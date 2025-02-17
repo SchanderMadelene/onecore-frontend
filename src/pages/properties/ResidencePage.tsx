@@ -5,7 +5,7 @@ import { TreeView } from "@/components/TreeView";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import type { Residence } from "@/types/api";
+import type { Residence, Room } from "@/types/api";
 import type { APIResponse } from "@/types/api";
 
 const mockResidenceData: APIResponse<Residence> = {
@@ -21,33 +21,130 @@ const mockResidenceData: APIResponse<Residence> = {
   }
 };
 
+const mockRoomsData: APIResponse<Room[]> = {
+  content: [
+    {
+      id: "1",
+      code: "RUM-101",
+      name: "Vardagsrum",
+      usage: {
+        shared: false,
+        allowPeriodicWorks: true,
+        spaceType: 1
+      },
+      features: {
+        hasToilet: false,
+        isHeated: true,
+        hasThermostatValve: true,
+        orientation: 1
+      },
+      dates: {
+        installation: null,
+        from: "2024-01-01T00:00:00Z",
+        to: "2024-12-31T23:59:59Z",
+        availableFrom: null,
+        availableTo: null
+      },
+      sortingOrder: 1,
+      deleted: false,
+      timestamp: "2024-01-01T00:00:00Z",
+      roomType: {
+        roomTypeId: "1",
+        roomTypeCode: "VARDAGSRUM",
+        name: "Vardagsrum",
+        use: 1,
+        optionAllowed: 0,
+        isSystemStandard: 1,
+        allowSmallRoomsInValuation: 0,
+        timestamp: "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      id: "2",
+      code: "RUM-102",
+      name: "Kök",
+      usage: {
+        shared: false,
+        allowPeriodicWorks: true,
+        spaceType: 2
+      },
+      features: {
+        hasToilet: false,
+        isHeated: true,
+        hasThermostatValve: true,
+        orientation: 2
+      },
+      dates: {
+        installation: null,
+        from: "2024-01-01T00:00:00Z",
+        to: "2024-12-31T23:59:59Z",
+        availableFrom: null,
+        availableTo: null
+      },
+      sortingOrder: 2,
+      deleted: false,
+      timestamp: "2024-01-01T00:00:00Z",
+      roomType: {
+        roomTypeId: "2",
+        roomTypeCode: "KOK",
+        name: "Kök",
+        use: 2,
+        optionAllowed: 0,
+        isSystemStandard: 1,
+        allowSmallRoomsInValuation: 0,
+        timestamp: "2024-01-01T00:00:00Z"
+      }
+    }
+  ]
+};
+
 const fetchResidence = async (id: string): Promise<Residence> => {
   // Simulera en nätverksfördröjning
   await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // Returnera mock-data
   return mockResidenceData.content;
+};
+
+const fetchRooms = async (id: string): Promise<Room[]> => {
+  // Simulera en nätverksfördröjning
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return mockRoomsData.content;
 };
 
 const ResidencePage = () => {
   const { city, district, property, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const { data: residenceData, isLoading, error } = useQuery({
+  const { data: residenceData, isLoading: isLoadingResidence, error: residenceError } = useQuery({
     queryKey: ['residence', id],
     queryFn: () => fetchResidence(id || ''),
     enabled: !!id
   });
 
+  const { data: roomsData, isLoading: isLoadingRooms, error: roomsError } = useQuery({
+    queryKey: ['rooms', id],
+    queryFn: () => fetchRooms(id || ''),
+    enabled: !!id
+  });
+
   // Om data håller på att laddas, visa en laddningsindikator
-  if (isLoading) {
+  if (isLoadingResidence || isLoadingRooms) {
     return <div>Laddar...</div>;
   }
 
   // Om det uppstod ett fel, visa felmeddelande
-  if (error) {
-    return <div>Ett fel uppstod: {error.message}</div>;
+  if (residenceError || roomsError) {
+    return <div>Ett fel uppstod: {(residenceError || roomsError)?.message}</div>;
   }
+
+  const getOrientationText = (orientation: number) => {
+    switch (orientation) {
+      case 1: return "Norr";
+      case 2: return "Öster";
+      case 3: return "Söder";
+      case 4: return "Väster";
+      default: return "Okänd";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
@@ -83,6 +180,7 @@ const ResidencePage = () => {
             p-4 sm:p-6 lg:p-8 
             transition-all duration-300 
             w-full
+            overflow-y-auto
             ${isSidebarOpen ? "lg:ml-64" : "lg:ml-0"}
           `}
         >
@@ -137,6 +235,54 @@ const ResidencePage = () => {
                 </CardContent>
               </Card>
             </div>
+
+            <Card className="col-span-full">
+              <CardHeader>
+                <CardTitle>Rum</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 gap-4">
+                  {roomsData?.map(room => (
+                    <div key={room.id} className="border rounded-lg p-4">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Rumskod</p>
+                          <p className="font-medium">{room.code}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Namn</p>
+                          <p className="font-medium">{room.name || '-'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Typ</p>
+                          <p className="font-medium">{room.roomType?.name || '-'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Orientering</p>
+                          <p className="font-medium">{getOrientationText(room.features.orientation)}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Uppvärmd</p>
+                          <p className="font-medium">{room.features.isHeated ? 'Ja' : 'Nej'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Termostatventil</p>
+                          <p className="font-medium">{room.features.hasThermostatValve ? 'Ja' : 'Nej'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Toalett</p>
+                          <p className="font-medium">{room.features.hasToilet ? 'Ja' : 'Nej'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Status</p>
+                          <p className="font-medium">{room.deleted ? 'Borttagen' : 'Aktiv'}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </main>
       </div>
