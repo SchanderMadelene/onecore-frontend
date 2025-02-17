@@ -1,4 +1,3 @@
-
 export interface Residence {
   id: string;
   code: string;
@@ -49,4 +48,22 @@ export interface Room {
 
 export interface APIResponse<T> {
   content: T;
+}
+
+export interface Property {
+  id: string;
+  propertyObjectId: string;
+  code: string;
+  designation: string;
+  municipality: string;
+  purpose: string | null;
+  buildingType: string | null;
+}
+
+export interface Company {
+  id: string;
+  propertyObjectId: string;
+  code: string;
+  name: string;
+  organizationNumber: string | null;
 }
