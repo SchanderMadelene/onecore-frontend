@@ -4,28 +4,38 @@ import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
+import type { Residence } from "@/types/api";
+import type { APIResponse } from "@/types/api";
+
+const fetchResidence = async (id: string): Promise<Residence> => {
+  const response = await fetch(`/api/residences/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch residence');
+  }
+  const data: APIResponse<Residence> = await response.json();
+  return data.content;
+};
 
 const ResidencePage = () => {
   const { city, district, property, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Exempel på lägenhetsdata (detta skulle normalt komma från en databas)
-  const residenceData = {
-    id: id,
-    code: "LGH-1001",
-    name: "3 rok med balkong",
-    address: `${property?.replace("-", " ")}, ${district}`,
-    area: "72",
-    floor: "2",
-    rooms: "3",
-    balcony: true,
-    validityPeriod: {
-      fromDate: "2024-01-01",
-      toDate: "2024-12-31"
-    },
-    monthlyRent: "9 800",
-    status: "Uthyrd"
-  };
+  const { data: residenceData, isLoading, error } = useQuery({
+    queryKey: ['residence', id],
+    queryFn: () => fetchResidence(id || ''),
+    enabled: !!id
+  });
+
+  // Om data håller på att laddas, visa en laddningsindikator
+  if (isLoading) {
+    return <div>Laddar...</div>;
+  }
+
+  // Om det uppstod ett fel, visa felmeddelande
+  if (error) {
+    return <div>Ett fel uppstod: {error.message}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
@@ -66,8 +76,8 @@ const ResidencePage = () => {
         >
           <div className="max-w-6xl mx-auto space-y-6">
             <div>
-              <h1 className="text-3xl font-bold mb-2">Lägenhet {residenceData.id}</h1>
-              <p className="text-muted-foreground">{residenceData.address}</p>
+              <h1 className="text-3xl font-bold mb-2">Lägenhet {residenceData?.code}</h1>
+              <p className="text-muted-foreground">{property?.replace("-", " ")}, {district}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -79,27 +89,15 @@ const ResidencePage = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-muted-foreground">Lägenhetskod</p>
-                      <p className="font-medium">{residenceData.code}</p>
+                      <p className="font-medium">{residenceData?.code}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Namn</p>
-                      <p className="font-medium">{residenceData.name}</p>
+                      <p className="font-medium">{residenceData?.name}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Area (m²)</p>
-                      <p className="font-medium">{residenceData.area}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Våning</p>
-                      <p className="font-medium">{residenceData.floor}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Antal rum</p>
-                      <p className="font-medium">{residenceData.rooms}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Balkong</p>
-                      <p className="font-medium">{residenceData.balcony ? "Ja" : "Nej"}</p>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <p className="font-medium">{residenceData?.deleted ? "Borttagen" : "Aktiv"}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -107,25 +105,21 @@ const ResidencePage = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Hyresinformation</CardTitle>
+                  <CardTitle>Giltighetstid</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm text-muted-foreground">Status</p>
-                      <p className="font-medium">{residenceData.status}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Månadshyra (kr)</p>
-                      <p className="font-medium">{residenceData.monthlyRent}</p>
-                    </div>
-                    <div>
                       <p className="text-sm text-muted-foreground">Giltig från</p>
-                      <p className="font-medium">{residenceData.validityPeriod.fromDate}</p>
+                      <p className="font-medium">
+                        {new Date(residenceData?.validityPeriod.fromDate || '').toLocaleDateString('sv-SE')}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Giltig till</p>
-                      <p className="font-medium">{residenceData.validityPeriod.toDate}</p>
+                      <p className="font-medium">
+                        {new Date(residenceData?.validityPeriod.toDate || '').toLocaleDateString('sv-SE')}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
