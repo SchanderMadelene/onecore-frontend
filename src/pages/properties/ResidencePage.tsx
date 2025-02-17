@@ -8,13 +8,25 @@ import { useQuery } from "@tanstack/react-query";
 import type { Residence } from "@/types/api";
 import type { APIResponse } from "@/types/api";
 
-const fetchResidence = async (id: string): Promise<Residence> => {
-  const response = await fetch(`/api/residences/${id}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch residence');
+const mockResidenceData: APIResponse<Residence> = {
+  content: {
+    id: "101",
+    code: "LGH-101",
+    name: "Kontorslokal med utsikt",
+    deleted: false,
+    validityPeriod: {
+      fromDate: "2024-01-01T00:00:00Z",
+      toDate: "2024-12-31T23:59:59Z"
+    }
   }
-  const data: APIResponse<Residence> = await response.json();
-  return data.content;
+};
+
+const fetchResidence = async (id: string): Promise<Residence> => {
+  // Simulera en nätverksfördröjning
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // Returnera mock-data
+  return mockResidenceData.content;
 };
 
 const ResidencePage = () => {
