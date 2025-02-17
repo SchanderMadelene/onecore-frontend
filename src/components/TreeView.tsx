@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 interface TreeNode {
   id: string;
   label: string;
+  icon?: string;
   path?: string;
   children?: TreeNode[];
 }
@@ -55,10 +56,14 @@ function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             className="flex-1 text-sm py-1"
             onClick={handleNodeClick}
           >
+            {node.icon && <span className="mr-2">{node.icon}</span>}
             {node.label}
           </Link>
         ) : (
-          <span className="text-sm">{node.label}</span>
+          <span className="text-sm">
+            {node.icon && <span className="mr-2">{node.icon}</span>}
+            {node.label}
+          </span>
         )}
       </div>
       {isExpanded &&
@@ -73,35 +78,90 @@ function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
 export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
   const treeData: TreeNode[] = [
     {
-      id: "1",
-      label: "Fastigheter",
+      id: "company",
+      label: "Företag",
+      icon: "🏢",
       children: [
         {
-          id: "1-1",
-          label: "Stockholm",
+          id: "properties",
+          label: "Fastigheter",
+          icon: "🏛",
           children: [
-            { id: "1-1-1", label: "Vasastan", path: "/properties/stockholm/vasastan" },
-            { id: "1-1-2", label: "Södermalm", path: "/properties/stockholm/sodermalm" },
-          ],
-        },
-        {
-          id: "1-2",
-          label: "Göteborg",
-          children: [
-            { id: "1-2-1", label: "Centrum", path: "/properties/gothenburg/centrum" },
-            { id: "1-2-2", label: "Hisingen", path: "/properties/gothenburg/hisingen" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "2",
-      label: "Hyresgäster",
-      children: [
-        { id: "2-1", label: "Företag", path: "/tenants/companies" },
-        { id: "2-2", label: "Privatpersoner", path: "/tenants/private" },
-      ],
-    },
+            { id: "prop-id", label: "ID", icon: "📜" },
+            { id: "prop-code", label: "Kod", icon: "📜" },
+            { id: "prop-municipality", label: "Kommun", icon: "📍" },
+            { id: "prop-area", label: "Areal", icon: "📐" },
+            {
+              id: "buildings",
+              label: "Byggnader",
+              icon: "🏗",
+              children: [
+                {
+                  id: "building",
+                  label: "Byggnad",
+                  icon: "🏗",
+                  children: [
+                    { id: "building-id", label: "ID", icon: "📜" },
+                    { id: "building-type", label: "Byggnadstyp", icon: "🏗" },
+                    {
+                      id: "construction",
+                      label: "Konstruktion",
+                      icon: "🔨",
+                      children: [
+                        { id: "construction-year", label: "Byggår", icon: "📅" },
+                        { id: "renovation-year", label: "Renoveringsår", icon: "📅" }
+                      ]
+                    },
+                    {
+                      id: "staircases",
+                      label: "Trapphus",
+                      icon: "🏠",
+                      children: [
+                        {
+                          id: "staircase",
+                          label: "Trapphus",
+                          icon: "🏠",
+                          children: [
+                            { id: "staircase-id", label: "ID", icon: "📜" },
+                            { id: "floor-plan", label: "Planlösning", icon: "📍" },
+                            {
+                              id: "residences",
+                              label: "Lägenheter",
+                              icon: "🚪",
+                              children: [
+                                {
+                                  id: "residence",
+                                  label: "Lägenhet",
+                                  icon: "🚪",
+                                  children: [
+                                    { id: "residence-id", label: "ID", icon: "📜" },
+                                    { id: "residence-code", label: "Kod", icon: "📜" },
+                                    { id: "residence-name", label: "Namn", icon: "🏷" },
+                                    {
+                                      id: "validity-period",
+                                      label: "Giltighetstid",
+                                      icon: "🏠",
+                                      children: [
+                                        { id: "from-date", label: "Från", icon: "🗓" },
+                                        { id: "to-date", label: "Till", icon: "🗓" }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ];
 
   return (
