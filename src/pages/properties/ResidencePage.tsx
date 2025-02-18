@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
@@ -150,6 +151,7 @@ const ResidencePage = () => {
   const { city, district, property, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isInspectionDialogOpen, setIsInspectionDialogOpen] = useState(false);
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
 
   const form = useForm({
     defaultValues: {
@@ -182,6 +184,15 @@ const ResidencePage = () => {
       case 3: return "Söder";
       case 4: return "Väster";
       default: return "Okänd";
+    }
+  };
+
+  const getConditionColor = (condition: string) => {
+    switch (condition) {
+      case 'good': return 'text-green-600';
+      case 'fair': return 'text-yellow-600';
+      case 'poor': return 'text-red-600';
+      default: return 'text-gray-600';
     }
   };
 
@@ -245,7 +256,7 @@ const ResidencePage = () => {
                     Skapa nytt besiktningsprotokoll
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="max-w-4xl">
                   <DialogHeader>
                     <DialogTitle>Nytt besiktningsprotokoll</DialogTitle>
                     <DialogDescription>
@@ -254,41 +265,203 @@ const ResidencePage = () => {
                   </DialogHeader>
                   
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onCreateInspection)} className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="inspector"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Besiktningsman</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Ange namn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="notes"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Anteckningar</FormLabel>
-                            <FormControl>
-                              <Textarea 
-                                placeholder="Generella anteckningar om besiktningen"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <Button type="submit" className="w-full">
-                        Fortsätt till rumsbesiktning
-                      </Button>
+                    <form onSubmit={form.handleSubmit(onCreateInspection)} className="space-y-6">
+                      <div className="grid grid-cols-1 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="inspector"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Besiktningsman</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Ange namn" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={form.control}
+                          name="notes"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Generella anteckningar</FormLabel>
+                              <FormControl>
+                                <Textarea 
+                                  placeholder="Generella anteckningar om besiktningen"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Rum att besiktiga</h3>
+                        <div className="grid gap-4">
+                          {roomsData?.map((room) => (
+                            <div
+                              key={room.id}
+                              className="border rounded-lg p-4 space-y-4"
+                            >
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <h4 className="font-medium">{room.name || room.code}</h4>
+                                  <p className="text-sm text-muted-foreground">
+                                    {room.roomType?.name || "Typ ej specificerad"}
+                                  </p>
+                                </div>
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => setSelectedRoomId(room.id)}
+                                >
+                                  Besiktiga rum
+                                </Button>
+                              </div>
+                              
+                              {selectedRoomId === room.id && (
+                                <div className="space-y-4">
+                                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                    <div className="space-y-3">
+                                      <h5 className="font-medium">Golv</h5>
+                                      {mockInspectionItems.floor.map((item) => (
+                                        <div key={item.id} className="space-y-2">
+                                          <div className="flex justify-between items-center">
+                                            <span>{item.name}</span>
+                                            <select
+                                              className="text-sm border rounded p-1"
+                                              value={item.condition}
+                                              onChange={(e) => console.log(e.target.value)}
+                                            >
+                                              <option value="good">Bra skick</option>
+                                              <option value="fair">Acceptabelt</option>
+                                              <option value="poor">Behöver åtgärd</option>
+                                            </select>
+                                          </div>
+                                          <Textarea
+                                            placeholder="Anteckningar om skicket..."
+                                            className="text-sm"
+                                            value={item.notes}
+                                            onChange={(e) => console.log(e.target.value)}
+                                          />
+                                        </div>
+                                      ))}
+                                    </div>
+                                    
+                                    <div className="space-y-3">
+                                      <h5 className="font-medium">Väggar</h5>
+                                      {mockInspectionItems.wall.map((item) => (
+                                        <div key={item.id} className="space-y-2">
+                                          <div className="flex justify-between items-center">
+                                            <span>{item.name}</span>
+                                            <select
+                                              className="text-sm border rounded p-1"
+                                              value={item.condition}
+                                              onChange={(e) => console.log(e.target.value)}
+                                            >
+                                              <option value="good">Bra skick</option>
+                                              <option value="fair">Acceptabelt</option>
+                                              <option value="poor">Behöver åtgärd</option>
+                                            </select>
+                                          </div>
+                                          <Textarea
+                                            placeholder="Anteckningar om skicket..."
+                                            className="text-sm"
+                                            value={item.notes}
+                                            onChange={(e) => console.log(e.target.value)}
+                                          />
+                                        </div>
+                                      ))}
+                                    </div>
+                                    
+                                    <div className="space-y-3">
+                                      <h5 className="font-medium">Tak</h5>
+                                      {mockInspectionItems.ceiling.map((item) => (
+                                        <div key={item.id} className="space-y-2">
+                                          <div className="flex justify-between items-center">
+                                            <span>{item.name}</span>
+                                            <select
+                                              className="text-sm border rounded p-1"
+                                              value={item.condition}
+                                              onChange={(e) => console.log(e.target.value)}
+                                            >
+                                              <option value="good">Bra skick</option>
+                                              <option value="fair">Acceptabelt</option>
+                                              <option value="poor">Behöver åtgärd</option>
+                                            </select>
+                                          </div>
+                                          <Textarea
+                                            placeholder="Anteckningar om skicket..."
+                                            className="text-sm"
+                                            value={item.notes}
+                                            onChange={(e) => console.log(e.target.value)}
+                                          />
+                                        </div>
+                                      ))}
+                                    </div>
+                                    
+                                    <div className="space-y-3">
+                                      <h5 className="font-medium">Vitvaror</h5>
+                                      {mockInspectionItems.appliance.map((item) => (
+                                        <div key={item.id} className="space-y-2">
+                                          <div className="flex justify-between items-center">
+                                            <span>{item.name}</span>
+                                            <select
+                                              className="text-sm border rounded p-1"
+                                              value={item.condition}
+                                              onChange={(e) => console.log(e.target.value)}
+                                            >
+                                              <option value="good">Bra skick</option>
+                                              <option value="fair">Acceptabelt</option>
+                                              <option value="poor">Behöver åtgärd</option>
+                                            </select>
+                                          </div>
+                                          <Textarea
+                                            placeholder="Anteckningar om skicket..."
+                                            className="text-sm"
+                                            value={item.notes}
+                                            onChange={(e) => console.log(e.target.value)}
+                                          />
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="flex justify-end space-x-2">
+                                    <Button
+                                      variant="outline"
+                                      onClick={() => setSelectedRoomId(null)}
+                                    >
+                                      Stäng
+                                    </Button>
+                                    <Button
+                                      onClick={() => console.log("Sparar rumsbesiktning")}
+                                    >
+                                      Spara
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end space-x-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setIsInspectionDialogOpen(false)}
+                        >
+                          Avbryt
+                        </Button>
+                        <Button type="submit">
+                          Spara protokoll
+                        </Button>
+                      </div>
                     </form>
                   </Form>
                 </DialogContent>
