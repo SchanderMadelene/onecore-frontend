@@ -12,9 +12,9 @@ import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 
 const mockResidenceData: APIResponse<Residence> = {
   content: {
-    id: "101",
-    code: "LGH-101",
-    name: "Kontorslokal med utsikt",
+    id: "1002",
+    code: "LGH-1002",
+    name: "Lägenhet 1002, Odenplan 5",
     deleted: false,
     validityPeriod: {
       fromDate: "2024-01-01T00:00:00Z",
