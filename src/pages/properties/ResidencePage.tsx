@@ -1,11 +1,31 @@
-
 import { useParams } from "react-router-dom";
 import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import type { Residence, Room } from "@/types/api";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
+import type { Residence, Room, InspectionProtocol, InspectionItem } from "@/types/api";
 import type { APIResponse } from "@/types/api";
 
 const mockResidenceData: APIResponse<Residence> = {
@@ -98,14 +118,30 @@ const mockRoomsData: APIResponse<Room[]> = {
   ]
 };
 
+const mockInspectionItems: Record<string, InspectionItem[]> = {
+  floor: [
+    { id: "f1", type: "floor", name: "Parkettgolv", condition: "good", notes: "" },
+    { id: "f2", type: "floor", name: "Trösklar", condition: "good", notes: "" }
+  ],
+  wall: [
+    { id: "w1", type: "wall", name: "Väggar", condition: "good", notes: "" },
+    { id: "w2", type: "wall", name: "Tapeter", condition: "good", notes: "" }
+  ],
+  ceiling: [
+    { id: "c1", type: "ceiling", name: "Innertak", condition: "good", notes: "" }
+  ],
+  appliance: [
+    { id: "a1", type: "appliance", name: "Kylskåp", condition: "good", notes: "" },
+    { id: "a2", type: "appliance", name: "Spis", condition: "good", notes: "" }
+  ]
+};
+
 const fetchResidence = async (id: string): Promise<Residence> => {
-  // Simulera en nätverksfördröjning
   await new Promise(resolve => setTimeout(resolve, 500));
   return mockResidenceData.content;
 };
 
 const fetchRooms = async (id: string): Promise<Room[]> => {
-  // Simulera en nätverksfördröjning
   await new Promise(resolve => setTimeout(resolve, 500));
   return mockRoomsData.content;
 };
@@ -113,6 +149,14 @@ const fetchRooms = async (id: string): Promise<Room[]> => {
 const ResidencePage = () => {
   const { city, district, property, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isInspectionDialogOpen, setIsInspectionDialogOpen] = useState(false);
+
+  const form = useForm({
+    defaultValues: {
+      inspector: "",
+      notes: "",
+    },
+  });
 
   const { data: residenceData, isLoading: isLoadingResidence, error: residenceError } = useQuery({
     queryKey: ['residence', id],
@@ -126,15 +170,10 @@ const ResidencePage = () => {
     enabled: !!id
   });
 
-  // Om data håller på att laddas, visa en laddningsindikator
-  if (isLoadingResidence || isLoadingRooms) {
-    return <div>Laddar...</div>;
-  }
-
-  // Om det uppstod ett fel, visa felmeddelande
-  if (residenceError || roomsError) {
-    return <div>Ett fel uppstod: {(residenceError || roomsError)?.message}</div>;
-  }
+  const onCreateInspection = (data: any) => {
+    console.log("Creating inspection protocol:", data);
+    setIsInspectionDialogOpen(false);
+  };
 
   const getOrientationText = (orientation: number) => {
     switch (orientation) {
@@ -145,6 +184,14 @@ const ResidencePage = () => {
       default: return "Okänd";
     }
   };
+
+  if (isLoadingResidence || isLoadingRooms) {
+    return <div>Laddar...</div>;
+  }
+
+  if (residenceError || roomsError) {
+    return <div>Ett fel uppstod: {(residenceError || roomsError)?.message}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
@@ -185,9 +232,67 @@ const ResidencePage = () => {
           `}
         >
           <div className="max-w-6xl mx-auto space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Lägenhet {residenceData?.code}</h1>
-              <p className="text-muted-foreground">{property?.replace("-", " ")}, {district}</p>
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Lägenhet {residenceData?.code}</h1>
+                <p className="text-muted-foreground">{property?.replace("-", " ")}, {district}</p>
+              </div>
+              
+              <Dialog open={isInspectionDialogOpen} onOpenChange={setIsInspectionDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="gap-2">
+                    <PlusCircle className="h-4 w-4" />
+                    Skapa nytt besiktningsprotokoll
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Nytt besiktningsprotokoll</DialogTitle>
+                    <DialogDescription>
+                      Skapa ett nytt besiktningsprotokoll för lägenheten. Fyll i grundläggande information nedan.
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onCreateInspection)} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="inspector"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Besiktningsman</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Ange namn" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="notes"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Anteckningar</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Generella anteckningar om besiktningen"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <Button type="submit" className="w-full">
+                        Fortsätt till rumsbesiktning
+                      </Button>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -238,7 +343,7 @@ const ResidencePage = () => {
 
             <Card className="col-span-full">
               <CardHeader>
-                <CardTitle>Rum</CardTitle>
+                <CardTitle>Rum för besiktning</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 gap-4">
@@ -261,21 +366,48 @@ const ResidencePage = () => {
                           <p className="text-sm text-muted-foreground">Orientering</p>
                           <p className="font-medium">{getOrientationText(room.features.orientation)}</p>
                         </div>
+                      </div>
+                      
+                      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div>
-                          <p className="text-sm text-muted-foreground">Uppvärmd</p>
-                          <p className="font-medium">{room.features.isHeated ? 'Ja' : 'Nej'}</p>
+                          <h4 className="font-medium mb-2">Golv</h4>
+                          <ul className="text-sm space-y-1">
+                            {mockInspectionItems.floor.map(item => (
+                              <li key={item.id} className="text-muted-foreground">
+                                {item.name}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                         <div>
-                          <p className="text-sm text-muted-foreground">Termostatventil</p>
-                          <p className="font-medium">{room.features.hasThermostatValve ? 'Ja' : 'Nej'}</p>
+                          <h4 className="font-medium mb-2">Väggar</h4>
+                          <ul className="text-sm space-y-1">
+                            {mockInspectionItems.wall.map(item => (
+                              <li key={item.id} className="text-muted-foreground">
+                                {item.name}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                         <div>
-                          <p className="text-sm text-muted-foreground">Toalett</p>
-                          <p className="font-medium">{room.features.hasToilet ? 'Ja' : 'Nej'}</p>
+                          <h4 className="font-medium mb-2">Tak</h4>
+                          <ul className="text-sm space-y-1">
+                            {mockInspectionItems.ceiling.map(item => (
+                              <li key={item.id} className="text-muted-foreground">
+                                {item.name}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                         <div>
-                          <p className="text-sm text-muted-foreground">Status</p>
-                          <p className="font-medium">{room.deleted ? 'Borttagen' : 'Aktiv'}</p>
+                          <h4 className="font-medium mb-2">Vitvaror</h4>
+                          <ul className="text-sm space-y-1">
+                            {mockInspectionItems.appliance.map(item => (
+                              <li key={item.id} className="text-muted-foreground">
+                                {item.name}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       </div>
                     </div>
