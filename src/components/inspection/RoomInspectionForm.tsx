@@ -27,7 +27,7 @@ const commonIssues = [
   "Rengöringsbehov"
 ];
 
-const getInitialInspectionItems = (): Record<string, InspectionItem[]> => ({
+const getInitialInspectionItems = () => ({
   floor: [
     { id: "f1", type: "floor", name: "Parkettgolv", condition: "good", notes: "" },
     { id: "f2", type: "floor", name: "Trösklar", condition: "good", notes: "" }
@@ -68,14 +68,17 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
   };
 
   const handleRoomSelection = (roomId: string) => {
-    // Initialisera inspektionsobjekt för rummet om det inte redan finns
-    if (!roomInspectionItems[roomId]) {
-      setRoomInspectionItems(prev => ({
-        ...prev,
-        [roomId]: getInitialInspectionItems()
-      }));
-    }
     setSelectedRoomId(roomId);
+    // Säkerställ att rummet har inspektionsdata
+    setRoomInspectionItems(prev => {
+      if (!prev[roomId]) {
+        return {
+          ...prev,
+          [roomId]: getInitialInspectionItems()
+        };
+      }
+      return prev;
+    });
   };
 
   return (
@@ -124,42 +127,23 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
             {selectedRoomId === room.id && roomInspectionItems[room.id] && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <InspectionCategory 
-                    title="Golv" 
-                    items={roomInspectionItems[room.id].floor}
-                    onItemClick={(itemId) => {
-                      setSelectedItemId(itemId);
-                      setSelectedIssues([]);
-                      setCustomNote("");
-                    }}
-                  />
-                  <InspectionCategory 
-                    title="Väggar" 
-                    items={roomInspectionItems[room.id].wall}
-                    onItemClick={(itemId) => {
-                      setSelectedItemId(itemId);
-                      setSelectedIssues([]);
-                      setCustomNote("");
-                    }}
-                  />
-                  <InspectionCategory 
-                    title="Tak" 
-                    items={roomInspectionItems[room.id].ceiling}
-                    onItemClick={(itemId) => {
-                      setSelectedItemId(itemId);
-                      setSelectedIssues([]);
-                      setCustomNote("");
-                    }}
-                  />
-                  <InspectionCategory 
-                    title="Vitvaror" 
-                    items={roomInspectionItems[room.id].appliance}
-                    onItemClick={(itemId) => {
-                      setSelectedItemId(itemId);
-                      setSelectedIssues([]);
-                      setCustomNote("");
-                    }}
-                  />
+                  {Object.entries(roomInspectionItems[room.id]).map(([category, items]) => (
+                    <InspectionCategory 
+                      key={category}
+                      title={
+                        category === 'floor' ? 'Golv' :
+                        category === 'wall' ? 'Väggar' :
+                        category === 'ceiling' ? 'Tak' :
+                        'Vitvaror'
+                      }
+                      items={items}
+                      onItemClick={(itemId) => {
+                        setSelectedItemId(itemId);
+                        setSelectedIssues([]);
+                        setCustomNote("");
+                      }}
+                    />
+                  ))}
                 </div>
                 
                 <div className="flex justify-end space-x-2">
