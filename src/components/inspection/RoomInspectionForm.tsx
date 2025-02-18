@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,21 +26,21 @@ const commonIssues = [
   "Rengöringsbehov"
 ];
 
-const getInitialInspectionItems = () => ({
+const getInitialInspectionItems = (): Record<string, InspectionItem[]> => ({
   floor: [
-    { id: "f1", type: "floor", name: "Parkettgolv", condition: "good", notes: "" },
-    { id: "f2", type: "floor", name: "Trösklar", condition: "good", notes: "" }
+    { id: "f1", type: "floor" as const, name: "Parkettgolv", condition: "good", notes: "" },
+    { id: "f2", type: "floor" as const, name: "Trösklar", condition: "good", notes: "" }
   ],
   wall: [
-    { id: "w1", type: "wall", name: "Väggar", condition: "good", notes: "" },
-    { id: "w2", type: "wall", name: "Tapeter", condition: "good", notes: "" }
+    { id: "w1", type: "wall" as const, name: "Väggar", condition: "good", notes: "" },
+    { id: "w2", type: "wall" as const, name: "Tapeter", condition: "good", notes: "" }
   ],
   ceiling: [
-    { id: "c1", type: "ceiling", name: "Innertak", condition: "good", notes: "" }
+    { id: "c1", type: "ceiling" as const, name: "Innertak", condition: "good", notes: "" }
   ],
   appliance: [
-    { id: "a1", type: "appliance", name: "Kylskåp", condition: "good", notes: "" },
-    { id: "a2", type: "appliance", name: "Spis", condition: "good", notes: "" }
+    { id: "a1", type: "appliance" as const, name: "Kylskåp", condition: "good", notes: "" },
+    { id: "a2", type: "appliance" as const, name: "Spis", condition: "good", notes: "" }
   ]
 });
 
@@ -69,7 +68,6 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
 
   const handleRoomSelection = (roomId: string) => {
     setSelectedRoomId(roomId);
-    // Säkerställ att rummet har inspektionsdata
     setRoomInspectionItems(prev => {
       if (!prev[roomId]) {
         return {
