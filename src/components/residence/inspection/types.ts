@@ -13,6 +13,12 @@ export interface InspectionRoom {
     ceiling: string[];
     details: string[];
   };
+  componentNotes: {
+    walls: string;
+    floor: string;
+    ceiling: string;
+    details: string;
+  };
   notes: string;
   photos: string[];
 }

@@ -9,6 +9,8 @@ interface ConditionSelectProps {
   actions: string[];
   onActionUpdate: (action: string) => void;
   type: "walls" | "floor" | "ceiling" | "details";
+  note: string;
+  onNoteChange: (note: string) => void;
 }
 
 export const ConditionSelect = ({ 
@@ -17,7 +19,9 @@ export const ConditionSelect = ({
   onChange, 
   actions, 
   onActionUpdate,
-  type 
+  type,
+  note,
+  onNoteChange
 }: ConditionSelectProps) => {
   const needsAction = (condition: string) => {
     return condition === "needs_attention" || condition === "damaged";
@@ -87,8 +91,17 @@ export const ConditionSelect = ({
         <option value="damaged">Skadat</option>
       </select>
       {needsAction(value) && (
-        <div className="mt-2 flex gap-2">
-          {getActionButtons()}
+        <div className="space-y-2">
+          <div className="mt-2 flex gap-2">
+            {getActionButtons()}
+          </div>
+          <textarea
+            className="w-full border rounded-md p-2 mt-1 text-sm"
+            placeholder="Skriv en anteckning om skadan eller åtgärden..."
+            value={note}
+            onChange={(e) => onNoteChange(e.target.value)}
+            rows={2}
+          />
         </div>
       )}
     </div>

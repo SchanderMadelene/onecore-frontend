@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Camera, CheckCircle } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
@@ -18,6 +17,12 @@ interface InspectionRoom {
     ceiling: string[];
     details: string[];
   };
+  componentNotes: {
+    walls: string;
+    floor: string;
+    ceiling: string;
+    details: string;
+  };
   notes: string;
   photos: string[];
 }
@@ -30,6 +35,7 @@ interface InspectionRoomProps {
   onConditionUpdate: (field: keyof InspectionRoom["conditions"], value: string) => void;
   onActionUpdate: (field: keyof InspectionRoom["actions"], action: string) => void;
   onNotesUpdate: (notes: string) => void;
+  onComponentNoteUpdate: (field: keyof InspectionRoom["componentNotes"], note: string) => void;
 }
 
 export const InspectionRoom = ({
@@ -40,6 +46,7 @@ export const InspectionRoom = ({
   onConditionUpdate,
   onActionUpdate,
   onNotesUpdate,
+  onComponentNoteUpdate,
 }: InspectionRoomProps) => {
   const isRoomApproved = Object.values(inspectionData.conditions).every(
     condition => condition === "good" || condition === "acceptable"
@@ -95,6 +102,8 @@ export const InspectionRoom = ({
               actions={inspectionData.actions.walls}
               onActionUpdate={(action) => onActionUpdate("walls", action)}
               type="walls"
+              note={inspectionData.componentNotes.walls}
+              onNoteChange={(note) => onComponentNoteUpdate("walls", note)}
             />
             <ConditionSelect
               label="Golv"
@@ -103,6 +112,8 @@ export const InspectionRoom = ({
               actions={inspectionData.actions.floor}
               onActionUpdate={(action) => onActionUpdate("floor", action)}
               type="floor"
+              note={inspectionData.componentNotes.floor}
+              onNoteChange={(note) => onComponentNoteUpdate("floor", note)}
             />
             <ConditionSelect
               label="Tak"
@@ -111,6 +122,8 @@ export const InspectionRoom = ({
               actions={inspectionData.actions.ceiling}
               onActionUpdate={(action) => onActionUpdate("ceiling", action)}
               type="ceiling"
+              note={inspectionData.componentNotes.ceiling}
+              onNoteChange={(note) => onComponentNoteUpdate("ceiling", note)}
             />
             <ConditionSelect
               label="Detaljer"
@@ -119,6 +132,8 @@ export const InspectionRoom = ({
               actions={inspectionData.actions.details}
               onActionUpdate={(action) => onActionUpdate("details", action)}
               type="details"
+              note={inspectionData.componentNotes.details}
+              onNoteChange={(note) => onComponentNoteUpdate("details", note)}
             />
           </div>
 

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -33,6 +32,12 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
           floor: [],
           ceiling: [],
           details: []
+        },
+        componentNotes: {
+          walls: "",
+          floor: "",
+          ceiling: "",
+          details: ""
         },
         notes: "",
         photos: []
@@ -96,6 +101,23 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     }));
   };
 
+  const handleComponentNoteUpdate = (
+    roomId: string,
+    field: keyof InspectionRoomType["componentNotes"],
+    note: string
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        componentNotes: {
+          ...prev[roomId].componentNotes,
+          [field]: note
+        }
+      }
+    }));
+  };
+
   const handleSaveInspection = () => {
     console.log("Sparar besiktning:", inspectionData);
   };
@@ -121,6 +143,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
               onConditionUpdate={(field, value) => handleConditionUpdate(room.id, field, value)}
               onActionUpdate={(field, action) => handleActionUpdate(room.id, field, action)}
               onNotesUpdate={(notes) => handleNotesUpdate(room.id, notes)}
+              onComponentNoteUpdate={(field, note) => handleComponentNoteUpdate(room.id, field, note)}
             />
           ))}
         </div>
