@@ -27,7 +27,7 @@ const commonIssues = [
   "Rengöringsbehov"
 ];
 
-const mockInspectionItems: Record<string, InspectionItem[]> = {
+const getInitialInspectionItems = (): Record<string, InspectionItem[]> => ({
   floor: [
     { id: "f1", type: "floor", name: "Parkettgolv", condition: "good", notes: "" },
     { id: "f2", type: "floor", name: "Trösklar", condition: "good", notes: "" }
@@ -43,15 +43,15 @@ const mockInspectionItems: Record<string, InspectionItem[]> = {
     { id: "a1", type: "appliance", name: "Kylskåp", condition: "good", notes: "" },
     { id: "a2", type: "appliance", name: "Spis", condition: "good", notes: "" }
   ]
-};
+});
 
 export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
-  const [detailedInspectionRoomId, setDetailedInspectionRoomId] = useState<string | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedIssues, setSelectedIssues] = useState<string[]>([]);
   const [customNote, setCustomNote] = useState("");
   const [approvedRooms, setApprovedRooms] = useState<Set<string>>(new Set());
+  const [roomInspectionItems, setRoomInspectionItems] = useState<Record<string, Record<string, InspectionItem[]>>>({});
 
   const handleRoomApproval = (roomId: string) => {
     const newApprovedRooms = new Set(approvedRooms);
@@ -65,6 +65,17 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
       console.log("Bild uppladdad:", file.name);
       // Här skulle vi normalt hantera bilduppladdningen
     }
+  };
+
+  const handleRoomSelection = (roomId: string) => {
+    // Initialisera inspektionsobjekt för rummet om det inte redan finns
+    if (!roomInspectionItems[roomId]) {
+      setRoomInspectionItems(prev => ({
+        ...prev,
+        [roomId]: getInitialInspectionItems()
+      }));
+    }
+    setSelectedRoomId(roomId);
   };
 
   return (
@@ -92,10 +103,7 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
                 <Button
                   variant="outline"
                   className="gap-2"
-                  onClick={() => {
-                    setSelectedRoomId(room.id);
-                    setDetailedInspectionRoomId(room.id);
-                  }}
+                  onClick={() => handleRoomSelection(room.id)}
                 >
                   Detaljerad besiktning
                   <ChevronRight className="h-4 w-4" />
@@ -113,12 +121,12 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
               </div>
             </div>
             
-            {selectedRoomId === room.id && (
+            {selectedRoomId === room.id && roomInspectionItems[room.id] && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <InspectionCategory 
                     title="Golv" 
-                    items={mockInspectionItems.floor}
+                    items={roomInspectionItems[room.id].floor}
                     onItemClick={(itemId) => {
                       setSelectedItemId(itemId);
                       setSelectedIssues([]);
@@ -127,7 +135,7 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
                   />
                   <InspectionCategory 
                     title="Väggar" 
-                    items={mockInspectionItems.wall}
+                    items={roomInspectionItems[room.id].wall}
                     onItemClick={(itemId) => {
                       setSelectedItemId(itemId);
                       setSelectedIssues([]);
@@ -136,7 +144,7 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
                   />
                   <InspectionCategory 
                     title="Tak" 
-                    items={mockInspectionItems.ceiling}
+                    items={roomInspectionItems[room.id].ceiling}
                     onItemClick={(itemId) => {
                       setSelectedItemId(itemId);
                       setSelectedIssues([]);
@@ -145,7 +153,7 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
                   />
                   <InspectionCategory 
                     title="Vitvaror" 
-                    items={mockInspectionItems.appliance}
+                    items={roomInspectionItems[room.id].appliance}
                     onItemClick={(itemId) => {
                       setSelectedItemId(itemId);
                       setSelectedIssues([]);
