@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -7,6 +6,7 @@ import type { APIResponse } from "@/types/api";
 import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { ResidenceInspection } from "@/components/residence/ResidenceInspection";
 
 const mockResidenceData: APIResponse<Residence> = {
   content: {
@@ -146,18 +146,25 @@ const ResidencePage = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <ResidenceBasicInfo
-        residence={residenceData}
-        property={property}
-        district={district}
-      />
-      
-      {roomsData && (
-        <ResidenceInfo 
-          rooms={roomsData}
-          getOrientationText={getOrientationText}
+      <div className="space-y-6">
+        <ResidenceBasicInfo
+          residence={residenceData}
+          property={property}
+          district={district}
         />
-      )}
+        
+        {roomsData && (
+          <>
+            <ResidenceInfo 
+              rooms={roomsData}
+              getOrientationText={getOrientationText}
+            />
+            <ResidenceInspection
+              rooms={roomsData}
+            />
+          </>
+        )}
+      </div>
     </PageLayout>
   );
 };
