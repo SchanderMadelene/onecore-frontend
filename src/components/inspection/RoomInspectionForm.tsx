@@ -2,11 +2,30 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Check, ChevronRight, ImagePlus } from "lucide-react";
 import type { Room, InspectionItem } from "@/types/api";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 interface RoomInspectionFormProps {
   rooms?: Room[];
 }
+
+const commonIssues = [
+  "Slitage utöver normal förslitning",
+  "Fuktskada",
+  "Färgsläpp/tapetsläpp",
+  "Spricka",
+  "Trasigt handtag/beslag",
+  "Skada i ytskikt",
+  "Funktionsfel",
+  "Saknas helt",
+  "Felaktig installation",
+  "Rengöringsbehov"
+];
 
 const mockInspectionItems: Record<string, InspectionItem[]> = {
   floor: [
@@ -28,6 +47,25 @@ const mockInspectionItems: Record<string, InspectionItem[]> = {
 
 export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+  const [detailedInspectionRoomId, setDetailedInspectionRoomId] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [selectedIssues, setSelectedIssues] = useState<string[]>([]);
+  const [customNote, setCustomNote] = useState("");
+  const [approvedRooms, setApprovedRooms] = useState<Set<string>>(new Set());
+
+  const handleRoomApproval = (roomId: string) => {
+    const newApprovedRooms = new Set(approvedRooms);
+    newApprovedRooms.add(roomId);
+    setApprovedRooms(newApprovedRooms);
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      console.log("Bild uppladdad:", file.name);
+      // Här skulle vi normalt hantera bilduppladdningen
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -44,22 +82,76 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
                 <p className="text-sm text-muted-foreground">
                   {room.roomType?.name || "Typ ej specificerad"}
                 </p>
+                {approvedRooms.has(room.id) && (
+                  <Badge className="mt-2 bg-green-500">
+                    <Check className="mr-1 h-3 w-3" /> Godkänt
+                  </Badge>
+                )}
               </div>
-              <Button
-                variant="secondary"
-                onClick={() => setSelectedRoomId(room.id)}
-              >
-                Besiktiga rum
-              </Button>
+              <div className="space-x-2">
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => {
+                    setSelectedRoomId(room.id);
+                    setDetailedInspectionRoomId(room.id);
+                  }}
+                >
+                  Detaljerad besiktning
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                {!approvedRooms.has(room.id) && (
+                  <Button
+                    variant="secondary"
+                    className="gap-2"
+                    onClick={() => handleRoomApproval(room.id)}
+                  >
+                    <Check className="h-4 w-4" />
+                    Godkänn rum
+                  </Button>
+                )}
+              </div>
             </div>
             
             {selectedRoomId === room.id && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <InspectionCategory title="Golv" items={mockInspectionItems.floor} />
-                  <InspectionCategory title="Väggar" items={mockInspectionItems.wall} />
-                  <InspectionCategory title="Tak" items={mockInspectionItems.ceiling} />
-                  <InspectionCategory title="Vitvaror" items={mockInspectionItems.appliance} />
+                  <InspectionCategory 
+                    title="Golv" 
+                    items={mockInspectionItems.floor}
+                    onItemClick={(itemId) => {
+                      setSelectedItemId(itemId);
+                      setSelectedIssues([]);
+                      setCustomNote("");
+                    }}
+                  />
+                  <InspectionCategory 
+                    title="Väggar" 
+                    items={mockInspectionItems.wall}
+                    onItemClick={(itemId) => {
+                      setSelectedItemId(itemId);
+                      setSelectedIssues([]);
+                      setCustomNote("");
+                    }}
+                  />
+                  <InspectionCategory 
+                    title="Tak" 
+                    items={mockInspectionItems.ceiling}
+                    onItemClick={(itemId) => {
+                      setSelectedItemId(itemId);
+                      setSelectedIssues([]);
+                      setCustomNote("");
+                    }}
+                  />
+                  <InspectionCategory 
+                    title="Vitvaror" 
+                    items={mockInspectionItems.appliance}
+                    onItemClick={(itemId) => {
+                      setSelectedItemId(itemId);
+                      setSelectedIssues([]);
+                      setCustomNote("");
+                    }}
+                  />
                 </div>
                 
                 <div className="flex justify-end space-x-2">
@@ -80,6 +172,92 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
           </div>
         ))}
       </div>
+
+      <Dialog 
+        open={selectedItemId !== null} 
+        onOpenChange={() => setSelectedItemId(null)}
+      >
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Registrera anmärkning</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h4 className="font-medium">Vanliga åtgärder</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {commonIssues.map((issue) => (
+                  <div key={issue} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`issue-${issue}`}
+                      checked={selectedIssues.includes(issue)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedIssues([...selectedIssues, issue]);
+                        } else {
+                          setSelectedIssues(selectedIssues.filter(i => i !== issue));
+                        }
+                      }}
+                    />
+                    <Label htmlFor={`issue-${issue}`}>{issue}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="customNote">Övriga anteckningar</Label>
+              <Textarea
+                id="customNote"
+                placeholder="Beskriv anmärkningen..."
+                value={customNote}
+                onChange={(e) => setCustomNote(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="imageUpload">Lägg till bild</Label>
+              <div className="flex items-center gap-4">
+                <Input
+                  id="imageUpload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => document.getElementById("imageUpload")?.click()}
+                >
+                  <ImagePlus className="h-4 w-4" />
+                  Välj bild
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => setSelectedItemId(null)}
+              >
+                Avbryt
+              </Button>
+              <Button
+                onClick={() => {
+                  console.log("Sparar anmärkning:", {
+                    itemId: selectedItemId,
+                    issues: selectedIssues,
+                    customNote,
+                  });
+                  setSelectedItemId(null);
+                }}
+              >
+                Spara anmärkning
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
@@ -87,31 +265,30 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
 interface InspectionCategoryProps {
   title: string;
   items: InspectionItem[];
+  onItemClick: (itemId: string) => void;
 }
 
-const InspectionCategory = ({ title, items }: InspectionCategoryProps) => (
+const InspectionCategory = ({ title, items, onItemClick }: InspectionCategoryProps) => (
   <div className="space-y-3">
     <h5 className="font-medium">{title}</h5>
     {items.map((item) => (
       <div key={item.id} className="space-y-2">
         <div className="flex justify-between items-center">
-          <span>{item.name}</span>
-          <select
-            className="text-sm border rounded p-1"
-            value={item.condition}
-            onChange={(e) => console.log(e.target.value)}
+          <Button 
+            variant="ghost" 
+            className="p-0 h-auto hover:bg-transparent hover:underline"
+            onClick={() => onItemClick(item.id)}
           >
-            <option value="good">Bra skick</option>
-            <option value="fair">Acceptabelt</option>
-            <option value="poor">Behöver åtgärd</option>
-          </select>
+            {item.name}
+          </Button>
+          <Badge 
+            variant={item.condition === 'good' ? 'secondary' : 'destructive'}
+            className="cursor-pointer"
+            onClick={() => onItemClick(item.id)}
+          >
+            {item.condition === 'good' ? 'Godkänt' : 'Anmärkning'}
+          </Badge>
         </div>
-        <Textarea
-          placeholder="Anteckningar om skicket..."
-          className="text-sm"
-          value={item.notes}
-          onChange={(e) => console.log(e.target.value)}
-        />
       </div>
     ))}
   </div>
