@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import type { Residence, Room, APIResponse } from "@/types/api";
-import { InspectionDialog } from "@/components/inspection/InspectionDialog";
+import { InspectionDialog } from "@/components/inspection/inspection-dialog";
 import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 
 const mockResidenceData: APIResponse<Residence> = {
