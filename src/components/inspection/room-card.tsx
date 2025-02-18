@@ -48,8 +48,8 @@ export const RoomCard = ({
               }
             }}
           >
-            Detaljerad besiktning
-            <ChevronRight className="h-4 w-4" />
+            {isExpanded ? "Stäng" : "Detaljerad besiktning"}
+            <ChevronRight className={`h-4 w-4 transition-transform ${isExpanded ? "rotate-90" : ""}`} />
           </Button>
           {!isApproved && (
             <Button
@@ -65,19 +65,13 @@ export const RoomCard = ({
       </div>
       
       {isExpanded && inspectionItems[room.id] && (
-        <div className="space-y-4">
+        <div className="space-y-4 mt-4 pt-4 border-t">
           <InspectionCategories
             items={inspectionItems[room.id]}
             onItemClick={onSelectItem}
           />
           
           <div className="flex justify-end space-x-2">
-            <Button
-              variant="outline"
-              onClick={() => setIsExpanded(false)}
-            >
-              Stäng
-            </Button>
             <Button
               onClick={() => console.log("Sparar rumsbesiktning")}
             >
