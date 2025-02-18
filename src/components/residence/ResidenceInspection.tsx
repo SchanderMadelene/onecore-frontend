@@ -2,20 +2,35 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import type { Room } from "@/types/api";
 import { InspectionStart } from "./inspection/InspectionStart";
 import { InspectionRoom } from "./inspection/InspectionRoom";
-import type { InspectionRoom as InspectionRoomType } from "./inspection/types";
+import { InspectionHistory } from "./inspection/InspectionHistory";
+import type { InspectionRoom as InspectionRoomType, Inspection } from "./inspection/types";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
 }
 
+// Simulera lokal lagring av besiktningar
+const LOCAL_STORAGE_KEY = "inspections";
+
+const loadInspections = (): Inspection[] => {
+  const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+  return saved ? JSON.parse(saved) : [];
+};
+
+const saveInspections = (inspections: Inspection[]) => {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(inspections));
+};
+
 export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
   const [inspectionData, setInspectionData] = useState<Record<string, InspectionRoomType>>({});
   const [startedInspection, setStartedInspection] = useState(false);
-  
+  const [inspectionHistory, setInspectionHistory] = useState<Inspection[]>(loadInspections);
+
   const handleStartInspection = () => {
     setStartedInspection(true);
     const initialData: Record<string, InspectionRoomType> = {};
@@ -108,12 +123,37 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     }));
   };
 
+  const handleLoadInspection = (inspection: Inspection) => {
+    setInspectionData(inspection.rooms);
+    setStartedInspection(true);
+    toast.success("Besiktning laddad");
+  };
+
   const handleSaveInspection = () => {
-    console.log("Sparar besiktning:", inspectionData);
+    const newInspection: Inspection = {
+      id: Date.now().toString(),
+      date: new Date().toISOString(),
+      inspectedBy: "Test Användare", // Detta skulle komma från inloggad användare
+      rooms: inspectionData
+    };
+
+    const updatedHistory = [newInspection, ...inspectionHistory];
+    setInspectionHistory(updatedHistory);
+    saveInspections(updatedHistory);
+    
+    toast.success("Besiktningen har sparats");
   };
 
   if (!startedInspection) {
-    return <InspectionStart onStart={handleStartInspection} />;
+    return (
+      <div className="space-y-6">
+        <InspectionHistory 
+          inspections={inspectionHistory}
+          onLoadInspection={handleLoadInspection}
+        />
+        <InspectionStart onStart={handleStartInspection} />
+      </div>
+    );
   }
 
   return (

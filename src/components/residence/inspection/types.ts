@@ -21,3 +21,10 @@ export interface InspectionRoom {
   };
   photos: string[];
 }
+
+export interface Inspection {
+  id: string;
+  date: string;
+  inspectedBy: string;
+  rooms: Record<string, InspectionRoom>;
+}
