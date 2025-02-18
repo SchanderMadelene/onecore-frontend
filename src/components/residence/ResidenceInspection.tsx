@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -39,7 +40,6 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
           ceiling: "",
           details: ""
         },
-        notes: "",
         photos: []
       };
     });
@@ -91,16 +91,6 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     });
   };
 
-  const handleNotesUpdate = (roomId: string, notes: string) => {
-    setInspectionData(prev => ({
-      ...prev,
-      [roomId]: {
-        ...prev[roomId],
-        notes
-      }
-    }));
-  };
-
   const handleComponentNoteUpdate = (
     roomId: string,
     field: keyof InspectionRoomType["componentNotes"],
@@ -142,7 +132,6 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
               inspectionData={inspectionData[room.id]}
               onConditionUpdate={(field, value) => handleConditionUpdate(room.id, field, value)}
               onActionUpdate={(field, action) => handleActionUpdate(room.id, field, action)}
-              onNotesUpdate={(notes) => handleNotesUpdate(room.id, notes)}
               onComponentNoteUpdate={(field, note) => handleComponentNoteUpdate(room.id, field, note)}
             />
           ))}

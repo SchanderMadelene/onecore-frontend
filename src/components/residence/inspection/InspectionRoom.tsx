@@ -1,41 +1,18 @@
+
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Camera, CheckCircle } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
 import type { Room } from "@/types/api";
-
-interface InspectionRoom {
-  roomId: string;
-  conditions: {
-    walls: string;
-    floor: string;
-    ceiling: string;
-    details: string;
-  };
-  actions: {
-    walls: string[];
-    floor: string[];
-    ceiling: string[];
-    details: string[];
-  };
-  componentNotes: {
-    walls: string;
-    floor: string;
-    ceiling: string;
-    details: string;
-  };
-  notes: string;
-  photos: string[];
-}
+import type { InspectionRoom as InspectionRoomType } from "./types";
 
 interface InspectionRoomProps {
   room: Room;
   isExpanded: boolean;
   onToggle: () => void;
-  inspectionData: InspectionRoom;
-  onConditionUpdate: (field: keyof InspectionRoom["conditions"], value: string) => void;
-  onActionUpdate: (field: keyof InspectionRoom["actions"], action: string) => void;
-  onNotesUpdate: (notes: string) => void;
-  onComponentNoteUpdate: (field: keyof InspectionRoom["componentNotes"], note: string) => void;
+  inspectionData: InspectionRoomType;
+  onConditionUpdate: (field: keyof InspectionRoomType["conditions"], value: string) => void;
+  onActionUpdate: (field: keyof InspectionRoomType["actions"], action: string) => void;
+  onComponentNoteUpdate: (field: keyof InspectionRoomType["componentNotes"], note: string) => void;
 }
 
 export const InspectionRoom = ({
@@ -45,7 +22,6 @@ export const InspectionRoom = ({
   inspectionData,
   onConditionUpdate,
   onActionUpdate,
-  onNotesUpdate,
   onComponentNoteUpdate,
 }: InspectionRoomProps) => {
   const isRoomApproved = Object.values(inspectionData.conditions).every(
@@ -53,7 +29,7 @@ export const InspectionRoom = ({
   );
 
   const handleApproveRoom = () => {
-    const fields: (keyof InspectionRoom["conditions"])[] = ["walls", "floor", "ceiling", "details"];
+    const fields: (keyof InspectionRoomType["conditions"])[] = ["walls", "floor", "ceiling", "details"];
     fields.forEach(field => {
       onConditionUpdate(field, "good");
     });
@@ -134,17 +110,6 @@ export const InspectionRoom = ({
               type="details"
               note={inspectionData.componentNotes.details}
               onNoteChange={(note) => onComponentNoteUpdate("details", note)}
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Anteckningar</label>
-            <textarea
-              className="w-full border rounded-md p-2 mt-1"
-              rows={3}
-              value={inspectionData.notes}
-              onChange={(e) => onNotesUpdate(e.target.value)}
-              placeholder="Skriv eventuella kommentarer eller noteringar här..."
             />
           </div>
 

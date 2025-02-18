@@ -19,6 +19,5 @@ export interface InspectionRoom {
     ceiling: string;
     details: string;
   };
-  notes: string;
   photos: string[];
 }
