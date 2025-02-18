@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
@@ -7,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import type { Residence, Room } from "@/types/api";
 import type { APIResponse } from "@/types/api";
+import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 
 const mockResidenceData: APIResponse<Residence> = {
   content: {
@@ -126,16 +126,6 @@ const ResidencePage = () => {
     enabled: !!id
   });
 
-  // Om data håller på att laddas, visa en laddningsindikator
-  if (isLoadingResidence || isLoadingRooms) {
-    return <div>Laddar...</div>;
-  }
-
-  // Om det uppstod ett fel, visa felmeddelande
-  if (residenceError || roomsError) {
-    return <div>Ett fel uppstod: {(residenceError || roomsError)?.message}</div>;
-  }
-
   const getOrientationText = (orientation: number) => {
     switch (orientation) {
       case 1: return "Norr";
@@ -145,6 +135,14 @@ const ResidencePage = () => {
       default: return "Okänd";
     }
   };
+
+  if (isLoadingResidence || isLoadingRooms) {
+    return <div>Laddar...</div>;
+  }
+
+  if (residenceError || roomsError) {
+    return <div>Ett fel uppstod: {(residenceError || roomsError)?.message}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
@@ -236,53 +234,12 @@ const ResidencePage = () => {
               </Card>
             </div>
 
-            <Card className="col-span-full">
-              <CardHeader>
-                <CardTitle>Rum</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 gap-4">
-                  {roomsData?.map(room => (
-                    <div key={room.id} className="border rounded-lg p-4">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div>
-                          <p className="text-sm text-muted-foreground">Rumskod</p>
-                          <p className="font-medium">{room.code}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Namn</p>
-                          <p className="font-medium">{room.name || '-'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Typ</p>
-                          <p className="font-medium">{room.roomType?.name || '-'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Orientering</p>
-                          <p className="font-medium">{getOrientationText(room.features.orientation)}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Uppvärmd</p>
-                          <p className="font-medium">{room.features.isHeated ? 'Ja' : 'Nej'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Termostatventil</p>
-                          <p className="font-medium">{room.features.hasThermostatValve ? 'Ja' : 'Nej'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Toalett</p>
-                          <p className="font-medium">{room.features.hasToilet ? 'Ja' : 'Nej'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Status</p>
-                          <p className="font-medium">{room.deleted ? 'Borttagen' : 'Aktiv'}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            {roomsData && (
+              <ResidenceInfo 
+                rooms={roomsData}
+                getOrientationText={getOrientationText}
+              />
+            )}
           </div>
         </main>
       </div>
