@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -67,12 +68,15 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
   };
 
   const handleRoomSelection = (roomId: string) => {
+    console.log("Selecting room:", roomId);
     setSelectedRoomId(roomId);
     setRoomInspectionItems(prev => {
       if (!prev[roomId]) {
+        const initialItems = getInitialInspectionItems();
+        console.log("Initial items for room:", initialItems);
         return {
           ...prev,
-          [roomId]: getInitialInspectionItems()
+          [roomId]: initialItems
         };
       }
       return prev;
