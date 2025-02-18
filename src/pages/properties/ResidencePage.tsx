@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
@@ -5,7 +6,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import type { Residence, Room } from "@/types/api";
+import type { Residence, Room, APIResponse } from "@/types/api";
 import { InspectionDialog } from "@/components/inspection/InspectionDialog";
 import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 
