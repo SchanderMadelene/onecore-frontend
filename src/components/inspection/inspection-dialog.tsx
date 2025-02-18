@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { ImagePlus } from "lucide-react";
+import type { Room } from "@/types/api";
 
 interface InspectionDialogProps {
   open: boolean;
@@ -15,6 +16,8 @@ interface InspectionDialogProps {
   onIssuesChange: (issues: string[]) => void;
   customNote: string;
   onCustomNoteChange: (note: string) => void;
+  rooms?: Room[];
+  onSubmit?: (data: any) => void;
 }
 
 const commonIssues = [
@@ -38,6 +41,8 @@ export const InspectionDialog = ({
   onIssuesChange,
   customNote,
   onCustomNoteChange,
+  rooms,
+  onSubmit
 }: InspectionDialogProps) => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -116,11 +121,13 @@ export const InspectionDialog = ({
             </Button>
             <Button
               onClick={() => {
-                console.log("Sparar anmärkning:", {
-                  itemId: selectedItemId,
-                  issues: selectedIssues,
-                  customNote,
-                });
+                if (onSubmit) {
+                  onSubmit({
+                    itemId: selectedItemId,
+                    issues: selectedIssues,
+                    customNote,
+                  });
+                }
                 onOpenChange(false);
               }}
             >
