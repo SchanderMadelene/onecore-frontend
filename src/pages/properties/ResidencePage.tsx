@@ -1,33 +1,13 @@
-
 import { useParams } from "react-router-dom";
 import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
-import type { Residence, Room, InspectionProtocol, InspectionItem } from "@/types/api";
-import type { APIResponse } from "@/types/api";
+import type { Residence, Room } from "@/types/api";
+import { InspectionDialog } from "@/components/inspection/InspectionDialog";
+import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 
 const mockResidenceData: APIResponse<Residence> = {
   content: {
@@ -119,24 +99,6 @@ const mockRoomsData: APIResponse<Room[]> = {
   ]
 };
 
-const mockInspectionItems: Record<string, InspectionItem[]> = {
-  floor: [
-    { id: "f1", type: "floor", name: "Parkettgolv", condition: "good", notes: "" },
-    { id: "f2", type: "floor", name: "Trösklar", condition: "good", notes: "" }
-  ],
-  wall: [
-    { id: "w1", type: "wall", name: "Väggar", condition: "good", notes: "" },
-    { id: "w2", type: "wall", name: "Tapeter", condition: "good", notes: "" }
-  ],
-  ceiling: [
-    { id: "c1", type: "ceiling", name: "Innertak", condition: "good", notes: "" }
-  ],
-  appliance: [
-    { id: "a1", type: "appliance", name: "Kylskåp", condition: "good", notes: "" },
-    { id: "a2", type: "appliance", name: "Spis", condition: "good", notes: "" }
-  ]
-};
-
 const fetchResidence = async (id: string): Promise<Residence> => {
   await new Promise(resolve => setTimeout(resolve, 500));
   return mockResidenceData.content;
@@ -151,14 +113,6 @@ const ResidencePage = () => {
   const { city, district, property, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isInspectionDialogOpen, setIsInspectionDialogOpen] = useState(false);
-  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
-
-  const form = useForm({
-    defaultValues: {
-      inspector: "",
-      notes: "",
-    },
-  });
 
   const { data: residenceData, isLoading: isLoadingResidence, error: residenceError } = useQuery({
     queryKey: ['residence', id],
@@ -184,15 +138,6 @@ const ResidencePage = () => {
       case 3: return "Söder";
       case 4: return "Väster";
       default: return "Okänd";
-    }
-  };
-
-  const getConditionColor = (condition: string) => {
-    switch (condition) {
-      case 'good': return 'text-green-600';
-      case 'fair': return 'text-yellow-600';
-      case 'poor': return 'text-red-600';
-      default: return 'text-gray-600';
     }
   };
 
@@ -249,345 +194,23 @@ const ResidencePage = () => {
                 <p className="text-muted-foreground">{property?.replace("-", " ")}, {district}</p>
               </div>
               
-              <Dialog open={isInspectionDialogOpen} onOpenChange={setIsInspectionDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button className="gap-2">
-                    <PlusCircle className="h-4 w-4" />
-                    Skapa nytt besiktningsprotokoll
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-4xl">
-                  <DialogHeader>
-                    <DialogTitle>Nytt besiktningsprotokoll</DialogTitle>
-                    <DialogDescription>
-                      Skapa ett nytt besiktningsprotokoll för lägenheten. Fyll i grundläggande information nedan.
-                    </DialogDescription>
-                  </DialogHeader>
-                  
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onCreateInspection)} className="space-y-6">
-                      <div className="grid grid-cols-1 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="inspector"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Besiktningsman</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Ange namn" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="notes"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Generella anteckningar</FormLabel>
-                              <FormControl>
-                                <Textarea 
-                                  placeholder="Generella anteckningar om besiktningen"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Rum att besiktiga</h3>
-                        <div className="grid gap-4">
-                          {roomsData?.map((room) => (
-                            <div
-                              key={room.id}
-                              className="border rounded-lg p-4 space-y-4"
-                            >
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <h4 className="font-medium">{room.name || room.code}</h4>
-                                  <p className="text-sm text-muted-foreground">
-                                    {room.roomType?.name || "Typ ej specificerad"}
-                                  </p>
-                                </div>
-                                <Button
-                                  variant="secondary"
-                                  onClick={() => setSelectedRoomId(room.id)}
-                                >
-                                  Besiktiga rum
-                                </Button>
-                              </div>
-                              
-                              {selectedRoomId === room.id && (
-                                <div className="space-y-4">
-                                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                    <div className="space-y-3">
-                                      <h5 className="font-medium">Golv</h5>
-                                      {mockInspectionItems.floor.map((item) => (
-                                        <div key={item.id} className="space-y-2">
-                                          <div className="flex justify-between items-center">
-                                            <span>{item.name}</span>
-                                            <select
-                                              className="text-sm border rounded p-1"
-                                              value={item.condition}
-                                              onChange={(e) => console.log(e.target.value)}
-                                            >
-                                              <option value="good">Bra skick</option>
-                                              <option value="fair">Acceptabelt</option>
-                                              <option value="poor">Behöver åtgärd</option>
-                                            </select>
-                                          </div>
-                                          <Textarea
-                                            placeholder="Anteckningar om skicket..."
-                                            className="text-sm"
-                                            value={item.notes}
-                                            onChange={(e) => console.log(e.target.value)}
-                                          />
-                                        </div>
-                                      ))}
-                                    </div>
-                                    
-                                    <div className="space-y-3">
-                                      <h5 className="font-medium">Väggar</h5>
-                                      {mockInspectionItems.wall.map((item) => (
-                                        <div key={item.id} className="space-y-2">
-                                          <div className="flex justify-between items-center">
-                                            <span>{item.name}</span>
-                                            <select
-                                              className="text-sm border rounded p-1"
-                                              value={item.condition}
-                                              onChange={(e) => console.log(e.target.value)}
-                                            >
-                                              <option value="good">Bra skick</option>
-                                              <option value="fair">Acceptabelt</option>
-                                              <option value="poor">Behöver åtgärd</option>
-                                            </select>
-                                          </div>
-                                          <Textarea
-                                            placeholder="Anteckningar om skicket..."
-                                            className="text-sm"
-                                            value={item.notes}
-                                            onChange={(e) => console.log(e.target.value)}
-                                          />
-                                        </div>
-                                      ))}
-                                    </div>
-                                    
-                                    <div className="space-y-3">
-                                      <h5 className="font-medium">Tak</h5>
-                                      {mockInspectionItems.ceiling.map((item) => (
-                                        <div key={item.id} className="space-y-2">
-                                          <div className="flex justify-between items-center">
-                                            <span>{item.name}</span>
-                                            <select
-                                              className="text-sm border rounded p-1"
-                                              value={item.condition}
-                                              onChange={(e) => console.log(e.target.value)}
-                                            >
-                                              <option value="good">Bra skick</option>
-                                              <option value="fair">Acceptabelt</option>
-                                              <option value="poor">Behöver åtgärd</option>
-                                            </select>
-                                          </div>
-                                          <Textarea
-                                            placeholder="Anteckningar om skicket..."
-                                            className="text-sm"
-                                            value={item.notes}
-                                            onChange={(e) => console.log(e.target.value)}
-                                          />
-                                        </div>
-                                      ))}
-                                    </div>
-                                    
-                                    <div className="space-y-3">
-                                      <h5 className="font-medium">Vitvaror</h5>
-                                      {mockInspectionItems.appliance.map((item) => (
-                                        <div key={item.id} className="space-y-2">
-                                          <div className="flex justify-between items-center">
-                                            <span>{item.name}</span>
-                                            <select
-                                              className="text-sm border rounded p-1"
-                                              value={item.condition}
-                                              onChange={(e) => console.log(e.target.value)}
-                                            >
-                                              <option value="good">Bra skick</option>
-                                              <option value="fair">Acceptabelt</option>
-                                              <option value="poor">Behöver åtgärd</option>
-                                            </select>
-                                          </div>
-                                          <Textarea
-                                            placeholder="Anteckningar om skicket..."
-                                            className="text-sm"
-                                            value={item.notes}
-                                            onChange={(e) => console.log(e.target.value)}
-                                          />
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                  
-                                  <div className="flex justify-end space-x-2">
-                                    <Button
-                                      variant="outline"
-                                      onClick={() => setSelectedRoomId(null)}
-                                    >
-                                      Stäng
-                                    </Button>
-                                    <Button
-                                      onClick={() => console.log("Sparar rumsbesiktning")}
-                                    >
-                                      Spara
-                                    </Button>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex justify-end space-x-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setIsInspectionDialogOpen(false)}
-                        >
-                          Avbryt
-                        </Button>
-                        <Button type="submit">
-                          Spara protokoll
-                        </Button>
-                      </div>
-                    </form>
-                  </Form>
-                </DialogContent>
-              </Dialog>
+              <Button className="gap-2" onClick={() => setIsInspectionDialogOpen(true)}>
+                <PlusCircle className="h-4 w-4" />
+                Skapa nytt besiktningsprotokoll
+              </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Grundinformation</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Lägenhetskod</p>
-                      <p className="font-medium">{residenceData?.code}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Namn</p>
-                      <p className="font-medium">{residenceData?.name}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Status</p>
-                      <p className="font-medium">{residenceData?.deleted ? "Borttagen" : "Aktiv"}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <InspectionDialog
+              open={isInspectionDialogOpen}
+              onOpenChange={setIsInspectionDialogOpen}
+              rooms={roomsData}
+              onSubmit={onCreateInspection}
+            />
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Giltighetstid</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Giltig från</p>
-                      <p className="font-medium">
-                        {new Date(residenceData?.validityPeriod.fromDate || '').toLocaleDateString('sv-SE')}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Giltig till</p>
-                      <p className="font-medium">
-                        {new Date(residenceData?.validityPeriod.toDate || '').toLocaleDateString('sv-SE')}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card className="col-span-full">
-              <CardHeader>
-                <CardTitle>Rum för besiktning</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 gap-4">
-                  {roomsData?.map(room => (
-                    <div key={room.id} className="border rounded-lg p-4">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div>
-                          <p className="text-sm text-muted-foreground">Rumskod</p>
-                          <p className="font-medium">{room.code}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Namn</p>
-                          <p className="font-medium">{room.name || '-'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Typ</p>
-                          <p className="font-medium">{room.roomType?.name || '-'}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">Orientering</p>
-                          <p className="font-medium">{getOrientationText(room.features.orientation)}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div>
-                          <h4 className="font-medium mb-2">Golv</h4>
-                          <ul className="text-sm space-y-1">
-                            {mockInspectionItems.floor.map(item => (
-                              <li key={item.id} className="text-muted-foreground">
-                                {item.name}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-medium mb-2">Väggar</h4>
-                          <ul className="text-sm space-y-1">
-                            {mockInspectionItems.wall.map(item => (
-                              <li key={item.id} className="text-muted-foreground">
-                                {item.name}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-medium mb-2">Tak</h4>
-                          <ul className="text-sm space-y-1">
-                            {mockInspectionItems.ceiling.map(item => (
-                              <li key={item.id} className="text-muted-foreground">
-                                {item.name}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-medium mb-2">Vitvaror</h4>
-                          <ul className="text-sm space-y-1">
-                            {mockInspectionItems.appliance.map(item => (
-                              <li key={item.id} className="text-muted-foreground">
-                                {item.name}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <ResidenceInfo
+              rooms={roomsData}
+              getOrientationText={getOrientationText}
+            />
           </div>
         </main>
       </div>
