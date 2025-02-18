@@ -27,31 +27,31 @@ const commonIssues = [
   "Rengöringsbehov"
 ];
 
-const getInitialInspectionItems = (): Record<string, InspectionItem[]> => ({
+const mockInspectionItems: Record<string, InspectionItem[]> = {
   floor: [
-    { id: "f1", type: "floor" as const, name: "Parkettgolv", condition: "good", notes: "" },
-    { id: "f2", type: "floor" as const, name: "Trösklar", condition: "good", notes: "" }
+    { id: "f1", type: "floor", name: "Parkettgolv", condition: "good", notes: "" },
+    { id: "f2", type: "floor", name: "Trösklar", condition: "good", notes: "" }
   ],
   wall: [
-    { id: "w1", type: "wall" as const, name: "Väggar", condition: "good", notes: "" },
-    { id: "w2", type: "wall" as const, name: "Tapeter", condition: "good", notes: "" }
+    { id: "w1", type: "wall", name: "Väggar", condition: "good", notes: "" },
+    { id: "w2", type: "wall", name: "Tapeter", condition: "good", notes: "" }
   ],
   ceiling: [
-    { id: "c1", type: "ceiling" as const, name: "Innertak", condition: "good", notes: "" }
+    { id: "c1", type: "ceiling", name: "Innertak", condition: "good", notes: "" }
   ],
   appliance: [
-    { id: "a1", type: "appliance" as const, name: "Kylskåp", condition: "good", notes: "" },
-    { id: "a2", type: "appliance" as const, name: "Spis", condition: "good", notes: "" }
+    { id: "a1", type: "appliance", name: "Kylskåp", condition: "good", notes: "" },
+    { id: "a2", type: "appliance", name: "Spis", condition: "good", notes: "" }
   ]
-});
+};
 
 export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
+  const [detailedInspectionRoomId, setDetailedInspectionRoomId] = useState<string | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedIssues, setSelectedIssues] = useState<string[]>([]);
   const [customNote, setCustomNote] = useState("");
   const [approvedRooms, setApprovedRooms] = useState<Set<string>>(new Set());
-  const [roomInspectionItems, setRoomInspectionItems] = useState<Record<string, Record<string, InspectionItem[]>>>({});
 
   const handleRoomApproval = (roomId: string) => {
     const newApprovedRooms = new Set(approvedRooms);
@@ -65,22 +65,6 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
       console.log("Bild uppladdad:", file.name);
       // Här skulle vi normalt hantera bilduppladdningen
     }
-  };
-
-  const handleRoomSelection = (roomId: string) => {
-    console.log("Selecting room:", roomId);
-    setSelectedRoomId(roomId);
-    setRoomInspectionItems(prev => {
-      if (!prev[roomId]) {
-        const initialItems = getInitialInspectionItems();
-        console.log("Initial items for room:", initialItems);
-        return {
-          ...prev,
-          [roomId]: initialItems
-        };
-      }
-      return prev;
-    });
   };
 
   return (
@@ -108,7 +92,10 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
                 <Button
                   variant="outline"
                   className="gap-2"
-                  onClick={() => handleRoomSelection(room.id)}
+                  onClick={() => {
+                    setSelectedRoomId(room.id);
+                    setDetailedInspectionRoomId(room.id);
+                  }}
                 >
                   Detaljerad besiktning
                   <ChevronRight className="h-4 w-4" />
@@ -126,26 +113,45 @@ export const RoomInspectionForm = ({ rooms }: RoomInspectionFormProps) => {
               </div>
             </div>
             
-            {selectedRoomId === room.id && roomInspectionItems[room.id] && (
+            {selectedRoomId === room.id && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {Object.entries(roomInspectionItems[room.id]).map(([category, items]) => (
-                    <InspectionCategory 
-                      key={category}
-                      title={
-                        category === 'floor' ? 'Golv' :
-                        category === 'wall' ? 'Väggar' :
-                        category === 'ceiling' ? 'Tak' :
-                        'Vitvaror'
-                      }
-                      items={items}
-                      onItemClick={(itemId) => {
-                        setSelectedItemId(itemId);
-                        setSelectedIssues([]);
-                        setCustomNote("");
-                      }}
-                    />
-                  ))}
+                  <InspectionCategory 
+                    title="Golv" 
+                    items={mockInspectionItems.floor}
+                    onItemClick={(itemId) => {
+                      setSelectedItemId(itemId);
+                      setSelectedIssues([]);
+                      setCustomNote("");
+                    }}
+                  />
+                  <InspectionCategory 
+                    title="Väggar" 
+                    items={mockInspectionItems.wall}
+                    onItemClick={(itemId) => {
+                      setSelectedItemId(itemId);
+                      setSelectedIssues([]);
+                      setCustomNote("");
+                    }}
+                  />
+                  <InspectionCategory 
+                    title="Tak" 
+                    items={mockInspectionItems.ceiling}
+                    onItemClick={(itemId) => {
+                      setSelectedItemId(itemId);
+                      setSelectedIssues([]);
+                      setCustomNote("");
+                    }}
+                  />
+                  <InspectionCategory 
+                    title="Vitvaror" 
+                    items={mockInspectionItems.appliance}
+                    onItemClick={(itemId) => {
+                      setSelectedItemId(itemId);
+                      setSelectedIssues([]);
+                      setCustomNote("");
+                    }}
+                  />
                 </div>
                 
                 <div className="flex justify-end space-x-2">
