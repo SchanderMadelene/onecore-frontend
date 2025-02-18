@@ -258,6 +258,9 @@ const ResidencePage = () => {
   const { city, district, property, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isInspectionDialogOpen, setIsInspectionDialogOpen] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [selectedIssues, setSelectedIssues] = useState<string[]>([]);
+  const [customNote, setCustomNote] = useState("");
 
   const { data: residenceData, isLoading: isLoadingResidence, error: residenceError } = useQuery({
     queryKey: ['residence', id],
@@ -274,6 +277,10 @@ const ResidencePage = () => {
   const onCreateInspection = (data: any) => {
     console.log("Creating inspection protocol:", data);
     setIsInspectionDialogOpen(false);
+    // Reset form state
+    setSelectedItemId(null);
+    setSelectedIssues([]);
+    setCustomNote("");
   };
 
   const getOrientationText = (orientation: number) => {
@@ -339,7 +346,10 @@ const ResidencePage = () => {
                 <p className="text-muted-foreground">{property?.replace("-", " ")}, {district}</p>
               </div>
               
-              <Button className="gap-2" onClick={() => setIsInspectionDialogOpen(true)}>
+              <Button className="gap-2" onClick={() => {
+                setSelectedItemId("new");  // Set a default value when opening dialog
+                setIsInspectionDialogOpen(true);
+              }}>
                 <PlusCircle className="h-4 w-4" />
                 Skapa nytt besiktningsprotokoll
               </Button>
@@ -348,6 +358,11 @@ const ResidencePage = () => {
             <InspectionDialog
               open={isInspectionDialogOpen}
               onOpenChange={setIsInspectionDialogOpen}
+              selectedItemId={selectedItemId}
+              selectedIssues={selectedIssues}
+              onIssuesChange={setSelectedIssues}
+              customNote={customNote}
+              onCustomNoteChange={setCustomNote}
               rooms={roomsData}
               onSubmit={onCreateInspection}
             />
