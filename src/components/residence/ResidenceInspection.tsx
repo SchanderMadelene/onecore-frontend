@@ -142,6 +142,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     saveInspections(updatedHistory);
     
     toast.success("Besiktningen har sparats");
+    setStartedInspection(false); // Stänger den aktiva besiktningen efter sparande
   };
 
   if (!startedInspection) {
