@@ -67,27 +67,3 @@ export interface Company {
   name: string;
   organizationNumber: string | null;
 }
-
-export interface InspectionItem {
-  id: string;
-  type: 'floor' | 'wall' | 'ceiling' | 'appliance';
-  name: string;
-  condition: 'good' | 'fair' | 'poor';
-  notes?: string;
-}
-
-export interface RoomInspection {
-  roomId: string;
-  items: InspectionItem[];
-  notes?: string;
-  timestamp: string;
-}
-
-export interface InspectionProtocol {
-  id: string;
-  residenceId: string;
-  date: string;
-  inspector: string;
-  status: 'draft' | 'completed';
-  roomInspections: RoomInspection[];
-}
