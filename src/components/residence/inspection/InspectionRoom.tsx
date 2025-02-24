@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, CheckCircle, Circle, CircleDot } from "lucide-react";
+import { ChevronDown, ChevronUp, CheckCircle, Circle, CircleDot, AlertCircle } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
@@ -34,6 +34,10 @@ export const InspectionRoom = ({
     condition => condition === "good" || condition === "acceptable"
   );
 
+  const isRoomComplete = Object.values(inspectionData.conditions).every(
+    condition => condition !== ""
+  );
+
   const handleApproveRoom = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -59,19 +63,29 @@ export const InspectionRoom = ({
     wall4: "Vägg (Väst)"
   };
 
-  const getWallsStatus = () => {
-    const wallFields = ["wall1", "wall2", "wall3", "wall4"] as const;
-    const hasAnyWallSet = wallFields.some(wall => inspectionData.conditions[wall]);
-    return hasAnyWallSet ? (
-      <CircleDot className="h-4 w-4 text-blue-500" />
-    ) : (
-      <Circle className="h-4 w-4 text-gray-300" />
+  const getComponentStatus = (conditions: string[]) => {
+    const hasAnyCondition = conditions.some(condition => condition !== "");
+    if (!hasAnyCondition) return <Circle className="h-4 w-4 text-gray-300" />;
+    
+    const allGoodOrAcceptable = conditions.every(
+      condition => condition === "good" || condition === "acceptable"
     );
+    if (allGoodOrAcceptable) return <CheckCircle className="h-4 w-4 text-green-500" />;
+    
+    const hasAllConditions = conditions.every(condition => condition !== "");
+    if (hasAllConditions) return <AlertCircle className="h-4 w-4 text-amber-500" />;
+    
+    return <CircleDot className="h-4 w-4 text-blue-500" />;
   };
 
-  const getComponentStatus = (field: keyof InspectionRoomType["conditions"]) => {
-    const value = inspectionData.conditions[field];
-    return value ? <CircleDot className="h-4 w-4 text-blue-500" /> : <Circle className="h-4 w-4 text-gray-300" />;
+  const getWallsStatus = () => {
+    const wallFields = ["wall1", "wall2", "wall3", "wall4"] as const;
+    const wallConditions = wallFields.map(wall => inspectionData.conditions[wall]);
+    return getComponentStatus(wallConditions);
+  };
+
+  const getSingleComponentStatus = (field: keyof InspectionRoomType["conditions"]) => {
+    return getComponentStatus([inspectionData.conditions[field]]);
   };
 
   return (
@@ -85,6 +99,9 @@ export const InspectionRoom = ({
           <span className="font-semibold text-base">{room.name || room.roomType?.name || room.code}</span>
           {isRoomApproved && (
             <CheckCircle className="h-4 w-4 text-green-500" />
+          )}
+          {!isRoomApproved && isRoomComplete && (
+            <AlertCircle className="h-4 w-4 text-amber-500" />
           )}
         </button>
         <div className="flex items-center gap-3">
@@ -136,7 +153,7 @@ export const InspectionRoom = ({
             <AccordionItem value="ceiling" className="border rounded-md">
               <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
                 <span className="font-medium">Tak</span>
-                {getComponentStatus("ceiling")}
+                {getSingleComponentStatus("ceiling")}
               </AccordionTrigger>
               <AccordionContent className="px-4">
                 <div className="py-2">
@@ -157,7 +174,7 @@ export const InspectionRoom = ({
             <AccordionItem value="floor" className="border rounded-md">
               <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
                 <span className="font-medium">Golv</span>
-                {getComponentStatus("floor")}
+                {getSingleComponentStatus("floor")}
               </AccordionTrigger>
               <AccordionContent className="px-4">
                 <div className="py-2">
@@ -178,7 +195,7 @@ export const InspectionRoom = ({
             <AccordionItem value="details" className="border rounded-md">
               <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
                 <span className="font-medium">Detaljer</span>
-                {getComponentStatus("details")}
+                {getSingleComponentStatus("details")}
               </AccordionTrigger>
               <AccordionContent className="px-4">
                 <div className="py-2">
