@@ -59,6 +59,16 @@ export const InspectionRoom = ({
     wall4: "Vägg (Väst)"
   };
 
+  const getWallsStatus = () => {
+    const wallFields = ["wall1", "wall2", "wall3", "wall4"] as const;
+    const hasAnyWallSet = wallFields.some(wall => inspectionData.conditions[wall]);
+    return hasAnyWallSet ? (
+      <CircleDot className="h-4 w-4 text-blue-500" />
+    ) : (
+      <Circle className="h-4 w-4 text-gray-300" />
+    );
+  };
+
   const getComponentStatus = (field: keyof InspectionRoomType["conditions"]) => {
     const value = inspectionData.conditions[field];
     return value ? <CircleDot className="h-4 w-4 text-blue-500" /> : <Circle className="h-4 w-4 text-gray-300" />;
@@ -103,10 +113,7 @@ export const InspectionRoom = ({
               <AccordionTrigger className="flex justify-between">
                 <span>Väggar</span>
                 <div className="flex gap-2 mr-4">
-                  {getComponentStatus("wall1")}
-                  {getComponentStatus("wall2")}
-                  {getComponentStatus("wall3")}
-                  {getComponentStatus("wall4")}
+                  {getWallsStatus()}
                 </div>
               </AccordionTrigger>
               <AccordionContent>
