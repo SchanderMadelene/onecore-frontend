@@ -30,9 +30,11 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   const [inspectionData, setInspectionData] = useState<Record<string, InspectionRoomType>>({});
   const [startedInspection, setStartedInspection] = useState(false);
   const [inspectionHistory, setInspectionHistory] = useState<Inspection[]>(loadInspections);
+  const [currentInspector, setCurrentInspector] = useState<string>("");
 
-  const handleStartInspection = () => {
+  const handleStartInspection = (inspectorName: string) => {
     setStartedInspection(true);
+    setCurrentInspector(inspectorName);
     const initialData: Record<string, InspectionRoomType> = {};
     rooms.forEach(room => {
       initialData[room.id] = {
@@ -133,7 +135,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     const newInspection: Inspection = {
       id: Date.now().toString(),
       date: new Date().toISOString(),
-      inspectedBy: "Test Användare", // Detta skulle komma från inloggad användare
+      inspectedBy: currentInspector,
       rooms: inspectionData
     };
 
@@ -142,7 +144,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     saveInspections(updatedHistory);
     
     toast.success("Besiktningen har sparats");
-    setStartedInspection(false); // Stänger den aktiva besiktningen efter sparande
+    setStartedInspection(false);
   };
 
   if (!startedInspection) {
