@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
+import { ChevronDown, ChevronUp, CheckCircle, Circle, CircleDot } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
@@ -59,6 +59,11 @@ export const InspectionRoom = ({
     wall4: "Vägg (Väst)"
   };
 
+  const getComponentStatus = (field: keyof InspectionRoomType["conditions"]) => {
+    const value = inspectionData.conditions[field];
+    return value ? <CircleDot className="h-4 w-4 text-blue-500" /> : <Circle className="h-4 w-4 text-gray-300" />;
+  };
+
   return (
     <div className="border rounded-lg">
       <div className="w-full bg-card p-4 flex items-center justify-between">
@@ -95,7 +100,15 @@ export const InspectionRoom = ({
         <div className="p-4 border-t">
           <Accordion type="single" collapsible>
             <AccordionItem value="walls">
-              <AccordionTrigger>Väggar</AccordionTrigger>
+              <AccordionTrigger className="flex justify-between">
+                <span>Väggar</span>
+                <div className="flex gap-2 mr-4">
+                  {getComponentStatus("wall1")}
+                  {getComponentStatus("wall2")}
+                  {getComponentStatus("wall3")}
+                  {getComponentStatus("wall4")}
+                </div>
+              </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-6">
                   {(["wall1", "wall2", "wall3", "wall4"] as const).map((wall) => (
@@ -116,7 +129,12 @@ export const InspectionRoom = ({
             </AccordionItem>
 
             <AccordionItem value="ceiling">
-              <AccordionTrigger>Tak</AccordionTrigger>
+              <AccordionTrigger className="flex justify-between">
+                <span>Tak</span>
+                <div className="flex gap-2 mr-4">
+                  {getComponentStatus("ceiling")}
+                </div>
+              </AccordionTrigger>
               <AccordionContent>
                 <ConditionSelect
                   label="Tak"
@@ -132,7 +150,12 @@ export const InspectionRoom = ({
             </AccordionItem>
 
             <AccordionItem value="floor">
-              <AccordionTrigger>Golv</AccordionTrigger>
+              <AccordionTrigger className="flex justify-between">
+                <span>Golv</span>
+                <div className="flex gap-2 mr-4">
+                  {getComponentStatus("floor")}
+                </div>
+              </AccordionTrigger>
               <AccordionContent>
                 <ConditionSelect
                   label="Golv"
@@ -148,7 +171,12 @@ export const InspectionRoom = ({
             </AccordionItem>
 
             <AccordionItem value="details">
-              <AccordionTrigger>Detaljer</AccordionTrigger>
+              <AccordionTrigger className="flex justify-between">
+                <span>Detaljer</span>
+                <div className="flex gap-2 mr-4">
+                  {getComponentStatus("details")}
+                </div>
+              </AccordionTrigger>
               <AccordionContent>
                 <ConditionSelect
                   label="Detaljer"
