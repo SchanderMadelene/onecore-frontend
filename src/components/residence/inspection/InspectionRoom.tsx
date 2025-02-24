@@ -78,18 +78,15 @@ export const InspectionRoom = ({
       <div className="w-full bg-card p-4 flex items-center justify-between">
         <button
           type="button"
-          className="flex-1 text-left"
+          className="flex-1 text-left flex items-center gap-2"
           onClick={handleToggleClick}
         >
           <span className="font-medium">{room.name || room.roomType?.name || room.code}</span>
+          {isRoomApproved && (
+            <CheckCircle className="h-4 w-4 text-green-500" />
+          )}
         </button>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            {getWallsStatus()}
-            {getComponentStatus("ceiling")}
-            {getComponentStatus("floor")}
-            {getComponentStatus("details")}
-          </div>
+        <div className="flex items-center gap-2">
           <Button 
             type="button"
             variant="outline" 
@@ -112,8 +109,9 @@ export const InspectionRoom = ({
         <div className="p-4 border-t">
           <Accordion type="single" collapsible>
             <AccordionItem value="walls">
-              <AccordionTrigger>
+              <AccordionTrigger className="flex justify-between w-full pr-4">
                 <span>Väggar</span>
+                {getWallsStatus()}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-6">
@@ -135,8 +133,9 @@ export const InspectionRoom = ({
             </AccordionItem>
 
             <AccordionItem value="ceiling">
-              <AccordionTrigger>
+              <AccordionTrigger className="flex justify-between w-full pr-4">
                 <span>Tak</span>
+                {getComponentStatus("ceiling")}
               </AccordionTrigger>
               <AccordionContent>
                 <ConditionSelect
@@ -153,8 +152,9 @@ export const InspectionRoom = ({
             </AccordionItem>
 
             <AccordionItem value="floor">
-              <AccordionTrigger>
+              <AccordionTrigger className="flex justify-between w-full pr-4">
                 <span>Golv</span>
+                {getComponentStatus("floor")}
               </AccordionTrigger>
               <AccordionContent>
                 <ConditionSelect
@@ -171,8 +171,9 @@ export const InspectionRoom = ({
             </AccordionItem>
 
             <AccordionItem value="details">
-              <AccordionTrigger>
+              <AccordionTrigger className="flex justify-between w-full pr-4">
                 <span>Detaljer</span>
+                {getComponentStatus("details")}
               </AccordionTrigger>
               <AccordionContent>
                 <ConditionSelect
