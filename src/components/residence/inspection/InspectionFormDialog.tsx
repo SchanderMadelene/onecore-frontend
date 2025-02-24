@@ -141,7 +141,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCancel}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>
             {step === "info" ? "Starta ny besiktning" : "Genomför besiktning"}
