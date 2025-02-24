@@ -140,11 +140,16 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
     setExpandedRoomId(null);
   };
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      handleCancel();
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent 
-        className="max-w-4xl max-h-[90vh] overflow-y-auto" 
-        onPointerDownOutside={(e) => e.preventDefault()}
+        className="max-w-4xl max-h-[90vh] overflow-y-auto"
       >
         <DialogHeader>
           <DialogTitle>
