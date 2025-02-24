@@ -37,7 +37,10 @@ export const InspectionRoom = ({
   const handleApproveRoom = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const fields: (keyof InspectionRoomType["conditions"])[] = ["walls", "floor", "ceiling", "details"];
+    const fields: (keyof InspectionRoomType["conditions"])[] = [
+      "wall1", "wall2", "wall3", "wall4", 
+      "floor", "ceiling", "details"
+    ];
     fields.forEach(field => {
       onConditionUpdate(field, "good");
     });
@@ -47,6 +50,13 @@ export const InspectionRoom = ({
     e.preventDefault();
     e.stopPropagation();
     onToggle();
+  };
+
+  const wallDirections = {
+    wall1: "Vägg (Norr)",
+    wall2: "Vägg (Öst)",
+    wall3: "Vägg (Söder)",
+    wall4: "Vägg (Väst)"
   };
 
   return (
@@ -87,16 +97,21 @@ export const InspectionRoom = ({
             <AccordionItem value="walls">
               <AccordionTrigger>Väggar</AccordionTrigger>
               <AccordionContent>
-                <ConditionSelect
-                  label="Väggar"
-                  value={inspectionData.conditions.walls}
-                  onChange={(value) => onConditionUpdate("walls", value)}
-                  actions={inspectionData.actions.walls}
-                  onActionUpdate={(action) => onActionUpdate("walls", action)}
-                  type="walls"
-                  note={inspectionData.componentNotes.walls}
-                  onNoteChange={(note) => onComponentNoteUpdate("walls", note)}
-                />
+                <div className="space-y-6">
+                  {(["wall1", "wall2", "wall3", "wall4"] as const).map((wall) => (
+                    <ConditionSelect
+                      key={wall}
+                      label={wallDirections[wall]}
+                      value={inspectionData.conditions[wall]}
+                      onChange={(value) => onConditionUpdate(wall, value)}
+                      actions={inspectionData.actions[wall]}
+                      onActionUpdate={(action) => onActionUpdate(wall, action)}
+                      type="walls"
+                      note={inspectionData.componentNotes[wall]}
+                      onNoteChange={(note) => onComponentNoteUpdate(wall, note)}
+                    />
+                  ))}
+                </div>
               </AccordionContent>
             </AccordionItem>
 

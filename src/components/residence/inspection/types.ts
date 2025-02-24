@@ -2,19 +2,28 @@
 export interface InspectionRoom {
   roomId: string;
   conditions: {
-    walls: string;
+    wall1: string;
+    wall2: string;
+    wall3: string;
+    wall4: string;
     floor: string;
     ceiling: string;
     details: string;
   };
   actions: {
-    walls: string[];
+    wall1: string[];
+    wall2: string[];
+    wall3: string[];
+    wall4: string[];
     floor: string[];
     ceiling: string[];
     details: string[];
   };
   componentNotes: {
-    walls: string;
+    wall1: string;
+    wall2: string;
+    wall3: string;
+    wall4: string;
     floor: string;
     ceiling: string;
     details: string;

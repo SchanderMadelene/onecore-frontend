@@ -32,19 +32,28 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
       initialData[room.id] = {
         roomId: room.id,
         conditions: {
-          walls: "",
+          wall1: "",
+          wall2: "",
+          wall3: "",
+          wall4: "",
           floor: "",
           ceiling: "",
           details: ""
         },
         actions: {
-          walls: [],
+          wall1: [],
+          wall2: [],
+          wall3: [],
+          wall4: [],
           floor: [],
           ceiling: [],
           details: []
         },
         componentNotes: {
-          walls: "",
+          wall1: "",
+          wall2: "",
+          wall3: "",
+          wall4: "",
           floor: "",
           ceiling: "",
           details: ""
