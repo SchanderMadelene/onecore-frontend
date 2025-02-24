@@ -75,7 +75,7 @@ export const InspectionRoom = ({
     const hasAllConditions = conditions.every(condition => condition !== "");
     if (hasAllConditions) return <AlertCircle className="h-4 w-4 text-amber-500" />;
     
-    return <CircleDot className="h-4 w-4 text-blue-500" />;
+    return <CheckCircle className="h-4 w-4 text-green-500" />;
   };
 
   const getWallsStatus = () => {
