@@ -4,6 +4,12 @@ import { ChevronDown, ChevronUp, Camera, CheckCircle } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 interface InspectionRoomProps {
   room: Room;
@@ -76,51 +82,74 @@ export const InspectionRoom = ({
       </div>
 
       {isExpanded && (
-        <div className="p-4 border-t space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <ConditionSelect
-              label="Väggar"
-              value={inspectionData.conditions.walls}
-              onChange={(value) => onConditionUpdate("walls", value)}
-              actions={inspectionData.actions.walls}
-              onActionUpdate={(action) => onActionUpdate("walls", action)}
-              type="walls"
-              note={inspectionData.componentNotes.walls}
-              onNoteChange={(note) => onComponentNoteUpdate("walls", note)}
-            />
-            <ConditionSelect
-              label="Golv"
-              value={inspectionData.conditions.floor}
-              onChange={(value) => onConditionUpdate("floor", value)}
-              actions={inspectionData.actions.floor}
-              onActionUpdate={(action) => onActionUpdate("floor", action)}
-              type="floor"
-              note={inspectionData.componentNotes.floor}
-              onNoteChange={(note) => onComponentNoteUpdate("floor", note)}
-            />
-            <ConditionSelect
-              label="Tak"
-              value={inspectionData.conditions.ceiling}
-              onChange={(value) => onConditionUpdate("ceiling", value)}
-              actions={inspectionData.actions.ceiling}
-              onActionUpdate={(action) => onActionUpdate("ceiling", action)}
-              type="ceiling"
-              note={inspectionData.componentNotes.ceiling}
-              onNoteChange={(note) => onComponentNoteUpdate("ceiling", note)}
-            />
-            <ConditionSelect
-              label="Detaljer"
-              value={inspectionData.conditions.details}
-              onChange={(value) => onConditionUpdate("details", value)}
-              actions={inspectionData.actions.details}
-              onActionUpdate={(action) => onActionUpdate("details", action)}
-              type="details"
-              note={inspectionData.componentNotes.details}
-              onNoteChange={(note) => onComponentNoteUpdate("details", note)}
-            />
-          </div>
+        <div className="p-4 border-t">
+          <Accordion type="single" collapsible>
+            <AccordionItem value="walls">
+              <AccordionTrigger>Väggar</AccordionTrigger>
+              <AccordionContent>
+                <ConditionSelect
+                  label="Väggar"
+                  value={inspectionData.conditions.walls}
+                  onChange={(value) => onConditionUpdate("walls", value)}
+                  actions={inspectionData.actions.walls}
+                  onActionUpdate={(action) => onActionUpdate("walls", action)}
+                  type="walls"
+                  note={inspectionData.componentNotes.walls}
+                  onNoteChange={(note) => onComponentNoteUpdate("walls", note)}
+                />
+              </AccordionContent>
+            </AccordionItem>
 
-          <div>
+            <AccordionItem value="ceiling">
+              <AccordionTrigger>Tak</AccordionTrigger>
+              <AccordionContent>
+                <ConditionSelect
+                  label="Tak"
+                  value={inspectionData.conditions.ceiling}
+                  onChange={(value) => onConditionUpdate("ceiling", value)}
+                  actions={inspectionData.actions.ceiling}
+                  onActionUpdate={(action) => onActionUpdate("ceiling", action)}
+                  type="ceiling"
+                  note={inspectionData.componentNotes.ceiling}
+                  onNoteChange={(note) => onComponentNoteUpdate("ceiling", note)}
+                />
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="floor">
+              <AccordionTrigger>Golv</AccordionTrigger>
+              <AccordionContent>
+                <ConditionSelect
+                  label="Golv"
+                  value={inspectionData.conditions.floor}
+                  onChange={(value) => onConditionUpdate("floor", value)}
+                  actions={inspectionData.actions.floor}
+                  onActionUpdate={(action) => onActionUpdate("floor", action)}
+                  type="floor"
+                  note={inspectionData.componentNotes.floor}
+                  onNoteChange={(note) => onComponentNoteUpdate("floor", note)}
+                />
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="details">
+              <AccordionTrigger>Detaljer</AccordionTrigger>
+              <AccordionContent>
+                <ConditionSelect
+                  label="Detaljer"
+                  value={inspectionData.conditions.details}
+                  onChange={(value) => onConditionUpdate("details", value)}
+                  actions={inspectionData.actions.details}
+                  onActionUpdate={(action) => onActionUpdate("details", action)}
+                  type="details"
+                  note={inspectionData.componentNotes.details}
+                  onNoteChange={(note) => onComponentNoteUpdate("details", note)}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <div className="mt-4">
             <label className="text-sm font-medium block mb-2">Foton</label>
             <Button type="button" variant="outline">
               <Camera className="mr-2 h-4 w-4" />
