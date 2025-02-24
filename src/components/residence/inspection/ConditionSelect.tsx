@@ -27,6 +27,12 @@ export const ConditionSelect = ({
     return condition === "needs_attention" || condition === "damaged";
   };
 
+  const handleActionClick = (e: React.MouseEvent, action: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onActionUpdate(action);
+  };
+
   const getActionButtons = () => {
     switch (type) {
       case "walls":
@@ -36,7 +42,7 @@ export const ConditionSelect = ({
             <Button
               size="sm"
               variant={actions.includes("painting") ? "default" : "outline"}
-              onClick={() => onActionUpdate("painting")}
+              onClick={(e) => handleActionClick(e, "painting")}
             >
               <PaintRoller className="h-4 w-4 mr-1" />
               Målning
@@ -44,7 +50,7 @@ export const ConditionSelect = ({
             <Button
               size="sm"
               variant={actions.includes("repair") ? "default" : "outline"}
-              onClick={() => onActionUpdate("repair")}
+              onClick={(e) => handleActionClick(e, "repair")}
             >
               <Wrench className="h-4 w-4 mr-1" />
               Reparation
@@ -58,7 +64,7 @@ export const ConditionSelect = ({
             <Button
               size="sm"
               variant={actions.includes("repair") ? "default" : "outline"}
-              onClick={() => onActionUpdate("repair")}
+              onClick={(e) => handleActionClick(e, "repair")}
             >
               <Wrench className="h-4 w-4 mr-1" />
               Reparation
@@ -66,7 +72,7 @@ export const ConditionSelect = ({
             <Button
               size="sm"
               variant={actions.includes("replacement") ? "default" : "outline"}
-              onClick={() => onActionUpdate("replacement")}
+              onClick={(e) => handleActionClick(e, "replacement")}
             >
               <Hammer className="h-4 w-4 mr-1" />
               Byte
@@ -102,7 +108,12 @@ export const ConditionSelect = ({
             onChange={(e) => onNoteChange(e.target.value)}
             rows={2}
           />
-          <Button type="button" variant="outline" size="sm">
+          <Button 
+            type="button" 
+            variant="outline" 
+            size="sm"
+            onClick={(e) => e.stopPropagation()}
+          >
             <Camera className="mr-2 h-4 w-4" />
             Lägg till foto
           </Button>
