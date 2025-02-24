@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -140,12 +141,21 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleCancel}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" onPointerDownOutside={(e) => e.preventDefault()}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent 
+        className="max-w-4xl max-h-[90vh] overflow-y-auto" 
+        onPointerDownOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>
             {step === "info" ? "Starta ny besiktning" : "Genomför besiktning"}
           </DialogTitle>
+          <DialogDescription>
+            {step === "info" 
+              ? "Fyll i information om besiktningen" 
+              : "Gå igenom och dokumentera skicket på alla rum"
+            }
+          </DialogDescription>
         </DialogHeader>
 
         {step === "info" ? (
