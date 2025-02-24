@@ -28,19 +28,28 @@ export const InspectionRoom = ({
     condition => condition === "good" || condition === "acceptable"
   );
 
-  const handleApproveRoom = () => {
+  const handleApproveRoom = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     const fields: (keyof InspectionRoomType["conditions"])[] = ["walls", "floor", "ceiling", "details"];
     fields.forEach(field => {
       onConditionUpdate(field, "good");
     });
   };
 
+  const handleToggleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onToggle();
+  };
+
   return (
     <div className="border rounded-lg">
       <div className="w-full bg-card p-4 flex items-center justify-between">
         <button
+          type="button"
           className="flex-1 text-left flex items-center gap-2"
-          onClick={onToggle}
+          onClick={handleToggleClick}
         >
           <span className="font-medium">{room.name || room.roomType?.name || room.code}</span>
           {isRoomApproved && (
@@ -49,13 +58,11 @@ export const InspectionRoom = ({
         </button>
         <div className="flex items-center gap-2">
           <Button 
+            type="button"
             variant="outline" 
             size="sm"
             className="text-green-600 border-green-600 hover:bg-green-50"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleApproveRoom();
-            }}
+            onClick={handleApproveRoom}
           >
             <CheckCircle className="mr-2 h-4 w-4" />
             Godkänn rum
@@ -115,7 +122,7 @@ export const InspectionRoom = ({
 
           <div>
             <label className="text-sm font-medium block mb-2">Foton</label>
-            <Button variant="outline">
+            <Button type="button" variant="outline">
               <Camera className="mr-2 h-4 w-4" />
               Lägg till foto
             </Button>
