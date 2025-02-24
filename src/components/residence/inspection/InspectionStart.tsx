@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import { InspectionFormDialog } from "./InspectionFormDialog";
+import type { Room } from "@/types/api";
+import type { InspectionRoom as InspectionRoomType } from "./types";
 
 interface InspectionStartProps {
-  onStart: (inspectorName: string) => void;
+  rooms: Room[];
+  onSave: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
 }
 
-export const InspectionStart = ({ onStart }: InspectionStartProps) => {
+export const InspectionStart = ({ rooms, onSave }: InspectionStartProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
@@ -33,10 +36,11 @@ export const InspectionStart = ({ onStart }: InspectionStartProps) => {
       </Card>
 
       <InspectionFormDialog
+        rooms={rooms}
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        onStart={onStart}
+        onSubmit={onSave}
       />
     </>
   );
-};
+}
