@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Camera, CheckCircle } from "lucide-react";
+import { ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
@@ -163,14 +163,6 @@ export const InspectionRoom = ({
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-
-          <div className="mt-4">
-            <label className="text-sm font-medium block mb-2">Foton</label>
-            <Button type="button" variant="outline">
-              <Camera className="mr-2 h-4 w-4" />
-              Lägg till foto
-            </Button>
-          </div>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { PaintRoller, Wrench, Hammer } from "lucide-react";
+import { PaintRoller, Wrench, Hammer, Camera } from "lucide-react";
 
 interface ConditionSelectProps {
   label: string;
@@ -102,6 +102,10 @@ export const ConditionSelect = ({
             onChange={(e) => onNoteChange(e.target.value)}
             rows={2}
           />
+          <Button type="button" variant="outline" size="sm">
+            <Camera className="mr-2 h-4 w-4" />
+            Lägg till foto
+          </Button>
         </div>
       )}
     </div>
