@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Dialog,
@@ -179,9 +178,22 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
     };
   };
 
+  const getRoomComponentStatus = (roomId: string) => {
+    const inspection = inspectionData[roomId];
+    const totalComponents = Object.keys(inspection.conditions).length;
+    const completedComponents = Object.values(inspection.conditions).filter(c => c !== "").length;
+    
+    return {
+      total: totalComponents,
+      completed: completedComponents,
+      percentage: Math.round((completedComponents / totalComponents) * 100)
+    };
+  };
+
   const currentRoom = rooms[currentRoomIndex];
   const canGoNext = currentRoomIndex < rooms.length - 1;
   const canGoPrevious = currentRoomIndex > 0;
+  const currentRoomStatus = getRoomComponentStatus(currentRoom.id);
 
   const goToNextRoom = () => {
     if (canGoNext) {
@@ -207,7 +219,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
           <DialogDescription>
             {step === "info" 
               ? "Fyll i information om besiktningen" 
-              : "Gå igenom och dokumentera skicket på alla rum"
+              : `Rum ${currentRoomIndex + 1} av ${rooms.length}`
             }
           </DialogDescription>
         </DialogHeader>
@@ -227,7 +239,9 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
               </div>
               <div className="space-y-2">
                 <Label>Lägenhet</Label>
-                <p className="text-sm text-muted-foreground">Odenplan 5, lägenhet 1001</p>
+                <p className="text-sm text-muted-foreground">
+                  Odenplan 5, lägenhet 1001
+                </p>
               </div>
               <div className="space-y-2">
                 <Label>Datum</Label>
@@ -248,55 +262,50 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
-              {/* Rum översikt */}
-              <div className="flex items-center gap-2 mb-6">
+              {/* Progress översikt */}
+              <div className="grid grid-cols-6 gap-2">
                 {rooms.map((room, index) => {
-                  const status = getRoomStatus(room.id);
+                  const status = getRoomComponentStatus(room.id);
+                  const isCurrent = currentRoomIndex === index;
+                  const isComplete = status.completed === status.total;
+                  
                   return (
                     <Button
                       key={room.id}
                       type="button"
-                      variant={currentRoomIndex === index ? "default" : "outline"}
+                      variant={isCurrent ? "default" : "outline"}
                       onClick={() => setCurrentRoomIndex(index)}
-                      className="flex items-center gap-2"
+                      className={`relative ${isComplete ? 'border-green-500' : ''}`}
                     >
-                      {status.icon}
                       <span className="text-sm">{index + 1}</span>
+                      {isComplete && (
+                        <CheckCircle className="absolute -top-2 -right-2 h-4 w-4 text-green-500" />
+                      )}
                     </Button>
                   );
                 })}
               </div>
 
-              {/* Nuvarande rum */}
-              <div className="border rounded-lg p-4 space-y-4">
-                <div className="flex items-center justify-between">
+              {/* Progress för nuvarande rum */}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
                   <h3 className="text-lg font-semibold">
                     {currentRoom.name || currentRoom.roomType?.name || currentRoom.code}
                   </h3>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={goToPreviousRoom}
-                      disabled={!canGoPrevious}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                      Föregående
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={goToNextRoom}
-                      disabled={!canGoNext}
-                    >
-                      Nästa
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  <span className="text-sm text-gray-600">
+                    {currentRoomStatus.completed} av {currentRoomStatus.total} komponenter klara
+                  </span>
                 </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-green-500 h-2 rounded-full transition-all"
+                    style={{ width: `${currentRoomStatus.percentage}%` }}
+                  />
+                </div>
+              </div>
 
+              {/* Nuvarande rum */}
+              <div className="border rounded-lg">
                 <InspectionRoom
                   room={currentRoom}
                   isExpanded={true}
@@ -309,11 +318,36 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
               </div>
             </div>
 
-            <DialogFooter>
-              <Button variant="outline" type="button" onClick={() => setStep("info")}>
-                Tillbaka
+            <DialogFooter className="space-x-2">
+              <div className="flex-1 flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={goToPreviousRoom}
+                  disabled={!canGoPrevious}
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Föregående rum
+                </Button>
+                <Button
+                  type="button"
+                  variant={canGoNext ? "outline" : "default"}
+                  onClick={goToNextRoom}
+                  disabled={!canGoNext}
+                >
+                  {canGoNext ? (
+                    <>
+                      Nästa rum
+                      <ChevronRight className="h-4 w-4 ml-1" />
+                    </>
+                  ) : (
+                    "Avsluta besiktning"
+                  )}
+                </Button>
+              </div>
+              <Button type="submit" variant="default">
+                Spara besiktning
               </Button>
-              <Button type="submit">Spara besiktning</Button>
             </DialogFooter>
           </form>
         )}
