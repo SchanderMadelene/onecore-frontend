@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   Dialog,
@@ -13,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { InspectionRoom } from "./InspectionRoom";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
-import { CheckCircle, AlertCircle, Circle, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -25,7 +26,7 @@ interface InspectionFormDialogProps {
 export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: InspectionFormDialogProps) {
   const [inspectorName, setInspectorName] = useState("");
   const [step, setStep] = useState<"info" | "inspection">("info");
-  const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
+  const [expandedRoomIds, setExpandedRoomIds] = useState<string[]>([]);
   const [inspectionData, setInspectionData] = useState<Record<string, InspectionRoomType>>(() => {
     const initialData: Record<string, InspectionRoomType> = {};
     rooms.forEach(room => {
@@ -67,6 +68,10 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
     setStep("inspection");
+    // Expandera första rummet automatiskt när man börjar besiktningen
+    if (rooms.length > 0) {
+      setExpandedRoomIds([rooms[0].id]);
+    }
   };
 
   const handleConditionUpdate = (
@@ -133,14 +138,14 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
     onClose();
     setStep("info");
     setInspectorName("");
-    setCurrentRoomIndex(0);
+    setExpandedRoomIds([]);
   };
 
   const handleCancel = () => {
     onClose();
     setStep("info");
     setInspectorName("");
-    setCurrentRoomIndex(0);
+    setExpandedRoomIds([]);
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -149,62 +154,13 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
     }
   };
 
-  const getRoomStatus = (roomId: string) => {
-    const inspection = inspectionData[roomId];
-    const conditions = Object.values(inspection.conditions);
-    const isComplete = conditions.every(c => c !== "");
-    const isApproved = conditions.every(c => c === "good" || c === "acceptable");
-    const hasStarted = conditions.some(c => c !== "");
-
-    if (isComplete && isApproved) return { 
-      icon: <CheckCircle className="h-4 w-4 text-green-500" />,
-      text: "Godkänt",
-      color: "text-green-500"
-    };
-    if (isComplete) return {
-      icon: <AlertCircle className="h-4 w-4 text-amber-500" />,
-      text: "Behöver åtgärd",
-      color: "text-amber-500"
-    };
-    if (hasStarted) return {
-      icon: <CheckCircle className="h-4 w-4 text-green-500" />,
-      text: "Påbörjad",
-      color: "text-green-500"
-    };
-    return {
-      icon: <Circle className="h-4 w-4 text-gray-300" />,
-      text: "Ej påbörjad",
-      color: "text-gray-400"
-    };
-  };
-
-  const getRoomComponentStatus = (roomId: string) => {
-    const inspection = inspectionData[roomId];
-    const totalComponents = Object.keys(inspection.conditions).length;
-    const completedComponents = Object.values(inspection.conditions).filter(c => c !== "").length;
-    
-    return {
-      total: totalComponents,
-      completed: completedComponents,
-      percentage: Math.round((completedComponents / totalComponents) * 100)
-    };
-  };
-
-  const currentRoom = rooms[currentRoomIndex];
-  const canGoNext = currentRoomIndex < rooms.length - 1;
-  const canGoPrevious = currentRoomIndex > 0;
-  const currentRoomStatus = getRoomComponentStatus(currentRoom.id);
-
-  const goToNextRoom = () => {
-    if (canGoNext) {
-      setCurrentRoomIndex(prev => prev + 1);
-    }
-  };
-
-  const goToPreviousRoom = () => {
-    if (canGoPrevious) {
-      setCurrentRoomIndex(prev => prev - 1);
-    }
+  const handleToggleRoom = (roomId: string) => {
+    setExpandedRoomIds(prev => {
+      if (prev.includes(roomId)) {
+        return prev.filter(id => id !== roomId);
+      }
+      return [...prev, roomId];
+    });
   };
 
   return (
@@ -219,7 +175,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
           <DialogDescription>
             {step === "info" 
               ? "Fyll i information om besiktningen" 
-              : `Rum ${currentRoomIndex + 1} av ${rooms.length}`
+              : "Gå igenom och bedöm skicket på alla rum"
             }
           </DialogDescription>
         </DialogHeader>
@@ -262,92 +218,27 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
-              {/* Progress översikt */}
-              <div className="grid grid-cols-6 gap-2">
-                {rooms.map((room, index) => {
-                  const status = getRoomComponentStatus(room.id);
-                  const isCurrent = currentRoomIndex === index;
-                  const isComplete = status.completed === status.total;
-                  
-                  return (
-                    <Button
-                      key={room.id}
-                      type="button"
-                      variant={isCurrent ? "default" : "outline"}
-                      onClick={() => setCurrentRoomIndex(index)}
-                      className={`relative ${isComplete ? 'border-green-500' : ''}`}
-                    >
-                      <span className="text-sm">{index + 1}</span>
-                      {isComplete && (
-                        <CheckCircle className="absolute -top-2 -right-2 h-4 w-4 text-green-500" />
-                      )}
-                    </Button>
-                  );
-                })}
-              </div>
-
-              {/* Progress för nuvarande rum */}
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-semibold">
-                    {currentRoom.name || currentRoom.roomType?.name || currentRoom.code}
-                  </h3>
-                  <span className="text-sm text-gray-600">
-                    {currentRoomStatus.completed} av {currentRoomStatus.total} komponenter klara
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-green-500 h-2 rounded-full transition-all"
-                    style={{ width: `${currentRoomStatus.percentage}%` }}
+              <div className="space-y-4">
+                {rooms.map((room) => (
+                  <InspectionRoom
+                    key={room.id}
+                    room={room}
+                    isExpanded={expandedRoomIds.includes(room.id)}
+                    onToggle={() => handleToggleRoom(room.id)}
+                    inspectionData={inspectionData[room.id]}
+                    onConditionUpdate={(field, value) => handleConditionUpdate(room.id, field, value)}
+                    onActionUpdate={(field, action) => handleActionUpdate(room.id, field, action)}
+                    onComponentNoteUpdate={(field, note) => handleComponentNoteUpdate(room.id, field, note)}
                   />
-                </div>
-              </div>
-
-              {/* Nuvarande rum */}
-              <div className="border rounded-lg">
-                <InspectionRoom
-                  room={currentRoom}
-                  isExpanded={true}
-                  onToggle={() => {}}
-                  inspectionData={inspectionData[currentRoom.id]}
-                  onConditionUpdate={(field, value) => handleConditionUpdate(currentRoom.id, field, value)}
-                  onActionUpdate={(field, action) => handleActionUpdate(currentRoom.id, field, action)}
-                  onComponentNoteUpdate={(field, note) => handleComponentNoteUpdate(currentRoom.id, field, note)}
-                />
+                ))}
               </div>
             </div>
 
-            <DialogFooter className="space-x-2">
-              <div className="flex-1 flex items-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={goToPreviousRoom}
-                  disabled={!canGoPrevious}
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Föregående rum
-                </Button>
-                <Button
-                  type="button"
-                  variant={canGoNext ? "outline" : "default"}
-                  onClick={goToNextRoom}
-                  disabled={!canGoNext}
-                >
-                  {canGoNext ? (
-                    <>
-                      Nästa rum
-                      <ChevronRight className="h-4 w-4 ml-1" />
-                    </>
-                  ) : (
-                    "Avsluta besiktning"
-                  )}
-                </Button>
-              </div>
-              <Button type="submit" variant="default">
-                Spara besiktning
+            <DialogFooter>
+              <Button variant="outline" type="button" onClick={() => setStep("info")}>
+                Tillbaka
               </Button>
+              <Button type="submit">Spara besiktning</Button>
             </DialogFooter>
           </form>
         )}
