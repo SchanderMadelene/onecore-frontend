@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { InspectionRoom } from "./InspectionRoom";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
-import { CheckCircle, AlertCircle, Circle, CircleDot } from "lucide-react";
+import { CheckCircle, AlertCircle, Circle } from "lucide-react";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -160,20 +160,15 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
     const isApproved = conditions.every(c => c === "good" || c === "acceptable");
     const hasStarted = conditions.some(c => c !== "");
 
-    if (isApproved) return { 
+    if (isApproved || hasStarted) return { 
       icon: <CheckCircle className="h-4 w-4 text-green-500" />,
-      text: "Godkänt",
+      text: hasStarted ? "Påbörjad" : "Godkänt",
       color: "text-green-500"
     };
     if (isComplete) return {
       icon: <AlertCircle className="h-4 w-4 text-amber-500" />,
       text: "Behöver åtgärd",
       color: "text-amber-500"
-    };
-    if (hasStarted) return {
-      icon: <CircleDot className="h-4 w-4 text-blue-500" />,
-      text: "Påbörjad",
-      color: "text-blue-500"
     };
     return {
       icon: <Circle className="h-4 w-4 text-gray-300" />,
