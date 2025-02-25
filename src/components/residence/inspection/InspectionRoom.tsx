@@ -1,14 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Check } from "lucide-react";
-import { ConditionSelect } from "./ConditionSelect";
+
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { RoomStatus } from "./room-header/RoomStatus";
+import { RoomActions } from "./room-header/RoomActions";
+import { InspectionAccordion } from "./InspectionAccordion";
 
 interface InspectionRoomProps {
   room: Room;
@@ -39,7 +34,6 @@ export const InspectionRoom = ({
     fields.forEach(field => {
       onConditionUpdate(field, "good");
     });
-    // Efter att alla fält är markerade som "good", markera rummet som godkänt
     inspectionData.isApproved = true;
   };
 
@@ -69,153 +63,30 @@ export const InspectionRoom = ({
   return (
     <div className={`border rounded-lg shadow-sm ${inspectionData.isApproved ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
       <div className={`w-full p-4 flex items-center justify-between border-b ${inspectionData.isApproved ? 'bg-green-50/50 border-green-200' : 'bg-card'}`}>
-        <button
-          type="button"
-          className={`flex-1 text-left flex items-center gap-2 transition-colors ${inspectionData.isApproved ? 'text-green-700 hover:text-green-800' : 'hover:text-primary/80'}`}
+        <RoomStatus
+          isApproved={inspectionData.isApproved}
+          name={room.name || room.roomType?.name || room.code}
           onClick={handleToggleClick}
-        >
-          {inspectionData.isApproved && (
-            <Check className="h-5 w-5 text-green-600 shrink-0" />
-          )}
-          <span className="font-semibold text-base">{room.name || room.roomType?.name || room.code}</span>
-        </button>
-        <div className="flex items-center gap-3">
-          <Button 
-            type="button"
-            variant="outline" 
-            size="sm"
-            className={`pointer-events-auto transition-colors ${
-              inspectionData.isApproved 
-                ? 'text-green-700 border-green-200 bg-green-50 hover:bg-green-100 hover:border-green-300 hover:text-green-800'
-                : 'text-green-600 border-green-600 hover:bg-green-50 hover:border-green-600 hover:text-green-600'
-            }`}
-            onClick={handleApproveRoom}
-          >
-            <Check className="mr-2 h-4 w-4" />
-            {inspectionData.isApproved ? 'Godkänt' : 'Godkänn rum'}
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="p-0 hover:bg-transparent"
-            onClick={handleToggleClick}
-          >
-            {isExpanded ? (
-              <ChevronUp className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" />
-            ) : (
-              <ChevronDown className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" />
-            )}
-          </Button>
-        </div>
+        />
+        <RoomActions
+          isApproved={inspectionData.isApproved}
+          isExpanded={isExpanded}
+          onApprove={handleApproveRoom}
+          onToggle={handleToggleClick}
+        />
       </div>
 
       {isExpanded && (
         <div className="p-4">
-          <Accordion type="single" className="space-y-2">
-            <AccordionItem value="walls" className="border rounded-md">
-              <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
-                <div className="flex items-center gap-2">
-                  {isWallsComplete() && (
-                    <Check className="h-4 w-4 text-green-500" />
-                  )}
-                  <span className="font-medium">Väggar</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <div className="space-y-6 py-2">
-                  {(["wall1", "wall2", "wall3", "wall4"] as const).map((wall) => (
-                    <ConditionSelect
-                      key={wall}
-                      label={wallDirections[wall]}
-                      value={inspectionData.conditions[wall]}
-                      onChange={(value) => onConditionUpdate(wall, value)}
-                      actions={inspectionData.actions[wall]}
-                      onActionUpdate={(action) => onActionUpdate(wall, action)}
-                      type="walls"
-                      note={inspectionData.componentNotes[wall]}
-                      onNoteChange={(note) => onComponentNoteUpdate(wall, note)}
-                    />
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="ceiling" className="border rounded-md">
-              <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
-                <div className="flex items-center gap-2">
-                  {isSingleComponentComplete("ceiling") && (
-                    <Check className="h-4 w-4 text-green-500" />
-                  )}
-                  <span className="font-medium">Tak</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <div className="py-2">
-                  <ConditionSelect
-                    label="Tak"
-                    value={inspectionData.conditions.ceiling}
-                    onChange={(value) => onConditionUpdate("ceiling", value)}
-                    actions={inspectionData.actions.ceiling}
-                    onActionUpdate={(action) => onActionUpdate("ceiling", action)}
-                    type="ceiling"
-                    note={inspectionData.componentNotes.ceiling}
-                    onNoteChange={(note) => onComponentNoteUpdate("ceiling", note)}
-                  />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="floor" className="border rounded-md">
-              <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
-                <div className="flex items-center gap-2">
-                  {isSingleComponentComplete("floor") && (
-                    <Check className="h-4 w-4 text-green-500" />
-                  )}
-                  <span className="font-medium">Golv</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <div className="py-2">
-                  <ConditionSelect
-                    label="Golv"
-                    value={inspectionData.conditions.floor}
-                    onChange={(value) => onConditionUpdate("floor", value)}
-                    actions={inspectionData.actions.floor}
-                    onActionUpdate={(action) => onActionUpdate("floor", action)}
-                    type="floor"
-                    note={inspectionData.componentNotes.floor}
-                    onNoteChange={(note) => onComponentNoteUpdate("floor", note)}
-                  />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="details" className="border rounded-md">
-              <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
-                <div className="flex items-center gap-2">
-                  {isSingleComponentComplete("details") && (
-                    <Check className="h-4 w-4 text-green-500" />
-                  )}
-                  <span className="font-medium">Detaljer</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="px-4">
-                <div className="py-2">
-                  <ConditionSelect
-                    label="Detaljer"
-                    value={inspectionData.conditions.details}
-                    onChange={(value) => onConditionUpdate("details", value)}
-                    actions={inspectionData.actions.details}
-                    onActionUpdate={(action) => onActionUpdate("details", action)}
-                    type="details"
-                    note={inspectionData.componentNotes.details}
-                    onNoteChange={(note) => onComponentNoteUpdate("details", note)}
-                  />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <InspectionAccordion
+            isWallsComplete={isWallsComplete}
+            isSingleComponentComplete={isSingleComponentComplete}
+            wallDirections={wallDirections}
+            inspectionData={inspectionData}
+            onConditionUpdate={onConditionUpdate}
+            onActionUpdate={onActionUpdate}
+            onComponentNoteUpdate={onComponentNoteUpdate}
+          />
         </div>
       )}
     </div>
