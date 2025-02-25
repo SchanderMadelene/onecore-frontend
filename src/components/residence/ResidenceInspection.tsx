@@ -80,6 +80,21 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     );
   };
 
+  if (!currentInspection) {
+    return (
+      <div className="space-y-6 w-full max-w-4xl mx-auto">
+        <InspectionHistory 
+          inspections={inspectionHistory}
+          onLoadInspection={handleLoadInspection}
+        />
+        <InspectionStart
+          rooms={rooms}
+          onSave={handleSaveInspection}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 w-full max-w-4xl mx-auto">
       <InspectionHistory 
@@ -87,28 +102,35 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
         onLoadInspection={handleLoadInspection}
       />
       
-      {currentInspection ? (
-        <div className="space-y-6">
-          {progress && (
-            <InspectionProgress
-              progress={progress.progress}
-              stats={progress.stats}
-              inspectorName={currentInspection.inspectorName}
-            />
-          )}
-          <Tabs defaultValue="protocol" className="w-full">
-            <TabsList className="w-full justify-start bg-background border-b">
-              <TabsTrigger value="basic" className="text-base">Grundläggande info</TabsTrigger>
-              <TabsTrigger value="protocol" className="text-base">Protokoll</TabsTrigger>
-              <TabsTrigger value="floorplan" className="text-base">Planritning</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="basic" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Grundläggande information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
+      <div className="space-y-6">
+        {progress && (
+          <InspectionProgress
+            progress={progress.progress}
+            stats={progress.stats}
+            inspectorName={currentInspection.inspectorName}
+          />
+        )}
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Besiktning - {currentInspection.inspectorName}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="basic" className="w-full">
+              <TabsList className="w-full justify-start bg-background border-b rounded-none px-0">
+                <TabsTrigger value="basic" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                  Grundläggande info
+                </TabsTrigger>
+                <TabsTrigger value="protocol" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                  Protokoll
+                </TabsTrigger>
+                <TabsTrigger value="floorplan" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                  Planritning
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="basic" className="mt-6">
+                <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-muted-foreground">Besiktningsman</p>
@@ -127,34 +149,22 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
                       <p className="font-medium">Pågående</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                </div>
+              </TabsContent>
 
-            <TabsContent value="protocol" className="mt-6">
-              {renderInspectionContent()}
-            </TabsContent>
+              <TabsContent value="protocol" className="mt-6">
+                {renderInspectionContent()}
+              </TabsContent>
 
-            <TabsContent value="floorplan" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Planritning</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-center h-[400px] border-2 border-dashed rounded-lg">
-                    <p className="text-muted-foreground">Planritning är inte tillgänglig</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      ) : (
-        <InspectionStart
-          rooms={rooms}
-          onSave={handleSaveInspection}
-        />
-      )}
+              <TabsContent value="floorplan" className="mt-6">
+                <div className="flex items-center justify-center h-[400px] border-2 border-dashed rounded-lg">
+                  <p className="text-muted-foreground">Planritning är inte tillgänglig</p>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
