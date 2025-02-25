@@ -54,6 +54,26 @@ export function InspectionInfoStep({
               {new Date().toLocaleDateString("sv-SE")}
             </p>
           </div>
+          <div className="space-y-2">
+            <Label>Huvudnyckel</Label>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                data-state="active"
+              >
+                Ja
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Nej
+              </Button>
+            </div>
+          </div>
         </div>
 
         <Separator />
