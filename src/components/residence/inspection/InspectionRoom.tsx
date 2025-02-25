@@ -67,7 +67,7 @@ export const InspectionRoom = ({
 
   return (
     <div className="border rounded-lg shadow-sm bg-white">
-      <div className="w-full bg-card p-4 flex items-center justify-between border-b relative">
+      <div className="w-full bg-card p-4 flex items-center justify-between border-b relative isolate">
         <button
           type="button"
           className="flex-1 text-left flex items-center gap-2 hover:text-primary/80 transition-colors"
@@ -76,21 +76,23 @@ export const InspectionRoom = ({
           <span className="font-semibold text-base">{room.name || room.roomType?.name || room.code}</span>
         </button>
         <div className="flex items-center gap-3">
-          <Button 
-            type="button"
-            variant="outline" 
-            size="sm"
-            className="text-green-600 border-green-600 hover:bg-green-50 transition-colors z-10"
-            onClick={handleApproveRoom}
-          >
-            <Check className="mr-2 h-4 w-4" />
-            Godkänn rum
-          </Button>
+          <div className="relative z-20">
+            <Button 
+              type="button"
+              variant="outline" 
+              size="sm"
+              className="text-green-600 border-green-600 hover:bg-green-50 transition-colors"
+              onClick={handleApproveRoom}
+            >
+              <Check className="mr-2 h-4 w-4" />
+              Godkänn rum
+            </Button>
+          </div>
           <Button
             type="button"
             variant="ghost"
             size="sm"
-            className="p-0 hover:bg-transparent"
+            className="p-0 hover:bg-transparent relative z-20"
             onClick={handleToggleClick}
           >
             {isExpanded ? (
