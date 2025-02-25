@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, CheckCircle, Check } from "lucide-react";
+import { ChevronDown, ChevronUp, Check } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
@@ -83,7 +83,7 @@ export const InspectionRoom = ({
             className="text-green-600 border-green-600 hover:bg-green-50 transition-colors"
             onClick={handleApproveRoom}
           >
-            <CheckCircle className="mr-2 h-4 w-4" />
+            <Check className="mr-2 h-4 w-4" />
             Godkänn rum
           </Button>
           {isExpanded ? (
