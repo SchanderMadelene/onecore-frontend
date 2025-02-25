@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { toast } from "sonner";
 import type { Room } from "@/types/api";
@@ -76,14 +75,11 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   const progress = useInspectionProgress(rooms, currentInspection?.rooms ?? null);
 
   const handleLoadInspection = (inspection: Inspection) => {
-    // Skapa en ny rumsdatastruktur som kombinerar aktuella rum med historisk data
     const currentRoomData = initializeRoomData(rooms);
     const mergedRooms = Object.keys(currentRoomData).reduce((acc, roomId) => {
-      // Om rummet finns i den historiska besiktningen, använd den datan
       if (inspection.rooms[roomId]) {
         acc[roomId] = inspection.rooms[roomId];
       } else {
-        // Om rummet är nytt, använd den initialiserade datan
         acc[roomId] = currentRoomData[roomId];
       }
       return acc;
@@ -143,7 +139,6 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
         <InspectionStart
           rooms={rooms}
           onSave={(inspectorName, _) => {
-            // Initiera rum med korrekta IDs från rooms-arrayen
             const initialRoomData = initializeRoomData(rooms);
             handleSaveInspection(inspectorName, initialRoomData);
           }}
