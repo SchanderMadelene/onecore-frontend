@@ -33,9 +33,9 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 flex-wrap gap-4">
         <CardTitle>Hyresgästinformation</CardTitle>
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild className="shrink-0">
           <Link to={`/tenants/${tenant.personalNumber}`}>
             <User className="mr-2" />
             Öppna kundkort
