@@ -9,6 +9,7 @@ import { InspectionProgress } from "./inspection/InspectionProgress";
 import { useInspectionProgress } from "./inspection/useInspectionProgress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BasicInformation } from "./inspection/form/BasicInformation";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
@@ -120,26 +121,10 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
               </TabsList>
               
               <TabsContent value="basic" className="mt-6">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Besiktningsman</p>
-                      <p className="font-medium">{currentInspection.inspectorName}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Datum</p>
-                      <p className="font-medium">{new Date().toLocaleDateString("sv-SE")}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Antal rum</p>
-                      <p className="font-medium">{rooms.length}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Status</p>
-                      <p className="font-medium">Pågående</p>
-                    </div>
-                  </div>
-                </div>
+                <BasicInformation 
+                  inspectorName={currentInspection.inspectorName}
+                  roomCount={rooms.length}
+                />
               </TabsContent>
 
               <TabsContent value="protocol" className="mt-6">
