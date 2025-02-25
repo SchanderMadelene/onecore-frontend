@@ -30,6 +30,7 @@ export interface InspectionRoom {
   };
   photos: string[];
   isApproved: boolean;
+  isHandled: boolean;
 }
 
 export interface Inspection {

@@ -5,13 +5,14 @@ import type { InspectionRoom } from "./types";
 interface InspectionProgress {
   rooms: Array<{
     room: Room;
-    status: "not-started" | "in-progress" | "approved" | "needs-action";
+    status: "not-started" | "in-progress" | "approved" | "handled";
   }>;
   progress: number;
   stats: {
     total: number;
     completed: number;
     approved: number;
+    handled: number;
     inProgress: number;
   };
 }
@@ -28,25 +29,25 @@ export const useInspectionProgress = (
 
     const conditions = Object.values(inspection.conditions);
     const isComplete = conditions.every(c => c !== "");
-    const isApproved = conditions.every(c => c === "good" || c === "acceptable");
-    const hasStarted = conditions.some(c => c !== "");
 
-    if (isApproved) return { room, status: "approved" as const };
-    if (isComplete) return { room, status: "needs-action" as const };
-    if (hasStarted) return { room, status: "in-progress" as const };
+    if (inspection.isApproved) return { room, status: "approved" as const };
+    if (inspection.isHandled) return { room, status: "handled" as const };
+    if (isComplete) return { room, status: "handled" as const };
+    if (conditions.some(c => c !== "")) return { room, status: "in-progress" as const };
     return { room, status: "not-started" as const };
   });
 
   const total = roomProgress.length;
   const completed = roomProgress.filter(r => 
-    r.status === "approved" || r.status === "needs-action"
+    r.status === "approved" || r.status === "handled"
   ).length;
   const approved = roomProgress.filter(r => r.status === "approved").length;
+  const handled = roomProgress.filter(r => r.status === "handled").length;
   const inProgress = roomProgress.filter(r => r.status === "in-progress").length;
 
   return {
     rooms: roomProgress,
     progress: (completed / total) * 100,
-    stats: { total, completed, approved, inProgress }
+    stats: { total, completed, approved, handled, inProgress }
   };
 };

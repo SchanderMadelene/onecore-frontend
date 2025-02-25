@@ -35,6 +35,13 @@ export const InspectionRoom = ({
       onConditionUpdate(field, "good");
     });
     inspectionData.isApproved = true;
+    inspectionData.isHandled = true;
+  };
+
+  const handleMarkHandled = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    inspectionData.isHandled = true;
   };
 
   const handleToggleClick = (e: React.MouseEvent) => {
@@ -60,18 +67,41 @@ export const InspectionRoom = ({
     return inspectionData.conditions[component] !== "";
   };
 
+  // Kontrollera om alla komponenter har fyllts i
+  const isAllComponentsHandled = Object.values(inspectionData.conditions).every(condition => condition !== "");
+
+  // Uppdatera isHandled automatiskt när alla komponenter är ifyllda
+  if (isAllComponentsHandled && !inspectionData.isHandled) {
+    inspectionData.isHandled = true;
+  }
+
   return (
-    <div className={`border rounded-lg shadow-sm ${inspectionData.isApproved ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
-      <div className={`w-full p-4 flex items-center justify-between border-b ${inspectionData.isApproved ? 'bg-green-50/50 border-green-200' : 'bg-card'}`}>
+    <div className={`border rounded-lg shadow-sm ${
+      inspectionData.isApproved 
+        ? 'bg-green-50 border-green-200' 
+        : inspectionData.isHandled 
+          ? 'bg-amber-50 border-amber-200'
+          : 'bg-white'
+    }`}>
+      <div className={`w-full p-4 flex items-center justify-between border-b ${
+        inspectionData.isApproved 
+          ? 'bg-green-50/50 border-green-200' 
+          : inspectionData.isHandled
+            ? 'bg-amber-50/50 border-amber-200'
+            : 'bg-card'
+      }`}>
         <RoomStatus
           isApproved={inspectionData.isApproved}
+          isHandled={inspectionData.isHandled}
           name={room.name || room.roomType?.name || room.code}
           onClick={handleToggleClick}
         />
         <RoomActions
           isApproved={inspectionData.isApproved}
+          isHandled={inspectionData.isHandled}
           isExpanded={isExpanded}
           onApprove={handleApproveRoom}
+          onMarkHandled={handleMarkHandled}
           onToggle={handleToggleClick}
         />
       </div>

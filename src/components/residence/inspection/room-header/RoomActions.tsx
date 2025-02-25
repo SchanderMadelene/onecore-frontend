@@ -1,22 +1,38 @@
 
 import { Button } from "@/components/ui/button";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Check, CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
 
 interface RoomActionsProps {
   isApproved: boolean;
+  isHandled: boolean;
   isExpanded: boolean;
   onApprove: (e: React.MouseEvent) => void;
+  onMarkHandled: (e: React.MouseEvent) => void;
   onToggle: (e: React.MouseEvent) => void;
 }
 
 export const RoomActions = ({ 
   isApproved, 
+  isHandled,
   isExpanded, 
   onApprove, 
+  onMarkHandled,
   onToggle 
 }: RoomActionsProps) => {
   return (
     <div className="flex items-center gap-3">
+      {!isApproved && isHandled && (
+        <Button 
+          type="button"
+          variant="outline" 
+          size="sm"
+          className="text-amber-600 border-amber-600 hover:bg-amber-50 hover:text-amber-700"
+          onClick={onMarkHandled}
+        >
+          <CheckCircle className="mr-2 h-4 w-4" />
+          Hanterat
+        </Button>
+      )}
       <Button 
         type="button"
         variant="outline" 
