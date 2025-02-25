@@ -46,15 +46,22 @@ export const initializeRoomData = (rooms: Room[]): Record<string, InspectionRoom
 };
 
 export const getRoomName = (room: Room | InspectionRoom): string => {
-  if ('roomId' in room) {
-    // Det är ett InspectionRoom-objekt
-    const name = room.roomName || room.roomTypeName || '';
-    const code = room.roomCode;
-    return name ? `${name} ${code}` : code;
-  } else {
+  console.log('Room object received:', room);
+  console.log('Room type check - has roomId:', 'roomId' in room);
+  console.log('Room type check - has id:', 'id' in room);
+  console.log('Room properties:', Object.keys(room));
+
+  if ('id' in room) {
     // Det är ett Room-objekt
     const name = room.name || room.roomType?.name || '';
     const code = room.code;
+    console.log('Room name components:', { name, code });
+    return name ? `${name} ${code}` : code;
+  } else {
+    // Det är ett InspectionRoom-objekt
+    const name = room.roomName || room.roomTypeName || '';
+    const code = room.roomCode;
+    console.log('InspectionRoom name components:', { name, code });
     return name ? `${name} ${code}` : code;
   }
 };
