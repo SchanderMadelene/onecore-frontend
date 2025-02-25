@@ -14,7 +14,6 @@ interface ResidenceInspectionProps {
   rooms: Room[];
 }
 
-// Simulera lokal lagring av besiktningar
 const LOCAL_STORAGE_KEY = "inspections";
 
 const loadInspections = (): Inspection[] => {
@@ -82,7 +81,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-4xl mx-auto">
       <InspectionHistory 
         inspections={inspectionHistory}
         onLoadInspection={handleLoadInspection}
@@ -97,14 +96,14 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
               inspectorName={currentInspection.inspectorName}
             />
           )}
-          <Tabs defaultValue="protocol" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="basic">Grundläggande info</TabsTrigger>
-              <TabsTrigger value="protocol">Protokoll</TabsTrigger>
-              <TabsTrigger value="floorplan">Planritning</TabsTrigger>
+          <Tabs defaultValue="protocol" className="w-full">
+            <TabsList className="w-full justify-start bg-background border-b">
+              <TabsTrigger value="basic" className="text-base">Grundläggande info</TabsTrigger>
+              <TabsTrigger value="protocol" className="text-base">Protokoll</TabsTrigger>
+              <TabsTrigger value="floorplan" className="text-base">Planritning</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="basic">
+            <TabsContent value="basic" className="mt-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Grundläggande information</CardTitle>
@@ -132,11 +131,11 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="protocol">
+            <TabsContent value="protocol" className="mt-6">
               {renderInspectionContent()}
             </TabsContent>
 
-            <TabsContent value="floorplan">
+            <TabsContent value="floorplan" className="mt-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Planritning</CardTitle>
