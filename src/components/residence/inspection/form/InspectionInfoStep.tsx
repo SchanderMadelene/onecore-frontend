@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { TenantInformation } from "./TenantInformation";
 
 interface InspectionInfoStepProps {
@@ -54,25 +55,9 @@ export function InspectionInfoStep({
               {new Date().toLocaleDateString("sv-SE")}
             </p>
           </div>
-          <div className="space-y-2">
-            <Label>Huvudnyckel</Label>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                data-state="active"
-              >
-                Ja
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                Nej
-              </Button>
-            </div>
+          <div className="flex items-center justify-between space-x-2">
+            <Label htmlFor="master-key" className="flex-1">Huvudnyckel finns</Label>
+            <Switch id="master-key" defaultChecked />
           </div>
         </div>
 
