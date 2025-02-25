@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Check } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
@@ -39,6 +40,8 @@ export const InspectionRoom = ({
     fields.forEach(field => {
       onConditionUpdate(field, "good");
     });
+    // Efter att alla fält är markerade som "good", markera rummet som godkänt
+    inspectionData.isApproved = true;
   };
 
   const handleToggleClick = (e: React.MouseEvent) => {
@@ -65,13 +68,16 @@ export const InspectionRoom = ({
   };
 
   return (
-    <div className="border rounded-lg shadow-sm bg-white">
+    <div className={`border rounded-lg shadow-sm bg-white ${inspectionData.isApproved ? 'bg-green-50' : ''}`}>
       <div className="w-full bg-card p-4 flex items-center justify-between border-b">
         <button
           type="button"
           className="flex-1 text-left flex items-center gap-2 hover:text-primary/80 transition-colors"
           onClick={handleToggleClick}
         >
+          {inspectionData.isApproved && (
+            <Check className="h-4 w-4 text-green-500" />
+          )}
           <span className="font-semibold text-base">{room.name || room.roomType?.name || room.code}</span>
         </button>
         <div className="flex items-center gap-3">
