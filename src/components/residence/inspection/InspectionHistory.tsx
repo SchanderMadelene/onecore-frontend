@@ -9,10 +9,9 @@ import { InspectionReadOnly } from "./InspectionReadOnly";
 
 interface InspectionHistoryProps {
   inspections: Inspection[];
-  onLoadInspection: (inspection: Inspection) => void;
 }
 
-export const InspectionHistory = ({ inspections, onLoadInspection }: InspectionHistoryProps) => {
+export const InspectionHistory = ({ inspections }: InspectionHistoryProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedInspection, setSelectedInspection] = useState<Inspection | null>(null);
 
@@ -43,20 +42,12 @@ export const InspectionHistory = ({ inspections, onLoadInspection }: InspectionH
                       Besiktigad av: {inspection.inspectedBy}
                     </p>
                   </div>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline"
-                      onClick={() => setSelectedInspection(inspection)}
-                    >
-                      Visa
-                    </Button>
-                    <Button 
-                      variant="outline"
-                      onClick={() => onLoadInspection(inspection)}
-                    >
-                      Redigera
-                    </Button>
-                  </div>
+                  <Button 
+                    variant="outline"
+                    onClick={() => setSelectedInspection(inspection)}
+                  >
+                    Visa
+                  </Button>
                 </div>
               ))}
             </div>
@@ -76,12 +67,6 @@ export const InspectionHistory = ({ inspections, onLoadInspection }: InspectionH
                   onClick={() => setSelectedInspection(inspections[0])}
                 >
                   Visa
-                </Button>
-                <Button 
-                  variant="outline"
-                  onClick={() => onLoadInspection(inspections[0])}
-                >
-                  Redigera
                 </Button>
                 <Button 
                   variant="ghost"
