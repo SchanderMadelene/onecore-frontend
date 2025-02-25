@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +7,7 @@ import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ResidenceInspection } from "@/components/residence/ResidenceInspection";
+import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
 
 const mockResidenceData: APIResponse<Residence> = {
   content: {
@@ -265,9 +265,21 @@ const getOrientationText = (orientation: number) => {
   }
 };
 
-const ResidencePage = () => {
+export const ResidencePage = () => {
   const { city, district, property, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Mock data för hyresgäst (detta bör senare komma från ett API)
+  const mockTenant = {
+    firstName: "Anna",
+    lastName: "Andersson",
+    phone: "070-123 45 67",
+    email: "anna.andersson@example.com",
+    contractStatus: "permanent" as const,
+    moveInDate: "2023-01-01",
+    contractNumber: "KT2023-001",
+    personalNumber: "19850101-1234"
+  };
 
   const { data: residenceData, isLoading: isLoadingResidence, error: residenceError } = useQuery({
     queryKey: ['residence', id],
@@ -297,6 +309,8 @@ const ResidencePage = () => {
           property={property}
           district={district}
         />
+        
+        <TenantInformation tenant={mockTenant} />
         
         {roomsData && (
           <>
