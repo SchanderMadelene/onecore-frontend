@@ -30,6 +30,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     inspectorName: string;
     rooms: Record<string, InspectionRoom>;
   } | null>(null);
+  const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
 
   const progress = useInspectionProgress(rooms, currentInspection?.rooms ?? null);
 
@@ -57,6 +58,10 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     toast.success("Besiktningen har sparats");
   };
 
+  const handleRoomToggle = (roomId: string) => {
+    setExpandedRoomId(expandedRoomId === roomId ? null : roomId);
+  };
+
   return (
     <div className="space-y-6">
       <InspectionHistory 
@@ -73,6 +78,17 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
               inspectorName={currentInspection.inspectorName}
             />
           )}
+          <div className="space-y-4">
+            {rooms.map(room => (
+              <InspectionStart
+                key={room.id}
+                rooms={[room]}
+                onSave={handleSaveInspection}
+                isExpanded={expandedRoomId === room.id}
+                onToggle={() => handleRoomToggle(room.id)}
+              />
+            ))}
+          </div>
         </div>
       ) : (
         <InspectionStart
