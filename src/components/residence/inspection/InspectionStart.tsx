@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import { Plus, Check } from "lucide-react";
 import { InspectionFormDialog } from "./InspectionFormDialog";
+import { InspectionRoom } from "./InspectionRoom";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
 
@@ -12,25 +13,92 @@ interface InspectionStartProps {
   onSave: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
   isExpanded?: boolean;
   onToggle?: () => void;
+  currentInspection?: {
+    inspectorName: string;
+    rooms: Record<string, InspectionRoomType>;
+  } | null;
 }
 
 export const InspectionStart = ({ 
   rooms, 
   onSave, 
   isExpanded, 
-  onToggle 
+  onToggle,
+  currentInspection 
 }: InspectionStartProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Om vi har onToggle prop, använd den för expandering/kollaps
   // annars visa default vy med "Starta ny besiktning"
   if (onToggle) {
+    const room = rooms[0];
+    const inspectionData = currentInspection?.rooms[room.id] || {
+      conditions: {},
+      actions: {},
+      componentNotes: {},
+      isApproved: false
+    };
+
     return (
       <Card>
         <CardHeader className="cursor-pointer" onClick={onToggle}>
-          <CardTitle>{rooms[0].name || rooms[0].roomType?.name || rooms[0].code}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            {inspectionData.isApproved && (
+              <Check className="h-4 w-4 text-green-500" />
+            )}
+            <span>{room.name || room.roomType?.name || room.code}</span>
+          </CardTitle>
         </CardHeader>
-        {isExpanded && (
+        {isExpanded && currentInspection && (
+          <CardContent>
+            <InspectionRoom
+              room={room}
+              isExpanded={true}
+              onToggle={() => {}}
+              inspectionData={inspectionData}
+              onConditionUpdate={(component, value) => {
+                const updatedRooms = {
+                  ...currentInspection.rooms,
+                  [room.id]: {
+                    ...currentInspection.rooms[room.id],
+                    conditions: {
+                      ...currentInspection.rooms[room.id].conditions,
+                      [component]: value
+                    }
+                  }
+                };
+                onSave(currentInspection.inspectorName, updatedRooms);
+              }}
+              onActionUpdate={(component, action) => {
+                const updatedRooms = {
+                  ...currentInspection.rooms,
+                  [room.id]: {
+                    ...currentInspection.rooms[room.id],
+                    actions: {
+                      ...currentInspection.rooms[room.id].actions,
+                      [component]: action
+                    }
+                  }
+                };
+                onSave(currentInspection.inspectorName, updatedRooms);
+              }}
+              onComponentNoteUpdate={(component, note) => {
+                const updatedRooms = {
+                  ...currentInspection.rooms,
+                  [room.id]: {
+                    ...currentInspection.rooms[room.id],
+                    componentNotes: {
+                      ...currentInspection.rooms[room.id].componentNotes,
+                      [component]: note
+                    }
+                  }
+                };
+                onSave(currentInspection.inspectorName, updatedRooms);
+              }}
+            />
+          </CardContent>
+        )}
+        {isExpanded && !currentInspection && (
           <CardContent>
             <div className="text-center py-8">
               <h3 className="text-lg font-medium mb-4">Ingen aktiv besiktning</h3>
