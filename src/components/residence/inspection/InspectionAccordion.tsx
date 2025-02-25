@@ -10,7 +10,7 @@ import {
 import { Check } from "lucide-react";
 
 interface InspectionAccordionProps {
-  isWallsComplete: boolean;
+  isWallsComplete: () => boolean;
   isSingleComponentComplete: (component: keyof InspectionRoomType["conditions"]) => boolean;
   wallDirections: Record<string, string>;
   inspectionData: InspectionRoomType;
