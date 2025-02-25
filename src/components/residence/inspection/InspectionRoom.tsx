@@ -104,7 +104,7 @@ export const InspectionRoom = ({
 
       {isExpanded && (
         <div className="p-4">
-          <Accordion type="single" collapsible className="space-y-2">
+          <Accordion type="single" className="space-y-2">
             <AccordionItem value="walls" className="border rounded-md">
               <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
                 <div className="flex items-center gap-2">
