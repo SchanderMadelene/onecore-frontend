@@ -64,8 +64,6 @@ export const InspectionStart = ({
       isHandled: false
     };
 
-    const roomName = room.name || room.roomType?.name || room.code;
-
     return (
       <Card>
         <CardHeader className="cursor-pointer" onClick={onToggle}>
@@ -73,7 +71,7 @@ export const InspectionStart = ({
             {inspectionData.isApproved && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span>{roomName}</span>
+            <span>{room.name || room.roomType?.name || room.code}</span>
           </CardTitle>
         </CardHeader>
         {isExpanded && currentInspection && (

@@ -1,3 +1,4 @@
+
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
 import { RoomStatus } from "./room-header/RoomStatus";
@@ -92,7 +93,7 @@ export const InspectionRoom = ({
         <RoomStatus
           isApproved={inspectionData.isApproved}
           isHandled={inspectionData.isHandled}
-          name={room.name || room.roomType?.name || room.code}
+          room={room}
           onClick={handleToggleClick}
         />
         <RoomActions
