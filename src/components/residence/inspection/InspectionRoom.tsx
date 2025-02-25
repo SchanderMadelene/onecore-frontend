@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, CheckCircle } from "lucide-react";
+import { ChevronDown, ChevronUp, CheckCircle, Check } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
@@ -55,6 +55,16 @@ export const InspectionRoom = ({
     wall4: "Vägg (Väst)"
   };
 
+  const isWallsComplete = () => {
+    return ["wall1", "wall2", "wall3", "wall4"].every(
+      wall => inspectionData.conditions[wall as keyof InspectionRoomType["conditions"]] !== ""
+    );
+  };
+
+  const isSingleComponentComplete = (component: keyof InspectionRoomType["conditions"]) => {
+    return inspectionData.conditions[component] !== "";
+  };
+
   return (
     <div className="border rounded-lg shadow-sm bg-white">
       <div className="w-full bg-card p-4 flex items-center justify-between border-b">
@@ -89,7 +99,12 @@ export const InspectionRoom = ({
           <Accordion type="single" collapsible className="space-y-2">
             <AccordionItem value="walls" className="border rounded-md">
               <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
-                <span className="font-medium">Väggar</span>
+                <div className="flex items-center gap-2">
+                  {isWallsComplete() && (
+                    <Check className="h-4 w-4 text-green-500" />
+                  )}
+                  <span className="font-medium">Väggar</span>
+                </div>
               </AccordionTrigger>
               <AccordionContent className="px-4">
                 <div className="space-y-6 py-2">
@@ -112,7 +127,12 @@ export const InspectionRoom = ({
 
             <AccordionItem value="ceiling" className="border rounded-md">
               <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
-                <span className="font-medium">Tak</span>
+                <div className="flex items-center gap-2">
+                  {isSingleComponentComplete("ceiling") && (
+                    <Check className="h-4 w-4 text-green-500" />
+                  )}
+                  <span className="font-medium">Tak</span>
+                </div>
               </AccordionTrigger>
               <AccordionContent className="px-4">
                 <div className="py-2">
@@ -132,7 +152,12 @@ export const InspectionRoom = ({
 
             <AccordionItem value="floor" className="border rounded-md">
               <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
-                <span className="font-medium">Golv</span>
+                <div className="flex items-center gap-2">
+                  {isSingleComponentComplete("floor") && (
+                    <Check className="h-4 w-4 text-green-500" />
+                  )}
+                  <span className="font-medium">Golv</span>
+                </div>
               </AccordionTrigger>
               <AccordionContent className="px-4">
                 <div className="py-2">
@@ -152,7 +177,12 @@ export const InspectionRoom = ({
 
             <AccordionItem value="details" className="border rounded-md">
               <AccordionTrigger className="flex justify-between w-full px-4 hover:no-underline hover:bg-gray-50">
-                <span className="font-medium">Detaljer</span>
+                <div className="flex items-center gap-2">
+                  {isSingleComponentComplete("details") && (
+                    <Check className="h-4 w-4 text-green-500" />
+                  )}
+                  <span className="font-medium">Detaljer</span>
+                </div>
               </AccordionTrigger>
               <AccordionContent className="px-4">
                 <div className="py-2">
