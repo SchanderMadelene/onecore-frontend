@@ -1,7 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare } from "lucide-react";
+import { Phone, Mail, MessageSquare, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface TenantInformationProps {
   tenant: {
@@ -32,8 +33,13 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Hyresgästinformation</CardTitle>
+        <Button variant="outline" size="icon" asChild title="Visa hyresgästprofil">
+          <Link to={`/tenants/${tenant.personalNumber}`}>
+            <User className="h-4 w-4" />
+          </Link>
+        </Button>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
