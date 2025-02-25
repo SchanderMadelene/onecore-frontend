@@ -7,14 +7,23 @@ import { InspectionHistory } from "./inspection/InspectionHistory";
 import type { InspectionRoom, Inspection } from "./inspection/types";
 import { InspectionProgress } from "./inspection/InspectionProgress";
 import { useInspectionProgress } from "./inspection/useInspectionProgress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { loadInspections, saveInspections } from "./inspection/utils/storage";
-import { initializeRoomData } from "./inspection/utils/room";
-import { InspectionTabs } from "./inspection/InspectionTabs";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
 }
+
+const LOCAL_STORAGE_KEY = "inspections";
+
+const loadInspections = (): Inspection[] => {
+  const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+  return saved ? JSON.parse(saved) : [];
+};
+
+const saveInspections = (inspections: Inspection[]) => {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(inspections));
+};
 
 export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   const [inspectionHistory, setInspectionHistory] = useState<Inspection[]>(loadInspections);
@@ -27,19 +36,9 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   const progress = useInspectionProgress(rooms, currentInspection?.rooms ?? null);
 
   const handleLoadInspection = (inspection: Inspection) => {
-    const currentRoomData = initializeRoomData(rooms);
-    const mergedRooms = Object.keys(currentRoomData).reduce((acc, roomId) => {
-      if (inspection.rooms[roomId]) {
-        acc[roomId] = inspection.rooms[roomId];
-      } else {
-        acc[roomId] = currentRoomData[roomId];
-      }
-      return acc;
-    }, {} as Record<string, InspectionRoom>);
-
     setCurrentInspection({
       inspectorName: inspection.inspectedBy,
-      rooms: mergedRooms
+      rooms: inspection.rooms
     });
     toast.success("Besiktning laddad");
   };
@@ -90,10 +89,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
         />
         <InspectionStart
           rooms={rooms}
-          onSave={(inspectorName, _) => {
-            const initialRoomData = initializeRoomData(rooms);
-            handleSaveInspection(inspectorName, initialRoomData);
-          }}
+          onSave={handleSaveInspection}
         />
       </div>
     );
@@ -120,12 +116,52 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
             <CardTitle>Besiktning - {currentInspection.inspectorName}</CardTitle>
           </CardHeader>
           <CardContent>
-            <InspectionTabs
-              inspectorName={currentInspection.inspectorName}
-              roomCount={rooms.length}
-            >
-              {renderInspectionContent()}
-            </InspectionTabs>
+            <Tabs defaultValue="basic" className="w-full">
+              <TabsList className="w-full justify-start bg-background border-b rounded-none px-0">
+                <TabsTrigger value="basic" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                  Grundläggande info
+                </TabsTrigger>
+                <TabsTrigger value="protocol" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                  Protokoll
+                </TabsTrigger>
+                <TabsTrigger value="floorplan" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                  Planritning
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="basic" className="mt-6">
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Besiktningsman</p>
+                      <p className="font-medium">{currentInspection.inspectorName}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Datum</p>
+                      <p className="font-medium">{new Date().toLocaleDateString("sv-SE")}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Antal rum</p>
+                      <p className="font-medium">{rooms.length}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <p className="font-medium">Pågående</p>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="protocol" className="mt-6">
+                {renderInspectionContent()}
+              </TabsContent>
+
+              <TabsContent value="floorplan" className="mt-6">
+                <div className="flex items-center justify-center h-[400px] border-2 border-dashed rounded-lg">
+                  <p className="text-muted-foreground">Planritning är inte tillgänglig</p>
+                </div>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
       </div>

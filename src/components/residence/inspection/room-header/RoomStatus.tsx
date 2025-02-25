@@ -1,16 +1,14 @@
 
 import { Check, CheckCircle } from "lucide-react";
-import type { Room } from "@/types/api";
-import { getRoomName } from "../utils/room";
 
 interface RoomStatusProps {
   isApproved: boolean;
   isHandled: boolean;
-  room: Room;
+  name: string;
   onClick: (e: React.MouseEvent) => void;
 }
 
-export const RoomStatus = ({ isApproved, isHandled, room, onClick }: RoomStatusProps) => {
+export const RoomStatus = ({ isApproved, isHandled, name, onClick }: RoomStatusProps) => {
   return (
     <button
       type="button"
@@ -28,7 +26,7 @@ export const RoomStatus = ({ isApproved, isHandled, room, onClick }: RoomStatusP
       ) : isHandled && (
         <CheckCircle className="h-5 w-5 text-slate-600 shrink-0" />
       )}
-      <span className="font-semibold text-base">{getRoomName(room)}</span>
+      <span className="font-semibold text-base">{name}</span>
     </button>
   );
 };
