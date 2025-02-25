@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +6,7 @@ import { InspectionFormDialog } from "./InspectionFormDialog";
 import { RoomInspectionContent } from "./room-content/RoomInspectionContent";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
+import { getRoomName } from "./utils/room";
 
 interface InspectionStartProps {
   rooms: Room[];
@@ -32,6 +32,9 @@ export const InspectionStart = ({
     const room = rooms[0];
     const inspectionData = currentInspection?.rooms[room.id] || {
       roomId: room.id,
+      roomCode: room.code,
+      roomName: room.name,
+      roomTypeName: room.roomType?.name,
       conditions: {
         wall1: "",
         wall2: "",
@@ -71,7 +74,7 @@ export const InspectionStart = ({
             {inspectionData.isApproved && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span>{room.name || room.roomType?.name || room.code}</span>
+            <span>{getRoomName(room)}</span>
           </CardTitle>
         </CardHeader>
         {isExpanded && currentInspection && (

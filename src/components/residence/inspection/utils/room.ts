@@ -7,6 +7,9 @@ export const initializeRoomData = (rooms: Room[]): Record<string, InspectionRoom
   rooms.forEach(room => {
     roomData[room.id] = {
       roomId: room.id,
+      roomCode: room.code,
+      roomName: room.name,
+      roomTypeName: room.roomType?.name,
       conditions: {
         wall1: "",
         wall2: "",
@@ -43,11 +46,24 @@ export const initializeRoomData = (rooms: Room[]): Record<string, InspectionRoom
 };
 
 export const getRoomName = (room: Room | InspectionRoom): string => {
+  let name: string;
+  let code: string;
+
   if ('name' in room) {
     // Det är ett Room-objekt
-    return room.name || room.roomType?.name || room.code;
+    name = room.name || room.roomType?.name || '';
+    code = room.code;
   } else {
     // Det är ett InspectionRoom-objekt
-    return room.roomId;
+    name = room.roomName || room.roomTypeName || '';
+    code = room.roomCode;
+  }
+
+  if (name && code) {
+    return `${name} ${code}`;
+  } else if (name) {
+    return name;
+  } else {
+    return code;
   }
 };
