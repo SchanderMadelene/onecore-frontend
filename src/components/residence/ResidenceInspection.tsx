@@ -35,14 +35,6 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
 
   const progress = useInspectionProgress(rooms, currentInspection?.rooms ?? null);
 
-  const handleLoadInspection = (inspection: Inspection) => {
-    setCurrentInspection({
-      inspectorName: inspection.inspectedBy,
-      rooms: inspection.rooms
-    });
-    toast.success("Besiktning laddad");
-  };
-
   const handleSaveInspection = (inspectorName: string, inspectionData: Record<string, InspectionRoom>) => {
     const newInspection: Inspection = {
       id: Date.now().toString(),
@@ -85,7 +77,6 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
       <div className="space-y-6 w-full max-w-4xl mx-auto">
         <InspectionHistory 
           inspections={inspectionHistory}
-          onLoadInspection={handleLoadInspection}
         />
         <InspectionStart
           rooms={rooms}
@@ -99,7 +90,6 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     <div className="space-y-6 w-full max-w-4xl mx-auto">
       <InspectionHistory 
         inspections={inspectionHistory}
-        onLoadInspection={handleLoadInspection}
       />
       
       <div className="space-y-6">
