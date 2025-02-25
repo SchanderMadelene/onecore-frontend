@@ -10,6 +10,7 @@ import type { Inspection } from "./types";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { getRoomName } from "./utils/room";
 
 interface InspectionReadOnlyProps {
   inspection: Inspection | null;
@@ -37,7 +38,7 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
           {Object.entries(inspection.rooms).map(([roomId, room]) => (
             <div key={roomId} className="border rounded-lg p-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">Rum {roomId}</h3>
+                <h3 className="text-lg font-medium">{getRoomName(room)}</h3>
                 <Button
                   variant="ghost"
                   size="sm"

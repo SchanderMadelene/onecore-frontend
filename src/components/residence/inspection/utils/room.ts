@@ -41,3 +41,13 @@ export const initializeRoomData = (rooms: Room[]): Record<string, InspectionRoom
   });
   return roomData;
 };
+
+export const getRoomName = (room: Room | InspectionRoom): string => {
+  if ('name' in room) {
+    // Det är ett Room-objekt
+    return room.name || room.roomType?.name || room.code;
+  } else {
+    // Det är ett InspectionRoom-objekt
+    return room.roomId;
+  }
+};

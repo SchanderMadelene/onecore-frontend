@@ -1,4 +1,6 @@
 
+import type { Room } from "@/types/api";
+
 export interface InspectionRoom {
   roomId: string;
   conditions: {
