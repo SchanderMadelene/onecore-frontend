@@ -7,6 +7,8 @@ import { InspectionHistory } from "./inspection/InspectionHistory";
 import type { InspectionRoom, Inspection } from "./inspection/types";
 import { InspectionProgress } from "./inspection/InspectionProgress";
 import { useInspectionProgress } from "./inspection/useInspectionProgress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
@@ -62,6 +64,23 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     setExpandedRoomId(expandedRoomId === roomId ? null : roomId);
   };
 
+  const renderInspectionContent = () => {
+    return (
+      <div className="space-y-4">
+        {rooms.map(room => (
+          <InspectionStart
+            key={room.id}
+            rooms={[room]}
+            onSave={handleSaveInspection}
+            isExpanded={expandedRoomId === room.id}
+            onToggle={() => handleRoomToggle(room.id)}
+            currentInspection={currentInspection}
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
       <InspectionHistory 
@@ -78,17 +97,58 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
               inspectorName={currentInspection.inspectorName}
             />
           )}
-          <div className="space-y-4">
-            {rooms.map(room => (
-              <InspectionStart
-                key={room.id}
-                rooms={[room]}
-                onSave={handleSaveInspection}
-                isExpanded={expandedRoomId === room.id}
-                onToggle={() => handleRoomToggle(room.id)}
-              />
-            ))}
-          </div>
+          <Tabs defaultValue="protocol" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="basic">Grundläggande info</TabsTrigger>
+              <TabsTrigger value="protocol">Protokoll</TabsTrigger>
+              <TabsTrigger value="floorplan">Planritning</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="basic">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Grundläggande information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Besiktningsman</p>
+                      <p className="font-medium">{currentInspection.inspectorName}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Datum</p>
+                      <p className="font-medium">{new Date().toLocaleDateString("sv-SE")}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Antal rum</p>
+                      <p className="font-medium">{rooms.length}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <p className="font-medium">Pågående</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="protocol">
+              {renderInspectionContent()}
+            </TabsContent>
+
+            <TabsContent value="floorplan">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Planritning</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-center h-[400px] border-2 border-dashed rounded-lg">
+                    <p className="text-muted-foreground">Planritning är inte tillgänglig</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       ) : (
         <InspectionStart
