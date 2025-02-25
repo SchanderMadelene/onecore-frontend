@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   Dialog,
@@ -11,9 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InspectionRoom } from "./InspectionRoom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
-import { CheckCircle } from "lucide-react";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -64,37 +65,8 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
     const initialData: Record<string, InspectionRoomType> = {};
     rooms.forEach(room => {
       initialData[room.id] = {
+        ...initialRoomData,
         roomId: room.id,
-        conditions: {
-          wall1: "",
-          wall2: "",
-          wall3: "",
-          wall4: "",
-          floor: "",
-          ceiling: "",
-          details: ""
-        },
-        actions: {
-          wall1: [],
-          wall2: [],
-          wall3: [],
-          wall4: [],
-          floor: [],
-          ceiling: [],
-          details: []
-        },
-        componentNotes: {
-          wall1: "",
-          wall2: "",
-          wall3: "",
-          wall4: "",
-          floor: "",
-          ceiling: "",
-          details: ""
-        },
-        photos: [],
-        isApproved: false,
-        isHandled: false
       };
     });
     return initialData;
@@ -103,7 +75,6 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
     setStep("inspection");
-    // Expandera första rummet automatiskt när man börjar besiktningen
     if (rooms.length > 0) {
       setExpandedRoomIds([rooms[0].id]);
     }
@@ -200,9 +171,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent 
-        className="max-w-4xl max-h-[90vh] overflow-y-auto"
-      >
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {step === "info" ? "Starta ny besiktning" : "Genomför besiktning"}
@@ -253,20 +222,69 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
-              <div className="space-y-4">
-                {rooms.map((room) => (
-                  <InspectionRoom
-                    key={room.id}
-                    room={room}
-                    isExpanded={expandedRoomIds.includes(room.id)}
-                    onToggle={() => handleToggleRoom(room.id)}
-                    inspectionData={inspectionData[room.id]}
-                    onConditionUpdate={(field, value) => handleConditionUpdate(room.id, field, value)}
-                    onActionUpdate={(field, action) => handleActionUpdate(room.id, field, action)}
-                    onComponentNoteUpdate={(field, note) => handleComponentNoteUpdate(room.id, field, note)}
-                  />
-                ))}
-              </div>
+              <Tabs defaultValue="basic" className="w-full">
+                <TabsList className="w-full justify-start bg-background border-b rounded-none px-0">
+                  <TabsTrigger value="basic" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                    Grundläggande info
+                  </TabsTrigger>
+                  <TabsTrigger value="protocol" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                    Protokoll
+                  </TabsTrigger>
+                  <TabsTrigger value="floorplan" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                    Planritning
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="basic" className="mt-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Besiktningsman</p>
+                      <p className="font-medium">{inspectorName}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Datum</p>
+                      <p className="font-medium">{new Date().toLocaleDateString("sv-SE")}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Antal rum</p>
+                      <p className="font-medium">{rooms.length}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <p className="font-medium">Pågående</p>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="protocol" className="mt-6">
+                  <div className="space-y-4">
+                    {rooms.map(room => (
+                      <InspectionRoom
+                        key={room.id}
+                        room={room}
+                        isExpanded={expandedRoomIds.includes(room.id)}
+                        onToggle={() => handleToggleRoom(room.id)}
+                        inspectionData={inspectionData[room.id]}
+                        onConditionUpdate={(field, value) => 
+                          handleConditionUpdate(room.id, field, value)
+                        }
+                        onActionUpdate={(field, action) => 
+                          handleActionUpdate(room.id, field, action)
+                        }
+                        onComponentNoteUpdate={(field, note) => 
+                          handleComponentNoteUpdate(room.id, field, note)
+                        }
+                      />
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="floorplan" className="mt-6">
+                  <div className="flex items-center justify-center h-[400px] border-2 border-dashed rounded-lg">
+                    <p className="text-muted-foreground">Planritning är inte tillgänglig</p>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
 
             <DialogFooter>
