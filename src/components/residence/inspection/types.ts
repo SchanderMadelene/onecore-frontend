@@ -29,6 +29,7 @@ export interface InspectionRoom {
     details: string;
   };
   photos: string[];
+  isApproved: boolean;
 }
 
 export interface Inspection {

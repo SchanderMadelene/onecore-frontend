@@ -33,9 +33,35 @@ export const InspectionStart = ({
   if (onToggle) {
     const room = rooms[0];
     const inspectionData = currentInspection?.rooms[room.id] || {
-      conditions: {},
-      actions: {},
-      componentNotes: {},
+      roomId: room.id,
+      conditions: {
+        wall1: "",
+        wall2: "",
+        wall3: "",
+        wall4: "",
+        floor: "",
+        ceiling: "",
+        details: ""
+      },
+      actions: {
+        wall1: [],
+        wall2: [],
+        wall3: [],
+        wall4: [],
+        floor: [],
+        ceiling: [],
+        details: []
+      },
+      componentNotes: {
+        wall1: "",
+        wall2: "",
+        wall3: "",
+        wall4: "",
+        floor: "",
+        ceiling: "",
+        details: ""
+      },
+      photos: [],
       isApproved: false
     };
 
