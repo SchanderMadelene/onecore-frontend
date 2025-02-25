@@ -35,10 +35,10 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
-          {Object.entries(inspection.rooms).map(([roomId, room]) => (
+          {Object.entries(inspection.rooms).map(([roomId, inspectionRoom]) => (
             <div key={roomId} className="border rounded-lg p-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">{getRoomName(room)}</h3>
+                <h3 className="text-lg font-medium">{getRoomName(inspectionRoom)}</h3>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -55,15 +55,15 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
               {expandedRoomId === roomId && (
                 <div className="mt-4 space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {Object.entries(room.conditions).map(([component, condition]) => (
+                    {Object.entries(inspectionRoom.conditions).map(([component, condition]) => (
                       <div key={component} className="space-y-2">
                         <h4 className="font-medium capitalize">{component}</h4>
                         <p className="text-sm">Skick: {condition || "Ej angivet"}</p>
                         <div className="text-sm">
                           <p className="font-medium">Åtgärder:</p>
-                          {room.actions[component as keyof typeof room.actions].length > 0 ? (
+                          {inspectionRoom.actions[component as keyof typeof inspectionRoom.actions].length > 0 ? (
                             <ul className="list-disc list-inside">
-                              {room.actions[component as keyof typeof room.actions].map((action, index) => (
+                              {inspectionRoom.actions[component as keyof typeof inspectionRoom.actions].map((action, index) => (
                                 <li key={index}>{action}</li>
                               ))}
                             </ul>
@@ -71,10 +71,10 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
                             <p className="text-muted-foreground">Inga åtgärder registrerade</p>
                           )}
                         </div>
-                        {room.componentNotes[component as keyof typeof room.componentNotes] && (
+                        {inspectionRoom.componentNotes[component as keyof typeof inspectionRoom.componentNotes] && (
                           <div className="text-sm">
                             <p className="font-medium">Anteckningar:</p>
-                            <p>{room.componentNotes[component as keyof typeof room.componentNotes]}</p>
+                            <p>{inspectionRoom.componentNotes[component as keyof typeof inspectionRoom.componentNotes]}</p>
                           </div>
                         )}
                       </div>
