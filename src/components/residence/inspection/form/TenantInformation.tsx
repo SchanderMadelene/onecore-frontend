@@ -1,19 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, User, AlertCircle } from "lucide-react";
+import { Phone, Mail, MessageSquare, User } from "lucide-react";
 import { Link } from "react-router-dom";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 
 interface TenantInformationProps {
   tenant: {
@@ -30,10 +19,6 @@ interface TenantInformationProps {
 }
 
 export function TenantInformation({ tenant }: TenantInformationProps) {
-  const [issueDescription, setIssueDescription] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { toast } = useToast();
-
   const handleCall = () => {
     window.location.href = `tel:${tenant.phone.replace(/[\s-]/g, '')}`;
   };
@@ -46,75 +31,10 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
     window.location.href = `mailto:${tenant.email}`;
   };
 
-  const handleCreateIssue = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Här kan vi senare integrera med ett backend-system
-    console.log("Creating issue:", {
-      tenant,
-      description: issueDescription,
-      timestamp: new Date().toISOString(),
-    });
-
-    toast({
-      title: "Ärende skapat",
-      description: "Ärendet har registrerats och kommer att hanteras inom kort.",
-    });
-
-    setIssueDescription("");
-    setIsDialogOpen(false);
-  };
-
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <div className="flex items-center gap-4">
-          <CardTitle>Hyresgästinformation</CardTitle>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                <AlertCircle className="mr-2 h-4 w-4" />
-                Skapa ärende
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Skapa nytt ärende</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleCreateIssue} className="space-y-4">
-                <div className="grid gap-4">
-                  <div>
-                    <Label htmlFor="tenant">Hyresgäst</Label>
-                    <Input
-                      id="tenant"
-                      value={`${tenant.firstName} ${tenant.lastName}`}
-                      disabled
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="description">Beskrivning av ärendet</Label>
-                    <Input
-                      id="description"
-                      placeholder="Beskriv felet eller ärendet..."
-                      value={issueDescription}
-                      onChange={(e) => setIssueDescription(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setIsDialogOpen(false)}
-                  >
-                    Avbryt
-                  </Button>
-                  <Button type="submit">Skapa ärende</Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+        <CardTitle>Hyresgästinformation</CardTitle>
         <Button variant="outline" asChild>
           <Link to={`/tenants/${tenant.personalNumber}`}>
             <User className="mr-2" />
