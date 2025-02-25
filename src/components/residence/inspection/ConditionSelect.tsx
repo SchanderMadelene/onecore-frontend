@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { PaintRoller, Wrench, Hammer, Camera, Circle, CircleDot } from "lucide-react";
+import { PaintRoller, Wrench, Hammer, Camera } from "lucide-react";
 
 interface ConditionSelectProps {
   label: string;
@@ -86,11 +86,6 @@ export const ConditionSelect = ({
     <div>
       <div className="flex items-center justify-between">
         <label className="text-sm font-medium">{label}</label>
-        {value ? (
-          <CircleDot className="h-4 w-4 text-blue-500" />
-        ) : (
-          <Circle className="h-4 w-4 text-gray-300" />
-        )}
       </div>
       <select 
         className="w-full border rounded-md p-2 mt-1"
