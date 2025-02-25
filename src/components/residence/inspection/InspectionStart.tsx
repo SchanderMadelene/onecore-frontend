@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,8 +27,6 @@ export const InspectionStart = ({
 }: InspectionStartProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Om vi har onToggle prop, använd den för expandering/kollaps
-  // annars visa default vy med "Starta ny besiktning"
   if (onToggle) {
     const room = rooms[0];
     const inspectionData = currentInspection?.rooms[room.id] || {
@@ -62,7 +59,8 @@ export const InspectionStart = ({
         details: ""
       },
       photos: [],
-      isApproved: false
+      isApproved: false,
+      isHandled: false
     };
 
     return (
@@ -149,7 +147,6 @@ export const InspectionStart = ({
     );
   }
 
-  // Default vy för när vi inte har expandering/kollaps
   return (
     <>
       <Card>

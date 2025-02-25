@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Dialog,
@@ -22,6 +21,40 @@ interface InspectionFormDialogProps {
   onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
   rooms: Room[];
 }
+
+const initialRoomData: InspectionRoomType = {
+  roomId: "",
+  conditions: {
+    wall1: "",
+    wall2: "",
+    wall3: "",
+    wall4: "",
+    floor: "",
+    ceiling: "",
+    details: ""
+  },
+  actions: {
+    wall1: [],
+    wall2: [],
+    wall3: [],
+    wall4: [],
+    floor: [],
+    ceiling: [],
+    details: []
+  },
+  componentNotes: {
+    wall1: "",
+    wall2: "",
+    wall3: "",
+    wall4: "",
+    floor: "",
+    ceiling: "",
+    details: ""
+  },
+  photos: [],
+  isApproved: false,
+  isHandled: false
+};
 
 export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: InspectionFormDialogProps) {
   const [inspectorName, setInspectorName] = useState("");
@@ -60,7 +93,8 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
           details: ""
         },
         photos: [],
-        isApproved: false
+        isApproved: false,
+        isHandled: false
       };
     });
     return initialData;

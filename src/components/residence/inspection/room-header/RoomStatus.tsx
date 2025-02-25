@@ -16,7 +16,7 @@ export const RoomStatus = ({ isApproved, isHandled, name, onClick }: RoomStatusP
         isApproved 
           ? 'text-green-700 hover:text-green-800' 
           : isHandled
-            ? 'text-amber-700 hover:text-amber-800'
+            ? 'text-slate-700 hover:text-slate-800'
             : 'hover:text-primary/80'
       }`}
       onClick={onClick}
@@ -24,7 +24,7 @@ export const RoomStatus = ({ isApproved, isHandled, name, onClick }: RoomStatusP
       {isApproved ? (
         <Check className="h-5 w-5 text-green-600 shrink-0" />
       ) : isHandled && (
-        <CheckCircle className="h-5 w-5 text-amber-600 shrink-0" />
+        <CheckCircle className="h-5 w-5 text-slate-600 shrink-0" />
       )}
       <span className="font-semibold text-base">{name}</span>
     </button>

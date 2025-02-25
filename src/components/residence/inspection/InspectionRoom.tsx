@@ -1,4 +1,3 @@
-
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
 import { RoomStatus } from "./room-header/RoomStatus";
@@ -80,14 +79,14 @@ export const InspectionRoom = ({
       inspectionData.isApproved 
         ? 'bg-green-50 border-green-200' 
         : inspectionData.isHandled 
-          ? 'bg-amber-50 border-amber-200'
+          ? 'bg-slate-50 border-slate-200'
           : 'bg-white'
     }`}>
       <div className={`w-full p-4 flex items-center justify-between border-b ${
         inspectionData.isApproved 
           ? 'bg-green-50/50 border-green-200' 
           : inspectionData.isHandled
-            ? 'bg-amber-50/50 border-amber-200'
+            ? 'bg-slate-50/50 border-slate-200'
             : 'bg-card'
       }`}>
         <RoomStatus
@@ -101,7 +100,6 @@ export const InspectionRoom = ({
           isHandled={inspectionData.isHandled}
           isExpanded={isExpanded}
           onApprove={handleApproveRoom}
-          onMarkHandled={handleMarkHandled}
           onToggle={handleToggleClick}
         />
       </div>
