@@ -9,12 +9,12 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { InspectionRoom } from "./InspectionRoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
+import { InspectionInfoStep } from "./form/InspectionInfoStep";
+import { BasicInformation } from "./form/BasicInformation";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -141,10 +141,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(inspectorName, inspectionData);
-    onClose();
-    setStep("info");
-    setInspectorName("");
-    setExpandedRoomIds([]);
+    handleCancel();
   };
 
   const handleCancel = () => {
@@ -171,7 +168,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[95vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle>
             {step === "info" ? "Starta ny besiktning" : "Genomför besiktning"}
@@ -185,75 +182,33 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
         </DialogHeader>
 
         {step === "info" ? (
-          <form onSubmit={handleNext}>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="inspectorName">Besiktningsman</Label>
-                <Input
-                  id="inspectorName"
-                  value={inspectorName}
-                  onChange={(e) => setInspectorName(e.target.value)}
-                  placeholder="Ange ditt namn"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Lägenhet</Label>
-                <p className="text-sm text-muted-foreground">
-                  Odenplan 5, lägenhet 1001
-                </p>
-              </div>
-              <div className="space-y-2">
-                <Label>Datum</Label>
-                <p className="text-sm text-muted-foreground">
-                  {new Date().toLocaleDateString("sv-SE")}
-                </p>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" type="button" onClick={handleCancel}>
-                Avbryt
-              </Button>
-              <Button type="submit" disabled={!inspectorName.trim()}>
-                Nästa
-              </Button>
-            </DialogFooter>
-          </form>
+          <InspectionInfoStep
+            inspectorName={inspectorName}
+            onInspectorNameChange={setInspectorName}
+            onNext={handleNext}
+            onCancel={handleCancel}
+          />
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
               <Tabs defaultValue="basic" className="w-full">
-                <TabsList className="w-full justify-start bg-background border-b rounded-none px-0">
-                  <TabsTrigger value="basic" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                <TabsList className="w-full justify-start bg-background border-b rounded-none px-0 overflow-x-auto flex-nowrap">
+                  <TabsTrigger value="basic" className="text-sm sm:text-base whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
                     Grundläggande info
                   </TabsTrigger>
-                  <TabsTrigger value="protocol" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                  <TabsTrigger value="protocol" className="text-sm sm:text-base whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
                     Protokoll
                   </TabsTrigger>
-                  <TabsTrigger value="floorplan" className="text-base data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+                  <TabsTrigger value="floorplan" className="text-sm sm:text-base whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
                     Planritning
                   </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="basic" className="mt-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Besiktningsman</p>
-                      <p className="font-medium">{inspectorName}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Datum</p>
-                      <p className="font-medium">{new Date().toLocaleDateString("sv-SE")}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Antal rum</p>
-                      <p className="font-medium">{rooms.length}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Status</p>
-                      <p className="font-medium">Pågående</p>
-                    </div>
-                  </div>
+                  <BasicInformation
+                    inspectorName={inspectorName}
+                    roomCount={rooms.length}
+                  />
                 </TabsContent>
 
                 <TabsContent value="protocol" className="mt-6">
@@ -287,7 +242,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
               </Tabs>
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
               <Button variant="outline" type="button" onClick={() => setStep("info")}>
                 Tillbaka
               </Button>
