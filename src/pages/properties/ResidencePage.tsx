@@ -8,6 +8,7 @@ import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ResidenceInspection } from "@/components/residence/ResidenceInspection";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
+import { CreateIssue } from "@/components/residence/CreateIssue";
 
 const mockResidenceData: APIResponse<Residence> = {
   content: {
@@ -309,8 +310,11 @@ export const ResidencePage = () => {
           property={property}
           district={district}
         />
-        
-        <TenantInformation tenant={mockTenant} />
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <TenantInformation tenant={mockTenant} />
+          <CreateIssue />
+        </div>
         
         {roomsData && (
           <>
