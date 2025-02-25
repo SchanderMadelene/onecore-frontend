@@ -35,9 +35,10 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Hyresgästinformation</CardTitle>
-        <Button variant="outline" size="icon" asChild title="Visa hyresgästprofil">
+        <Button variant="outline" asChild>
           <Link to={`/tenants/${tenant.personalNumber}`}>
-            <User className="h-4 w-4" />
+            <User className="mr-2" />
+            Öppna kundkort
           </Link>
         </Button>
       </CardHeader>
