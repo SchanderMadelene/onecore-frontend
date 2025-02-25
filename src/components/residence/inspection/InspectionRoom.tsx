@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Check } from "lucide-react";
 import { ConditionSelect } from "./ConditionSelect";
@@ -67,7 +66,7 @@ export const InspectionRoom = ({
 
   return (
     <div className="border rounded-lg shadow-sm bg-white">
-      <div className="w-full bg-card p-4 flex items-center justify-between border-b relative isolate">
+      <div className="w-full bg-card p-4 flex items-center justify-between border-b">
         <button
           type="button"
           className="flex-1 text-left flex items-center gap-2 hover:text-primary/80 transition-colors"
@@ -76,23 +75,21 @@ export const InspectionRoom = ({
           <span className="font-semibold text-base">{room.name || room.roomType?.name || room.code}</span>
         </button>
         <div className="flex items-center gap-3">
-          <div className="relative z-20">
-            <Button 
-              type="button"
-              variant="outline" 
-              size="sm"
-              className="text-green-600 border-green-600 hover:bg-green-50 transition-colors"
-              onClick={handleApproveRoom}
-            >
-              <Check className="mr-2 h-4 w-4" />
-              Godkänn rum
-            </Button>
-          </div>
+          <Button 
+            type="button"
+            variant="outline" 
+            size="sm"
+            className="pointer-events-auto text-green-600 border-green-600 hover:bg-green-50 hover:border-green-600 hover:text-green-600"
+            onClick={handleApproveRoom}
+          >
+            <Check className="mr-2 h-4 w-4" />
+            Godkänn rum
+          </Button>
           <Button
             type="button"
             variant="ghost"
             size="sm"
-            className="p-0 hover:bg-transparent relative z-20"
+            className="p-0 hover:bg-transparent"
             onClick={handleToggleClick}
           >
             {isExpanded ? (
