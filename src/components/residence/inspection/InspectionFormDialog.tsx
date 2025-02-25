@@ -59,7 +59,8 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
           ceiling: "",
           details: ""
         },
-        photos: []
+        photos: [],
+        isApproved: false
       };
     });
     return initialData;
