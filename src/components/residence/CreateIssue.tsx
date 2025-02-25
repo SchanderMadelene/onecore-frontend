@@ -41,7 +41,7 @@ export function CreateIssue() {
         <CardTitle>Ärenden</CardTitle>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="secondary">
+            <Button>
               <AlertCircle className="mr-2 h-4 w-4" />
               Skapa ärende
             </Button>
