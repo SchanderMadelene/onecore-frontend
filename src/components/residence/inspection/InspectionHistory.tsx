@@ -43,20 +43,12 @@ export const InspectionHistory = ({ inspections, onLoadInspection }: InspectionH
                       Besiktigad av: {inspection.inspectedBy}
                     </p>
                   </div>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline"
-                      onClick={() => setSelectedInspection(inspection)}
-                    >
-                      Visa
-                    </Button>
-                    <Button 
-                      variant="outline"
-                      onClick={() => onLoadInspection(inspection)}
-                    >
-                      Redigera
-                    </Button>
-                  </div>
+                  <Button 
+                    variant="outline"
+                    onClick={() => setSelectedInspection(inspection)}
+                  >
+                    Visa protokoll
+                  </Button>
                 </div>
               ))}
             </div>
@@ -75,13 +67,7 @@ export const InspectionHistory = ({ inspections, onLoadInspection }: InspectionH
                   variant="outline"
                   onClick={() => setSelectedInspection(inspections[0])}
                 >
-                  Visa
-                </Button>
-                <Button 
-                  variant="outline"
-                  onClick={() => onLoadInspection(inspections[0])}
-                >
-                  Redigera
+                  Visa protokoll
                 </Button>
                 <Button 
                   variant="ghost"
