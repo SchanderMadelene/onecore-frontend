@@ -68,15 +68,17 @@ export const InspectionRoom = ({
   };
 
   return (
-    <div className={`border rounded-lg shadow-sm bg-white ${inspectionData.isApproved ? 'bg-green-50' : ''}`}>
-      <div className="w-full bg-card p-4 flex items-center justify-between border-b">
+    <div className={`border rounded-lg shadow-sm ${inspectionData.isApproved ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
+      <div className={`w-full p-4 flex items-center justify-between border-b ${inspectionData.isApproved ? 'bg-green-50/50 border-green-200' : 'bg-card'}`}>
         <button
           type="button"
-          className="flex-1 text-left flex items-center gap-2 hover:text-primary/80 transition-colors"
+          className={`flex-1 text-left flex items-center gap-2 transition-colors ${inspectionData.isApproved ? 'text-green-700 hover:text-green-800' : 'hover:text-primary/80'}`}
           onClick={handleToggleClick}
         >
-          {inspectionData.isApproved && (
-            <Check className="h-4 w-4 text-green-500" />
+          {inspectionData.isApproved ? (
+            <Check className="h-5 w-5 text-green-600 shrink-0" />
+          ) : (
+            <div className="h-5 w-5 rounded-full border-2 border-dashed border-gray-300 shrink-0" />
           )}
           <span className="font-semibold text-base">{room.name || room.roomType?.name || room.code}</span>
         </button>
@@ -85,11 +87,15 @@ export const InspectionRoom = ({
             type="button"
             variant="outline" 
             size="sm"
-            className="pointer-events-auto text-green-600 border-green-600 hover:bg-green-50 hover:border-green-600 hover:text-green-600"
+            className={`pointer-events-auto transition-colors ${
+              inspectionData.isApproved 
+                ? 'text-green-700 border-green-200 bg-green-50 hover:bg-green-100 hover:border-green-300 hover:text-green-800'
+                : 'text-green-600 border-green-600 hover:bg-green-50 hover:border-green-600 hover:text-green-600'
+            }`}
             onClick={handleApproveRoom}
           >
             <Check className="mr-2 h-4 w-4" />
-            Godkänn rum
+            {inspectionData.isApproved ? 'Godkänt' : 'Godkänn rum'}
           </Button>
           <Button
             type="button"
