@@ -86,11 +86,19 @@ export const InspectionRoom = ({
             <Check className="mr-2 h-4 w-4" />
             Godkänn rum
           </Button>
-          {isExpanded ? (
-            <ChevronUp className="h-5 w-5 text-gray-400" />
-          ) : (
-            <ChevronDown className="h-5 w-5 text-gray-400" />
-          )}
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="p-0 hover:bg-transparent"
+            onClick={handleToggleClick}
+          >
+            {isExpanded ? (
+              <ChevronUp className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" />
+            ) : (
+              <ChevronDown className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" />
+            )}
+          </Button>
         </div>
       </div>
 
