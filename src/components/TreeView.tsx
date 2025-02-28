@@ -1,5 +1,5 @@
 
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, LayoutGrid, Home, Building, DoorOpen, MapPin } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
@@ -28,17 +28,40 @@ function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
     }
   };
 
+  // Custom icon mapping
+  const getIcon = () => {
+    switch (node.icon) {
+      case "🏛":
+        return <Building className="h-4 w-4 text-primary" />;
+      case "📍":
+        return <MapPin className="h-4 w-4 text-accent" />;
+      case "🏢":
+        return <Building className="h-4 w-4 text-muted-foreground" />;
+      case "🏗":
+        return <Building className="h-4 w-4 text-muted-foreground" />;
+      case "🏠":
+        return <Home className="h-4 w-4 text-muted-foreground" />;
+      case "🚪":
+        return <DoorOpen className="h-4 w-4 text-muted-foreground" />;
+      default:
+        return <LayoutGrid className="h-4 w-4 text-muted-foreground" />;
+    }
+  };
+
   return (
     <div className="flex flex-col">
       <div
-        className="flex items-center hover:bg-accent/10 rounded-lg px-2 py-1 cursor-pointer"
+        className={`
+          flex items-center hover:bg-accent/10 rounded-lg px-2 py-1.5 cursor-pointer transition-colors
+          ${node.path ? 'hover:text-accent' : ''} 
+        `}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
       >
         {hasChildren ? (
           <Button
             variant="ghost"
             size="icon"
-            className="h-4 w-4"
+            className="h-5 w-5 p-0 mr-1 text-muted-foreground hover:text-foreground hover:bg-transparent"
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {isExpanded ? (
@@ -48,20 +71,20 @@ function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             )}
           </Button>
         ) : (
-          <div className="w-4" />
+          <div className="w-6" />
         )}
         {node.path ? (
           <Link 
             to={node.path} 
-            className="flex-1 text-sm py-1"
+            className="flex items-center text-sm py-1 flex-1 font-medium"
             onClick={handleNodeClick}
           >
-            {node.icon && <span className="mr-2">{node.icon}</span>}
+            <span className="mr-2">{getIcon()}</span>
             {node.label}
           </Link>
         ) : (
-          <span className="text-sm">
-            {node.icon && <span className="mr-2">{node.icon}</span>}
+          <span className="flex items-center text-sm font-medium">
+            <span className="mr-2">{getIcon()}</span>
             {node.label}
           </span>
         )}
@@ -219,7 +242,10 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
   ];
 
   return (
-    <div className="p-2">
+    <div className="p-3 overflow-y-auto">
+      <div className="mb-4">
+        <h3 className="text-sm font-semibold text-muted-foreground px-2">NAVIGATION</h3>
+      </div>
       {treeData.map((node) => (
         <TreeItem key={node.id} node={node} onNavigate={onNavigate} />
       ))}
