@@ -12,6 +12,10 @@ interface SearchResult {
   type: "property" | "building" | "apartment";
   address: string;
   path: string;
+  tenant?: {
+    name: string;
+    active: boolean;
+  };
 }
 
 const mockSearchResults: SearchResult[] = [
@@ -20,28 +24,44 @@ const mockSearchResults: SearchResult[] = [
     name: "Lägenhet 1001",
     type: "apartment",
     address: "Odenplan 5, Vasastan",
-    path: "/properties/stockholm/vasastan/odenplan-5/1001"
+    path: "/properties/stockholm/vasastan/odenplan-5/1001",
+    tenant: {
+      name: "Anna Andersson",
+      active: true
+    }
   },
   {
     id: "1002",
     name: "Lägenhet 1002",
     type: "apartment",
     address: "Odenplan 5, Vasastan",
-    path: "/properties/stockholm/vasastan/odenplan-5/1002"
+    path: "/properties/stockholm/vasastan/odenplan-5/1002",
+    tenant: {
+      name: "Johan Svensson",
+      active: true
+    }
   },
   {
     id: "2001",
     name: "Lägenhet 2001",
     type: "apartment",
     address: "Odenplan 5, Vasastan",
-    path: "/properties/stockholm/vasastan/odenplan-5/2001"
+    path: "/properties/stockholm/vasastan/odenplan-5/2001",
+    tenant: {
+      name: "Maria Eriksson",
+      active: true
+    }
   },
   {
     id: "3001",
     name: "Lägenhet 3001",
     type: "apartment",
     address: "Götgatan 15, Södermalm",
-    path: "/properties/stockholm/sodermalm/gotgatan-15/3001"
+    path: "/properties/stockholm/sodermalm/gotgatan-15/3001",
+    tenant: {
+      name: "Henrik Johansson",
+      active: true
+    }
   },
   {
     id: "3002",
@@ -55,7 +75,11 @@ const mockSearchResults: SearchResult[] = [
     name: "Kontor 101",
     type: "apartment",
     address: "Sveavägen 10, Vasastan",
-    path: "/properties/stockholm/vasastan/sveavagen-10/101"
+    path: "/properties/stockholm/vasastan/sveavagen-10/101",
+    tenant: {
+      name: "Tech AB",
+      active: true
+    }
   },
   {
     id: "odenplan-5",
@@ -165,8 +189,24 @@ export function NavigationBar({ onMenuClick }: { onMenuClick: () => void }) {
                   className="block px-4 py-2 hover:bg-accent/10 text-sm"
                   onClick={handleSearchItemClick}
                 >
-                  <div className="font-medium">{result.name}</div>
+                  <div className="flex justify-between items-center">
+                    <div className="font-medium">{result.name}</div>
+                    {result.type === "apartment" && (
+                      <div className={`text-xs px-2 py-0.5 rounded-full ${
+                        result.tenant 
+                          ? "bg-green-100 text-green-800" 
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}>
+                        {result.tenant ? "Uthyrd" : "Vakant"}
+                      </div>
+                    )}
+                  </div>
                   <div className="text-xs text-muted-foreground">{result.address}</div>
+                  {result.tenant && (
+                    <div className="text-xs mt-1 text-primary">
+                      Hyresgäst: {result.tenant.name}
+                    </div>
+                  )}
                 </Link>
               ))}
             </div>
