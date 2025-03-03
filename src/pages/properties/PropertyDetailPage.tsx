@@ -6,10 +6,10 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Building as BuildingIcon, Home, MapPin } from "lucide-react";
+import { Building as BuildingIcon, Home, MapPin, Map } from "lucide-react";
 import type { PropertyDetail } from "@/types/api";
 
-// Mockdata for property details
+// Uppdaterad mockdata för property details - lägger till propertyMap
 const mockPropertyDetails: Record<string, PropertyDetail> = {
   "odenplan-5": {
     id: "1",
@@ -22,6 +22,13 @@ const mockPropertyDetails: Record<string, PropertyDetail> = {
     buildingType: "Flerfamiljshus",
     propertyNumber: "12345-678",
     direction: "Nordväst",
+    propertyMap: {
+      image: "/placeholder.svg",
+      buildings: [
+        { id: "b1", name: "Huvudbyggnad A", x: 100, y: 120, width: 180, height: 80 },
+        { id: "b2", name: "Gårdshus B", x: 150, y: 250, width: 100, height: 60 }
+      ]
+    },
     buildings: [
       {
         id: "b1",
@@ -54,6 +61,13 @@ const mockPropertyDetails: Record<string, PropertyDetail> = {
     buildingType: "Kontorskomplex",
     propertyNumber: "56789-012",
     direction: "Sydost",
+    propertyMap: {
+      image: "/placeholder.svg",
+      buildings: [
+        { id: "b3", name: "Kontorsbyggnad", x: 80, y: 100, width: 200, height: 100 },
+        { id: "b4", name: "Bostadsdel", x: 120, y: 240, width: 120, height: 80 }
+      ]
+    },
     buildings: [
       {
         id: "b3",
@@ -86,6 +100,13 @@ const mockPropertyDetails: Record<string, PropertyDetail> = {
     buildingType: "Flerfamiljshus",
     propertyNumber: "34567-890",
     direction: "Sydväst",
+    propertyMap: {
+      image: "/placeholder.svg",
+      buildings: [
+        { id: "b5", name: "Bostadshus", x: 90, y: 80, width: 180, height: 90 },
+        { id: "b6", name: "Butiksbyggnad", x: 130, y: 200, width: 100, height: 50 }
+      ]
+    },
     buildings: [
       {
         id: "b5",
@@ -107,6 +128,42 @@ const mockPropertyDetails: Record<string, PropertyDetail> = {
       }
     ]
   }
+};
+
+// Ny komponent för fastighetsritningen
+const PropertyMap = ({ propertyMap, buildings }) => {
+  return (
+    <div className="relative w-full h-[400px] border border-border rounded-md overflow-hidden bg-white">
+      <div className="absolute inset-0 bg-gray-100 p-4">
+        {/* Bakgrundsbild för fastighetens tomt */}
+        <div className="w-full h-full bg-gray-200 rounded flex items-center justify-center">
+          <Map className="h-32 w-32 text-gray-400" />
+        </div>
+        
+        {/* Rita ut byggnaderna */}
+        {propertyMap.buildings.map((building) => {
+          // Hitta byggnadsinformation för tooltip
+          const buildingInfo = buildings.find(b => b.id === building.id);
+          
+          return (
+            <div 
+              key={building.id}
+              className="absolute bg-primary/80 backdrop-blur-sm border border-primary text-white p-2 rounded text-xs font-medium cursor-help"
+              style={{
+                top: `${building.y}px`,
+                left: `${building.x}px`,
+                width: `${building.width}px`,
+                height: `${building.height}px`,
+              }}
+              title={buildingInfo ? `${buildingInfo.name} (${buildingInfo.type}, ${buildingInfo.area} m²)` : building.name}
+            >
+              {building.name}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 };
 
 const PropertyDetailPage = () => {
@@ -149,6 +206,7 @@ const PropertyDetailPage = () => {
             <TabsList>
               <TabsTrigger value="basic-info">Grunddata</TabsTrigger>
               <TabsTrigger value="buildings">Byggnader</TabsTrigger>
+              <TabsTrigger value="map">Ritning</TabsTrigger>
             </TabsList>
             
             <TabsContent value="basic-info" className="space-y-6 pt-6">
@@ -180,10 +238,6 @@ const PropertyDetailPage = () => {
                     <div>
                       <p className="text-sm text-muted-foreground">Församling</p>
                       <p className="font-medium">{propertyDetail.parish}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Riktning</p>
-                      <p className="font-medium">{propertyDetail.direction}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -247,6 +301,26 @@ const PropertyDetailPage = () => {
                   </Card>
                 ))}
               </div>
+            </TabsContent>
+            
+            <TabsContent value="map" className="space-y-6 pt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Fastighetsritning</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Ritningen visar fastighetens byggnader och placering. Hovra över byggnaderna för detaljer.
+                  </p>
+                  
+                  {propertyDetail.propertyMap && (
+                    <PropertyMap 
+                      propertyMap={propertyDetail.propertyMap} 
+                      buildings={propertyDetail.buildings} 
+                    />
+                  )}
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>

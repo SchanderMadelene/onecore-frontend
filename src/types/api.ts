@@ -1,3 +1,4 @@
+
 export interface Residence {
   id: string;
   code: string;
@@ -68,11 +69,26 @@ export interface Company {
   organizationNumber: string | null;
 }
 
+export interface BuildingLocation {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface PropertyMap {
+  image: string;
+  buildings: BuildingLocation[];
+}
+
 export interface PropertyDetail extends Property {
   municipality: string;
   parish: string;
   propertyNumber: string;
   direction: string;
+  propertyMap?: PropertyMap;
   buildings: Building[];
 }
 
