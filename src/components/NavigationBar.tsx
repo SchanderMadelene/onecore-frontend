@@ -23,8 +23,8 @@ const mockSearchResults: SearchResult[] = [
     id: "1001",
     name: "Lägenhet 1001",
     type: "apartment",
-    address: "Odenplan 5, Vasastan",
-    path: "/properties/stockholm/vasastan/odenplan-5/1001",
+    address: "Odenplan 5, Lundby",
+    path: "/properties/vasteras/lundby/odenplan-5/1001",
     tenant: {
       name: "Anna Andersson",
       active: true
@@ -34,8 +34,8 @@ const mockSearchResults: SearchResult[] = [
     id: "1002",
     name: "Lägenhet 1002",
     type: "apartment",
-    address: "Odenplan 5, Vasastan",
-    path: "/properties/stockholm/vasastan/odenplan-5/1002",
+    address: "Odenplan 5, Lundby",
+    path: "/properties/vasteras/lundby/odenplan-5/1002",
     tenant: {
       name: "Johan Svensson",
       active: true
@@ -45,8 +45,8 @@ const mockSearchResults: SearchResult[] = [
     id: "2001",
     name: "Lägenhet 2001",
     type: "apartment",
-    address: "Odenplan 5, Vasastan",
-    path: "/properties/stockholm/vasastan/odenplan-5/2001",
+    address: "Odenplan 5, Lundby",
+    path: "/properties/vasteras/lundby/odenplan-5/2001",
     tenant: {
       name: "Maria Eriksson",
       active: true
@@ -56,8 +56,8 @@ const mockSearchResults: SearchResult[] = [
     id: "3001",
     name: "Lägenhet 3001",
     type: "apartment",
-    address: "Götgatan 15, Södermalm",
-    path: "/properties/stockholm/sodermalm/gotgatan-15/3001",
+    address: "Götgatan 15, Bäckby",
+    path: "/properties/vasteras/backby/gotgatan-15/3001",
     tenant: {
       name: "Henrik Johansson",
       active: true
@@ -67,15 +67,15 @@ const mockSearchResults: SearchResult[] = [
     id: "3002",
     name: "Lägenhet 3002",
     type: "apartment",
-    address: "Götgatan 15, Södermalm",
-    path: "/properties/stockholm/sodermalm/gotgatan-15/3002"
+    address: "Götgatan 15, Bäckby",
+    path: "/properties/vasteras/backby/gotgatan-15/3002"
   },
   {
     id: "101",
     name: "Kontor 101",
     type: "apartment",
-    address: "Sveavägen 10, Vasastan",
-    path: "/properties/stockholm/vasastan/sveavagen-10/101",
+    address: "Sveavägen 10, Domkyrkan",
+    path: "/properties/vasteras/domkyrkan/sveavagen-10/101",
     tenant: {
       name: "Tech AB",
       active: true
@@ -85,22 +85,22 @@ const mockSearchResults: SearchResult[] = [
     id: "odenplan-5",
     name: "Odenplan 5",
     type: "property",
-    address: "Vasastan, Stockholm",
-    path: "/properties/stockholm/vasastan/odenplan-5"
+    address: "Lundby, Västerås",
+    path: "/properties/vasteras/lundby/odenplan-5"
   },
   {
     id: "sveavagen-10",
     name: "Sveavägen 10",
     type: "property",
-    address: "Vasastan, Stockholm",
-    path: "/properties/stockholm/vasastan/sveavagen-10"
+    address: "Domkyrkan, Västerås",
+    path: "/properties/vasteras/domkyrkan/sveavagen-10"
   },
   {
     id: "gotgatan-15",
     name: "Götgatan 15",
     type: "property",
-    address: "Södermalm, Stockholm",
-    path: "/properties/stockholm/sodermalm/gotgatan-15"
+    address: "Bäckby, Västerås",
+    path: "/properties/vasteras/backby/gotgatan-15"
   }
 ];
 
