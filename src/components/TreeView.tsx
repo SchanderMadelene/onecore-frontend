@@ -1,3 +1,4 @@
+
 import { ChevronDown, ChevronRight, LayoutGrid, Home, Building, DoorOpen, MapPin } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -104,15 +105,15 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
       icon: "🏛",
       children: [
         {
-          id: "vasastan",
-          label: "Vasastan",
+          id: "lundby",
+          label: "Lundby",
           icon: "📍",
           children: [
             {
               id: "odenplan-5",
               label: "Odenplan 5",
               icon: "🏢",
-              path: "/properties/stockholm/vasastan/odenplan-5",
+              path: "/properties/vasteras/lundby/odenplan-5",
               children: [
                 {
                   id: "building-a",
@@ -128,13 +129,13 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
                           id: "apt-1001",
                           label: "Lägenhet 1001",
                           icon: "🚪",
-                          path: "/properties/stockholm/vasastan/odenplan-5/1001"
+                          path: "/properties/vasteras/lundby/odenplan-5/1001"
                         },
                         {
                           id: "apt-1002",
                           label: "Lägenhet 1002",
                           icon: "🚪",
-                          path: "/properties/stockholm/vasastan/odenplan-5/1002"
+                          path: "/properties/vasteras/lundby/odenplan-5/1002"
                         }
                       ]
                     },
@@ -147,25 +148,32 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
                           id: "apt-2001",
                           label: "Lägenhet 2001",
                           icon: "🚪",
-                          path: "/properties/stockholm/vasastan/odenplan-5/2001"
+                          path: "/properties/vasteras/lundby/odenplan-5/2001"
                         },
                         {
                           id: "apt-2002",
                           label: "Lägenhet 2002",
                           icon: "🚪",
-                          path: "/properties/stockholm/vasastan/odenplan-5/2002"
+                          path: "/properties/vasteras/lundby/odenplan-5/2002"
                         }
                       ]
                     }
                   ]
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          id: "domkyrkan",
+          label: "Domkyrkan",
+          icon: "📍",
+          children: [
             {
               id: "sveavagen-10",
               label: "Sveavägen 10",
               icon: "🏢",
-              path: "/properties/stockholm/vasastan/sveavagen-10",
+              path: "/properties/vasteras/domkyrkan/sveavagen-10",
               children: [
                 {
                   id: "building-b",
@@ -181,13 +189,13 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
                           id: "office-101",
                           label: "Kontor 101",
                           icon: "🚪",
-                          path: "/properties/stockholm/vasastan/sveavagen-10/101"
+                          path: "/properties/vasteras/domkyrkan/sveavagen-10/101"
                         },
                         {
                           id: "office-102",
                           label: "Kontor 102",
                           icon: "🚪",
-                          path: "/properties/stockholm/vasastan/sveavagen-10/102"
+                          path: "/properties/vasteras/domkyrkan/sveavagen-10/102"
                         }
                       ]
                     }
@@ -198,15 +206,15 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
           ]
         },
         {
-          id: "sodermalm",
-          label: "Södermalm",
+          id: "backby",
+          label: "Bäckby",
           icon: "📍",
           children: [
             {
               id: "gotgatan-15",
               label: "Götgatan 15",
               icon: "🏢",
-              path: "/properties/stockholm/sodermalm/gotgatan-15",
+              path: "/properties/vasteras/backby/gotgatan-15",
               children: [
                 {
                   id: "building-c",
@@ -222,13 +230,13 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
                           id: "apt-3001",
                           label: "Lägenhet 3001",
                           icon: "🚪",
-                          path: "/properties/stockholm/sodermalm/gotgatan-15/3001"
+                          path: "/properties/vasteras/backby/gotgatan-15/3001"
                         },
                         {
                           id: "apt-3002",
                           label: "Lägenhet 3002",
                           icon: "🚪",
-                          path: "/properties/stockholm/sodermalm/gotgatan-15/3002"
+                          path: "/properties/vasteras/backby/gotgatan-15/3002"
                         }
                       ]
                     }
