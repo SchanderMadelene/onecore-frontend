@@ -67,3 +67,21 @@ export interface Company {
   name: string;
   organizationNumber: string | null;
 }
+
+export interface PropertyDetail extends Property {
+  municipality: string;
+  parish: string;
+  propertyNumber: string;
+  direction: string;
+  buildings: Building[];
+}
+
+export interface Building {
+  id: string;
+  name: string;
+  type: string;
+  constructionYear: number;
+  area: number;
+  floors: number;
+  units: number;
+}
