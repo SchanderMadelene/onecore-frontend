@@ -1,4 +1,3 @@
-
 import { ChevronDown, ChevronRight, LayoutGrid, Home, Building, DoorOpen, MapPin } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -28,7 +27,6 @@ function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
     }
   };
 
-  // Custom icon mapping
   const getIcon = () => {
     switch (node.icon) {
       case "🏛":
@@ -114,6 +112,7 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
               id: "odenplan-5",
               label: "Odenplan 5",
               icon: "🏢",
+              path: "/properties/stockholm/vasastan/odenplan-5",
               children: [
                 {
                   id: "building-a",
@@ -166,6 +165,7 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
               id: "sveavagen-10",
               label: "Sveavägen 10",
               icon: "🏢",
+              path: "/properties/stockholm/vasastan/sveavagen-10",
               children: [
                 {
                   id: "building-b",
@@ -206,6 +206,7 @@ export function TreeView({ onNavigate }: { onNavigate?: () => void }) {
               id: "gotgatan-15",
               label: "Götgatan 15",
               icon: "🏢",
+              path: "/properties/stockholm/sodermalm/gotgatan-15",
               children: [
                 {
                   id: "building-c",
