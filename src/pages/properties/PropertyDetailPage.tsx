@@ -47,7 +47,9 @@ const PropertyDetailPage = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold mb-2">{propertyDetail.designation}</h1>
-          <p className="text-muted-foreground">{propertyDetail.address}, {propertyDetail.municipality}</p>
+          <p className="text-muted-foreground">
+            {propertyDetail.address || propertyDetail.designation}, {propertyDetail.municipality}
+          </p>
         </div>
 
         <Tabs defaultValue="info" className="space-y-6">
