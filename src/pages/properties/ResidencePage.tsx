@@ -11,15 +11,54 @@ import { ResidenceInspection } from "@/components/residence/ResidenceInspection"
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
 import { CreateIssue } from "@/components/residence/CreateIssue";
 
-const mockResidenceData: APIResponse<Residence> = {
-  content: {
-    id: "101",
-    code: "LGH-101",
-    name: "Kontorslokal med utsikt",
-    deleted: false,
-    validityPeriod: {
-      fromDate: "2024-01-01T00:00:00Z",
-      toDate: "2024-12-31T23:59:59Z"
+// Mock data setup to match the IDs in the tree view
+const mockResidenceData: Record<string, APIResponse<Residence>> = {
+  "lgh-101": {
+    content: {
+      id: "lgh-101",
+      code: "LGH-101",
+      name: "3 rum och kök, Odenplan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-201": {
+    content: {
+      id: "lgh-201",
+      code: "LGH-201",
+      name: "4 rum och kök, Sveavägen",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-301": {
+    content: {
+      id: "lgh-301",
+      code: "LGH-301",
+      name: "3 rum och kök, Götgatan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-302": {
+    content: {
+      id: "lgh-302",
+      code: "LGH-302",
+      name: "2 rum och kök, Götgatan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
     }
   }
 };
@@ -248,7 +287,10 @@ const mockRoomsData: APIResponse<Room[]> = {
 const fetchResidence = async (id: string): Promise<Residence> => {
   // Simulera en nätverksfördröjning
   await new Promise(resolve => setTimeout(resolve, 500));
-  return mockResidenceData.content;
+  if (mockResidenceData[id]) {
+    return mockResidenceData[id].content;
+  }
+  throw new Error('Lägenhet hittades inte');
 };
 
 const fetchRooms = async (id: string): Promise<Room[]> => {

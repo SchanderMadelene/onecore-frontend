@@ -1,19 +1,26 @@
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapPin } from "lucide-react";
+import { MapPin, Home } from "lucide-react";
 import { usePropertyDetail } from "./hooks/usePropertyDetail";
 import PropertyBasicInfo from "./components/PropertyBasicInfo";
 import PropertyBuildingsList from "./components/PropertyBuildingsList";
 import PropertyMapView from "./components/PropertyMapView";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const PropertyDetailPage = () => {
-  const { property } = useParams();
+  const { city, district, property } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const { data: propertyDetail, isLoading } = usePropertyDetail(property);
+
+  // Mock data for apartments in this property
+  const mockApartments = [
+    { id: "lgh-301", code: "LGH-301", name: "3 rum och kök", status: "Uthyrd" },
+    { id: "lgh-302", code: "LGH-302", name: "2 rum och kök", status: "Ledig" }
+  ];
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -35,6 +42,7 @@ const PropertyDetailPage = () => {
             <TabsList>
               <TabsTrigger value="basic-info">Grunddata</TabsTrigger>
               <TabsTrigger value="buildings">Byggnader</TabsTrigger>
+              <TabsTrigger value="apartments">Lägenheter</TabsTrigger>
               <TabsTrigger value="map">Ritning</TabsTrigger>
             </TabsList>
             
@@ -44,6 +52,36 @@ const PropertyDetailPage = () => {
             
             <TabsContent value="buildings" className="space-y-6 pt-6">
               <PropertyBuildingsList buildings={propertyDetail.buildings} />
+            </TabsContent>
+            
+            <TabsContent value="apartments" className="space-y-6 pt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Lägenheter</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4">
+                    {mockApartments.map(apartment => (
+                      <Link 
+                        key={apartment.id} 
+                        to={`/properties/${city}/${district}/${property}/${apartment.id}`}
+                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent/10 transition-colors"
+                      >
+                        <div className="flex items-center">
+                          <Home className="mr-3 h-5 w-5 text-accent" />
+                          <div>
+                            <p className="font-medium">{apartment.code}</p>
+                            <p className="text-sm text-muted-foreground">{apartment.name}</p>
+                          </div>
+                        </div>
+                        <span className={`text-sm ${apartment.status === 'Ledig' ? 'text-green-500' : 'text-muted-foreground'}`}>
+                          {apartment.status}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
             
             <TabsContent value="map" className="space-y-6 pt-6">
