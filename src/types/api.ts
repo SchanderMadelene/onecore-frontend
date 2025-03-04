@@ -1,4 +1,3 @@
-
 export interface Residence {
   id: string;
   code: string;
@@ -91,16 +90,6 @@ export interface Apartment {
   status: string;
 }
 
-export interface PropertyDetail extends Property {
-  municipality: string;
-  parish: string;
-  propertyNumber: string;
-  direction: string;
-  address?: string; // Adding optional address field
-  propertyMap?: PropertyMap;
-  buildings: Building[];
-}
-
 export interface Building {
   id: string;
   name: string;
@@ -109,6 +98,15 @@ export interface Building {
   area: number;
   floors: number;
   units: number;
-  tenants?: number; // Adding optional tenants field
-  apartments?: Apartment[]; // Adding optional apartments field
+  tenants?: number;
+  apartments?: Apartment[];
+}
+
+export interface PropertyDetail extends Property {
+  parish: string;
+  propertyNumber: string;
+  direction: string;
+  address?: string;
+  propertyMap?: PropertyMap;
+  buildings: Building[];
 }

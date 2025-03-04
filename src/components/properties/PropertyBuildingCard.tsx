@@ -30,6 +30,14 @@ export const PropertyBuildingCard = ({ building }: PropertyBuildingCardProps) =>
               <p className="text-sm text-muted-foreground">Våningar</p>
               <p className="font-medium">{building.floors}</p>
             </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Byggår</p>
+              <p className="font-medium">{building.constructionYear}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Enheter</p>
+              <p className="font-medium">{building.units}</p>
+            </div>
           </div>
           
           <div className="pt-2 border-t">

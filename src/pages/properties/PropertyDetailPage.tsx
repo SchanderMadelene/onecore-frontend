@@ -85,13 +85,24 @@ const PropertyDetailPage = () => {
           </TabsContent>
 
           <TabsContent value="map">
-            <PropertyMapView propertyDetail={propertyDetail} />
+            {propertyDetail.propertyMap && (
+              <PropertyMapView propertyDetail={propertyDetail} />
+            )}
+            {!propertyDetail.propertyMap && (
+              <div className="border rounded-lg p-6 text-center">
+                <MapPin className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-xl font-medium mb-2">Karta saknas</h3>
+                <p className="text-muted-foreground">
+                  Fastighetskarta finns inte tillgänglig för denna fastighet.
+                </p>
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="apartments">
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {propertyDetail.buildings.flatMap(building => 
-                building.apartments?.map(apartment => (
+                (building.apartments || []).map(apartment => (
                   <div key={apartment.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
                     <h3 className="font-semibold">{apartment.code}</h3>
                     <p className="text-sm text-muted-foreground">{building.name}</p>
@@ -110,7 +121,16 @@ const PropertyDetailPage = () => {
                       </div>
                     </div>
                   </div>
-                )) || []
+                ))
+              )}
+              {propertyDetail.buildings.every(b => !b.apartments || b.apartments.length === 0) && (
+                <div className="col-span-3 border rounded-lg p-6 text-center">
+                  <Key className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-medium mb-2">Inga lägenheter</h3>
+                  <p className="text-muted-foreground">
+                    Det finns inga lägenheter registrerade för denna fastighet.
+                  </p>
+                </div>
               )}
             </div>
           </TabsContent>
