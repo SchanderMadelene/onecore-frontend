@@ -2,8 +2,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Helper component to display grid cells
-const GridCell = ({ children }: { children: React.ReactNode }) => (
-  <div className="bg-accent/20 border border-accent/40 rounded p-3 flex items-center justify-center text-sm">
+const GridCell = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <div className={`bg-accent/20 border border-accent/40 rounded p-3 flex items-center justify-center text-sm ${className}`}>
     {children}
   </div>
 );
