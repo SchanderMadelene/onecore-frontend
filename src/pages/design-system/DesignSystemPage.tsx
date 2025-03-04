@@ -1,16 +1,17 @@
 
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Palette, Type, Component, Grid, Paintbrush } from "lucide-react";
 
-// Components for different design system sections
-import { ColorPalette } from "./components/ColorPalette";
-import { Typography } from "./components/Typography";
-import { ComponentShowcase } from "./components/ComponentShowcase";
-import { GridSystem } from "./components/GridSystem";
-import { IconsShowcase } from "./components/IconsShowcase";
+// Import components from the new global location
+import { 
+  ColorPalette, 
+  Typography, 
+  ComponentShowcase, 
+  GridSystem, 
+  IconsShowcase 
+} from "@/components/design-system";
 
 const DesignSystemPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
