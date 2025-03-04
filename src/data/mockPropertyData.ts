@@ -1,35 +1,196 @@
+import { PropertyDetail } from "@/types/api";
 
-import type { PropertyDetail } from "@/types/api";
-
+// Add constructionYear and units to all building objects
 export const mockPropertyDetails: Record<string, PropertyDetail> = {
-  "odenplan-5": {
-    id: "odenplan-5",
+  "vasteras/lundby/odenplan-5": {
+    id: "1",
     propertyObjectId: "P1",
     code: "FAST-001",
     designation: "Odenplan 5",
     municipality: "Västerås",
-    purpose: "Bostadshus",
-    address: "Odenplan 5",
-    district: "Lundby",
+    parish: "Lundby",
+    propertyNumber: "Lundby 3:15",
+    direction: "N",
+    address: "Odenplan, 5, 72346 Västerås",
+    purpose: "Bostad",
+    buildingType: "Flerbostadshus",
     buildings: [
       {
-        id: "b1",
-        name: "Norra huset",
-        type: "Flerfamiljshus",
-        area: 1250,
-        floors: 5,
-        tenants: 35,
+        id: "B1",
+        name: "Hus A",
+        type: "Flerbostadshus",
+        constructionYear: 1985,
+        area: 1200,
+        floors: 4,
+        units: 12,
+        tenants: 10,
         apartments: [
           {
-            id: "lgh-101",
-            code: "LGH-101",
+            id: "A1",
+            code: "1001",
+            area: 56,
+            rooms: 2,
+            status: "Uthyrd"
+          },
+          {
+            id: "A2",
+            code: "1002",
+            area: 72,
+            rooms: 3,
+            status: "Uthyrd"
+          },
+          {
+            id: "A3",
+            code: "1003",
+            area: 45,
+            rooms: 1,
+            status: "Vakant"
+          }
+        ]
+      },
+      {
+        id: "B2",
+        name: "Hus B",
+        type: "Flerbostadshus",
+        constructionYear: 1987,
+        area: 800,
+        floors: 3,
+        units: 9,
+        tenants: 8,
+        apartments: [
+          {
+            id: "A4",
+            code: "2001",
             area: 65,
             rooms: 2,
             status: "Uthyrd"
           },
           {
-            id: "lgh-102",
-            code: "LGH-102",
+            id: "A5",
+            code: "2002",
+            area: 85,
+            rooms: 3,
+            status: "Uthyrd"
+          }
+        ]
+      }
+    ],
+    propertyMap: {
+      image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg==",
+      buildings: [
+        {
+          id: "B1",
+          name: "Hus A",
+          x: 100,
+          y: 100,
+          width: 200,
+          height: 150
+        },
+        {
+          id: "B2",
+          name: "Hus B",
+          x: 400,
+          y: 200,
+          width: 200,
+          height: 100
+        }
+      ]
+    }
+  },
+  "vasteras/backby/gotgatan-15": {
+    id: "2",
+    propertyObjectId: "P2",
+    code: "FAST-002",
+    designation: "Götgatan 15",
+    municipality: "Västerås",
+    parish: "Bäckby",
+    propertyNumber: "Bäckby 1:22",
+    direction: "S",
+    address: "Götgatan 15, 72130 Västerås",
+    purpose: "Bostad",
+    buildingType: "Flerbostadshus",
+    buildings: [
+      {
+        id: "B3",
+        name: "Hus A",
+        type: "Flerbostadshus",
+        constructionYear: 1992,
+        area: 1500,
+        floors: 5,
+        units: 20,
+        tenants: 18,
+        apartments: [
+          {
+            id: "A6",
+            code: "3001",
+            area: 78,
+            rooms: 3,
+            status: "Uthyrd"
+          },
+          {
+            id: "A7",
+            code: "3002",
+            area: 55,
+            rooms: 2,
+            status: "Vakant"
+          },
+          {
+            id: "A8",
+            code: "3003",
+            area: 92,
+            rooms: 4,
+            status: "Uthyrd"
+          }
+        ]
+      }
+    ],
+    propertyMap: {
+      image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg==",
+      buildings: [
+        {
+          id: "B3",
+          name: "Hus A",
+          x: 200,
+          y: 150,
+          width: 250,
+          height: 180
+        }
+      ]
+    }
+  },
+  "vasteras/domkyrkan/sveavagen-10": {
+    id: "3",
+    propertyObjectId: "P3",
+    code: "FAST-003",
+    designation: "Sveavägen 10",
+    municipality: "Västerås",
+    parish: "Domkyrkan",
+    propertyNumber: "Domkyrkan 2:33",
+    direction: "Ö",
+    address: "Sveavägen 10, 72213 Västerås",
+    purpose: "Kontor",
+    buildingType: "Kontorsbyggnad",
+    buildings: [
+      {
+        id: "B4",
+        name: "Kontorsbyggnad A",
+        type: "Kontor",
+        constructionYear: 2005,
+        area: 2800,
+        floors: 6,
+        units: 25,
+        tenants: 22,
+        apartments: [
+          {
+            id: "A9",
+            code: "101",
+            area: 120,
+            rooms: 4,
+            status: "Uthyrd"
+          },
+          {
+            id: "A10",
+            code: "102",
             area: 85,
             rooms: 3,
             status: "Uthyrd"
@@ -37,165 +198,16 @@ export const mockPropertyDetails: Record<string, PropertyDetail> = {
         ]
       },
       {
-        id: "b2",
-        name: "Södra huset",
-        type: "Flerfamiljshus",
-        area: 980,
-        floors: 4,
-        tenants: 28,
-        apartments: [
-          {
-            id: "lgh-201",
-            code: "LGH-201",
-            area: 55,
-            rooms: 2,
-            status: "Ledig"
-          },
-          {
-            id: "lgh-202",
-            code: "LGH-202",
-            area: 75,
-            rooms: 3,
-            status: "Uthyrd"
-          }
-        ]
-      }
-    ],
-    propertyMap: {
-      image: "",
-      buildings: [
-        {
-          id: "b1",
-          name: "Norra",
-          x: 50,
-          y: 50,
-          width: 150,
-          height: 100
-        },
-        {
-          id: "b2",
-          name: "Södra",
-          x: 50,
-          y: 250,
-          width: 150,
-          height: 100
-        }
-      ]
-    }
-  },
-  "sveavagen-10": {
-    id: "sveavagen-10",
-    propertyObjectId: "P2",
-    code: "FAST-002",
-    designation: "Sveavägen 10",
-    municipality: "Västerås",
-    purpose: "Bostadshus",
-    address: "Sveavägen 10",
-    district: "Domkyrkan",
-    buildings: [
-      {
-        id: "b3",
-        name: "Huvudbyggnaden",
-        type: "Flerfamiljshus",
+        id: "B5",
+        name: "Kontorsbyggnad B",
+        type: "Kontor",
+        constructionYear: 2007,
         area: 1800,
-        floors: 6,
-        tenants: 42,
-        apartments: [
-          {
-            id: "lgh-201",
-            code: "LGH-201",
-            area: 75,
-            rooms: 3,
-            status: "Uthyrd"
-          },
-          {
-            id: "lgh-202",
-            code: "LGH-202",
-            area: 45,
-            rooms: 1,
-            status: "Uthyrd"
-          }
-        ]
-      }
-    ],
-    propertyMap: {
-      image: "",
-      buildings: [
-        {
-          id: "b3",
-          name: "Huvudbygg.",
-          x: 100,
-          y: 150,
-          width: 200,
-          height: 120
-        }
-      ]
-    }
-  },
-  "gotgatan-15": {
-    id: "gotgatan-15",
-    propertyObjectId: "P3",
-    code: "FAST-003",
-    designation: "Götgatan 15",
-    municipality: "Västerås",
-    purpose: "Bostadshus",
-    address: "Götgatan 15",
-    district: "Bäckby",
-    buildings: [
-      {
-        id: "b4",
-        name: "A-huset",
-        type: "Flerfamiljshus",
-        area: 950,
-        floors: 3,
-        tenants: 18,
-        apartments: [
-          {
-            id: "lgh-301",
-            code: "LGH-301",
-            area: 68,
-            rooms: 2,
-            status: "Uthyrd"
-          },
-          {
-            id: "lgh-302",
-            code: "LGH-302",
-            area: 92,
-            rooms: 4,
-            status: "Ledig"
-          }
-        ]
-      },
-      {
-        id: "b5",
-        name: "B-huset",
-        type: "Flerfamiljshus",
-        area: 850,
-        floors: 3,
+        floors: 4,
+        units: 16,
         tenants: 15,
         apartments: []
       }
-    ],
-    propertyMap: {
-      image: "",
-      buildings: [
-        {
-          id: "b4",
-          name: "A-huset",
-          x: 80,
-          y: 80,
-          width: 120,
-          height: 100
-        },
-        {
-          id: "b5",
-          name: "B-huset",
-          x: 250,
-          y: 150,
-          width: 120,
-          height: 100
-        }
-      ]
-    }
+    ]
   }
 };

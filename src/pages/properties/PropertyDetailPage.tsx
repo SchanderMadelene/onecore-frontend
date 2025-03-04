@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { usePropertyDetail } from "./hooks/usePropertyDetail";
+import { usePropertyDetail } from "@/hooks/usePropertyDetail";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building, MapPin, Key, Shield } from "lucide-react";

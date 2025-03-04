@@ -6,7 +6,7 @@ import { InspectionStart } from "./inspection/InspectionStart";
 import { InspectionHistory } from "./inspection/InspectionHistory";
 import type { InspectionRoom, Inspection } from "./inspection/types";
 import { InspectionProgress } from "./inspection/InspectionProgress";
-import { useInspectionProgress } from "./inspection/useInspectionProgress";
+import { useInspectionProgress } from "@/hooks/useInspectionProgress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BasicInformation } from "./inspection/form/BasicInformation";
