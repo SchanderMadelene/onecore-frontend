@@ -1,10 +1,11 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { usePropertyDetail } from "@/hooks/usePropertyDetail";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building, MapPin, Key, Shield } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 // Import from new global components location
 import { 
@@ -14,10 +15,27 @@ import {
 } from "@/components/properties";
 
 const PropertyDetailPage = () => {
-  const { property } = useParams();
+  const { city, district, property } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { toast } = useToast();
   
-  const { data: propertyDetail, isLoading, error } = usePropertyDetail(property);
+  // Skapa korrekt propertyId format för att matcha nyckeln i mockData
+  const propertyKey = city && district && property 
+    ? `${city}/${district}/${property}`
+    : undefined;
+  
+  const { data: propertyDetail, isLoading, error } = usePropertyDetail(propertyKey);
+
+  useEffect(() => {
+    if (error) {
+      console.error("Error loading property:", error);
+      toast({
+        title: "Fel vid laddning",
+        description: "Kunde inte ladda fastighetsdata. Kontrollera URL:en.",
+        variant: "destructive"
+      });
+    }
+  }, [error, toast]);
 
   if (isLoading) {
     return (
@@ -37,6 +55,7 @@ const PropertyDetailPage = () => {
         <div className="text-center py-10">
           <h2 className="text-2xl font-bold mb-2">Fastigheten kunde inte hittas</h2>
           <p className="text-muted-foreground">Kontrollera adressen och försök igen</p>
+          <p className="text-sm text-muted-foreground mt-2">Sökte efter: {propertyKey}</p>
         </div>
       </PageLayout>
     );

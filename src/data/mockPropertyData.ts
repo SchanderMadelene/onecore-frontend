@@ -1,3 +1,4 @@
+
 import { PropertyDetail } from "@/types/api";
 
 // Add constructionYear and units to all building objects
@@ -211,3 +212,6 @@ export const mockPropertyDetails: Record<string, PropertyDetail> = {
     ]
   }
 };
+
+// Debugging för att se tillgängliga nycklar i konsolen
+console.log("Available property keys:", Object.keys(mockPropertyDetails));
