@@ -1,100 +1,129 @@
 
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { usePropertyDetail } from "./hooks/usePropertyDetail";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapPin, Home } from "lucide-react";
-import { usePropertyDetail } from "./hooks/usePropertyDetail";
-import PropertyBasicInfo from "./components/PropertyBasicInfo";
-import PropertyBuildingsList from "./components/PropertyBuildingsList";
-import PropertyMapView from "./components/PropertyMapView";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Building, MapPin, Key, Shield } from "lucide-react";
+
+// Import from new global components location
+import { 
+  PropertyBasicInfo, 
+  PropertyBuildingsList, 
+  PropertyMapView 
+} from "@/components/properties";
 
 const PropertyDetailPage = () => {
-  const { city, district, property } = useParams();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { property } = useParams();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  
+  const { data: propertyDetail, isLoading, error } = usePropertyDetail(property);
 
-  const { data: propertyDetail, isLoading } = usePropertyDetail(property);
+  if (isLoading) {
+    return (
+      <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
+        <div className="animate-pulse space-y-6">
+          <div className="h-8 bg-secondary rounded w-64"></div>
+          <div className="h-4 bg-secondary rounded w-32"></div>
+          <div className="h-[200px] bg-secondary rounded"></div>
+        </div>
+      </PageLayout>
+    );
+  }
 
-  // Mock data for apartments in this property
-  const mockApartments = [
-    { id: "lgh-301", code: "LGH-301", name: "3 rum och kök", status: "Uthyrd" },
-    { id: "lgh-302", code: "LGH-302", name: "2 rum och kök", status: "Ledig" }
-  ];
+  if (error || !propertyDetail) {
+    return (
+      <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
+        <div className="text-center py-10">
+          <h2 className="text-2xl font-bold mb-2">Fastigheten kunde inte hittas</h2>
+          <p className="text-muted-foreground">Kontrollera adressen och försök igen</p>
+        </div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      {isLoading ? (
-        <div className="flex items-center justify-center h-40">
-          <p>Laddar fastighetsdata...</p>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">{propertyDetail.designation}</h1>
+          <p className="text-muted-foreground">{propertyDetail.address}, {propertyDetail.municipality}</p>
         </div>
-      ) : propertyDetail ? (
-        <div className="space-y-6">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">{propertyDetail.designation}</h1>
-            <p className="text-muted-foreground flex items-center gap-1.5">
-              <MapPin className="h-4 w-4" />
-              {propertyDetail.municipality}
-            </p>
-          </div>
 
-          <Tabs defaultValue="basic-info">
-            <TabsList>
-              <TabsTrigger value="basic-info">Grunddata</TabsTrigger>
-              <TabsTrigger value="buildings">Byggnader</TabsTrigger>
-              <TabsTrigger value="apartments">Lägenheter</TabsTrigger>
-              <TabsTrigger value="map">Ritning</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="basic-info" className="space-y-6 pt-6">
-              <PropertyBasicInfo propertyDetail={propertyDetail} />
-            </TabsContent>
-            
-            <TabsContent value="buildings" className="space-y-6 pt-6">
-              <PropertyBuildingsList buildings={propertyDetail.buildings} />
-            </TabsContent>
-            
-            <TabsContent value="apartments" className="space-y-6 pt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Lägenheter</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-4">
-                    {mockApartments.map(apartment => (
-                      <Link 
-                        key={apartment.id} 
-                        to={`/properties/${city}/${district}/${property}/${apartment.id}`}
-                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent/10 transition-colors"
-                      >
-                        <div className="flex items-center">
-                          <Home className="mr-3 h-5 w-5 text-accent" />
-                          <div>
-                            <p className="font-medium">{apartment.code}</p>
-                            <p className="text-sm text-muted-foreground">{apartment.name}</p>
-                          </div>
-                        </div>
-                        <span className={`text-sm ${apartment.status === 'Ledig' ? 'text-green-500' : 'text-muted-foreground'}`}>
-                          {apartment.status}
-                        </span>
-                      </Link>
-                    ))}
+        <Tabs defaultValue="info" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="info" className="flex items-center gap-2">
+              <Building className="h-4 w-4" />
+              <span>Information</span>
+            </TabsTrigger>
+            <TabsTrigger value="buildings" className="flex items-center gap-2">
+              <Building className="h-4 w-4" />
+              <span>Byggnader</span>
+            </TabsTrigger>
+            <TabsTrigger value="map" className="flex items-center gap-2">
+              <MapPin className="h-4 w-4" />
+              <span>Karta</span>
+            </TabsTrigger>
+            <TabsTrigger value="apartments" className="flex items-center gap-2">
+              <Key className="h-4 w-4" />
+              <span>Lägenheter</span>
+            </TabsTrigger>
+            <TabsTrigger value="security" className="flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              <span>Säkerhet</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="info">
+            <PropertyBasicInfo property={propertyDetail} />
+          </TabsContent>
+
+          <TabsContent value="buildings">
+            <PropertyBuildingsList buildings={propertyDetail.buildings} />
+          </TabsContent>
+
+          <TabsContent value="map">
+            <PropertyMapView propertyDetail={propertyDetail} />
+          </TabsContent>
+
+          <TabsContent value="apartments">
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {propertyDetail.buildings.flatMap(building => 
+                building.apartments?.map(apartment => (
+                  <div key={apartment.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <h3 className="font-semibold">{apartment.code}</h3>
+                    <p className="text-sm text-muted-foreground">{building.name}</p>
+                    <div className="mt-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Area:</span>
+                        <span>{apartment.area} m²</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Rum:</span>
+                        <span>{apartment.rooms}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Status:</span>
+                        <span>{apartment.status}</span>
+                      </div>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="map" className="space-y-6 pt-6">
-              <PropertyMapView propertyDetail={propertyDetail} />
-            </TabsContent>
-          </Tabs>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-40">
-          <h2 className="text-xl font-semibold mb-2">Fastighet hittades inte</h2>
-          <p className="text-muted-foreground">Den begärda fastigheten existerar inte.</p>
-        </div>
-      )}
+                )) || []
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="security">
+            <div className="border rounded-lg p-6 text-center">
+              <Shield className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-medium mb-2">Säkerhetsinformation</h3>
+              <p className="text-muted-foreground">
+                Information om fastighetens säkerhet är inte tillgänglig.
+              </p>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </PageLayout>
   );
 };
