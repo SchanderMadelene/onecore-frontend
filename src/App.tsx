@@ -10,6 +10,7 @@ import PropertyPage from "./pages/properties/PropertyPage";
 import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
 import ResidencePage from "./pages/properties/ResidencePage";
 import TenantsPage from "./pages/tenants/TenantsPage";
+import DesignSystemPage from "./pages/design-system/DesignSystemPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/properties/:city/:district/:property" element={<PropertyDetailPage />} />
             <Route path="/properties/:city/:district/:property/:id" element={<ResidencePage />} />
             <Route path="/tenants/:type" element={<TenantsPage />} />
+            <Route path="/design-system" element={<DesignSystemPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
