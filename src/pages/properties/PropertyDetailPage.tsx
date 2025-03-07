@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building, MapPin, Key, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-// Import from new global components location
+// Import from components directory
 import { 
   PropertyBasicInfo, 
   PropertyBuildingsList, 

@@ -66,5 +66,3 @@ export const PropertyBuildingCard = ({ building }: PropertyBuildingCardProps) =>
     </Card>
   );
 };
-
-export default PropertyBuildingCard;
