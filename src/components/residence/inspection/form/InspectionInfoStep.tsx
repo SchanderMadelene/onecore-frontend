@@ -6,6 +6,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { TenantInformation } from "./TenantInformation";
+import { mockTenant } from "@/data/mockData";
 
 interface InspectionInfoStepProps {
   inspectorName: string;
@@ -20,18 +21,6 @@ export function InspectionInfoStep({
   onNext,
   onCancel,
 }: InspectionInfoStepProps) {
-  // Temporär hyresgästdata för demonstration
-  const mockTenant = {
-    firstName: "Anna",
-    lastName: "Andersson",
-    phone: "070-123 45 67",
-    email: "anna.andersson@example.com",
-    contractStatus: "permanent" as const,
-    moveInDate: "2023-01-01",
-    contractNumber: "KT2023-001",
-    personalNumber: "19850101-1234"
-  };
-
   return (
     <form onSubmit={onNext}>
       <div className="space-y-6 py-4">

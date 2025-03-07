@@ -1,6 +1,6 @@
 
 import { useQuery } from "@tanstack/react-query";
-import { mockPropertyDetails } from "../data/mockPropertyData";
+import { mockPropertyDetails } from "@/data/mockData";
 import { PropertyDetail } from "@/types/api";
 
 export function usePropertyDetail(propertyId: string | undefined) {
