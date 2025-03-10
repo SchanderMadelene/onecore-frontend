@@ -63,62 +63,62 @@ export interface SearchResult {
 
 export const mockSearchResults: SearchResult[] = [
   {
-    id: "1001",
+    id: "lgh-101",
     name: "Lägenhet 1001",
     type: "apartment",
     address: "Odenplan 5, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/1001",
+    path: "/properties/vasteras/lundby/odenplan-5/lgh-101",
     tenant: {
       name: "Anna Andersson",
       active: true
     }
   },
   {
-    id: "1002",
+    id: "lgh-201",
     name: "Lägenhet 1002",
     type: "apartment",
     address: "Odenplan 5, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/1002",
+    path: "/properties/vasteras/lundby/odenplan-5/lgh-201",
     tenant: {
       name: "Johan Svensson",
       active: true
     }
   },
   {
-    id: "2001",
+    id: "lgh-301",
     name: "Lägenhet 2001",
     type: "apartment",
     address: "Odenplan 5, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/2001",
+    path: "/properties/vasteras/lundby/odenplan-5/lgh-301",
     tenant: {
       name: "Maria Eriksson",
       active: true
     }
   },
   {
-    id: "3001",
+    id: "lgh-301",
     name: "Lägenhet 3001",
     type: "apartment",
     address: "Götgatan 15, Bäckby",
-    path: "/properties/vasteras/backby/gotgatan-15/3001",
+    path: "/properties/vasteras/backby/gotgatan-15/lgh-301",
     tenant: {
       name: "Henrik Johansson",
       active: true
     }
   },
   {
-    id: "3002",
+    id: "lgh-302",
     name: "Lägenhet 3002",
     type: "apartment",
     address: "Götgatan 15, Bäckby",
-    path: "/properties/vasteras/backby/gotgatan-15/3002"
+    path: "/properties/vasteras/backby/gotgatan-15/lgh-302"
   },
   {
-    id: "101",
+    id: "lgh-101",
     name: "Kontor 101",
     type: "apartment",
     address: "Sveavägen 10, Domkyrkan",
-    path: "/properties/vasteras/domkyrkan/sveavagen-10/101",
+    path: "/properties/vasteras/domkyrkan/sveavagen-10/lgh-101",
     tenant: {
       name: "Tech AB",
       active: true
