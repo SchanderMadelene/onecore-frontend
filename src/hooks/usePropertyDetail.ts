@@ -1,6 +1,6 @@
 
 import { useQuery } from "@tanstack/react-query";
-import { mockPropertyDetails } from "../data/mockPropertyData";
+import { mockPropertyDetails } from "@/data/mockData";
 import { PropertyDetail } from "@/types/api";
 
 export function usePropertyDetail(propertyId: string | undefined) {
@@ -13,6 +13,8 @@ export function usePropertyDetail(propertyId: string | undefined) {
           if (propertyId && mockPropertyDetails[propertyId]) {
             resolve(mockPropertyDetails[propertyId]);
           } else {
+            console.error('Property not found:', propertyId);
+            console.log('Available properties:', Object.keys(mockPropertyDetails));
             reject(new Error('Fastighet hittades inte'));
           }
         }, 500);

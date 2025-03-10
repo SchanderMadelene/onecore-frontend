@@ -1,4 +1,3 @@
-
 export interface Residence {
   id: string;
   code: string;
@@ -83,13 +82,12 @@ export interface PropertyMap {
   buildings: BuildingLocation[];
 }
 
-export interface PropertyDetail extends Property {
-  municipality: string;
-  parish: string;
-  propertyNumber: string;
-  direction: string;
-  propertyMap?: PropertyMap;
-  buildings: Building[];
+export interface Apartment {
+  id: string;
+  code: string;
+  area: number;
+  rooms: number;
+  status: string;
 }
 
 export interface Building {
@@ -100,4 +98,15 @@ export interface Building {
   area: number;
   floors: number;
   units: number;
+  tenants?: number;
+  apartments?: Apartment[];
+}
+
+export interface PropertyDetail extends Property {
+  parish: string;
+  propertyNumber: string;
+  direction: string;
+  address?: string;
+  propertyMap?: PropertyMap;
+  buildings: Building[];
 }

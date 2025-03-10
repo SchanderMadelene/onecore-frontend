@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
@@ -6,52 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Building, Users, Home } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { Property, Company } from "@/types/api";
-
-// Mock data
-const mockProperties: Property[] = [
-  {
-    id: "1",
-    propertyObjectId: "P1",
-    code: "FAST-001",
-    designation: "Kontorskomplex City",
-    municipality: "Stockholm",
-    purpose: "Kontor",
-    buildingType: "Kontorsbyggnad"
-  },
-  {
-    id: "2",
-    propertyObjectId: "P2",
-    code: "FAST-002",
-    designation: "Bostadshus Centrum",
-    municipality: "Stockholm",
-    purpose: "Bostad",
-    buildingType: "Flerfamiljshus"
-  }
-];
-
-const mockCompanies: Company[] = [
-  {
-    id: "1",
-    propertyObjectId: "C1",
-    code: "FTG-001",
-    name: "Företag AB",
-    organizationNumber: "556123-1234"
-  },
-  {
-    id: "2",
-    propertyObjectId: "C2",
-    code: "FTG-002",
-    name: "Fastigheter & Co KB",
-    organizationNumber: "556789-0123"
-  }
-];
-
-// Mock occupancy data
-const mockOccupancyData = {
-  total: 150,
-  occupied: 135,
-  available: 15
-};
+import { mockProperties, mockCompanies, mockOccupancyData } from "@/data/mockData";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

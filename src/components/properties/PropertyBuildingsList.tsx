@@ -1,12 +1,12 @@
 
-import { Building } from "@/types/api";
-import PropertyBuildingCard from "./PropertyBuildingCard";
+import type { Building } from "@/types/api";
+import { PropertyBuildingCard } from "./PropertyBuildingCard";
 
 interface PropertyBuildingsListProps {
   buildings: Building[];
 }
 
-const PropertyBuildingsList = ({ buildings }: PropertyBuildingsListProps) => {
+export const PropertyBuildingsList = ({ buildings }: PropertyBuildingsListProps) => {
   return (
     <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
       {buildings.map((building) => (
@@ -15,5 +15,3 @@ const PropertyBuildingsList = ({ buildings }: PropertyBuildingsListProps) => {
     </div>
   );
 };
-
-export default PropertyBuildingsList;

@@ -1,6 +1,6 @@
 
 import type { Room } from "@/types/api";
-import type { InspectionRoom } from "./types";
+import type { InspectionRoom } from "@/components/residence/inspection/types";
 
 interface InspectionProgress {
   rooms: Array<{

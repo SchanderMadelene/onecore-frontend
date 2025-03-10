@@ -1,13 +1,13 @@
 
-import { PropertyDetail } from "@/types/api";
+import type { PropertyDetail } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import PropertyMap from "./PropertyMap";
+import { PropertyMap } from "./PropertyMap";
 
 interface PropertyMapViewProps {
   propertyDetail: PropertyDetail;
 }
 
-const PropertyMapView = ({ propertyDetail }: PropertyMapViewProps) => {
+export const PropertyMapView = ({ propertyDetail }: PropertyMapViewProps) => {
   return (
     <Card>
       <CardHeader>
@@ -28,5 +28,3 @@ const PropertyMapView = ({ propertyDetail }: PropertyMapViewProps) => {
     </Card>
   );
 };
-
-export default PropertyMapView;

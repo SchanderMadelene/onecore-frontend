@@ -1,5 +1,5 @@
 
-import { BuildingLocation, Building } from "@/types/api";
+import type { BuildingLocation, Building } from "@/types/api";
 import { Map } from "lucide-react";
 
 interface PropertyMapProps {
@@ -10,7 +10,7 @@ interface PropertyMapProps {
   buildings: Building[];
 }
 
-const PropertyMap = ({ propertyMap, buildings }: PropertyMapProps) => {
+export const PropertyMap = ({ propertyMap, buildings }: PropertyMapProps) => {
   return (
     <div className="relative w-full h-[400px] border border-border rounded-md overflow-hidden bg-white">
       <div className="absolute inset-0 bg-gray-100 p-4">
@@ -44,5 +44,3 @@ const PropertyMap = ({ propertyMap, buildings }: PropertyMapProps) => {
     </div>
   );
 };
-
-export default PropertyMap;
