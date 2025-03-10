@@ -1,7 +1,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { Residence, Room } from "@/types/api";
-import { mockResidenceData, mockRoomsData } from "@/data/mockData";
+import { mockResidenceData } from "@/data/residences";
+import { mockRoomsData } from "@/data/rooms";
 
 const fetchResidence = async (id: string): Promise<Residence> => {
   // Simulate network delay

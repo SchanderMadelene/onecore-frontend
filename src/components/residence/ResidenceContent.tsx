@@ -6,7 +6,7 @@ import { TenantInformation } from "@/components/residence/inspection/form/Tenant
 import { CreateIssue } from "@/components/residence/CreateIssue";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room } from "@/types/api";
-import { mockTenant } from "@/data/mockData";
+import { mockTenant } from "@/data/tenants";
 
 interface ResidenceContentProps {
   residenceData: Residence;

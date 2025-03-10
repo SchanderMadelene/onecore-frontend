@@ -1,9 +1,8 @@
-
 import { Search } from "lucide-react";
 import { Input } from "./ui/input";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { mockSearchResults, type SearchResult } from "@/data/mockData";
+import { mockSearchResults, type SearchResult } from "@/data/search";
 
 export function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
