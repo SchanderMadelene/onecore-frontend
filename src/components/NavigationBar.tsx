@@ -1,3 +1,4 @@
+
 import { Menu, Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
@@ -17,7 +18,7 @@ export function NavigationBar({
           <span className="font-semibold">OneCore</span>
         </div>
         
-        <div className="mx-4 flex-1 hidden sm:block">
+        <div className="mx-8 flex-1 hidden sm:block">
           <SearchBar />
         </div>
         
