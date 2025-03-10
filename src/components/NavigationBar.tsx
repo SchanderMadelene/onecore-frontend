@@ -18,7 +18,7 @@ export function NavigationBar({
           <span className="font-semibold">OneCore</span>
         </div>
         
-        <div className="mx-24 flex-1 hidden sm:block">
+        <div className="mx-48 flex-1 hidden sm:block">
           <SearchBar />
         </div>
         
