@@ -53,7 +53,7 @@ export function SearchBar() {
   };
 
   return (
-    <div ref={searchRef} className="flex-1 max-w-md relative">
+    <div ref={searchRef} className="flex-1 w-full max-w-3xl relative">
       <form onSubmit={handleSearch}>
         <div className="relative w-full">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
