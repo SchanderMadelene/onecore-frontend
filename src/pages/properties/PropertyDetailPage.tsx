@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { usePropertyDetail } from "@/hooks/usePropertyDetail";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building, MapPin, Key, Shield } from "lucide-react";
+import { Building, MapPin, Key, Shield, FileText, Calendar, PieChart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 // Import from components directory
@@ -72,10 +71,18 @@ const PropertyDetailPage = () => {
         </div>
 
         <Tabs defaultValue="info" className="space-y-6">
-          <TabsList>
+          <TabsList className="grid md:grid-cols-7 grid-cols-3 w-full h-auto">
             <TabsTrigger value="info" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
-              <span>Information</span>
+              <span>Fastighet</span>
+            </TabsTrigger>
+            <TabsTrigger value="documents" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              <span>Dokument</span>
+            </TabsTrigger>
+            <TabsTrigger value="planning" className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <span>Planering</span>
             </TabsTrigger>
             <TabsTrigger value="buildings" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
@@ -89,14 +96,34 @@ const PropertyDetailPage = () => {
               <Key className="h-4 w-4" />
               <span>Lägenheter</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
-              <Shield className="h-4 w-4" />
-              <span>Säkerhet</span>
+            <TabsTrigger value="statistics" className="flex items-center gap-2">
+              <PieChart className="h-4 w-4" />
+              <span>Statistik</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="info">
             <PropertyBasicInfo property={propertyDetail} />
+          </TabsContent>
+
+          <TabsContent value="documents">
+            <div className="border rounded-lg p-6 text-center">
+              <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-medium mb-2">Dokument</h3>
+              <p className="text-muted-foreground">
+                Inga dokument tillgängliga för denna fastighet.
+              </p>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="planning">
+            <div className="border rounded-lg p-6 text-center">
+              <Calendar className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-medium mb-2">Planering</h3>
+              <p className="text-muted-foreground">
+                Ingen planeringsinformation tillgänglig.
+              </p>
+            </div>
           </TabsContent>
 
           <TabsContent value="buildings">
@@ -154,12 +181,12 @@ const PropertyDetailPage = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="security">
+          <TabsContent value="statistics">
             <div className="border rounded-lg p-6 text-center">
-              <Shield className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-xl font-medium mb-2">Säkerhetsinformation</h3>
+              <PieChart className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-medium mb-2">Statistik</h3>
               <p className="text-muted-foreground">
-                Information om fastighetens säkerhet är inte tillgänglig.
+                Ingen statistik tillgänglig för denna fastighet.
               </p>
             </div>
           </TabsContent>
