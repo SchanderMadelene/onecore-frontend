@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Filter, Building2 } from "lucide-react";
+import { Search, Filter, Building2, Buildings } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -94,6 +94,7 @@ const AllPropertiesPage = () => {
                     <TableHead>Beteckning</TableHead>
                     <TableHead>Typ</TableHead>
                     <TableHead>Användning</TableHead>
+                    <TableHead>Byggnader</TableHead>
                     <TableHead className="text-right">Åtgärd</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -113,6 +114,12 @@ const AllPropertiesPage = () => {
                           {property.purpose}
                         </Badge>
                       </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Buildings className="h-4 w-4 text-muted-foreground" />
+                          <span>{property.buildingCount || 0}</span>
+                        </div>
+                      </TableCell>
                       <TableCell className="text-right">
                         <Button asChild variant="link" size="sm">
                           <Link to={`/properties/vasteras/${property.purpose === 'Bostad' ? 'backby' : 'domkyrkan'}/${property.purpose === 'Bostad' ? 'gotgatan-15' : 'sveavagen-10'}`}>
@@ -124,7 +131,7 @@ const AllPropertiesPage = () => {
                   ))}
                   {(!filteredProperties || filteredProperties.length === 0) && (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-8">
+                      <TableCell colSpan={5} className="text-center py-8">
                         Inga fastigheter hittades med angivna sökkriterier
                       </TableCell>
                     </TableRow>
