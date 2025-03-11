@@ -1,4 +1,3 @@
-
 import type { PropertyDetail } from "@/types/api";
 
 // Property details mock data
@@ -7,7 +6,7 @@ export const mockPropertyDetails: Record<string, PropertyDetail> = {
     id: "1",
     propertyObjectId: "P1",
     code: "FAST-001",
-    designation: "Odenplan 5",
+    designation: "Älgen 1",
     municipality: "Västerås",
     parish: "Lundby",
     propertyNumber: "Lundby 3:15",
@@ -102,7 +101,7 @@ export const mockPropertyDetails: Record<string, PropertyDetail> = {
     id: "2",
     propertyObjectId: "P2",
     code: "FAST-002",
-    designation: "Götgatan 15",
+    designation: "Lindaren 2",
     municipality: "Västerås",
     parish: "Bäckby",
     propertyNumber: "Bäckby 1:22",
@@ -163,7 +162,7 @@ export const mockPropertyDetails: Record<string, PropertyDetail> = {
     id: "3",
     propertyObjectId: "P3",
     code: "FAST-003",
-    designation: "Sveavägen 10",
+    designation: "Björnen 4",
     municipality: "Västerås",
     parish: "Domkyrkan",
     propertyNumber: "Domkyrkan 2:33",

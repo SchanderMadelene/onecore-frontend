@@ -7,7 +7,7 @@ export const mockProperties: Property[] = [
     id: "1",
     propertyObjectId: "P1",
     code: "FAST-001",
-    designation: "Kontorskomplex City",
+    designation: "Älgen 1",
     municipality: "Stockholm",
     purpose: "Kontor",
     buildingType: "Kontorsbyggnad"
@@ -16,7 +16,7 @@ export const mockProperties: Property[] = [
     id: "2",
     propertyObjectId: "P2",
     code: "FAST-002",
-    designation: "Bostadshus Centrum",
+    designation: "Björnen 4",
     municipality: "Stockholm",
     purpose: "Bostad",
     buildingType: "Flerfamiljshus"

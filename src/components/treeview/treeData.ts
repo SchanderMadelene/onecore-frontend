@@ -9,7 +9,7 @@ export const treeData: TreeNode[] = [
     children: [
       {
         id: "odenplan-5",
-        label: "Odenplan 5",
+        label: "Älgen 1",
         icon: "building",
         path: "/properties/vasteras/lundby/odenplan-5",
         area: "Lundby",
@@ -30,7 +30,7 @@ export const treeData: TreeNode[] = [
       },
       {
         id: "sveavagen-10",
-        label: "Sveavägen 10",
+        label: "Björnen 4",
         icon: "building",
         path: "/properties/vasteras/domkyrkan/sveavagen-10",
         area: "Domkyrkan",
@@ -51,7 +51,7 @@ export const treeData: TreeNode[] = [
       },
       {
         id: "gotgatan-15",
-        label: "Götgatan 15",
+        label: "Lindaren 2",
         icon: "building",
         path: "/properties/vasteras/backby/gotgatan-15",
         area: "Bäckby",
