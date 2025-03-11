@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
@@ -5,7 +6,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Building, Users, Home } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { Property, Company } from "@/types/api";
-import { mockProperties, mockCompanies, mockOccupancyData } from "@/data/mockData";
+import { mockProperties } from "@/data/properties";
+import { mockCompanies } from "@/data/companies";
+import { mockOccupancyData } from "@/data/occupancy";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
