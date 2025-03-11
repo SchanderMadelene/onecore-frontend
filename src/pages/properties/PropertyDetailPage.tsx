@@ -33,10 +33,12 @@ const PropertyDetailPage = () => {
   if (isLoading) {
     return (
       <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-        <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-secondary rounded w-64"></div>
-          <div className="h-4 bg-secondary rounded w-32"></div>
-          <div className="h-[200px] bg-secondary rounded"></div>
+        <div className="space-y-6">
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 bg-secondary rounded w-64"></div>
+            <div className="h-4 bg-secondary rounded w-32"></div>
+            <div className="h-[200px] bg-secondary rounded"></div>
+          </div>
         </div>
       </PageLayout>
     );
@@ -45,10 +47,12 @@ const PropertyDetailPage = () => {
   if (error || !propertyDetail) {
     return (
       <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-        <div className="text-center py-10 space-y-4">
-          <h2 className="text-2xl font-bold mb-2">Fastigheten kunde inte hittas</h2>
-          <p className="text-muted-foreground">Kontrollera adressen och försök igen</p>
-          <p className="text-sm text-muted-foreground mt-2">Sökte efter: {propertyKey}</p>
+        <div className="space-y-6">
+          <div className="text-center py-10 space-y-4">
+            <h2 className="text-2xl font-bold mb-2">Fastigheten kunde inte hittas</h2>
+            <p className="text-muted-foreground">Kontrollera adressen och försök igen</p>
+            <p className="text-sm text-muted-foreground mt-2">Sökte efter: {propertyKey}</p>
+          </div>
         </div>
       </PageLayout>
     );
