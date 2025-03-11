@@ -13,22 +13,42 @@ export const ResidencePage = () => {
   
   const { residenceData, roomsData, isLoading, error } = useResidenceData(id);
 
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="py-4">
+          <LoadingState />
+        </div>
+      );
+    }
+    
+    if (error) {
+      return (
+        <div className="py-4">
+          <ErrorState message={error.message} />
+        </div>
+      );
+    }
+    
+    if (residenceData && roomsData) {
+      return (
+        <div className="py-4 space-y-6">
+          <ResidenceContent 
+            residenceData={residenceData}
+            roomsData={roomsData}
+            property={property}
+            district={district}
+          />
+        </div>
+      );
+    }
+    
+    return null;
+  };
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      {isLoading && <LoadingState />}
-      
-      {error && (
-        <ErrorState message={error.message} />
-      )}
-      
-      {!isLoading && !error && residenceData && roomsData && (
-        <ResidenceContent 
-          residenceData={residenceData}
-          roomsData={roomsData}
-          property={property}
-          district={district}
-        />
-      )}
+      {renderContent()}
     </PageLayout>
   );
 };

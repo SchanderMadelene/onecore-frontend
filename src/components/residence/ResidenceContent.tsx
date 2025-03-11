@@ -22,7 +22,7 @@ export const ResidenceContent = ({
   district 
 }: ResidenceContentProps) => {
   return (
-    <div className="space-y-6">
+    <>
       <ResidenceBasicInfo
         residence={residenceData}
         property={property}
@@ -45,6 +45,6 @@ export const ResidenceContent = ({
           />
         </>
       )}
-    </div>
+    </>
   );
 };

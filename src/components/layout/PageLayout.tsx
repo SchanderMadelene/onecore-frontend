@@ -23,7 +23,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
 
         <aside
           className={`
-            w-[280px] lg:w-64 
+            w-[240px] lg:w-56 
             bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 
             fixed lg:static 
             left-0 top-14 
@@ -40,14 +40,13 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
         <main
           className={`
             flex-1 
-            p-4 sm:p-6 lg:p-8 
+            p-4 sm:p-6 
             transition-all duration-300 
-            w-full
+            ${isSidebarOpen ? "lg:ml-56" : "lg:ml-0"}
             overflow-y-auto
-            ${isSidebarOpen ? "lg:ml-64" : "lg:ml-0"}
           `}
         >
-          <div className="max-w-6xl mx-auto space-y-6">
+          <div className="w-full">
             {children}
           </div>
         </main>

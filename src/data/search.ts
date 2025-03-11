@@ -17,7 +17,7 @@ export const mockSearchResults: SearchResult[] = [
     id: "lgh-101",
     name: "Lägenhet 1001",
     type: "apartment",
-    address: "Odenplan 5, Lundby",
+    address: "Älgen 1, Lundby",
     path: "/properties/vasteras/lundby/odenplan-5/lgh-101",
     tenant: {
       name: "Anna Andersson",
@@ -28,7 +28,7 @@ export const mockSearchResults: SearchResult[] = [
     id: "lgh-201",
     name: "Lägenhet 1002",
     type: "apartment",
-    address: "Odenplan 5, Lundby",
+    address: "Älgen 1, Lundby",
     path: "/properties/vasteras/lundby/odenplan-5/lgh-201",
     tenant: {
       name: "Johan Svensson",
@@ -39,7 +39,7 @@ export const mockSearchResults: SearchResult[] = [
     id: "lgh-301",
     name: "Lägenhet 2001",
     type: "apartment",
-    address: "Odenplan 5, Lundby",
+    address: "Älgen 1, Lundby",
     path: "/properties/vasteras/lundby/odenplan-5/lgh-301",
     tenant: {
       name: "Maria Eriksson",
@@ -50,7 +50,7 @@ export const mockSearchResults: SearchResult[] = [
     id: "lgh-301",
     name: "Lägenhet 3001",
     type: "apartment",
-    address: "Götgatan 15, Bäckby",
+    address: "Lindaren 2, Bäckby",
     path: "/properties/vasteras/backby/gotgatan-15/lgh-301",
     tenant: {
       name: "Henrik Johansson",
@@ -61,14 +61,14 @@ export const mockSearchResults: SearchResult[] = [
     id: "lgh-302",
     name: "Lägenhet 3002",
     type: "apartment",
-    address: "Götgatan 15, Bäckby",
+    address: "Lindaren 2, Bäckby",
     path: "/properties/vasteras/backby/gotgatan-15/lgh-302"
   },
   {
     id: "lgh-101",
     name: "Kontor 101",
     type: "apartment",
-    address: "Sveavägen 10, Domkyrkan",
+    address: "Björnen 4, Domkyrkan",
     path: "/properties/vasteras/domkyrkan/sveavagen-10/lgh-101",
     tenant: {
       name: "Tech AB",
@@ -77,21 +77,21 @@ export const mockSearchResults: SearchResult[] = [
   },
   {
     id: "odenplan-5",
-    name: "Odenplan 5",
+    name: "Älgen 1",
     type: "property",
     address: "Lundby, Västerås",
     path: "/properties/vasteras/lundby/odenplan-5"
   },
   {
     id: "sveavagen-10",
-    name: "Sveavägen 10",
+    name: "Björnen 4",
     type: "property",
     address: "Domkyrkan, Västerås",
     path: "/properties/vasteras/domkyrkan/sveavagen-10"
   },
   {
     id: "gotgatan-15",
-    name: "Götgatan 15",
+    name: "Lindaren 2",
     type: "property",
     address: "Bäckby, Västerås",
     path: "/properties/vasteras/backby/gotgatan-15"

@@ -6,6 +6,7 @@ export interface TreeNode {
   label: string;
   icon?: string;
   path?: string;
+  area?: string;
   children?: TreeNode[];
 }
 

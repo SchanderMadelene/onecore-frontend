@@ -18,13 +18,13 @@ const DesignSystemPage = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
-        <header>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Design System</h1>
-          <p className="text-muted-foreground">
+      <div className="space-y-6 w-full">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Design System</h1>
+          <p className="text-muted-foreground mb-6">
             Visual guide for consistent design and development across the application.
           </p>
-        </header>
+        </div>
 
         <Tabs defaultValue="colors" className="w-full">
           <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full">
