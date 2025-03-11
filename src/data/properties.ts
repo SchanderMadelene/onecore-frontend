@@ -20,5 +20,14 @@ export const mockProperties: Property[] = [
     municipality: "Stockholm",
     purpose: "Bostad",
     buildingType: "Flerfamiljshus"
+  },
+  {
+    id: "3",
+    propertyObjectId: "P3",
+    code: "FAST-003",
+    designation: "Lindaren 2",
+    municipality: "Västerås",
+    purpose: "Bostad",
+    buildingType: "Flerfamiljshus"
   }
 ];
