@@ -42,9 +42,8 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
             flex-1 
             p-4 sm:p-6 lg:p-6 
             transition-all duration-300 
-            w-full
-            overflow-y-auto
             ${isSidebarOpen ? "lg:ml-56" : "lg:ml-0"}
+            overflow-y-auto
           `}
         >
           <div className="max-w-6xl mx-auto">
