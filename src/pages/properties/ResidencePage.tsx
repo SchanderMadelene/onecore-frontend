@@ -13,23 +13,33 @@ export const ResidencePage = () => {
   
   const { residenceData, roomsData, isLoading, error } = useResidenceData(id);
 
+  const renderContent = () => {
+    if (isLoading) {
+      return <LoadingState />;
+    }
+    
+    if (error) {
+      return <ErrorState message={error.message} />;
+    }
+    
+    if (residenceData && roomsData) {
+      return (
+        <ResidenceContent 
+          residenceData={residenceData}
+          roomsData={roomsData}
+          property={property}
+          district={district}
+        />
+      );
+    }
+    
+    return null;
+  };
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
-        {isLoading && <LoadingState />}
-        
-        {error && (
-          <ErrorState message={error.message} />
-        )}
-        
-        {!isLoading && !error && residenceData && roomsData && (
-          <ResidenceContent 
-            residenceData={residenceData}
-            roomsData={roomsData}
-            property={property}
-            district={district}
-          />
-        )}
+        {renderContent()}
       </div>
     </PageLayout>
   );
