@@ -29,5 +29,41 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Flerfamiljshus"
+  },
+  {
+    id: "4",
+    propertyObjectId: "P4",
+    code: "FAST-004",
+    designation: "Pipan 1",
+    municipality: "Göteborg",
+    purpose: "Bostad",
+    buildingType: "Flerfamiljshus"
+  },
+  {
+    id: "5",
+    propertyObjectId: "P5",
+    code: "FAST-005",
+    designation: "Oskaria 1",
+    municipality: "Malmö",
+    purpose: "Kontor",
+    buildingType: "Kontorsbyggnad"
+  },
+  {
+    id: "6",
+    propertyObjectId: "P6",
+    code: "FAST-006",
+    designation: "Styrhylsan 9",
+    municipality: "Uppsala",
+    purpose: "Bostad",
+    buildingType: "Radhus"
+  },
+  {
+    id: "7",
+    propertyObjectId: "P7",
+    code: "FAST-007",
+    designation: "Bävern 1",
+    municipality: "Linköping",
+    purpose: "Kontor",
+    buildingType: "Kontorskomplex"
   }
 ];
