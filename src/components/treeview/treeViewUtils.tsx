@@ -1,11 +1,11 @@
 
 import { ReactNode } from "react";
-import { Building, DoorOpen, MapPin, LayoutGrid, LandPlot, Castle, Tag } from "lucide-react";
+import { Building, DoorOpen, MapPin, LayoutGrid, LandPlot, Castle, Tag, Home } from "lucide-react";
 
 export const getNodeIcon = (iconName?: string): ReactNode => {
   switch (iconName) {
     case "location":
-      return <LandPlot className="h-4 w-4 text-primary" />;
+      return <Home className="h-4 w-4 text-primary" />;
     case "map":
       return <MapPin className="h-4 w-4 text-accent" />;
     case "area":
