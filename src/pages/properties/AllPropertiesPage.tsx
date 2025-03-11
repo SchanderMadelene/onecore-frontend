@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Filter, Building2, MapPin } from "lucide-react";
+import { Search, Filter, Building2 } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,6 @@ const AllPropertiesPage = () => {
   const filteredProperties = properties?.filter(property => {
     const matchesSearch = (
       property.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      property.municipality.toLowerCase().includes(searchQuery.toLowerCase()) ||
       property.code.toLowerCase().includes(searchQuery.toLowerCase())
     );
     
@@ -54,7 +53,7 @@ const AllPropertiesPage = () => {
               <div className="relative flex-1">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Sök på beteckning, kommun eller kod..."
+                  placeholder="Sök på beteckning eller kod..."
                   className="pl-8"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -93,7 +92,6 @@ const AllPropertiesPage = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Beteckning</TableHead>
-                    <TableHead>Kommun</TableHead>
                     <TableHead>Typ</TableHead>
                     <TableHead>Användning</TableHead>
                     <TableHead className="text-right">Åtgärd</TableHead>
@@ -104,12 +102,6 @@ const AllPropertiesPage = () => {
                     <TableRow key={property.id}>
                       <TableCell className="font-medium">
                         {property.designation}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4 text-muted-foreground" />
-                          {property.municipality}
-                        </div>
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className="bg-slate-100">
@@ -132,7 +124,7 @@ const AllPropertiesPage = () => {
                   ))}
                   {(!filteredProperties || filteredProperties.length === 0) && (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-8">
+                      <TableCell colSpan={4} className="text-center py-8">
                         Inga fastigheter hittades med angivna sökkriterier
                       </TableCell>
                     </TableRow>
