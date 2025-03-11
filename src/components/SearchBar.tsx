@@ -1,4 +1,3 @@
-
 import { Search } from "lucide-react";
 import { Input } from "./ui/input";
 import { useState, useRef, useEffect } from "react";
@@ -18,9 +17,11 @@ export function SearchBar() {
       return;
     }
 
+    const query = searchQuery.toLowerCase();
     const filteredResults = mockSearchResults.filter(result => 
-      result.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      result.address.toLowerCase().includes(searchQuery.toLowerCase())
+      result.name.toLowerCase().includes(query) || 
+      result.address.toLowerCase().includes(query) ||
+      (result.type === "tenant" && result.id.toLowerCase().includes(query))
     );
     
     setSearchResults(filteredResults);

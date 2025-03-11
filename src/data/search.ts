@@ -1,4 +1,3 @@
-
 import { TreeNode } from "../components/treeview/types";
 
 export interface SearchResult {
@@ -137,8 +136,8 @@ const tenantResults: SearchResult[] = [
   }
 ];
 
+// Combine all search results into a single exported array
 export const mockSearchResults: SearchResult[] = [
   ...propertyResults,
   ...tenantResults
 ];
-
