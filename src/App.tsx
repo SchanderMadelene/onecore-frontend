@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -12,6 +13,7 @@ import TenantDetailPage from "./pages/tenants/TenantDetailPage";
 import AllTenantsPage from "./pages/tenants/AllTenantsPage";
 import DesignSystemPage from "./pages/design-system/DesignSystemPage";
 import NotFound from "./pages/NotFound";
+import AllPropertiesPage from "./pages/properties/AllPropertiesPage";
 
 const queryClient = new QueryClient();
 
