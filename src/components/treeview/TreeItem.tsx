@@ -1,7 +1,7 @@
 
-import { useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { ChevronDown, ChevronRight, MapPin } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import { TreeItemProps } from "./types";
 import { getNodeIcon } from "./treeViewUtils";
@@ -9,6 +9,18 @@ import { getNodeIcon } from "./treeViewUtils";
 export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const hasChildren = node.children && node.children.length > 0;
+  const location = useLocation();
+  const isActive = node.path && location.pathname === node.path;
+  const isParentOfActive = node.children && node.children.some(child => 
+    child.path && location.pathname.includes(child.path)
+  );
+
+  useEffect(() => {
+    // Auto-expand parents of active item
+    if (isParentOfActive) {
+      setIsExpanded(true);
+    }
+  }, [isParentOfActive, location.pathname]);
 
   const handleNodeClick = () => {
     if (!hasChildren && node.path && onNavigate) {
@@ -20,7 +32,10 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
     <div className="flex flex-col">
       <div
         className={`
-          flex items-center hover:bg-accent/10 rounded-lg px-2 py-1.5 cursor-pointer transition-colors
+          flex items-center rounded-lg px-2 py-1.5 cursor-pointer transition-colors
+          ${isActive 
+            ? 'bg-primary/10 text-primary font-medium' 
+            : 'hover:bg-accent/10'}
           ${node.path ? 'hover:text-accent' : ''} 
         `}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
@@ -44,14 +59,17 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
         {node.path ? (
           <Link 
             to={node.path} 
-            className="flex items-center text-sm py-1 flex-1 font-medium"
+            className={`flex items-center text-sm py-1 flex-1 ${isActive ? 'font-medium' : ''}`}
             onClick={handleNodeClick}
           >
             <span className="mr-2">{getNodeIcon(node.icon)}</span>
             {node.label}
+            {isActive && (
+              <MapPin className="h-3 w-3 ml-2 text-primary" />
+            )}
           </Link>
         ) : (
-          <span className="flex items-center text-sm font-medium">
+          <span className={`flex items-center text-sm ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
             <span className="mr-2">{getNodeIcon(node.icon)}</span>
             {node.label}
           </span>
