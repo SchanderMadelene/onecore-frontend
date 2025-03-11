@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { usePropertyDetail } from "@/hooks/usePropertyDetail";
@@ -62,43 +63,49 @@ const PropertyDetailPage = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div>
-          <h1 className="text-3xl font-bold mb-2">{propertyDetail.designation}</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl font-bold mb-1">{propertyDetail.designation}</h1>
+          <p className="text-muted-foreground text-sm">
             {propertyDetail.address || propertyDetail.designation}, {propertyDetail.municipality}
           </p>
         </div>
 
-        <Tabs defaultValue="info" className="space-y-6">
+        <Tabs defaultValue="info" className="space-y-4">
           <TabsList className="grid md:grid-cols-7 grid-cols-3 w-full h-auto">
-            <TabsTrigger value="info" className="flex items-center gap-2">
-              <Building className="h-4 w-4" />
-              <span>Fastighet</span>
+            <TabsTrigger value="info" className="flex items-center gap-1 text-xs sm:text-sm">
+              <Building className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Fastighet</span>
+              <span className="sm:hidden">Info</span>
             </TabsTrigger>
-            <TabsTrigger value="documents" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              <span>Dokument</span>
+            <TabsTrigger value="documents" className="flex items-center gap-1 text-xs sm:text-sm">
+              <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Dokument</span>
+              <span className="sm:hidden">Dok</span>
             </TabsTrigger>
-            <TabsTrigger value="planning" className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              <span>Planering</span>
+            <TabsTrigger value="planning" className="flex items-center gap-1 text-xs sm:text-sm">
+              <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Planering</span>
+              <span className="sm:hidden">Plan</span>
             </TabsTrigger>
-            <TabsTrigger value="buildings" className="flex items-center gap-2">
-              <Building className="h-4 w-4" />
-              <span>Byggnader</span>
+            <TabsTrigger value="buildings" className="flex items-center gap-1 text-xs sm:text-sm">
+              <Building className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Byggnader</span>
+              <span className="sm:hidden">Bygg</span>
             </TabsTrigger>
-            <TabsTrigger value="map" className="flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
+            <TabsTrigger value="map" className="flex items-center gap-1 text-xs sm:text-sm">
+              <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>Karta</span>
             </TabsTrigger>
-            <TabsTrigger value="apartments" className="flex items-center gap-2">
-              <Key className="h-4 w-4" />
-              <span>Lägenheter</span>
+            <TabsTrigger value="apartments" className="flex items-center gap-1 text-xs sm:text-sm">
+              <Key className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Lägenheter</span>
+              <span className="sm:hidden">Läg</span>
             </TabsTrigger>
-            <TabsTrigger value="statistics" className="flex items-center gap-2">
-              <PieChart className="h-4 w-4" />
-              <span>Statistik</span>
+            <TabsTrigger value="statistics" className="flex items-center gap-1 text-xs sm:text-sm">
+              <PieChart className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Statistik</span>
+              <span className="sm:hidden">Stat</span>
             </TabsTrigger>
           </TabsList>
 
