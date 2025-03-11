@@ -46,7 +46,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
             overflow-y-auto
           `}
         >
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-5xl mx-auto space-y-4">
             {children}
           </div>
         </main>

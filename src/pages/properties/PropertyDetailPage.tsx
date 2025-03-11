@@ -33,10 +33,10 @@ const PropertyDetailPage = () => {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="animate-pulse space-y-6">
+        <div className="animate-pulse space-y-6 py-4">
           <div className="h-8 bg-secondary rounded w-64"></div>
-          <div className="h-4 bg-secondary rounded w-32"></div>
-          <div className="h-[200px] bg-secondary rounded"></div>
+          <div className="h-4 bg-secondary rounded w-32 mt-2"></div>
+          <div className="h-[200px] bg-secondary rounded mt-6"></div>
         </div>
       );
     }
@@ -44,7 +44,7 @@ const PropertyDetailPage = () => {
     if (error || !propertyDetail) {
       return (
         <div className="text-center py-10 space-y-4">
-          <h2 className="text-2xl font-bold mb-2">Fastigheten kunde inte hittas</h2>
+          <h2 className="text-2xl font-bold">Fastigheten kunde inte hittas</h2>
           <p className="text-muted-foreground">Kontrollera adressen och försök igen</p>
           <p className="text-sm text-muted-foreground mt-2">Sökte efter: {propertyKey}</p>
         </div>
@@ -52,18 +52,16 @@ const PropertyDetailPage = () => {
     }
 
     return (
-      <>
+      <div className="py-4 space-y-6">
         <PropertyHeader propertyDetail={propertyDetail} />
         <PropertyDetailTabs propertyDetail={propertyDetail} />
-      </>
+      </div>
     );
   };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
-        {renderContent()}
-      </div>
+      {renderContent()}
     </PageLayout>
   );
 };

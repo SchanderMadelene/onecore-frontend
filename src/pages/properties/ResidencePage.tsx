@@ -15,21 +15,31 @@ export const ResidencePage = () => {
 
   const renderContent = () => {
     if (isLoading) {
-      return <LoadingState />;
+      return (
+        <div className="py-4">
+          <LoadingState />
+        </div>
+      );
     }
     
     if (error) {
-      return <ErrorState message={error.message} />;
+      return (
+        <div className="py-4">
+          <ErrorState message={error.message} />
+        </div>
+      );
     }
     
     if (residenceData && roomsData) {
       return (
-        <ResidenceContent 
-          residenceData={residenceData}
-          roomsData={roomsData}
-          property={property}
-          district={district}
-        />
+        <div className="py-4 space-y-6">
+          <ResidenceContent 
+            residenceData={residenceData}
+            roomsData={roomsData}
+            property={property}
+            district={district}
+          />
+        </div>
       );
     }
     
@@ -38,9 +48,7 @@ export const ResidencePage = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
-        {renderContent()}
-      </div>
+      {renderContent()}
     </PageLayout>
   );
 };
