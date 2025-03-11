@@ -6,7 +6,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { TenantInformation } from "./TenantInformation";
-import { mockTenant } from "@/data/mockData";
+import { mockTenant } from "@/data/tenants";
 
 interface InspectionInfoStepProps {
   inspectorName: string;
