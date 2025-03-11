@@ -15,22 +15,20 @@ export const ResidencePage = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
-        {isLoading && <LoadingState />}
-        
-        {error && (
-          <ErrorState message={error.message} />
-        )}
-        
-        {!isLoading && !error && residenceData && roomsData && (
-          <ResidenceContent 
-            residenceData={residenceData}
-            roomsData={roomsData}
-            property={property}
-            district={district}
-          />
-        )}
-      </div>
+      {isLoading && <LoadingState />}
+      
+      {error && (
+        <ErrorState message={error.message} />
+      )}
+      
+      {!isLoading && !error && residenceData && roomsData && (
+        <ResidenceContent 
+          residenceData={residenceData}
+          roomsData={roomsData}
+          property={property}
+          district={district}
+        />
+      )}
     </PageLayout>
   );
 };

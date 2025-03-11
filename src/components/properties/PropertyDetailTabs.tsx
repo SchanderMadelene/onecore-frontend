@@ -16,7 +16,7 @@ interface PropertyDetailTabsProps {
 
 export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) => {
   return (
-    <Tabs defaultValue="info" className="space-y-4">
+    <Tabs defaultValue="info" className="space-y-6">
       <TabsList className="grid md:grid-cols-7 grid-cols-3 w-full h-auto">
         <TabsTrigger value="info" className="flex items-center gap-1 text-xs sm:text-sm">
           <Building className="h-3 w-3 sm:h-4 sm:w-4" />
