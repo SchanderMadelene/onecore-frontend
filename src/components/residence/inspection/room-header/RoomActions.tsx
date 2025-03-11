@@ -21,7 +21,7 @@ export const RoomActions = ({
   return (
     <div className="flex items-center gap-3">
       {!isApproved && isHandled && (
-        <Badge variant="muted" className="gap-1.5">
+        <Badge variant="secondary" className="gap-1.5">
           <CheckCircle className="h-3 w-3" />
           Hanterat
         </Badge>
