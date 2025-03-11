@@ -10,10 +10,10 @@ const TenantsPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
-        <h1 className="text-3xl font-bold mb-6">
+        <h1 className="text-3xl font-bold mb-2">
           {type === "companies" ? "Företagshyresgäster" : "Privata hyresgäster"}
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground mb-6">
           Information om {type === "companies" ? "företagshyresgäster" : "privata hyresgäster"}.
         </p>
       </div>

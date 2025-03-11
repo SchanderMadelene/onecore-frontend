@@ -8,8 +8,8 @@ interface PropertyHeaderProps {
 export const PropertyHeader = ({ propertyDetail }: PropertyHeaderProps) => {
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-1">{propertyDetail.designation}</h1>
-      <p className="text-muted-foreground text-sm">
+      <h1 className="text-3xl font-bold mb-2">{propertyDetail.designation}</h1>
+      <p className="text-muted-foreground">
         {propertyDetail.address || propertyDetail.designation}, {propertyDetail.municipality}
       </p>
     </div>
