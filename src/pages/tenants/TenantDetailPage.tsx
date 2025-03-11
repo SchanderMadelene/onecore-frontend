@@ -48,8 +48,8 @@ const TenantDetailPage = () => {
               Ärenden
               {hasActiveCases && (
                 <Badge 
-                  variant="destructive" 
-                  className="ml-1.5 py-0 px-1.5 h-5 text-[10px] font-semibold"
+                  variant="outline" 
+                  className="ml-1.5 py-0 px-1.5 h-5 text-[10px] font-semibold bg-slate-200 text-slate-700 border-slate-300"
                 >
                   1
                 </Badge>
