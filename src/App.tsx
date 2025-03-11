@@ -11,6 +11,7 @@ import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
 import ResidencePage from "./pages/properties/ResidencePage";
 import TenantsPage from "./pages/tenants/TenantsPage";
 import TenantDetailPage from "./pages/tenants/TenantDetailPage";
+import AllTenantsPage from "./pages/tenants/AllTenantsPage";
 import DesignSystemPage from "./pages/design-system/DesignSystemPage";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/properties/:city/:district/:property/:id" element={<ResidencePage />} />
             <Route path="/tenants/:type" element={<TenantsPage />} />
             <Route path="/tenants/detail/:id" element={<TenantDetailPage />} />
+            <Route path="/tenants/all" element={<AllTenantsPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
