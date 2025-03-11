@@ -1,4 +1,5 @@
-import { TreeNode } from "./components/treeview/types";
+
+import { TreeNode } from "../components/treeview/types";
 
 export interface SearchResult {
   id: string;
@@ -12,7 +13,7 @@ export interface SearchResult {
   };
 }
 
-export const mockSearchResults: SearchResult[] = [
+const propertyResults: SearchResult[] = [
   {
     id: "lgh-101",
     name: "Lägenhet 1001",
@@ -137,6 +138,7 @@ const tenantResults: SearchResult[] = [
 ];
 
 export const mockSearchResults: SearchResult[] = [
-  ...mockSearchResults,
+  ...propertyResults,
   ...tenantResults
 ];
+
