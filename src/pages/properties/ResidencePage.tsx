@@ -32,7 +32,7 @@ export const ResidencePage = () => {
     
     if (residenceData && roomsData) {
       return (
-        <div className="py-4 space-y-6 max-w-4xl mx-auto">
+        <div className="py-4 space-y-6">
           <ResidenceContent 
             residenceData={residenceData}
             roomsData={roomsData}
