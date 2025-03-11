@@ -1,68 +1,147 @@
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { Building2, MapPin } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Search, Filter, Building2, MapPin } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { mockProperties } from "@/data/properties";
 import type { Property } from "@/types/api";
 
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState<"all" | "bostad" | "kontor">("all");
 
   const { data: properties } = useQuery<Property[]>({
     queryKey: ['properties'],
     queryFn: () => Promise.resolve(mockProperties)
   });
 
+  const filteredProperties = properties?.filter(property => {
+    const matchesSearch = (
+      property.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.municipality.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.code.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
+    const matchesFilter = 
+      filter === "all" || 
+      (filter === "bostad" && property.purpose === "Bostad") || 
+      (filter === "kontor" && property.purpose === "Kontor");
+    
+    return matchesSearch && matchesFilter;
+  });
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">Fastigheter</h1>
-            <p className="text-muted-foreground">
-              Översikt över alla fastigheter
-            </p>
-          </div>
-        </div>
+      <div className="w-full">
+        <h1 className="text-3xl font-bold mb-2">Fastigheter</h1>
+        <p className="text-muted-foreground mb-6">
+          Översikt över alla fastigheter i systemet
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {properties?.map((property) => (
-            <Link 
-              key={property.id} 
-              to={`/properties/vasteras/${property.purpose === 'Bostad' ? 'backby' : 'domkyrkan'}/${property.purpose === 'Bostad' ? 'gotgatan-15' : 'sveavagen-10'}`}
-              className="block"
-            >
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <h3 className="font-semibold text-lg">{property.designation}</h3>
-                      <div className="flex items-center text-muted-foreground text-sm gap-1">
-                        <MapPin className="h-4 w-4" />
-                        {property.municipality}
-                      </div>
-                    </div>
-                    <Building2 className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-2">
-                    <Badge variant="outline" className="bg-slate-100">
-                      {property.purpose}
-                    </Badge>
-                    <Badge variant="outline" className="bg-slate-100">
-                      {property.buildingType}
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Fastighetslista</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Sök på beteckning, kommun eller kod..."
+                  className="pl-8"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button 
+                  variant={filter === "all" ? "default" : "outline"} 
+                  onClick={() => setFilter("all")}
+                  className="flex gap-2 items-center"
+                >
+                  <Filter className="h-4 w-4" />
+                  <span className="hidden sm:inline">Alla</span>
+                </Button>
+                <Button 
+                  variant={filter === "bostad" ? "default" : "outline"} 
+                  onClick={() => setFilter("bostad")}
+                  className="flex gap-2 items-center"
+                >
+                  <Building2 className="h-4 w-4" />
+                  <span className="hidden sm:inline">Bostad</span>
+                </Button>
+                <Button 
+                  variant={filter === "kontor" ? "default" : "outline"} 
+                  onClick={() => setFilter("kontor")}
+                  className="flex gap-2 items-center"
+                >
+                  <Building2 className="h-4 w-4" />
+                  <span className="hidden sm:inline">Kontor</span>
+                </Button>
+              </div>
+            </div>
+
+            <div className="border rounded-md">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Beteckning</TableHead>
+                    <TableHead>Kommun</TableHead>
+                    <TableHead>Typ</TableHead>
+                    <TableHead>Användning</TableHead>
+                    <TableHead className="text-right">Åtgärd</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredProperties?.map((property) => (
+                    <TableRow key={property.id}>
+                      <TableCell className="font-medium">
+                        {property.designation}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4 text-muted-foreground" />
+                          {property.municipality}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="bg-slate-100">
+                          {property.buildingType}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="bg-slate-100">
+                          {property.purpose}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button asChild variant="link" size="sm">
+                          <Link to={`/properties/vasteras/${property.purpose === 'Bostad' ? 'backby' : 'domkyrkan'}/${property.purpose === 'Bostad' ? 'gotgatan-15' : 'sveavagen-10'}`}>
+                            Visa detaljer
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {(!filteredProperties || filteredProperties.length === 0) && (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center py-8">
+                        Inga fastigheter hittades med angivna sökkriterier
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </PageLayout>
   );
