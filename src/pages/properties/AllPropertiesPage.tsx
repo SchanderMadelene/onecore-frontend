@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Filter, Building2, Buildings } from "lucide-react";
+import { Search, Filter, Building2, Building } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -116,7 +116,7 @@ const AllPropertiesPage = () => {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1">
-                          <Buildings className="h-4 w-4 text-muted-foreground" />
+                          <Building className="h-4 w-4 text-muted-foreground" />
                           <span>{property.buildingCount || 0}</span>
                         </div>
                       </TableCell>
