@@ -1,4 +1,3 @@
-
 import { TreeNode } from "./types";
 
 export const treeData: TreeNode[] = [
@@ -71,6 +70,12 @@ export const treeData: TreeNode[] = [
         ]
       }
     ]
+  },
+  {
+    id: "tenants",
+    label: "Kunder",
+    icon: "contact",
+    path: "/tenants/all",
   },
   {
     id: "design-system",

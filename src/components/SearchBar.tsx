@@ -17,9 +17,11 @@ export function SearchBar() {
       return;
     }
 
+    const query = searchQuery.toLowerCase();
     const filteredResults = mockSearchResults.filter(result => 
-      result.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      result.address.toLowerCase().includes(searchQuery.toLowerCase())
+      result.name.toLowerCase().includes(query) || 
+      result.address.toLowerCase().includes(query) ||
+      (result.type === "tenant" && result.id.toLowerCase().includes(query))
     );
     
     setSearchResults(filteredResults);
@@ -91,9 +93,14 @@ export function SearchBar() {
                     {result.tenant ? "Uthyrd" : "Vakant"}
                   </div>
                 )}
+                {result.type === "tenant" && (
+                  <div className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                    Kund
+                  </div>
+                )}
               </div>
               <div className="text-xs text-muted-foreground">{result.address}</div>
-              {result.tenant && (
+              {result.type !== "tenant" && result.tenant && (
                 <div className="text-xs mt-1 text-primary">
                   Hyresgäst: {result.tenant.name}
                 </div>

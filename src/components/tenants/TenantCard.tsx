@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, User } from "lucide-react";
-import { Link } from "react-router-dom";
 
-interface TenantInformationProps {
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Phone, Mail, MessageSquare, Home, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+interface TenantCardProps {
   tenant: {
     firstName: string;
     lastName: string;
@@ -17,7 +17,7 @@ interface TenantInformationProps {
   };
 }
 
-export function TenantInformation({ tenant }: TenantInformationProps) {
+export function TenantCard({ tenant }: TenantCardProps) {
   const handleCall = () => {
     window.location.href = `tel:${tenant.phone.replace(/[\s-]/g, '')}`;
   };
@@ -32,14 +32,8 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 flex-wrap gap-4">
-        <CardTitle>Hyresgästinformation</CardTitle>
-        <Button variant="outline" asChild className="shrink-0">
-          <Link to={`/tenants/detail/${tenant.personalNumber}`}>
-            <User className="mr-2" />
-            Öppna kundkort
-          </Link>
-        </Button>
+      <CardHeader>
+        <CardTitle>Personuppgifter</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -52,18 +46,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
               <p className="text-sm text-muted-foreground">Personnummer</p>
               <p className="font-medium">{tenant.personalNumber}</p>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-              <p className="font-medium">{tenant.contractNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
-              <p className="font-medium">
-                {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
-              </p>
-            </div>
-          </div>
-          <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Telefon</p>
               <div className="flex items-center gap-2">
@@ -87,14 +69,32 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                 </Button>
               </div>
             </div>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
+              <p className="font-medium">{tenant.contractNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
+              <p className="font-medium">
+                {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
+              </p>
+            </div>
             <div>
               <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-              <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </div>
             </div>
             {tenant.moveOutDate && (
               <div>
                 <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-                <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                </div>
               </div>
             )}
           </div>

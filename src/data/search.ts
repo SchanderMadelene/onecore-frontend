@@ -1,9 +1,9 @@
+import { TreeNode } from "../components/treeview/types";
 
-// Mock search results
 export interface SearchResult {
   id: string;
   name: string;
-  type: "property" | "building" | "apartment";
+  type: "property" | "building" | "apartment" | "tenant";
   address: string;
   path: string;
   tenant?: {
@@ -12,7 +12,7 @@ export interface SearchResult {
   };
 }
 
-export const mockSearchResults: SearchResult[] = [
+const propertyResults: SearchResult[] = [
   {
     id: "lgh-101",
     name: "Lägenhet 1001",
@@ -96,4 +96,48 @@ export const mockSearchResults: SearchResult[] = [
     address: "Bäckby, Västerås",
     path: "/properties/vasteras/backby/gotgatan-15"
   }
+];
+
+const tenantResults: SearchResult[] = [
+  {
+    id: "19850101-1234",
+    name: "Anna Andersson",
+    type: "tenant",
+    address: "Älgen 1, Lundby",
+    path: "/tenants/detail/19850101-1234"
+  },
+  {
+    id: "19760315-5678",
+    name: "Erik Karlsson",
+    type: "tenant",
+    address: "Björnen 4, Domkyrkan",
+    path: "/tenants/detail/19760315-5678"
+  },
+  {
+    id: "19911122-9012",
+    name: "Maria Lindberg",
+    type: "tenant",
+    address: "Lindaren 2, Bäckby",
+    path: "/tenants/detail/19911122-9012"
+  },
+  {
+    id: "5566778899",
+    name: "Svenssons Bygg AB",
+    type: "tenant",
+    address: "Björnen 4, Domkyrkan",
+    path: "/tenants/detail/5566778899"
+  },
+  {
+    id: "1122334455",
+    name: "Johanssons Fastigheter KB",
+    type: "tenant",
+    address: "Älgen 1, Lundby",
+    path: "/tenants/detail/1122334455"
+  }
+];
+
+// Combine all search results into a single exported array
+export const mockSearchResults: SearchResult[] = [
+  ...propertyResults,
+  ...tenantResults
 ];
