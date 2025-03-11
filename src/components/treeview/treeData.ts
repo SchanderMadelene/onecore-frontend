@@ -75,7 +75,7 @@ export const treeData: TreeNode[] = [
   {
     id: "tenants",
     label: "Kunder",
-    icon: "users",
+    icon: "contact",
     children: [
       {
         id: "private-tenants",
