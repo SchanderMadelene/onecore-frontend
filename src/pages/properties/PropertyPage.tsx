@@ -9,7 +9,7 @@ const PropertyPage = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="max-w-6xl mx-auto">
+      <div className="w-full">
         <h1 className="text-3xl font-bold mb-6">
           {city && district 
             ? `${city.charAt(0).toUpperCase() + city.slice(1)} - ${district.charAt(0).toUpperCase() + district.slice(1)}`

@@ -18,7 +18,7 @@ const DesignSystemPage = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
+      <div className="space-y-6 w-full">
         <header>
           <h1 className="text-3xl font-bold tracking-tight mb-2">Design System</h1>
           <p className="text-muted-foreground">
