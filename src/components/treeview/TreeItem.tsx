@@ -1,10 +1,11 @@
 
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, MapPin } from "lucide-react";
+import { ChevronDown, ChevronRight, MapPin, Tag } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import { TreeItemProps } from "./types";
 import { getNodeIcon } from "./treeViewUtils";
+import { Badge } from "../ui/badge";
 
 export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -63,10 +64,20 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             onClick={handleNodeClick}
           >
             <span className="mr-2">{getNodeIcon(node.icon)}</span>
-            {node.label}
-            {isActive && (
-              <MapPin className="h-3 w-3 ml-2 text-primary" />
-            )}
+            <div className="flex flex-col">
+              <div className="flex items-center">
+                {node.label}
+                {isActive && (
+                  <MapPin className="h-3 w-3 ml-2 text-primary" />
+                )}
+              </div>
+              {node.area && (
+                <Badge variant="outline" className="text-xs px-1 py-0 h-5 mt-1 bg-accent/5">
+                  <Tag className="h-3 w-3 mr-1" />
+                  {node.area}
+                </Badge>
+              )}
+            </div>
           </Link>
         ) : (
           <span className={`flex items-center text-sm ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
