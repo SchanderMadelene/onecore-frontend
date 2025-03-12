@@ -4,13 +4,14 @@ import { mockPropertyDetails } from "./propertyDetails";
 
 // Helper function to get building count
 const getBuildingCount = (propertyId: string): number => {
-  // Check all property details to find matching property
-  for (const key in mockPropertyDetails) {
-    const detail = mockPropertyDetails[key];
-    if (detail.id === propertyId) {
-      return detail.buildings.length;
-    }
+  const propertyKey = Object.keys(mockPropertyDetails).find(key => 
+    mockPropertyDetails[key].id === propertyId
+  );
+  
+  if (propertyKey) {
+    return mockPropertyDetails[propertyKey].buildings.length;
   }
+  
   // Default to 0 if not found
   return 0;
 };
@@ -23,29 +24,29 @@ export const mockProperties: Property[] = [
     code: "FAST-001",
     designation: "Älgen 1",
     municipality: "Västerås",
-    purpose: "Kontor",
-    buildingType: "Kontorsbyggnad",
-    buildingCount: getBuildingCount("1")
+    purpose: "Bostad",
+    buildingType: "Flerbostadshus",
+    buildingCount: 2
   },
   {
     id: "2",
     propertyObjectId: "P2",
     code: "FAST-002",
-    designation: "Björnen 4",
+    designation: "Lindaren 2",
     municipality: "Västerås",
     purpose: "Bostad",
-    buildingType: "Flerfamiljshus",
-    buildingCount: getBuildingCount("2")
+    buildingType: "Flerbostadshus",
+    buildingCount: 1
   },
   {
     id: "3",
     propertyObjectId: "P3",
     code: "FAST-003",
-    designation: "Lindaren 2",
+    designation: "Björnen 4",
     municipality: "Västerås",
-    purpose: "Bostad",
-    buildingType: "Flerfamiljshus",
-    buildingCount: getBuildingCount("3")
+    purpose: "Kontor",
+    buildingType: "Kontorsbyggnad",
+    buildingCount: 2
   },
   {
     id: "4",

@@ -7,6 +7,10 @@ interface PropertyApartmentsTabProps {
 }
 
 export const PropertyApartmentsTab = ({ buildings }: PropertyApartmentsTabProps) => {
+  // Count total apartments across all buildings
+  const totalApartments = buildings.reduce((total, building) => 
+    total + (building.apartments?.length || 0), 0);
+
   return (
     <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {buildings.flatMap(building => 
@@ -31,7 +35,7 @@ export const PropertyApartmentsTab = ({ buildings }: PropertyApartmentsTabProps)
           </div>
         ))
       )}
-      {buildings.every(b => !b.apartments || b.apartments.length === 0) && (
+      {totalApartments === 0 && (
         <div className="col-span-3 border rounded-lg p-6 text-center">
           <Key className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
           <h3 className="text-xl font-medium mb-2">Inga lägenheter</h3>

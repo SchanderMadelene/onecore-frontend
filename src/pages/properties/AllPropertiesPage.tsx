@@ -36,6 +36,18 @@ const AllPropertiesPage = () => {
     return matchesSearch && matchesFilter;
   });
 
+  // Helper function to get the correct path for a property
+  const getPropertyPath = (property: Property): string => {
+    if (property.id === "1") return "/properties/vasteras/lundby/odenplan-5";
+    if (property.id === "2") return "/properties/vasteras/backby/gotgatan-15";
+    if (property.id === "3") return "/properties/vasteras/domkyrkan/sveavagen-10";
+    
+    // Default path for other properties
+    const area = property.purpose === 'Bostad' ? 'backby' : 'domkyrkan';
+    const street = property.purpose === 'Bostad' ? 'gotgatan-15' : 'sveavagen-10';
+    return `/properties/vasteras/${area}/${street}`;
+  };
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
@@ -122,7 +134,7 @@ const AllPropertiesPage = () => {
                       </TableCell>
                       <TableCell className="text-right">
                         <Button asChild variant="link" size="sm">
-                          <Link to={`/properties/vasteras/${property.purpose === 'Bostad' ? 'backby' : 'domkyrkan'}/${property.purpose === 'Bostad' ? 'gotgatan-15' : 'sveavagen-10'}`}>
+                          <Link to={getPropertyPath(property)}>
                             Visa detaljer
                           </Link>
                         </Button>

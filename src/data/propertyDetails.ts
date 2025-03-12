@@ -1,3 +1,4 @@
+
 import type { PropertyDetail } from "@/types/api";
 
 // Property details mock data
