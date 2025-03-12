@@ -1,4 +1,3 @@
-
 import { TreeNode } from "../components/treeview/types";
 
 export interface SearchResult {
@@ -77,6 +76,57 @@ const propertyResults: SearchResult[] = [
     }
   },
   {
+    id: "lgh-4001",
+    name: "Lägenhet 4001",
+    type: "apartment",
+    address: "Pipan 1, Pettersberg",
+    path: "/properties/vasteras/pettersberg/pipan-1/flerfamiljshus-pipan/lgh-4001",
+    tenant: {
+      name: "Peter Pettersson",
+      active: true
+    }
+  },
+  {
+    id: "lgh-4002",
+    name: "Lägenhet 4002",
+    type: "apartment",
+    address: "Pipan 1, Pettersberg",
+    path: "/properties/vasteras/pettersberg/pipan-1/flerfamiljshus-pipan/lgh-4002"
+  },
+  {
+    id: "kontor-201",
+    name: "Kontor 201",
+    type: "apartment",
+    address: "Oskaria 1, Oxbacken",
+    path: "/properties/vasteras/oxbacken/oskaria-1/kontorsbyggnad-oskaria/kontor-201",
+    tenant: {
+      name: "Digital Solutions AB",
+      active: true
+    }
+  },
+  {
+    id: "lgh-5001",
+    name: "Lägenhet 5001",
+    type: "apartment",
+    address: "Styrhylsan 9, Hammarby",
+    path: "/properties/vasteras/hammarby/styrhylsan-9/radhus-styrhylsan/lgh-5001",
+    tenant: {
+      name: "Stefan Hammarberg",
+      active: true
+    }
+  },
+  {
+    id: "kontor-301",
+    name: "Kontor 301",
+    type: "apartment",
+    address: "Bävern 1, Centrum",
+    path: "/properties/vasteras/centrum/bavern-1/kontorskomplex-bavern/kontor-301",
+    tenant: {
+      name: "Centrumkliniken AB",
+      active: true
+    }
+  },
+  {
     id: "odenplan-5",
     name: "Älgen 1",
     type: "property",
@@ -96,6 +146,34 @@ const propertyResults: SearchResult[] = [
     type: "property",
     address: "Bäckby, Västerås",
     path: "/properties/vasteras/backby/gotgatan-15"
+  },
+  {
+    id: "pipan-1",
+    name: "Pipan 1",
+    type: "property",
+    address: "Pettersberg, Västerås",
+    path: "/properties/vasteras/pettersberg/pipan-1"
+  },
+  {
+    id: "oskaria-1",
+    name: "Oskaria 1",
+    type: "property",
+    address: "Oxbacken, Västerås",
+    path: "/properties/vasteras/oxbacken/oskaria-1"
+  },
+  {
+    id: "styrhylsan-9",
+    name: "Styrhylsan 9",
+    type: "property",
+    address: "Hammarby, Västerås",
+    path: "/properties/vasteras/hammarby/styrhylsan-9"
+  },
+  {
+    id: "bavern-1",
+    name: "Bävern 1",
+    type: "property",
+    address: "Centrum, Västerås",
+    path: "/properties/vasteras/centrum/bavern-1"
   }
 ];
 
@@ -137,7 +215,6 @@ const tenantResults: SearchResult[] = [
   }
 ];
 
-// Combine all search results into a single exported array
 export const mockSearchResults: SearchResult[] = [
   ...propertyResults,
   ...tenantResults
