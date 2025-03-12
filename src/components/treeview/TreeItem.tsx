@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, MapPin, Tag, FolderOpen, Folder } from "lucide-react";
+import { ChevronDown, ChevronRight, MapPin, Tag } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import { TreeItemProps } from "./types";
@@ -29,13 +29,6 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
     }
   };
 
-  const getFolderIcon = () => {
-    if (isExpanded) {
-      return <FolderOpen className="h-4 w-4 text-accent" />;
-    }
-    return <Folder className="h-4 w-4 text-muted-foreground" />;
-  };
-
   return (
     <div className="flex flex-col">
       <div
@@ -47,7 +40,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
               ? 'bg-accent/10 text-foreground' 
               : 'hover:bg-accent/10'}
           ${node.path ? 'hover:text-accent' : ''} 
-          ${isExpanded ? 'border-l-2 border-accent/80 shadow-sm' : ''}
+          ${isExpanded ? 'border-l-2 border-accent/80' : ''}
         `}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
       >
@@ -74,7 +67,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             onClick={handleNodeClick}
           >
             <span className={`mr-2 ${isExpanded ? 'text-accent' : ''}`}>
-              {node.icon === 'building' && hasChildren ? getFolderIcon() : getNodeIcon(node.icon)}
+              {getNodeIcon(node.icon)}
             </span>
             <div className="flex flex-col">
               <div className="flex items-center">
@@ -94,7 +87,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
         ) : (
           <span className={`flex items-center text-sm ${isActive || isParentOfActive ? 'font-medium' : ''} ${isExpanded ? 'text-accent' : ''}`}>
             <span className={`mr-2 ${isExpanded ? 'text-accent' : ''}`}>
-              {node.icon === 'building' && hasChildren ? getFolderIcon() : getNodeIcon(node.icon)}
+              {getNodeIcon(node.icon)}
             </span>
             {node.label}
           </span>
