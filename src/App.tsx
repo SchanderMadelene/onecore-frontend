@@ -29,7 +29,8 @@ const App = () => (
             <Route path="/properties" element={<AllPropertiesPage />} />
             <Route path="/properties/:city/:district" element={<PropertyPage />} />
             <Route path="/properties/:city/:district/:property" element={<PropertyDetailPage />} />
-            <Route path="/properties/:city/:district/:property/:id" element={<ResidencePage />} />
+            <Route path="/properties/:city/:district/:property/:building" element={<ResidencePage />} />
+            <Route path="/properties/:city/:district/:property/:building/:id" element={<ResidencePage />} />
             <Route path="/tenants/all" element={<AllTenantsPage />} />
             <Route path="/tenants/detail/:id" element={<TenantDetailPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
