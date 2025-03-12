@@ -1,3 +1,4 @@
+
 import { TreeNode } from "../components/treeview/types";
 
 export interface SearchResult {
@@ -14,62 +15,62 @@ export interface SearchResult {
 
 const propertyResults: SearchResult[] = [
   {
-    id: "lgh-101",
+    id: "lgh-1001",
     name: "Lägenhet 1001",
     type: "apartment",
     address: "Älgen 1, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/lgh-101",
+    path: "/properties/vasteras/lundby/odenplan-5/building-a/lgh-1001",
     tenant: {
       name: "Anna Andersson",
       active: true
     }
   },
   {
-    id: "lgh-201",
+    id: "lgh-1002",
     name: "Lägenhet 1002",
     type: "apartment",
     address: "Älgen 1, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/lgh-201",
+    path: "/properties/vasteras/lundby/odenplan-5/building-a/lgh-1002",
     tenant: {
       name: "Johan Svensson",
       active: true
     }
   },
   {
-    id: "lgh-301",
+    id: "lgh-2001",
     name: "Lägenhet 2001",
     type: "apartment",
     address: "Älgen 1, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/lgh-301",
+    path: "/properties/vasteras/lundby/odenplan-5/building-b/lgh-2001",
     tenant: {
       name: "Maria Eriksson",
       active: true
     }
   },
   {
-    id: "lgh-301",
+    id: "lgh-3001",
     name: "Lägenhet 3001",
     type: "apartment",
     address: "Lindaren 2, Bäckby",
-    path: "/properties/vasteras/backby/gotgatan-15/lgh-301",
+    path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren/lgh-3001",
     tenant: {
       name: "Henrik Johansson",
       active: true
     }
   },
   {
-    id: "lgh-302",
+    id: "lgh-3002",
     name: "Lägenhet 3002",
     type: "apartment",
     address: "Lindaren 2, Bäckby",
-    path: "/properties/vasteras/backby/gotgatan-15/lgh-302"
+    path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren/lgh-3002"
   },
   {
-    id: "lgh-101",
+    id: "kontor-101",
     name: "Kontor 101",
     type: "apartment",
     address: "Björnen 4, Domkyrkan",
-    path: "/properties/vasteras/domkyrkan/sveavagen-10/lgh-101",
+    path: "/properties/vasteras/domkyrkan/sveavagen-10/kontorsbyggnad-a/kontor-101",
     tenant: {
       name: "Tech AB",
       active: true

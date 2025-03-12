@@ -1,7 +1,6 @@
 
 import { PropertyDetail } from "@/types/api";
 
-// Property 3: Björnen 4
 export const property3: PropertyDetail = {
   id: "3",
   propertyObjectId: "P3",
@@ -52,5 +51,26 @@ export const property3: PropertyDetail = {
       tenants: 15,
       apartments: []
     }
-  ]
+  ],
+  propertyMap: {
+    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg==",
+    buildings: [
+      {
+        id: "B4",
+        name: "Kontorsbyggnad A",
+        x: 150,
+        y: 100,
+        width: 250,
+        height: 200
+      },
+      {
+        id: "B5",
+        name: "Kontorsbyggnad B",
+        x: 450,
+        y: 250,
+        width: 200,
+        height: 150
+      }
+    ]
+  }
 };

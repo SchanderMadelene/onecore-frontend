@@ -1,7 +1,6 @@
 
 import { PropertyDetail } from "@/types/api";
 
-// Property 2: Lindaren 2
 export const property2: PropertyDetail = {
   id: "2",
   propertyObjectId: "P2",

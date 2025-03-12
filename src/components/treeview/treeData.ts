@@ -1,3 +1,4 @@
+
 import { TreeNode } from "./types";
 
 export const treeData: TreeNode[] = [
@@ -70,16 +71,30 @@ export const treeData: TreeNode[] = [
         area: "Domkyrkan",
         children: [
           {
-            id: "lgh-201",
-            label: "LGH-201",
-            icon: "home",
-            path: "/properties/vasteras/domkyrkan/sveavagen-10/lgh-201"
+            id: "kontorsbyggnad-a",
+            label: "Kontorsbyggnad A",
+            icon: "building",
+            path: "/properties/vasteras/domkyrkan/sveavagen-10/kontorsbyggnad-a",
+            children: [
+              {
+                id: "kontor-101",
+                label: "101",
+                icon: "home",
+                path: "/properties/vasteras/domkyrkan/sveavagen-10/kontorsbyggnad-a/kontor-101"
+              },
+              {
+                id: "kontor-102",
+                label: "102",
+                icon: "home",
+                path: "/properties/vasteras/domkyrkan/sveavagen-10/kontorsbyggnad-a/kontor-102"
+              }
+            ]
           },
           {
-            id: "lgh-202",
-            label: "LGH-202",
-            icon: "home",
-            path: "/properties/vasteras/domkyrkan/sveavagen-10/lgh-202"
+            id: "kontorsbyggnad-b",
+            label: "Kontorsbyggnad B",
+            icon: "building",
+            path: "/properties/vasteras/domkyrkan/sveavagen-10/kontorsbyggnad-b"
           }
         ]
       },
@@ -91,16 +106,30 @@ export const treeData: TreeNode[] = [
         area: "Bäckby",
         children: [
           {
-            id: "lgh-301",
-            label: "LGH-301",
-            icon: "home",
-            path: "/properties/vasteras/backby/gotgatan-15/lgh-301"
-          },
-          {
-            id: "lgh-302",
-            label: "LGH-302",
-            icon: "home",
-            path: "/properties/vasteras/backby/gotgatan-15/lgh-302"
+            id: "hus-a-lindaren",
+            label: "Hus A",
+            icon: "building",
+            path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren",
+            children: [
+              {
+                id: "lgh-3001",
+                label: "3001",
+                icon: "home",
+                path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren/lgh-3001"
+              },
+              {
+                id: "lgh-3002",
+                label: "3002",
+                icon: "home",
+                path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren/lgh-3002"
+              },
+              {
+                id: "lgh-3003",
+                label: "3003",
+                icon: "home",
+                path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren/lgh-3003"
+              }
+            ]
           }
         ]
       }
