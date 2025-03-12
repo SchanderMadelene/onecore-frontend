@@ -34,11 +34,11 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
         className={`
           flex items-center rounded-full px-4 py-2.5 cursor-pointer transition-colors
           ${isActive 
-            ? 'bg-white text-foreground font-medium' 
+            ? 'bg-white text-foreground font-medium shadow-sm' 
             : isExpanded 
-              ? 'text-foreground' 
-              : 'hover:bg-[#E5E5E5]'}
-          ${node.path ? 'hover:bg-[#E5E5E5]' : ''} 
+              ? 'text-foreground hover:bg-white/60' 
+              : 'hover:bg-white/60'}
+          ${node.path ? 'hover:bg-white/60' : ''} 
         `}
         style={{ paddingLeft: `${level * 16 + 16}px` }}
       >
@@ -65,10 +65,10 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             className={`flex items-center text-sm py-1 flex-1 ${isActive ? 'font-medium' : ''}`}
             onClick={handleNodeClick}
           >
-            <span className="mr-3 text-muted-foreground">
+            <span className="mr-3 text-foreground">
               {getNodeIcon(node.icon)}
             </span>
-            <div className="flex flex-col">
+            <div className="flex flex-col text-foreground">
               <div className="flex items-center">
                 {node.label}
                 {isActive && (
@@ -84,8 +84,8 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             </div>
           </Link>
         ) : (
-          <span className={`flex items-center text-sm ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
-            <span className="mr-3 text-muted-foreground">
+          <span className={`flex items-center text-sm text-foreground ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
+            <span className="mr-3 text-foreground">
               {getNodeIcon(node.icon)}
             </span>
             {node.label}
@@ -99,7 +99,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
           relative ml-7
         `}>
           {isExpanded && (
-            <div className="absolute left-0 top-0 bottom-0 w-px bg-[#CCCCCC]"></div>
+            <div className="absolute left-0 top-0 bottom-0 w-px bg-border"></div>
           )}
           <div className="pl-2">
             {isExpanded &&
