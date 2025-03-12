@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { mockPropertyDetails } from "@/data/properties";
 import { PropertyDetail } from "@/types/api";

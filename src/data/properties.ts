@@ -1,5 +1,8 @@
 import type { Property } from "@/types/api";
-import { mockPropertyDetails } from "@/data/properties";
+import { mockPropertyDetails as propertyDetails } from "./properties/index";
+
+// Export mockPropertyDetails for backwards compatibility
+export const mockPropertyDetails = propertyDetails;
 
 // Helper function to get building count
 const getBuildingCount = (propertyId: string): number => {
