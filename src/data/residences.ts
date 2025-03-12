@@ -1,8 +1,103 @@
-
 import type { Residence, APIResponse } from "@/types/api";
 
 // Residence mock data
 export const mockResidenceData: Record<string, APIResponse<Residence>> = {
+  "lgh-1001": {
+    content: {
+      id: "lgh-1001",
+      code: "LGH-1001",
+      name: "2 rum och kök, Odenplan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-1002": {
+    content: {
+      id: "lgh-1002",
+      code: "LGH-1002",
+      name: "3 rum och kök, Odenplan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-1003": {
+    content: {
+      id: "lgh-1003",
+      code: "LGH-1003",
+      name: "1 rum och kök, Odenplan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-2001": {
+    content: {
+      id: "lgh-2001",
+      code: "LGH-2001",
+      name: "2 rum och kök, Odenplan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-2002": {
+    content: {
+      id: "lgh-2002",
+      code: "LGH-2002",
+      name: "3 rum och kök, Odenplan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-3001": {
+    content: {
+      id: "lgh-3001",
+      code: "3001",
+      name: "3 rum och kök, Götgatan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-3002": {
+    content: {
+      id: "lgh-3002",
+      code: "3002",
+      name: "2 rum och kök, Götgatan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
+  "lgh-3003": {
+    content: {
+      id: "lgh-3003",
+      code: "3003",
+      name: "4 rum och kök, Götgatan",
+      deleted: false,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2024-12-31T23:59:59Z"
+      }
+    }
+  },
   "lgh-101": {
     content: {
       id: "lgh-101",
