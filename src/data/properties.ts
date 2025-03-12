@@ -1,6 +1,5 @@
-
 import type { Property } from "@/types/api";
-import { mockPropertyDetails } from "./propertyDetails";
+import { mockPropertyDetails } from "@/data/properties";
 
 // Helper function to get building count
 const getBuildingCount = (propertyId: string): number => {
