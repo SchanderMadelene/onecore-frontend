@@ -36,8 +36,11 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
           flex items-center rounded-lg px-2 py-1.5 cursor-pointer transition-colors
           ${isActive 
             ? 'bg-primary/10 text-primary font-medium' 
-            : 'hover:bg-accent/10'}
+            : isExpanded 
+              ? 'bg-accent/5 text-foreground' 
+              : 'hover:bg-accent/10'}
           ${node.path ? 'hover:text-accent' : ''} 
+          ${isExpanded ? 'border-l-2 border-accent' : ''}
         `}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
       >
@@ -45,7 +48,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="h-5 w-5 p-0 mr-1 text-muted-foreground hover:text-foreground hover:bg-transparent"
+            className={`h-5 w-5 p-0 mr-1 ${isExpanded ? 'text-accent' : 'text-muted-foreground'} hover:text-foreground hover:bg-transparent`}
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {isExpanded ? (
@@ -63,7 +66,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             className={`flex items-center text-sm py-1 flex-1 ${isActive ? 'font-medium' : ''}`}
             onClick={handleNodeClick}
           >
-            <span className="mr-2">{getNodeIcon(node.icon)}</span>
+            <span className={`mr-2 ${isExpanded ? 'text-accent' : ''}`}>{getNodeIcon(node.icon)}</span>
             <div className="flex flex-col">
               <div className="flex items-center">
                 {node.label}
@@ -80,8 +83,8 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             </div>
           </Link>
         ) : (
-          <span className={`flex items-center text-sm ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
-            <span className="mr-2">{getNodeIcon(node.icon)}</span>
+          <span className={`flex items-center text-sm ${isActive || isParentOfActive ? 'font-medium' : ''} ${isExpanded ? 'text-accent' : ''}`}>
+            <span className={`mr-2 ${isExpanded ? 'text-accent' : ''}`}>{getNodeIcon(node.icon)}</span>
             {node.label}
           </span>
         )}
