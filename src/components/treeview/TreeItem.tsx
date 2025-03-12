@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, MapPin, Tag } from "lucide-react";
+import { ChevronDown, ChevronRight, MapPin, Tag, FolderOpen, Folder } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import { TreeItemProps } from "./types";
@@ -29,6 +29,13 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
     }
   };
 
+  const getFolderIcon = () => {
+    if (isExpanded) {
+      return <FolderOpen className="h-4 w-4 text-accent" />;
+    }
+    return <Folder className="h-4 w-4 text-muted-foreground" />;
+  };
+
   return (
     <div className="flex flex-col">
       <div
@@ -37,10 +44,10 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
           ${isActive 
             ? 'bg-primary/10 text-primary font-medium' 
             : isExpanded 
-              ? 'bg-accent/5 text-foreground' 
+              ? 'bg-accent/10 text-foreground' 
               : 'hover:bg-accent/10'}
           ${node.path ? 'hover:text-accent' : ''} 
-          ${isExpanded ? 'border-l-2 border-accent' : ''}
+          ${isExpanded ? 'border-l-2 border-accent/80 shadow-sm' : ''}
         `}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
       >
@@ -66,7 +73,9 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             className={`flex items-center text-sm py-1 flex-1 ${isActive ? 'font-medium' : ''}`}
             onClick={handleNodeClick}
           >
-            <span className={`mr-2 ${isExpanded ? 'text-accent' : ''}`}>{getNodeIcon(node.icon)}</span>
+            <span className={`mr-2 ${isExpanded ? 'text-accent' : ''}`}>
+              {node.icon === 'building' && hasChildren ? getFolderIcon() : getNodeIcon(node.icon)}
+            </span>
             <div className="flex flex-col">
               <div className="flex items-center">
                 {node.label}
@@ -84,16 +93,23 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
           </Link>
         ) : (
           <span className={`flex items-center text-sm ${isActive || isParentOfActive ? 'font-medium' : ''} ${isExpanded ? 'text-accent' : ''}`}>
-            <span className={`mr-2 ${isExpanded ? 'text-accent' : ''}`}>{getNodeIcon(node.icon)}</span>
+            <span className={`mr-2 ${isExpanded ? 'text-accent' : ''}`}>
+              {node.icon === 'building' && hasChildren ? getFolderIcon() : getNodeIcon(node.icon)}
+            </span>
             {node.label}
           </span>
         )}
       </div>
-      {isExpanded &&
-        hasChildren &&
-        node.children.map((child) => (
-          <TreeItem key={child.id} node={child} level={level + 1} onNavigate={onNavigate} />
-        ))}
+      <div className={`
+        ${isExpanded ? 'animate-fade-in' : 'hidden'}
+        ${hasChildren ? 'border-l border-accent/30 ml-3' : ''}
+      `}>
+        {isExpanded &&
+          hasChildren &&
+          node.children.map((child) => (
+            <TreeItem key={child.id} node={child} level={level + 1} onNavigate={onNavigate} />
+          ))}
+      </div>
     </div>
   );
 }
