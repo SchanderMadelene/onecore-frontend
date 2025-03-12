@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight, MapPin, Tag } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -17,7 +16,6 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   );
 
   useEffect(() => {
-    // Auto-expand parents of active item
     if (isParentOfActive) {
       setIsExpanded(true);
     }
@@ -40,7 +38,6 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
               ? 'bg-accent/10 text-foreground' 
               : 'hover:bg-accent/10'}
           ${node.path ? 'hover:text-accent' : ''} 
-          ${isExpanded ? 'border-l-2 border-accent/80' : ''}
         `}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
       >
