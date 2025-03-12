@@ -1,4 +1,3 @@
-
 import { TreeNode } from "./types";
 
 export const treeData: TreeNode[] = [
@@ -16,16 +15,50 @@ export const treeData: TreeNode[] = [
         area: "Lundby",
         children: [
           {
-            id: "lgh-101",
-            label: "LGH-101",
-            icon: "home",
-            path: "/properties/vasteras/lundby/odenplan-5/lgh-101"
+            id: "building-a",
+            label: "Hus A",
+            icon: "building",
+            path: "/properties/vasteras/lundby/odenplan-5/building-a",
+            children: [
+              {
+                id: "lgh-1001",
+                label: "LGH-1001",
+                icon: "home",
+                path: "/properties/vasteras/lundby/odenplan-5/building-a/lgh-1001"
+              },
+              {
+                id: "lgh-1002",
+                label: "LGH-1002",
+                icon: "home",
+                path: "/properties/vasteras/lundby/odenplan-5/building-a/lgh-1002"
+              },
+              {
+                id: "lgh-1003",
+                label: "LGH-1003",
+                icon: "home",
+                path: "/properties/vasteras/lundby/odenplan-5/building-a/lgh-1003"
+              }
+            ]
           },
           {
-            id: "lgh-102",
-            label: "LGH-102",
-            icon: "home",
-            path: "/properties/vasteras/lundby/odenplan-5/lgh-102"
+            id: "building-b",
+            label: "Hus B",
+            icon: "building",
+            path: "/properties/vasteras/lundby/odenplan-5/building-b",
+            children: [
+              {
+                id: "lgh-2001",
+                label: "LGH-2001",
+                icon: "home",
+                path: "/properties/vasteras/lundby/odenplan-5/building-b/lgh-2001"
+              },
+              {
+                id: "lgh-2002",
+                label: "LGH-2002",
+                icon: "home",
+                path: "/properties/vasteras/lundby/odenplan-5/building-b/lgh-2002"
+              }
+            ]
           }
         ]
       },

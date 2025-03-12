@@ -1,7 +1,5 @@
-
 import { PropertyDetail } from "@/types/api";
 
-// Property 1: Älgen 1
 export const property1: PropertyDetail = {
   id: "1",
   propertyObjectId: "P1",
@@ -11,7 +9,7 @@ export const property1: PropertyDetail = {
   parish: "Lundby",
   propertyNumber: "Lundby 3:15",
   direction: "N",
-  address: "Odenplan, 5, 72346 Västerås",
+  address: "Odenplan 5, 72346 Västerås",
   purpose: "Bostad",
   buildingType: "Flerbostadshus",
   buildings: [
@@ -27,21 +25,21 @@ export const property1: PropertyDetail = {
       apartments: [
         {
           id: "A1",
-          code: "1001",
+          code: "LGH-1001",
           area: 56,
           rooms: 2,
           status: "Uthyrd"
         },
         {
           id: "A2",
-          code: "1002",
+          code: "LGH-1002",
           area: 72,
           rooms: 3,
           status: "Uthyrd"
         },
         {
           id: "A3",
-          code: "1003",
+          code: "LGH-1003",
           area: 45,
           rooms: 1,
           status: "Vakant"
@@ -60,14 +58,14 @@ export const property1: PropertyDetail = {
       apartments: [
         {
           id: "A4",
-          code: "2001",
+          code: "LGH-2001",
           area: 65,
           rooms: 2,
           status: "Uthyrd"
         },
         {
           id: "A5",
-          code: "2002",
+          code: "LGH-2002",
           area: 85,
           rooms: 3,
           status: "Uthyrd"
