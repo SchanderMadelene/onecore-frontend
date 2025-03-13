@@ -71,25 +71,25 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             </span>
             <div className="flex flex-col text-foreground min-w-0">
               <div className="flex items-center w-full overflow-hidden">
-                <span className="truncate max-w-[180px]">{node.label}</span>
+                <span className="break-words">{node.label}</span>
                 {isActive && (
                   <MapPin className="h-3 w-3 ml-2 text-primary flex-shrink-0" />
                 )}
               </div>
               {node.area && (
-                <Badge variant="outline" className="text-xs px-1 py-0 h-5 mt-1 bg-accent/5 w-full overflow-hidden">
+                <Badge variant="outline" className="text-xs px-1 py-0 h-auto mt-1 bg-accent/5 w-full">
                   <Tag className="h-3 w-3 mr-1 flex-shrink-0" />
-                  <span className="truncate max-w-[150px]">{node.area}</span>
+                  <span className="break-words">{node.area}</span>
                 </Badge>
               )}
             </div>
           </Link>
         ) : (
-          <span className={`flex items-center text-sm text-foreground w-full overflow-hidden text-ellipsis whitespace-nowrap ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
+          <span className={`flex items-center text-sm text-foreground w-full ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
             <span className="mr-3 text-foreground flex-shrink-0">
               {getNodeIcon(node.icon)}
             </span>
-            <span className="truncate max-w-[180px]">{node.label}</span>
+            <span className="break-words">{node.label}</span>
           </span>
         )}
       </div>

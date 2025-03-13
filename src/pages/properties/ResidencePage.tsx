@@ -6,11 +6,20 @@ import { ResidenceContent } from "@/components/residence/ResidenceContent";
 import { LoadingState } from "@/components/residence/LoadingState";
 import { ErrorState } from "@/components/residence/ErrorState";
 import { useResidenceData } from "@/hooks/useResidenceData";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const ResidencePage = () => {
   const { city, district, property, building, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
+  
+  // Default to sidebar closed on detail pages
+  useEffect(() => {
+    if (!isMobile) {
+      setIsSidebarOpen(false);
+    }
+  }, [isMobile]);
   
   // If we're on a building page without an apartment ID, use the building param as the ID
   const residenceId = id || building;
