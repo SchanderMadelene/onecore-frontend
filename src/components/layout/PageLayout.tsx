@@ -33,6 +33,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
       <NavigationBar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
       
       <div className="flex h-[calc(100vh-3.5rem)] mt-14 relative">
+        {/* Overlay for mobile */}
         {isSidebarOpen && (
           <div 
             className="fixed inset-0 bg-black/20 z-40 lg:hidden"
@@ -40,6 +41,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
           />
         )}
 
+        {/* Sidebar */}
         <aside
           className={`
             w-[350px] lg:w-[320px] 
@@ -53,9 +55,10 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
             ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
           `}
         >
-          <TreeView onNavigate={() => setIsSidebarOpen(false)} />
+          <TreeView onNavigate={() => isMobile && setIsSidebarOpen(false)} />
         </aside>
 
+        {/* Main content */}
         <main
           className={`
             flex-1 

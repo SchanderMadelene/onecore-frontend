@@ -14,11 +14,9 @@ export const ResidencePage = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
   
-  // Default to sidebar closed on detail pages
+  // Let the PageLayout handle sidebar state based on route
   useEffect(() => {
-    if (!isMobile) {
-      setIsSidebarOpen(false);
-    }
+    // Default behavior is in PageLayout, which will auto-collapse on detail pages
   }, [isMobile]);
   
   // If we're on a building page without an apartment ID, use the building param as the ID

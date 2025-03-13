@@ -10,13 +10,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const PropertyDetailPage = () => {
   const { city, district, property } = useParams();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { toast } = useToast();
   const isMobile = useIsMobile();
   
   // Let the PageLayout handle sidebar state based on route
   useEffect(() => {
-    // Default sidebar state can be set here if needed
+    // Default sidebar state is handled in PageLayout based on route
   }, [isMobile]);
   
   // Create proper propertyId format to match key in mockData
