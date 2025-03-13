@@ -58,7 +58,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
           <TreeView onNavigate={() => isMobile && setIsSidebarOpen(false)} />
         </aside>
 
-        {/* Main content - removed dependency on sidebar state */}
+        {/* Main content - fills the entire container */}
         <main
           className="
             flex-1 
@@ -68,7 +68,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
             w-full
           "
         >
-          <div className="w-full max-w-6xl mx-auto">
+          <div className="w-full">
             {children}
           </div>
         </main>
