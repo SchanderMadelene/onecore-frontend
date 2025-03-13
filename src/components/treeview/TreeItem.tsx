@@ -29,11 +29,11 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   };
 
   return (
-    <div className="flex flex-col max-w-full">
+    <div className="flex flex-col w-full">
       <div
         className={`
           flex items-center rounded-full px-3 py-2 cursor-pointer transition-colors
-          overflow-hidden text-ellipsis whitespace-nowrap max-w-full
+          text-ellipsis whitespace-nowrap w-full
           ${isActive 
             ? 'bg-white text-foreground font-medium shadow-sm' 
             : isExpanded 
@@ -69,27 +69,27 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             <span className="mr-3 text-foreground flex-shrink-0">
               {getNodeIcon(node.icon)}
             </span>
-            <div className="flex flex-col text-foreground min-w-0 overflow-hidden">
-              <div className="flex items-center overflow-hidden text-ellipsis whitespace-nowrap">
-                <span className="truncate">{node.label}</span>
+            <div className="flex flex-col text-foreground min-w-0">
+              <div className="flex items-center w-full overflow-hidden">
+                <span className="truncate max-w-[180px]">{node.label}</span>
                 {isActive && (
                   <MapPin className="h-3 w-3 ml-2 text-primary flex-shrink-0" />
                 )}
               </div>
               {node.area && (
-                <Badge variant="outline" className="text-xs px-1 py-0 h-5 mt-1 bg-accent/5 max-w-full overflow-hidden">
+                <Badge variant="outline" className="text-xs px-1 py-0 h-5 mt-1 bg-accent/5 w-full overflow-hidden">
                   <Tag className="h-3 w-3 mr-1 flex-shrink-0" />
-                  <span className="truncate">{node.area}</span>
+                  <span className="truncate max-w-[150px]">{node.area}</span>
                 </Badge>
               )}
             </div>
           </Link>
         ) : (
-          <span className={`flex items-center text-sm text-foreground overflow-hidden text-ellipsis whitespace-nowrap ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
+          <span className={`flex items-center text-sm text-foreground w-full overflow-hidden text-ellipsis whitespace-nowrap ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
             <span className="mr-3 text-foreground flex-shrink-0">
               {getNodeIcon(node.icon)}
             </span>
-            <span className="truncate">{node.label}</span>
+            <span className="truncate max-w-[180px]">{node.label}</span>
           </span>
         )}
       </div>
@@ -97,12 +97,12 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
       {hasChildren && (
         <div className={`
           ${isExpanded ? 'animate-fade-in' : 'hidden'}
-          relative ml-7 max-w-full
+          relative ml-7 w-full
         `}>
           {isExpanded && (
             <div className="absolute left-0 top-0 bottom-0 w-px bg-border"></div>
           )}
-          <div className="pl-2 max-w-full">
+          <div className="pl-2 w-full">
             {isExpanded &&
               node.children.map((child) => (
                 <TreeItem key={child.id} node={child} level={level + 1} onNavigate={onNavigate} />
