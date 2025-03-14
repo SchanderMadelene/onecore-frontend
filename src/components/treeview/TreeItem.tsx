@@ -17,7 +17,6 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   );
 
   useEffect(() => {
-    // Auto-expand parents of active item
     if (isParentOfActive) {
       setIsExpanded(true);
     }
@@ -30,22 +29,25 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <div
         className={`
-          flex items-center rounded-lg px-2 py-1.5 cursor-pointer transition-colors
+          flex items-center rounded-full px-3 py-2 cursor-pointer transition-colors
+          text-ellipsis whitespace-nowrap w-full
           ${isActive 
-            ? 'bg-primary/10 text-primary font-medium' 
-            : 'hover:bg-accent/10'}
-          ${node.path ? 'hover:text-accent' : ''} 
+            ? 'bg-white text-foreground font-medium shadow-sm' 
+            : isExpanded 
+              ? 'text-foreground hover:bg-white/60' 
+              : 'hover:bg-white/60'}
+          ${node.path ? 'hover:bg-white/60' : ''} 
         `}
-        style={{ paddingLeft: `${level * 12 + 8}px` }}
+        style={{ paddingLeft: `${level * 16 + 16}px` }}
       >
         {hasChildren ? (
           <Button
             variant="ghost"
             size="icon"
-            className="h-5 w-5 p-0 mr-1 text-muted-foreground hover:text-foreground hover:bg-transparent"
+            className={`h-5 w-5 p-0 mr-2 flex-shrink-0 ${isExpanded ? 'text-foreground' : 'text-muted-foreground'} hover:text-foreground hover:bg-transparent`}
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {isExpanded ? (
@@ -55,42 +57,59 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             )}
           </Button>
         ) : (
-          <div className="w-6" />
+          <div className="w-6 mr-1 flex-shrink-0" />
         )}
+        
         {node.path ? (
           <Link 
             to={node.path} 
-            className={`flex items-center text-sm py-1 flex-1 ${isActive ? 'font-medium' : ''}`}
+            className={`flex items-center text-sm py-1 flex-1 min-w-0 ${isActive ? 'font-medium' : ''}`}
             onClick={handleNodeClick}
           >
-            <span className="mr-2">{getNodeIcon(node.icon)}</span>
-            <div className="flex flex-col">
-              <div className="flex items-center">
-                {node.label}
+            <span className="mr-3 text-foreground flex-shrink-0">
+              {getNodeIcon(node.icon)}
+            </span>
+            <div className="flex flex-col text-foreground min-w-0">
+              <div className="flex items-center w-full overflow-hidden">
+                <span className="break-words">{node.label}</span>
                 {isActive && (
-                  <MapPin className="h-3 w-3 ml-2 text-primary" />
+                  <MapPin className="h-3 w-3 ml-2 text-primary flex-shrink-0" />
                 )}
               </div>
               {node.area && (
-                <Badge variant="outline" className="text-xs px-1 py-0 h-5 mt-1 bg-accent/5">
-                  <Tag className="h-3 w-3 mr-1" />
-                  {node.area}
+                <Badge variant="outline" className="text-xs px-1 py-0 h-auto mt-1 bg-accent/5 w-full">
+                  <Tag className="h-3 w-3 mr-1 flex-shrink-0" />
+                  <span className="break-words">{node.area}</span>
                 </Badge>
               )}
             </div>
           </Link>
         ) : (
-          <span className={`flex items-center text-sm ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
-            <span className="mr-2">{getNodeIcon(node.icon)}</span>
-            {node.label}
+          <span className={`flex items-center text-sm text-foreground w-full ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
+            <span className="mr-3 text-foreground flex-shrink-0">
+              {getNodeIcon(node.icon)}
+            </span>
+            <span className="break-words">{node.label}</span>
           </span>
         )}
       </div>
-      {isExpanded &&
-        hasChildren &&
-        node.children.map((child) => (
-          <TreeItem key={child.id} node={child} level={level + 1} onNavigate={onNavigate} />
-        ))}
+      
+      {hasChildren && (
+        <div className={`
+          ${isExpanded ? 'animate-fade-in' : 'hidden'}
+          relative ml-7 w-full
+        `}>
+          {isExpanded && (
+            <div className="absolute left-0 top-0 bottom-0 w-px bg-border"></div>
+          )}
+          <div className="pl-2 w-full">
+            {isExpanded &&
+              node.children.map((child) => (
+                <TreeItem key={child.id} node={child} level={level + 1} onNavigate={onNavigate} />
+              ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

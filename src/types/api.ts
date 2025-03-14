@@ -1,3 +1,4 @@
+
 export interface Residence {
   id: string;
   code: string;
@@ -58,6 +59,7 @@ export interface Property {
   municipality: string;
   purpose: string | null;
   buildingType: string | null;
+  buildingCount?: number;
 }
 
 export interface Company {

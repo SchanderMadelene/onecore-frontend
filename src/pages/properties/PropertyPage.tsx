@@ -5,7 +5,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 
 const PropertyPage = () => {
   const { city, district } = useParams();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>

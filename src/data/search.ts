@@ -14,64 +14,115 @@ export interface SearchResult {
 
 const propertyResults: SearchResult[] = [
   {
-    id: "lgh-101",
+    id: "lgh-1001",
     name: "Lägenhet 1001",
     type: "apartment",
     address: "Älgen 1, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/lgh-101",
+    path: "/properties/vasteras/lundby/odenplan-5/building-a/lgh-1001",
     tenant: {
       name: "Anna Andersson",
       active: true
     }
   },
   {
-    id: "lgh-201",
+    id: "lgh-1002",
     name: "Lägenhet 1002",
     type: "apartment",
     address: "Älgen 1, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/lgh-201",
+    path: "/properties/vasteras/lundby/odenplan-5/building-a/lgh-1002",
     tenant: {
       name: "Johan Svensson",
       active: true
     }
   },
   {
-    id: "lgh-301",
+    id: "lgh-2001",
     name: "Lägenhet 2001",
     type: "apartment",
     address: "Älgen 1, Lundby",
-    path: "/properties/vasteras/lundby/odenplan-5/lgh-301",
+    path: "/properties/vasteras/lundby/odenplan-5/building-b/lgh-2001",
     tenant: {
       name: "Maria Eriksson",
       active: true
     }
   },
   {
-    id: "lgh-301",
+    id: "lgh-3001",
     name: "Lägenhet 3001",
     type: "apartment",
     address: "Lindaren 2, Bäckby",
-    path: "/properties/vasteras/backby/gotgatan-15/lgh-301",
+    path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren/lgh-3001",
     tenant: {
       name: "Henrik Johansson",
       active: true
     }
   },
   {
-    id: "lgh-302",
+    id: "lgh-3002",
     name: "Lägenhet 3002",
     type: "apartment",
     address: "Lindaren 2, Bäckby",
-    path: "/properties/vasteras/backby/gotgatan-15/lgh-302"
+    path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren/lgh-3002"
   },
   {
-    id: "lgh-101",
+    id: "kontor-101",
     name: "Kontor 101",
     type: "apartment",
     address: "Björnen 4, Domkyrkan",
-    path: "/properties/vasteras/domkyrkan/sveavagen-10/lgh-101",
+    path: "/properties/vasteras/domkyrkan/sveavagen-10/kontorsbyggnad-a/kontor-101",
     tenant: {
       name: "Tech AB",
+      active: true
+    }
+  },
+  {
+    id: "lgh-4001",
+    name: "Lägenhet 4001",
+    type: "apartment",
+    address: "Pipan 1, Pettersberg",
+    path: "/properties/vasteras/pettersberg/pipan-1/flerfamiljshus-pipan/lgh-4001",
+    tenant: {
+      name: "Peter Pettersson",
+      active: true
+    }
+  },
+  {
+    id: "lgh-4002",
+    name: "Lägenhet 4002",
+    type: "apartment",
+    address: "Pipan 1, Pettersberg",
+    path: "/properties/vasteras/pettersberg/pipan-1/flerfamiljshus-pipan/lgh-4002"
+  },
+  {
+    id: "kontor-201",
+    name: "Kontor 201",
+    type: "apartment",
+    address: "Oskaria 1, Oxbacken",
+    path: "/properties/vasteras/oxbacken/oskaria-1/kontorsbyggnad-oskaria/kontor-201",
+    tenant: {
+      name: "Digital Solutions AB",
+      active: true
+    }
+  },
+  {
+    id: "lgh-5001",
+    name: "Lägenhet 5001",
+    type: "apartment",
+    address: "Styrhylsan 9, Hammarby",
+    path: "/properties/vasteras/hammarby/styrhylsan-9/radhus-styrhylsan/lgh-5001",
+    tenant: {
+      name: "Stefan Hammarberg",
+      active: true
+    }
+  },
+  {
+    id: "kontor-301",
+    name: "Kontor 301",
+    type: "apartment",
+    address: "Bävern 1, Centrum",
+    path: "/properties/vasteras/centrum/bavern-1/kontorskomplex-bavern/kontor-301",
+    tenant: {
+      name: "Centrumkliniken AB",
       active: true
     }
   },
@@ -95,6 +146,34 @@ const propertyResults: SearchResult[] = [
     type: "property",
     address: "Bäckby, Västerås",
     path: "/properties/vasteras/backby/gotgatan-15"
+  },
+  {
+    id: "pipan-1",
+    name: "Pipan 1",
+    type: "property",
+    address: "Pettersberg, Västerås",
+    path: "/properties/vasteras/pettersberg/pipan-1"
+  },
+  {
+    id: "oskaria-1",
+    name: "Oskaria 1",
+    type: "property",
+    address: "Oxbacken, Västerås",
+    path: "/properties/vasteras/oxbacken/oskaria-1"
+  },
+  {
+    id: "styrhylsan-9",
+    name: "Styrhylsan 9",
+    type: "property",
+    address: "Hammarby, Västerås",
+    path: "/properties/vasteras/hammarby/styrhylsan-9"
+  },
+  {
+    id: "bavern-1",
+    name: "Bävern 1",
+    type: "property",
+    address: "Centrum, Västerås",
+    path: "/properties/vasteras/centrum/bavern-1"
   }
 ];
 
@@ -136,7 +215,6 @@ const tenantResults: SearchResult[] = [
   }
 ];
 
-// Combine all search results into a single exported array
 export const mockSearchResults: SearchResult[] = [
   ...propertyResults,
   ...tenantResults
