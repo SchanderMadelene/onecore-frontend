@@ -21,7 +21,7 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
     <div className="space-y-6">
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {maintenanceUnits.map((unit) => (
-          <Card key={unit.id} className="hover-transform">
+          <Card key={unit.id} className="hover:shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
             <CardContent className="p-6">
               <h3 className="font-semibold text-lg">{unit.type}</h3>
             </CardContent>
