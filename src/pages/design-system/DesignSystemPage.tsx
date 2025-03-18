@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Palette, Type, Component, Grid, Paintbrush } from "lucide-react";
+import { Palette, Type, Component, Grid, Icons } from "lucide-react";
 
 // Import components from the new global location
 import { 
@@ -45,7 +45,7 @@ const DesignSystemPage = () => {
               <span className="hidden sm:inline">Grid</span>
             </TabsTrigger>
             <TabsTrigger value="icons" className="flex items-center gap-2">
-              <Paintbrush className="h-4 w-4" />
+              <Icons className="h-4 w-4" />
               <span className="hidden sm:inline">Icons</span>
             </TabsTrigger>
           </TabsList>

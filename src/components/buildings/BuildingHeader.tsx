@@ -1,6 +1,6 @@
 
 import { Building } from "@/types/api";
-import { Building as BuildingIcon, Home, MapPin } from "lucide-react";
+import { Building as BuildingIcon, Building2, MapPin } from "lucide-react";
 
 interface BuildingHeaderProps {
   building: Building;
@@ -11,7 +11,7 @@ export const BuildingHeader = ({ building, propertyName }: BuildingHeaderProps) 
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 text-muted-foreground text-sm">
-        <Home className="h-4 w-4" />
+        <Building2 className="h-4 w-4" />
         <span>{propertyName}</span>
         <span>/</span>
         <BuildingIcon className="h-4 w-4" />

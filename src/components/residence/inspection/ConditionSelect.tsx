@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { PaintRoller, Wrench, Hammer, Camera } from "lucide-react";
+import { PaintBrush, Wrench, Hammer, Camera } from "lucide-react";
 
 interface ConditionSelectProps {
   label: string;
@@ -44,7 +44,7 @@ export const ConditionSelect = ({
               variant={actions.includes("painting") ? "default" : "outline"}
               onClick={(e) => handleActionClick(e, "painting")}
             >
-              <PaintRoller className="h-4 w-4 mr-1" />
+              <PaintBrush className="h-4 w-4 mr-1" />
               Målning
             </Button>
             <Button
