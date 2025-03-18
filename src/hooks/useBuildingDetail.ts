@@ -1,10 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { Building, PropertyDetail } from "@/types/api";
-import { property1, property2, property3 } from "@/data/properties";
-
-// Combined properties data
-const properties = [property1, property2, property3];
+import { mockPropertyDetails } from "@/data/properties";
 
 export const useBuildingDetail = (
   propertyKey?: string, 
@@ -18,12 +15,8 @@ export const useBuildingDetail = (
       
       if (!propertyKey || !buildingId) return null;
       
-      // Find the property
-      const property = properties.find(p => {
-        const [_, district, propertyName] = propertyKey.split('/');
-        return p.parish.toLowerCase() === district && 
-               p.address?.toLowerCase().includes(propertyName.replace('-', ' '));
-      });
+      // Get property from mockPropertyDetails using propertyKey
+      const property = mockPropertyDetails[propertyKey];
       
       if (!property) return null;
       

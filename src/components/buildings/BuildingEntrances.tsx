@@ -1,7 +1,7 @@
 
 import { Building, Apartment } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Door, Home, User, X } from "lucide-react";
+import { DoorOpen, Home, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
   if (!building.entrances || building.entrances.length === 0) {
     return (
       <div className="py-8 text-center">
-        <Door className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+        <DoorOpen className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-xl font-medium mb-2">Inga uppgångar</h3>
         <p className="text-muted-foreground">
           Det finns inga uppgångar registrerade för denna byggnad.
@@ -39,7 +39,7 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
             <CardHeader className="pb-3 bg-muted/30">
               <CardTitle className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <Door className="h-5 w-5 text-primary" />
+                  <DoorOpen className="h-5 w-5 text-primary" />
                   {entrance.name}
                 </div>
                 <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">
