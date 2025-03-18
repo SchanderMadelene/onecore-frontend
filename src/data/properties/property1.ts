@@ -1,3 +1,4 @@
+
 import { PropertyDetail } from "@/types/api";
 
 export const property1: PropertyDetail = {
@@ -71,6 +72,37 @@ export const property1: PropertyDetail = {
           status: "Uthyrd"
         }
       ]
+    }
+  ],
+  maintenanceUnits: [
+    {
+      id: "MU1",
+      name: "Miljöbod Nord",
+      type: "Miljöbod",
+      area: 25,
+      constructionYear: 1990,
+      lastRenovated: "2019-05-15",
+      status: "Aktiv",
+      description: "Återvinningscentral för hushållsavfall och sortering"
+    },
+    {
+      id: "MU2",
+      name: "Tvättstuga A",
+      type: "Tvättstuga",
+      area: 45,
+      constructionYear: 1985,
+      lastRenovated: "2020-03-10",
+      status: "Aktiv",
+      description: "Gemensam tvättstuga för Hus A och B"
+    },
+    {
+      id: "MU3",
+      name: "Undercentral 1",
+      type: "Undercentral",
+      area: 30,
+      constructionYear: 1985,
+      status: "Aktiv",
+      description: "Värmecentral för fastigheten"
     }
   ],
   propertyMap: {

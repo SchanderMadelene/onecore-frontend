@@ -92,6 +92,17 @@ export interface Apartment {
   status: string;
 }
 
+export interface MaintenanceUnit {
+  id: string;
+  name: string;
+  type: "Miljöbod" | "Tvättstuga" | "Undercentral" | "Annat";
+  area: number;
+  constructionYear: number;
+  lastRenovated?: string;
+  status: "Aktiv" | "Under renovering" | "Planerad";
+  description?: string;
+}
+
 export interface Building {
   id: string;
   name: string;
@@ -111,4 +122,5 @@ export interface PropertyDetail extends Property {
   address?: string;
   propertyMap?: PropertyMap;
   buildings: Building[];
+  maintenanceUnits?: MaintenanceUnit[];
 }
