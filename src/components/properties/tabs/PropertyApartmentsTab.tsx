@@ -1,5 +1,5 @@
 
-import { Key } from "lucide-react";
+import { DoorOpen, Home } from "lucide-react";
 import type { Building } from "@/types/api";
 
 interface PropertyApartmentsTabProps {
@@ -37,7 +37,7 @@ export const PropertyApartmentsTab = ({ buildings }: PropertyApartmentsTabProps)
       )}
       {totalApartments === 0 && (
         <div className="col-span-3 border rounded-lg p-6 text-center">
-          <Key className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <Home className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
           <h3 className="text-xl font-medium mb-2">Inga lägenheter</h3>
           <p className="text-muted-foreground">
             Det finns inga lägenheter registrerade för denna fastighet.

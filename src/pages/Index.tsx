@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Building, Users, Home } from "lucide-react";
+import { Building2, Users, Home } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { Property, Company } from "@/types/api";
 import { mockProperties } from "@/data/properties";
@@ -38,7 +38,7 @@ const Index = () => {
             <CardHeader className="space-y-1">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-2xl">Fastigheter</CardTitle>
-                <Building className="h-5 w-5 text-muted-foreground" />
+                <Building2 className="h-5 w-5 text-muted-foreground" />
               </div>
               <CardDescription>Översikt av fastighetsbestånd</CardDescription>
             </CardHeader>

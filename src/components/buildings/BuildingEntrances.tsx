@@ -1,7 +1,7 @@
 
 import { Building, Apartment } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DoorOpen, Home, User, X } from "lucide-react";
+import { DoorOpen, Home, User, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -70,7 +70,7 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
                   ) : (
                     <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
                       <div className="flex items-center gap-2">
-                        <X className="h-4 w-4 text-destructive" />
+                        <AlertCircle className="h-4 w-4 text-destructive" />
                         <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
                       </div>
                     </div>
