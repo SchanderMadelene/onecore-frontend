@@ -16,13 +16,35 @@ export const property1: PropertyDetail = {
   buildings: [
     {
       id: "B1",
-      name: "Hus A",
+      name: "Byggnad A",
       type: "Flerbostadshus",
       constructionYear: 1985,
       area: 1200,
       floors: 4,
-      units: 12,
-      tenants: 10,
+      units: 20,
+      tenants: 18,
+      entrances: [
+        {
+          id: "E3",
+          name: "Odenplan 5A",
+          apartments: ["A1", "A2", "A6", "A7", "A8"]
+        },
+        {
+          id: "E4",
+          name: "Odenplan 5B",
+          apartments: ["A3", "A9", "A10"]
+        },
+        {
+          id: "E5",
+          name: "Odenplan 5C",
+          apartments: ["A11", "A12", "A13"]
+        },
+        {
+          id: "E6",
+          name: "Odenplan 5D",
+          apartments: ["A14", "A15", "A16", "A17"]
+        }
+      ],
       apartments: [
         {
           id: "A1",
@@ -44,18 +66,109 @@ export const property1: PropertyDetail = {
           area: 45,
           rooms: 1,
           status: "Vakant"
+        },
+        {
+          id: "A6",
+          code: "LGH-1004",
+          area: 62,
+          rooms: 2,
+          status: "Uthyrd"
+        },
+        {
+          id: "A7",
+          code: "LGH-1005",
+          area: 85,
+          rooms: 4,
+          status: "Uthyrd"
+        },
+        {
+          id: "A8",
+          code: "LGH-1006",
+          area: 32,
+          rooms: 1,
+          status: "Vakant"
+        },
+        {
+          id: "A9",
+          code: "LGH-1007",
+          area: 75,
+          rooms: 3,
+          status: "Uthyrd"
+        },
+        {
+          id: "A10",
+          code: "LGH-1008",
+          area: 95,
+          rooms: 4,
+          status: "Uthyrd"
+        },
+        {
+          id: "A11",
+          code: "LGH-1009",
+          area: 42,
+          rooms: 1,
+          status: "Uthyrd"
+        },
+        {
+          id: "A12",
+          code: "LGH-1010",
+          area: 64,
+          rooms: 2,
+          status: "Uthyrd"
+        },
+        {
+          id: "A13",
+          code: "LGH-1011",
+          area: 78,
+          rooms: 3,
+          status: "Vakant"
+        },
+        {
+          id: "A14",
+          code: "LGH-1012",
+          area: 112,
+          rooms: 5,
+          status: "Uthyrd"
+        },
+        {
+          id: "A15",
+          code: "LGH-1013",
+          area: 57,
+          rooms: 2,
+          status: "Uthyrd"
+        },
+        {
+          id: "A16",
+          code: "LGH-1014",
+          area: 48,
+          rooms: 2,
+          status: "Uthyrd"
+        },
+        {
+          id: "A17",
+          code: "LGH-1015",
+          area: 98,
+          rooms: 4,
+          status: "Vakant"
         }
       ]
     },
     {
       id: "B2",
-      name: "Hus B",
+      name: "Byggnad B",
       type: "Flerbostadshus",
       constructionYear: 1987,
       area: 800,
       floors: 3,
       units: 9,
       tenants: 8,
+      entrances: [
+        {
+          id: "E5",
+          name: "Odenplan 7A",
+          apartments: ["A4", "A5"]
+        }
+      ],
       apartments: [
         {
           id: "A4",
@@ -110,7 +223,7 @@ export const property1: PropertyDetail = {
     buildings: [
       {
         id: "B1",
-        name: "Hus A",
+        name: "Byggnad A",
         x: 100,
         y: 100,
         width: 200,
@@ -118,7 +231,7 @@ export const property1: PropertyDetail = {
       },
       {
         id: "B2",
-        name: "Hus B",
+        name: "Byggnad B",
         x: 400,
         y: 200,
         width: 200,

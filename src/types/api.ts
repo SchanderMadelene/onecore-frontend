@@ -1,4 +1,3 @@
-
 export interface Residence {
   id: string;
   code: string;
@@ -8,6 +7,12 @@ export interface Residence {
     fromDate: string;
     toDate: string;
   };
+}
+
+export interface Entrance {
+  id: string;
+  name: string;
+  apartments: string[]; // Array of apartment IDs
 }
 
 export interface Room {
@@ -113,6 +118,7 @@ export interface Building {
   units: number;
   tenants?: number;
   apartments?: Apartment[];
+  entrances?: Entrance[]; // Add entrances to Building type
 }
 
 export interface PropertyDetail extends Property {

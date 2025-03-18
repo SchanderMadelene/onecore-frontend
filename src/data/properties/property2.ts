@@ -16,13 +16,25 @@ export const property2: PropertyDetail = {
   buildings: [
     {
       id: "B3",
-      name: "Hus A",
+      name: "Byggnad A",
       type: "Flerbostadshus",
       constructionYear: 1992,
       area: 1500,
       floors: 5,
       units: 20,
       tenants: 18,
+      entrances: [
+        {
+          id: "E1",
+          name: "Uppgång 1",
+          apartments: ["A6", "A7"]
+        },
+        {
+          id: "E2",
+          name: "Uppgång 2",
+          apartments: ["A8"]
+        }
+      ],
       apartments: [
         {
           id: "A6",
@@ -74,7 +86,7 @@ export const property2: PropertyDetail = {
     buildings: [
       {
         id: "B3",
-        name: "Hus A",
+        name: "Byggnad A",
         x: 200,
         y: 150,
         width: 250,
