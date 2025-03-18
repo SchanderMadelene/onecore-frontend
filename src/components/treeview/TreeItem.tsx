@@ -41,7 +41,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
               : 'hover:bg-white/60'}
           ${node.path ? 'hover:bg-white/60' : ''} 
         `}
-        style={{ paddingLeft: `${level * 16 + 16}px` }}
+        style={{ paddingLeft: `${level * 12 + 16}px` }}
       >
         {hasChildren ? (
           <Button
@@ -97,7 +97,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
       {hasChildren && (
         <div className={`
           ${isExpanded ? 'animate-fade-in' : 'hidden'}
-          relative ml-7 w-full
+          relative ml-4 w-full
         `}>
           {isExpanded && (
             <div className="absolute left-0 top-0 bottom-0 w-px bg-border"></div>
