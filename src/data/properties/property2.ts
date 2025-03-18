@@ -16,7 +16,7 @@ export const property2: PropertyDetail = {
   buildings: [
     {
       id: "B3",
-      name: "Hus A",
+      name: "Byggnad A",
       type: "Flerbostadshus",
       constructionYear: 1992,
       area: 1500,

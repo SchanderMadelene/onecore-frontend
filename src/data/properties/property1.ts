@@ -1,4 +1,3 @@
-
 import { PropertyDetail } from "@/types/api";
 
 export const property1: PropertyDetail = {
@@ -16,7 +15,7 @@ export const property1: PropertyDetail = {
   buildings: [
     {
       id: "B1",
-      name: "Hus A",
+      name: "Byggnad A",
       type: "Flerbostadshus",
       constructionYear: 1985,
       area: 1200,
@@ -49,7 +48,7 @@ export const property1: PropertyDetail = {
     },
     {
       id: "B2",
-      name: "Hus B",
+      name: "Byggnad B",
       type: "Flerbostadshus",
       constructionYear: 1987,
       area: 800,
@@ -110,7 +109,7 @@ export const property1: PropertyDetail = {
     buildings: [
       {
         id: "B1",
-        name: "Hus A",
+        name: "Byggnad A",
         x: 100,
         y: 100,
         width: 200,
@@ -118,7 +117,7 @@ export const property1: PropertyDetail = {
       },
       {
         id: "B2",
-        name: "Hus B",
+        name: "Byggnad B",
         x: 400,
         y: 200,
         width: 200,

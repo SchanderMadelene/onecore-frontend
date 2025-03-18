@@ -17,7 +17,7 @@ export const treeData: TreeNode[] = [
         children: [
           {
             id: "building-a",
-            label: "Hus A",
+            label: "Byggnad A",
             icon: "building",
             path: "/properties/vasteras/lundby/odenplan-5/building-a",
             children: [
@@ -43,7 +43,7 @@ export const treeData: TreeNode[] = [
           },
           {
             id: "building-b",
-            label: "Hus B",
+            label: "Byggnad B",
             icon: "building",
             path: "/properties/vasteras/lundby/odenplan-5/building-b",
             children: [
@@ -72,7 +72,7 @@ export const treeData: TreeNode[] = [
         children: [
           {
             id: "hus-a-lindaren",
-            label: "Hus A",
+            label: "Byggnad A",
             icon: "building",
             path: "/properties/vasteras/backby/gotgatan-15/hus-a-lindaren",
             children: [
