@@ -1,6 +1,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building, MapPin, Key, FileText, Calendar, PieChart, Tool } from "lucide-react";
+import { Building, MapPin, Key, FileText, Calendar, PieChart, Wrench } from "lucide-react";
 import { PropertyInfoTab } from "./tabs/PropertyInfoTab";
 import { PropertyDocumentsTab } from "./tabs/PropertyDocumentsTab";
 import { PropertyPlanningTab } from "./tabs/PropertyPlanningTab";
@@ -40,7 +40,7 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
           <span className="sm:hidden">Bygg</span>
         </TabsTrigger>
         <TabsTrigger value="maintenance" className="flex items-center gap-1 text-xs sm:text-sm">
-          <Tool className="h-3 w-3 sm:h-4 sm:w-4" />
+          <Wrench className="h-3 w-3 sm:h-4 sm:w-4" />
           <span className="hidden sm:inline">Underhållsenheter</span>
           <span className="sm:hidden">Underhåll</span>
         </TabsTrigger>
