@@ -26,22 +26,22 @@ export const property1: PropertyDetail = {
       entrances: [
         {
           id: "E3",
-          name: "Uppgång A",
+          name: "Odenplan 5A",
           apartments: ["A1", "A2", "A6", "A7", "A8"]
         },
         {
           id: "E4",
-          name: "Uppgång B",
+          name: "Odenplan 5B",
           apartments: ["A3", "A9", "A10"]
         },
         {
           id: "E5",
-          name: "Uppgång C",
+          name: "Odenplan 5C",
           apartments: ["A11", "A12", "A13"]
         },
         {
           id: "E6",
-          name: "Uppgång D",
+          name: "Odenplan 5D",
           apartments: ["A14", "A15", "A16", "A17"]
         }
       ],
@@ -165,7 +165,7 @@ export const property1: PropertyDetail = {
       entrances: [
         {
           id: "E5",
-          name: "Uppgång A",
+          name: "Odenplan 7A",
           apartments: ["A4", "A5"]
         }
       ],
