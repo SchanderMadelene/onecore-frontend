@@ -52,6 +52,36 @@ export const property3: PropertyDetail = {
       apartments: []
     }
   ],
+  maintenanceUnits: [
+    {
+      id: "MU6",
+      name: "Teknikrum A",
+      type: "Undercentral",
+      area: 75,
+      constructionYear: 2005,
+      status: "Aktiv",
+      description: "Huvudteknikrum för hela fastigheten"
+    },
+    {
+      id: "MU7",
+      name: "Soprum Östra",
+      type: "Miljöbod",
+      area: 40,
+      constructionYear: 2005,
+      lastRenovated: "2022-01-15",
+      status: "Aktiv",
+      description: "Återvinningscentral för kontorsmaterial"
+    },
+    {
+      id: "MU8",
+      name: "Parkering Teknik",
+      type: "Annat",
+      area: 150,
+      constructionYear: 2005,
+      status: "Planerad",
+      description: "Planerad ombyggnation till laddstation för elbilar"
+    }
+  ],
   propertyMap: {
     image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg==",
     buildings: [

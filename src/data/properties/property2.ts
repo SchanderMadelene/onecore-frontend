@@ -48,6 +48,27 @@ export const property2: PropertyDetail = {
       ]
     }
   ],
+  maintenanceUnits: [
+    {
+      id: "MU4",
+      name: "Tvättstuga Götgatan",
+      type: "Tvättstuga",
+      area: 60,
+      constructionYear: 1995,
+      lastRenovated: "2018-09-22",
+      status: "Aktiv",
+      description: "Gemensam tvättstuga för hela fastigheten"
+    },
+    {
+      id: "MU5",
+      name: "Miljörum",
+      type: "Miljöbod",
+      area: 35,
+      constructionYear: 1992,
+      status: "Under renovering",
+      description: "Under renovering fram till 2023-09-01"
+    }
+  ],
   propertyMap: {
     image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg==",
     buildings: [

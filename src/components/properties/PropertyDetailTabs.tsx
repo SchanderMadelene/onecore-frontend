@@ -1,6 +1,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building, MapPin, Key, FileText, Calendar, PieChart } from "lucide-react";
+import { Building, MapPin, Key, FileText, Calendar, PieChart, Tool } from "lucide-react";
 import { PropertyInfoTab } from "./tabs/PropertyInfoTab";
 import { PropertyDocumentsTab } from "./tabs/PropertyDocumentsTab";
 import { PropertyPlanningTab } from "./tabs/PropertyPlanningTab";
@@ -8,6 +8,7 @@ import { PropertyBuildingsTab } from "./tabs/PropertyBuildingsTab";
 import { PropertyMapTab } from "./tabs/PropertyMapTab";
 import { PropertyApartmentsTab } from "./tabs/PropertyApartmentsTab";
 import { PropertyStatisticsTab } from "./tabs/PropertyStatisticsTab";
+import { PropertyMaintenanceUnitsTab } from "./tabs/PropertyMaintenanceUnitsTab";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyDetailTabsProps {
@@ -17,7 +18,7 @@ interface PropertyDetailTabsProps {
 export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) => {
   return (
     <Tabs defaultValue="info" className="space-y-6">
-      <TabsList className="grid md:grid-cols-7 grid-cols-3 w-full h-auto">
+      <TabsList className="grid md:grid-cols-8 grid-cols-4 w-full h-auto">
         <TabsTrigger value="info" className="flex items-center gap-1 text-xs sm:text-sm">
           <Building className="h-3 w-3 sm:h-4 sm:w-4" />
           <span className="hidden sm:inline">Fastighet</span>
@@ -37,6 +38,11 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
           <Building className="h-3 w-3 sm:h-4 sm:w-4" />
           <span className="hidden sm:inline">Byggnader</span>
           <span className="sm:hidden">Bygg</span>
+        </TabsTrigger>
+        <TabsTrigger value="maintenance" className="flex items-center gap-1 text-xs sm:text-sm">
+          <Tool className="h-3 w-3 sm:h-4 sm:w-4" />
+          <span className="hidden sm:inline">Underhållsenheter</span>
+          <span className="sm:hidden">Underhåll</span>
         </TabsTrigger>
         <TabsTrigger value="map" className="flex items-center gap-1 text-xs sm:text-sm">
           <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -68,6 +74,10 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
 
       <TabsContent value="buildings">
         <PropertyBuildingsTab buildings={propertyDetail.buildings} />
+      </TabsContent>
+
+      <TabsContent value="maintenance">
+        <PropertyMaintenanceUnitsTab maintenanceUnits={propertyDetail.maintenanceUnits} />
       </TabsContent>
 
       <TabsContent value="map">
