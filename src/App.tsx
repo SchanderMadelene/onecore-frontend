@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import PropertyPage from "./pages/properties/PropertyPage";
 import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
+import BuildingDetailPage from "./pages/properties/BuildingDetailPage"; // Add new import
 import ResidencePage from "./pages/properties/ResidencePage";
 import TenantDetailPage from "./pages/tenants/TenantDetailPage";
 import AllTenantsPage from "./pages/tenants/AllTenantsPage";
@@ -29,7 +30,7 @@ const App = () => (
             <Route path="/properties" element={<AllPropertiesPage />} />
             <Route path="/properties/:city/:district" element={<PropertyPage />} />
             <Route path="/properties/:city/:district/:property" element={<PropertyDetailPage />} />
-            <Route path="/properties/:city/:district/:property/:building" element={<ResidencePage />} />
+            <Route path="/properties/:city/:district/:property/:building" element={<BuildingDetailPage />} /> {/* Add new route */}
             <Route path="/properties/:city/:district/:property/:building/:id" element={<ResidencePage />} />
             <Route path="/tenants/all" element={<AllTenantsPage />} />
             <Route path="/tenants/detail/:id" element={<TenantDetailPage />} />

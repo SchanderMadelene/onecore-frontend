@@ -1,3 +1,4 @@
+
 import { PropertyDetail } from "@/types/api";
 
 export const property1: PropertyDetail = {
@@ -22,6 +23,18 @@ export const property1: PropertyDetail = {
       floors: 4,
       units: 12,
       tenants: 10,
+      entrances: [
+        {
+          id: "E3",
+          name: "Uppgång A",
+          apartments: ["A1", "A2"]
+        },
+        {
+          id: "E4",
+          name: "Uppgång B",
+          apartments: ["A3"]
+        }
+      ],
       apartments: [
         {
           id: "A1",
@@ -55,6 +68,13 @@ export const property1: PropertyDetail = {
       floors: 3,
       units: 9,
       tenants: 8,
+      entrances: [
+        {
+          id: "E5",
+          name: "Uppgång A",
+          apartments: ["A4", "A5"]
+        }
+      ],
       apartments: [
         {
           id: "A4",
