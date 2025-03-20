@@ -23,13 +23,13 @@ export const RoomView = ({
 }: RoomViewProps) => {
   return (
     <Tabs defaultValue="inspection" className="w-full">
-      <TabsList className="w-full justify-start bg-background border-b mb-4">
-        <TabsTrigger value="inspection" className="text-base">Besiktning</TabsTrigger>
-        <TabsTrigger value="photos" className="text-base">Foton</TabsTrigger>
-        <TabsTrigger value="notes" className="text-base">Anteckningar</TabsTrigger>
+      <TabsList>
+        <TabsTrigger value="inspection">Besiktning</TabsTrigger>
+        <TabsTrigger value="photos">Foton</TabsTrigger>
+        <TabsTrigger value="notes">Anteckningar</TabsTrigger>
       </TabsList>
       
-      <TabsContent value="inspection" className="mt-4">
+      <TabsContent value="inspection">
         <InspectionRoom
           room={room}
           isExpanded={true}
@@ -77,13 +77,13 @@ export const RoomView = ({
         />
       </TabsContent>
 
-      <TabsContent value="photos" className="mt-4">
+      <TabsContent value="photos">
         <div className="text-center py-8">
           <p className="text-muted-foreground">Inga foton har laddats upp ännu</p>
         </div>
       </TabsContent>
 
-      <TabsContent value="notes" className="mt-4">
+      <TabsContent value="notes">
         <div className="text-center py-8">
           <p className="text-muted-foreground">Inga anteckningar har sparats ännu</p>
         </div>

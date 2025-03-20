@@ -34,7 +34,7 @@ const TenantDetailPage = () => {
         </div>
 
         <Tabs defaultValue="contracts" className="w-full">
-          <TabsList className="w-full justify-start mb-6">
+          <TabsList className="mb-6">
             <TabsTrigger value="contracts" className="flex items-center gap-1.5">
               <FileText className="h-4 w-4" />
               Kontrakt
@@ -69,18 +69,18 @@ const TenantDetailPage = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="contracts" className="mt-0">
+          <TabsContent value="contracts">
             <TenantContracts contracts={contracts} />
           </TabsContent>
           
-          <TabsContent value="events" className="mt-0">
+          <TabsContent value="events">
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
               <h3 className="text-lg font-medium mb-4">Händelselogg</h3>
               <p className="text-muted-foreground">Ingen händelsehistorik tillgänglig för denna kund.</p>
             </div>
           </TabsContent>
           
-          <TabsContent value="cases" className="mt-0">
+          <TabsContent value="cases">
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
               <h3 className="text-lg font-medium mb-4">Ärenden</h3>
               {hasActiveCases ? (
@@ -100,21 +100,21 @@ const TenantDetailPage = () => {
             </div>
           </TabsContent>
           
-          <TabsContent value="ledger" className="mt-0">
+          <TabsContent value="ledger">
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
               <h3 className="text-lg font-medium mb-4">Kundreskontra</h3>
               <p className="text-muted-foreground">Ingen information om kundreskontra tillgänglig.</p>
             </div>
           </TabsContent>
           
-          <TabsContent value="keys" className="mt-0">
+          <TabsContent value="keys">
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
               <h3 className="text-lg font-medium mb-4">Nycklar</h3>
               <p className="text-muted-foreground">Inga nycklar registrerade för denna kund.</p>
             </div>
           </TabsContent>
           
-          <TabsContent value="documents" className="mt-0">
+          <TabsContent value="documents">
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
               <h3 className="text-lg font-medium mb-4">Dokument</h3>
               <p className="text-muted-foreground">Inga dokument tillgängliga för denna kund.</p>

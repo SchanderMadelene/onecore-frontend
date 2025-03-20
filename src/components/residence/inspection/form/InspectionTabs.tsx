@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BasicInformation } from "./BasicInformation";
 import { RoomInspectionList } from "./RoomInspectionList";
@@ -56,19 +57,19 @@ export function InspectionTabs({
   
   return (
     <Tabs defaultValue="basic" className="w-full">
-      <TabsList className="w-full justify-start mb-4">
-        <TabsTrigger value="basic" className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
+      <TabsList className="mb-4">
+        <TabsTrigger value="basic">
           Grundläggande info
         </TabsTrigger>
-        <TabsTrigger value="protocol" className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
+        <TabsTrigger value="protocol">
           Protokoll
         </TabsTrigger>
-        <TabsTrigger value="floorplan" className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
+        <TabsTrigger value="floorplan">
           Planritning
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="basic" className="mt-4 space-y-4">
+      <TabsContent value="basic" className="space-y-4">
         <div className="space-y-3">
           <div className="space-y-2">
             <Label htmlFor="inspectorName">Besiktningsman</Label>
@@ -99,7 +100,7 @@ export function InspectionTabs({
         />
       </TabsContent>
 
-      <TabsContent value="protocol" className="mt-4">
+      <TabsContent value="protocol">
         <RoomInspectionList
           rooms={rooms}
           expandedRoomIds={expandedRoomIds}
@@ -111,7 +112,7 @@ export function InspectionTabs({
         />
       </TabsContent>
 
-      <TabsContent value="floorplan" className="mt-4">
+      <TabsContent value="floorplan">
         <div className="flex items-center justify-center h-[200px] sm:h-[400px] border-2 border-dashed rounded-lg">
           <p className="text-muted-foreground text-sm">Planritning är inte tillgänglig</p>
         </div>
