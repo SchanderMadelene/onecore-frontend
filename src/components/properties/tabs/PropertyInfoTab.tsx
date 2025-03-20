@@ -1,5 +1,5 @@
 
-import { PropertyBasicInfo, PropertyStatisticsSummary } from "@/components/properties";
+import { PropertyStatisticsSummary } from "@/components/properties";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyInfoTabProps {

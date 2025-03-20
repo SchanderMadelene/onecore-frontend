@@ -6,8 +6,8 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { useToast } from "@/hooks/use-toast";
 import { PropertyDetailTabs } from "@/components/properties/PropertyDetailTabs";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building, MapPin } from "lucide-react";
+import { PropertyHeader } from "@/components/properties/PropertyHeader";
+import { PropertyBasicInfo } from "@/components/properties/PropertyBasicInfo";
 
 const PropertyDetailPage = () => {
   const { city, district, property } = useParams();
@@ -61,63 +61,8 @@ const PropertyDetailPage = () => {
 
     return (
       <div className="py-4 space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">{propertyDetail.designation}</h1>
-          <p className="text-muted-foreground mb-6">
-            {propertyDetail.address || propertyDetail.designation}, {propertyDetail.municipality}
-          </p>
-          
-          <Card className="mb-6">
-            <CardHeader className="pb-4">
-              <CardTitle>Grundläggande information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Fastighetsbeteckning</p>
-                    <p className="font-medium">{propertyDetail.designation}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Kommun</p>
-                    <p className="font-medium">{propertyDetail.municipality}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Adress</p>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{propertyDetail.address || "-"}</p>
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Fastighetsstatus</p>
-                    <p className="font-medium">
-                      Aktiv
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Antal byggnader</p>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{propertyDetail.buildings.length}</p>
-                      <Building className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Byggnadsår</p>
-                    <p className="font-medium">
-                      {propertyDetail.buildings.length > 0 
-                        ? propertyDetail.buildings[0].constructionYear 
-                        : "-"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        
+        <PropertyHeader propertyDetail={propertyDetail} />
+        <PropertyBasicInfo propertyDetail={propertyDetail} />
         <PropertyDetailTabs propertyDetail={propertyDetail} />
       </div>
     );
