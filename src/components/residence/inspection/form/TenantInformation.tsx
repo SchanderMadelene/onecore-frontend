@@ -34,10 +34,10 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 flex-wrap gap-4 pb-4">
-        <CardTitle>Hyresgästinformation</CardTitle>
+        <CardTitle className="text-lg font-medium">Hyresgästinformation</CardTitle>
         <Button variant="outline" asChild className="shrink-0">
           <Link to={`/tenants/detail/${tenant.personalNumber}`}>
-            <User className="mr-2" />
+            <User className="h-4 w-4 mr-2" />
             Öppna kundkort
           </Link>
         </Button>
