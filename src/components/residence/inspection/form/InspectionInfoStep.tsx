@@ -98,7 +98,7 @@ export function InspectionInfoStep({
         <Button variant="outline" type="button" onClick={onCancel}>
           Avbryt
         </Button>
-        <Button type="submit" disabled={!inspectorName.trim()}>
+        <Button type="submit">
           Nästa
         </Button>
       </DialogFooter>
