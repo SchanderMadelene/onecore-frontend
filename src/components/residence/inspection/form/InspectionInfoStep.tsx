@@ -36,6 +36,19 @@ export function InspectionInfoStep({
   onNext,
   onCancel,
 }: InspectionInfoStepProps) {
+  // Format current date with time
+  const formatDateWithTime = () => {
+    const now = new Date();
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return now.toLocaleString('sv-SE', dateOptions);
+  };
+
   return (
     <form onSubmit={onNext}>
       <div className="space-y-6 py-4">
@@ -68,7 +81,7 @@ export function InspectionInfoStep({
           <div className="space-y-2">
             <Label>Datum</Label>
             <p className="text-sm text-muted-foreground">
-              {new Date().toLocaleDateString("sv-SE")}
+              {formatDateWithTime()}
             </p>
           </div>
           <div className="flex items-center justify-between space-x-2">
