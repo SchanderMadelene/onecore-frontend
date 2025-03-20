@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { TenantInformation } from "./TenantInformation";
 import { mockTenant } from "@/data/tenants";
 import {
@@ -85,17 +84,8 @@ export function InspectionInfoStep({
             </p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="master-key">Huvudnyckel finns</Label>
-            <RadioGroup defaultValue="yes" className="flex space-x-4 pt-1">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="master-key-yes" />
-                <Label htmlFor="master-key-yes" className="cursor-pointer">Ja</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="master-key-no" />
-                <Label htmlFor="master-key-no" className="cursor-pointer">Nej</Label>
-              </div>
-            </RadioGroup>
+            <Label>Huvudnyckel finns</Label>
+            <p className="text-sm text-muted-foreground">Ja</p>
           </div>
         </div>
 
