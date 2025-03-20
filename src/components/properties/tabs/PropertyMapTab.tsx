@@ -18,29 +18,29 @@ export const PropertyMapTab = ({
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="mark" className="w-full">
-          <TabsList className="flex w-full mb-6 bg-muted/50 rounded-full p-1 overflow-x-auto">
-            <TabsTrigger value="mark" className="text-xs md:text-sm rounded-full">
+          <TabsList className="flex flex-col w-full mb-6 gap-2">
+            <TabsTrigger value="mark" className="text-xs md:text-sm justify-start">
               Mark
             </TabsTrigger>
-            <TabsTrigger value="byggnader" className="text-xs md:text-sm rounded-full">
+            <TabsTrigger value="byggnader" className="text-xs md:text-sm justify-start">
               Byggnader
             </TabsTrigger>
-            <TabsTrigger value="brand" className="text-xs md:text-sm rounded-full">
+            <TabsTrigger value="brand" className="text-xs md:text-sm justify-start">
               Brand
             </TabsTrigger>
-            <TabsTrigger value="el" className="text-xs md:text-sm rounded-full">
+            <TabsTrigger value="el" className="text-xs md:text-sm justify-start">
               El
             </TabsTrigger>
-            <TabsTrigger value="ventilation" className="text-xs md:text-sm rounded-full">
+            <TabsTrigger value="ventilation" className="text-xs md:text-sm justify-start">
               Ventilation
             </TabsTrigger>
-            <TabsTrigger value="vvs" className="text-xs md:text-sm rounded-full">
+            <TabsTrigger value="vvs" className="text-xs md:text-sm justify-start">
               VVS
             </TabsTrigger>
-            <TabsTrigger value="drift" className="text-xs md:text-sm whitespace-normal rounded-full">
+            <TabsTrigger value="drift" className="text-xs md:text-sm justify-start">
               DU-handlingar
             </TabsTrigger>
-            <TabsTrigger value="bofaktablad" className="text-xs md:text-sm whitespace-normal rounded-full">
+            <TabsTrigger value="bofaktablad" className="text-xs md:text-sm justify-start">
               Bofaktablad
             </TabsTrigger>
           </TabsList>
