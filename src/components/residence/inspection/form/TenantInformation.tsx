@@ -31,6 +31,16 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
     window.location.href = `mailto:${tenant.email}`;
   };
 
+  // Function to mask personal number - show only last 4 digits
+  const maskedPersonalNumber = () => {
+    const parts = tenant.personalNumber.split('-');
+    if (parts.length === 2) {
+      return `XXXXXXXX-${parts[1]}`;
+    }
+    // If no hyphen, mask all but last 4 chars
+    return `XXXXXXXX${tenant.personalNumber.slice(-4)}`;
+  };
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 flex-wrap gap-4">
@@ -51,7 +61,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Personnummer</p>
-              <p className="font-medium">{tenant.personalNumber}</p>
+              <p className="font-medium">{maskedPersonalNumber()}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Kontraktstatus</p>
