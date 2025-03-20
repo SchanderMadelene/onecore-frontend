@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BasicInformation } from "./BasicInformation";
 import { RoomInspectionList } from "./RoomInspectionList";
@@ -57,14 +56,14 @@ export function InspectionTabs({
   
   return (
     <Tabs defaultValue="basic" className="w-full">
-      <TabsList className="w-full justify-start bg-background border-b rounded-none px-0 overflow-x-auto flex-nowrap">
-        <TabsTrigger value="basic" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
+      <TabsList className="w-full justify-start mb-4">
+        <TabsTrigger value="basic" className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
           Grundläggande info
         </TabsTrigger>
-        <TabsTrigger value="protocol" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
+        <TabsTrigger value="protocol" className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
           Protokoll
         </TabsTrigger>
-        <TabsTrigger value="floorplan" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
+        <TabsTrigger value="floorplan" className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
           Planritning
         </TabsTrigger>
       </TabsList>
