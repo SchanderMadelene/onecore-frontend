@@ -37,68 +37,54 @@ export const PropertyStatisticsSummary = ({ property }: PropertyStatisticsSummar
           <CardTitle>Fastighetssammanställning</CardTitle>
         </CardHeader>
         <CardContent className="pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="space-y-4">
-              <div className="h-40 flex items-center justify-center rounded-md bg-teal-200 dark:bg-teal-800">
-                <p className="text-center text-lg font-medium p-4">Samlad bild av hus fastigheten ser ut</p>
-              </div>
-              
-              <div className="h-40 flex items-center justify-center rounded-md bg-teal-200 dark:bg-teal-800">
-                <p className="text-center text-lg font-medium p-4">Driftnetto per/kvm</p>
-              </div>
+          <div className="rounded-md border">
+            <div className="grid grid-cols-3 border-b bg-muted/50 px-4 py-2">
+              <div className="font-medium">Mängdtyp</div>
+              <div className="font-medium text-right">Mängd</div>
+              <div className="font-medium text-right">Enhet</div>
             </div>
             
-            <div className="md:col-span-2">
-              <div className="rounded-md border">
-                <div className="grid grid-cols-3 border-b bg-muted/50 px-4 py-2">
-                  <div className="font-medium">Mängdtyp</div>
-                  <div className="font-medium text-right">Mängd</div>
-                  <div className="font-medium text-right">Enhet</div>
-                </div>
+            <div className="divide-y">
+              {Object.entries({
+                BOA: stats.BOA,
+                BRA: stats.BRA, 
+                LOA: stats.LOA,
+                Lokaler: stats.lokaler,
+                Bostäder: stats.bostader,
+                Hus: stats.hus,
+                Uteplats: stats.uteplats,
+                "Gröna Mimer": stats.gronaMimer,
+                NTA: stats.NTA,
+                "Antal bilar": stats.antalBilar,
+                Garageyta: stats.garageyta,
+                "A-temp": stats.ATemp,
+                "Övrigt hyresobjekt": stats.ovrigtHyresobjekt,
+                BIA: stats.BIA
+              }).map(([label, value]) => {
+                // Split the value into the number and unit
+                const isSquareMeters = value.includes("m²");
+                const isCount = value.includes("st");
                 
-                <div className="divide-y">
-                  {Object.entries({
-                    BOA: stats.BOA,
-                    BRA: stats.BRA, 
-                    LOA: stats.LOA,
-                    Lokaler: stats.lokaler,
-                    Bostäder: stats.bostader,
-                    Hus: stats.hus,
-                    Uteplats: stats.uteplats,
-                    "Gröna Mimer": stats.gronaMimer,
-                    NTA: stats.NTA,
-                    "Antal bilar": stats.antalBilar,
-                    Garageyta: stats.garageyta,
-                    "A-temp": stats.ATemp,
-                    "Övrigt hyresobjekt": stats.ovrigtHyresobjekt,
-                    BIA: stats.BIA
-                  }).map(([label, value]) => {
-                    // Split the value into the number and unit
-                    const isSquareMeters = value.includes("m²");
-                    const isCount = value.includes("st");
-                    
-                    let amount = value;
-                    let unit = "";
-                    
-                    if (isSquareMeters) {
-                      [amount, unit] = value.split(" ");
-                    } else if (isCount) {
-                      [amount, unit] = value.split(" ");
-                    }
-                    
-                    return (
-                      <div 
-                        key={label} 
-                        className="grid grid-cols-3 px-4 py-2 hover:bg-muted/30 transition-colors"
-                      >
-                        <div>{label}</div>
-                        <div className="text-right">{amount}</div>
-                        <div className="text-right">{unit}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+                let amount = value;
+                let unit = "";
+                
+                if (isSquareMeters) {
+                  [amount, unit] = value.split(" ");
+                } else if (isCount) {
+                  [amount, unit] = value.split(" ");
+                }
+                
+                return (
+                  <div 
+                    key={label} 
+                    className="grid grid-cols-3 px-4 py-2 hover:bg-muted/30 transition-colors"
+                  >
+                    <div>{label}</div>
+                    <div className="text-right">{amount}</div>
+                    <div className="text-right">{unit}</div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </CardContent>
