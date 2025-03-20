@@ -13,6 +13,7 @@ import type { InspectionRoom as InspectionRoomType } from "./types";
 import { InspectionInfoStep } from "./form/InspectionInfoStep";
 import { InspectionTabs } from "./form/InspectionTabs";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
+import { mockTenant } from "@/data/tenants";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -92,6 +93,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
                 onConditionUpdate={handleConditionUpdate}
                 onActionUpdate={handleActionUpdate}
                 onComponentNoteUpdate={handleComponentNoteUpdate}
+                tenant={mockTenant}
               />
             </div>
 

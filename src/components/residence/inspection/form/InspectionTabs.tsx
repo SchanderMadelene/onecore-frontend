@@ -4,6 +4,7 @@ import { BasicInformation } from "./BasicInformation";
 import { RoomInspectionList } from "./RoomInspectionList";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "../types";
+import { mockTenant } from "@/data/tenants";
 
 interface InspectionTabsProps {
   inspectorName: string;
@@ -18,6 +19,7 @@ interface InspectionTabsProps {
   onConditionUpdate: (roomId: string, field: keyof InspectionRoomType["conditions"], value: string) => void;
   onActionUpdate: (roomId: string, field: keyof InspectionRoomType["actions"], action: string) => void;
   onComponentNoteUpdate: (roomId: string, field: keyof InspectionRoomType["componentNotes"], note: string) => void;
+  tenant?: typeof mockTenant;
 }
 
 export function InspectionTabs({
@@ -29,7 +31,8 @@ export function InspectionTabs({
   onToggleRoom,
   onConditionUpdate,
   onActionUpdate,
-  onComponentNoteUpdate
+  onComponentNoteUpdate,
+  tenant = mockTenant // Default to mockTenant
 }: InspectionTabsProps) {
   return (
     <Tabs defaultValue="basic" className="w-full">
@@ -50,6 +53,7 @@ export function InspectionTabs({
           inspectorName={inspectorName}
           roomCount={rooms.length}
           apartmentInfo={apartmentInfo}
+          tenant={tenant}
         />
       </TabsContent>
 
