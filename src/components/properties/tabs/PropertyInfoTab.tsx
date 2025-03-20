@@ -1,5 +1,5 @@
 
-import { PropertyBasicInfo } from "@/components/properties";
+import { PropertyBasicInfo, PropertyStatisticsSummary } from "@/components/properties";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyInfoTabProps {
@@ -7,5 +7,10 @@ interface PropertyInfoTabProps {
 }
 
 export const PropertyInfoTab = ({ property }: PropertyInfoTabProps) => {
-  return <PropertyBasicInfo property={property} />;
+  return (
+    <div className="space-y-8">
+      <PropertyBasicInfo property={property} />
+      <PropertyStatisticsSummary property={property} />
+    </div>
+  );
 };
