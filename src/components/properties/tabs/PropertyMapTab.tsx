@@ -17,32 +17,17 @@ export const PropertyMapTab = ({
         <CardTitle>Ritningar</CardTitle>
       </CardHeader>
       <CardContent>
+        <h2 className="text-2xl font-bold mb-6">Ritningar</h2>
         <Tabs defaultValue="mark" className="w-full">
-          <TabsList className="flex flex-col w-full mb-6 gap-2">
-            <TabsTrigger value="mark" className="text-xs md:text-sm justify-start">
-              Mark
-            </TabsTrigger>
-            <TabsTrigger value="byggnader" className="text-xs md:text-sm justify-start">
-              Byggnader
-            </TabsTrigger>
-            <TabsTrigger value="brand" className="text-xs md:text-sm justify-start">
-              Brand
-            </TabsTrigger>
-            <TabsTrigger value="el" className="text-xs md:text-sm justify-start">
-              El
-            </TabsTrigger>
-            <TabsTrigger value="ventilation" className="text-xs md:text-sm justify-start">
-              Ventilation
-            </TabsTrigger>
-            <TabsTrigger value="vvs" className="text-xs md:text-sm justify-start">
-              VVS
-            </TabsTrigger>
-            <TabsTrigger value="drift" className="text-xs md:text-sm justify-start">
-              DU-handlingar
-            </TabsTrigger>
-            <TabsTrigger value="bofaktablad" className="text-xs md:text-sm justify-start">
-              Bofaktablad
-            </TabsTrigger>
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+            <TabsTrigger value="mark">Mark</TabsTrigger>
+            <TabsTrigger value="byggnader">Byggnader</TabsTrigger>
+            <TabsTrigger value="brand">Brand</TabsTrigger>
+            <TabsTrigger value="el">El</TabsTrigger>
+            <TabsTrigger value="ventilation">Ventilation</TabsTrigger>
+            <TabsTrigger value="vvs">VVS</TabsTrigger>
+            <TabsTrigger value="drift">DU-handlingar</TabsTrigger>
+            <TabsTrigger value="bofaktablad">Bofaktablad</TabsTrigger>
           </TabsList>
 
           <TabsContent value="mark">

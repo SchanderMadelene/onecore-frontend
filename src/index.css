@@ -54,6 +54,17 @@
   @apply bg-white/30 backdrop-blur-md border border-white/20 shadow-xl;
 }
 
+/* Secondary tabs styling */
+.secondary-tabs .tabs-list {
+  @apply bg-transparent border-b border-border;
+}
+
+.secondary-tabs .tab-trigger {
+  @apply rounded-none border-b-2 border-transparent pb-2 px-4 
+         data-[state=active]:border-primary data-[state=active]:bg-transparent 
+         data-[state=active]:shadow-none;
+}
+
 /* Mobile-first responsive utilities */
 @layer utilities {
   .text-truncate {
