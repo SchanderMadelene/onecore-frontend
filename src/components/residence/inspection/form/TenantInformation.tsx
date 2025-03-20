@@ -56,9 +56,21 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-              <p className="font-medium">{tenant.contractNumber}</p>
+              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </div>
             </div>
+            {tenant.moveOutDate && (
+              <div>
+                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                </div>
+              </div>
+            )}
           </div>
           <div className="space-y-4">
             <div>
@@ -83,24 +95,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                   <Mail className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                </div>
-              </div>
-              {tenant.moveOutDate && (
-                <div>
-                  <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
