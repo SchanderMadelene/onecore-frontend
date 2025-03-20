@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MessageSquare, User } from "lucide-react";
@@ -53,11 +54,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
               <p className="font-medium">{tenant.personalNumber}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-              <p className="font-medium">{tenant.contractNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
+              <p className="text-sm text-muted-foreground">Kontraktstatus</p>
               <p className="font-medium">
                 {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
               </p>
