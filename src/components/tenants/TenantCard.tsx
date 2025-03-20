@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MessageSquare, Home, Calendar } from "lucide-react";
+import { Phone, Mail, MessageSquare, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TenantCardProps {
@@ -13,7 +13,6 @@ interface TenantCardProps {
     moveInDate: string;
     moveOutDate?: string;
     contractNumber: string;
-    personalNumber: string;
   };
 }
 
@@ -32,7 +31,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-4">
         <CardTitle>Personuppgifter</CardTitle>
       </CardHeader>
       <CardContent>
@@ -41,10 +40,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
               <p className="font-medium">{tenant.firstName} {tenant.lastName}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Personnummer</p>
-              <p className="font-medium">{tenant.personalNumber}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Telefon</p>
@@ -71,10 +66,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
           </div>
           <div className="space-y-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-              <p className="font-medium">{tenant.contractNumber}</p>
-            </div>
             <div>
               <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
               <p className="font-medium">

@@ -53,3 +53,42 @@
 .glassmorphism {
   @apply bg-white/30 backdrop-blur-md border border-white/20 shadow-xl;
 }
+
+/* Mobile-first responsive utilities */
+@layer utilities {
+  .text-truncate {
+    @apply truncate;
+  }
+  
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+  
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4;
+  }
+  
+  .px-responsive {
+    @apply px-3 sm:px-4 md:px-6;
+  }
+  
+  .py-responsive {
+    @apply py-3 sm:py-4 md:py-6;
+  }
+  
+  .p-responsive {
+    @apply p-3 sm:p-4 md:p-6;
+  }
+  
+  .text-responsive {
+    @apply text-sm sm:text-base;
+  }
+  
+  .heading-responsive {
+    @apply text-lg sm:text-xl md:text-2xl font-medium;
+  }
+}

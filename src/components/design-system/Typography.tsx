@@ -26,18 +26,18 @@ export const Typography = () => {
           </div>
           
           <div className="space-y-2">
-            <h4 className="text-xl font-bold tracking-tight">Heading 4</h4>
-            <p className="text-sm text-muted-foreground">Font Size: 1.25rem (20px), Font Weight: 700</p>
+            <h4 className="text-xl font-semibold">Heading 4</h4>
+            <p className="text-sm text-muted-foreground">Font Size: 1.25rem (20px), Font Weight: 600</p>
           </div>
           
           <div className="space-y-2">
-            <h5 className="text-lg font-bold tracking-tight">Heading 5</h5>
-            <p className="text-sm text-muted-foreground">Font Size: 1.125rem (18px), Font Weight: 700</p>
+            <h5 className="text-lg font-medium">Heading 5</h5>
+            <p className="text-sm text-muted-foreground">Font Size: 1.125rem (18px), Font Weight: 500</p>
           </div>
           
           <div className="space-y-2">
-            <h6 className="text-base font-bold tracking-tight">Heading 6</h6>
-            <p className="text-sm text-muted-foreground">Font Size: 1rem (16px), Font Weight: 700</p>
+            <h6 className="text-base font-medium">Heading 6</h6>
+            <p className="text-sm text-muted-foreground">Font Size: 1rem (16px), Font Weight: 500</p>
           </div>
         </CardContent>
       </Card>
@@ -78,22 +78,22 @@ export const Typography = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <p className="text-muted-foreground">Muted Text: Used for less important information</p>
-            <p className="text-sm text-muted-foreground">Uses the muted-foreground color variable</p>
+            <p className="text-sm text-muted-foreground">Muted Text: Used for labels and less important information</p>
+            <p className="text-sm text-muted-foreground">Uses the text-sm and text-muted-foreground classes</p>
           </div>
           
           <div className="space-y-2">
-            <p className="font-medium">Medium Text: Used for semi-emphasized content</p>
+            <p className="font-medium">Medium Text: Used for values and semi-emphasized content</p>
             <p className="text-sm text-muted-foreground">Font Weight: 500</p>
           </div>
           
           <div className="space-y-2">
-            <p className="font-semibold">Semibold Text: Used for important content</p>
+            <p className="font-semibold">Semibold Text: Used for important content and subheadings</p>
             <p className="text-sm text-muted-foreground">Font Weight: 600</p>
           </div>
           
           <div className="space-y-2">
-            <p className="font-bold">Bold Text: Used for strongly emphasized content</p>
+            <p className="font-bold">Bold Text: Used for headings and strongly emphasized content</p>
             <p className="text-sm text-muted-foreground">Font Weight: 700</p>
           </div>
           

@@ -5,13 +5,12 @@ import type { InspectionRoom } from "@/components/residence/inspection/types";
 interface InspectionProgress {
   rooms: Array<{
     room: Room;
-    status: "not-started" | "in-progress" | "approved" | "handled";
+    status: "not-started" | "in-progress" | "handled";
   }>;
   progress: number;
   stats: {
     total: number;
     completed: number;
-    approved: number;
     handled: number;
     inProgress: number;
   };
@@ -30,7 +29,6 @@ export const useInspectionProgress = (
     const conditions = Object.values(inspection.conditions);
     const isComplete = conditions.every(c => c !== "");
 
-    if (inspection.isApproved) return { room, status: "approved" as const };
     if (inspection.isHandled) return { room, status: "handled" as const };
     if (isComplete) return { room, status: "handled" as const };
     if (conditions.some(c => c !== "")) return { room, status: "in-progress" as const };
@@ -38,16 +36,13 @@ export const useInspectionProgress = (
   });
 
   const total = roomProgress.length;
-  const completed = roomProgress.filter(r => 
-    r.status === "approved" || r.status === "handled"
-  ).length;
-  const approved = roomProgress.filter(r => r.status === "approved").length;
+  const completed = roomProgress.filter(r => r.status === "handled").length;
   const handled = roomProgress.filter(r => r.status === "handled").length;
   const inProgress = roomProgress.filter(r => r.status === "in-progress").length;
 
   return {
     rooms: roomProgress,
     progress: (completed / total) * 100,
-    stats: { total, completed, approved, handled, inProgress }
+    stats: { total, completed, handled, inProgress }
   };
 };
