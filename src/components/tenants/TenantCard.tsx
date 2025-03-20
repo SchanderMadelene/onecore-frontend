@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MessageSquare, Home, Calendar } from "lucide-react";
+import { Phone, Mail, MessageSquare, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TenantCardProps {
@@ -32,7 +32,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-4">
         <CardTitle>Personuppgifter</CardTitle>
       </CardHeader>
       <CardContent>
@@ -77,22 +77,24 @@ export function TenantCard({ tenant }: TenantCardProps) {
                 {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
               </p>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-              </div>
-            </div>
-            {tenant.moveOutDate && (
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+                <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
                 <div className="flex items-center gap-2">
-                  <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                  <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                 </div>
               </div>
-            )}
+              {tenant.moveOutDate && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>

@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, User } from "lucide-react";
+import { Phone, Mail, MessageSquare, User, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface TenantInformationProps {
@@ -33,7 +33,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 flex-wrap gap-4">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 flex-wrap gap-4 pb-4">
         <CardTitle>Hyresgästinformation</CardTitle>
         <Button variant="outline" asChild className="shrink-0">
           <Link to={`/tenants/detail/${tenant.personalNumber}`}>
@@ -54,6 +54,10 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
               <p className="font-medium">
                 {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
               </p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
+              <p className="font-medium">{tenant.contractNumber}</p>
             </div>
           </div>
           <div className="space-y-4">
@@ -80,16 +84,24 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                 </Button>
               </div>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-              <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
-            </div>
-            {tenant.moveOutDate && (
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-                <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                </div>
               </div>
-            )}
+              {tenant.moveOutDate && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>
