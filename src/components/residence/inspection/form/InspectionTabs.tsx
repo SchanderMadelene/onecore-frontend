@@ -52,19 +52,6 @@ export function InspectionTabs({
   onComponentNoteUpdate,
   tenant = mockTenant // Default to mockTenant
 }: InspectionTabsProps) {
-  // Format current date with time
-  const formatDateWithTime = () => {
-    const now = new Date();
-    const dateOptions: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    return now.toLocaleString('sv-SE', dateOptions);
-  };
-
   return (
     <Tabs defaultValue="basic" className="w-full">
       <TabsList className="w-full justify-start bg-background border-b rounded-none px-0 overflow-x-auto flex-nowrap">
@@ -99,18 +86,6 @@ export function InspectionTabs({
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          <div className="space-y-2">
-            <Label>Datum</Label>
-            <p className="text-sm text-muted-foreground">
-              {formatDateWithTime()}
-            </p>
-          </div>
-          <div className="space-y-2">
-            <Label>Huvudnyckel finns</Label>
-            <p className="text-sm text-muted-foreground">
-              {apartmentInfo?.hasMainKey ? "Ja" : "Nej"}
-            </p>
           </div>
         </div>
         
