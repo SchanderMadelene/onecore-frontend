@@ -94,7 +94,7 @@ const PropertyDetailPage = () => {
                   <div>
                     <p className="text-sm text-muted-foreground">Fastighetsstatus</p>
                     <p className="font-medium">
-                      {propertyDetail.status === "active" ? "Aktiv" : "Inaktiv"}
+                      Aktiv
                     </p>
                   </div>
                   <div>
@@ -106,7 +106,11 @@ const PropertyDetailPage = () => {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Byggnadsår</p>
-                    <p className="font-medium">{propertyDetail.constructionYear || "-"}</p>
+                    <p className="font-medium">
+                      {propertyDetail.buildings.length > 0 
+                        ? propertyDetail.buildings[0].constructionYear 
+                        : "-"}
+                    </p>
                   </div>
                 </div>
               </div>
