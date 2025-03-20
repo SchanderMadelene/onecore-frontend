@@ -35,50 +35,48 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {building.entrances.map(entrance => (
-          <Card key={entrance.id} className="overflow-hidden">
-            <CardHeader className="pb-3 bg-muted/30">
-              <CardTitle className="flex justify-between items-center">
+          <div key={entrance.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div className="p-4 border-b bg-background">
+              <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <DoorOpen className="h-5 w-5 text-primary" />
                   {entrance.name}
                 </div>
-                <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">
+                <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
                   {entrance.apartments.length} lgh
                 </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <div className="space-y-3">
-                {entrance.apartments.map(aptId => {
-                  const apartment = getApartment(aptId);
-                  
-                  return apartment ? (
-                    <div key={aptId} className="flex justify-between items-center p-2 rounded-md border">
-                      <div className="flex items-center gap-2">
-                        <Home className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-medium">{apartment.code}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
-                        <Link to={`${basePath}/${apartment.id}`}>
-                          <Button variant="ghost" size="icon" className="h-7 w-7">
-                            <User className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  ) : (
-                    <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
-                      <div className="flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4 text-destructive" />
-                        <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
-                      </div>
-                    </div>
-                  );
-                })}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+            <div className="p-4 space-y-2">
+              {entrance.apartments.map(aptId => {
+                const apartment = getApartment(aptId);
+                
+                return apartment ? (
+                  <div key={aptId} className="flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center gap-2">
+                      <Home className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-medium">{apartment.code}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
+                      <Link to={`${basePath}/${apartment.id}`}>
+                        <Button variant="ghost" size="icon" className="h-7 w-7">
+                          <User className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="h-4 w-4 text-destructive" />
+                      <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         ))}
       </div>
     </div>

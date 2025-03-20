@@ -56,6 +56,27 @@
 
 /* Remove secondary tabs custom styling to use shadcn default */
 
+/* Card component enhancements */
+.card-grid {
+  @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.card-flat {
+  @apply border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow;
+}
+
+.card-header-compact {
+  @apply p-4 border-b bg-background;
+}
+
+.card-body-compact {
+  @apply p-4;
+}
+
+.apartment-card {
+  @apply border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow;
+}
+
 /* Mobile-first responsive utilities */
 @layer utilities {
   .text-truncate {
