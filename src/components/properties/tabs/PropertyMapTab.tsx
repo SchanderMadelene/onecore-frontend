@@ -1,13 +1,10 @@
-
 import { MapPin } from "lucide-react";
 import { PropertyMapView } from "@/components/properties";
 import type { PropertyDetail } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 interface PropertyMapTabProps {
   propertyDetail: PropertyDetail;
 }
-
 export const PropertyMapTab = ({
   propertyDetail
 }: PropertyMapTabProps) => {
@@ -16,16 +13,12 @@ export const PropertyMapTab = ({
         <CardTitle>Ritningar</CardTitle>
       </CardHeader>
       <CardContent>
-        <h2 className="text-2xl font-bold mb-6">Ritningar</h2>
-        {propertyDetail.propertyMap ? (
-          <PropertyMapView propertyDetail={propertyDetail} />
-        ) : (
-          <EmptyDrawingState label="Ritningar" />
-        )}
+        <h2 className="font-bold mb-6 text-2xl">
+      </h2>
+        {propertyDetail.propertyMap ? <PropertyMapView propertyDetail={propertyDetail} /> : <EmptyDrawingState label="Ritningar" />}
       </CardContent>
     </Card>;
 };
-
 const EmptyDrawingState = ({
   label
 }: {
