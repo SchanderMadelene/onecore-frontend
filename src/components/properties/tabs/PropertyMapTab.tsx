@@ -1,11 +1,14 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin } from "lucide-react";
 import { PropertyMapView } from "@/components/properties";
 import type { PropertyDetail } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 interface PropertyMapTabProps {
   propertyDetail: PropertyDetail;
 }
+
 export const PropertyMapTab = ({
   propertyDetail
 }: PropertyMapTabProps) => {
@@ -73,6 +76,7 @@ export const PropertyMapTab = ({
       </CardContent>
     </Card>;
 };
+
 const EmptyDrawingState = ({
   label
 }: {
