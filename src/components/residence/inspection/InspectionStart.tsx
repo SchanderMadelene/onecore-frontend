@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { InspectionFormDialog } from "./InspectionFormDialog";
 import { RoomCard } from "./room-view/RoomCard";
+import { InspectionEmpty } from "./InspectionEmpty";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
 
@@ -41,8 +42,6 @@ export const InspectionStart = ({
   }
 
   // This is the initial inspection state without any room selected
-  // Import and use the InspectionEmpty component
-  const { InspectionEmpty } = require('./InspectionEmpty');
   return (
     <InspectionEmpty 
       rooms={rooms} 
