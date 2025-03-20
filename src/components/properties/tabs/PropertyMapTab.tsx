@@ -1,17 +1,15 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin } from "lucide-react";
 import { PropertyMapView } from "@/components/properties";
 import type { PropertyDetail } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 interface PropertyMapTabProps {
   propertyDetail: PropertyDetail;
 }
-
-export const PropertyMapTab = ({ propertyDetail }: PropertyMapTabProps) => {
-  return (
-    <Card>
+export const PropertyMapTab = ({
+  propertyDetail
+}: PropertyMapTabProps) => {
+  return <Card>
       <CardHeader>
         <CardTitle>Ritningar</CardTitle>
       </CardHeader>
@@ -36,20 +34,14 @@ export const PropertyMapTab = ({ propertyDetail }: PropertyMapTabProps) => {
             <TabsTrigger value="vvs" className="text-xs md:text-sm">
               VVS
             </TabsTrigger>
-            <TabsTrigger value="drift" className="text-xs md:text-sm whitespace-normal h-auto py-2">
-              Drift och underhålls-handlingar
-            </TabsTrigger>
+            <TabsTrigger value="drift" className="text-xs md:text-sm whitespace-normal h-auto py-2">DU-handlingar</TabsTrigger>
             <TabsTrigger value="bofaktablad" className="text-xs md:text-sm whitespace-normal h-auto py-2">
               Bofaktablad för alla lägenheter
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="mark">
-            {propertyDetail.propertyMap ? (
-              <PropertyMapView propertyDetail={propertyDetail} />
-            ) : (
-              <EmptyDrawingState label="Mark" />
-            )}
+            {propertyDetail.propertyMap ? <PropertyMapView propertyDetail={propertyDetail} /> : <EmptyDrawingState label="Mark" />}
           </TabsContent>
           
           <TabsContent value="byggnader">
@@ -81,18 +73,18 @@ export const PropertyMapTab = ({ propertyDetail }: PropertyMapTabProps) => {
           </TabsContent>
         </Tabs>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
-const EmptyDrawingState = ({ label }: { label: string }) => {
-  return (
-    <div className="border rounded-lg p-6 text-center">
+const EmptyDrawingState = ({
+  label
+}: {
+  label: string;
+}) => {
+  return <div className="border rounded-lg p-6 text-center">
       <MapPin className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
       <h3 className="text-xl font-medium mb-2">Ritningar saknas</h3>
       <p className="text-muted-foreground">
         Ritningar för {label} finns inte tillgängliga för denna fastighet.
       </p>
-    </div>
-  );
+    </div>;
 };
