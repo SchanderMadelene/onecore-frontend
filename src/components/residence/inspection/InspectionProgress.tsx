@@ -6,7 +6,7 @@ import { AlertCircle, CheckCircle, Circle } from "lucide-react";
 interface InspectionStats {
   total: number;
   completed: number;
-  approved: number;
+  handled: number;
   inProgress: number;
 }
 
@@ -43,11 +43,11 @@ export const InspectionProgress = ({ progress, stats, inspectorName }: Inspectio
           <div className="grid grid-cols-2 gap-4 pt-4">
             <StatisticItem 
               icon={<CheckCircle className="h-4 w-4 text-green-500" />}
-              label={`${stats.approved} rum godkända`}
+              label={`${stats.handled} rum hanterade`}
             />
             <StatisticItem 
               icon={<AlertCircle className="h-4 w-4 text-amber-500" />}
-              label={`${stats.completed - stats.approved} rum behöver åtgärd`}
+              label={`${stats.completed - stats.handled} rum behöver åtgärd`}
             />
             <StatisticItem 
               icon={<Circle className="h-4 w-4 text-blue-500 fill-current" />}
