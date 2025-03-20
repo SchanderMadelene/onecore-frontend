@@ -46,12 +46,23 @@ export const InspectionAccordion = ({
   
   const expandAll = () => {
     setAllExpanded(true);
-    setExpandedValue(undefined);
+    setExpandedValue("walls,ceiling,floor,details");
   };
   
   const collapseAll = () => {
     setAllExpanded(false);
     setExpandedValue(undefined);
+  };
+  
+  // Determine which items to show as expanded
+  const isExpanded = (value: string) => {
+    if (allExpanded) {
+      return true;
+    }
+    if (expandedValue?.includes(",")) {
+      return expandedValue.split(",").includes(value);
+    }
+    return expandedValue === value;
   };
   
   return (
@@ -80,13 +91,13 @@ export const InspectionAccordion = ({
       </div>
       
       <Accordion 
-        type="single" 
+        type={allExpanded ? "multiple" : "single"} 
         value={expandedValue} 
         onValueChange={handleValueChange} 
         className="space-y-2"
         collapsible
       >
-        <AccordionItem value="walls" className="border rounded-md" forceMount open={allExpanded}>
+        <AccordionItem value="walls" className="border rounded-md">
           <AccordionTrigger className="flex justify-between w-full px-3 hover:no-underline hover:bg-gray-50">
             <div className="flex items-center gap-1.5">
               {isWallsComplete() && (
@@ -95,26 +106,28 @@ export const InspectionAccordion = ({
               <span className={`font-medium ${isMobile ? 'text-sm' : ''}`}>Väggar</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-3" forceMount>
-            <div className="space-y-4 py-2">
-              {(["wall1", "wall2", "wall3", "wall4"] as const).map((wall) => (
-                <ConditionSelect
-                  key={wall}
-                  label={wallDirections[wall]}
-                  value={inspectionData.conditions[wall]}
-                  onChange={(value) => onConditionUpdate(wall, value)}
-                  actions={inspectionData.actions[wall]}
-                  onActionUpdate={(action) => onActionUpdate(wall, action)}
-                  type="walls"
-                  note={inspectionData.componentNotes[wall]}
-                  onNoteChange={(note) => onComponentNoteUpdate(wall, note)}
-                />
-              ))}
-            </div>
-          </AccordionContent>
+          {isExpanded("walls") && (
+            <AccordionContent className="px-3">
+              <div className="space-y-4 py-2">
+                {(["wall1", "wall2", "wall3", "wall4"] as const).map((wall) => (
+                  <ConditionSelect
+                    key={wall}
+                    label={wallDirections[wall]}
+                    value={inspectionData.conditions[wall]}
+                    onChange={(value) => onConditionUpdate(wall, value)}
+                    actions={inspectionData.actions[wall]}
+                    onActionUpdate={(action) => onActionUpdate(wall, action)}
+                    type="walls"
+                    note={inspectionData.componentNotes[wall]}
+                    onNoteChange={(note) => onComponentNoteUpdate(wall, note)}
+                  />
+                ))}
+              </div>
+            </AccordionContent>
+          )}
         </AccordionItem>
 
-        <AccordionItem value="ceiling" className="border rounded-md" forceMount open={allExpanded}>
+        <AccordionItem value="ceiling" className="border rounded-md">
           <AccordionTrigger className="flex justify-between w-full px-3 hover:no-underline hover:bg-gray-50">
             <div className="flex items-center gap-1.5">
               {isSingleComponentComplete("ceiling") && (
@@ -123,23 +136,25 @@ export const InspectionAccordion = ({
               <span className={`font-medium ${isMobile ? 'text-sm' : ''}`}>Tak</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-3" forceMount>
-            <div className="py-2">
-              <ConditionSelect
-                label="Tak"
-                value={inspectionData.conditions.ceiling}
-                onChange={(value) => onConditionUpdate("ceiling", value)}
-                actions={inspectionData.actions.ceiling}
-                onActionUpdate={(action) => onActionUpdate("ceiling", action)}
-                type="ceiling"
-                note={inspectionData.componentNotes.ceiling}
-                onNoteChange={(note) => onComponentNoteUpdate("ceiling", note)}
-              />
-            </div>
-          </AccordionContent>
+          {isExpanded("ceiling") && (
+            <AccordionContent className="px-3">
+              <div className="py-2">
+                <ConditionSelect
+                  label="Tak"
+                  value={inspectionData.conditions.ceiling}
+                  onChange={(value) => onConditionUpdate("ceiling", value)}
+                  actions={inspectionData.actions.ceiling}
+                  onActionUpdate={(action) => onActionUpdate("ceiling", action)}
+                  type="ceiling"
+                  note={inspectionData.componentNotes.ceiling}
+                  onNoteChange={(note) => onComponentNoteUpdate("ceiling", note)}
+                />
+              </div>
+            </AccordionContent>
+          )}
         </AccordionItem>
 
-        <AccordionItem value="floor" className="border rounded-md" forceMount open={allExpanded}>
+        <AccordionItem value="floor" className="border rounded-md">
           <AccordionTrigger className="flex justify-between w-full px-3 hover:no-underline hover:bg-gray-50">
             <div className="flex items-center gap-1.5">
               {isSingleComponentComplete("floor") && (
@@ -148,23 +163,25 @@ export const InspectionAccordion = ({
               <span className={`font-medium ${isMobile ? 'text-sm' : ''}`}>Golv</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-3" forceMount>
-            <div className="py-2">
-              <ConditionSelect
-                label="Golv"
-                value={inspectionData.conditions.floor}
-                onChange={(value) => onConditionUpdate("floor", value)}
-                actions={inspectionData.actions.floor}
-                onActionUpdate={(action) => onActionUpdate("floor", action)}
-                type="floor"
-                note={inspectionData.componentNotes.floor}
-                onNoteChange={(note) => onComponentNoteUpdate("floor", note)}
-              />
-            </div>
-          </AccordionContent>
+          {isExpanded("floor") && (
+            <AccordionContent className="px-3">
+              <div className="py-2">
+                <ConditionSelect
+                  label="Golv"
+                  value={inspectionData.conditions.floor}
+                  onChange={(value) => onConditionUpdate("floor", value)}
+                  actions={inspectionData.actions.floor}
+                  onActionUpdate={(action) => onActionUpdate("floor", action)}
+                  type="floor"
+                  note={inspectionData.componentNotes.floor}
+                  onNoteChange={(note) => onComponentNoteUpdate("floor", note)}
+                />
+              </div>
+            </AccordionContent>
+          )}
         </AccordionItem>
 
-        <AccordionItem value="details" className="border rounded-md" forceMount open={allExpanded}>
+        <AccordionItem value="details" className="border rounded-md">
           <AccordionTrigger className="flex justify-between w-full px-3 hover:no-underline hover:bg-gray-50">
             <div className="flex items-center gap-1.5">
               {isSingleComponentComplete("details") && (
@@ -173,20 +190,22 @@ export const InspectionAccordion = ({
               <span className={`font-medium ${isMobile ? 'text-sm' : ''}`}>Detaljer</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-3" forceMount>
-            <div className="py-2">
-              <ConditionSelect
-                label="Detaljer"
-                value={inspectionData.conditions.details}
-                onChange={(value) => onConditionUpdate("details", value)}
-                actions={inspectionData.actions.details}
-                onActionUpdate={(action) => onActionUpdate("details", action)}
-                type="details"
-                note={inspectionData.componentNotes.details}
-                onNoteChange={(note) => onComponentNoteUpdate("details", note)}
-              />
-            </div>
-          </AccordionContent>
+          {isExpanded("details") && (
+            <AccordionContent className="px-3">
+              <div className="py-2">
+                <ConditionSelect
+                  label="Detaljer"
+                  value={inspectionData.conditions.details}
+                  onChange={(value) => onConditionUpdate("details", value)}
+                  actions={inspectionData.actions.details}
+                  onActionUpdate={(action) => onActionUpdate("details", action)}
+                  type="details"
+                  note={inspectionData.componentNotes.details}
+                  onNoteChange={(note) => onComponentNoteUpdate("details", note)}
+                />
+              </div>
+            </AccordionContent>
+          )}
         </AccordionItem>
       </Accordion>
     </div>
