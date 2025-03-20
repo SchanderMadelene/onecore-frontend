@@ -62,8 +62,19 @@ const PropertyDetailPage = () => {
     return (
       <div className="py-4 space-y-6">
         <PropertyHeader propertyDetail={propertyDetail} />
-        <PropertyBasicInfo propertyDetail={propertyDetail} />
+        
+        {/* Grundläggande information comes first */}
+        <div className="mb-6">
+          <PropertyBasicInfo propertyDetail={propertyDetail} showBasicInfoOnly={true} />
+        </div>
+        
+        {/* Tabs in the middle */}
         <PropertyDetailTabs propertyDetail={propertyDetail} />
+        
+        {/* Detailed property information at the bottom */}
+        <div className="mt-6">
+          <PropertyBasicInfo propertyDetail={propertyDetail} showBasicInfoOnly={false} showDetailedInfo={true} />
+        </div>
       </div>
     );
   };
