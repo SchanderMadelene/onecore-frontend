@@ -7,5 +7,6 @@ export * from "./PropertyMapView";
 export * from "./PropertyHeader";
 export * from "./PropertyDetailTabs";
 export * from "./PropertyStatisticsSummary";
+export * from "./tabs/PropertyInfoTab";
 export * from "./tabs/PropertyResidenceTab";
 export * from "./tabs/PropertyMaintenanceUnitsTab";
