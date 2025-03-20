@@ -35,9 +35,7 @@ export const PropertyMapTab = ({
               VVS
             </TabsTrigger>
             <TabsTrigger value="drift" className="text-xs md:text-sm whitespace-normal h-auto py-2">DU-handlingar</TabsTrigger>
-            <TabsTrigger value="bofaktablad" className="text-xs md:text-sm whitespace-normal h-auto py-2">
-              Bofaktablad för alla lägenheter
-            </TabsTrigger>
+            <TabsTrigger value="bofaktablad" className="text-xs md:text-sm whitespace-normal h-auto py-2">Bofaktablad</TabsTrigger>
           </TabsList>
 
           <TabsContent value="mark">
