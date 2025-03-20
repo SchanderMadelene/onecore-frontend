@@ -1,5 +1,6 @@
 
 import { Check, CheckCircle } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface RoomStatusProps {
   isApproved: boolean;
@@ -9,10 +10,12 @@ interface RoomStatusProps {
 }
 
 export const RoomStatus = ({ isApproved, isHandled, name, onClick }: RoomStatusProps) => {
+  const isMobile = useIsMobile();
+  
   return (
     <button
       type="button"
-      className={`flex-1 text-left flex items-center gap-2 transition-colors ${
+      className={`text-left flex items-center gap-1.5 transition-colors w-full sm:w-auto ${
         isApproved 
           ? 'text-green-700 hover:text-green-800' 
           : isHandled
@@ -22,11 +25,11 @@ export const RoomStatus = ({ isApproved, isHandled, name, onClick }: RoomStatusP
       onClick={onClick}
     >
       {isApproved ? (
-        <Check className="h-5 w-5 text-green-600 shrink-0" />
+        <Check className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} text-green-600 shrink-0`} />
       ) : isHandled && (
-        <CheckCircle className="h-5 w-5 text-slate-600 shrink-0" />
+        <CheckCircle className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} text-slate-600 shrink-0`} />
       )}
-      <span className="font-semibold text-base">{name}</span>
+      <span className={`font-semibold ${isMobile ? 'text-sm' : 'text-base'} truncate`}>{name}</span>
     </button>
   );
 };

@@ -1,8 +1,10 @@
+
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
 import { RoomStatus } from "./room-header/RoomStatus";
 import { RoomActions } from "./room-header/RoomActions";
 import { InspectionAccordion } from "./InspectionAccordion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface InspectionRoomProps {
   room: Room;
@@ -23,6 +25,8 @@ export const InspectionRoom = ({
   onActionUpdate,
   onComponentNoteUpdate,
 }: InspectionRoomProps) => {
+  const isMobile = useIsMobile();
+  
   const handleApproveRoom = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -82,7 +86,7 @@ export const InspectionRoom = ({
           ? 'bg-slate-50 border-slate-200'
           : 'bg-white'
     }`}>
-      <div className={`w-full p-4 flex items-center justify-between border-b ${
+      <div className={`w-full p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between border-b gap-2 ${
         inspectionData.isApproved 
           ? 'bg-green-50/50 border-green-200' 
           : inspectionData.isHandled
@@ -101,11 +105,12 @@ export const InspectionRoom = ({
           isExpanded={isExpanded}
           onApprove={handleApproveRoom}
           onToggle={handleToggleClick}
+          isMobile={isMobile}
         />
       </div>
 
       {isExpanded && (
-        <div className="p-4">
+        <div className="p-3 sm:p-4">
           <InspectionAccordion
             isWallsComplete={isWallsComplete}
             isSingleComponentComplete={isSingleComponentComplete}

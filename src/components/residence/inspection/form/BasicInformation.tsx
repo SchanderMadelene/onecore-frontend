@@ -64,8 +64,8 @@ export function BasicInformation({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-3">
         <div>
           <p className="text-sm text-muted-foreground">Datum</p>
           <p className="font-medium">{formatDateWithTime()}</p>
@@ -74,12 +74,6 @@ export function BasicInformation({
           <div>
             <p className="text-sm text-muted-foreground">Lägenhet</p>
             <p className="font-medium">{apartmentInfo.address}</p>
-          </div>
-        )}
-        {apartmentInfo && (
-          <div>
-            <p className="text-sm text-muted-foreground">Huvudnyckel finns</p>
-            <p className="font-medium">{apartmentInfo.hasMainKey ? 'Ja' : 'Nej'}</p>
           </div>
         )}
         <div>
@@ -94,9 +88,9 @@ export function BasicInformation({
 
       {/* Tenant information section */}
       {tenant && (
-        <div className="mt-6 border-t pt-6">
-          <h3 className="text-lg font-medium mb-4">Hyresgästinformation</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="mt-4 border-t pt-4">
+          <h3 className="text-base font-medium mb-3">Hyresgästinformation</h3>
+          <div className="grid grid-cols-1 gap-3">
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
               <p className="font-medium">{tenant.firstName} {tenant.lastName}</p>
@@ -120,13 +114,13 @@ export function BasicInformation({
             <div>
               <p className="text-sm text-muted-foreground">Telefon</p>
               <div className="flex items-center gap-2">
-                <p className="font-medium">{tenant.phone}</p>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="icon" onClick={handleCall} title="Ring">
-                    <Phone className="h-4 w-4" />
+                <p className="font-medium truncate max-w-[60%]">{tenant.phone}</p>
+                <div className="flex gap-1">
+                  <Button variant="outline" size="icon" onClick={handleCall} title="Ring" className="h-8 w-8">
+                    <Phone className="h-3 w-3" />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={handleSMS} title="Skicka SMS">
-                    <MessageSquare className="h-4 w-4" />
+                  <Button variant="outline" size="icon" onClick={handleSMS} title="Skicka SMS" className="h-8 w-8">
+                    <MessageSquare className="h-3 w-3" />
                   </Button>
                 </div>
               </div>
@@ -134,9 +128,9 @@ export function BasicInformation({
             <div>
               <p className="text-sm text-muted-foreground">E-post</p>
               <div className="flex items-center gap-2">
-                <p className="font-medium">{tenant.email}</p>
-                <Button variant="outline" size="icon" onClick={handleEmail} title="Skicka e-post">
-                  <Mail className="h-4 w-4" />
+                <p className="font-medium truncate max-w-[60%]">{tenant.email}</p>
+                <Button variant="outline" size="icon" onClick={handleEmail} title="Skicka e-post" className="h-8 w-8">
+                  <Mail className="h-3 w-3" />
                 </Button>
               </div>
             </div>

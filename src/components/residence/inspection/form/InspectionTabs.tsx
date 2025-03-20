@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // List of available inspectors
 const inspectors = [
@@ -52,22 +53,24 @@ export function InspectionTabs({
   onComponentNoteUpdate,
   tenant = mockTenant // Default to mockTenant
 }: InspectionTabsProps) {
+  const isMobile = useIsMobile();
+  
   return (
     <Tabs defaultValue="basic" className="w-full">
       <TabsList className="w-full justify-start bg-background border-b rounded-none px-0 overflow-x-auto flex-nowrap">
-        <TabsTrigger value="basic" className="text-sm sm:text-base whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+        <TabsTrigger value="basic" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
           Grundläggande info
         </TabsTrigger>
-        <TabsTrigger value="protocol" className="text-sm sm:text-base whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+        <TabsTrigger value="protocol" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
           Protokoll
         </TabsTrigger>
-        <TabsTrigger value="floorplan" className="text-sm sm:text-base whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none">
+        <TabsTrigger value="floorplan" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
           Planritning
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="basic" className="mt-6 space-y-6">
-        <div className="space-y-4">
+      <TabsContent value="basic" className="mt-4 space-y-4">
+        <div className="space-y-3">
           <div className="space-y-2">
             <Label htmlFor="inspectorName">Besiktningsman</Label>
             <Select 
@@ -97,7 +100,7 @@ export function InspectionTabs({
         />
       </TabsContent>
 
-      <TabsContent value="protocol" className="mt-6">
+      <TabsContent value="protocol" className="mt-4">
         <RoomInspectionList
           rooms={rooms}
           expandedRoomIds={expandedRoomIds}
@@ -109,9 +112,9 @@ export function InspectionTabs({
         />
       </TabsContent>
 
-      <TabsContent value="floorplan" className="mt-6">
-        <div className="flex items-center justify-center h-[400px] border-2 border-dashed rounded-lg">
-          <p className="text-muted-foreground">Planritning är inte tillgänglig</p>
+      <TabsContent value="floorplan" className="mt-4">
+        <div className="flex items-center justify-center h-[200px] sm:h-[400px] border-2 border-dashed rounded-lg">
+          <p className="text-muted-foreground text-sm">Planritning är inte tillgänglig</p>
         </div>
       </TabsContent>
     </Tabs>

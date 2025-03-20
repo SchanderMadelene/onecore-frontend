@@ -13,6 +13,7 @@ import type { InspectionRoom as InspectionRoomType } from "./types";
 import { InspectionTabs } from "./form/InspectionTabs";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
 import { mockTenant } from "@/data/tenants";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ interface InspectionFormDialogProps {
 }
 
 export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: InspectionFormDialogProps) {
+  const isMobile = useIsMobile();
+  
   const {
     inspectorName,
     setInspectorName,
@@ -60,16 +63,16 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[95vh] overflow-y-auto p-4 sm:p-6">
-        <DialogHeader>
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] p-3' : 'max-w-[95vw] sm:max-w-4xl p-4 sm:p-6'} max-h-[95vh] overflow-y-auto`}>
+        <DialogHeader className="space-y-1">
           <DialogTitle>Genomför besiktning</DialogTitle>
           <DialogDescription>
             Gå igenom och bedöm skicket på alla rum
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4 py-4">
+        <form onSubmit={handleSubmit} className="mt-2">
+          <div className="space-y-4">
             <InspectionTabs
               inspectorName={inspectorName}
               setInspectorName={setInspectorName}
@@ -85,11 +88,11 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
             />
           </div>
 
-          <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
-            <Button variant="outline" type="button" onClick={handleCancel}>
+          <DialogFooter className="flex-col-reverse sm:flex-row gap-2 mt-6">
+            <Button variant="outline" type="button" onClick={handleCancel} className="w-full sm:w-auto">
               Avbryt
             </Button>
-            <Button type="submit">Spara besiktning</Button>
+            <Button type="submit" className="w-full sm:w-auto">Spara besiktning</Button>
           </DialogFooter>
         </form>
       </DialogContent>
