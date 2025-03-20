@@ -33,10 +33,10 @@ export const PropertyStatisticsSummary = ({ property }: PropertyStatisticsSummar
   return (
     <div className="space-y-8">
       <Card>
-        <CardHeader className="border-b bg-muted/20">
+        <CardHeader className="pb-4">
           <CardTitle>Fastighetssammanställning</CardTitle>
         </CardHeader>
-        <CardContent className="pt-6">
+        <CardContent>
           <div className="rounded-md border">
             <div className="grid grid-cols-3 border-b bg-muted/50 px-4 py-2">
               <div className="font-medium">Mängdtyp</div>
