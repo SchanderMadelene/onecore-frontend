@@ -1,5 +1,4 @@
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin } from "lucide-react";
 import { PropertyMapView } from "@/components/properties";
 import type { PropertyDetail } from "@/types/api";
@@ -18,50 +17,11 @@ export const PropertyMapTab = ({
       </CardHeader>
       <CardContent>
         <h2 className="text-2xl font-bold mb-6">Ritningar</h2>
-        <Tabs defaultValue="mark" className="w-full">
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
-            <TabsTrigger value="mark">Mark</TabsTrigger>
-            <TabsTrigger value="byggnader">Byggnader</TabsTrigger>
-            <TabsTrigger value="brand">Brand</TabsTrigger>
-            <TabsTrigger value="el">El</TabsTrigger>
-            <TabsTrigger value="ventilation">Ventilation</TabsTrigger>
-            <TabsTrigger value="vvs">VVS</TabsTrigger>
-            <TabsTrigger value="drift">DU-handlingar</TabsTrigger>
-            <TabsTrigger value="bofaktablad">Bofaktablad</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="mark">
-            {propertyDetail.propertyMap ? <PropertyMapView propertyDetail={propertyDetail} /> : <EmptyDrawingState label="Mark" />}
-          </TabsContent>
-          
-          <TabsContent value="byggnader">
-            <EmptyDrawingState label="Byggnader" />
-          </TabsContent>
-          
-          <TabsContent value="brand">
-            <EmptyDrawingState label="Brand" />
-          </TabsContent>
-          
-          <TabsContent value="el">
-            <EmptyDrawingState label="El" />
-          </TabsContent>
-          
-          <TabsContent value="ventilation">
-            <EmptyDrawingState label="Ventilation" />
-          </TabsContent>
-          
-          <TabsContent value="vvs">
-            <EmptyDrawingState label="VVS" />
-          </TabsContent>
-          
-          <TabsContent value="drift">
-            <EmptyDrawingState label="Drift och underhållshandlingar" />
-          </TabsContent>
-          
-          <TabsContent value="bofaktablad">
-            <EmptyDrawingState label="Bofaktablad för alla lägenheter" />
-          </TabsContent>
-        </Tabs>
+        {propertyDetail.propertyMap ? (
+          <PropertyMapView propertyDetail={propertyDetail} />
+        ) : (
+          <EmptyDrawingState label="Ritningar" />
+        )}
       </CardContent>
     </Card>;
 };
