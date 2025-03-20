@@ -67,10 +67,6 @@ export function BasicInformation({
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <p className="text-sm text-muted-foreground">Besiktningsman</p>
-          <p className="font-medium">{inspectorName}</p>
-        </div>
-        <div>
           <p className="text-sm text-muted-foreground">Datum</p>
           <p className="font-medium">{formatDateWithTime()}</p>
         </div>
