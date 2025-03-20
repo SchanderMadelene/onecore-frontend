@@ -6,25 +6,17 @@ import { initializeInspectionData } from "@/components/residence/inspection/form
 
 export function useInspectionForm(rooms: Room[]) {
   const [inspectorName, setInspectorName] = useState("");
-  const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean } | undefined>();
-  const [step, setStep] = useState<"info" | "inspection">("info");
+  const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean }>({
+    address: "Odenplan 5, lägenhet 1001",
+    hasMainKey: true
+  });
   const [expandedRoomIds, setExpandedRoomIds] = useState<string[]>([]);
   const [inspectionData, setInspectionData] = useState<Record<string, InspectionRoom>>(() => 
     initializeInspectionData(rooms)
   );
 
-  const handleNext = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep("inspection");
-    if (rooms.length > 0) {
-      setExpandedRoomIds([rooms[0].id]);
-    }
-  };
-
   const handleCancel = () => {
-    setStep("info");
     setInspectorName("");
-    setApartmentInfo(undefined);
     setExpandedRoomIds([]);
     return;
   };
@@ -101,11 +93,8 @@ export function useInspectionForm(rooms: Room[]) {
     setInspectorName,
     apartmentInfo,
     setApartmentInfo,
-    step,
-    setStep,
     expandedRoomIds,
     inspectionData,
-    handleNext,
     handleCancel,
     handleToggleRoom,
     handleConditionUpdate,

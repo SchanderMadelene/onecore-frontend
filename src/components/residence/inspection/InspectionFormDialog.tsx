@@ -10,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
-import { InspectionInfoStep } from "./form/InspectionInfoStep";
 import { InspectionTabs } from "./form/InspectionTabs";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
 import { mockTenant } from "@/data/tenants";
@@ -28,11 +27,8 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
     setInspectorName,
     apartmentInfo,
     setApartmentInfo,
-    step,
-    setStep,
     expandedRoomIds,
     inspectionData,
-    handleNext,
     handleCancel: resetForm,
     handleToggleRoom,
     handleConditionUpdate,
@@ -57,54 +53,45 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
     }
   };
 
+  if (rooms.length > 0 && expandedRoomIds.length === 0) {
+    // Initialize with the first room expanded
+    handleToggleRoom(rooms[0].id);
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[95vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle>
-            {step === "info" ? "Starta ny besiktning" : "Genomför besiktning"}
-          </DialogTitle>
+          <DialogTitle>Genomför besiktning</DialogTitle>
           <DialogDescription>
-            {step === "info" 
-              ? "Fyll i information om besiktningen" 
-              : "Gå igenom och bedöm skicket på alla rum"
-            }
+            Gå igenom och bedöm skicket på alla rum
           </DialogDescription>
         </DialogHeader>
 
-        {step === "info" ? (
-          <InspectionInfoStep
-            inspectorName={inspectorName}
-            onInspectorNameChange={setInspectorName}
-            onApartmentInfoChange={setApartmentInfo}
-            onNext={handleNext}
-            onCancel={handleCancel}
-          />
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-4 py-4">
-              <InspectionTabs
-                inspectorName={inspectorName}
-                apartmentInfo={apartmentInfo}
-                rooms={rooms}
-                expandedRoomIds={expandedRoomIds}
-                inspectionData={inspectionData}
-                onToggleRoom={handleToggleRoom}
-                onConditionUpdate={handleConditionUpdate}
-                onActionUpdate={handleActionUpdate}
-                onComponentNoteUpdate={handleComponentNoteUpdate}
-                tenant={mockTenant}
-              />
-            </div>
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-4 py-4">
+            <InspectionTabs
+              inspectorName={inspectorName}
+              setInspectorName={setInspectorName}
+              apartmentInfo={apartmentInfo}
+              rooms={rooms}
+              expandedRoomIds={expandedRoomIds}
+              inspectionData={inspectionData}
+              onToggleRoom={handleToggleRoom}
+              onConditionUpdate={handleConditionUpdate}
+              onActionUpdate={handleActionUpdate}
+              onComponentNoteUpdate={handleComponentNoteUpdate}
+              tenant={mockTenant}
+            />
+          </div>
 
-            <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
-              <Button variant="outline" type="button" onClick={() => setStep("info")}>
-                Tillbaka
-              </Button>
-              <Button type="submit">Spara besiktning</Button>
-            </DialogFooter>
-          </form>
-        )}
+          <DialogFooter className="flex-col-reverse sm:flex-row gap-2">
+            <Button variant="outline" type="button" onClick={handleCancel}>
+              Avbryt
+            </Button>
+            <Button type="submit">Spara besiktning</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
