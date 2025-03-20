@@ -7,6 +7,10 @@ import type { InspectionRoom as InspectionRoomType } from "../types";
 
 interface InspectionTabsProps {
   inspectorName: string;
+  apartmentInfo?: {
+    address: string;
+    hasMainKey: boolean;
+  };
   rooms: Room[];
   expandedRoomIds: string[];
   inspectionData: Record<string, InspectionRoomType>;
@@ -18,6 +22,7 @@ interface InspectionTabsProps {
 
 export function InspectionTabs({
   inspectorName,
+  apartmentInfo,
   rooms,
   expandedRoomIds,
   inspectionData,
@@ -44,6 +49,7 @@ export function InspectionTabs({
         <BasicInformation
           inspectorName={inspectorName}
           roomCount={rooms.length}
+          apartmentInfo={apartmentInfo}
         />
       </TabsContent>
 

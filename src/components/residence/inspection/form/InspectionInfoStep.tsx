@@ -17,6 +17,7 @@ import {
 interface InspectionInfoStepProps {
   inspectorName: string;
   onInspectorNameChange: (value: string) => void;
+  onApartmentInfoChange: (value: { address: string; hasMainKey: boolean }) => void;
   onNext: (e: React.FormEvent) => void;
   onCancel: () => void;
 }
@@ -32,6 +33,7 @@ const inspectors = [
 export function InspectionInfoStep({
   inspectorName,
   onInspectorNameChange,
+  onApartmentInfoChange,
   onNext,
   onCancel,
 }: InspectionInfoStepProps) {
@@ -47,6 +49,14 @@ export function InspectionInfoStep({
     };
     return now.toLocaleString('sv-SE', dateOptions);
   };
+
+  // Set apartment info when the component renders
+  React.useEffect(() => {
+    onApartmentInfoChange({
+      address: "Odenplan 5, lägenhet 1001",
+      hasMainKey: true
+    });
+  }, [onApartmentInfoChange]);
 
   return (
     <form onSubmit={onNext}>

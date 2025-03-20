@@ -25,6 +25,8 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
   const {
     inspectorName,
     setInspectorName,
+    apartmentInfo,
+    setApartmentInfo,
     step,
     setStep,
     expandedRoomIds,
@@ -73,6 +75,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
           <InspectionInfoStep
             inspectorName={inspectorName}
             onInspectorNameChange={setInspectorName}
+            onApartmentInfoChange={setApartmentInfo}
             onNext={handleNext}
             onCancel={handleCancel}
           />
@@ -81,6 +84,7 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: Inspe
             <div className="space-y-4 py-4">
               <InspectionTabs
                 inspectorName={inspectorName}
+                apartmentInfo={apartmentInfo}
                 rooms={rooms}
                 expandedRoomIds={expandedRoomIds}
                 inspectionData={inspectionData}

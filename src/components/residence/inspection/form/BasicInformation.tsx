@@ -2,9 +2,13 @@
 interface BasicInformationProps {
   inspectorName: string;
   roomCount: number;
+  apartmentInfo?: {
+    address: string;
+    hasMainKey: boolean;
+  };
 }
 
-export function BasicInformation({ inspectorName, roomCount }: BasicInformationProps) {
+export function BasicInformation({ inspectorName, roomCount, apartmentInfo }: BasicInformationProps) {
   // Format current date with time
   const formatDateWithTime = () => {
     const now = new Date();
@@ -28,6 +32,18 @@ export function BasicInformation({ inspectorName, roomCount }: BasicInformationP
         <p className="text-sm text-muted-foreground">Datum</p>
         <p className="font-medium">{formatDateWithTime()}</p>
       </div>
+      {apartmentInfo && (
+        <div>
+          <p className="text-sm text-muted-foreground">Lägenhet</p>
+          <p className="font-medium">{apartmentInfo.address}</p>
+        </div>
+      )}
+      {apartmentInfo && (
+        <div>
+          <p className="text-sm text-muted-foreground">Huvudnyckel finns</p>
+          <p className="font-medium">{apartmentInfo.hasMainKey ? 'Ja' : 'Nej'}</p>
+        </div>
+      )}
       <div>
         <p className="text-sm text-muted-foreground">Antal rum</p>
         <p className="font-medium">{roomCount}</p>

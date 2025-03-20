@@ -1,11 +1,12 @@
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { InspectionRoom } from "@/components/residence/inspection/types";
 import type { Room } from "@/types/api";
 import { initializeInspectionData } from "@/components/residence/inspection/form/initialData";
 
 export function useInspectionForm(rooms: Room[]) {
   const [inspectorName, setInspectorName] = useState("");
+  const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean } | undefined>();
   const [step, setStep] = useState<"info" | "inspection">("info");
   const [expandedRoomIds, setExpandedRoomIds] = useState<string[]>([]);
   const [inspectionData, setInspectionData] = useState<Record<string, InspectionRoom>>(() => 
@@ -23,6 +24,7 @@ export function useInspectionForm(rooms: Room[]) {
   const handleCancel = () => {
     setStep("info");
     setInspectorName("");
+    setApartmentInfo(undefined);
     setExpandedRoomIds([]);
     return;
   };
@@ -97,6 +99,8 @@ export function useInspectionForm(rooms: Room[]) {
   return {
     inspectorName,
     setInspectorName,
+    apartmentInfo,
+    setApartmentInfo,
     step,
     setStep,
     expandedRoomIds,
