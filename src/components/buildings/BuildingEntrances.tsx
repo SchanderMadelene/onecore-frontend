@@ -14,13 +14,15 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
   // Return early if no entrances
   if (!building.entrances || building.entrances.length === 0) {
     return (
-      <div className="py-8 text-center">
-        <DoorOpen className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-        <h3 className="text-xl font-medium mb-2">Inga uppgångar</h3>
-        <p className="text-muted-foreground">
-          Det finns inga uppgångar registrerade för denna byggnad.
-        </p>
-      </div>
+      <Card className="mt-8">
+        <CardContent className="pt-6 text-center">
+          <DoorOpen className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+          <h3 className="text-xl font-medium mb-2">Inga uppgångar</h3>
+          <p className="text-muted-foreground">
+            Det finns inga uppgångar registrerade för denna byggnad.
+          </p>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -35,8 +37,8 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {building.entrances.map(entrance => (
-          <div key={entrance.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="p-4 border-b bg-background">
+          <Card key={entrance.id}>
+            <CardHeader className="pb-2">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <DoorOpen className="h-5 w-5 text-primary" />
@@ -46,37 +48,39 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
                   {entrance.apartments.length} lgh
                 </span>
               </div>
-            </div>
-            <div className="p-4 space-y-2">
-              {entrance.apartments.map(aptId => {
-                const apartment = getApartment(aptId);
-                
-                return apartment ? (
-                  <div key={aptId} className="flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center gap-2">
-                      <Home className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium">{apartment.code}</span>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {entrance.apartments.map(aptId => {
+                  const apartment = getApartment(aptId);
+                  
+                  return apartment ? (
+                    <div key={aptId} className="flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-2">
+                        <Home className="h-4 w-4 text-muted-foreground" />
+                        <span className="font-medium">{apartment.code}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
+                        <Link to={`${basePath}/${apartment.id}`}>
+                          <Button variant="ghost" size="icon" className="h-7 w-7">
+                            <User className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
-                      <Link to={`${basePath}/${apartment.id}`}>
-                        <Button variant="ghost" size="icon" className="h-7 w-7">
-                          <User className="h-4 w-4" />
-                        </Button>
-                      </Link>
+                  ) : (
+                    <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
+                      <div className="flex items-center gap-2">
+                        <AlertCircle className="h-4 w-4 text-destructive" />
+                        <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
-                    <div className="flex items-center gap-2">
-                      <AlertCircle className="h-4 w-4 text-destructive" />
-                      <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
