@@ -46,7 +46,7 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
         </TabsTrigger>
         <TabsTrigger value="map" className="flex items-center gap-1 text-xs sm:text-sm">
           <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
-          <span>Karta</span>
+          <span>Ritningar</span>
         </TabsTrigger>
         <TabsTrigger value="apartments" className="flex items-center gap-1 text-xs sm:text-sm">
           <Home className="h-3 w-3 sm:h-4 sm:w-4" />
