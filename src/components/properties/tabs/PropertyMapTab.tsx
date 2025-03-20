@@ -18,27 +18,31 @@ export const PropertyMapTab = ({
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="mark" className="w-full">
-          <TabsList className="grid grid-cols-4 md:grid-cols-8 w-full mb-6">
-            <TabsTrigger value="mark" className="text-xs md:text-sm">
+          <TabsList className="flex w-full mb-6 bg-muted/50 rounded-full p-1 overflow-x-auto">
+            <TabsTrigger value="mark" className="text-xs md:text-sm rounded-full">
               Mark
             </TabsTrigger>
-            <TabsTrigger value="byggnader" className="text-xs md:text-sm">
+            <TabsTrigger value="byggnader" className="text-xs md:text-sm rounded-full">
               Byggnader
             </TabsTrigger>
-            <TabsTrigger value="brand" className="text-xs md:text-sm">
+            <TabsTrigger value="brand" className="text-xs md:text-sm rounded-full">
               Brand
             </TabsTrigger>
-            <TabsTrigger value="el" className="text-xs md:text-sm">
+            <TabsTrigger value="el" className="text-xs md:text-sm rounded-full">
               El
             </TabsTrigger>
-            <TabsTrigger value="ventilation" className="text-xs md:text-sm">
+            <TabsTrigger value="ventilation" className="text-xs md:text-sm rounded-full">
               Ventilation
             </TabsTrigger>
-            <TabsTrigger value="vvs" className="text-xs md:text-sm">
+            <TabsTrigger value="vvs" className="text-xs md:text-sm rounded-full">
               VVS
             </TabsTrigger>
-            <TabsTrigger value="drift" className="text-xs md:text-sm whitespace-normal h-auto py-2">DU-handlingar</TabsTrigger>
-            <TabsTrigger value="bofaktablad" className="text-xs md:text-sm whitespace-normal h-auto py-2">Bofaktablad</TabsTrigger>
+            <TabsTrigger value="drift" className="text-xs md:text-sm whitespace-normal rounded-full">
+              DU-handlingar
+            </TabsTrigger>
+            <TabsTrigger value="bofaktablad" className="text-xs md:text-sm whitespace-normal rounded-full">
+              Bofaktablad
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="mark">
