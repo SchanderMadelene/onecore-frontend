@@ -1,7 +1,6 @@
 
 import { Building, Apartment } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DoorOpen, Home, User, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -16,7 +15,6 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
     return (
       <Card className="mt-8">
         <CardContent className="pt-6 text-center">
-          <DoorOpen className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
           <h3 className="text-xl font-medium mb-2">Inga uppgångar</h3>
           <p className="text-muted-foreground">
             Det finns inga uppgångar registrerade för denna byggnad.
@@ -41,7 +39,6 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
             <CardHeader className="pb-2">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <DoorOpen className="h-5 w-5 text-primary" />
                   {entrance.name}
                 </div>
                 <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
@@ -56,23 +53,21 @@ export const BuildingEntrances = ({ building, basePath }: BuildingEntrancesProps
                   
                   return apartment ? (
                     <div key={aptId} className="flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors">
-                      <div className="flex items-center gap-2">
-                        <Home className="h-4 w-4 text-muted-foreground" />
+                      <div>
                         <span className="font-medium">{apartment.code}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
                         <Link to={`${basePath}/${apartment.id}`}>
                           <Button variant="ghost" size="icon" className="h-7 w-7">
-                            <User className="h-4 w-4" />
+                            <span className="sr-only">View details</span>
                           </Button>
                         </Link>
                       </div>
                     </div>
                   ) : (
                     <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
-                      <div className="flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4 text-destructive" />
+                      <div>
                         <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
                       </div>
                     </div>

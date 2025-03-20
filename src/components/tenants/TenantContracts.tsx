@@ -14,14 +14,6 @@ import {
   TableRow 
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Home, 
-  Car, 
-  Box, 
-  FileText, 
-  Calendar, 
-  FileCheck 
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Contract } from "@/data/contracts";
 
@@ -42,19 +34,6 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
       </Card>
     );
   }
-
-  const getContractIcon = (type: Contract["type"]) => {
-    switch (type) {
-      case "housing":
-        return <Home className="h-4 w-4" />;
-      case "parking":
-        return <Car className="h-4 w-4" />;
-      case "storage":
-        return <Box className="h-4 w-4" />;
-      default:
-        return <FileText className="h-4 w-4" />;
-    }
-  };
 
   const getContractTypeName = (type: Contract["type"]) => {
     switch (type) {
@@ -117,15 +96,13 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
               <TableRow key={contract.id}>
                 <TableCell>
                   <div className="flex items-center">
-                    {getContractIcon(contract.type)}
-                    <span className="ml-2">{getContractTypeName(contract.type)}</span>
+                    <span>{getContractTypeName(contract.type)}</span>
                   </div>
                 </TableCell>
                 <TableCell>{contract.id}</TableCell>
                 <TableCell>{contract.objectName}</TableCell>
                 <TableCell>
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                  <div>
                     {formatDate(contract.startDate)}
                   </div>
                 </TableCell>
@@ -133,7 +110,6 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
                 <TableCell>{getStatusBadge(contract.status)}</TableCell>
                 <TableCell>
                   <Button variant="outline" size="sm">
-                    <FileCheck className="h-4 w-4 mr-2" />
                     Visa kontrakt
                   </Button>
                 </TableCell>

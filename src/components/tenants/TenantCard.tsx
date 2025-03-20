@@ -1,6 +1,5 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MessageSquare, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TenantCardProps {
@@ -46,12 +45,8 @@ export function TenantCard({ tenant }: TenantCardProps) {
               <div className="flex items-center gap-2">
                 <p className="font-medium">{tenant.phone}</p>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="icon" onClick={handleCall} title="Ring">
-                    <Phone className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" onClick={handleSMS} title="Skicka SMS">
-                    <MessageSquare className="h-4 w-4" />
-                  </Button>
+                  <Button variant="outline" size="icon" onClick={handleCall} title="Ring" />
+                  <Button variant="outline" size="icon" onClick={handleSMS} title="Skicka SMS" />
                 </div>
               </div>
             </div>
@@ -59,9 +54,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
               <p className="text-sm text-muted-foreground">E-post</p>
               <div className="flex items-center gap-2">
                 <p className="font-medium">{tenant.email}</p>
-                <Button variant="outline" size="icon" onClick={handleEmail} title="Skicka e-post">
-                  <Mail className="h-4 w-4" />
-                </Button>
+                <Button variant="outline" size="icon" onClick={handleEmail} title="Skicka e-post" />
               </div>
             </div>
           </div>
@@ -76,7 +69,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
               <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
               <div className="flex items-center gap-2">
                 <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
-                <Calendar className="h-4 w-4 text-muted-foreground" />
               </div>
             </div>
             {tenant.moveOutDate && (
@@ -84,7 +76,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
                 <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
                 <div className="flex items-center gap-2">
                   <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
                 </div>
               </div>
             )}

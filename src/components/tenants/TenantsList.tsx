@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, User, Building2, Filter } from "lucide-react";
 import { mockTenant } from "@/data/tenants";
 
 // Create an array of tenants for demo
@@ -80,10 +79,9 @@ export function TenantsList() {
       <CardContent>
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Sök på namn, ID eller fastighet..."
-              className="pl-8"
+              className="pl-4"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -92,26 +90,20 @@ export function TenantsList() {
             <Button 
               variant={filter === "all" ? "default" : "outline"} 
               onClick={() => setFilter("all")}
-              className="flex gap-2 items-center"
             >
-              <Filter className="h-4 w-4" />
-              <span className="hidden sm:inline">Alla</span>
+              <span className="sm:inline">Alla</span>
             </Button>
             <Button 
               variant={filter === "private" ? "default" : "outline"} 
               onClick={() => setFilter("private")}
-              className="flex gap-2 items-center"
             >
-              <User className="h-4 w-4" />
-              <span className="hidden sm:inline">Privat</span>
+              <span className="sm:inline">Privat</span>
             </Button>
             <Button 
               variant={filter === "company" ? "default" : "outline"} 
               onClick={() => setFilter("company")}
-              className="flex gap-2 items-center"
             >
-              <Building2 className="h-4 w-4" />
-              <span className="hidden sm:inline">Företag</span>
+              <span className="sm:inline">Företag</span>
             </Button>
           </div>
         </div>
@@ -135,17 +127,7 @@ export function TenantsList() {
                   </TableCell>
                   <TableCell>{tenant.id}</TableCell>
                   <TableCell>
-                    {tenant.type === "private" ? (
-                      <div className="flex items-center gap-1">
-                        <User className="h-4 w-4" />
-                        <span>Privat</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1">
-                        <Building2 className="h-4 w-4" />
-                        <span>Företag</span>
-                      </div>
-                    )}
+                    {tenant.type === "private" ? "Privat" : "Företag"}
                   </TableCell>
                   <TableCell>{tenant.property}</TableCell>
                   <TableCell className="text-right">

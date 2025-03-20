@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Filter, Building2, Building } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -63,10 +62,8 @@ const AllPropertiesPage = () => {
           <CardContent>
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="relative flex-1">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Sök på beteckning eller kod..."
-                  className="pl-8"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -75,26 +72,20 @@ const AllPropertiesPage = () => {
                 <Button 
                   variant={filter === "all" ? "default" : "outline"} 
                   onClick={() => setFilter("all")}
-                  className="flex gap-2 items-center"
                 >
-                  <Filter className="h-4 w-4" />
-                  <span className="hidden sm:inline">Alla</span>
+                  <span>Alla</span>
                 </Button>
                 <Button 
                   variant={filter === "bostad" ? "default" : "outline"} 
                   onClick={() => setFilter("bostad")}
-                  className="flex gap-2 items-center"
                 >
-                  <Building2 className="h-4 w-4" />
-                  <span className="hidden sm:inline">Bostad</span>
+                  <span>Bostad</span>
                 </Button>
                 <Button 
                   variant={filter === "kontor" ? "default" : "outline"} 
                   onClick={() => setFilter("kontor")}
-                  className="flex gap-2 items-center"
                 >
-                  <Building2 className="h-4 w-4" />
-                  <span className="hidden sm:inline">Kontor</span>
+                  <span>Kontor</span>
                 </Button>
               </div>
             </div>
@@ -127,8 +118,7 @@ const AllPropertiesPage = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Building className="h-4 w-4 text-muted-foreground" />
+                        <div>
                           <span>{property.buildingCount || 0}</span>
                         </div>
                       </TableCell>
