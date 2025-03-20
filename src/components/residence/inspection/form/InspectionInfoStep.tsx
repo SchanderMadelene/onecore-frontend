@@ -7,6 +7,13 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { TenantInformation } from "./TenantInformation";
 import { mockTenant } from "@/data/tenants";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface InspectionInfoStepProps {
   inspectorName: string;
@@ -14,6 +21,14 @@ interface InspectionInfoStepProps {
   onNext: (e: React.FormEvent) => void;
   onCancel: () => void;
 }
+
+// List of available inspectors
+const inspectors = [
+  "Madelene Schander", // Current logged in user
+  "Johan Andersson",
+  "Maria Karlsson",
+  "Erik Lindberg",
+];
 
 export function InspectionInfoStep({
   inspectorName,
@@ -27,13 +42,22 @@ export function InspectionInfoStep({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="inspectorName">Besiktningsman</Label>
-            <Input
-              id="inspectorName"
-              value={inspectorName}
-              onChange={(e) => onInspectorNameChange(e.target.value)}
-              placeholder="Ange ditt namn"
-              required
-            />
+            <Select 
+              value={inspectorName || inspectors[0]} 
+              onValueChange={onInspectorNameChange}
+              defaultValue={inspectors[0]}
+            >
+              <SelectTrigger id="inspectorName" className="w-full">
+                <SelectValue placeholder="Välj besiktningsman" />
+              </SelectTrigger>
+              <SelectContent>
+                {inspectors.map((inspector) => (
+                  <SelectItem key={inspector} value={inspector}>
+                    {inspector}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <Label>Lägenhet</Label>
