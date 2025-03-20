@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Check } from "lucide-react";
+import { Plus, CheckCircle } from "lucide-react";
 import { InspectionFormDialog } from "./InspectionFormDialog";
 import { InspectionRoom } from "./InspectionRoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -69,8 +69,8 @@ export const InspectionStart = ({
       <Card>
         <CardHeader className="cursor-pointer" onClick={onToggle}>
           <CardTitle className="flex items-center gap-2">
-            {inspectionData.isApproved && (
-              <Check className="h-4 w-4 text-green-500" />
+            {inspectionData.isHandled && (
+              <CheckCircle className="h-4 w-4 text-slate-500" />
             )}
             <span>{room.name || room.roomType?.name || room.code}</span>
           </CardTitle>

@@ -27,26 +27,6 @@ export const InspectionRoom = ({
 }: InspectionRoomProps) => {
   const isMobile = useIsMobile();
   
-  const handleApproveRoom = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const fields: (keyof InspectionRoomType["conditions"])[] = [
-      "wall1", "wall2", "wall3", "wall4", 
-      "floor", "ceiling", "details"
-    ];
-    fields.forEach(field => {
-      onConditionUpdate(field, "good");
-    });
-    inspectionData.isApproved = true;
-    inspectionData.isHandled = true;
-  };
-
-  const handleMarkHandled = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    inspectionData.isHandled = true;
-  };
-
   const handleToggleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -80,30 +60,23 @@ export const InspectionRoom = ({
 
   return (
     <div className={`border rounded-lg shadow-sm ${
-      inspectionData.isApproved 
-        ? 'bg-green-50 border-green-200' 
-        : inspectionData.isHandled 
-          ? 'bg-slate-50 border-slate-200'
-          : 'bg-white'
+      inspectionData.isHandled 
+        ? 'bg-slate-50 border-slate-200'
+        : 'bg-white'
     }`}>
       <div className={`w-full p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between border-b gap-2 ${
-        inspectionData.isApproved 
-          ? 'bg-green-50/50 border-green-200' 
-          : inspectionData.isHandled
-            ? 'bg-slate-50/50 border-slate-200'
-            : 'bg-card'
+        inspectionData.isHandled
+          ? 'bg-slate-50/50 border-slate-200'
+          : 'bg-card'
       }`}>
         <RoomStatus
-          isApproved={inspectionData.isApproved}
           isHandled={inspectionData.isHandled}
           name={room.name || room.roomType?.name || room.code}
           onClick={handleToggleClick}
         />
         <RoomActions
-          isApproved={inspectionData.isApproved}
           isHandled={inspectionData.isHandled}
           isExpanded={isExpanded}
-          onApprove={handleApproveRoom}
           onToggle={handleToggleClick}
           isMobile={isMobile}
         />
