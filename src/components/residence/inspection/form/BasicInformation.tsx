@@ -1,8 +1,12 @@
 
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Phone, Mail, MessageSquare } from "lucide-react";
 import { mockTenant } from "@/data/tenants";
 
 interface BasicInformationProps {
   inspectorName: string;
+  setInspectorName?: (name: string) => void;
   roomCount: number;
   apartmentInfo?: {
     address: string;
@@ -23,6 +27,7 @@ interface BasicInformationProps {
 
 export function BasicInformation({ 
   inspectorName, 
+  setInspectorName,
   roomCount, 
   apartmentInfo,
   tenant = mockTenant // Default to mockTenant if not provided
@@ -38,6 +43,24 @@ export function BasicInformation({
       minute: '2-digit'
     };
     return now.toLocaleString('sv-SE', dateOptions);
+  };
+
+  const handleCall = () => {
+    if (tenant) {
+      window.location.href = `tel:${tenant.phone.replace(/[\s-]/g, '')}`;
+    }
+  };
+
+  const handleSMS = () => {
+    if (tenant) {
+      window.location.href = `sms:${tenant.phone.replace(/[\s-]/g, '')}`;
+    }
+  };
+
+  const handleEmail = () => {
+    if (tenant) {
+      window.location.href = `mailto:${tenant.email}`;
+    }
   };
 
   return (
@@ -100,11 +123,26 @@ export function BasicInformation({
             )}
             <div>
               <p className="text-sm text-muted-foreground">Telefon</p>
-              <p className="font-medium">{tenant.phone}</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{tenant.phone}</p>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="icon" onClick={handleCall} title="Ring">
+                    <Phone className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="icon" onClick={handleSMS} title="Skicka SMS">
+                    <MessageSquare className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">E-post</p>
-              <p className="font-medium">{tenant.email}</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{tenant.email}</p>
+                <Button variant="outline" size="icon" onClick={handleEmail} title="Skicka e-post">
+                  <Mail className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
