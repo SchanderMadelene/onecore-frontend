@@ -57,19 +57,19 @@ export function InspectionTabs({
   
   return (
     <Tabs defaultValue="basic" className="w-full">
-      <TabsList className="w-full justify-start bg-background border-b rounded-none px-0 overflow-x-auto flex-nowrap">
-        <TabsTrigger value="basic" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
+      <TabsList className="mb-4">
+        <TabsTrigger value="basic">
           Grundläggande info
         </TabsTrigger>
-        <TabsTrigger value="protocol" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
+        <TabsTrigger value="protocol">
           Protokoll
         </TabsTrigger>
-        <TabsTrigger value="floorplan" className={`${isMobile ? 'text-xs' : 'text-sm sm:text-base'} whitespace-nowrap data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none py-2 px-2 sm:px-3`}>
+        <TabsTrigger value="floorplan">
           Planritning
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="basic" className="mt-4 space-y-4">
+      <TabsContent value="basic" className="space-y-4">
         <div className="space-y-3">
           <div className="space-y-2">
             <Label htmlFor="inspectorName">Besiktningsman</Label>
@@ -100,7 +100,7 @@ export function InspectionTabs({
         />
       </TabsContent>
 
-      <TabsContent value="protocol" className="mt-4">
+      <TabsContent value="protocol">
         <RoomInspectionList
           rooms={rooms}
           expandedRoomIds={expandedRoomIds}
@@ -112,7 +112,7 @@ export function InspectionTabs({
         />
       </TabsContent>
 
-      <TabsContent value="floorplan" className="mt-4">
+      <TabsContent value="floorplan">
         <div className="flex items-center justify-center h-[200px] sm:h-[400px] border-2 border-dashed rounded-lg">
           <p className="text-muted-foreground text-sm">Planritning är inte tillgänglig</p>
         </div>

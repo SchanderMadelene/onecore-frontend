@@ -1,6 +1,5 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building, MapPin, FileText, CalendarDays, PieChart, Wrench, Home, BarChart } from "lucide-react";
 import { PropertyInfoTab } from "./PropertyInfoTab";
 import { PropertyDocumentsTab } from "./PropertyDocumentsTab";
 import { PropertyPlanningTab } from "./PropertyPlanningTab";
@@ -18,43 +17,35 @@ interface PropertyDetailTabsProps {
 export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) => {
   return (
     <Tabs defaultValue="info" className="space-y-6">
-      <TabsList className="grid md:grid-cols-8 grid-cols-4 w-full h-auto">
-        <TabsTrigger value="info" className="flex items-center gap-1 text-xs sm:text-sm">
-          <Building className="h-3 w-3 sm:h-4 sm:w-4" />
+      <TabsList>
+        <TabsTrigger value="info">
           <span className="hidden sm:inline">Fastighet</span>
           <span className="sm:hidden">Info</span>
         </TabsTrigger>
-        <TabsTrigger value="documents" className="flex items-center gap-1 text-xs sm:text-sm">
-          <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
+        <TabsTrigger value="documents">
           <span className="hidden sm:inline">Dokument</span>
           <span className="sm:hidden">Dok</span>
         </TabsTrigger>
-        <TabsTrigger value="planning" className="flex items-center gap-1 text-xs sm:text-sm">
-          <CalendarDays className="h-3 w-3 sm:h-4 sm:w-4" />
+        <TabsTrigger value="planning">
           <span className="hidden sm:inline">Planering</span>
           <span className="sm:hidden">Plan</span>
         </TabsTrigger>
-        <TabsTrigger value="buildings" className="flex items-center gap-1 text-xs sm:text-sm">
-          <Building className="h-3 w-3 sm:h-4 sm:w-4" />
+        <TabsTrigger value="buildings">
           <span className="hidden sm:inline">Byggnader</span>
           <span className="sm:hidden">Bygg</span>
         </TabsTrigger>
-        <TabsTrigger value="maintenance" className="flex items-center gap-1 text-xs sm:text-sm">
-          <Wrench className="h-3 w-3 sm:h-4 sm:w-4" />
+        <TabsTrigger value="maintenance">
           <span className="hidden sm:inline">Underhållsenheter</span>
           <span className="sm:hidden">Underhåll</span>
         </TabsTrigger>
-        <TabsTrigger value="map" className="flex items-center gap-1 text-xs sm:text-sm">
-          <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
-          <span>Karta</span>
+        <TabsTrigger value="map">
+          <span>Ritningar</span>
         </TabsTrigger>
-        <TabsTrigger value="apartments" className="flex items-center gap-1 text-xs sm:text-sm">
-          <Home className="h-3 w-3 sm:h-4 sm:w-4" />
+        <TabsTrigger value="apartments">
           <span className="hidden sm:inline">Lägenheter</span>
           <span className="sm:hidden">Läg</span>
         </TabsTrigger>
-        <TabsTrigger value="statistics" className="flex items-center gap-1 text-xs sm:text-sm">
-          <BarChart className="h-3 w-3 sm:h-4 sm:w-4" />
+        <TabsTrigger value="statistics">
           <span className="hidden sm:inline">Statistik</span>
           <span className="sm:hidden">Stat</span>
         </TabsTrigger>

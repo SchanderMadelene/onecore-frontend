@@ -1,5 +1,4 @@
 
-import { Menu, Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { SearchBar } from "./SearchBar";
@@ -13,7 +12,7 @@ export function NavigationBar({
       <div className="flex h-14 items-center justify-between mx-0 px-[16px]">
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="icon" onClick={onMenuClick}>
-            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
           </Button>
           <span className="font-semibold">OneCore</span>
         </div>
@@ -24,9 +23,8 @@ export function NavigationBar({
         
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => setShowMobileSearch(!showMobileSearch)}>
-            <Search className="h-5 w-5" />
+            <span className="sr-only">Toggle Search</span>
           </Button>
-          {/* Add more navigation items here */}
         </div>
       </div>
 

@@ -54,6 +54,8 @@
   @apply bg-white/30 backdrop-blur-md border border-white/20 shadow-xl;
 }
 
+/* Remove secondary tabs custom styling to use shadcn default */
+
 /* Mobile-first responsive utilities */
 @layer utilities {
   .text-truncate {
