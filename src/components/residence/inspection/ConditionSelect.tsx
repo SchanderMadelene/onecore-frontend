@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
-import { Paintbrush, Wrench, Hammer, Camera } from "lucide-react";
+import { Paintbrush, Wrench, Hammer, Camera, FileImage } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ConditionSelectProps {
   label: string;
@@ -98,29 +99,34 @@ export const ConditionSelect = ({
         <option value="needs_attention">Behöver åtgärd</option>
         <option value="damaged">Skadat</option>
       </select>
+      
+      {/* Action buttons shown only when needed */}
       {needsAction(value) && (
-        <div className="space-y-2">
-          <div className="mt-2 flex gap-2">
-            {getActionButtons()}
-          </div>
-          <textarea
-            className="w-full border rounded-md p-2 mt-1 text-sm"
-            placeholder="Skriv en anteckning om skadan eller åtgärden..."
-            value={note}
-            onChange={(e) => onNoteChange(e.target.value)}
-            rows={2}
-          />
-          <Button 
-            type="button" 
-            variant="outline" 
-            size="sm"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Camera className="mr-2 h-4 w-4" />
-            Lägg till foto
-          </Button>
+        <div className="mt-2 flex gap-2">
+          {getActionButtons()}
         </div>
       )}
+      
+      {/* Notes and Photo button - now always visible */}
+      <div className="space-y-2 mt-2">
+        <Textarea
+          className="w-full text-sm"
+          placeholder="Skriv en anteckning..."
+          value={note}
+          onChange={(e) => onNoteChange(e.target.value)}
+          rows={2}
+        />
+        <Button 
+          type="button" 
+          variant="outline" 
+          size="sm"
+          onClick={(e) => e.stopPropagation()}
+          className="w-full"
+        >
+          <Camera className="mr-2 h-4 w-4" />
+          Lägg till foto
+        </Button>
+      </div>
     </div>
   );
 };
