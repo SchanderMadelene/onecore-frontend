@@ -1,10 +1,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { RoomView } from "./RoomView";
 import { EmptyInspectionState } from "./EmptyInspectionState";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "../types";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useState } from "react";
 
 interface RoomCardProps {
   room: Room;
@@ -26,6 +28,8 @@ export const RoomCard = ({
   onStartInspection,
   onSave
 }: RoomCardProps) => {
+  const [isContentOpen, setIsContentOpen] = useState(true);
+  
   const inspectionData = currentInspection?.rooms[room.id] || {
     roomId: room.id,
     conditions: {
@@ -72,13 +76,39 @@ export const RoomCard = ({
       </CardHeader>
       {isExpanded && currentInspection && (
         <CardContent>
-          <RoomView 
-            room={room} 
-            inspectionData={inspectionData}
-            currentInspection={currentInspection}
-            onSave={onSave}
-            inspectorName={currentInspection.inspectorName}
-          />
+          <Collapsible
+            open={isContentOpen}
+            onOpenChange={setIsContentOpen}
+            className="w-full"
+          >
+            <div className="flex justify-end mb-2">
+              <CollapsibleTrigger asChild>
+                <button className="text-sm text-gray-500 flex items-center gap-1">
+                  {isContentOpen ? (
+                    <>
+                      Dölj detaljer
+                      <ChevronUp className="h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      Visa detaljer
+                      <ChevronDown className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </CollapsibleTrigger>
+            </div>
+            
+            <CollapsibleContent>
+              <RoomView 
+                room={room} 
+                inspectionData={inspectionData}
+                currentInspection={currentInspection}
+                onSave={onSave}
+                inspectorName={currentInspection.inspectorName}
+              />
+            </CollapsibleContent>
+          </Collapsible>
         </CardContent>
       )}
       {isExpanded && !currentInspection && (
