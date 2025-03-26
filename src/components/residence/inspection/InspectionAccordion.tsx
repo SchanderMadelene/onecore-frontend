@@ -44,19 +44,17 @@ export const InspectionAccordion = ({
         </AccordionTrigger>
         <AccordionContent className="px-3">
           <div className="space-y-4 py-2">
-            {(["wall1", "wall2", "wall3", "wall4"] as const).map((wall) => (
-              <ConditionSelect
-                key={wall}
-                label={wallDirections[wall]}
-                value={inspectionData.conditions[wall]}
-                onChange={(value) => onConditionUpdate(wall, value)}
-                actions={inspectionData.actions[wall]}
-                onActionUpdate={(action) => onActionUpdate(wall, action)}
-                type="walls"
-                note={inspectionData.componentNotes[wall]}
-                onNoteChange={(note) => onComponentNoteUpdate(wall, note)}
-              />
-            ))}
+            <ConditionSelect
+              key="wall1"
+              label="Vägg"
+              value={inspectionData.conditions.wall1}
+              onChange={(value) => onConditionUpdate("wall1", value)}
+              actions={inspectionData.actions.wall1}
+              onActionUpdate={(action) => onActionUpdate("wall1", action)}
+              type="walls"
+              note={inspectionData.componentNotes.wall1}
+              onNoteChange={(note) => onComponentNoteUpdate("wall1", note)}
+            />
           </div>
         </AccordionContent>
       </AccordionItem>
