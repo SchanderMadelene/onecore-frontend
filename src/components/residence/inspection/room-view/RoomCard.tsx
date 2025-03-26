@@ -1,12 +1,16 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { RoomView } from "./RoomView";
 import { EmptyInspectionState } from "./EmptyInspectionState";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "../types";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface RoomCardProps {
   room: Room;
@@ -28,7 +32,6 @@ export const RoomCard = ({
   onStartInspection,
   onSave
 }: RoomCardProps) => {
-  const [isContentOpen, setIsContentOpen] = useState(true);
   
   const inspectionData = currentInspection?.rooms[room.id] || {
     roomId: room.id,
@@ -76,39 +79,24 @@ export const RoomCard = ({
       </CardHeader>
       {isExpanded && currentInspection && (
         <CardContent>
-          <Collapsible
-            open={isContentOpen}
-            onOpenChange={setIsContentOpen}
-            className="w-full"
-          >
-            <div className="flex justify-end mb-2">
-              <CollapsibleTrigger asChild>
-                <button className="text-sm text-gray-500 flex items-center gap-1">
-                  {isContentOpen ? (
-                    <>
-                      Dölj detaljer
-                      <ChevronUp className="h-4 w-4" />
-                    </>
-                  ) : (
-                    <>
-                      Visa detaljer
-                      <ChevronDown className="h-4 w-4" />
-                    </>
-                  )}
-                </button>
-              </CollapsibleTrigger>
-            </div>
-            
-            <CollapsibleContent>
-              <RoomView 
-                room={room} 
-                inspectionData={inspectionData}
-                currentInspection={currentInspection}
-                onSave={onSave}
-                inspectorName={currentInspection.inspectorName}
-              />
-            </CollapsibleContent>
-          </Collapsible>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="details" className="border-0">
+              <div className="flex justify-end">
+                <AccordionTrigger className="py-0 hover:no-underline">
+                  <span className="text-sm text-gray-500">Detaljer</span>
+                </AccordionTrigger>
+              </div>
+              <AccordionContent>
+                <RoomView 
+                  room={room} 
+                  inspectionData={inspectionData}
+                  currentInspection={currentInspection}
+                  onSave={onSave}
+                  inspectorName={currentInspection.inspectorName}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </CardContent>
       )}
       {isExpanded && !currentInspection && (
