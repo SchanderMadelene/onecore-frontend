@@ -7,9 +7,10 @@ import { TenantContracts } from "@/components/tenants/TenantContracts";
 import { mockTenant } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Wallet, Key, Bell, FileWarning, CircleAlert, Users } from "lucide-react";
+import { FileText, Wallet, Key, Bell, FileWarning, CircleAlert, Users, StickyNote } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
+import { TenantNotes } from "@/components/tenants/TenantNotes";
 
 const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -60,6 +61,10 @@ const TenantDetailPage = () => {
               <Users className="h-4 w-4" />
               Kösystem
             </TabsTrigger>
+            <TabsTrigger value="notes" className="flex items-center gap-1.5">
+              <StickyNote className="h-4 w-4" />
+              Noteringar
+            </TabsTrigger>
             <TabsTrigger value="ledger" className="flex items-center gap-1.5">
               <Wallet className="h-4 w-4" />
               Kundreskontra
@@ -107,6 +112,10 @@ const TenantDetailPage = () => {
           
           <TabsContent value="queue">
             <TenantQueueSystem />
+          </TabsContent>
+          
+          <TabsContent value="notes">
+            <TenantNotes />
           </TabsContent>
           
           <TabsContent value="ledger">
