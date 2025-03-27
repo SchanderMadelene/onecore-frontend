@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, User, LogIn, Calendar } from "lucide-react";
+import { Phone, Mail, MessageSquare, User, LogIn } from "lucide-react";
 
 interface TenantCardProps {
   tenant: {
@@ -140,7 +140,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
             <div>
               <p className="text-sm text-muted-foreground">Senaste inloggning</p>
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
                 <p className="font-medium">
                   {tenant.lastLogin 
                     ? new Date(tenant.lastLogin).toLocaleDateString('sv-SE', {
