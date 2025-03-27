@@ -28,7 +28,7 @@ const TenantDetailPage = () => {
           {mockTenant.firstName} {mockTenant.lastName}
         </h1>
         <p className="text-muted-foreground mb-6">
-          Kundkort för hyresgäst med personnummer {tenantId}
+          Kundkort
         </p>
 
         <div className="grid grid-cols-1 gap-6 mb-6">
