@@ -117,7 +117,7 @@ export function TenantCases() {
                 {activeCases.map((caseItem) => (
                   <Alert 
                     key={caseItem.id}
-                    className={`border ${caseItem.priority === 'high' ? 'border-red-200 bg-red-50' : 'border-yellow-200 bg-yellow-50'}`}
+                    className="border border-slate-200 bg-slate-50"
                   >
                     <CircleAlert className={`h-5 w-5 ${caseItem.priority === 'high' ? 'text-red-500' : 'text-yellow-500'}`} />
                     <AlertTitle className="flex items-center gap-2">
