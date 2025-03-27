@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { InfoIcon, Home, Car } from "lucide-react";
+import { TenantHousingReferences } from "./TenantHousingReferences";
 
 // Mock data for the queue system
 const queueData = {
@@ -115,6 +116,9 @@ export function TenantQueueSystem() {
           )}
         </CardContent>
       </Card>
+
+      {/* Add the housing references component */}
+      <TenantHousingReferences />
     </div>
   );
 }

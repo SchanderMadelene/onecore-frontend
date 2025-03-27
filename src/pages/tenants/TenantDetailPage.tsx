@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Wallet, Key, Bell, FileWarning, CircleAlert, Users, Home } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
-import { TenantHousingReferences } from "@/components/tenants/TenantHousingReferences";
 
 const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,9 +40,9 @@ const TenantDetailPage = () => {
               <FileText className="h-4 w-4" />
               Kontrakt
             </TabsTrigger>
-            <TabsTrigger value="references" className="flex items-center gap-1.5">
-              <Home className="h-4 w-4" />
-              Boendereferenser
+            <TabsTrigger value="queue" className="flex items-center gap-1.5">
+              <Users className="h-4 w-4" />
+              Kösystem
             </TabsTrigger>
             <TabsTrigger value="events" className="flex items-center gap-1.5">
               <Bell className="h-4 w-4" />
@@ -60,10 +59,6 @@ const TenantDetailPage = () => {
                   1
                 </Badge>
               )}
-            </TabsTrigger>
-            <TabsTrigger value="queue" className="flex items-center gap-1.5">
-              <Users className="h-4 w-4" />
-              Kösystem
             </TabsTrigger>
             <TabsTrigger value="ledger" className="flex items-center gap-1.5">
               <Wallet className="h-4 w-4" />
@@ -83,8 +78,8 @@ const TenantDetailPage = () => {
             <TenantContracts contracts={contracts} />
           </TabsContent>
           
-          <TabsContent value="references">
-            <TenantHousingReferences />
+          <TabsContent value="queue">
+            <TenantQueueSystem />
           </TabsContent>
           
           <TabsContent value="events">
@@ -112,10 +107,6 @@ const TenantDetailPage = () => {
                 <p className="text-muted-foreground">Inga ärenden registrerade för denna kund.</p>
               )}
             </div>
-          </TabsContent>
-          
-          <TabsContent value="queue">
-            <TenantQueueSystem />
           </TabsContent>
           
           <TabsContent value="ledger">
