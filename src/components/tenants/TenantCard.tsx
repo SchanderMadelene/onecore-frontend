@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare } from "lucide-react";
+import { Phone, Mail, MessageSquare, Flag, Globe, User, Users, LogIn, Calendar } from "lucide-react";
 
 interface TenantCardProps {
   tenant: {
@@ -13,6 +13,16 @@ interface TenantCardProps {
     moveInDate: string;
     moveOutDate?: string;
     contractNumber: string;
+    // New fields
+    nationality?: string;
+    language?: string;
+    hasLegalGuardian?: boolean;
+    portalCredentials?: {
+      username: string;
+      password: string;
+    };
+    loginCount?: number;
+    lastLogin?: string;
   };
 }
 
@@ -35,7 +45,8 @@ export function TenantCard({ tenant }: TenantCardProps) {
         <CardTitle>Personuppgifter</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* First column - Basic information */}
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
@@ -64,7 +75,23 @@ export function TenantCard({ tenant }: TenantCardProps) {
                 </Button>
               </div>
             </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Nationalitet</p>
+              <div className="flex items-center gap-2">
+                <Flag className="h-4 w-4 text-muted-foreground" />
+                <p className="font-medium">{tenant.nationality || "Ej angivet"}</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Språk</p>
+              <div className="flex items-center gap-2">
+                <Globe className="h-4 w-4 text-muted-foreground" />
+                <p className="font-medium">{tenant.language || "Svenska"}</p>
+              </div>
+            </div>
           </div>
+          
+          {/* Second column - Contract information */}
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
@@ -86,6 +113,57 @@ export function TenantCard({ tenant }: TenantCardProps) {
                 </div>
               </div>
             )}
+            <div>
+              <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-muted-foreground" />
+                <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Third column - Portal information */}
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-muted-foreground">Mina Sidor</p>
+              <div className="border rounded-md p-3 bg-muted/20 space-y-2 mt-1">
+                <div>
+                  <p className="text-xs text-muted-foreground">Användarnamn</p>
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    <p className="font-medium">{tenant.portalCredentials?.username || "Ej registrerad"}</p>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Lösenord</p>
+                  <p className="font-medium">••••••••</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Antal inloggningar</p>
+              <div className="flex items-center gap-2">
+                <LogIn className="h-4 w-4 text-muted-foreground" />
+                <p className="font-medium">{tenant.loginCount || 0}</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Senaste inloggning</p>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <p className="font-medium">
+                  {tenant.lastLogin 
+                    ? new Date(tenant.lastLogin).toLocaleDateString('sv-SE', {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })
+                    : "Aldrig"}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>
