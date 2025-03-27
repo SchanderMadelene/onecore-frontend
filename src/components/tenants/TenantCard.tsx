@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MessageSquare, Flag, Globe, User, Users, LogIn, Calendar } from "lucide-react";
@@ -78,7 +77,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
             <div>
               <p className="text-sm text-muted-foreground">Nationalitet</p>
               <div className="flex items-center gap-2">
-                <Flag className="h-4 w-4 text-muted-foreground" />
                 <p className="font-medium">{tenant.nationality || "Ej angivet"}</p>
               </div>
             </div>
