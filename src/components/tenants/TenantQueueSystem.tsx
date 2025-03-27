@@ -57,7 +57,7 @@ export function TenantQueueSystem() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Home className="h-5 w-5 text-blue-500" />
+              <Home className="h-5 w-5 text-muted-foreground" />
               Bostadskö
             </CardTitle>
           </CardHeader>
@@ -77,7 +77,7 @@ export function TenantQueueSystem() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Car className="h-5 w-5 text-blue-500" />
+              <Car className="h-5 w-5 text-muted-foreground" />
               Bilplatskö
             </CardTitle>
           </CardHeader>
@@ -98,7 +98,7 @@ export function TenantQueueSystem() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-blue-500" />
+            <Users className="h-5 w-5 text-muted-foreground" />
             Boendereferenser
           </CardTitle>
         </CardHeader>
@@ -118,14 +118,14 @@ export function TenantQueueSystem() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <User className="h-4 w-4 text-blue-500" />
+                  <User className="h-4 w-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">Vuxna i hushållet</p>
                 </div>
                 <p className="font-medium">{queueData.housingReferences.adultsInHousehold}</p>
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <User className="h-4 w-4 text-blue-500" />
+                  <User className="h-4 w-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">Barn i hushållet</p>
                 </div>
                 <p className="font-medium">{queueData.housingReferences.childrenInHousehold}</p>
@@ -134,7 +134,7 @@ export function TenantQueueSystem() {
             <Separator />
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <UserCheck className="h-4 w-4 text-blue-500" />
+                <UserCheck className="h-4 w-4 text-muted-foreground" />
                 <p className="text-sm text-muted-foreground">Status på boendereferens</p>
               </div>
               <Badge 
