@@ -9,5 +9,14 @@ export const mockTenant = {
   moveInDate: "2023-01-01",
   moveOutDate: "2023-12-31",
   contractNumber: "KT2023-001",
-  personalNumber: "19850101-1234"
+  personalNumber: "19850101-1234",
+  nationality: "Svensk",
+  language: "Svenska",
+  hasLegalGuardian: false,
+  portalCredentials: {
+    username: "anna.andersson",
+    password: "password123"
+  },
+  loginCount: 12,
+  lastLogin: "2023-11-15T14:30:00"
 };
