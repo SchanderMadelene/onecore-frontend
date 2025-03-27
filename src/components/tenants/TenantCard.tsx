@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, Flag, Globe, User, Users, LogIn, Calendar } from "lucide-react";
+import { Phone, Mail, MessageSquare, Globe, User, Users, LogIn, Calendar } from "lucide-react";
 
 interface TenantCardProps {
   tenant: {
@@ -12,7 +12,6 @@ interface TenantCardProps {
     moveInDate: string;
     moveOutDate?: string;
     contractNumber: string;
-    // New fields
     nationality?: string;
     language?: string;
     hasLegalGuardian?: boolean;
@@ -45,7 +44,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* First column - Basic information */}
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
@@ -88,8 +86,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
               </div>
             </div>
           </div>
-          
-          {/* Second column - Contract information */}
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
@@ -119,8 +115,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
               </div>
             </div>
           </div>
-          
-          {/* Third column - Portal information */}
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Mina Sidor</p>
