@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, User, LogIn } from "lucide-react";
+import { Phone, Mail, MessageSquare, User } from "lucide-react";
 
 interface TenantCardProps {
   tenant: {
@@ -133,7 +133,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
             <div>
               <p className="text-sm text-muted-foreground">Antal inloggningar</p>
               <div className="flex items-center gap-2">
-                <LogIn className="h-4 w-4 text-muted-foreground" />
                 <p className="font-medium">{tenant.loginCount || 0}</p>
               </div>
             </div>
