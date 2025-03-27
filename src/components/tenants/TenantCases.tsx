@@ -1,8 +1,29 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { CircleAlert, Clock, User, CalendarDays } from "lucide-react";
+import { CalendarDays, FilePlus } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 interface Case {
   id: string;
@@ -96,10 +117,103 @@ const getStatusBadge = (status: Case["status"]) => {
 };
 
 export function TenantCases() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newCaseTitle, setNewCaseTitle] = useState("");
+  const [newCaseDesc, setNewCaseDesc] = useState("");
+  const [newCasePriority, setNewCasePriority] = useState<Case["priority"]>("medium");
+  const { toast } = useToast();
+
+  const handleCreateCase = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Creating new case:", {
+      title: newCaseTitle,
+      description: newCaseDesc,
+      priority: newCasePriority,
+      reportedDate: new Date().toISOString().split('T')[0],
+      status: "active"
+    });
+
+    toast({
+      title: "Ärende skapat",
+      description: "Ditt ärende har registrerats och kommer att behandlas inom kort.",
+    });
+
+    // Reset form and close dialog
+    setNewCaseTitle("");
+    setNewCaseDesc("");
+    setNewCasePriority("medium");
+    setIsDialogOpen(false);
+  };
+
   return (
     <Card className="w-full">
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <CardTitle>Ärenden</CardTitle>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <FilePlus className="mr-2 h-4 w-4" />
+              Skapa ärende
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Skapa nytt ärende</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleCreateCase} className="space-y-4 mt-4">
+              <div className="space-y-2">
+                <Label htmlFor="title">Titel</Label>
+                <Input 
+                  id="title"
+                  value={newCaseTitle}
+                  onChange={(e) => setNewCaseTitle(e.target.value)}
+                  placeholder="Ange ärendets titel"
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="description">Beskrivning</Label>
+                <Textarea
+                  id="description"
+                  value={newCaseDesc}
+                  onChange={(e) => setNewCaseDesc(e.target.value)}
+                  placeholder="Beskriv ärendet mer detaljerat..."
+                  rows={4}
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="priority">Prioritet</Label>
+                <Select 
+                  value={newCasePriority} 
+                  onValueChange={(value) => setNewCasePriority(value as Case["priority"])}
+                >
+                  <SelectTrigger id="priority">
+                    <SelectValue placeholder="Välj prioritet" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="high">Hög</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="low">Låg</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="flex justify-end gap-2 pt-2">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsDialogOpen(false)}
+                >
+                  Avbryt
+                </Button>
+                <Button type="submit">Skapa ärende</Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="active" className="w-full">
