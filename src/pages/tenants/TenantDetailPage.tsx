@@ -7,7 +7,7 @@ import { TenantContracts } from "@/components/tenants/TenantContracts";
 import { mockTenant } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Wallet, Key, Bell, FileWarning, CircleAlert, Users, Home } from "lucide-react";
+import { FileText, Wallet, Key, Bell, FileWarning, CircleAlert, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 
@@ -40,10 +40,6 @@ const TenantDetailPage = () => {
               <FileText className="h-4 w-4" />
               Kontrakt
             </TabsTrigger>
-            <TabsTrigger value="queue" className="flex items-center gap-1.5">
-              <Users className="h-4 w-4" />
-              Kösystem
-            </TabsTrigger>
             <TabsTrigger value="events" className="flex items-center gap-1.5">
               <Bell className="h-4 w-4" />
               Händelselogg
@@ -59,6 +55,10 @@ const TenantDetailPage = () => {
                   1
                 </Badge>
               )}
+            </TabsTrigger>
+            <TabsTrigger value="queue" className="flex items-center gap-1.5">
+              <Users className="h-4 w-4" />
+              Kösystem
             </TabsTrigger>
             <TabsTrigger value="ledger" className="flex items-center gap-1.5">
               <Wallet className="h-4 w-4" />
@@ -76,10 +76,6 @@ const TenantDetailPage = () => {
 
           <TabsContent value="contracts">
             <TenantContracts contracts={contracts} />
-          </TabsContent>
-          
-          <TabsContent value="queue">
-            <TenantQueueSystem />
           </TabsContent>
           
           <TabsContent value="events">
@@ -107,6 +103,10 @@ const TenantDetailPage = () => {
                 <p className="text-muted-foreground">Inga ärenden registrerade för denna kund.</p>
               )}
             </div>
+          </TabsContent>
+          
+          <TabsContent value="queue">
+            <TenantQueueSystem />
           </TabsContent>
           
           <TabsContent value="ledger">
