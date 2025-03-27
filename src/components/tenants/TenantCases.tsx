@@ -1,8 +1,9 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, Clock, User, CalendarDays } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 interface Case {
@@ -112,38 +113,54 @@ export function TenantCases() {
           
           <TabsContent value="active">
             {activeCases.length > 0 ? (
-              <div className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
                 {activeCases.map((caseItem) => (
-                  <Alert 
+                  <Card 
                     key={caseItem.id}
-                    className="border border-slate-200 bg-slate-50"
+                    className={`overflow-hidden border ${
+                      caseItem.priority === 'high' 
+                        ? 'border-l-4 border-l-red-500' 
+                        : caseItem.priority === 'medium'
+                          ? 'border-l-4 border-l-yellow-500'
+                          : 'border-l-4 border-l-blue-500'
+                    }`}
                   >
-                    <CircleAlert className={`h-5 w-5 ${caseItem.priority === 'high' ? 'text-red-500' : 'text-yellow-500'}`} />
-                    <AlertTitle className="flex items-center gap-2">
-                      {caseItem.title}
-                      <span className="text-xs font-normal">#{caseItem.id}</span>
-                      {getPriorityBadge(caseItem.priority)}
-                    </AlertTitle>
-                    <AlertDescription>
-                      <div className="text-sm mt-1 space-y-2">
-                        <p>{caseItem.description}</p>
-                        <div className="grid grid-cols-2 gap-4 text-xs pt-2">
-                          <div>
-                            <span className="text-muted-foreground">Rapporterad: </span>
-                            {caseItem.reportedDate}
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Status: </span>
-                            {getStatusBadge(caseItem.status)}
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Tilldelad: </span>
-                            {caseItem.assignedTo}
-                          </div>
+                    <div className="p-5">
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex items-center gap-2">
+                          <CircleAlert className={`h-5 w-5 ${
+                            caseItem.priority === 'high' 
+                              ? 'text-red-500' 
+                              : caseItem.priority === 'medium'
+                                ? 'text-yellow-500'
+                                : 'text-blue-500'
+                          }`} />
+                          <h3 className="font-semibold text-lg">{caseItem.title}</h3>
+                        </div>
+                        <span className="text-xs bg-slate-100 px-2 py-1 rounded-md">#{caseItem.id}</span>
+                      </div>
+                      
+                      <p className="text-sm text-gray-600 mb-4">{caseItem.description}</p>
+                      
+                      <div className="grid grid-cols-2 gap-y-2 text-sm text-gray-500">
+                        <div className="flex items-center gap-1.5">
+                          <CalendarDays className="h-4 w-4" />
+                          <span>{caseItem.reportedDate}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <User className="h-4 w-4" />
+                          <span>{caseItem.assignedTo}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="h-4 w-4" />
+                          <span>Status: {getStatusBadge(caseItem.status)}</span>
+                        </div>
+                        <div>
+                          <span>Prioritet: {getPriorityBadge(caseItem.priority)}</span>
                         </div>
                       </div>
-                    </AlertDescription>
-                  </Alert>
+                    </div>
+                  </Card>
                 ))}
               </div>
             ) : (
@@ -159,7 +176,7 @@ export function TenantCases() {
                     <TableHead>ID</TableHead>
                     <TableHead>Ärende</TableHead>
                     <TableHead>Rapporterad</TableHead>
-                    <TableHead>Löst</TableHead>
+                    <TableHead>Åtgärdat</TableHead>
                     <TableHead>Prioritet</TableHead>
                     <TableHead>Status</TableHead>
                   </TableRow>
