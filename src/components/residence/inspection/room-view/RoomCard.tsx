@@ -5,6 +5,12 @@ import { RoomView } from "./RoomView";
 import { EmptyInspectionState } from "./EmptyInspectionState";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "../types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface RoomCardProps {
   room: Room;
@@ -26,6 +32,7 @@ export const RoomCard = ({
   onStartInspection,
   onSave
 }: RoomCardProps) => {
+  
   const inspectionData = currentInspection?.rooms[room.id] || {
     roomId: room.id,
     conditions: {
@@ -72,13 +79,24 @@ export const RoomCard = ({
       </CardHeader>
       {isExpanded && currentInspection && (
         <CardContent>
-          <RoomView 
-            room={room} 
-            inspectionData={inspectionData}
-            currentInspection={currentInspection}
-            onSave={onSave}
-            inspectorName={currentInspection.inspectorName}
-          />
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="details" className="border-0">
+              <div className="flex justify-end">
+                <AccordionTrigger className="py-0 hover:no-underline">
+                  <span className="text-sm text-gray-500">Detaljer</span>
+                </AccordionTrigger>
+              </div>
+              <AccordionContent>
+                <RoomView 
+                  room={room} 
+                  inspectionData={inspectionData}
+                  currentInspection={currentInspection}
+                  onSave={onSave}
+                  inspectorName={currentInspection.inspectorName}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </CardContent>
       )}
       {isExpanded && !currentInspection && (
