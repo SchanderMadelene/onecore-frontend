@@ -118,10 +118,7 @@ export function TenantCases() {
                   >
                     <div className="p-5">
                       <div className="flex justify-between items-start mb-3">
-                        <div className="flex items-center gap-2">
-                          <CircleAlert className="h-5 w-5" />
-                          <h3 className="font-semibold text-lg">{caseItem.title}</h3>
-                        </div>
+                        <h3 className="font-semibold text-lg">{caseItem.title}</h3>
                         <span className="text-xs bg-slate-100 px-2 py-1 rounded-md">#{caseItem.id}</span>
                       </div>
                       
@@ -133,11 +130,9 @@ export function TenantCases() {
                           <span>{caseItem.reportedDate}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <User className="h-4 w-4" />
                           <span>{caseItem.assignedTo}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <Clock className="h-4 w-4" />
                           <span>Status: {getStatusBadge(caseItem.status)}</span>
                         </div>
                         <div>
