@@ -7,9 +7,10 @@ import { TenantContracts } from "@/components/tenants/TenantContracts";
 import { mockTenant } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Wallet, Key, Bell, FileWarning, CircleAlert, Users } from "lucide-react";
+import { FileText, Wallet, Key, Bell, FileWarning, CircleAlert, Users, Home } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
+import { TenantHousingReferences } from "@/components/tenants/TenantHousingReferences";
 
 const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,6 +40,10 @@ const TenantDetailPage = () => {
             <TabsTrigger value="contracts" className="flex items-center gap-1.5">
               <FileText className="h-4 w-4" />
               Kontrakt
+            </TabsTrigger>
+            <TabsTrigger value="references" className="flex items-center gap-1.5">
+              <Home className="h-4 w-4" />
+              Boendereferenser
             </TabsTrigger>
             <TabsTrigger value="events" className="flex items-center gap-1.5">
               <Bell className="h-4 w-4" />
@@ -76,6 +81,10 @@ const TenantDetailPage = () => {
 
           <TabsContent value="contracts">
             <TenantContracts contracts={contracts} />
+          </TabsContent>
+          
+          <TabsContent value="references">
+            <TenantHousingReferences />
           </TabsContent>
           
           <TabsContent value="events">
