@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -24,12 +23,9 @@ const TenantDetailPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
-        <h1 className="text-3xl font-bold mb-2">
+        <h1 className="text-3xl font-bold mb-6">
           {mockTenant.firstName} {mockTenant.lastName}
         </h1>
-        <p className="text-muted-foreground mb-6">
-          Kundkort
-        </p>
 
         <div className="grid grid-cols-1 gap-6 mb-6">
           <TenantCard tenant={mockTenant} />
