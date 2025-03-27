@@ -2,7 +2,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { InfoIcon, Home, Car } from "lucide-react";
+import { InfoIcon, Home, Car, User, UserCheck, Users } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 // Mock data for the queue system
 const queueData = {
@@ -23,7 +24,30 @@ const queueData = {
       dateRegistered: "2023-11-05",
       status: "offered"
     }
-  ]
+  ],
+  housingReferences: {
+    currentHousingForm: "Hyresrätt",
+    landlord: "Mimer Fastigheter AB",
+    adultsInHousehold: 2,
+    childrenInHousehold: 1,
+    referenceStatus: "Godkänd"
+  }
+};
+
+// Helper function to get the appropriate color for reference status
+const getReferenceStatusColor = (status: string) => {
+  switch (status) {
+    case "Godkänd":
+      return "bg-green-500";
+    case "Ej godkänd":
+      return "bg-red-500";
+    case "Kontaktad - ej svar":
+      return "bg-amber-500";
+    case "Referens krävs ej":
+      return "bg-blue-500";
+    default:
+      return "bg-slate-500";
+  }
 };
 
 export function TenantQueueSystem() {
@@ -71,6 +95,58 @@ export function TenantQueueSystem() {
         </Card>
       </div>
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-blue-500" />
+            Boendereferenser
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Nuvarande boendeform</p>
+                <p className="font-medium">{queueData.housingReferences.currentHousingForm}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Hyresvärd</p>
+                <p className="font-medium">{queueData.housingReferences.landlord}</p>
+              </div>
+            </div>
+            <Separator />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <User className="h-4 w-4 text-blue-500" />
+                  <p className="text-sm text-muted-foreground">Vuxna i hushållet</p>
+                </div>
+                <p className="font-medium">{queueData.housingReferences.adultsInHousehold}</p>
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <User className="h-4 w-4 text-blue-500" />
+                  <p className="text-sm text-muted-foreground">Barn i hushållet</p>
+                </div>
+                <p className="font-medium">{queueData.housingReferences.childrenInHousehold}</p>
+              </div>
+            </div>
+            <Separator />
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <UserCheck className="h-4 w-4 text-blue-500" />
+                <p className="text-sm text-muted-foreground">Status på boendereferens</p>
+              </div>
+              <Badge 
+                className={`${getReferenceStatusColor(queueData.housingReferences.referenceStatus)} text-white mt-1`}
+              >
+                {queueData.housingReferences.referenceStatus}
+              </Badge>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
       <Card>
         <CardHeader>
           <CardTitle>Aktiva intresseanmälningar</CardTitle>
