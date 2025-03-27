@@ -41,9 +41,9 @@ const TenantDetailPage = () => {
               <FileText className="h-4 w-4" />
               Kontrakt
             </TabsTrigger>
-            <TabsTrigger value="events" className="flex items-center gap-1.5">
-              <Bell className="h-4 w-4" />
-              Händelselogg
+            <TabsTrigger value="queue" className="flex items-center gap-1.5">
+              <Users className="h-4 w-4" />
+              Kösystem
             </TabsTrigger>
             <TabsTrigger value="cases" className="flex items-center gap-1.5">
               <FileWarning className="h-4 w-4" />
@@ -57,21 +57,21 @@ const TenantDetailPage = () => {
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="queue" className="flex items-center gap-1.5">
-              <Users className="h-4 w-4" />
-              Kösystem
+            <TabsTrigger value="ledger" className="flex items-center gap-1.5">
+              <Wallet className="h-4 w-4" />
+              Kundreskontra
             </TabsTrigger>
             <TabsTrigger value="notes" className="flex items-center gap-1.5">
               <StickyNote className="h-4 w-4" />
               Noteringar
             </TabsTrigger>
-            <TabsTrigger value="ledger" className="flex items-center gap-1.5">
-              <Wallet className="h-4 w-4" />
-              Kundreskontra
-            </TabsTrigger>
             <TabsTrigger value="keys" className="flex items-center gap-1.5">
               <Key className="h-4 w-4" />
               Nycklar
+            </TabsTrigger>
+            <TabsTrigger value="events" className="flex items-center gap-1.5">
+              <Bell className="h-4 w-4" />
+              Händelselogg
             </TabsTrigger>
             <TabsTrigger value="documents" className="flex items-center gap-1.5">
               <FileText className="h-4 w-4" />
