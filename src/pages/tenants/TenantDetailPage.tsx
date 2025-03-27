@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -35,7 +36,7 @@ const TenantDetailPage = () => {
           <TabsList className="mb-6">
             <TabsTrigger value="contracts" className="flex items-center gap-1.5">
               <FileText className="h-4 w-4" />
-              Kontrakt
+              Hyreskontrakt
             </TabsTrigger>
             <TabsTrigger value="queue" className="flex items-center gap-1.5">
               <Users className="h-4 w-4" />
@@ -63,7 +64,7 @@ const TenantDetailPage = () => {
             </TabsTrigger>
             <TabsTrigger value="keys" className="flex items-center gap-1.5">
               <Key className="h-4 w-4" />
-              Nycklar
+              Nyckelknippa
             </TabsTrigger>
             <TabsTrigger value="events" className="flex items-center gap-1.5">
               <Bell className="h-4 w-4" />
