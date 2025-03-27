@@ -1,10 +1,8 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { CircleAlert, Clock, User, CalendarDays } from "lucide-react";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 interface Case {
   id: string;
@@ -17,7 +15,6 @@ interface Case {
   assignedTo?: string;
 }
 
-// Mock data - would typically come from an API
 const activeCases: Case[] = [
   {
     id: "C001",
@@ -75,11 +72,11 @@ const historicalCases: Case[] = [
 const getPriorityBadge = (priority: Case["priority"]) => {
   switch (priority) {
     case "high":
-      return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">Hög</Badge>;
+      return <Badge variant="outline">Hög</Badge>;
     case "medium":
-      return <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200">Medium</Badge>;
+      return <Badge variant="outline">Medium</Badge>;
     case "low":
-      return <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-200">Låg</Badge>;
+      return <Badge variant="outline">Låg</Badge>;
     default:
       return null;
   }
@@ -88,11 +85,11 @@ const getPriorityBadge = (priority: Case["priority"]) => {
 const getStatusBadge = (status: Case["status"]) => {
   switch (status) {
     case "active":
-      return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">Pågående</Badge>;
+      return <Badge variant="outline">Pågående</Badge>;
     case "pending":
-      return <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200">Väntande</Badge>;
+      return <Badge variant="outline">Väntande</Badge>;
     case "resolved":
-      return <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">Åtgärdat</Badge>;
+      return <Badge variant="outline">Åtgärdat</Badge>;
     default:
       return null;
   }
@@ -117,24 +114,12 @@ export function TenantCases() {
                 {activeCases.map((caseItem) => (
                   <Card 
                     key={caseItem.id}
-                    className={`overflow-hidden border ${
-                      caseItem.priority === 'high' 
-                        ? 'border-l-4 border-l-red-500' 
-                        : caseItem.priority === 'medium'
-                          ? 'border-l-4 border-l-yellow-500'
-                          : 'border-l-4 border-l-blue-500'
-                    }`}
+                    className="overflow-hidden border"
                   >
                     <div className="p-5">
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex items-center gap-2">
-                          <CircleAlert className={`h-5 w-5 ${
-                            caseItem.priority === 'high' 
-                              ? 'text-red-500' 
-                              : caseItem.priority === 'medium'
-                                ? 'text-yellow-500'
-                                : 'text-blue-500'
-                          }`} />
+                          <CircleAlert className="h-5 w-5" />
                           <h3 className="font-semibold text-lg">{caseItem.title}</h3>
                         </div>
                         <span className="text-xs bg-slate-100 px-2 py-1 rounded-md">#{caseItem.id}</span>
