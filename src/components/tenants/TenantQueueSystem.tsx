@@ -1,9 +1,7 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { InfoIcon, Home, Car, User, UserCheck, Users } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 
 // Mock data for the queue system
 const queueData = {
@@ -114,7 +112,6 @@ export function TenantQueueSystem() {
                 <p className="font-medium">{queueData.housingReferences.landlord}</p>
               </div>
             </div>
-            <Separator />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <div className="flex items-center gap-2 mb-1">
@@ -131,7 +128,6 @@ export function TenantQueueSystem() {
                 <p className="font-medium">{queueData.housingReferences.childrenInHousehold}</p>
               </div>
             </div>
-            <Separator />
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <UserCheck className="h-4 w-4 text-muted-foreground" />
