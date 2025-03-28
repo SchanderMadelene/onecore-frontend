@@ -1,13 +1,13 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { CreateCaseDialog } from "@/components/cases/CreateCaseDialog";
+import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
 
 export function CreateIssue() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle>Ärenden</CardTitle>
-        <CreateCaseDialog contextType="residence" />
+        <CreateOrderDialog contextType="residence" />
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground">

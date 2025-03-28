@@ -1,9 +1,20 @@
 
 import { useState } from "react";
-import { Case } from "@/components/orders/OrderForm";
 
-// Mock case data
-const activeCasesMock: Case[] = [
+// Define the Order type directly in this file since we don't have OrderForm.tsx yet
+export interface Order {
+  id: string;
+  title: string;
+  reportedDate: string;
+  status: string;
+  priority: string;
+  description: string;
+  assignedTo: string;
+  resolvedDate?: string;
+}
+
+// Mock order data
+const activeOrdersMock: Order[] = [
   {
     id: "C001",
     title: "Vattenläcka i kök",
@@ -24,7 +35,7 @@ const activeCasesMock: Case[] = [
   }
 ];
 
-const historicalCasesMock: Case[] = [
+const historicalOrdersMock: Order[] = [
   {
     id: "C000",
     title: "Stopp i avlopp",
@@ -58,28 +69,28 @@ const historicalCasesMock: Case[] = [
 ];
 
 // In a real application, this would likely be backed by an API service
-export function useCasesService() {
-  const [activeCases, setActiveCases] = useState<Case[]>(activeCasesMock);
-  const [historicalCases, setHistoricalCases] = useState<Case[]>(historicalCasesMock);
+export function useOrdersService() {
+  const [activeOrders, setActiveOrders] = useState<Order[]>(activeOrdersMock);
+  const [historicalOrders, setHistoricalOrders] = useState<Order[]>(historicalOrdersMock);
 
-  const createCase = (caseData: Omit<Case, "id">) => {
-    const newCase: Case = {
-      ...caseData,
-      id: `C${(activeCases.length + historicalCases.length + 10).toString().padStart(3, '0')}`,
+  const createOrder = (orderData: Omit<Order, "id">) => {
+    const newOrder: Order = {
+      ...orderData,
+      id: `C${(activeOrders.length + historicalOrders.length + 10).toString().padStart(3, '0')}`,
     };
 
-    console.log("Creating new case:", newCase);
+    console.log("Creating new order:", newOrder);
     
     // In a real app, this would be an API call
-    setActiveCases([newCase, ...activeCases]);
-    return newCase;
+    setActiveOrders([newOrder, ...activeOrders]);
+    return newOrder;
   };
 
-  // More methods could be added here, like resolving a case, updating a case, etc.
+  // More methods could be added here, like resolving an order, updating an order, etc.
   
   return {
-    activeCases,
-    historicalCases,
-    createCase,
+    activeOrders,
+    historicalOrders,
+    createOrder,
   };
 }
