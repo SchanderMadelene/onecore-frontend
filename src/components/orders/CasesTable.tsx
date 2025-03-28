@@ -1,14 +1,14 @@
 
-import { Case } from "./CaseForm";
+import { Order } from "@/hooks/useOrdersService";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
-interface CasesTableProps {
-  cases: Case[];
+interface OrdersTableProps {
+  orders: Order[];
 }
 
-export function CasesTable({ cases }: CasesTableProps) {
-  const getPriorityBadge = (priority: Case["priority"]) => {
+export function OrdersTable({ orders }: OrdersTableProps) {
+  const getPriorityBadge = (priority: Order["priority"]) => {
     switch (priority) {
       case "high":
         return <Badge variant="outline">Hög</Badge>;
@@ -21,7 +21,7 @@ export function CasesTable({ cases }: CasesTableProps) {
     }
   };
 
-  const getStatusBadge = (status: Case["status"]) => {
+  const getStatusBadge = (status: Order["status"]) => {
     switch (status) {
       case "active":
         return <Badge variant="outline">Pågående</Badge>;
@@ -47,14 +47,14 @@ export function CasesTable({ cases }: CasesTableProps) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {cases.map((caseItem) => (
-          <TableRow key={caseItem.id}>
-            <TableCell className="font-medium">{caseItem.id}</TableCell>
-            <TableCell>{caseItem.title}</TableCell>
-            <TableCell>{caseItem.reportedDate}</TableCell>
-            <TableCell>{caseItem.resolvedDate}</TableCell>
-            <TableCell>{getPriorityBadge(caseItem.priority)}</TableCell>
-            <TableCell>{getStatusBadge(caseItem.status)}</TableCell>
+        {orders.map((order) => (
+          <TableRow key={order.id}>
+            <TableCell className="font-medium">{order.id}</TableCell>
+            <TableCell>{order.title}</TableCell>
+            <TableCell>{order.reportedDate}</TableCell>
+            <TableCell>{order.resolvedDate}</TableCell>
+            <TableCell>{getPriorityBadge(order.priority)}</TableCell>
+            <TableCell>{getStatusBadge(order.status)}</TableCell>
           </TableRow>
         ))}
       </TableBody>
