@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Case } from "@/components/cases/CaseForm";
+import { Case } from "@/components/orders/OrderForm";
 
 // Mock case data
 const activeCasesMock: Case[] = [
