@@ -11,7 +11,7 @@ import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote } from "luc
 import { Badge } from "@/components/ui/badge";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 import { TenantNotes } from "@/components/tenants/TenantNotes";
-import { TenantCases } from "@/components/tenants/TenantCases";
+import { TenantOrders } from "@/components/tenants/TenantOrders";
 
 const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -89,7 +89,7 @@ const TenantDetailPage = () => {
           </TabsContent>
           
           <TabsContent value="cases">
-            <TenantCases />
+            <TenantOrders />
           </TabsContent>
           
           <TabsContent value="queue">
