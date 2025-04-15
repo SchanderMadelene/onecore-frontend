@@ -44,37 +44,12 @@ export function ParkingSpacesTable() {
   return (
     <div className="w-full">
       <Tabs defaultValue="publicerade" className="w-full">
-        <TabsList className="w-full flex justify-start mb-4 bg-transparent p-0 h-auto space-x-2">
-          <TabsTrigger 
-            value="publicerade" 
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Publicerade
-          </TabsTrigger>
-          <TabsTrigger 
-            value="klaraForErbjudande"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Klara för erbjudande
-          </TabsTrigger>
-          <TabsTrigger 
-            value="erbjudna"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Erbjudna
-          </TabsTrigger>
-          <TabsTrigger 
-            value="historik"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Historik
-          </TabsTrigger>
-          <TabsTrigger 
-            value="behovAvPublicering"
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Behov av publicering
-          </TabsTrigger>
+        <TabsList className="grid grid-cols-5 mb-6">
+          <TabsTrigger value="publicerade">Publicerade</TabsTrigger>
+          <TabsTrigger value="klaraForErbjudande">Klara för erbjudande</TabsTrigger>
+          <TabsTrigger value="erbjudna">Erbjudna</TabsTrigger>
+          <TabsTrigger value="historik">Historik</TabsTrigger>
+          <TabsTrigger value="behovAvPublicering">Behov av publicering</TabsTrigger>
         </TabsList>
 
         <TabsContent value="publicerade">
