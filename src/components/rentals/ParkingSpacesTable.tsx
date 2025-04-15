@@ -79,7 +79,8 @@ const demoData: ParkingSpace[] = [{
 }];
 
 export function ParkingSpacesTable() {
-  return <div className="w-full space-y-8">
+  return (
+    <div className="w-full space-y-8">
       <Tabs defaultValue="publicerade" className="w-full">
         <TabsList className="grid grid-cols-5 mb-8">
           <TabsTrigger value="publicerade">
@@ -128,7 +129,8 @@ export function ParkingSpacesTable() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {demoData.map(space => <TableRow key={space.id} className="group">
+                  {demoData.map(space => (
+                    <TableRow key={space.id} className="group">
                       <TableCell>
                         <div className="font-medium">{space.address}</div>
                         <div className="text-sm text-muted-foreground">{space.id}</div>
@@ -154,12 +156,11 @@ export function ParkingSpacesTable() {
                             <PlusCircle className="h-4 w-4" />
                             <span>Ny anmälan</span>
                           </Button>
-                          <Button variant="ghost" size="icon">
-                            <ChevronRight className="h-4 w-4" />
-                          </Button>
+                          <ParkingSpaceDetail space={space} />
                         </div>
                       </TableCell>
-                    </TableRow>)}
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </div>
@@ -202,5 +203,6 @@ export function ParkingSpacesTable() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>;
+    </div>
+  );
 }
