@@ -258,6 +258,12 @@ export const treeData: TreeNode[] = [
     path: "/tenants/all",
   },
   {
+    id: "rentals",
+    label: "Uthyrning",
+    icon: "key",
+    path: "/rentals",
+  },
+  {
     id: "design-system",
     label: "Design System",
     icon: "palette",
