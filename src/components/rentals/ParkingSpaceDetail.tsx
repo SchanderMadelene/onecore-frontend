@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -36,98 +37,105 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-[90vw] p-0">
         <div className="flex flex-col h-full">
-          <div className="p-6 border-b">
-            <div className="flex items-center gap-2 mb-6">
+          <div className="p-6 border-b bg-secondary">
+            <div className="flex items-center gap-2 mb-4">
               <Button variant="ghost" size="icon" className="h-8 w-8">
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <h2 className="text-lg font-semibold">ÖVERSIKT BILPLATSER</h2>
+              <h2 className="text-lg font-semibold text-muted-foreground">Bilplatser</h2>
             </div>
             <SheetHeader>
-              <SheetTitle>INTRESSEANMÄLNINGAR {space.address}</SheetTitle>
+              <SheetTitle className="text-2xl tracking-tight">
+                {space.address}
+              </SheetTitle>
             </SheetHeader>
           </div>
           
           <div className="flex-1 overflow-hidden">
             <ScrollArea className="h-full">
-              <div className="p-6">
-                <div className="mb-8">
-                  <h3 className="text-lg font-bold mb-4">OBJEKTSINFORMATION</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
+              <div className="p-6 space-y-8">
+                <section>
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    Objektsinformation
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Bilplats</p>
-                      <p>{space.address}</p>
+                      <p className="font-medium">{space.address}</p>
                       <p className="text-sm">{space.id}</p>
                     </div>
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Område</p>
-                      <p>{space.area}</p>
+                      <p className="font-medium">{space.area}</p>
                     </div>
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Bilplatstyp</p>
-                      <p>{space.type}</p>
+                      <p className="font-medium">{space.type}</p>
                     </div>
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Hyra</p>
-                      <p>{space.rent}</p>
+                      <p className="font-medium">{space.rent}</p>
                     </div>
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Sökande</p>
-                      <p>{space.seekers}</p>
+                      <p className="font-medium">{space.seekers}</p>
                     </div>
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Publicerad t.o.m</p>
-                      <p>{space.publishedTo}</p>
+                      <p className="font-medium">{space.publishedTo}</p>
                     </div>
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Ledig från och med</p>
-                      <p>{space.publishedFrom}</p>
+                      <p className="font-medium">{space.publishedFrom}</p>
                     </div>
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Önskat avflyttningsdatum</p>
-                      <p>{space.publishedFrom}</p>
+                      <p className="font-medium">{space.publishedFrom}</p>
                     </div>
                   </div>
-                </div>
+                </section>
 
-                <div>
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="hover:bg-transparent">
-                        <TableHead className="whitespace-nowrap">Namn</TableHead>
-                        <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
-                        <TableHead className="whitespace-nowrap">Köpoäng</TableHead>
-                        <TableHead className="whitespace-nowrap">Boendeadress</TableHead>
-                        <TableHead className="whitespace-nowrap">Status boendekontrakt</TableHead>
-                        <TableHead className="whitespace-nowrap">Anmälan</TableHead>
-                        <TableHead className="whitespace-nowrap">Har bilplats</TableHead>
-                        <TableHead className="whitespace-nowrap">Status sökande</TableHead>
-                        <TableHead className="whitespace-nowrap">Svar erbjudande</TableHead>
-                        <TableHead className="whitespace-nowrap">Svara senast</TableHead>
-                        <TableHead className="whitespace-nowrap">Ärende</TableHead>
-                        <TableHead className="whitespace-nowrap">Priogrupp</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {demoApplicants.map((applicant, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{applicant.name}</TableCell>
-                          <TableCell>{applicant.customerNumber}</TableCell>
-                          <TableCell>{applicant.points}</TableCell>
-                          <TableCell>{applicant.address}</TableCell>
-                          <TableCell>{applicant.contractStatus}</TableCell>
-                          <TableCell>{applicant.registrationDate}</TableCell>
-                          <TableCell>{applicant.hasParking}</TableCell>
-                          <TableCell>{applicant.status}</TableCell>
-                          <TableCell>{applicant.response}</TableCell>
-                          <TableCell>{applicant.responseDate}</TableCell>
-                          <TableCell>-</TableCell>
-                          <TableCell>{applicant.priority}</TableCell>
+                <section>
+                  <h3 className="text-lg font-semibold mb-4">Intresseanmälningar</h3>
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="hover:bg-transparent bg-secondary">
+                          <TableHead className="whitespace-nowrap font-semibold">Namn</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Kundnummer</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Köpoäng</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Boendeadress</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Status boendekontrakt</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Har bilplats</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Status sökande</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Svar erbjudande</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Svara senast</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Ärende</TableHead>
+                          <TableHead className="whitespace-nowrap font-semibold">Priogrupp</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                      </TableHeader>
+                      <TableBody>
+                        {demoApplicants.map((applicant, index) => (
+                          <TableRow key={index} className="hover:bg-secondary/50">
+                            <TableCell className="font-medium">{applicant.name}</TableCell>
+                            <TableCell>{applicant.customerNumber}</TableCell>
+                            <TableCell>{applicant.points}</TableCell>
+                            <TableCell>{applicant.address}</TableCell>
+                            <TableCell>{applicant.contractStatus}</TableCell>
+                            <TableCell>{applicant.registrationDate}</TableCell>
+                            <TableCell>{applicant.hasParking}</TableCell>
+                            <TableCell>{applicant.status}</TableCell>
+                            <TableCell>{applicant.response}</TableCell>
+                            <TableCell>{applicant.responseDate}</TableCell>
+                            <TableCell>-</TableCell>
+                            <TableCell>{applicant.priority}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </section>
               </div>
             </ScrollArea>
           </div>
