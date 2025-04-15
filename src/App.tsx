@@ -4,7 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useFeatureToggles } from "@/hooks/useFeatureToggles";
+import { FeatureTogglesProvider } from "@/contexts/FeatureTogglesContext";
+import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import Index from "./pages/Index";
 import PropertyPage from "./pages/properties/PropertyPage";
 import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
@@ -82,11 +83,13 @@ const App = () => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <FeatureTogglesProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </FeatureTogglesProvider>
         </TooltipProvider>
       </QueryClientProvider>
     </React.StrictMode>

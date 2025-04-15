@@ -1,10 +1,15 @@
 
-import { useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface FeatureToggles {
   showPropertyTree: boolean;
   showRentals: boolean;
   showDesignSystem: boolean;
+}
+
+interface FeatureTogglesContextType {
+  features: FeatureToggles;
+  handleFeatureToggle: (feature: keyof FeatureToggles) => void;
 }
 
 const DEFAULT_FEATURES: FeatureToggles = {
@@ -13,7 +18,9 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showDesignSystem: false,
 };
 
-export function useFeatureToggles() {
+const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
+
+export function FeatureTogglesProvider({ children }: { children: React.ReactNode }) {
   const [features, setFeatures] = useState<FeatureToggles>(() => {
     const savedFeatures = localStorage.getItem('featureToggles');
     return savedFeatures ? JSON.parse(savedFeatures) : DEFAULT_FEATURES;
@@ -27,16 +34,13 @@ export function useFeatureToggles() {
     setFeatures(prev => {
       const newFeatures = { ...prev };
       
-      // If toggling the property tree off, disable child features
       if (feature === 'showPropertyTree' && !prev.showPropertyTree) {
         newFeatures.showPropertyTree = true;
       } else if (feature === 'showPropertyTree' && prev.showPropertyTree) {
-        // When disabling property tree, disable all child features
         newFeatures.showPropertyTree = false;
         newFeatures.showRentals = false;
         newFeatures.showDesignSystem = false;
       } else if (feature === 'showRentals' || feature === 'showDesignSystem') {
-        // Child features can only be enabled if property tree is enabled
         if (prev.showPropertyTree) {
           newFeatures[feature] = !prev[feature];
         }
@@ -46,8 +50,17 @@ export function useFeatureToggles() {
     });
   };
 
-  return {
-    features,
-    handleFeatureToggle
-  };
+  return (
+    <FeatureTogglesContext.Provider value={{ features, handleFeatureToggle }}>
+      {children}
+    </FeatureTogglesContext.Provider>
+  );
+}
+
+export function useFeatureToggles() {
+  const context = useContext(FeatureTogglesContext);
+  if (context === undefined) {
+    throw new Error('useFeatureToggles must be used within a FeatureTogglesProvider');
+  }
+  return context;
 }
