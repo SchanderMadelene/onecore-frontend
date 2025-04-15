@@ -73,7 +73,7 @@ export function ParkingSpacesTable() {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
-                    <TableHead className="w-[250px] whitespace-nowrap">Gatuadress & ID</TableHead>
+                    <TableHead className="w-[250px] whitespace-nowrap">Bilplats</TableHead>
                     <TableHead className="whitespace-nowrap">Område</TableHead>
                     <TableHead className="whitespace-nowrap">Bilplatstyp</TableHead>
                     <TableHead className="whitespace-nowrap">Kötyp</TableHead>
