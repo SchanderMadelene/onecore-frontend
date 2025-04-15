@@ -36,7 +36,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
       
       <div className="flex h-[calc(100vh-3.5rem)] mt-14 relative">
         {/* Overlay for mobile */}
-        {isSidebarOpen && features.showPropertyTree && (
+        {isSidebarOpen && features.showNavigation && (
           <div 
             className="fixed inset-0 bg-black/20 z-40 lg:hidden"
             onClick={() => setIsSidebarOpen(false)}
@@ -44,7 +44,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
         )}
 
         {/* Sidebar */}
-        {features.showPropertyTree && (
+        {features.showNavigation && (
           <aside
             className={`
               w-[350px] lg:w-[320px] 
@@ -80,3 +80,4 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
     </div>
   );
 }
+

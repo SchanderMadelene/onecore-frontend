@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface FeatureToggles {
-  showPropertyTree: boolean;
+  showNavigation: boolean;
   showRentals: boolean;
   showDesignSystem: boolean;
 }
@@ -13,7 +13,7 @@ interface FeatureTogglesContextType {
 }
 
 const DEFAULT_FEATURES: FeatureToggles = {
-  showPropertyTree: false,
+  showNavigation: false,
   showRentals: false,
   showDesignSystem: false,
 };
@@ -23,7 +23,18 @@ const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefine
 export function FeatureTogglesProvider({ children }: { children: React.ReactNode }) {
   const [features, setFeatures] = useState<FeatureToggles>(() => {
     const savedFeatures = localStorage.getItem('featureToggles');
-    return savedFeatures ? JSON.parse(savedFeatures) : DEFAULT_FEATURES;
+    // Map old feature key to new key if exists
+    if (savedFeatures) {
+      const parsedFeatures = JSON.parse(savedFeatures);
+      if ('showPropertyTree' in parsedFeatures) {
+        return {
+          showNavigation: parsedFeatures.showPropertyTree,
+          showRentals: parsedFeatures.showRentals || false,
+          showDesignSystem: parsedFeatures.showDesignSystem || false
+        };
+      }
+    }
+    return DEFAULT_FEATURES;
   });
 
   useEffect(() => {
@@ -34,14 +45,14 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
     setFeatures(prev => {
       const newFeatures = { ...prev };
       
-      if (feature === 'showPropertyTree' && !prev.showPropertyTree) {
-        newFeatures.showPropertyTree = true;
-      } else if (feature === 'showPropertyTree' && prev.showPropertyTree) {
-        newFeatures.showPropertyTree = false;
+      if (feature === 'showNavigation' && !prev.showNavigation) {
+        newFeatures.showNavigation = true;
+      } else if (feature === 'showNavigation' && prev.showNavigation) {
+        newFeatures.showNavigation = false;
         newFeatures.showRentals = false;
         newFeatures.showDesignSystem = false;
       } else if (feature === 'showRentals' || feature === 'showDesignSystem') {
-        if (prev.showPropertyTree) {
+        if (prev.showNavigation) {
           newFeatures[feature] = !prev[feature];
         }
       }
@@ -64,3 +75,4 @@ export function useFeatureToggles() {
   }
   return context;
 }
+

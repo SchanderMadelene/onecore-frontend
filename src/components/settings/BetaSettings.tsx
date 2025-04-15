@@ -20,13 +20,13 @@ export function BetaSettings() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label htmlFor="property-tree">Fastighetsträd</Label>
-              <p className="text-sm text-muted-foreground">Visa hierarkisk vy av fastigheter</p>
+              <Label htmlFor="navigation">Navigation</Label>
+              <p className="text-sm text-muted-foreground">Visa hierarkisk navigeringsmeny</p>
             </div>
             <Switch 
-              id="property-tree"
-              checked={features.showPropertyTree}
-              onCheckedChange={() => handleFeatureToggle('showPropertyTree')}
+              id="navigation"
+              checked={features.showNavigation}
+              onCheckedChange={() => handleFeatureToggle('showNavigation')}
             />
           </div>
           
@@ -39,7 +39,7 @@ export function BetaSettings() {
               <Switch 
                 id="rentals"
                 checked={features.showRentals}
-                disabled={!features.showPropertyTree}
+                disabled={!features.showNavigation}
                 onCheckedChange={() => handleFeatureToggle('showRentals')}
               />
             </div>
@@ -52,7 +52,7 @@ export function BetaSettings() {
               <Switch 
                 id="design-system"
                 checked={features.showDesignSystem}
-                disabled={!features.showPropertyTree}
+                disabled={!features.showNavigation}
                 onCheckedChange={() => handleFeatureToggle('showDesignSystem')}
               />
             </div>
@@ -62,3 +62,4 @@ export function BetaSettings() {
     </Card>
   );
 }
+
