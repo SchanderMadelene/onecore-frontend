@@ -2,12 +2,12 @@
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, User, Shield, Languages, Moon } from "lucide-react";
+import { Bell, User, Shield, Moon, Beaker } from "lucide-react";
 import { ProfileSettings } from "@/components/settings/ProfileSettings";
 import { NotificationSettings } from "@/components/settings/NotificationSettings";
 import { PrivacySettings } from "@/components/settings/PrivacySettings";
 import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
+import { BetaSettings } from "@/components/settings/BetaSettings";
 
 const SettingsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -18,7 +18,7 @@ const SettingsPage = () => {
         <h1 className="text-3xl font-bold mb-6">Inställningar</h1>
         
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid grid-cols-4 mb-6">
+          <TabsList className="grid grid-cols-5 mb-6">
             <TabsTrigger value="profile" className="flex items-center gap-2">
               <User size={18} />
               <span>Profil</span>
@@ -34,6 +34,10 @@ const SettingsPage = () => {
             <TabsTrigger value="appearance" className="flex items-center gap-2">
               <Moon size={18} />
               <span>Utseende</span>
+            </TabsTrigger>
+            <TabsTrigger value="beta" className="flex items-center gap-2">
+              <Beaker size={18} />
+              <span>Beta</span>
             </TabsTrigger>
           </TabsList>
           
@@ -51,6 +55,10 @@ const SettingsPage = () => {
           
           <TabsContent value="appearance">
             <AppearanceSettings />
+          </TabsContent>
+
+          <TabsContent value="beta">
+            <BetaSettings />
           </TabsContent>
         </Tabs>
       </div>
