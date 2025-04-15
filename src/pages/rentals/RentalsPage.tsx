@@ -1,9 +1,9 @@
-
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Car, Home, Archive } from "lucide-react";
+import { ParkingSpacesTable } from "@/components/rentals/ParkingSpacesTable";
 
 const RentalsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,7 +13,7 @@ const RentalsPage = () => {
       <div className="w-full">
         <h1 className="text-3xl font-bold mb-6">Uthyrning</h1>
         
-        <Tabs defaultValue="bostad" className="w-full">
+        <Tabs defaultValue="bilplats" className="w-full">
           <TabsList className="grid grid-cols-3 mb-6">
             <TabsTrigger value="bostad" className="flex items-center gap-2">
               <Home size={18} />
@@ -28,6 +28,10 @@ const RentalsPage = () => {
               <span>Förråd</span>
             </TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="bilplats">
+            <ParkingSpacesTable />
+          </TabsContent>
           
           <TabsContent value="bostad">
             <Card>
@@ -46,29 +50,6 @@ const RentalsPage = () => {
                   <div className="bg-muted p-4 rounded-md">
                     <h3 className="font-medium mb-2">Lediga bostäder</h3>
                     <div className="text-2xl font-bold">12</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="bilplats">
-            <Card>
-              <CardHeader>
-                <CardTitle>Bilplatsuthyrning</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Översikt av parkeringsuthyrningar och lediga platser.
-                </p>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-muted p-4 rounded-md">
-                    <h3 className="font-medium mb-2">Aktiva parkeringskontrakt</h3>
-                    <div className="text-2xl font-bold">142</div>
-                  </div>
-                  <div className="bg-muted p-4 rounded-md">
-                    <h3 className="font-medium mb-2">Lediga parkeringsplatser</h3>
-                    <div className="text-2xl font-bold">28</div>
                   </div>
                 </div>
               </CardContent>
