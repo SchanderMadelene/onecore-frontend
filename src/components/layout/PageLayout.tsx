@@ -4,6 +4,7 @@ import { TreeView } from "@/components/TreeView";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useFeatureToggles } from "@/hooks/useFeatureToggles";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ interface PageLayoutProps {
 export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLayoutProps) => {
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { features } = useFeatureToggles();
   
   // Auto-collapse sidebar on detail pages for desktop
   useEffect(() => {
@@ -34,7 +36,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
       
       <div className="flex h-[calc(100vh-3.5rem)] mt-14 relative">
         {/* Overlay for mobile */}
-        {isSidebarOpen && (
+        {isSidebarOpen && features.showPropertyTree && (
           <div 
             className="fixed inset-0 bg-black/20 z-40 lg:hidden"
             onClick={() => setIsSidebarOpen(false)}
@@ -42,31 +44,33 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
         )}
 
         {/* Sidebar */}
-        <aside
-          className={`
-            w-[350px] lg:w-[320px] 
-            bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 
-            fixed lg:static 
-            left-0 top-14 
-            h-[calc(100vh-3.5rem)] 
-            transition-transform duration-300 ease-in-out
-            z-50 lg:z-0
-            border-r
-            ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-          `}
-        >
-          <TreeView onNavigate={() => isMobile && setIsSidebarOpen(false)} />
-        </aside>
+        {features.showPropertyTree && (
+          <aside
+            className={`
+              w-[350px] lg:w-[320px] 
+              bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 
+              fixed lg:static 
+              left-0 top-14 
+              h-[calc(100vh-3.5rem)] 
+              transition-transform duration-300 ease-in-out
+              z-50 lg:z-0
+              border-r
+              ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+            `}
+          >
+            <TreeView onNavigate={() => isMobile && setIsSidebarOpen(false)} />
+          </aside>
+        )}
 
         {/* Main content - fills the entire container */}
         <main
-          className="
+          className={`
             flex-1 
             p-4 sm:p-6 
             transition-all duration-300 
             overflow-y-auto
             w-full
-          "
+          `}
         >
           <div className="w-full">
             {children}
