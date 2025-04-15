@@ -1,4 +1,3 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,9 +43,9 @@ const demoData: ParkingSpace[] = [
 
 export function ParkingSpacesTable() {
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-8">
       <Tabs defaultValue="publicerade" className="w-full">
-        <TabsList className="grid grid-cols-5 mb-6">
+        <TabsList className="grid grid-cols-5 mb-8">
           <TabsTrigger value="publicerade" className="flex items-center gap-2">
             <CircleParking className="h-4 w-4" />
             <span>Publicerade</span>
