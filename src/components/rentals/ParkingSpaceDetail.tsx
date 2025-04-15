@@ -1,4 +1,5 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -40,9 +41,11 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
         <div className="flex flex-col h-full">
           <div className="p-6 border-b bg-secondary">
             <div className="flex items-center gap-2 mb-4">
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
+              <SheetClose asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </SheetClose>
               <h2 className="text-lg font-semibold text-muted-foreground">Bilplatser</h2>
             </div>
             <SheetHeader>
