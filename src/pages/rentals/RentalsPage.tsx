@@ -2,6 +2,8 @@
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Car, Home, Archive } from "lucide-react";
 
 const RentalsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -11,16 +13,91 @@ const RentalsPage = () => {
       <div className="w-full">
         <h1 className="text-3xl font-bold mb-6">Uthyrning</h1>
         
-        <Card>
-          <CardHeader>
-            <CardTitle>Uthyrningsöversikt</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Här kommer uthyrningsinformation att visas.
-            </p>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="bostad" className="w-full">
+          <TabsList className="grid grid-cols-3 mb-6">
+            <TabsTrigger value="bostad" className="flex items-center gap-2">
+              <Home size={18} />
+              <span>Bostad</span>
+            </TabsTrigger>
+            <TabsTrigger value="bilplats" className="flex items-center gap-2">
+              <Car size={18} />
+              <span>Bilplats</span>
+            </TabsTrigger>
+            <TabsTrigger value="forrad" className="flex items-center gap-2">
+              <Archive size={18} />
+              <span>Förråd</span>
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="bostad">
+            <Card>
+              <CardHeader>
+                <CardTitle>Bostadsuthyrning</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Översikt av bostadsuthyrningar och lediga lägenheter.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-muted p-4 rounded-md">
+                    <h3 className="font-medium mb-2">Aktiva hyreskontrakt</h3>
+                    <div className="text-2xl font-bold">247</div>
+                  </div>
+                  <div className="bg-muted p-4 rounded-md">
+                    <h3 className="font-medium mb-2">Lediga bostäder</h3>
+                    <div className="text-2xl font-bold">12</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="bilplats">
+            <Card>
+              <CardHeader>
+                <CardTitle>Bilplatsuthyrning</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Översikt av parkeringsuthyrningar och lediga platser.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-muted p-4 rounded-md">
+                    <h3 className="font-medium mb-2">Aktiva parkeringskontrakt</h3>
+                    <div className="text-2xl font-bold">142</div>
+                  </div>
+                  <div className="bg-muted p-4 rounded-md">
+                    <h3 className="font-medium mb-2">Lediga parkeringsplatser</h3>
+                    <div className="text-2xl font-bold">28</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="forrad">
+            <Card>
+              <CardHeader>
+                <CardTitle>Förrådsuthyrning</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Översikt av förrådsuthyrningar och lediga förråd.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-muted p-4 rounded-md">
+                    <h3 className="font-medium mb-2">Aktiva förrådskontrakt</h3>
+                    <div className="text-2xl font-bold">89</div>
+                  </div>
+                  <div className="bg-muted p-4 rounded-md">
+                    <h3 className="font-medium mb-2">Lediga förråd</h3>
+                    <div className="text-2xl font-bold">15</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </PageLayout>
   );
