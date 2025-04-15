@@ -1,6 +1,6 @@
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ChevronRight, ArrowLeft } from "lucide-react";
+import { ChevronRight, ArrowLeft, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -54,6 +54,20 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
           <div className="flex-1 overflow-hidden">
             <ScrollArea className="h-full">
               <div className="p-6 space-y-8">
+                <section>
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <ImageIcon className="h-5 w-5" />
+                    Översiktskarta
+                  </h3>
+                  <div className="border rounded-lg overflow-hidden">
+                    <img
+                      src="/lovable-uploads/f737d3ef-60f9-4e0f-a979-12d80d6f4efe.png"
+                      alt="Översiktskarta för bilplats"
+                      className="w-full h-auto object-cover"
+                    />
+                  </div>
+                </section>
+
                 <section>
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     Objektsinformation
