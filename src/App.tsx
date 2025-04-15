@@ -15,6 +15,7 @@ import DesignSystemPage from "./pages/design-system/DesignSystemPage";
 import NotFound from "./pages/NotFound";
 import AllPropertiesPage from "./pages/properties/AllPropertiesPage";
 import RentalsPage from "./pages/rentals/RentalsPage";
+import SettingsPage from "./pages/settings/SettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/tenants/detail/:id" element={<TenantDetailPage />} />
             <Route path="/rentals" element={<RentalsPage />} />
             <Route path="/design-system" element={<DesignSystemPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
