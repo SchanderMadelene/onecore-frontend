@@ -1,4 +1,3 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -84,15 +83,15 @@ export function ParkingSpacesTable() {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
-                    <TableHead className="w-[250px]">Bilplats</TableHead>
-                    <TableHead>Område</TableHead>
-                    <TableHead>Bilplatstyp</TableHead>
-                    <TableHead>Kötyp</TableHead>
-                    <TableHead>Hyra</TableHead>
-                    <TableHead>Sökande</TableHead>
-                    <TableHead>Publicerad T.O.M</TableHead>
-                    <TableHead>Publicerad Fr.O.M</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead className="w-[250px] whitespace-nowrap">Gatuadress & ID</TableHead>
+                    <TableHead className="whitespace-nowrap">Geografiskt område</TableHead>
+                    <TableHead className="whitespace-nowrap">Typ av parkeringsplats</TableHead>
+                    <TableHead className="whitespace-nowrap">Kötilldelningstyp</TableHead>
+                    <TableHead className="whitespace-nowrap">Månadshyra</TableHead>
+                    <TableHead className="whitespace-nowrap">Antal sökande</TableHead>
+                    <TableHead className="whitespace-nowrap">Publicerad till</TableHead>
+                    <TableHead className="whitespace-nowrap">Publicerad från</TableHead>
+                    <TableHead className="text-right whitespace-nowrap">Åtgärder</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
