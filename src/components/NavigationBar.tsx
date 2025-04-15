@@ -2,6 +2,9 @@
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { SearchBar } from "./SearchBar";
+import { Link } from "react-router-dom";
+import { Settings } from "lucide-react";
+
 export function NavigationBar({
   onMenuClick
 }: {
@@ -25,6 +28,12 @@ export function NavigationBar({
           <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => setShowMobileSearch(!showMobileSearch)}>
             <span className="sr-only">Toggle Search</span>
           </Button>
+          <Link to="/settings">
+            <Button variant="ghost" size="icon" className="ml-2">
+              <Settings className="h-5 w-5" />
+              <span className="sr-only">Inställningar</span>
+            </Button>
+          </Link>
         </div>
       </div>
 
