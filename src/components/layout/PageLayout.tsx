@@ -4,7 +4,7 @@ import { TreeView } from "@/components/TreeView";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useFeatureToggles } from "@/hooks/useFeatureToggles";
+import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 interface PageLayoutProps {
   children: React.ReactNode;

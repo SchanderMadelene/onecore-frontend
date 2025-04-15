@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Beaker } from "lucide-react";
-import { useFeatureToggles } from "@/hooks/useFeatureToggles";
+import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 export function BetaSettings() {
   const { features, handleFeatureToggle } = useFeatureToggles();
