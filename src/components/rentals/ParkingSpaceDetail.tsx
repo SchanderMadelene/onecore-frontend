@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Badge } from "@/components/ui/badge";
 
 interface ParkingSpaceDetailProps {
   space: {
@@ -45,8 +46,11 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
               <h2 className="text-lg font-semibold text-muted-foreground">Bilplatser</h2>
             </div>
             <SheetHeader>
-              <SheetTitle className="text-2xl tracking-tight">
+              <SheetTitle className="text-2xl tracking-tight flex items-center gap-2">
                 {space.address}
+                <Badge variant="outline" className="bg-primary/10 text-primary font-normal">
+                  Publicerad
+                </Badge>
               </SheetTitle>
             </SheetHeader>
           </div>
