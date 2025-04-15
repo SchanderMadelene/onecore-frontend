@@ -1,4 +1,3 @@
-
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -35,7 +34,7 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
           <ChevronRight className="h-4 w-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:w-[80vw] p-0">
+      <SheetContent side="right" className="w-full sm:max-w-[90vw] p-0">
         <div className="flex flex-col h-full">
           <div className="p-6 border-b">
             <div className="flex items-center gap-2 mb-6">
