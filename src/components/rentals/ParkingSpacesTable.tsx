@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PlusCircle, Search, Trash2, ChevronRight, CircleParking, Car } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 interface ParkingSpace {
   id: string;
   address: string;
@@ -14,6 +15,7 @@ interface ParkingSpace {
   publishedFrom: string;
   publishedTo: string;
 }
+
 const demoData: ParkingSpace[] = [{
   id: "123-123-123-0201",
   address: "Bellmansgatan 1",
@@ -34,7 +36,48 @@ const demoData: ParkingSpace[] = [{
   seekers: 1,
   publishedFrom: "2024-01-01",
   publishedTo: "2024-01-01"
+}, {
+  id: "123-123-123-0203",
+  address: "Kungsgatan 15",
+  area: "Centrum",
+  type: "Carport",
+  queueType: "Poängfri",
+  rent: "450kr/mån",
+  seekers: 3,
+  publishedFrom: "2024-01-01",
+  publishedTo: "2024-02-01"
+}, {
+  id: "123-123-123-0204",
+  address: "Stigbergsgatan 7",
+  area: "Stigberget",
+  type: "Utomhusplats",
+  queueType: "Poängfri",
+  rent: "350kr/mån",
+  seekers: 2,
+  publishedFrom: "2024-01-15",
+  publishedTo: "2024-02-15"
+}, {
+  id: "123-123-123-0205",
+  address: "Vasagatan 22",
+  area: "Vasastaden",
+  type: "Garage m el",
+  queueType: "Poängfri",
+  rent: "595kr/mån",
+  seekers: 5,
+  publishedFrom: "2024-01-10",
+  publishedTo: "2024-02-10"
+}, {
+  id: "123-123-123-0206",
+  address: "Östra Hamngatan 11",
+  area: "Nordstan",
+  type: "Garage m el",
+  queueType: "Poängfri",
+  rent: "650kr/mån",
+  seekers: 4,
+  publishedFrom: "2024-01-05",
+  publishedTo: "2024-02-05"
 }];
+
 export function ParkingSpacesTable() {
   return <div className="w-full space-y-8">
       <Tabs defaultValue="publicerade" className="w-full">
