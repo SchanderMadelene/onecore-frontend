@@ -62,7 +62,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
           </aside>
         )}
 
-        {/* Main content - fills the entire container */}
+        {/* Main content */}
         <main
           className={`
             flex-1 
