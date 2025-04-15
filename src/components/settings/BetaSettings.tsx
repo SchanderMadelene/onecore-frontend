@@ -1,23 +1,11 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import { Beaker } from "lucide-react";
+import { useFeatureToggles } from "@/hooks/useFeatureToggles";
 
 export function BetaSettings() {
-  const [features, setFeatures] = useState({
-    showPropertyTree: false,
-    showRentals: false,
-    showDesignSystem: false,
-  });
-
-  const handleFeatureToggle = (feature: keyof typeof features) => {
-    setFeatures(prev => ({
-      ...prev,
-      [feature]: !prev[feature]
-    }));
-  };
+  const { features, handleFeatureToggle } = useFeatureToggles();
 
   return (
     <Card>
