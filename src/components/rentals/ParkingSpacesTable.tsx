@@ -1,6 +1,8 @@
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Car, PlusCircle, Search, Trash2, ChevronRight, CircleParking } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ParkingSpace {
@@ -42,95 +44,136 @@ const demoData: ParkingSpace[] = [
 
 export function ParkingSpacesTable() {
   return (
-    <div className="w-full">
+    <div className="w-full space-y-6">
       <Tabs defaultValue="publicerade" className="w-full">
         <TabsList className="grid grid-cols-5 mb-6">
-          <TabsTrigger value="publicerade">Publicerade</TabsTrigger>
-          <TabsTrigger value="klaraForErbjudande">Klara för erbjudande</TabsTrigger>
-          <TabsTrigger value="erbjudna">Erbjudna</TabsTrigger>
-          <TabsTrigger value="historik">Historik</TabsTrigger>
-          <TabsTrigger value="behovAvPublicering">Behov av publicering</TabsTrigger>
+          <TabsTrigger value="publicerade" className="flex items-center gap-2">
+            <CircleParking className="h-4 w-4" />
+            <span>Publicerade</span>
+          </TabsTrigger>
+          <TabsTrigger value="klaraForErbjudande" className="flex items-center gap-2">
+            <Car className="h-4 w-4" />
+            <span>Klara för erbjudande</span>
+          </TabsTrigger>
+          <TabsTrigger value="erbjudna" className="flex items-center gap-2">
+            <Car className="h-4 w-4" />
+            <span>Erbjudna</span>
+          </TabsTrigger>
+          <TabsTrigger value="historik" className="flex items-center gap-2">
+            <Car className="h-4 w-4" />
+            <span>Historik</span>
+          </TabsTrigger>
+          <TabsTrigger value="behovAvPublicering" className="flex items-center gap-2">
+            <Car className="h-4 w-4" />
+            <span>Behov av publicering</span>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="publicerade">
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex gap-2">
-              <Button variant="outline">Publicera bilplatser från Xpand</Button>
-              <input
-                type="text"
-                placeholder="Sök"
-                className="px-3 py-2 border rounded-md"
-              />
+          <div className="flex flex-col space-y-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
+              <Button variant="default" className="flex items-center gap-2">
+                <PlusCircle className="h-4 w-4" />
+                Publicera bilplatser från Xpand
+              </Button>
+              <div className="relative">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Sök bilplats..."
+                  className="pl-9 w-full sm:w-[300px]"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="border rounded-md">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Bilplats</TableHead>
-                  <TableHead>Område</TableHead>
-                  <TableHead>Bilplatstyp</TableHead>
-                  <TableHead>Kötyp</TableHead>
-                  <TableHead>Hyra</TableHead>
-                  <TableHead>Sökande</TableHead>
-                  <TableHead>Publicerad T.O.M</TableHead>
-                  <TableHead>Publicerad Fr.O.M</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {demoData.map((space) => (
-                  <TableRow key={space.id}>
-                    <TableCell className="font-medium">
-                      {space.address}
-                      <br />
-                      <span className="text-sm text-muted-foreground">{space.id}</span>
-                    </TableCell>
-                    <TableCell>{space.area}</TableCell>
-                    <TableCell>{space.type}</TableCell>
-                    <TableCell>{space.queueType}</TableCell>
-                    <TableCell>{space.rent}</TableCell>
-                    <TableCell>{space.seekers}</TableCell>
-                    <TableCell>{space.publishedTo}</TableCell>
-                    <TableCell>{space.publishedFrom}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="destructive" size="sm">Ta bort annons</Button>
-                        <Button size="sm">Ny anmälan</Button>
-                        <Button variant="ghost" size="icon">
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <div className="rounded-md border bg-card">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead className="w-[250px]">Bilplats</TableHead>
+                    <TableHead>Område</TableHead>
+                    <TableHead>Bilplatstyp</TableHead>
+                    <TableHead>Kötyp</TableHead>
+                    <TableHead>Hyra</TableHead>
+                    <TableHead>Sökande</TableHead>
+                    <TableHead>Publicerad T.O.M</TableHead>
+                    <TableHead>Publicerad Fr.O.M</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {demoData.map((space) => (
+                    <TableRow key={space.id} className="group">
+                      <TableCell>
+                        <div className="font-medium">{space.address}</div>
+                        <div className="text-sm text-muted-foreground">{space.id}</div>
+                      </TableCell>
+                      <TableCell>{space.area}</TableCell>
+                      <TableCell>{space.type}</TableCell>
+                      <TableCell>{space.queueType}</TableCell>
+                      <TableCell>
+                        <div className="font-medium">{space.rent}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{space.seekers}</div>
+                      </TableCell>
+                      <TableCell>{space.publishedTo}</TableCell>
+                      <TableCell>{space.publishedFrom}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button variant="destructive" size="sm" className="flex items-center gap-1">
+                            <Trash2 className="h-4 w-4" />
+                            <span>Ta bort</span>
+                          </Button>
+                          <Button size="sm" className="flex items-center gap-1">
+                            <PlusCircle className="h-4 w-4" />
+                            <span>Ny anmälan</span>
+                          </Button>
+                          <Button variant="ghost" size="icon">
+                            <ChevronRight className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </div>
         </TabsContent>
 
         <TabsContent value="klaraForErbjudande">
-          <div className="p-4 text-center text-muted-foreground">
-            Inga bilplatser klara för erbjudande
+          <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
+            <div className="text-center">
+              <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
+              <p>Inga bilplatser klara för erbjudande</p>
+            </div>
           </div>
         </TabsContent>
 
         <TabsContent value="erbjudna">
-          <div className="p-4 text-center text-muted-foreground">
-            Inga erbjudna bilplatser
+          <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
+            <div className="text-center">
+              <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
+              <p>Inga erbjudna bilplatser</p>
+            </div>
           </div>
         </TabsContent>
 
         <TabsContent value="historik">
-          <div className="p-4 text-center text-muted-foreground">
-            Ingen historik tillgänglig
+          <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
+            <div className="text-center">
+              <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
+              <p>Ingen historik tillgänglig</p>
+            </div>
           </div>
         </TabsContent>
 
         <TabsContent value="behovAvPublicering">
-          <div className="p-4 text-center text-muted-foreground">
-            Inga bilplatser behöver publiceras
+          <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
+            <div className="text-center">
+              <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
+              <p>Inga bilplatser behöver publiceras</p>
+            </div>
           </div>
         </TabsContent>
       </Tabs>
