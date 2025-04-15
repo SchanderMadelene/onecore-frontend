@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Car, PlusCircle, Search, Trash2, ChevronRight, CircleParking } from "lucide-react";
+import { PlusCircle, Search, Trash2, ChevronRight, CircleParking } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ParkingSpace {
@@ -46,25 +46,20 @@ export function ParkingSpacesTable() {
     <div className="w-full space-y-8">
       <Tabs defaultValue="publicerade" className="w-full">
         <TabsList className="grid grid-cols-5 mb-8">
-          <TabsTrigger value="publicerade" className="flex items-center gap-2">
-            <CircleParking className="h-4 w-4" />
-            <span>Publicerade</span>
+          <TabsTrigger value="publicerade">
+            Publicerade
           </TabsTrigger>
-          <TabsTrigger value="klaraForErbjudande" className="flex items-center gap-2">
-            <Car className="h-4 w-4" />
-            <span>Klara för erbjudande</span>
+          <TabsTrigger value="klaraForErbjudande">
+            Klara för erbjudande
           </TabsTrigger>
-          <TabsTrigger value="erbjudna" className="flex items-center gap-2">
-            <Car className="h-4 w-4" />
-            <span>Erbjudna</span>
+          <TabsTrigger value="erbjudna">
+            Erbjudna
           </TabsTrigger>
-          <TabsTrigger value="historik" className="flex items-center gap-2">
-            <Car className="h-4 w-4" />
-            <span>Historik</span>
+          <TabsTrigger value="historik">
+            Historik
           </TabsTrigger>
-          <TabsTrigger value="behovAvPublicering" className="flex items-center gap-2">
-            <Car className="h-4 w-4" />
-            <span>Behov av publicering</span>
+          <TabsTrigger value="behovAvPublicering">
+            Behov av publicering
           </TabsTrigger>
         </TabsList>
 
