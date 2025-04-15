@@ -1,5 +1,5 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ChevronRight, ArrowLeft, Image as ImageIcon, FileSpreadsheet } from "lucide-react";
+import { ChevronRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -55,8 +55,7 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
             <ScrollArea className="h-full">
               <div className="p-6 space-y-8">
                 <section>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <FileSpreadsheet className="h-5 w-5" />
+                  <h3 className="text-lg font-semibold mb-4">
                     Intresseanmälningar
                   </h3>
                   <div className="border rounded-lg overflow-hidden">
@@ -140,8 +139,7 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
                   </section>
 
                   <section>
-                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                      <ImageIcon className="h-5 w-5" />
+                    <h3 className="text-lg font-semibold mb-4">
                       Översiktskarta
                     </h3>
                     <div className="border rounded-lg overflow-hidden">
