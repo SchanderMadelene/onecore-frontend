@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PlusCircle, Search, Trash2, ChevronRight, CircleParking, Car } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 interface ParkingSpace {
   id: string;
   address: string;
@@ -15,35 +14,29 @@ interface ParkingSpace {
   publishedFrom: string;
   publishedTo: string;
 }
-
-const demoData: ParkingSpace[] = [
-  {
-    id: "123-123-123-0201",
-    address: "Bellmansgatan 1",
-    area: "Centrum (Områdesbegränsning)",
-    type: "Garage m el",
-    queueType: "Poängfri",
-    rent: "540kr/mån",
-    seekers: 0,
-    publishedFrom: "2024-01-01",
-    publishedTo: "2024-01-01"
-  },
-  {
-    id: "123-123-123-0202",
-    address: "Bellmansgatan 2",
-    area: "Gryta",
-    type: "Garage m el",
-    queueType: "Poängfri",
-    rent: "540kr/mån",
-    seekers: 1,
-    publishedFrom: "2024-01-01",
-    publishedTo: "2024-01-01"
-  },
-];
-
+const demoData: ParkingSpace[] = [{
+  id: "123-123-123-0201",
+  address: "Bellmansgatan 1",
+  area: "Centrum (Områdesbegränsning)",
+  type: "Garage m el",
+  queueType: "Poängfri",
+  rent: "540kr/mån",
+  seekers: 0,
+  publishedFrom: "2024-01-01",
+  publishedTo: "2024-01-01"
+}, {
+  id: "123-123-123-0202",
+  address: "Bellmansgatan 2",
+  area: "Gryta",
+  type: "Garage m el",
+  queueType: "Poängfri",
+  rent: "540kr/mån",
+  seekers: 1,
+  publishedFrom: "2024-01-01",
+  publishedTo: "2024-01-01"
+}];
 export function ParkingSpacesTable() {
-  return (
-    <div className="w-full space-y-8">
+  return <div className="w-full space-y-8">
       <Tabs defaultValue="publicerade" className="w-full">
         <TabsList className="grid grid-cols-5 mb-8">
           <TabsTrigger value="publicerade">
@@ -72,10 +65,7 @@ export function ParkingSpacesTable() {
               </Button>
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Sök bilplats..."
-                  className="pl-9 w-full sm:w-[300px]"
-                />
+                <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
               </div>
             </div>
 
@@ -84,19 +74,18 @@ export function ParkingSpacesTable() {
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
                     <TableHead className="w-[250px] whitespace-nowrap">Gatuadress & ID</TableHead>
-                    <TableHead className="whitespace-nowrap">Geografiskt område</TableHead>
-                    <TableHead className="whitespace-nowrap">Typ av parkeringsplats</TableHead>
-                    <TableHead className="whitespace-nowrap">Kötilldelningstyp</TableHead>
-                    <TableHead className="whitespace-nowrap">Månadshyra</TableHead>
-                    <TableHead className="whitespace-nowrap">Antal sökande</TableHead>
-                    <TableHead className="whitespace-nowrap">Publicerad till</TableHead>
-                    <TableHead className="whitespace-nowrap">Publicerad från</TableHead>
+                    <TableHead className="whitespace-nowrap">Område</TableHead>
+                    <TableHead className="whitespace-nowrap">Bilplatstyp</TableHead>
+                    <TableHead className="whitespace-nowrap">Kötyp</TableHead>
+                    <TableHead className="whitespace-nowrap">Hyra</TableHead>
+                    <TableHead className="whitespace-nowrap">Sökande</TableHead>
+                    <TableHead className="whitespace-nowrap">Publicerad t.om</TableHead>
+                    <TableHead className="whitespace-nowrap">Publicerad fr.o.m</TableHead>
                     <TableHead className="text-right whitespace-nowrap">Åtgärder</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {demoData.map((space) => (
-                    <TableRow key={space.id} className="group">
+                  {demoData.map(space => <TableRow key={space.id} className="group">
                       <TableCell>
                         <div className="font-medium">{space.address}</div>
                         <div className="text-sm text-muted-foreground">{space.id}</div>
@@ -127,8 +116,7 @@ export function ParkingSpacesTable() {
                           </Button>
                         </div>
                       </TableCell>
-                    </TableRow>
-                  ))}
+                    </TableRow>)}
                 </TableBody>
               </Table>
             </div>
@@ -171,6 +159,5 @@ export function ParkingSpacesTable() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>;
 }
