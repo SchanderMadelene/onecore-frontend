@@ -1,8 +1,9 @@
+
 import { TreeItem } from "./TreeItem";
 import { TreeViewProps } from "./types";
 import { treeData } from "./treeData";
 
-export function TreeView({ onNavigate }: TreeViewProps) {
+export function TreeView({ onNavigate, showRentals, showDesignSystem }: TreeViewProps) {
   const filteredData = treeData.filter(node => {
     // Keep non-area specific items
     if (!node.area) return true;
