@@ -5,7 +5,13 @@ import { treeData } from "./treeData";
 
 export function TreeView({ onNavigate, showRentals, showDesignSystem }: TreeViewProps) {
   const filteredData = treeData.filter(node => {
-    // Keep non-area specific items
+    // Filter out rentals node entirely if showRentals is false
+    if (node.id === "rentals") return showRentals;
+    
+    // Filter out design-system node entirely if showDesignSystem is false
+    if (node.id === "design-system") return showDesignSystem;
+    
+    // For remaining nodes, apply the area filtering logic
     if (!node.area) return true;
 
     // Show rentals area only if showRentals is true
