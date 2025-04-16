@@ -102,7 +102,7 @@ export function TenantInspections() {
           
           <TabsContent value="active">
             {activeInspection ? (
-              <div className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
                 <InspectionStart
                   rooms={mockRooms}
                   onSave={() => handleInspectionCreated()}
