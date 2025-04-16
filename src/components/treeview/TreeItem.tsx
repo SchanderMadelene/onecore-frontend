@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, MapPin, Tag } from "lucide-react";
+import { ChevronDown, ChevronRight, MapPin, Tag, Building, Users, Home, Key, Palette, FileText } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import { TreeItemProps } from "./types";
@@ -25,6 +24,25 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   const handleNodeClick = () => {
     if (!hasChildren && node.path && onNavigate) {
       onNavigate();
+    }
+  };
+
+  const renderNodeIcon = () => {
+    switch (node.id) {
+      case "properties":
+        return <Building className="h-4 w-4 text-muted-foreground" />;
+      case "buildings":
+        return <Building className="h-4 w-4 text-muted-foreground" />;
+      case "apartments":
+        return <Home className="h-4 w-4 text-muted-foreground" />;
+      case "tenants":
+        return <Users className="h-4 w-4 text-muted-foreground" />;
+      case "rentals":
+        return <Key className="h-4 w-4 text-muted-foreground" />;
+      case "design-system":
+        return <Palette className="h-4 w-4 text-muted-foreground" />;
+      default:
+        return getNodeIcon(node.icon);
     }
   };
 
@@ -67,7 +85,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             onClick={handleNodeClick}
           >
             <span className="mr-3 text-foreground flex-shrink-0">
-              {getNodeIcon(node.icon)}
+              {renderNodeIcon()}
             </span>
             <div className="flex flex-col text-foreground min-w-0">
               <div className="flex items-center w-full overflow-hidden">
@@ -87,7 +105,7 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
         ) : (
           <span className={`flex items-center text-sm text-foreground w-full ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
             <span className="mr-3 text-foreground flex-shrink-0">
-              {getNodeIcon(node.icon)}
+              {renderNodeIcon()}
             </span>
             <span className="break-words">{node.label}</span>
           </span>

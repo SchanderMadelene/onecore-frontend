@@ -7,6 +7,7 @@ import { CreateIssue } from "@/components/residence/CreateIssue";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room } from "@/types/api";
 import { mockTenant } from "@/data/tenants";
+import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 interface ResidenceContentProps {
   residenceData: Residence;
@@ -21,6 +22,8 @@ export const ResidenceContent = ({
   property, 
   district 
 }: ResidenceContentProps) => {
+  const { features } = useFeatureToggles();
+  
   return (
     <>
       <ResidenceBasicInfo
@@ -30,20 +33,25 @@ export const ResidenceContent = ({
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <TenantInformation tenant={mockTenant} />
-        <CreateIssue />
+        {features.showTenantInfo && (
+          <TenantInformation tenant={mockTenant} />
+        )}
+        {features.showApartmentIssues && (
+          <CreateIssue />
+        )}
       </div>
       
-      {roomsData && (
-        <>
-          <ResidenceInfo 
-            rooms={roomsData}
-            getOrientationText={getOrientationText}
-          />
-          <ResidenceInspection
-            rooms={roomsData}
-          />
-        </>
+      {roomsData && features.showRoomInformation && (
+        <ResidenceInfo 
+          rooms={roomsData}
+          getOrientationText={getOrientationText}
+        />
+      )}
+
+      {roomsData && features.showInspections && (
+        <ResidenceInspection
+          rooms={roomsData}
+        />
       )}
     </>
   );

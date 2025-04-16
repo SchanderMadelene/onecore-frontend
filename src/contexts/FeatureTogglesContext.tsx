@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface FeatureToggles {
@@ -7,6 +6,12 @@ interface FeatureToggles {
   showDesignSystem: boolean;
   showProperties: boolean;
   showTenants: boolean;
+  showBuildings: boolean;
+  showApartments: boolean;
+  showRoomInformation: boolean;
+  showInspections: boolean;
+  showApartmentIssues: boolean;
+  showTenantInfo: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -20,6 +25,12 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showDesignSystem: false,
   showProperties: false,
   showTenants: false,
+  showBuildings: false,
+  showApartments: false,
+  showRoomInformation: false,
+  showInspections: false,
+  showApartmentIssues: false,
+  showTenantInfo: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
@@ -30,11 +41,8 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
     if (savedFeatures) {
       const parsedFeatures = JSON.parse(savedFeatures);
       return {
-        showNavigation: parsedFeatures.showNavigation || false,
-        showRentals: parsedFeatures.showRentals || false,
-        showDesignSystem: parsedFeatures.showDesignSystem || false,
-        showProperties: parsedFeatures.showProperties || false,
-        showTenants: parsedFeatures.showTenants || false
+        ...DEFAULT_FEATURES,
+        ...parsedFeatures,
       };
     }
     return DEFAULT_FEATURES;
@@ -51,20 +59,17 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
       if (feature === 'showNavigation' && !prev.showNavigation) {
         newFeatures.showNavigation = true;
       } else if (feature === 'showNavigation' && prev.showNavigation) {
-        newFeatures.showNavigation = false;
-        newFeatures.showRentals = false;
-        newFeatures.showDesignSystem = false;
+        Object.keys(newFeatures).forEach(key => {
+          newFeatures[key as keyof FeatureToggles] = false;
+        });
+      } else if (feature === 'showProperties' && !prev.showProperties) {
+        newFeatures.showProperties = true;
+      } else if (feature === 'showProperties' && prev.showProperties) {
         newFeatures.showProperties = false;
-        newFeatures.showTenants = false;
-      } else if (
-        feature === 'showRentals' || 
-        feature === 'showDesignSystem' || 
-        feature === 'showProperties' || 
-        feature === 'showTenants'
-      ) {
-        if (prev.showNavigation) {
-          newFeatures[feature] = !prev[feature];
-        }
+        newFeatures.showBuildings = false;
+        newFeatures.showApartments = false;
+      } else {
+        newFeatures[feature] = !prev[feature];
       }
       
       return newFeatures;
