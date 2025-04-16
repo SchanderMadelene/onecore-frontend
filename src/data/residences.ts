@@ -8,6 +8,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-1001",
       name: "2 rum och kök, Odenplan",
       deleted: false,
+      size: 56,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -20,6 +21,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-1002",
       name: "3 rum och kök, Odenplan",
       deleted: false,
+      size: 72,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -32,6 +34,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-1003",
       name: "1 rum och kök, Odenplan",
       deleted: false,
+      size: 45,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
