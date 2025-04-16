@@ -6,6 +6,8 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InspectionFormDialog } from "./InspectionFormDialog";
 import { InspectionReadOnly } from "./InspectionReadOnly";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { format } from "date-fns";
 import type { Room } from "@/types/api";
 import type { Inspection } from "./types";
 
@@ -36,6 +38,45 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
     setIsViewDialogOpen(true);
   };
 
+  const renderInspectionsTable = (inspectionsData: Inspection[]) => (
+    <div className="rounded-md border bg-card">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead>Datum</TableHead>
+            <TableHead>Besiktningsman</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Antal rum</TableHead>
+            <TableHead className="text-right">Åtgärder</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {inspectionsData.map((inspection) => (
+            <TableRow key={inspection.id} className="group">
+              <TableCell>{format(new Date(inspection.date), "yyyy-MM-dd")}</TableCell>
+              <TableCell>{inspection.inspectedBy}</TableCell>
+              <TableCell>
+                {inspection.isCompleted || Object.values(inspection.rooms).every(room => room.isHandled)
+                  ? "Slutförd"
+                  : "Pågående"}
+              </TableCell>
+              <TableCell>{Object.keys(inspection.rooms).length}</TableCell>
+              <TableCell className="text-right">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => handleOpenInspection(inspection)}
+                >
+                  Visa detaljer
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+
   return (
     <Card className="w-full">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
@@ -53,13 +94,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           
           <TabsContent value="active">
             {activeInspections.length > 0 ? (
-              <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
-                {activeInspections.map((inspection) => (
-                  <div key={inspection.id} className="cursor-pointer" onClick={() => handleOpenInspection(inspection)}>
-                    <InspectionReadOnly inspection={inspection} />
-                  </div>
-                ))}
-              </div>
+              renderInspectionsTable(activeInspections)
             ) : (
               <p className="text-muted-foreground">Inga aktiva besiktningar för denna lägenhet.</p>
             )}
@@ -67,13 +102,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           
           <TabsContent value="history">
             {completedInspections.length > 0 ? (
-              <div className="space-y-4">
-                {completedInspections.map((inspection) => (
-                  <div key={inspection.id} className="cursor-pointer" onClick={() => handleOpenInspection(inspection)}>
-                    <InspectionReadOnly inspection={inspection} />
-                  </div>
-                ))}
-              </div>
+              renderInspectionsTable(completedInspections)
             ) : (
               <p className="text-muted-foreground">Ingen besiktningshistorik för denna lägenhet.</p>
             )}
@@ -81,7 +110,6 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
         </Tabs>
       </CardContent>
 
-      {/* Inspection form dialog */}
       {isDialogOpen && (
         <InspectionFormDialog
           isOpen={isDialogOpen}
@@ -106,7 +134,6 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
         />
       )}
 
-      {/* View inspection dialog */}
       {selectedInspection && (
         <InspectionReadOnly
           inspection={selectedInspection}
