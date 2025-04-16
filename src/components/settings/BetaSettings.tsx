@@ -1,8 +1,7 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 export function BetaSettings() {
@@ -95,6 +94,38 @@ export function BetaSettings() {
                         checked={features.showInspections} 
                         disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
                         onCheckedChange={() => handleFeatureToggle('showInspections')} 
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="h-4 w-4" />
+                          <Label htmlFor="apartment-issues">Felanmälan</Label>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Visa felanmälansfunktioner på lägenhetskortet</p>
+                      </div>
+                      <Switch 
+                        id="apartment-issues" 
+                        checked={features.showApartmentIssues} 
+                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
+                        onCheckedChange={() => handleFeatureToggle('showApartmentIssues')} 
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <Users className="h-4 w-4" />
+                          <Label htmlFor="tenant-info">Hyresgästinformation</Label>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Visa hyresgästinformation på lägenhetskortet</p>
+                      </div>
+                      <Switch 
+                        id="tenant-info" 
+                        checked={features.showTenantInfo} 
+                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
+                        onCheckedChange={() => handleFeatureToggle('showTenantInfo')} 
                       />
                     </div>
                   </div>

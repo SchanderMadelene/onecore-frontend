@@ -33,8 +33,12 @@ export const ResidenceContent = ({
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <TenantInformation tenant={mockTenant} />
-        <CreateIssue />
+        {features.showTenantInfo && (
+          <TenantInformation tenant={mockTenant} />
+        )}
+        {features.showApartmentIssues && (
+          <CreateIssue />
+        )}
       </div>
       
       {roomsData && features.showRoomInformation && (
