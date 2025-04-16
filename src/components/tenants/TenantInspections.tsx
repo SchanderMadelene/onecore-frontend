@@ -18,11 +18,62 @@ export function TenantInspections() {
   const [inspectionHistory] = useState<Inspection[]>(loadInspections);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Mock rooms data for demonstration - in real app this would come from API
+  // Mock rooms data for demonstration - structured according to the Room interface
   const mockRooms: Room[] = [
-    { id: "1", name: "Kök", type: "kitchen", area: 12 },
-    { id: "2", name: "Vardagsrum", type: "living", area: 20 },
-    { id: "3", name: "Sovrum", type: "bedroom", area: 14 }
+    { 
+      id: "1", 
+      code: "KOK",
+      name: "Kök",
+      usage: { shared: false, allowPeriodicWorks: true, spaceType: 1 },
+      features: { hasToilet: false, isHeated: true, hasThermostatValve: true, orientation: 1 },
+      dates: {
+        installation: null,
+        from: "2023-01-01T00:00:00Z",
+        to: "2025-12-31T23:59:59Z",
+        availableFrom: null,
+        availableTo: null
+      },
+      sortingOrder: 1,
+      deleted: false,
+      timestamp: "2023-01-01T00:00:00Z",
+      roomType: null
+    },
+    { 
+      id: "2", 
+      code: "VARDAGSRUM",
+      name: "Vardagsrum",
+      usage: { shared: false, allowPeriodicWorks: true, spaceType: 2 },
+      features: { hasToilet: false, isHeated: true, hasThermostatValve: true, orientation: 2 },
+      dates: {
+        installation: null,
+        from: "2023-01-01T00:00:00Z",
+        to: "2025-12-31T23:59:59Z",
+        availableFrom: null,
+        availableTo: null
+      },
+      sortingOrder: 2,
+      deleted: false,
+      timestamp: "2023-01-01T00:00:00Z",
+      roomType: null
+    },
+    { 
+      id: "3", 
+      code: "SOVRUM",
+      name: "Sovrum",
+      usage: { shared: false, allowPeriodicWorks: true, spaceType: 3 },
+      features: { hasToilet: false, isHeated: true, hasThermostatValve: true, orientation: 3 },
+      dates: {
+        installation: null,
+        from: "2023-01-01T00:00:00Z",
+        to: "2025-12-31T23:59:59Z",
+        availableFrom: null,
+        availableTo: null
+      },
+      sortingOrder: 3,
+      deleted: false,
+      timestamp: "2023-01-01T00:00:00Z",
+      roomType: null
+    }
   ];
 
   const handleInspectionCreated = () => {
