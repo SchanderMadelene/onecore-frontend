@@ -20,9 +20,10 @@ interface InspectionFormDialogProps {
   onClose: () => void;
   onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
   rooms: Room[];
+  buttonSize?: string; // Add this property
 }
 
-export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms }: InspectionFormDialogProps) {
+export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms, buttonSize }: InspectionFormDialogProps) {
   const isMobile = useIsMobile();
   
   const {
