@@ -1,6 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { FilePlus } from "lucide-react";
 import { useState } from "react";
 import { InspectionHistory } from "../residence/inspection/InspectionHistory";
 import { InspectionStart } from "../residence/inspection/InspectionStart";
@@ -84,13 +86,17 @@ export function TenantInspections() {
 
   return (
     <Card className="w-full">
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <CardTitle>Besiktningar</CardTitle>
+        <Button size="sm" onClick={() => setRefreshKey(prev => prev + 1)}>
+          <FilePlus className="mr-2 h-4 w-4" />
+          Skapa besiktning
+        </Button>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="active" className="w-full" key={refreshKey}>
           <TabsList className="mb-4">
-            <TabsTrigger value="active">Pågående besiktningar</TabsTrigger>
+            <TabsTrigger value="active">Aktiva besiktningar</TabsTrigger>
             <TabsTrigger value="history">Besiktningshistorik</TabsTrigger>
           </TabsList>
           
@@ -104,7 +110,7 @@ export function TenantInspections() {
                 />
               </div>
             ) : (
-              <p className="text-muted-foreground">Inga pågående besiktningar.</p>
+              <p className="text-muted-foreground">Inga aktiva besiktningar.</p>
             )}
           </TabsContent>
           
