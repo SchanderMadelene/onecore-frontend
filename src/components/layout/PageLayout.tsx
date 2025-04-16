@@ -1,4 +1,3 @@
-
 import { NavigationBar } from "@/components/NavigationBar";
 import { TreeView } from "@/components/TreeView";
 import { useEffect } from "react";
@@ -34,8 +33,6 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
       <NavigationBar 
         onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        showRentals={features.showRentals}
-        showDesignSystem={features.showDesignSystem}
       />
       
       <div className="flex h-[calc(100vh-3.5rem)] mt-14 relative">
