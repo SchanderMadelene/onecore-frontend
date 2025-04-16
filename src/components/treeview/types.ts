@@ -18,4 +18,8 @@ export interface TreeItemProps {
 
 export interface TreeViewProps {
   onNavigate?: () => void;
+  showRentals: boolean;
+  showDesignSystem: boolean;
+  showProperties: boolean;
+  showTenants: boolean;
 }
