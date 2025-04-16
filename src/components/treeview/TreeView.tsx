@@ -9,10 +9,10 @@ export function TreeView({ onNavigate, showRentals, showDesignSystem }: TreeView
     if (!node.area) return true;
 
     // Show rentals area only if showRentals is true
-    if (node.area === 'rentals' && !showRentals) return false;
+    if (node.area === 'rentals') return showRentals;
 
     // Show design system area only if showDesignSystem is true
-    if (node.area === 'design-system' && !showDesignSystem) return false;
+    if (node.area === 'design-system') return showDesignSystem;
 
     return true;
   });
