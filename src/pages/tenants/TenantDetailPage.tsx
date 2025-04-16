@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -7,11 +6,12 @@ import { TenantContracts } from "@/components/tenants/TenantContracts";
 import { mockTenant } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote } from "lucide-react";
+import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote, ClipboardList } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 import { TenantNotes } from "@/components/tenants/TenantNotes";
 import { TenantOrders } from "@/components/tenants/TenantOrders";
+import { TenantInspections } from "@/components/tenants/TenantInspections";
 
 const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -75,6 +75,10 @@ const TenantDetailPage = () => {
               <FileText className="h-4 w-4" />
               Dokument
             </TabsTrigger>
+            <TabsTrigger value="inspections" className="flex items-center gap-1.5">
+              <ClipboardList className="h-4 w-4" />
+              Inspektionsrapporter
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="contracts">
@@ -119,6 +123,10 @@ const TenantDetailPage = () => {
               <h3 className="text-lg font-medium mb-4">Dokument</h3>
               <p className="text-muted-foreground">Inga dokument tillgängliga för denna kund.</p>
             </div>
+          </TabsContent>
+          
+          <TabsContent value="inspections">
+            <TenantInspections />
           </TabsContent>
         </Tabs>
       </div>
