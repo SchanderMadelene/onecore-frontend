@@ -1,4 +1,3 @@
-
 import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { ResidenceInspection } from "@/components/residence/ResidenceInspection";
@@ -51,7 +50,7 @@ export const ResidenceContent = ({
           </TabsTrigger>
           <TabsTrigger value="issues" className="flex items-center gap-1.5">
             <MessageSquare className="h-4 w-4" />
-            Felanmälan
+            Ärenden
           </TabsTrigger>
         </TabsList>
 
