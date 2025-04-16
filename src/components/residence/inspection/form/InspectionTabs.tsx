@@ -57,7 +57,7 @@ export function InspectionTabs({
   
   return (
     <Tabs defaultValue="basic" className="w-full">
-      <TabsList className="mb-4">
+      <TabsList className="mb-4 w-full flex justify-start">
         <TabsTrigger value="basic">
           Grundläggande info
         </TabsTrigger>

@@ -75,7 +75,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
 
   if (!currentInspection) {
     return (
-      <div className="space-y-6 w-full max-w-4xl mx-auto">
+      <div className="space-y-6 w-full">
         <InspectionHistory 
           inspections={inspectionHistory}
         />
@@ -88,7 +88,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   }
 
   return (
-    <div className="space-y-6 w-full max-w-4xl mx-auto">
+    <div className="space-y-6 w-full">
       <InspectionHistory 
         inspections={inspectionHistory}
       />
@@ -102,7 +102,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
           />
         )}
         
-        <Card>
+        <Card className="w-full">
           <CardHeader>
             <CardTitle>Besiktning - {currentInspection.inspectorName}</CardTitle>
           </CardHeader>
