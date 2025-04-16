@@ -35,6 +35,10 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
               <p className="font-medium">{residence.deleted ? "Borttagen" : "Aktiv"}</p>
             </div>
             <div>
+              <p className="text-sm text-muted-foreground">Yta</p>
+              <p className="font-medium">{residence.size ? `${residence.size} m²` : "-"}</p>
+            </div>
+            <div>
               <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>
               <p className="font-medium">
                 {new Date(residence.validityPeriod.fromDate).toLocaleDateString('sv-SE')}
