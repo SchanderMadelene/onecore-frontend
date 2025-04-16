@@ -22,15 +22,15 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
   const [selectedInspection, setSelectedInspection] = useState<Inspection | null>(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
-  // Check for isCompleted property or use isHandled as fallback
-  const activeInspections = inspections.filter(inspection => 
-    inspection.isCompleted === false || 
-    (inspection.isCompleted === undefined && !Object.values(inspection.rooms).every(room => room.isHandled))
+  // Find the most recent incomplete inspection (if any)
+  const activeInspection = inspections.find(inspection => 
+    !inspection.isCompleted && 
+    !Object.values(inspection.rooms).every(room => room.isHandled)
   );
-  
+
+  // All other inspections are considered historical
   const completedInspections = inspections.filter(inspection => 
-    inspection.isCompleted === true || 
-    (inspection.isCompleted === undefined && Object.values(inspection.rooms).every(room => room.isHandled))
+    inspection !== activeInspection
   );
 
   const handleOpenInspection = (inspection: Inspection) => {
@@ -81,22 +81,27 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
     <Card className="w-full">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <CardTitle>Besiktningar</CardTitle>
-        <Button size="sm" onClick={() => setIsDialogOpen(true)} className="flex items-center gap-1">
+        <Button 
+          size="sm" 
+          onClick={() => setIsDialogOpen(true)} 
+          className="flex items-center gap-1"
+          disabled={!!activeInspection}
+        >
           <Plus className="h-4 w-4" /> Skapa besiktning
         </Button>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="mb-4">
-            <TabsTrigger value="active">Aktiva besiktningar</TabsTrigger>
+            <TabsTrigger value="active">Aktiv besiktning</TabsTrigger>
             <TabsTrigger value="history">Besiktningshistorik</TabsTrigger>
           </TabsList>
           
           <TabsContent value="active">
-            {activeInspections.length > 0 ? (
-              renderInspectionsTable(activeInspections)
+            {activeInspection ? (
+              renderInspectionsTable([activeInspection])
             ) : (
-              <p className="text-muted-foreground">Inga aktiva besiktningar för denna lägenhet.</p>
+              <p className="text-muted-foreground">Ingen aktiv besiktning för denna lägenhet.</p>
             )}
           </TabsContent>
           
