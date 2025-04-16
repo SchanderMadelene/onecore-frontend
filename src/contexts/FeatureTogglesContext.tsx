@@ -5,6 +5,8 @@ interface FeatureToggles {
   showNavigation: boolean;
   showRentals: boolean;
   showDesignSystem: boolean;
+  showProperties: boolean;
+  showTenants: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -16,6 +18,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showNavigation: false,
   showRentals: false,
   showDesignSystem: false,
+  showProperties: false,
+  showTenants: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
@@ -28,7 +32,9 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
       return {
         showNavigation: parsedFeatures.showNavigation || false,
         showRentals: parsedFeatures.showRentals || false,
-        showDesignSystem: parsedFeatures.showDesignSystem || false
+        showDesignSystem: parsedFeatures.showDesignSystem || false,
+        showProperties: parsedFeatures.showProperties || false,
+        showTenants: parsedFeatures.showTenants || false
       };
     }
     return DEFAULT_FEATURES;
@@ -48,7 +54,14 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
         newFeatures.showNavigation = false;
         newFeatures.showRentals = false;
         newFeatures.showDesignSystem = false;
-      } else if (feature === 'showRentals' || feature === 'showDesignSystem') {
+        newFeatures.showProperties = false;
+        newFeatures.showTenants = false;
+      } else if (
+        feature === 'showRentals' || 
+        feature === 'showDesignSystem' || 
+        feature === 'showProperties' || 
+        feature === 'showTenants'
+      ) {
         if (prev.showNavigation) {
           newFeatures[feature] = !prev[feature];
         }

@@ -33,6 +33,32 @@ export function BetaSettings() {
           <div className="pl-6 space-y-4 border-l">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
+                <Label htmlFor="properties">Fastigheter</Label>
+                <p className="text-sm text-muted-foreground">Visa fastighetsfunktioner</p>
+              </div>
+              <Switch 
+                id="properties"
+                checked={features.showProperties}
+                disabled={!features.showNavigation}
+                onCheckedChange={() => handleFeatureToggle('showProperties')}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="tenants">Kunder</Label>
+                <p className="text-sm text-muted-foreground">Visa kundfunktioner</p>
+              </div>
+              <Switch 
+                id="tenants"
+                checked={features.showTenants}
+                disabled={!features.showNavigation}
+                onCheckedChange={() => handleFeatureToggle('showTenants')}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
                 <Label htmlFor="rentals">Uthyrning</Label>
                 <p className="text-sm text-muted-foreground">Aktivera uthyrningsfunktioner</p>
               </div>
@@ -62,4 +88,3 @@ export function BetaSettings() {
     </Card>
   );
 }
-

@@ -16,11 +16,9 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
   const isMobile = useIsMobile();
   const { features } = useFeatureToggles();
   
-  // Auto-collapse sidebar on detail pages for desktop
   useEffect(() => {
     if (!isMobile) {
       const pathSegments = location.pathname.split('/').filter(Boolean);
-      // Collapse on detail pages (when path has more than 3 segments)
       if (pathSegments.length > 3) {
         setIsSidebarOpen(false);
       } else {
@@ -36,7 +34,6 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
       />
       
       <div className="flex h-[calc(100vh-3.5rem)] mt-14 relative">
-        {/* Overlay for mobile */}
         {isSidebarOpen && features.showNavigation && (
           <div 
             className="fixed inset-0 bg-black/20 z-40 lg:hidden"
@@ -44,7 +41,6 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
           />
         )}
 
-        {/* Sidebar */}
         {features.showNavigation && (
           <aside
             className={`
@@ -63,11 +59,12 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
               onNavigate={() => isMobile && setIsSidebarOpen(false)}
               showRentals={features.showRentals}
               showDesignSystem={features.showDesignSystem}
+              showProperties={features.showProperties}
+              showTenants={features.showTenants}
             />
           </aside>
         )}
 
-        {/* Main content */}
         <main
           className={`
             flex-1 

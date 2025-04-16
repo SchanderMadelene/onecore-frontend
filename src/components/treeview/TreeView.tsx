@@ -3,21 +3,25 @@ import { TreeItem } from "./TreeItem";
 import { TreeViewProps } from "./types";
 import { treeData } from "./treeData";
 
-export function TreeView({ onNavigate, showRentals, showDesignSystem }: TreeViewProps) {
+export function TreeView({ 
+  onNavigate, 
+  showRentals, 
+  showDesignSystem,
+  showProperties,
+  showTenants 
+}: TreeViewProps) {
   const filteredData = treeData.filter(node => {
-    // Filter out rentals node entirely if showRentals is false
+    // Filter out main navigation nodes based on feature toggles
+    if (node.id === "properties") return showProperties;
+    if (node.id === "tenants") return showTenants;
     if (node.id === "rentals") return showRentals;
-    
-    // Filter out design-system node entirely if showDesignSystem is false
     if (node.id === "design-system") return showDesignSystem;
     
     // For remaining nodes, apply the area filtering logic
     if (!node.area) return true;
 
-    // Show rentals area only if showRentals is true
+    // Show areas only if their respective features are enabled
     if (node.area === 'rentals') return showRentals;
-
-    // Show design system area only if showDesignSystem is true
     if (node.area === 'design-system') return showDesignSystem;
 
     return true;
