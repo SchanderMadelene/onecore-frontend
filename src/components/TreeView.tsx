@@ -1,7 +1,6 @@
 
 import { TreeView as TreeViewComponent } from "./treeview";
-import { TreeViewProps } from "./treeview/types";
 
-export function TreeView(props: TreeViewProps) {
+export function TreeView(props: React.ComponentProps<typeof TreeViewComponent>) {
   return <TreeViewComponent {...props} />;
 }
