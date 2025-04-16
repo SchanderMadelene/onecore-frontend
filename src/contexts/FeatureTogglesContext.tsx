@@ -9,6 +9,8 @@ interface FeatureToggles {
   showTenants: boolean;
   showBuildings: boolean;
   showApartments: boolean;
+  showRoomInformation: boolean;
+  showInspections: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -24,6 +26,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenants: false,
   showBuildings: false,
   showApartments: false,
+  showRoomInformation: false,
+  showInspections: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);

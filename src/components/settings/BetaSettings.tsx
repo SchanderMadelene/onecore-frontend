@@ -1,13 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+
 export function BetaSettings() {
   const {
     features,
     handleFeatureToggle
   } = useFeatureToggles();
+  
   return <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
@@ -94,6 +96,40 @@ export function BetaSettings() {
                 <p className="text-sm text-muted-foreground">Visa sidan för designsystem</p>
               </div>
               <Switch id="design-system" checked={features.showDesignSystem} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDesignSystem')} />
+            </div>
+
+            <div className="pl-6 space-y-3 border-l">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <LayoutDashboard className="h-4 w-4" />
+                    <Label htmlFor="room-information">Rumsinformation</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa rumsinformation på lägenhetskortet</p>
+                </div>
+                <Switch 
+                  id="room-information" 
+                  checked={features.showRoomInformation} 
+                  disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showRoomInformation')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <ClipboardList className="h-4 w-4" />
+                    <Label htmlFor="inspections">Besiktning</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa besiktningsfunktioner på lägenhetskortet</p>
+                </div>
+                <Switch 
+                  id="inspections" 
+                  checked={features.showInspections} 
+                  disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showInspections')} 
+                />
+              </div>
             </div>
           </div>
         </div>
