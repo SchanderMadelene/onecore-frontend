@@ -23,16 +23,13 @@ const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefine
 export function FeatureTogglesProvider({ children }: { children: React.ReactNode }) {
   const [features, setFeatures] = useState<FeatureToggles>(() => {
     const savedFeatures = localStorage.getItem('featureToggles');
-    // Map old feature key to new key if exists
     if (savedFeatures) {
       const parsedFeatures = JSON.parse(savedFeatures);
-      if ('showPropertyTree' in parsedFeatures) {
-        return {
-          showNavigation: parsedFeatures.showPropertyTree,
-          showRentals: parsedFeatures.showRentals || false,
-          showDesignSystem: parsedFeatures.showDesignSystem || false
-        };
-      }
+      return {
+        showNavigation: parsedFeatures.showNavigation || false,
+        showRentals: parsedFeatures.showRentals || false,
+        showDesignSystem: parsedFeatures.showDesignSystem || false
+      };
     }
     return DEFAULT_FEATURES;
   });
@@ -75,4 +72,3 @@ export function useFeatureToggles() {
   }
   return context;
 }
-

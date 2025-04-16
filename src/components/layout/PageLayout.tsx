@@ -32,7 +32,11 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
-      <NavigationBar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <NavigationBar 
+        onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        showRentals={features.showRentals}
+        showDesignSystem={features.showDesignSystem}
+      />
       
       <div className="flex h-[calc(100vh-3.5rem)] mt-14 relative">
         {/* Overlay for mobile */}
@@ -58,7 +62,11 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
               ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
             `}
           >
-            <TreeView onNavigate={() => isMobile && setIsSidebarOpen(false)} />
+            <TreeView 
+              onNavigate={() => isMobile && setIsSidebarOpen(false)}
+              showRentals={features.showRentals}
+              showDesignSystem={features.showDesignSystem}
+            />
           </aside>
         )}
 
@@ -80,4 +88,3 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
     </div>
   );
 }
-
