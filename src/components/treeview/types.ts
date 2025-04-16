@@ -1,4 +1,3 @@
-
 import { ReactNode } from "react";
 
 export interface TreeNode {
@@ -18,4 +17,6 @@ export interface TreeItemProps {
 
 export interface TreeViewProps {
   onNavigate?: () => void;
+  showRentals?: boolean;
+  showDesignSystem?: boolean;
 }

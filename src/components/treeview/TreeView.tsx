@@ -3,7 +3,7 @@ import { TreeItem } from "./TreeItem";
 import { TreeViewProps } from "./types";
 import { treeData } from "./treeData";
 
-export function TreeView({ onNavigate }: TreeViewProps) {
+export function TreeView({ onNavigate, showRentals, showDesignSystem }: TreeViewProps) {
   return (
     <div className="p-4 overflow-y-auto bg-secondary w-full h-full">
       <div className="mb-5">
