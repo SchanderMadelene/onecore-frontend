@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import type { Room } from "@/types/api";
 import type { Inspection } from "./inspection/types";
 import { InspectionsList } from "./inspection/InspectionsList";
+import { InspectionHistory } from "./inspection/InspectionHistory";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
@@ -29,10 +30,16 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   };
 
   return (
-    <InspectionsList
-      rooms={rooms}
-      inspections={inspections}
-      onInspectionCreated={handleInspectionCreated}
-    />
+    <div className="space-y-6">
+      {inspections.length > 0 && (
+        <InspectionHistory inspections={inspections} />
+      )}
+      
+      <InspectionsList
+        rooms={rooms}
+        inspections={inspections}
+        onInspectionCreated={handleInspectionCreated}
+      />
+    </div>
   );
 };

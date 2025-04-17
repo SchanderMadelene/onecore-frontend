@@ -68,12 +68,14 @@ export const InspectionHistory = ({ inspections }: InspectionHistoryProps) => {
                 >
                   Visa
                 </Button>
-                <Button 
-                  variant="ghost"
-                  onClick={() => setIsExpanded(true)}
-                >
-                  Visa alla
-                </Button>
+                {inspections.length > 1 && (
+                  <Button 
+                    variant="ghost"
+                    onClick={() => setIsExpanded(true)}
+                  >
+                    Visa alla
+                  </Button>
+                )}
               </div>
             </div>
           )}
