@@ -76,20 +76,14 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
 
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-between w-full">
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          <ClipboardList className="h-5 w-5 text-muted-foreground" />
-          Besiktningar
-        </h3>
-        <Button 
-          size="sm" 
-          onClick={() => setIsDialogOpen(true)} 
-          className="flex items-center gap-1"
-          disabled={!!activeInspection}
-        >
-          <Plus className="h-4 w-4" /> Skapa ny
-        </Button>
-      </div>
+      <Button 
+        size="sm" 
+        onClick={() => setIsDialogOpen(true)} 
+        className="flex items-center gap-1"
+        disabled={!!activeInspection}
+      >
+        <Plus className="h-4 w-4" /> Skapa ny
+      </Button>
       
       <Tabs defaultValue="active" className="w-full">
         <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
@@ -144,3 +138,4 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
     </div>
   );
 }
+
