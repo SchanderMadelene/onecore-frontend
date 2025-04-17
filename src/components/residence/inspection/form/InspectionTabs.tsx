@@ -57,22 +57,31 @@ export function InspectionTabs({
   
   return (
     <Tabs defaultValue="basic" className="w-full">
-      <TabsList className="mb-4 w-full flex justify-start">
-        <TabsTrigger value="basic">
+      <TabsList className="mb-3 w-full flex justify-start bg-slate-100/70 p-1 rounded-lg">
+        <TabsTrigger 
+          value="basic" 
+          className="data-[state=active]:shadow-sm"
+        >
           Grundläggande info
         </TabsTrigger>
-        <TabsTrigger value="protocol">
+        <TabsTrigger 
+          value="protocol" 
+          className="data-[state=active]:shadow-sm"
+        >
           Protokoll
         </TabsTrigger>
-        <TabsTrigger value="floorplan">
+        <TabsTrigger 
+          value="floorplan" 
+          className="data-[state=active]:shadow-sm"
+        >
           Planritning
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="basic" className="space-y-4">
-        <div className="space-y-3">
+      <TabsContent value="basic" className="space-y-4 mt-2">
+        <div className="space-y-3 bg-white p-4 rounded-lg border border-slate-200">
           <div className="space-y-2">
-            <Label htmlFor="inspectorName">Besiktningsman</Label>
+            <Label htmlFor="inspectorName" className="font-medium">Besiktningsman</Label>
             <Select 
               value={inspectorName || inspectors[0]} 
               onValueChange={setInspectorName}
@@ -100,21 +109,23 @@ export function InspectionTabs({
         />
       </TabsContent>
 
-      <TabsContent value="protocol">
-        <RoomInspectionList
-          rooms={rooms}
-          expandedRoomIds={expandedRoomIds}
-          inspectionData={inspectionData}
-          onToggleRoom={onToggleRoom}
-          onConditionUpdate={onConditionUpdate}
-          onActionUpdate={onActionUpdate}
-          onComponentNoteUpdate={onComponentNoteUpdate}
-        />
+      <TabsContent value="protocol" className="mt-2">
+        <div className="bg-slate-50/50 py-1 px-0 rounded-lg">
+          <RoomInspectionList
+            rooms={rooms}
+            expandedRoomIds={expandedRoomIds}
+            inspectionData={inspectionData}
+            onToggleRoom={onToggleRoom}
+            onConditionUpdate={onConditionUpdate}
+            onActionUpdate={onActionUpdate}
+            onComponentNoteUpdate={onComponentNoteUpdate}
+          />
+        </div>
       </TabsContent>
 
-      <TabsContent value="floorplan">
-        <div className="flex items-center justify-center h-[200px] sm:h-[400px] border-2 border-dashed rounded-lg">
-          <p className="text-muted-foreground text-sm">Planritning är inte tillgänglig</p>
+      <TabsContent value="floorplan" className="mt-2">
+        <div className="flex items-center justify-center h-[200px] sm:h-[400px] border-2 border-dashed rounded-lg bg-white">
+          <p className="text-slate-500 text-sm">Planritning är inte tillgänglig</p>
         </div>
       </TabsContent>
     </Tabs>

@@ -68,39 +68,44 @@ export const RoomCard = ({
   };
 
   return (
-    <Card>
-      <CardHeader className="cursor-pointer" onClick={onToggle}>
+    <Card className="overflow-hidden border-slate-200">
+      <CardHeader 
+        className="cursor-pointer px-4 py-3 bg-white hover:bg-slate-50/80 transition-colors" 
+        onClick={onToggle}
+      >
         <CardTitle className="flex items-center gap-2 text-base">
           {inspectionData.isHandled && (
-            <CheckCircle className="h-4 w-4 text-slate-500" />
+            <CheckCircle className="h-4 w-4 text-green-500" />
           )}
           <span>{room.name || room.roomType?.name || room.code}</span>
         </CardTitle>
       </CardHeader>
       {isExpanded && currentInspection && (
-        <CardContent>
-          <Accordion type="single" collapsible className="w-full">
+        <CardContent className="p-0 border-t border-slate-100">
+          <Accordion type="single" collapsible className="w-full border-0">
             <AccordionItem value="details" className="border-0">
-              <div className="flex justify-end">
-                <AccordionTrigger className="py-0 hover:no-underline">
-                  <span className="text-base font-medium text-gray-500">Detaljer</span>
+              <div className="flex justify-end px-4 py-1">
+                <AccordionTrigger className="py-1.5 px-2 -mr-1.5 rounded-md hover:bg-slate-100">
+                  <span className="text-sm font-medium text-slate-500">Visa detaljer</span>
                 </AccordionTrigger>
               </div>
-              <AccordionContent>
-                <RoomView 
-                  room={room} 
-                  inspectionData={inspectionData}
-                  currentInspection={currentInspection}
-                  onSave={onSave}
-                  inspectorName={currentInspection.inspectorName}
-                />
+              <AccordionContent className="px-0 py-0 border-t border-slate-100">
+                <div className="p-4">
+                  <RoomView 
+                    room={room} 
+                    inspectionData={inspectionData}
+                    currentInspection={currentInspection}
+                    onSave={onSave}
+                    inspectorName={currentInspection.inspectorName}
+                  />
+                </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </CardContent>
       )}
       {isExpanded && !currentInspection && (
-        <CardContent>
+        <CardContent className="border-t border-slate-100">
           <EmptyInspectionState onStartInspection={onStartInspection} />
         </CardContent>
       )}
