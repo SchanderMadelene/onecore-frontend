@@ -167,6 +167,7 @@ export const ComponentShowcase = () => {
             <MobileAccordion 
               items={mobileAccordionItems} 
               defaultOpen={["profile"]}
+              className="space-y-3"
             />
           </div>
         </CardContent>
@@ -180,7 +181,7 @@ export const ComponentShowcase = () => {
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle>Example Card</CardTitle>
                 <CardDescription>This is a description of the card content</CardDescription>
               </CardHeader>
@@ -202,7 +203,7 @@ export const ComponentShowcase = () => {
               </div>
               
               <Tabs defaultValue="tab1" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
+                <TabsList className="grid w-full grid-cols-2 bg-slate-100/70 p-1 rounded-lg">
                   <TabsTrigger value="tab1">Tab 1</TabsTrigger>
                   <TabsTrigger value="tab2">Tab 2</TabsTrigger>
                 </TabsList>

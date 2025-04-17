@@ -83,7 +83,7 @@ export const InspectionRoom = ({
       </div>
 
       {isExpanded && (
-        <div className="p-3 sm:p-4">
+        <div className="p-4">
           <InspectionAccordion
             isWallsComplete={isWallsComplete}
             isSingleComponentComplete={isSingleComponentComplete}
@@ -97,4 +97,4 @@ export const InspectionRoom = ({
       )}
     </div>
   );
-};
+}

@@ -95,7 +95,7 @@ export const RoomCard = ({
                 </AccordionTrigger>
               </div>
               <AccordionContent className="pb-0">
-                <div className="border-t border-slate-200 pt-2">
+                <div className="border-t border-slate-200 pt-3 px-4 pb-4">
                   <RoomView 
                     room={room} 
                     inspectionData={inspectionData}

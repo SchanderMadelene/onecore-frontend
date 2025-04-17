@@ -45,7 +45,7 @@ export const ResidenceContent = ({
         />
       ) : (
         <Tabs defaultValue="info" className="w-full">
-          <TabsList className="mb-4">
+          <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
             <TabsTrigger value="info" className="flex items-center gap-1.5">
               <Info className="h-4 w-4" />
               Rumsinformation
@@ -72,11 +72,11 @@ export const ResidenceContent = ({
               />
             ) : (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Rumsinformation</CardTitle>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Rumsinformation</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-slate-500">
                     För att se rumsinformation, aktivera funktionen i inställningarna.
                   </p>
                 </CardContent>
@@ -91,11 +91,11 @@ export const ResidenceContent = ({
               />
             ) : (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Besiktningar</CardTitle>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Besiktningar</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-slate-500">
                     För att se besiktningar, aktivera funktionen i inställningarna.
                   </p>
                 </CardContent>
@@ -106,8 +106,8 @@ export const ResidenceContent = ({
           <TabsContent value="tenant">
             {features.showTenantInfo ? (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Hyresgästinformation</CardTitle>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Hyresgästinformation</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <TenantInformation tenant={mockTenant} />
@@ -115,11 +115,11 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Hyresgästinformation</CardTitle>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Hyresgästinformation</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-slate-500">
                     För att se hyresgästinformation, aktivera funktionen i inställningarna.
                   </p>
                 </CardContent>
@@ -132,11 +132,11 @@ export const ResidenceContent = ({
               <CreateIssue />
             ) : (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Felanmälan</CardTitle>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Felanmälan</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <p className="text-slate-500">
                     För att se felanmälningar, aktivera funktionen i inställningarna.
                   </p>
                 </CardContent>

@@ -92,7 +92,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
       </div>
       
       <Tabs defaultValue="active" className="w-full">
-        <TabsList className="mb-4 bg-slate-100/70">
+        <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
           <TabsTrigger value="active">Pågående</TabsTrigger>
           <TabsTrigger value="history">Historik</TabsTrigger>
         </TabsList>
@@ -101,7 +101,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           {activeInspection ? (
             renderInspectionsTable([activeInspection])
           ) : (
-            <p className="text-slate-500">Ingen aktiv besiktning för denna lägenhet.</p>
+            <p className="text-slate-500 p-2">Ingen aktiv besiktning för denna lägenhet.</p>
           )}
         </TabsContent>
         
@@ -109,7 +109,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           {completedInspections.length > 0 ? (
             renderInspectionsTable(completedInspections)
           ) : (
-            <p className="text-slate-500">Ingen besiktningshistorik för denna lägenhet.</p>
+            <p className="text-slate-500 p-2">Ingen besiktningshistorik för denna lägenhet.</p>
           )}
         </TabsContent>
       </Tabs>

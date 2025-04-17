@@ -28,7 +28,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
           getOrientationText={getOrientationText}
         />
       ) : (
-        <p className="text-slate-500">
+        <p className="text-slate-500 p-1">
           För att se rumsinformation, aktivera funktionen i inställningarna.
         </p>
       )
@@ -42,7 +42,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
           rooms={rooms}
         />
       ) : (
-        <p className="text-slate-500">
+        <p className="text-slate-500 p-1">
           För att se besiktningar, aktivera funktionen i inställningarna.
         </p>
       )
@@ -54,7 +54,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       content: features.showTenantInfo ? (
         <TenantInformation tenant={mockTenant} />
       ) : (
-        <p className="text-slate-500">
+        <p className="text-slate-500 p-1">
           För att se hyresgästinformation, aktivera funktionen i inställningarna.
         </p>
       )
@@ -66,7 +66,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       content: features.showApartmentIssues ? (
         <CreateIssue />
       ) : (
-        <p className="text-slate-500">
+        <p className="text-slate-500 p-1">
           För att se felanmälningar, aktivera funktionen i inställningarna.
         </p>
       )
@@ -74,6 +74,6 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
   ];
   
   return (
-    <GenericMobileAccordion items={accordionItems} defaultOpen={["info"]} />
+    <GenericMobileAccordion items={accordionItems} defaultOpen={["info"]} className="space-y-3" />
   );
 }

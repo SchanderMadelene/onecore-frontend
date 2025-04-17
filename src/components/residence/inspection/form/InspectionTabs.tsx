@@ -73,35 +73,37 @@ export function InspectionTabs({
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="basic" className="space-y-4 mt-2">
-        <div className="space-y-3 bg-white p-4 rounded-lg border border-slate-200">
-          <div className="space-y-2">
-            <Label htmlFor="inspectorName" className="font-medium">Besiktningsman</Label>
-            <Select 
-              value={inspectorName || inspectors[0]} 
-              onValueChange={setInspectorName}
-              defaultValue={inspectors[0]}
-            >
-              <SelectTrigger id="inspectorName" className="w-full">
-                <SelectValue placeholder="Välj besiktningsman" />
-              </SelectTrigger>
-              <SelectContent>
-                {inspectors.map((inspector) => (
-                  <SelectItem key={inspector} value={inspector}>
-                    {inspector}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      <TabsContent value="basic" className="mt-2">
+        <div className="space-y-4">
+          <div className="space-y-3 bg-white p-4 rounded-lg border border-slate-200">
+            <div className="space-y-2">
+              <Label htmlFor="inspectorName" className="font-medium">Besiktningsman</Label>
+              <Select 
+                value={inspectorName || inspectors[0]} 
+                onValueChange={setInspectorName}
+                defaultValue={inspectors[0]}
+              >
+                <SelectTrigger id="inspectorName" className="w-full">
+                  <SelectValue placeholder="Välj besiktningsman" />
+                </SelectTrigger>
+                <SelectContent>
+                  {inspectors.map((inspector) => (
+                    <SelectItem key={inspector} value={inspector}>
+                      {inspector}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
+          
+          <BasicInformation
+            inspectorName={inspectorName || inspectors[0]}
+            roomCount={rooms.length}
+            apartmentInfo={apartmentInfo}
+            tenant={tenant}
+          />
         </div>
-        
-        <BasicInformation
-          inspectorName={inspectorName || inspectors[0]}
-          roomCount={rooms.length}
-          apartmentInfo={apartmentInfo}
-          tenant={tenant}
-        />
       </TabsContent>
 
       <TabsContent value="protocol" className="mt-2">
