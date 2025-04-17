@@ -1,8 +1,11 @@
+
 export interface Residence {
   id: string;
   code: string;
   name: string;
   deleted: boolean;
+  size?: number;
+  malarenergiFacilityId?: string;
   validityPeriod: {
     fromDate: string;
     toDate: string;
@@ -118,7 +121,7 @@ export interface Building {
   units: number;
   tenants?: number;
   apartments?: Apartment[];
-  entrances?: Entrance[]; // Add entrances to Building type
+  entrances?: Entrance[];
 }
 
 export interface PropertyDetail extends Property {

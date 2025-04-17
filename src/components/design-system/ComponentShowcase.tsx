@@ -7,9 +7,76 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { AlertCircle, Check, Info, Loader2 } from "lucide-react";
+import { AlertCircle, Check, Info, Loader2, Settings, File, Bell, User } from "lucide-react";
+import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
 
 export const ComponentShowcase = () => {
+  const mobileAccordionItems: MobileAccordionItem[] = [
+    {
+      id: "profile",
+      icon: User,
+      title: "Profil",
+      content: (
+        <div className="space-y-3">
+          <div className="space-y-1">
+            <Label htmlFor="name">Namn</Label>
+            <Input id="name" placeholder="John Doe" />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" placeholder="john.doe@example.com" />
+          </div>
+        </div>
+      )
+    },
+    {
+      id: "notifications",
+      icon: Bell,
+      title: "Aviseringar",
+      content: (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="email-notifications">Email aviseringar</Label>
+            <Switch id="email-notifications" />
+          </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="push-notifications">Push aviseringar</Label>
+            <Switch id="push-notifications" />
+          </div>
+        </div>
+      )
+    },
+    {
+      id: "settings",
+      icon: Settings,
+      title: "Inställningar",
+      content: (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="dark-mode">Mörkt läge</Label>
+            <Switch id="dark-mode" />
+          </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="autoplay">Autouppspelning</Label>
+            <Switch id="autoplay" />
+          </div>
+        </div>
+      )
+    },
+    {
+      id: "documents",
+      icon: File,
+      title: "Dokument",
+      content: (
+        <div className="space-y-2">
+          <p>Inga dokument tillgängliga</p>
+          <Button size="sm" variant="outline">Ladda upp dokument</Button>
+        </div>
+      ),
+      disabled: true
+    },
+  ];
+
   return (
     <div className="space-y-8">
       <Card>
@@ -92,13 +159,29 @@ export const ComponentShowcase = () => {
 
       <Card>
         <CardHeader>
+          <CardTitle>Mobile Accordion</CardTitle>
+          <CardDescription>Collapsible accordion component optimized for mobile views</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="max-w-md mx-auto">
+            <MobileAccordion 
+              items={mobileAccordionItems} 
+              defaultOpen={["profile"]}
+              className="space-y-3"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Cards</CardTitle>
           <CardDescription>Card components for displaying content</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle>Example Card</CardTitle>
                 <CardDescription>This is a description of the card content</CardDescription>
               </CardHeader>
@@ -120,7 +203,7 @@ export const ComponentShowcase = () => {
               </div>
               
               <Tabs defaultValue="tab1" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
+                <TabsList className="grid w-full grid-cols-2 bg-slate-100/70 p-1 rounded-lg">
                   <TabsTrigger value="tab1">Tab 1</TabsTrigger>
                   <TabsTrigger value="tab2">Tab 2</TabsTrigger>
                 </TabsList>

@@ -23,7 +23,7 @@ export function RoomInspectionList({
   onComponentNoteUpdate
 }: RoomInspectionListProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {rooms.map(room => (
         <InspectionRoom
           key={room.id}

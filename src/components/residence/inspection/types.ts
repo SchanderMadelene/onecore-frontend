@@ -38,4 +38,5 @@ export interface Inspection {
   date: string;
   inspectedBy: string;
   rooms: Record<string, InspectionRoom>;
+  isCompleted?: boolean; // Add this property
 }

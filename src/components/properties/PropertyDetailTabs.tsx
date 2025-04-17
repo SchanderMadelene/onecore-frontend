@@ -17,7 +17,7 @@ interface PropertyDetailTabsProps {
 export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) => {
   return (
     <Tabs defaultValue="info" className="space-y-6">
-      <TabsList>
+      <TabsList className="bg-slate-100/70 p-1 rounded-lg">
         <TabsTrigger value="info">
           <span className="hidden sm:inline">Fastighet</span>
           <span className="sm:hidden">Info</span>

@@ -23,7 +23,7 @@ export const RoomView = ({
 }: RoomViewProps) => {
   return (
     <Tabs defaultValue="inspection" className="w-full">
-      <TabsList>
+      <TabsList className="w-full justify-start">
         <TabsTrigger value="inspection">Besiktning</TabsTrigger>
         <TabsTrigger value="photos">Foton</TabsTrigger>
         <TabsTrigger value="notes">Anteckningar</TabsTrigger>
@@ -90,4 +90,4 @@ export const RoomView = ({
       </TabsContent>
     </Tabs>
   );
-};
+}

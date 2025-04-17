@@ -18,8 +18,8 @@ export function TenantOrders() {
 
   return (
     <Card className="w-full">
-      <CardHeader className="pb-2 flex flex-row items-center justify-between">
-        <CardTitle>Ärenden</CardTitle>
+      <CardHeader className="pb-3 flex flex-row items-center justify-between">
+        <CardTitle className="text-lg font-semibold">Ärenden</CardTitle>
         <CreateOrderDialog 
           buttonSize="sm" 
           contextType="tenant"
@@ -28,7 +28,7 @@ export function TenantOrders() {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="active" className="w-full" key={refreshKey}>
-          <TabsList className="mb-4">
+          <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
             <TabsTrigger value="active">Aktiva ärenden</TabsTrigger>
             <TabsTrigger value="history">Ärendehistorik</TabsTrigger>
           </TabsList>
@@ -41,7 +41,7 @@ export function TenantOrders() {
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground">Inga aktiva ärenden för denna hyresgäst.</p>
+              <p className="text-slate-500 p-2">Inga aktiva ärenden för denna hyresgäst.</p>
             )}
           </TabsContent>
           
@@ -49,7 +49,7 @@ export function TenantOrders() {
             {historicalOrders.length > 0 ? (
               <OrdersTable orders={historicalOrders} />
             ) : (
-              <p className="text-muted-foreground">Ingen ärendehistorik för denna hyresgäst.</p>
+              <p className="text-slate-500 p-2">Ingen ärendehistorik för denna hyresgäst.</p>
             )}
           </TabsContent>
         </Tabs>

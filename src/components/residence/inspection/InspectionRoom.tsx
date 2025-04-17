@@ -59,16 +59,16 @@ export const InspectionRoom = ({
   }
 
   return (
-    <div className={`border rounded-lg shadow-sm ${
+    <div className={`rounded-lg shadow-sm border ${
       inspectionData.isHandled 
         ? 'bg-slate-50 border-slate-200'
-        : 'bg-white'
+        : 'bg-white border-slate-200'
     }`}>
-      <div className={`w-full p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between border-b gap-2 ${
+      <div className={`w-full p-3 sm:p-3.5 flex flex-col sm:flex-row sm:items-center justify-between border-b gap-2 ${
         inspectionData.isHandled
-          ? 'bg-slate-50/50 border-slate-200'
-          : 'bg-card'
-      }`}>
+          ? 'bg-slate-50/80 border-slate-200'
+          : 'bg-white'
+      } transition-colors`}>
         <RoomStatus
           isHandled={inspectionData.isHandled}
           name={room.name || room.roomType?.name || room.code}
@@ -83,7 +83,7 @@ export const InspectionRoom = ({
       </div>
 
       {isExpanded && (
-        <div className="p-3 sm:p-4">
+        <div className="p-4">
           <InspectionAccordion
             isWallsComplete={isWallsComplete}
             isSingleComponentComplete={isSingleComponentComplete}
@@ -97,4 +97,4 @@ export const InspectionRoom = ({
       )}
     </div>
   );
-};
+}
