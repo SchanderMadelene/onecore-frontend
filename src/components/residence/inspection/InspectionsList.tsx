@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { format } from "date-fns";
 import type { Room } from "@/types/api";
 import type { Inspection } from "./types";
+import { InspectionHistory } from "./InspectionHistory";
 
 interface InspectionsListProps {
   rooms: Room[];
@@ -78,8 +79,8 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
   );
 
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-2 flex flex-row items-center justify-between">
+    <div className="w-full">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between px-0 pt-0">
         <CardTitle>Besiktningar</CardTitle>
         <Button 
           size="sm" 
@@ -90,7 +91,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           <Plus className="h-4 w-4" /> Skapa besiktning
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0">
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="mb-4">
             <TabsTrigger value="active">Aktiv besiktning</TabsTrigger>
@@ -146,6 +147,6 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           onClose={() => setIsViewDialogOpen(false)}
         />
       )}
-    </Card>
+    </div>
   );
 }
