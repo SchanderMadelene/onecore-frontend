@@ -44,7 +44,7 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
           <AccordionTrigger>
             <div className="flex items-center gap-2">
               <Info className="h-5 w-5" />
-              <span className="text-base">Rumsinformation</span>
+              <span className="text-base font-medium">Rumsinformation</span>
             </div>
           </AccordionTrigger>
           <AccordionContent>
@@ -65,7 +65,7 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
           <AccordionTrigger>
             <div className="flex items-center gap-2">
               <ClipboardList className="h-5 w-5" />
-              <span className="text-base">Besiktningar</span>
+              <span className="text-base font-medium">Besiktningar</span>
             </div>
           </AccordionTrigger>
           <AccordionContent>
@@ -85,7 +85,7 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
           <AccordionTrigger>
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5" />
-              <span className="text-base">Hyresgäst</span>
+              <span className="text-base font-medium">Hyresgäst</span>
             </div>
           </AccordionTrigger>
           <AccordionContent>
@@ -103,7 +103,7 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
           <AccordionTrigger>
             <div className="flex items-center gap-2">
               <MessageSquare className="h-5 w-5" />
-              <span className="text-base">Ärenden</span>
+              <span className="text-base font-medium">Ärenden</span>
             </div>
           </AccordionTrigger>
           <AccordionContent>

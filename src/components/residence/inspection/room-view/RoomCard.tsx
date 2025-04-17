@@ -70,7 +70,7 @@ export const RoomCard = ({
   return (
     <Card>
       <CardHeader className="cursor-pointer" onClick={onToggle}>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-base">
           {inspectionData.isHandled && (
             <CheckCircle className="h-4 w-4 text-slate-500" />
           )}
@@ -83,7 +83,7 @@ export const RoomCard = ({
             <AccordionItem value="details" className="border-0">
               <div className="flex justify-end">
                 <AccordionTrigger className="py-0 hover:no-underline">
-                  <span className="text-sm text-gray-500">Detaljer</span>
+                  <span className="text-base font-medium text-gray-500">Detaljer</span>
                 </AccordionTrigger>
               </div>
               <AccordionContent>

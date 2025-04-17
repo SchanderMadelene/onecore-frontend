@@ -39,7 +39,7 @@ export const InspectionAccordion = ({
             {isWallsComplete() && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>Väggar</span>
+            <span className="font-medium text-base">Väggar</span>
           </div>
         </AccordionTrigger>
         <AccordionContent>
@@ -65,7 +65,7 @@ export const InspectionAccordion = ({
             {isSingleComponentComplete("ceiling") && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>Tak</span>
+            <span className="font-medium text-base">Tak</span>
           </div>
         </AccordionTrigger>
         <AccordionContent>
@@ -90,7 +90,7 @@ export const InspectionAccordion = ({
             {isSingleComponentComplete("floor") && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>Golv</span>
+            <span className="font-medium text-base">Golv</span>
           </div>
         </AccordionTrigger>
         <AccordionContent>
@@ -115,7 +115,7 @@ export const InspectionAccordion = ({
             {isSingleComponentComplete("details") && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>Detaljer</span>
+            <span className="font-medium text-base">Detaljer</span>
           </div>
         </AccordionTrigger>
         <AccordionContent>
