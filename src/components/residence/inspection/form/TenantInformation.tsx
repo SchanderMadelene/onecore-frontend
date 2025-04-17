@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MessageSquare, User, Calendar, Users } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -32,18 +31,12 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-row items-center justify-between space-y-0 flex-wrap gap-4 pb-2">
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          <Users className="h-5 w-5 text-muted-foreground" />
-          Hyresgästinformation
-        </h3>
-        <Button variant="outline" asChild className="shrink-0">
-          <Link to={`/tenants/detail/${tenant.personalNumber}`}>
-            <User className="h-4 w-4 mr-2" />
-            Öppna kundkort
-          </Link>
-        </Button>
-      </div>
+      <Button variant="outline" asChild className="shrink-0 w-full justify-start">
+        <Link to={`/tenants/detail/${tenant.personalNumber}`}>
+          <User className="h-4 w-4 mr-2" />
+          Öppna kundkort
+        </Link>
+      </Button>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="space-y-4">
