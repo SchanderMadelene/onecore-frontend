@@ -1,6 +1,10 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PlusIcon } from "lucide-react";
 import type { Room } from "@/types/api";
 import type { Inspection } from "./inspection/types";
 import { InspectionsList } from "./inspection/InspectionsList";
@@ -30,16 +34,33 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   };
 
   return (
-    <div className="space-y-6">
-      {inspections.length > 0 && (
-        <InspectionHistory inspections={inspections} />
-      )}
-      
-      <InspectionsList
-        rooms={rooms}
-        inspections={inspections}
-        onInspectionCreated={handleInspectionCreated}
-      />
-    </div>
+    <Card className="w-full">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-lg">Besiktningar</CardTitle>
+        <Button size="sm" variant="outline" className="h-8">
+          <PlusIcon className="h-4 w-4 mr-2" />
+          Skapa besiktning
+        </Button>
+      </CardHeader>
+      <CardContent className="space-y-4 p-4">
+        <Tabs defaultValue="active" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="active">Aktiv besiktning</TabsTrigger>
+            <TabsTrigger value="history">Besiktningshistorik</TabsTrigger>
+          </TabsList>
+          <TabsContent value="active">
+            <InspectionsList
+              rooms={rooms}
+              inspections={inspections}
+              onInspectionCreated={handleInspectionCreated}
+            />
+          </TabsContent>
+          <TabsContent value="history">
+            <InspectionHistory inspections={inspections} />
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 };
+

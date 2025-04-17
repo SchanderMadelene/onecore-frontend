@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Accordion, 
@@ -24,59 +23,53 @@ interface MobileAccordionProps {
 
 export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionProps) {
   const { features } = useFeatureToggles();
+  // Change to array of open item IDs instead of single string or null
   const [openItems, setOpenItems] = useState<string[]>(["info"]); // Default: info section open
   
-  const handleValueChange = (value: string[]) => {
-    setOpenItems(value);
+  const handleValueChange = (value: string) => {
+    setOpenItems(current => {
+      // If item is already open, remove it from the array (close it)
+      if (current.includes(value)) {
+        return current.filter(item => item !== value);
+      } 
+      // Otherwise add it to the array (open it)
+      return [...current, value];
+    });
   };
   
-  const renderAccordionSection = (
-    id: string, 
-    icon: React.ReactNode, 
-    title: string, 
-    featureFlag: boolean, 
-    content: React.ReactNode,
-    disabledMessage: string
-  ) => {
-    const isOpen = openItems.includes(id);
-    
-    return (
+  return (
+    <div className="space-y-4">
       <Card className={cn(
         "overflow-hidden transition-all",
-        isOpen ? "ring-1 ring-primary/20 shadow-md" : ""
+        openItems.includes("info") ? "ring-2 ring-primary/10" : ""
       )}>
         <Accordion 
           type="multiple" 
           value={openItems} 
-          onValueChange={handleValueChange}
+          onValueChange={(value) => setOpenItems(value)}
           className="border-0"
         >
-          <AccordionItem value={id} className="border-0">
-            <AccordionTrigger className="py-4 px-5 hover:no-underline group">
-              <div className="flex items-center gap-2.5">
-                <div className={cn(
-                  "p-1.5 rounded-md",
-                  isOpen ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-                )}>
-                  {icon}
+          <AccordionItem value="info" className="border-0">
+            <div className="border-b-0">
+              <AccordionTrigger className="py-3 px-4 hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <Info className="h-4 w-4" />
+                  <span>Rumsinformation</span>
                 </div>
-                <span className={cn(
-                  "font-medium", 
-                  isOpen ? "text-primary" : ""
-                )}>
-                  {title}
-                </span>
-              </div>
-            </AccordionTrigger>
+              </AccordionTrigger>
+            </div>
             <AccordionContent className="pb-0 border-t">
-              {featureFlag ? (
-                <div className="p-5">
-                  {content}
+              {features.showRoomInformation ? (
+                <div className="px-4 py-4">
+                  <ResidenceInfo 
+                    rooms={rooms}
+                    getOrientationText={getOrientationText}
+                  />
                 </div>
               ) : (
-                <div className="p-5">
+                <div className="p-4">
                   <p className="text-muted-foreground">
-                    {disabledMessage}
+                    För att se rumsinformation, aktivera funktionen i inställningarna.
                   </p>
                 </div>
               )}
@@ -84,46 +77,140 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
           </AccordionItem>
         </Accordion>
       </Card>
-    );
-  };
-  
-  return (
-    <div className="space-y-4">
-      {renderAccordionSection(
-        "info",
-        <Info className="h-4 w-4" />,
-        "Rumsinformation",
-        features.showRoomInformation,
-        <ResidenceInfo rooms={rooms} getOrientationText={getOrientationText} />,
-        "För att se rumsinformation, aktivera funktionen i inställningarna."
-      )}
       
-      {renderAccordionSection(
-        "inspections",
-        <ClipboardList className="h-4 w-4" />,
-        "Besiktningar",
-        features.showInspections,
-        <ResidenceInspection rooms={rooms} />,
-        "För att se besiktningar, aktivera funktionen i inställningarna."
-      )}
+      <Card className={cn(
+        "overflow-hidden transition-all",
+        openItems.includes("inspections") ? "ring-2 ring-primary/10" : ""
+      )}>
+        <Accordion 
+          type="multiple" 
+          value={openItems.includes("inspections") ? ["inspections"] : []}
+          onValueChange={(value) => {
+            if (value.includes("inspections")) {
+              if (!openItems.includes("inspections")) {
+                setOpenItems([...openItems, "inspections"]);
+              }
+            } else {
+              setOpenItems(openItems.filter(item => item !== "inspections"));
+            }
+          }}
+          className="border-0"
+        >
+          <AccordionItem value="inspections" className="border-0">
+            <div className="border-b-0">
+              <AccordionTrigger className="py-3 px-4 hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <ClipboardList className="h-4 w-4" />
+                  <span>Besiktningar</span>
+                </div>
+              </AccordionTrigger>
+            </div>
+            <AccordionContent className="pb-0 border-t">
+              {features.showInspections ? (
+                <div className="px-4 py-4">
+                  <ResidenceInspection
+                    rooms={rooms}
+                  />
+                </div>
+              ) : (
+                <div className="p-4">
+                  <p className="text-muted-foreground">
+                    För att se besiktningar, aktivera funktionen i inställningarna.
+                  </p>
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </Card>
       
-      {renderAccordionSection(
-        "tenant",
-        <Users className="h-4 w-4" />,
-        "Hyresgäst",
-        features.showTenantInfo,
-        <TenantInformation tenant={mockTenant} />,
-        "För att se hyresgästinformation, aktivera funktionen i inställningarna."
-      )}
+      <Card className={cn(
+        "overflow-hidden transition-all",
+        openItems.includes("tenant") ? "ring-2 ring-primary/10" : ""
+      )}>
+        <Accordion 
+          type="multiple" 
+          value={openItems.includes("tenant") ? ["tenant"] : []}
+          onValueChange={(value) => {
+            if (value.includes("tenant")) {
+              if (!openItems.includes("tenant")) {
+                setOpenItems([...openItems, "tenant"]);
+              }
+            } else {
+              setOpenItems(openItems.filter(item => item !== "tenant"));
+            }
+          }}
+          className="border-0"
+        >
+          <AccordionItem value="tenant" className="border-0">
+            <div className="border-b-0">
+              <AccordionTrigger className="py-3 px-4 hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <Users className="h-4 w-4" />
+                  <span>Hyresgäst</span>
+                </div>
+              </AccordionTrigger>
+            </div>
+            <AccordionContent className="pb-0 border-t">
+              {features.showTenantInfo ? (
+                <div className="px-4 py-4">
+                  <TenantInformation tenant={mockTenant} />
+                </div>
+              ) : (
+                <div className="p-4">
+                  <p className="text-muted-foreground">
+                    För att se hyresgästinformation, aktivera funktionen i inställningarna.
+                  </p>
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </Card>
       
-      {renderAccordionSection(
-        "issues",
-        <MessageSquare className="h-4 w-4" />,
-        "Ärenden",
-        features.showApartmentIssues,
-        <CreateIssue />,
-        "För att se felanmälningar, aktivera funktionen i inställningarna."
-      )}
+      <Card className={cn(
+        "overflow-hidden transition-all",
+        openItems.includes("issues") ? "ring-2 ring-primary/10" : ""
+      )}>
+        <Accordion 
+          type="multiple" 
+          value={openItems.includes("issues") ? ["issues"] : []}
+          onValueChange={(value) => {
+            if (value.includes("issues")) {
+              if (!openItems.includes("issues")) {
+                setOpenItems([...openItems, "issues"]);
+              }
+            } else {
+              setOpenItems(openItems.filter(item => item !== "issues"));
+            }
+          }}
+          className="border-0"
+        >
+          <AccordionItem value="issues" className="border-0">
+            <div className="border-b-0">
+              <AccordionTrigger className="py-3 px-4 hover:no-underline">
+                <div className="flex items-center gap-1.5">
+                  <MessageSquare className="h-4 w-4" />
+                  <span>Ärenden</span>
+                </div>
+              </AccordionTrigger>
+            </div>
+            <AccordionContent className="pb-0 border-t">
+              {features.showApartmentIssues ? (
+                <div className="px-4 py-4">
+                  <CreateIssue />
+                </div>
+              ) : (
+                <div className="p-4">
+                  <p className="text-muted-foreground">
+                    För att se felanmälningar, aktivera funktionen i inställningarna.
+                  </p>
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </Card>
     </div>
   );
 }

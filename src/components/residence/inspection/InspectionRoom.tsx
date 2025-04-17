@@ -5,7 +5,6 @@ import { RoomStatus } from "./room-header/RoomStatus";
 import { RoomActions } from "./room-header/RoomActions";
 import { InspectionAccordion } from "./InspectionAccordion";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
 
 interface InspectionRoomProps {
   room: Room;
@@ -60,19 +59,16 @@ export const InspectionRoom = ({
   }
 
   return (
-    <div className={cn(
-      "border rounded-lg shadow-sm overflow-hidden transition-all",
+    <div className={`border rounded-lg shadow-sm ${
       inspectionData.isHandled 
         ? 'bg-slate-50 border-slate-200'
-        : 'bg-white',
-      isExpanded && 'ring-1 ring-primary/20 shadow-md'
-    )}>
-      <div className={cn(
-        "w-full p-4 flex flex-col sm:flex-row sm:items-center justify-between border-b gap-2",
+        : 'bg-white'
+    }`}>
+      <div className={`w-full p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between border-b gap-2 ${
         inspectionData.isHandled
-          ? 'bg-slate-50/80 border-slate-200'
-          : 'bg-white'
-      )}>
+          ? 'bg-slate-50/50 border-slate-200'
+          : 'bg-card'
+      }`}>
         <RoomStatus
           isHandled={inspectionData.isHandled}
           name={room.name || room.roomType?.name || room.code}
@@ -87,7 +83,7 @@ export const InspectionRoom = ({
       </div>
 
       {isExpanded && (
-        <div className="p-4">
+        <div className="p-3 sm:p-4">
           <InspectionAccordion
             isWallsComplete={isWallsComplete}
             isSingleComponentComplete={isSingleComponentComplete}

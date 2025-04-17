@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -13,18 +12,13 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface InspectionReadOnlyProps {
-  inspection: Inspection | null;
+  inspection: Inspection;
   onClose?: () => void;
   isOpen?: boolean;
 }
 
 export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionReadOnlyProps) {
   const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
-
-  // Don't render anything if inspection is null
-  if (!inspection) {
-    return null;
-  }
 
   const renderContent = () => (
     <>
