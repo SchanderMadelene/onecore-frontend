@@ -1,11 +1,9 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Card, CardContent } from "@/components/ui/card";
 import type { Room } from "@/types/api";
 import type { Inspection } from "./inspection/types";
 import { InspectionsList } from "./inspection/InspectionsList";
-import { InspectionHistory } from "./inspection/InspectionHistory";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
@@ -31,14 +29,12 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   };
 
   return (
-    <Card className="w-full">
-      <CardContent className="space-y-4 p-4">
-        <InspectionsList
-          rooms={rooms}
-          inspections={inspections}
-          onInspectionCreated={handleInspectionCreated}
-        />
-      </CardContent>
-    </Card>
+    <div className="w-full">
+      <InspectionsList
+        rooms={rooms}
+        inspections={inspections}
+        onInspectionCreated={handleInspectionCreated}
+      />
+    </div>
   );
 };

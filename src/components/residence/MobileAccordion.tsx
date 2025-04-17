@@ -39,15 +39,16 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
         type="multiple" 
         value={openItems} 
         onValueChange={(value) => setOpenItems(value)}
+        className="space-y-2"
       >
-        <AccordionItem value="info">
-          <AccordionTrigger>
+        <AccordionItem value="info" className="border rounded-md overflow-hidden">
+          <AccordionTrigger className="px-4 py-3">
             <div className="flex items-center gap-2">
               <Info className="h-5 w-5" />
               <span className="text-base font-medium">Rumsinformation</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="px-4 py-3">
             {features.showRoomInformation ? (
               <ResidenceInfo 
                 rooms={rooms}
@@ -61,14 +62,14 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="inspections">
-          <AccordionTrigger>
+        <AccordionItem value="inspections" className="border rounded-md overflow-hidden">
+          <AccordionTrigger className="px-4 py-3">
             <div className="flex items-center gap-2">
               <ClipboardList className="h-5 w-5" />
               <span className="text-base font-medium">Besiktningar</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="px-4 py-3">
             {features.showInspections ? (
               <ResidenceInspection
                 rooms={rooms}
@@ -81,14 +82,14 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="tenant">
-          <AccordionTrigger>
+        <AccordionItem value="tenant" className="border rounded-md overflow-hidden">
+          <AccordionTrigger className="px-4 py-3">
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5" />
               <span className="text-base font-medium">Hyresgäst</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="px-4 py-3">
             {features.showTenantInfo ? (
               <TenantInformation tenant={mockTenant} />
             ) : (
@@ -99,14 +100,14 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="issues">
-          <AccordionTrigger>
+        <AccordionItem value="issues" className="border rounded-md overflow-hidden">
+          <AccordionTrigger className="px-4 py-3">
             <div className="flex items-center gap-2">
               <MessageSquare className="h-5 w-5" />
               <span className="text-base font-medium">Ärenden</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="px-4 py-3">
             {features.showApartmentIssues ? (
               <CreateIssue />
             ) : (

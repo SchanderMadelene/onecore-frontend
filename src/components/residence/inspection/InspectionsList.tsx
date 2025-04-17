@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { format } from "date-fns";
 import type { Room } from "@/types/api";
 import type { Inspection } from "./types";
-import { InspectionHistory } from "./InspectionHistory";
 
 interface InspectionsListProps {
   rooms: Room[];
@@ -77,9 +75,9 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
   );
 
   return (
-    <div className="w-full">
-      <CardHeader className="pb-2 flex flex-row items-center justify-between px-0 pt-0">
-        <CardTitle>Besiktningar</CardTitle>
+    <div className="w-full space-y-4">
+      <div className="flex items-center justify-between w-full">
+        <h3 className="text-base font-medium leading-none tracking-tight">Besiktningar</h3>
         <Button 
           size="sm" 
           onClick={() => setIsDialogOpen(true)} 
@@ -88,31 +86,30 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
         >
           <Plus className="h-4 w-4" /> Skapa ny
         </Button>
-      </CardHeader>
-      <CardContent className="px-0">
-        <Tabs defaultValue="active" className="w-full">
-          <TabsList className="mb-4">
-            <TabsTrigger value="active">Pågående</TabsTrigger>
-            <TabsTrigger value="history">Historik</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="active">
-            {activeInspection ? (
-              renderInspectionsTable([activeInspection])
-            ) : (
-              <p className="text-muted-foreground">Ingen aktiv besiktning för denna lägenhet.</p>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="history">
-            {completedInspections.length > 0 ? (
-              renderInspectionsTable(completedInspections)
-            ) : (
-              <p className="text-muted-foreground">Ingen besiktningshistorik för denna lägenhet.</p>
-            )}
-          </TabsContent>
-        </Tabs>
-      </CardContent>
+      </div>
+      
+      <Tabs defaultValue="active" className="w-full">
+        <TabsList className="mb-4">
+          <TabsTrigger value="active">Pågående</TabsTrigger>
+          <TabsTrigger value="history">Historik</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="active">
+          {activeInspection ? (
+            renderInspectionsTable([activeInspection])
+          ) : (
+            <p className="text-muted-foreground">Ingen aktiv besiktning för denna lägenhet.</p>
+          )}
+        </TabsContent>
+        
+        <TabsContent value="history">
+          {completedInspections.length > 0 ? (
+            renderInspectionsTable(completedInspections)
+          ) : (
+            <p className="text-muted-foreground">Ingen besiktningshistorik för denna lägenhet.</p>
+          )}
+        </TabsContent>
+      </Tabs>
 
       {isDialogOpen && (
         <InspectionFormDialog
