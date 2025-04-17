@@ -44,18 +44,18 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
       </CardHeader>
       <CardContent className="space-y-4 p-4">
         <Tabs defaultValue="active" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger value="active">Aktiv besiktning</TabsTrigger>
             <TabsTrigger value="history">Besiktningshistorik</TabsTrigger>
           </TabsList>
-          <TabsContent value="active">
+          <TabsContent value="active" className="pt-2">
             <InspectionsList
               rooms={rooms}
               inspections={inspections}
               onInspectionCreated={handleInspectionCreated}
             />
           </TabsContent>
-          <TabsContent value="history">
+          <TabsContent value="history" className="pt-2">
             <InspectionHistory inspections={inspections} />
           </TabsContent>
         </Tabs>
@@ -63,4 +63,3 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
     </Card>
   );
 };
-

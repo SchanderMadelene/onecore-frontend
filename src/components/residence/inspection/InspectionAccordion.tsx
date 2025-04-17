@@ -32,18 +32,18 @@ export const InspectionAccordion = ({
   const isMobile = useIsMobile();
   
   return (
-    <Accordion type="single" className="space-y-2">
-      <AccordionItem value="walls" className="border rounded-md">
-        <AccordionTrigger className="flex justify-between w-full px-3 hover:no-underline hover:bg-gray-50">
-          <div className="flex items-center gap-1.5">
+    <Accordion type="single" className="space-y-2" collapsible>
+      <AccordionItem value="walls">
+        <AccordionTrigger>
+          <div className="flex items-center gap-2">
             {isWallsComplete() && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span className={`font-medium ${isMobile ? 'text-sm' : ''}`}>Väggar</span>
+            <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>Väggar</span>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="px-3">
-          <div className="space-y-4 py-2">
+        <AccordionContent>
+          <div className="space-y-4">
             <ConditionSelect
               key="wall1"
               label="Vägg"
@@ -59,17 +59,17 @@ export const InspectionAccordion = ({
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="ceiling" className="border rounded-md">
-        <AccordionTrigger className="flex justify-between w-full px-3 hover:no-underline hover:bg-gray-50">
-          <div className="flex items-center gap-1.5">
+      <AccordionItem value="ceiling">
+        <AccordionTrigger>
+          <div className="flex items-center gap-2">
             {isSingleComponentComplete("ceiling") && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span className={`font-medium ${isMobile ? 'text-sm' : ''}`}>Tak</span>
+            <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>Tak</span>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="px-3">
-          <div className="py-2">
+        <AccordionContent>
+          <div>
             <ConditionSelect
               label="Tak"
               value={inspectionData.conditions.ceiling}
@@ -84,17 +84,17 @@ export const InspectionAccordion = ({
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="floor" className="border rounded-md">
-        <AccordionTrigger className="flex justify-between w-full px-3 hover:no-underline hover:bg-gray-50">
-          <div className="flex items-center gap-1.5">
+      <AccordionItem value="floor">
+        <AccordionTrigger>
+          <div className="flex items-center gap-2">
             {isSingleComponentComplete("floor") && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span className={`font-medium ${isMobile ? 'text-sm' : ''}`}>Golv</span>
+            <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>Golv</span>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="px-3">
-          <div className="py-2">
+        <AccordionContent>
+          <div>
             <ConditionSelect
               label="Golv"
               value={inspectionData.conditions.floor}
@@ -109,17 +109,17 @@ export const InspectionAccordion = ({
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="details" className="border rounded-md">
-        <AccordionTrigger className="flex justify-between w-full px-3 hover:no-underline hover:bg-gray-50">
-          <div className="flex items-center gap-1.5">
+      <AccordionItem value="details">
+        <AccordionTrigger>
+          <div className="flex items-center gap-2">
             {isSingleComponentComplete("details") && (
               <Check className="h-4 w-4 text-green-500" />
             )}
-            <span className={`font-medium ${isMobile ? 'text-sm' : ''}`}>Detaljer</span>
+            <span className={`font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>Detaljer</span>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="px-3">
-          <div className="py-2">
+        <AccordionContent>
+          <div>
             <ConditionSelect
               label="Detaljer"
               value={inspectionData.conditions.details}
