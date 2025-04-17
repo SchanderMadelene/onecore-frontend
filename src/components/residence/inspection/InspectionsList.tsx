@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus } from "lucide-react";
+import { Plus, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InspectionFormDialog } from "./InspectionFormDialog";
 import { InspectionReadOnly } from "./InspectionReadOnly";
@@ -36,7 +36,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
   };
 
   const renderInspectionsTable = (inspectionsData: Inspection[]) => (
-    <div className="rounded-md border bg-card">
+    <div className="rounded-lg border border-slate-200 bg-white overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
@@ -77,7 +77,10 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between w-full">
-        <h3 className="text-base font-medium leading-none tracking-tight">Besiktningar</h3>
+        <h3 className="text-base font-medium leading-none tracking-tight flex items-center gap-2">
+          <ClipboardList className="h-5 w-5 text-slate-500" />
+          Besiktningar
+        </h3>
         <Button 
           size="sm" 
           onClick={() => setIsDialogOpen(true)} 
@@ -89,7 +92,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
       </div>
       
       <Tabs defaultValue="active" className="w-full">
-        <TabsList className="mb-4">
+        <TabsList className="mb-4 bg-slate-100/70">
           <TabsTrigger value="active">Pågående</TabsTrigger>
           <TabsTrigger value="history">Historik</TabsTrigger>
         </TabsList>
@@ -98,7 +101,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           {activeInspection ? (
             renderInspectionsTable([activeInspection])
           ) : (
-            <p className="text-muted-foreground">Ingen aktiv besiktning för denna lägenhet.</p>
+            <p className="text-slate-500">Ingen aktiv besiktning för denna lägenhet.</p>
           )}
         </TabsContent>
         
@@ -106,7 +109,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           {completedInspections.length > 0 ? (
             renderInspectionsTable(completedInspections)
           ) : (
-            <p className="text-muted-foreground">Ingen besiktningshistorik för denna lägenhet.</p>
+            <p className="text-slate-500">Ingen besiktningshistorik för denna lägenhet.</p>
           )}
         </TabsContent>
       </Tabs>

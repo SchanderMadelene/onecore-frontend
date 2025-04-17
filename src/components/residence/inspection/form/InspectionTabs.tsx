@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ClipboardList, Home, MapPin } from "lucide-react";
 
 // List of available inspectors
 const inspectors = [
@@ -57,23 +58,17 @@ export function InspectionTabs({
   
   return (
     <Tabs defaultValue="basic" className="w-full">
-      <TabsList className="mb-3 w-full flex justify-start bg-slate-100/70 p-1 rounded-lg">
-        <TabsTrigger 
-          value="basic" 
-          className="data-[state=active]:shadow-sm"
-        >
+      <TabsList className="mb-4 w-full flex justify-start bg-slate-100/70 p-1 rounded-lg">
+        <TabsTrigger value="basic" className="flex items-center gap-1.5">
+          <ClipboardList className="h-4 w-4" />
           Grundläggande info
         </TabsTrigger>
-        <TabsTrigger 
-          value="protocol" 
-          className="data-[state=active]:shadow-sm"
-        >
+        <TabsTrigger value="protocol" className="flex items-center gap-1.5">
+          <Home className="h-4 w-4" />
           Protokoll
         </TabsTrigger>
-        <TabsTrigger 
-          value="floorplan" 
-          className="data-[state=active]:shadow-sm"
-        >
+        <TabsTrigger value="floorplan" className="flex items-center gap-1.5">
+          <MapPin className="h-4 w-4" />
           Planritning
         </TabsTrigger>
       </TabsList>

@@ -1,5 +1,4 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
 import { RoomView } from "./RoomView";
 import { EmptyInspectionState } from "./EmptyInspectionState";
@@ -68,29 +67,35 @@ export const RoomCard = ({
   };
 
   return (
-    <Card className="overflow-hidden border-slate-200">
-      <CardHeader 
-        className="cursor-pointer px-4 py-3 bg-white hover:bg-slate-50/80 transition-colors" 
+    <div className="rounded-lg border border-slate-200 bg-white">
+      <div 
+        className="flex items-center px-4 py-3 cursor-pointer hover:bg-slate-50/80 transition-colors" 
         onClick={onToggle}
       >
-        <CardTitle className="flex items-center gap-2 text-base">
+        <div className="flex items-center gap-2 text-base font-medium flex-1">
           {inspectionData.isHandled && (
             <CheckCircle className="h-4 w-4 text-green-500" />
           )}
           <span>{room.name || room.roomType?.name || room.code}</span>
-        </CardTitle>
-      </CardHeader>
+        </div>
+        <div className={`h-5 w-5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </div>
+      </div>
+      
       {isExpanded && currentInspection && (
-        <CardContent className="p-0 border-t border-slate-100">
-          <Accordion type="single" collapsible className="w-full border-0">
-            <AccordionItem value="details" className="border-0">
-              <div className="flex justify-end px-4 py-1">
-                <AccordionTrigger className="py-1.5 px-2 -mr-1.5 rounded-md hover:bg-slate-100">
+        <div className="border-t border-slate-200">
+          <Accordion type="single" collapsible className="border-none">
+            <AccordionItem value="details" className="border-none rounded-none">
+              <div className="flex justify-end px-4 py-1.5">
+                <AccordionTrigger className="py-1 px-2 rounded-md hover:bg-slate-100 justify-end">
                   <span className="text-sm font-medium text-slate-500">Visa detaljer</span>
                 </AccordionTrigger>
               </div>
-              <AccordionContent className="px-0 py-0 border-t border-slate-100">
-                <div className="p-4">
+              <AccordionContent className="pb-0">
+                <div className="border-t border-slate-200 pt-2">
                   <RoomView 
                     room={room} 
                     inspectionData={inspectionData}
@@ -102,13 +107,14 @@ export const RoomCard = ({
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </CardContent>
+        </div>
       )}
+      
       {isExpanded && !currentInspection && (
-        <CardContent className="border-t border-slate-100">
+        <div className="border-t border-slate-200 p-4">
           <EmptyInspectionState onStartInspection={onStartInspection} />
-        </CardContent>
+        </div>
       )}
-    </Card>
+    </div>
   );
 };

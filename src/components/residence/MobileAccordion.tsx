@@ -34,84 +34,84 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
   };
   
   return (
-    <div className="space-y-0.5">
+    <div className="space-y-2.5">
       <Accordion 
         type="multiple" 
         value={openItems} 
         onValueChange={(value) => setOpenItems(value)}
-        className="space-y-0.5"
+        className="space-y-2.5"
       >
-        <AccordionItem value="info" className="bg-white overflow-hidden">
-          <AccordionTrigger className="bg-white hover:bg-slate-50">
+        <AccordionItem value="info">
+          <AccordionTrigger>
             <div className="flex items-center gap-2">
-              <Info className="h-5 w-5 text-slate-600" />
+              <Info className="h-5 w-5 text-slate-500" />
               <span className="text-base font-medium">Rumsinformation</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="pt-2">
+          <AccordionContent>
             {features.showRoomInformation ? (
               <ResidenceInfo 
                 rooms={rooms}
                 getOrientationText={getOrientationText}
               />
             ) : (
-              <p className="text-muted-foreground">
+              <p className="text-slate-500">
                 För att se rumsinformation, aktivera funktionen i inställningarna.
               </p>
             )}
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="inspections" className="bg-white overflow-hidden">
-          <AccordionTrigger className="bg-white hover:bg-slate-50">
+        <AccordionItem value="inspections">
+          <AccordionTrigger>
             <div className="flex items-center gap-2">
-              <ClipboardList className="h-5 w-5 text-slate-600" />
+              <ClipboardList className="h-5 w-5 text-slate-500" />
               <span className="text-base font-medium">Besiktningar</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="pt-2">
+          <AccordionContent>
             {features.showInspections ? (
               <ResidenceInspection
                 rooms={rooms}
               />
             ) : (
-              <p className="text-muted-foreground">
+              <p className="text-slate-500">
                 För att se besiktningar, aktivera funktionen i inställningarna.
               </p>
             )}
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="tenant" className="bg-white overflow-hidden">
-          <AccordionTrigger className="bg-white hover:bg-slate-50">
+        <AccordionItem value="tenant">
+          <AccordionTrigger>
             <div className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-slate-600" />
+              <Users className="h-5 w-5 text-slate-500" />
               <span className="text-base font-medium">Hyresgäst</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="pt-2">
+          <AccordionContent>
             {features.showTenantInfo ? (
               <TenantInformation tenant={mockTenant} />
             ) : (
-              <p className="text-muted-foreground">
+              <p className="text-slate-500">
                 För att se hyresgästinformation, aktivera funktionen i inställningarna.
               </p>
             )}
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="issues" className="bg-white overflow-hidden">
-          <AccordionTrigger className="bg-white hover:bg-slate-50">
+        <AccordionItem value="issues">
+          <AccordionTrigger>
             <div className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-slate-600" />
+              <MessageSquare className="h-5 w-5 text-slate-500" />
               <span className="text-base font-medium">Ärenden</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="pt-2">
+          <AccordionContent>
             {features.showApartmentIssues ? (
               <CreateIssue />
             ) : (
-              <p className="text-muted-foreground">
+              <p className="text-slate-500">
                 För att se felanmälningar, aktivera funktionen i inställningarna.
               </p>
             )}

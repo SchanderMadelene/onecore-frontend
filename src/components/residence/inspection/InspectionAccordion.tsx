@@ -33,8 +33,8 @@ export const InspectionAccordion = ({
   
   return (
     <Accordion type="single" className="space-y-2" collapsible>
-      <AccordionItem value="walls" className="bg-white border-slate-200">
-        <AccordionTrigger className="bg-white hover:bg-slate-50">
+      <AccordionItem value="walls">
+        <AccordionTrigger>
           <div className="flex items-center gap-2.5">
             <MapPin className="h-4.5 w-4.5 text-slate-500" />
             <span className="font-medium text-base">Väggar</span>
@@ -44,7 +44,7 @@ export const InspectionAccordion = ({
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          <div className="space-y-4 pt-1">
+          <div className="space-y-4">
             <ConditionSelect
               key="wall1"
               label="Vägg"
@@ -60,8 +60,8 @@ export const InspectionAccordion = ({
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="ceiling" className="bg-white border-slate-200">
-        <AccordionTrigger className="bg-white hover:bg-slate-50">
+      <AccordionItem value="ceiling">
+        <AccordionTrigger>
           <div className="flex items-center gap-2.5">
             <PanelTop className="h-4.5 w-4.5 text-slate-500" />
             <span className="font-medium text-base">Tak</span>
@@ -71,7 +71,7 @@ export const InspectionAccordion = ({
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          <div className="pt-1">
+          <div>
             <ConditionSelect
               label="Tak"
               value={inspectionData.conditions.ceiling}
@@ -86,8 +86,8 @@ export const InspectionAccordion = ({
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="floor" className="bg-white border-slate-200">
-        <AccordionTrigger className="bg-white hover:bg-slate-50">
+      <AccordionItem value="floor">
+        <AccordionTrigger>
           <div className="flex items-center gap-2.5">
             <Grid3X3 className="h-4.5 w-4.5 text-slate-500" />
             <span className="font-medium text-base">Golv</span>
@@ -97,7 +97,7 @@ export const InspectionAccordion = ({
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          <div className="pt-1">
+          <div>
             <ConditionSelect
               label="Golv"
               value={inspectionData.conditions.floor}
@@ -112,8 +112,8 @@ export const InspectionAccordion = ({
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="details" className="bg-white border-slate-200">
-        <AccordionTrigger className="bg-white hover:bg-slate-50">
+      <AccordionItem value="details">
+        <AccordionTrigger>
           <div className="flex items-center gap-2.5">
             <Home className="h-4.5 w-4.5 text-slate-500" />
             <span className="font-medium text-base">Detaljer</span>
@@ -123,7 +123,7 @@ export const InspectionAccordion = ({
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          <div className="pt-1">
+          <div>
             <ConditionSelect
               label="Detaljer"
               value={inspectionData.conditions.details}
