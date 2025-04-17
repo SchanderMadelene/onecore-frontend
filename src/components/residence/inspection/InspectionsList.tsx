@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -23,13 +22,11 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
   const [selectedInspection, setSelectedInspection] = useState<Inspection | null>(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
-  // Find the most recent incomplete inspection (if any)
   const activeInspection = inspections.find(inspection => 
     !inspection.isCompleted && 
     !Object.values(inspection.rooms).every(room => room.isHandled)
   );
 
-  // All other inspections are considered historical
   const completedInspections = inspections.filter(inspection => 
     inspection !== activeInspection
   );
@@ -88,7 +85,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           className="flex items-center gap-1"
           disabled={!!activeInspection}
         >
-          <Plus className="h-4 w-4" /> Skapa besiktning
+          <Plus className="h-4 w-4" /> Skapa ny
         </Button>
       </CardHeader>
       <CardContent className="px-0">
@@ -121,7 +118,6 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
           onSubmit={(inspectorName, roomsData) => {
-            // Handle submission logic
             const newInspection: Inspection = {
               id: `inspection-${Date.now()}`,
               date: new Date().toISOString(),
@@ -130,10 +126,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
               isCompleted: false
             };
             
-            // Save inspection (this is handled by the parent component)
             onInspectionCreated();
-            
-            // Close the dialog
             setIsDialogOpen(false);
           }}
           rooms={rooms}
