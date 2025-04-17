@@ -68,8 +68,8 @@ export const RoomCard = ({
   };
 
   return (
-    <Card>
-      <CardHeader className="cursor-pointer" onClick={onToggle}>
+    <Card className="overflow-hidden">
+      <CardHeader className="cursor-pointer pb-3" onClick={onToggle}>
         <CardTitle className="flex items-center gap-2 text-base">
           {inspectionData.isHandled && (
             <CheckCircle className="h-4 w-4 text-slate-500" />
@@ -78,15 +78,13 @@ export const RoomCard = ({
         </CardTitle>
       </CardHeader>
       {isExpanded && currentInspection && (
-        <CardContent>
-          <Accordion type="single" collapsible className="w-full">
+        <CardContent className="pt-0 px-0">
+          <Accordion type="single" collapsible className="w-full border-t">
             <AccordionItem value="details" className="border-0">
-              <div className="flex justify-end">
-                <AccordionTrigger className="py-0 hover:no-underline">
-                  <span className="text-base font-medium text-gray-500">Detaljer</span>
-                </AccordionTrigger>
-              </div>
-              <AccordionContent>
+              <AccordionTrigger className="px-6 py-2 hover:no-underline">
+                <span className="text-sm font-medium text-muted-foreground">Detaljer</span>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 py-3">
                 <RoomView 
                   room={room} 
                   inspectionData={inspectionData}
@@ -106,4 +104,4 @@ export const RoomCard = ({
       )}
     </Card>
   );
-};
+}

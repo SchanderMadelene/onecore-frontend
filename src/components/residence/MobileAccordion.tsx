@@ -34,90 +34,92 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
   };
   
   return (
-    <div className="space-y-4">
-      <Accordion 
-        type="multiple" 
-        value={openItems} 
-        onValueChange={(value) => setOpenItems(value)}
-        className="space-y-2"
-      >
-        <AccordionItem value="info" className="border rounded-md overflow-hidden">
-          <AccordionTrigger className="px-4 py-3">
-            <div className="flex items-center gap-2">
-              <Info className="h-5 w-5" />
-              <span className="text-base font-medium">Rumsinformation</span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="px-4 py-3">
-            {features.showRoomInformation ? (
-              <ResidenceInfo 
-                rooms={rooms}
-                getOrientationText={getOrientationText}
-              />
-            ) : (
-              <p className="text-muted-foreground">
-                För att se rumsinformation, aktivera funktionen i inställningarna.
-              </p>
-            )}
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="inspections" className="border rounded-md overflow-hidden">
-          <AccordionTrigger className="px-4 py-3">
-            <div className="flex items-center gap-2">
-              <ClipboardList className="h-5 w-5" />
-              <span className="text-base font-medium">Besiktningar</span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="px-4 py-3">
-            {features.showInspections ? (
-              <ResidenceInspection
-                rooms={rooms}
-              />
-            ) : (
-              <p className="text-muted-foreground">
-                För att se besiktningar, aktivera funktionen i inställningarna.
-              </p>
-            )}
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="tenant" className="border rounded-md overflow-hidden">
-          <AccordionTrigger className="px-4 py-3">
-            <div className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              <span className="text-base font-medium">Hyresgäst</span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="px-4 py-3">
-            {features.showTenantInfo ? (
+    <Accordion 
+      type="multiple" 
+      value={openItems} 
+      onValueChange={(value) => setOpenItems(value)}
+      className="w-full space-y-2"
+    >
+      <AccordionItem value="info" className="border rounded-md overflow-hidden">
+        <AccordionTrigger className="px-4 py-3 hover:no-underline">
+          <div className="flex items-center gap-2">
+            <Info className="h-5 w-5" />
+            <span className="text-base font-medium">Rumsinformation</span>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent className="border-t">
+          {features.showRoomInformation ? (
+            <ResidenceInfo 
+              rooms={rooms}
+              getOrientationText={getOrientationText}
+            />
+          ) : (
+            <p className="px-4 py-3 text-muted-foreground">
+              För att se rumsinformation, aktivera funktionen i inställningarna.
+            </p>
+          )}
+        </AccordionContent>
+      </AccordionItem>
+      
+      <AccordionItem value="inspections" className="border rounded-md overflow-hidden">
+        <AccordionTrigger className="px-4 py-3 hover:no-underline">
+          <div className="flex items-center gap-2">
+            <ClipboardList className="h-5 w-5" />
+            <span className="text-base font-medium">Besiktningar</span>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent className="border-t">
+          {features.showInspections ? (
+            <ResidenceInspection
+              rooms={rooms}
+            />
+          ) : (
+            <p className="px-4 py-3 text-muted-foreground">
+              För att se besiktningar, aktivera funktionen i inställningarna.
+            </p>
+          )}
+        </AccordionContent>
+      </AccordionItem>
+      
+      <AccordionItem value="tenant" className="border rounded-md overflow-hidden">
+        <AccordionTrigger className="px-4 py-3 hover:no-underline">
+          <div className="flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            <span className="text-base font-medium">Hyresgäst</span>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent className="border-t">
+          {features.showTenantInfo ? (
+            <div className="px-4 py-3">
               <TenantInformation tenant={mockTenant} />
-            ) : (
-              <p className="text-muted-foreground">
-                För att se hyresgästinformation, aktivera funktionen i inställningarna.
-              </p>
-            )}
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="issues" className="border rounded-md overflow-hidden">
-          <AccordionTrigger className="px-4 py-3">
-            <div className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5" />
-              <span className="text-base font-medium">Ärenden</span>
             </div>
-          </AccordionTrigger>
-          <AccordionContent className="px-4 py-3">
-            {features.showApartmentIssues ? (
+          ) : (
+            <p className="px-4 py-3 text-muted-foreground">
+              För att se hyresgästinformation, aktivera funktionen i inställningarna.
+            </p>
+          )}
+        </AccordionContent>
+      </AccordionItem>
+      
+      <AccordionItem value="issues" className="border rounded-md overflow-hidden">
+        <AccordionTrigger className="px-4 py-3 hover:no-underline">
+          <div className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5" />
+            <span className="text-base font-medium">Ärenden</span>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent className="border-t">
+          {features.showApartmentIssues ? (
+            <div className="px-4 py-3">
               <CreateIssue />
-            ) : (
-              <p className="text-muted-foreground">
-                För att se felanmälningar, aktivera funktionen i inställningarna.
-              </p>
-            )}
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
+            </div>
+          ) : (
+            <p className="px-4 py-3 text-muted-foreground">
+              För att se felanmälningar, aktivera funktionen i inställningarna.
+            </p>
+          )}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
