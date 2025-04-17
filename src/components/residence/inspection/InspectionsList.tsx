@@ -36,7 +36,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
   };
 
   const renderInspectionsTable = (inspectionsData: Inspection[]) => (
-    <div className="overflow-x-auto border rounded-md">
+    <div className="rounded-md border bg-card">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
@@ -94,7 +94,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           <TabsTrigger value="history">Historik</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="active" className="mt-0">
+        <TabsContent value="active">
           {activeInspection ? (
             renderInspectionsTable([activeInspection])
           ) : (
@@ -102,7 +102,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
           )}
         </TabsContent>
         
-        <TabsContent value="history" className="mt-0">
+        <TabsContent value="history">
           {completedInspections.length > 0 ? (
             renderInspectionsTable(completedInspections)
           ) : (

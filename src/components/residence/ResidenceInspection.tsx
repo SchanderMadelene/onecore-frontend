@@ -29,7 +29,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   };
 
   return (
-    <div className="w-full px-0">
+    <div className="w-full">
       <InspectionsList
         rooms={rooms}
         inspections={inspections}
