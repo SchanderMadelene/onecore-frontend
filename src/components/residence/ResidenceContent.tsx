@@ -9,7 +9,7 @@ import type { Residence, Room } from "@/types/api";
 import { mockTenant } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Info, ClipboardList, Users, MessageSquare } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAccordion } from "./MobileAccordion";
@@ -65,80 +65,64 @@ export const ResidenceContent = ({
           </TabsList>
 
           <TabsContent value="info">
-            {features.showRoomInformation ? (
-              <Card>
-                <CardContent className="p-4">
+            <Card>
+              <CardContent className="p-4">
+                {features.showRoomInformation ? (
                   <ResidenceInfo 
                     rooms={roomsData}
                     getOrientationText={getOrientationText}
                   />
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardContent className="p-4">
+                ) : (
                   <p className="text-slate-500">
                     För att se rumsinformation, aktivera funktionen i inställningarna.
                   </p>
-                </CardContent>
-              </Card>
-            )}
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="inspections">
-            {features.showInspections ? (
-              <Card>
-                <CardContent className="p-4">
+            <Card>
+              <CardContent className="p-4">
+                {features.showInspections ? (
                   <ResidenceInspection
                     rooms={roomsData}
                   />
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardContent className="p-4">
+                ) : (
                   <p className="text-slate-500">
                     För att se besiktningar, aktivera funktionen i inställningarna.
                   </p>
-                </CardContent>
-              </Card>
-            )}
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="tenant">
-            {features.showTenantInfo ? (
-              <Card>
-                <CardContent className="p-4">
+            <Card>
+              <CardContent className="p-4">
+                {features.showTenantInfo ? (
                   <TenantInformation tenant={mockTenant} />
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardContent className="p-4">
+                ) : (
                   <p className="text-slate-500">
                     För att se hyresgästinformation, aktivera funktionen i inställningarna.
                   </p>
-                </CardContent>
-              </Card>
-            )}
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="issues">
-            {features.showApartmentIssues ? (
-              <Card>
-                <CardContent className="p-4">
+            <Card>
+              <CardContent className="p-4">
+                {features.showApartmentIssues ? (
                   <CreateIssue />
-                </CardContent>
-              </Card>
-            ) : (
-              <Card>
-                <CardContent className="p-4">
+                ) : (
                   <p className="text-slate-500">
                     För att se felanmälningar, aktivera funktionen i inställningarna.
                   </p>
-                </CardContent>
-              </Card>
-            )}
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       )}
