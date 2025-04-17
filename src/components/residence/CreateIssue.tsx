@@ -1,12 +1,11 @@
 
 import { Button } from "@/components/ui/button";
 import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
-import { ClipboardList } from "lucide-react";
 
 export function CreateIssue() {
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-start">
         <CreateOrderDialog contextType="residence" />
       </div>
       <p className="text-sm text-muted-foreground">
