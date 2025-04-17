@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Accordion, 
@@ -24,7 +23,13 @@ interface MobileAccordionProps {
 
 export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionProps) {
   const { features } = useFeatureToggles();
-  const [openItem, setOpenItem] = useState<string>("info"); // Default open item
+  const [openItem, setOpenItem] = useState<string | null>("info"); // Changed to allow null values, default still "info"
+  
+  const handleValueChange = (value: string) => {
+    // Toggle accordion: if the same item is clicked, close it (set to null)
+    // Otherwise, open the new item
+    setOpenItem(value === openItem ? null : value);
+  };
   
   return (
     <div className="space-y-4">
@@ -32,8 +37,8 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
         "overflow-hidden transition-all",
         openItem === "info" ? "ring-2 ring-primary/10" : ""
       )}>
-        <Accordion type="single" collapsible value={openItem} 
-          onValueChange={(value) => value && setOpenItem(value)}
+        <Accordion type="single" collapsible value={openItem || ""} 
+          onValueChange={handleValueChange}
           className="border-0">
           <AccordionItem value="info" className="border-0">
             <div className="border-b-0">
@@ -69,7 +74,7 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
         openItem === "inspections" ? "ring-2 ring-primary/10" : ""
       )}>
         <Accordion type="single" collapsible value={openItem === "inspections" ? "inspections" : ""} 
-          onValueChange={(value) => value && setOpenItem(value)}
+          onValueChange={handleValueChange}
           className="border-0">
           <AccordionItem value="inspections" className="border-0">
             <div className="border-b-0">
@@ -104,7 +109,7 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
         openItem === "tenant" ? "ring-2 ring-primary/10" : ""
       )}>
         <Accordion type="single" collapsible value={openItem === "tenant" ? "tenant" : ""} 
-          onValueChange={(value) => value && setOpenItem(value)}
+          onValueChange={handleValueChange}
           className="border-0">
           <AccordionItem value="tenant" className="border-0">
             <div className="border-b-0">
@@ -137,7 +142,7 @@ export function MobileAccordion({ rooms, getOrientationText }: MobileAccordionPr
         openItem === "issues" ? "ring-2 ring-primary/10" : ""
       )}>
         <Accordion type="single" collapsible value={openItem === "issues" ? "issues" : ""} 
-          onValueChange={(value) => value && setOpenItem(value)}
+          onValueChange={handleValueChange}
           className="border-0">
           <AccordionItem value="issues" className="border-0">
             <div className="border-b-0">
