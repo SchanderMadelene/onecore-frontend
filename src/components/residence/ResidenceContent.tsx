@@ -1,3 +1,4 @@
+
 import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { ResidenceInspection } from "@/components/residence/ResidenceInspection";
@@ -10,6 +11,7 @@ import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Info, ClipboardList, Users, MessageSquare } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ResidenceContentProps {
   residenceData: Residence;
@@ -25,6 +27,7 @@ export const ResidenceContent = ({
   district 
 }: ResidenceContentProps) => {
   const { features } = useFeatureToggles();
+  const isMobile = useIsMobile();
   
   return (
     <div className="w-full space-y-6">
@@ -35,22 +38,22 @@ export const ResidenceContent = ({
       />
 
       <Tabs defaultValue="info" className="w-full">
-        <TabsList className="mb-6">
+        <TabsList className={`mb-4 ${isMobile ? 'w-full flex overflow-x-auto' : ''}`}>
           <TabsTrigger value="info" className="flex items-center gap-1.5">
             <Info className="h-4 w-4" />
-            Rumsinformation
+            {!isMobile && "Rumsinformation"}
           </TabsTrigger>
           <TabsTrigger value="inspections" className="flex items-center gap-1.5">
             <ClipboardList className="h-4 w-4" />
-            Besiktningar
+            {!isMobile && "Besiktningar"}
           </TabsTrigger>
           <TabsTrigger value="tenant" className="flex items-center gap-1.5">
             <Users className="h-4 w-4" />
-            Hyresgäst
+            {!isMobile && "Hyresgäst"}
           </TabsTrigger>
           <TabsTrigger value="issues" className="flex items-center gap-1.5">
             <MessageSquare className="h-4 w-4" />
-            Ärenden
+            {!isMobile && "Ärenden"}
           </TabsTrigger>
         </TabsList>
 
@@ -63,7 +66,7 @@ export const ResidenceContent = ({
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle>Rumsinformation</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Rumsinformation</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
@@ -82,7 +85,7 @@ export const ResidenceContent = ({
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle>Besiktningar</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Besiktningar</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
@@ -97,7 +100,7 @@ export const ResidenceContent = ({
           {features.showTenantInfo ? (
             <Card>
               <CardHeader>
-                <CardTitle>Hyresgästinformation</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Hyresgästinformation</CardTitle>
               </CardHeader>
               <CardContent>
                 <TenantInformation tenant={mockTenant} />
@@ -106,7 +109,7 @@ export const ResidenceContent = ({
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle>Hyresgästinformation</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Hyresgästinformation</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
@@ -123,7 +126,7 @@ export const ResidenceContent = ({
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle>Felanmälan</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">Felanmälan</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
