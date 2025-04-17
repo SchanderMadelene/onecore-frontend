@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -91,7 +92,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
       <CardContent className="px-0">
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="mb-4">
-            <TabsTrigger value="active">Aktiv besiktning</TabsTrigger>
+            <TabsTrigger value="active">Pågående</TabsTrigger>
             <TabsTrigger value="history">Besiktningshistorik</TabsTrigger>
           </TabsList>
           
