@@ -32,7 +32,7 @@ export function MobileAccordion({
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="pb-4 pt-1 px-0 my-[12px]">
+              <div className="pb-4 pt-1 px-0 my-[12px] py-0">
                 {item.content}
               </div>
             </AccordionContent>
