@@ -1,13 +1,6 @@
-
 import { useState } from "react";
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { LucideIcon } from "lucide-react";
-
 export interface MobileAccordionItem {
   id: string;
   icon: LucideIcon;
@@ -15,39 +8,23 @@ export interface MobileAccordionItem {
   content: React.ReactNode;
   disabled?: boolean;
 }
-
 interface MobileAccordionProps {
   items: MobileAccordionItem[];
   defaultOpen?: string[];
   className?: string;
 }
-
-export function MobileAccordion({ 
-  items, 
-  defaultOpen = [], 
+export function MobileAccordion({
+  items,
+  defaultOpen = [],
   className = ""
 }: MobileAccordionProps) {
   const [openItems, setOpenItems] = useState<string[]>(defaultOpen);
-  
   const handleValueChange = (value: string[]) => {
     setOpenItems(value);
   };
-  
-  return (
-    <div className={`space-y-3 ${className}`}>
-      <Accordion 
-        type="multiple" 
-        value={openItems} 
-        onValueChange={handleValueChange}
-        className="space-y-3"
-      >
-        {items.map((item) => (
-          <AccordionItem 
-            key={item.id} 
-            value={item.id} 
-            disabled={item.disabled}
-            className="rounded-lg border border-slate-200 bg-white"
-          >
+  return <div className={`space-y-3 ${className}`}>
+      <Accordion type="multiple" value={openItems} onValueChange={handleValueChange} className="space-y-3">
+        {items.map(item => <AccordionItem key={item.id} value={item.id} disabled={item.disabled} className="rounded-lg border border-slate-200 bg-white">
             <AccordionTrigger className="px-4 py-3">
               <div className="flex items-center gap-2">
                 <item.icon className="h-5 w-5 text-muted-foreground" />
@@ -55,13 +32,11 @@ export function MobileAccordion({
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="px-4 pb-4 pt-1">
+              <div className="pb-4 pt-1 px-0">
                 {item.content}
               </div>
             </AccordionContent>
-          </AccordionItem>
-        ))}
+          </AccordionItem>)}
       </Accordion>
-    </div>
-  );
+    </div>;
 }
