@@ -93,7 +93,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="mb-4">
             <TabsTrigger value="active">Pågående</TabsTrigger>
-            <TabsTrigger value="history">Besiktningshistorik</TabsTrigger>
+            <TabsTrigger value="history">Historik</TabsTrigger>
           </TabsList>
           
           <TabsContent value="active">
