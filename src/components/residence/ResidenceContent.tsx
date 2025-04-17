@@ -66,16 +66,17 @@ export const ResidenceContent = ({
 
           <TabsContent value="info">
             {features.showRoomInformation ? (
-              <ResidenceInfo 
-                rooms={roomsData}
-                getOrientationText={getOrientationText}
-              />
+              <Card>
+                <CardContent className="p-4">
+                  <ResidenceInfo 
+                    rooms={roomsData}
+                    getOrientationText={getOrientationText}
+                  />
+                </CardContent>
+              </Card>
             ) : (
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Rumsinformation</CardTitle>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="p-4">
                   <p className="text-slate-500">
                     För att se rumsinformation, aktivera funktionen i inställningarna.
                   </p>
@@ -86,15 +87,16 @@ export const ResidenceContent = ({
 
           <TabsContent value="inspections">
             {features.showInspections ? (
-              <ResidenceInspection
-                rooms={roomsData}
-              />
+              <Card>
+                <CardContent className="p-4">
+                  <ResidenceInspection
+                    rooms={roomsData}
+                  />
+                </CardContent>
+              </Card>
             ) : (
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Besiktningar</CardTitle>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="p-4">
                   <p className="text-slate-500">
                     För att se besiktningar, aktivera funktionen i inställningarna.
                   </p>
@@ -106,19 +108,13 @@ export const ResidenceContent = ({
           <TabsContent value="tenant">
             {features.showTenantInfo ? (
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Hyresgästinformation</CardTitle>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="p-4">
                   <TenantInformation tenant={mockTenant} />
                 </CardContent>
               </Card>
             ) : (
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Hyresgästinformation</CardTitle>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="p-4">
                   <p className="text-slate-500">
                     För att se hyresgästinformation, aktivera funktionen i inställningarna.
                   </p>
@@ -129,13 +125,14 @@ export const ResidenceContent = ({
 
           <TabsContent value="issues">
             {features.showApartmentIssues ? (
-              <CreateIssue />
+              <Card>
+                <CardContent className="p-4">
+                  <CreateIssue />
+                </CardContent>
+              </Card>
             ) : (
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Felanmälan</CardTitle>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="p-4">
                   <p className="text-slate-500">
                     För att se felanmälningar, aktivera funktionen i inställningarna.
                   </p>
