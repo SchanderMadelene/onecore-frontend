@@ -50,7 +50,7 @@ export function MobileAccordion({
           >
             <AccordionTrigger className="px-4 py-3">
               <div className="flex items-center gap-2">
-                <item.icon className="h-5 w-5 text-slate-500" />
+                <item.icon className="h-5 w-5 text-muted-foreground" />
                 <span className="text-base font-medium">{item.title}</span>
               </div>
             </AccordionTrigger>

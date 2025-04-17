@@ -77,8 +77,8 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between w-full">
-        <h3 className="text-base font-medium leading-none tracking-tight flex items-center gap-2">
-          <ClipboardList className="h-5 w-5 text-slate-500" />
+        <h3 className="text-lg font-semibold flex items-center gap-2">
+          <ClipboardList className="h-5 w-5 text-muted-foreground" />
           Besiktningar
         </h3>
         <Button 

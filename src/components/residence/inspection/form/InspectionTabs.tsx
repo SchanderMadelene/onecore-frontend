@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ClipboardList, Home, MapPin } from "lucide-react";
+import { ClipboardList, Home, MapPin, Users } from "lucide-react";
 
 // List of available inspectors
 const inspectors = [
