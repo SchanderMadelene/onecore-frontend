@@ -26,8 +26,8 @@ export const InspectionHistory = ({ inspections }: InspectionHistoryProps) => {
               {inspections.map((inspection, index) => (
                 <TableRow key={index}>
                   <TableCell>{inspection?.date || 'N/A'}</TableCell>
-                  <TableCell>{inspection?.inspectorName || 'N/A'}</TableCell>
-                  <TableCell>{inspection?.status || 'N/A'}</TableCell>
+                  <TableCell>{inspection?.inspectedBy || 'N/A'}</TableCell>
+                  <TableCell>{inspection?.isCompleted ? 'Slutförd' : 'Pågående'}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
