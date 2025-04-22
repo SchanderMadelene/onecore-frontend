@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -11,6 +10,13 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { mockProperties } from "@/data/properties";
 import type { Property } from "@/types/api";
+
+/**
+ * Helper function to generate property detail URL path
+ */
+const getPropertyPath = (property: Property) => {
+  return `/properties/${property.id}`;
+};
 
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
