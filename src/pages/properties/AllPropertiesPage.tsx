@@ -12,6 +12,11 @@ import { Badge } from "@/components/ui/badge";
 import { mockProperties } from "@/data/properties";
 import type { Property } from "@/types/api";
 
+// Helper function to generate property URL path
+const getPropertyPath = (property: Property) => {
+  return `/properties/${property.id}`;
+};
+
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
