@@ -104,7 +104,7 @@ export interface Apartment {
 export interface MaintenanceUnit {
   id: string;
   name: string;
-  type: "Miljöbod" | "Tvättstuga" | "Undercentral" | "Annat" | "Tak";
+  type: "Miljöbod" | "Tvättstuga" | "Undercentral" | "Annat";
   area: number;
   constructionYear: number;
   lastRenovated?: string;

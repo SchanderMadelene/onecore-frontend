@@ -1,3 +1,4 @@
+
 import { PropertyDetail } from "@/types/api";
 
 // Property 1 (Odenplan 5) details
@@ -86,15 +87,6 @@ export const property1: PropertyDetail = {
       area: 30,
       constructionYear: 1973,
       status: "Aktiv"
-    },
-    {
-      id: "M4",
-      name: "Takrenovering",
-      type: "Tak",
-      area: 120,
-      constructionYear: 1973,
-      status: "Aktiv",
-      description: "Huvudbyggnadens tak, senast renoverat 2015"
     }
   ],
   propertyMap: {

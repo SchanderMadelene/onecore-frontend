@@ -1,7 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { MaintenanceUnit } from "@/types/api";
-import { Building } from "lucide-react";
 
 interface PropertyMaintenanceUnitsTabProps {
   maintenanceUnits?: MaintenanceUnit[];
@@ -23,16 +22,8 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {maintenanceUnits.map((unit) => (
           <Card key={unit.id}>
-            <CardContent className="p-6 flex items-center space-x-4">
-              {unit.type === "Tak" ? (
-                <Building className="w-10 h-10 text-primary" />
-              ) : null}
-              <div>
-                <h3 className="font-semibold text-lg">{unit.type}</h3>
-                {unit.description && (
-                  <p className="text-sm text-muted-foreground">{unit.description}</p>
-                )}
-              </div>
+            <CardContent className="p-6">
+              <h3 className="font-semibold text-lg">{unit.type}</h3>
             </CardContent>
           </Card>
         ))}
@@ -40,4 +31,3 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
     </div>
   );
 };
-
