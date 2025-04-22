@@ -1,11 +1,10 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PropertyInfoTab } from "./tabs/PropertyInfoTab";
 import { PropertyDocumentsTab } from "./tabs/PropertyDocumentsTab";
 import { PropertyPlanningTab } from "./tabs/PropertyPlanningTab";
 import { PropertyBuildingsTab } from "./tabs/PropertyBuildingsTab";
 import { PropertyMapTab } from "./tabs/PropertyMapTab";
-import { PropertyApartmentsTab } from "./tabs/PropertyApartmentsTab";
+import { PropertyResidenceTab } from "./tabs/PropertyResidenceTab";
 import { PropertyStatisticsTab } from "./tabs/PropertyStatisticsTab";
 import { PropertyMaintenanceUnitsTab } from "./tabs/PropertyMaintenanceUnitsTab";
 import type { PropertyDetail } from "@/types/api";
@@ -42,8 +41,8 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
           <span>Ritningar</span>
         </TabsTrigger>
         <TabsTrigger value="apartments">
-          <span className="hidden sm:inline">Lägenheter</span>
-          <span className="sm:hidden">Läg</span>
+          <span className="hidden sm:inline">Portar/Adresser</span>
+          <span className="sm:hidden">Portar</span>
         </TabsTrigger>
         <TabsTrigger value="statistics">
           <span className="hidden sm:inline">Statistik</span>
@@ -76,7 +75,7 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
       </TabsContent>
 
       <TabsContent value="apartments">
-        <PropertyApartmentsTab buildings={propertyDetail.buildings} />
+        <PropertyResidenceTab buildings={propertyDetail.buildings} />
       </TabsContent>
 
       <TabsContent value="statistics">
