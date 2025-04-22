@@ -6,36 +6,20 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { mockProperties } from "@/data/properties";
 import type { Property } from "@/types/api";
 
-// Helper function to generate property URL path
-const getPropertyPath = (property: Property) => {
-  return `/properties/${property.id}`;
-};
-
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "bostad" | "kontor">("all");
-  const [districtFilter, setDistrictFilter] = useState<string>("all");
-  const [managerAreaFilter, setManagerAreaFilter] = useState<string>("all");
 
   const { data: properties } = useQuery<Property[]>({
     queryKey: ['properties'],
     queryFn: () => Promise.resolve(mockProperties)
   });
-
-  const getUniqueValues = (field: keyof Property) => {
-    const values = properties?.map(property => property[field]) || [];
-    return Array.from(new Set(values));
-  };
-
-  const districts = getUniqueValues('district');
-  const managerAreas = getUniqueValues('managerArea');
 
   const filteredProperties = properties?.filter(property => {
     const matchesSearch = (
@@ -47,17 +31,21 @@ const AllPropertiesPage = () => {
       filter === "all" || 
       (filter === "bostad" && property.purpose === "Bostad") || 
       (filter === "kontor" && property.purpose === "Kontor");
-
-    const matchesDistrict = 
-      districtFilter === "all" || 
-      property.district === districtFilter;
-
-    const matchesManagerArea = 
-      managerAreaFilter === "all" || 
-      property.managerArea === managerAreaFilter;
     
-    return matchesSearch && matchesFilter && matchesDistrict && matchesManagerArea;
+    return matchesSearch && matchesFilter;
   });
+
+  // Helper function to get the correct path for a property
+  const getPropertyPath = (property: Property): string => {
+    if (property.id === "1") return "/properties/vasteras/lundby/odenplan-5";
+    if (property.id === "2") return "/properties/vasteras/backby/gotgatan-15";
+    if (property.id === "3") return "/properties/vasteras/domkyrkan/sveavagen-10";
+    
+    // Default path for other properties
+    const area = property.purpose === 'Bostad' ? 'backby' : 'domkyrkan';
+    const street = property.purpose === 'Bostad' ? 'gotgatan-15' : 'sveavagen-10';
+    return `/properties/vasteras/${area}/${street}`;
+  };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -72,69 +60,33 @@ const AllPropertiesPage = () => {
             <CardTitle>Fastighetslista</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-4 mb-6">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="relative flex-1">
-                  <Input
-                    placeholder="Sök på beteckning eller kod..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant={filter === "all" ? "default" : "outline"} 
-                    onClick={() => setFilter("all")}
-                  >
-                    <span>Alla</span>
-                  </Button>
-                  <Button 
-                    variant={filter === "bostad" ? "default" : "outline"} 
-                    onClick={() => setFilter("bostad")}
-                  >
-                    <span>Bostad</span>
-                  </Button>
-                  <Button 
-                    variant={filter === "kontor" ? "default" : "outline"} 
-                    onClick={() => setFilter("kontor")}
-                  >
-                    <span>Kontor</span>
-                  </Button>
-                </div>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="relative flex-1">
+                <Input
+                  placeholder="Sök på beteckning eller kod..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Select value={districtFilter} onValueChange={setDistrictFilter}>
-                  <SelectTrigger className="w-full sm:w-[200px]">
-                    <SelectValue placeholder="Välj distrikt" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="all">Alla distrikt</SelectItem>
-                      {districts.map((district) => (
-                        <SelectItem key={district} value={district}>
-                          {district}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-
-                <Select value={managerAreaFilter} onValueChange={setManagerAreaFilter}>
-                  <SelectTrigger className="w-full sm:w-[200px]">
-                    <SelectValue placeholder="Välj kvartersvärdsområde" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="all">Alla områden</SelectItem>
-                      {managerAreas.map((area) => (
-                        <SelectItem key={area} value={area}>
-                          {area}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+              <div className="flex gap-2">
+                <Button 
+                  variant={filter === "all" ? "default" : "outline"} 
+                  onClick={() => setFilter("all")}
+                >
+                  <span>Alla</span>
+                </Button>
+                <Button 
+                  variant={filter === "bostad" ? "default" : "outline"} 
+                  onClick={() => setFilter("bostad")}
+                >
+                  <span>Bostad</span>
+                </Button>
+                <Button 
+                  variant={filter === "kontor" ? "default" : "outline"} 
+                  onClick={() => setFilter("kontor")}
+                >
+                  <span>Kontor</span>
+                </Button>
               </div>
             </div>
 
@@ -145,8 +97,6 @@ const AllPropertiesPage = () => {
                     <TableHead>Beteckning</TableHead>
                     <TableHead>Typ</TableHead>
                     <TableHead>Användning</TableHead>
-                    <TableHead>Distrikt</TableHead>
-                    <TableHead>Kvartersvärdsområde</TableHead>
                     <TableHead>Byggnader</TableHead>
                     <TableHead className="text-right">Åtgärd</TableHead>
                   </TableRow>
@@ -167,8 +117,6 @@ const AllPropertiesPage = () => {
                           {property.purpose}
                         </Badge>
                       </TableCell>
-                      <TableCell>{property.district}</TableCell>
-                      <TableCell>{property.managerArea}</TableCell>
                       <TableCell>
                         <div>
                           <span>{property.buildingCount || 0}</span>
@@ -185,7 +133,7 @@ const AllPropertiesPage = () => {
                   ))}
                   {(!filteredProperties || filteredProperties.length === 0) && (
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center py-8">
+                      <TableCell colSpan={5} className="text-center py-8">
                         Inga fastigheter hittades med angivna sökkriterier
                       </TableCell>
                     </TableRow>
