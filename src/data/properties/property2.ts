@@ -1,4 +1,3 @@
-
 import { PropertyDetail } from "@/types/api";
 
 // Property 2 (Götgatan 15) details
@@ -58,6 +57,15 @@ export const property2: PropertyDetail = {
       constructionYear: 1985,
       lastRenovated: "2018-05-01",
       status: "Aktiv"
+    },
+    {
+      id: "M6",
+      name: "Takbyte",
+      type: "Tak",
+      area: 200,
+      constructionYear: 1985,
+      status: "Aktiv",
+      description: "Planerat takbyte för hela fastigheten"
     }
   ],
   propertyMap: {
