@@ -5,7 +5,6 @@ import {
   Building as BuildingIcon, 
   CalendarDays, 
   Layers, 
-  SquareStack, 
   Users
 } from "lucide-react";
 
