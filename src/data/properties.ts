@@ -18,7 +18,6 @@ const getBuildingCount = (propertyId: string): number => {
   return 0;
 };
 
-// Property mock data
 export const mockProperties: Property[] = [
   {
     id: "1",
@@ -28,7 +27,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Flerbostadshus",
-    buildingCount: 2
+    buildingCount: 2,
+    district: "Centrum",
+    managerArea: "City"
   },
   {
     id: "2",
@@ -38,7 +39,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Flerbostadshus",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Östermalm",
+    managerArea: "Öst"
   },
   {
     id: "3",
@@ -48,7 +51,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Kontor",
     buildingType: "Kontorsbyggnad",
-    buildingCount: 2
+    buildingCount: 2,
+    district: "Centrum",
+    managerArea: "City"
   },
   {
     id: "4",
@@ -58,7 +63,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Flerfamiljshus",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Norr",
+    managerArea: "Norra"
   },
   {
     id: "5",
@@ -68,7 +75,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Kontor",
     buildingType: "Kontorsbyggnad",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Söder",
+    managerArea: "Södra"
   },
   {
     id: "6",
@@ -78,7 +87,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Radhus",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Väst",
+    managerArea: "Västra"
   },
   {
     id: "7",
@@ -88,6 +99,8 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Kontor",
     buildingType: "Kontorskomplex",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Öst",
+    managerArea: "Östra"
   }
 ];
