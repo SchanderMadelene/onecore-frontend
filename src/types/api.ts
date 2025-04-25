@@ -1,3 +1,4 @@
+// residence = apartment
 export interface Residence {
   id: string;
   code: string;
