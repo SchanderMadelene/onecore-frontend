@@ -21,24 +21,6 @@ const activeOrdersMock: Order[] = [
     priority: "medium",
     description: "Väntar på handläggning",
     assignedTo: "Johan Andersson"
-  },
-  {
-    id: "C001",
-    title: "Vattenläcka i kök",
-    reportedDate: "2023-08-15",
-    status: "active",
-    priority: "high",
-    description: "Läckage under diskbänken, vatten samlas på golvet.",
-    assignedTo: "Johan Andersson"
-  },
-  {
-    id: "C002",
-    title: "Trasigt dörrhandtag",
-    reportedDate: "2023-09-02",
-    status: "pending",
-    priority: "low",
-    description: "Badrumsdörrens handtag har lossnat.",
-    assignedTo: "Maria Nilsson"
   }
 ];
 
