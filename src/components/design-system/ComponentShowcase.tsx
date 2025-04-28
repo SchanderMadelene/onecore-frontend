@@ -80,8 +80,8 @@ export const ComponentShowcase = () => {
     {
       name: "Takluckor",
       specs: {
-        ekonomiskLivslangd: "15 år",
-        tekniskLivslangd: "20 år",
+        ekonomiskLivslangd: "15 år (2035)",
+        tekniskLivslangd: "20 år (2040)",
         year: "2020",
         quantity: "3 st",
         brand: "Velux",
@@ -91,8 +91,8 @@ export const ComponentShowcase = () => {
     {
       name: "Röklucka",
       specs: {
-        ekonomiskLivslangd: "20 år",
-        tekniskLivslangd: "25 år",
+        ekonomiskLivslangd: "20 år (2042)",
+        tekniskLivslangd: "25 år (2047)",
         year: "2022",
         quantity: "1 st",
         brand: "Automatic",
@@ -102,8 +102,8 @@ export const ComponentShowcase = () => {
     {
       name: "Taktegel",
       specs: {
-        ekonomiskLivslangd: "30 år",
-        tekniskLivslangd: "40 år",
+        ekonomiskLivslangd: "30 år (2052)",
+        tekniskLivslangd: "40 år (2062)",
         year: "2022",
         quantity: "450 m²",
         brand: "Benders",
