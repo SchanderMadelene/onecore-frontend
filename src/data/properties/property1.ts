@@ -1,4 +1,3 @@
-
 import { PropertyDetail } from "@/types/api";
 
 // Property 1 (Odenplan 5) details
@@ -86,6 +85,113 @@ export const property1: PropertyDetail = {
       type: "Undercentral",
       area: 30,
       constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M4",
+      name: "Takbeläggning",
+      type: "Tak",
+      area: 800,
+      constructionYear: 1973,
+      lastRenovated: "2010-06-15",
+      status: "Aktiv"
+    },
+    {
+      id: "M5",
+      name: "Fasadbeklädnad",
+      type: "Fasad",
+      area: 1200,
+      constructionYear: 1973,
+      status: "Under renovering"
+    },
+    {
+      id: "M6",
+      name: "Fönsterpartier",
+      type: "Fönster",
+      area: 240,
+      constructionYear: 1973,
+      status: "Planerad"
+    },
+    {
+      id: "M7",
+      name: "Balkonger",
+      type: "Balkong",
+      area: 180,
+      constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M8",
+      name: "Uteplats",
+      type: "Uteplats",
+      area: 120,
+      constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M9",
+      name: "Hiss A",
+      type: "Hiss",
+      area: 4,
+      constructionYear: 1973,
+      lastRenovated: "2019-03-20",
+      status: "Aktiv"
+    },
+    {
+      id: "M10",
+      name: "Trapphus och korridorer",
+      type: "Allmänna ytor",
+      area: 450,
+      constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M11",
+      name: "Källarutrymmen",
+      type: "Källare",
+      area: 600,
+      constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M12",
+      name: "Vindsutrymme",
+      type: "Vind",
+      area: 700,
+      constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M13",
+      name: "Förrådsutrymmen",
+      type: "Förråd",
+      area: 350,
+      constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M14",
+      name: "Skyddsrum",
+      type: "Skyddsrum",
+      area: 120,
+      constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M15",
+      name: "Butikslokal",
+      type: "Lokal",
+      area: 85,
+      constructionYear: 1973,
+      status: "Aktiv"
+    },
+    {
+      id: "M16",
+      name: "Passagesystem",
+      type: "Lås & passage",
+      area: 0,
+      constructionYear: 1973,
+      lastRenovated: "2021-09-10",
       status: "Aktiv"
     }
   ],
