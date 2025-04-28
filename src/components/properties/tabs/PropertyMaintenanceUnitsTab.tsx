@@ -2,15 +2,20 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { MaintenanceUnit } from "@/types/api";
 import { 
-  House, 
-  Window, 
-  Elevator, 
-  DoorClosed, 
+  Building, 
+  Wind, 
+  ArrowUpDown, 
+  Door, 
   Lock, 
   WashingMachine, 
-  AirVent, 
+  Fan, 
   Thermometer, 
-  Box 
+  Box,
+  HomeIcon,
+  ExternalLink,
+  LayoutGrid,
+  Warehouse,
+  Landmark
 } from "lucide-react";
 
 interface PropertyMaintenanceUnitsTabProps {
@@ -21,27 +26,35 @@ interface PropertyMaintenanceUnitsTabProps {
 const getMaintenanceUnitIcon = (type: MaintenanceUnit['type']) => {
   switch (type) {
     case "Tak":
+      return <HomeIcon className="h-5 w-5" />;
     case "Fasad":
-    case "Balkong":
-    case "Uteplats":
-    case "Allmänna ytor":
-    case "Källare":
-    case "Vind":
-    case "Förråd":
-    case "Lokal":
-      return <House className="h-5 w-5" />;
+      return <Building className="h-5 w-5" />;
     case "Fönster":
-      return <Window className="h-5 w-5" />;
+      return <Wind className="h-5 w-5" />; // Using Wind instead of Window
+    case "Balkong":
+      return <ExternalLink className="h-5 w-5" />;
+    case "Uteplats":
+      return <LayoutGrid className="h-5 w-5" />;
+    case "Allmänna ytor":
+      return <Landmark className="h-5 w-5" />;
+    case "Källare":
+      return <Warehouse className="h-5 w-5" />;
+    case "Vind":
+      return <Building className="h-5 w-5" />;
+    case "Förråd":
+      return <Box className="h-5 w-5" />;
+    case "Lokal":
+      return <Building className="h-5 w-5" />;
     case "Hiss":
-      return <Elevator className="h-5 w-5" />;
+      return <ArrowUpDown className="h-5 w-5" />; // Using ArrowUpDown instead of Elevator
     case "Skyddsrum":
-      return <DoorClosed className="h-5 w-5" />;
+      return <Door className="h-5 w-5" />;
     case "Lås & passage":
       return <Lock className="h-5 w-5" />;
     case "Tvättstuga":
       return <WashingMachine className="h-5 w-5" />;
     case "Miljöbod":
-      return <AirVent className="h-5 w-5" />;
+      return <Fan className="h-5 w-5" />; // Using Fan instead of AirVent
     case "Undercentral":
       return <Thermometer className="h-5 w-5" />;
     default:
