@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -76,6 +77,40 @@ export const ComponentShowcase = () => {
     },
   ];
 
+  // Takkomponenter data
+  const takSubComponents = [
+    {
+      name: "Takluckor",
+      specs: {
+        age: "5 år",
+        year: "2020",
+        quantity: "3 st",
+        brand: "Velux",
+        model: "GVT 103"
+      }
+    },
+    {
+      name: "Röklucka",
+      specs: {
+        age: "3 år",
+        year: "2022",
+        quantity: "1 st",
+        brand: "Automatic",
+        model: "RL-200"
+      }
+    },
+    {
+      name: "Taktegel",
+      specs: {
+        age: "3 år",
+        year: "2022",
+        quantity: "450 m²",
+        brand: "Benders",
+        model: "Palema"
+      }
+    }
+  ];
+
   return (
     <div className="space-y-8">
       <Card>
@@ -112,6 +147,35 @@ export const ComponentShowcase = () => {
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground">Yta:</span>
                     <span>450 m²</span>
+                  </div>
+                  
+                  <Separator className="my-2" />
+                  
+                  <div>
+                    <h4 className="font-medium mb-2">Sub-komponenter</h4>
+                    <div className="space-y-3">
+                      {takSubComponents.map((component, idx) => (
+                        <div key={idx} className="border rounded-md p-3">
+                          <h5 className="font-medium mb-2">{component.name}</h5>
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                            <div className="text-muted-foreground">Ålder:</div>
+                            <div>{component.specs.age}</div>
+                            
+                            <div className="text-muted-foreground">Årtal:</div>
+                            <div>{component.specs.year}</div>
+                            
+                            <div className="text-muted-foreground">Mängd:</div>
+                            <div>{component.specs.quantity}</div>
+                            
+                            <div className="text-muted-foreground">Märke:</div>
+                            <div>{component.specs.brand}</div>
+                            
+                            <div className="text-muted-foreground">Modell:</div>
+                            <div>{component.specs.model}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </CardContent>
