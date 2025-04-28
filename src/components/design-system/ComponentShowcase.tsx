@@ -1,9 +1,9 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ButtonShowcase } from "./showcase/buttons/ButtonShowcase";
 import { FormControlsShowcase } from "./showcase/forms/FormControlsShowcase";
 import { MaintenanceUnitCard } from "./showcase/maintenance/MaintenanceUnitCard";
 import { CardsShowcase } from "./showcase/cards/CardsShowcase";
+import { OrdersShowcase } from "./showcase/orders/OrdersShowcase";
 import { MobileAccordion } from "@/components/ui/mobile-accordion";
 import { Bell, File, Settings, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -117,6 +117,7 @@ export const ComponentShowcase = () => {
 
   return (
     <div className="space-y-8">
+      <OrdersShowcase />
       <Card>
         <CardHeader>
           <CardTitle>Maintenance Unit Card</CardTitle>

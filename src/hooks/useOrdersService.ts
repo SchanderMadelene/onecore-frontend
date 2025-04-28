@@ -1,7 +1,5 @@
-
 import { useState } from "react";
 
-// Define the Order type directly in this file since we don't have OrderForm.tsx yet
 export interface Order {
   id: string;
   title: string;
@@ -16,22 +14,13 @@ export interface Order {
 // Mock order data
 const activeOrdersMock: Order[] = [
   {
-    id: "C001",
-    title: "Vattenläcka i kök",
-    reportedDate: "2023-08-15",
-    status: "active",
-    priority: "high",
-    description: "Läckage under diskbänken, vatten samlas på golvet.",
-    assignedTo: "Johan Andersson"
-  },
-  {
-    id: "C002",
-    title: "Trasigt dörrhandtag",
-    reportedDate: "2023-09-02",
+    id: "od-211",
+    title: "WEBB: Felanmäld Lägenhet - Tvättmaskin",
+    reportedDate: "2025-04-28",
     status: "pending",
-    priority: "low",
-    description: "Badrumsdörrens handtag har lossnat.",
-    assignedTo: "Maria Nilsson"
+    priority: "medium",
+    description: "Väntar på handläggning",
+    assignedTo: "Johan Andersson"
   }
 ];
 
