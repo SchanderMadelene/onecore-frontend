@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -77,7 +76,6 @@ export const ComponentShowcase = () => {
     },
   ];
 
-  // Takkomponenter data
   const takSubComponents = [
     {
       name: "Takluckor",
@@ -151,31 +149,28 @@ export const ComponentShowcase = () => {
                   
                   <Separator className="my-2" />
                   
-                  <div>
-                    <h4 className="font-medium mb-2">Sub-komponenter</h4>
-                    <div className="space-y-3">
-                      {takSubComponents.map((component, idx) => (
-                        <div key={idx} className="border rounded-md p-3">
-                          <h5 className="font-medium mb-2">{component.name}</h5>
-                          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-                            <div className="text-muted-foreground">Ålder:</div>
-                            <div>{component.specs.age}</div>
-                            
-                            <div className="text-muted-foreground">Årtal:</div>
-                            <div>{component.specs.year}</div>
-                            
-                            <div className="text-muted-foreground">Mängd:</div>
-                            <div>{component.specs.quantity}</div>
-                            
-                            <div className="text-muted-foreground">Märke:</div>
-                            <div>{component.specs.brand}</div>
-                            
-                            <div className="text-muted-foreground">Modell:</div>
-                            <div>{component.specs.model}</div>
-                          </div>
+                  <div className="space-y-3">
+                    {takSubComponents.map((component, idx) => (
+                      <div key={idx} className="border rounded-md p-3">
+                        <h5 className="font-medium mb-2">{component.name}</h5>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                          <div className="text-muted-foreground">Ålder:</div>
+                          <div>{component.specs.age}</div>
+                          
+                          <div className="text-muted-foreground">Årtal:</div>
+                          <div>{component.specs.year}</div>
+                          
+                          <div className="text-muted-foreground">Mängd:</div>
+                          <div>{component.specs.quantity}</div>
+                          
+                          <div className="text-muted-foreground">Märke:</div>
+                          <div>{component.specs.brand}</div>
+                          
+                          <div className="text-muted-foreground">Modell:</div>
+                          <div>{component.specs.model}</div>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </CardContent>
