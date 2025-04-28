@@ -1,16 +1,54 @@
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ButtonShowcase } from "./showcase/buttons/ButtonShowcase";
+import { FormControlsShowcase } from "./showcase/forms/FormControlsShowcase";
+import { MaintenanceUnitCard } from "./showcase/maintenance/MaintenanceUnitCard";
+import { CardsShowcase } from "./showcase/cards/CardsShowcase";
+import { MobileAccordion } from "@/components/ui/mobile-accordion";
+import { Bell, File, Settings, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
-import { AlertCircle, Check, Info, Loader2, Settings, File, Bell, User } from "lucide-react";
-import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
+import type { MobileAccordionItem } from "@/components/ui/mobile-accordion";
 
 export const ComponentShowcase = () => {
+  const takSubComponents = [
+    {
+      name: "Takluckor",
+      specs: {
+        ekonomiskLivslangd: "15 år (2035)",
+        tekniskLivslangd: "20 år (2040)",
+        year: "2020",
+        quantity: "3 st",
+        brand: "Velux",
+        model: "GVT 103"
+      }
+    },
+    {
+      name: "Röklucka",
+      specs: {
+        ekonomiskLivslangd: "20 år (2042)",
+        tekniskLivslangd: "25 år (2047)",
+        year: "2022",
+        quantity: "1 st",
+        brand: "Automatic",
+        model: "RL-200"
+      }
+    },
+    {
+      name: "Taktegel",
+      specs: {
+        ekonomiskLivslangd: "30 år (2052)",
+        tekniskLivslangd: "40 år (2062)",
+        year: "2022",
+        quantity: "450 m²",
+        brand: "Benders",
+        model: "Palema"
+      }
+    }
+  ];
+
   const mobileAccordionItems: MobileAccordionItem[] = [
     {
       id: "profile",
@@ -81,81 +119,28 @@ export const ComponentShowcase = () => {
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>Buttons</CardTitle>
-          <CardDescription>Various button styles used throughout the application</CardDescription>
+          <CardTitle>Maintenance Unit Card</CardTitle>
+          <CardDescription>Card component used for displaying maintenance unit information</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="flex flex-wrap gap-4">
-            <Button variant="default">Default</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="destructive">Destructive</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="link">Link</Button>
-          </div>
-          
-          <Separator />
-          
-          <div className="flex flex-wrap gap-4">
-            <Button size="default">Default Size</Button>
-            <Button size="sm">Small</Button>
-            <Button size="lg">Large</Button>
-            <Button size="icon">
-              <Check className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <Separator />
-          
-          <div className="flex flex-wrap gap-4">
-            <Button disabled>Disabled</Button>
-            <Button variant="outline" disabled>Disabled Outline</Button>
-            <Button>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Loading
-            </Button>
-            <Button>
-              <Check className="mr-2 h-4 w-4" /> 
-              Success
-            </Button>
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <MaintenanceUnitCard subComponents={takSubComponents} />
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-lg">Fasad</h3>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-lg">Fönster</h3>
+              </CardContent>
+            </Card>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Form Controls</CardTitle>
-          <CardDescription>Input elements used in forms</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid gap-4 max-w-md">
-            <div className="space-y-2">
-              <Label htmlFor="example-input">Default Input</Label>
-              <Input id="example-input" placeholder="Enter text..." />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="disabled-input">Disabled Input</Label>
-              <Input id="disabled-input" disabled placeholder="Disabled input" />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="with-icon" className="flex items-center gap-2">
-                <Info className="h-4 w-4" /> Input with Icon
-              </Label>
-              <div className="relative">
-                <AlertCircle className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input id="with-icon" className="pl-9" placeholder="Input with icon..." />
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Switch id="airplane-mode" />
-              <Label htmlFor="airplane-mode">Switch Example</Label>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <ButtonShowcase />
+      <FormControlsShowcase />
 
       <Card>
         <CardHeader>
@@ -173,51 +158,9 @@ export const ComponentShowcase = () => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Cards</CardTitle>
-          <CardDescription>Card components for displaying content</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle>Example Card</CardTitle>
-                <CardDescription>This is a description of the card content</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Main content goes here. The quick brown fox jumps over the lazy dog.</p>
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button variant="ghost">Cancel</Button>
-                <Button>Submit</Button>
-              </CardFooter>
-            </Card>
-            
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-2">
-                <Badge>Default</Badge>
-                <Badge variant="secondary">Secondary</Badge>
-                <Badge variant="outline">Outline</Badge>
-                <Badge variant="destructive">Destructive</Badge>
-              </div>
-              
-              <Tabs defaultValue="tab1" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 bg-slate-100/70 p-1 rounded-lg">
-                  <TabsTrigger value="tab1">Tab 1</TabsTrigger>
-                  <TabsTrigger value="tab2">Tab 2</TabsTrigger>
-                </TabsList>
-                <TabsContent value="tab1" className="p-4 border rounded-md mt-2">
-                  Tab 1 content
-                </TabsContent>
-                <TabsContent value="tab2" className="p-4 border rounded-md mt-2">
-                  Tab 2 content
-                </TabsContent>
-              </Tabs>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <CardsShowcase />
     </div>
   );
 };
+
+export default ComponentShowcase;

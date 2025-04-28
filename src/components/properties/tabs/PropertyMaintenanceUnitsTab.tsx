@@ -18,16 +18,14 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
   }
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {maintenanceUnits.map((unit) => (
-          <Card key={unit.id}>
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-lg">{unit.type}</h3>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {maintenanceUnits.map((unit) => (
+        <Card key={unit.id} className="hover:shadow-md transition-shadow">
+          <CardContent className="p-6">
+            <h3 className="font-semibold text-lg">{unit.type}</h3>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 };
