@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 export interface Order {
@@ -7,19 +8,19 @@ export interface Order {
   status: string;
   priority: string;
   description: string;
-  assignedTo: string;
+  assignedTo?: string; // Making this optional since unassigned orders won't have this
   resolvedDate?: string;
 }
 
-// Mock order data
+// Mock order data - Update to fix the status inconsistency
 const activeOrdersMock: Order[] = [
   {
     id: "od-211",
     title: "WEBB: Felanmäld Lägenhet - Tvättmaskin",
     reportedDate: "2025-04-28",
-    status: "pending",
+    status: "assigned", // Changed from "pending" to "assigned" since it has an assignedTo
     priority: "medium",
-    description: "Väntar på handläggning",
+    description: "Tilldelad till handläggare",
     assignedTo: "Johan Andersson"
   }
 ];

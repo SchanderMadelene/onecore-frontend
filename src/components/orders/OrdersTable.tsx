@@ -26,7 +26,9 @@ export function OrdersTable({ orders }: OrdersTableProps) {
       case "active":
         return <Badge variant="outline">Pågående</Badge>;
       case "pending":
-        return <Badge variant="outline">Väntande</Badge>;
+        return <Badge variant="outline">Väntar på handläggning</Badge>;
+      case "assigned":
+        return <Badge variant="outline">Tilldelad</Badge>;
       case "resolved":
         return <Badge variant="outline">Åtgärdat</Badge>;
       default:
