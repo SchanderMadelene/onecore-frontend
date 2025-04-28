@@ -80,7 +80,8 @@ export const ComponentShowcase = () => {
     {
       name: "Takluckor",
       specs: {
-        age: "5 år",
+        ekonomiskLivslangd: "15 år",
+        tekniskLivslangd: "20 år",
         year: "2020",
         quantity: "3 st",
         brand: "Velux",
@@ -90,7 +91,8 @@ export const ComponentShowcase = () => {
     {
       name: "Röklucka",
       specs: {
-        age: "3 år",
+        ekonomiskLivslangd: "20 år",
+        tekniskLivslangd: "25 år",
         year: "2022",
         quantity: "1 st",
         brand: "Automatic",
@@ -100,7 +102,8 @@ export const ComponentShowcase = () => {
     {
       name: "Taktegel",
       specs: {
-        age: "3 år",
+        ekonomiskLivslangd: "30 år",
+        tekniskLivslangd: "40 år",
         year: "2022",
         quantity: "450 m²",
         brand: "Benders",
@@ -154,8 +157,11 @@ export const ComponentShowcase = () => {
                       <div key={idx} className="border rounded-md p-3">
                         <h5 className="font-medium mb-2">{component.name}</h5>
                         <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-                          <div className="text-muted-foreground">Ålder:</div>
-                          <div>{component.specs.age}</div>
+                          <div className="text-muted-foreground">Ekonomisk livslängd:</div>
+                          <div>{component.specs.ekonomiskLivslangd}</div>
+                          
+                          <div className="text-muted-foreground">Teknisk livslängd:</div>
+                          <div>{component.specs.tekniskLivslangd}</div>
                           
                           <div className="text-muted-foreground">Årtal:</div>
                           <div>{component.specs.year}</div>
