@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -79,6 +78,47 @@ export const ComponentShowcase = () => {
 
   return (
     <div className="space-y-8">
+      <Card>
+        <CardHeader>
+          <CardTitle>Maintenance Unit Card</CardTitle>
+          <CardDescription>Card component used for displaying maintenance unit information</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-lg">Tak</h3>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-lg">Fasad</h3>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-lg">Fönster</h3>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Separator />
+          
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">Example usage:</p>
+            <pre className="bg-slate-100 p-4 rounded-md overflow-x-auto">
+              <code className="text-sm">
+{`<Card className="hover:shadow-md transition-shadow">
+  <CardContent className="p-6">
+    <h3 className="font-semibold text-lg">Unit Name</h3>
+  </CardContent>
+</Card>`}
+              </code>
+            </pre>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Buttons</CardTitle>
