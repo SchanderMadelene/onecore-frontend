@@ -8,7 +8,6 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { AlertCircle, Check, Info, Loader2, Settings, File, Bell, User } from "lucide-react";
 import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
-import { Calendar, Clock, Factory, Ruler } from "lucide-react";
 
 export const ComponentShowcase = () => {
   const mobileAccordionItems: MobileAccordionItem[] = [
@@ -91,32 +90,26 @@ export const ComponentShowcase = () => {
                 <h3 className="font-semibold text-lg">Tak</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Årsintervall:</span>
                     <span>2020-2025</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Avskrivningstid:</span>
                     <span>25 år</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Factory className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Fabrikat:</span>
                     <span>Takab AB</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Garantitid:</span>
                     <span>10 år</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Ålder:</span>
                     <span>3 år</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Ruler className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">Yta:</span>
                     <span>450 m²</span>
                   </div>
