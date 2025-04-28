@@ -163,7 +163,7 @@ export const ComponentShowcase = () => {
                           <div className="text-muted-foreground">Teknisk livslängd:</div>
                           <div>{component.specs.tekniskLivslangd}</div>
                           
-                          <div className="text-muted-foreground">Årtal:</div>
+                          <div className="text-muted-foreground">Startår:</div>
                           <div>{component.specs.year}</div>
                           
                           <div className="text-muted-foreground">Mängd:</div>
