@@ -1,4 +1,4 @@
-
+// residence = apartment
 export interface Residence {
   id: string;
   code: string;
@@ -68,6 +68,8 @@ export interface Property {
   purpose: string | null;
   buildingType: string | null;
   buildingCount?: number;
+  district: string;
+  propertyManagerArea: string;
 }
 
 export interface Company {

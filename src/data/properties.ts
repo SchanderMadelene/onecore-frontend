@@ -1,3 +1,4 @@
+
 import type { Property } from "@/types/api";
 import { mockPropertyDetails as propertyDetails } from "./properties/index";
 
@@ -28,7 +29,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Flerbostadshus",
-    buildingCount: 2
+    buildingCount: 2,
+    district: "Västerås Centrum",
+    propertyManagerArea: "Centrum Öst"
   },
   {
     id: "2",
@@ -38,7 +41,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Flerbostadshus",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Västerås Centrum",
+    propertyManagerArea: "Centrum Väst"
   },
   {
     id: "3",
@@ -48,7 +53,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Kontor",
     buildingType: "Kontorsbyggnad",
-    buildingCount: 2
+    buildingCount: 2,
+    district: "Västerås Nord",
+    propertyManagerArea: "Nord"
   },
   {
     id: "4",
@@ -58,7 +65,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Flerfamiljshus",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Västerås Nord",
+    propertyManagerArea: "Nord"
   },
   {
     id: "5",
@@ -68,7 +77,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Kontor",
     buildingType: "Kontorsbyggnad",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Västerås Syd",
+    propertyManagerArea: "Syd"
   },
   {
     id: "6",
@@ -78,7 +89,9 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Bostad",
     buildingType: "Radhus",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Västerås Syd",
+    propertyManagerArea: "Syd"
   },
   {
     id: "7",
@@ -88,6 +101,8 @@ export const mockProperties: Property[] = [
     municipality: "Västerås",
     purpose: "Kontor",
     buildingType: "Kontorskomplex",
-    buildingCount: 1
+    buildingCount: 1,
+    district: "Västerås Centrum",
+    propertyManagerArea: "Centrum Öst"
   }
 ];
