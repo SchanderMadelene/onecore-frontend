@@ -5,7 +5,7 @@ import {
   Building, 
   Wind, 
   ArrowUpDown, 
-  Door, 
+  DoorClosed, 
   Lock, 
   WashingMachine, 
   Fan, 
@@ -48,7 +48,7 @@ const getMaintenanceUnitIcon = (type: MaintenanceUnit['type']) => {
     case "Hiss":
       return <ArrowUpDown className="h-5 w-5" />; // Using ArrowUpDown instead of Elevator
     case "Skyddsrum":
-      return <Door className="h-5 w-5" />;
+      return <DoorClosed className="h-5 w-5" />; // Changed from Door to DoorClosed
     case "Lås & passage":
       return <Lock className="h-5 w-5" />;
     case "Tvättstuga":
