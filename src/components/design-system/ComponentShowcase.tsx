@@ -101,21 +101,6 @@ export const ComponentShowcase = () => {
               </CardContent>
             </Card>
           </div>
-          
-          <Separator />
-          
-          <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">Example usage:</p>
-            <pre className="bg-slate-100 p-4 rounded-md overflow-x-auto">
-              <code className="text-sm">
-{`<Card className="hover:shadow-md transition-shadow">
-  <CardContent className="p-6">
-    <h3 className="font-semibold text-lg">Unit Name</h3>
-  </CardContent>
-</Card>`}
-              </code>
-            </pre>
-          </div>
         </CardContent>
       </Card>
 
@@ -261,3 +246,5 @@ export const ComponentShowcase = () => {
     </div>
   );
 };
+
+export default ComponentShowcase;
