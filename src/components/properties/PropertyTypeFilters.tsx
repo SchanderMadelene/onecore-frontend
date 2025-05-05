@@ -1,8 +1,8 @@
 
-import { Building, Home } from "lucide-react";
+import { Building, Home, Wrench, Component } from "lucide-react";
 import { FilterChip } from "@/components/ui/filter-chip";
 
-type SearchTypeFilter = "property" | "building" | "apartment";
+type SearchTypeFilter = "property" | "building" | "apartment" | "maintenance" | "buildingpart";
 
 interface PropertyTypeFiltersProps {
   searchTypeFilter: SearchTypeFilter;
@@ -35,6 +35,20 @@ export const PropertyTypeFilters = ({
       >
         <Home className="h-4 w-4" />
         <span>Lägenheter</span>
+      </FilterChip>
+      <FilterChip
+        selected={searchTypeFilter === "maintenance"}
+        onSelect={() => setSearchTypeFilter("maintenance")}
+      >
+        <Wrench className="h-4 w-4" />
+        <span>Underhållsenheter</span>
+      </FilterChip>
+      <FilterChip
+        selected={searchTypeFilter === "buildingpart"}
+        onSelect={() => setSearchTypeFilter("buildingpart")}
+      >
+        <Component className="h-4 w-4" />
+        <span>Byggnadsdelar/komponenter</span>
       </FilterChip>
     </div>
   );

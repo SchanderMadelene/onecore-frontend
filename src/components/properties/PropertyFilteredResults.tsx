@@ -8,7 +8,7 @@ interface PropertyFilteredResultsProps {
   showSearchResults: boolean;
   filteredSearchResults: SearchResult[];
   filteredProperties: Property[];
-  searchTypeFilter: "property" | "building" | "apartment";
+  searchTypeFilter: "property" | "building" | "apartment" | "maintenance" | "buildingpart";
 }
 
 export const PropertyFilteredResults = ({
@@ -23,7 +23,9 @@ export const PropertyFilteredResults = ({
   const contentType = 
     searchTypeFilter === "property" ? "Fastigheter" : 
     searchTypeFilter === "building" ? "Byggnader" : 
-    "Lägenheter";
+    searchTypeFilter === "apartment" ? "Lägenheter" :
+    searchTypeFilter === "maintenance" ? "Underhållsenheter" :
+    "Byggnadsdelar/komponenter";
 
   return (
     <>

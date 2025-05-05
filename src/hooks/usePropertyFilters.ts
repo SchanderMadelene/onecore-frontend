@@ -5,7 +5,7 @@ import { mockProperties } from "@/data/properties";
 import { mockSearchResults, SearchResult } from "@/data/search";
 import { Property } from "@/types/api";
 
-type SearchTypeFilter = "property" | "building" | "apartment";
+type SearchTypeFilter = "property" | "building" | "apartment" | "maintenance" | "buildingpart";
 
 export const usePropertyFilters = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -67,6 +67,8 @@ export const usePropertyFilters = () => {
   const showSearchResults = 
     searchTypeFilter === "building" || 
     searchTypeFilter === "apartment" ||
+    searchTypeFilter === "maintenance" ||
+    searchTypeFilter === "buildingpart" ||
     (searchTypeFilter === "property" && searchQuery.trim() !== "");
 
   return {
