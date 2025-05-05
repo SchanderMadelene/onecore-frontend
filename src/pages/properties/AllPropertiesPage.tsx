@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,6 @@ import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters
 import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
 import { PropertyFilteredResults } from "@/components/properties/PropertyFilteredResults";
 import { usePropertyFilters } from "@/hooks/usePropertyFilters";
-
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {
@@ -34,7 +32,7 @@ const AllPropertiesPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Sök i fastighetsträdet</CardTitle>
+            <CardTitle>Sök i fastighetsbasen</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-4 mb-6">
@@ -55,5 +53,4 @@ const AllPropertiesPage = () => {
       </div>
     </PageLayout>;
 };
-
 export default AllPropertiesPage;
