@@ -12,6 +12,7 @@ export * from "./PropertyTypeFilters";
 export * from "./PropertySelectionFilters";
 export * from "./SearchResultsTable";
 export * from "./PropertiesTable";
+export * from "./PropertyFilteredResults";
 export * from "./tabs/PropertyInfoTab";
 export * from "./tabs/PropertyResidenceTab";
 export * from "./tabs/PropertyMaintenanceUnitsTab";

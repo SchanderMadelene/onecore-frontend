@@ -10,6 +10,26 @@ interface SearchResultsTableProps {
 }
 
 export const SearchResultsTable = ({ results }: SearchResultsTableProps) => {
+  const getTypeDisplay = (type: string) => {
+    switch (type) {
+      case "property": return "Fastighet";
+      case "building": return "Byggnad";
+      case "apartment": return "Lägenhet";
+      case "tenant": return "Kund";
+      default: return type;
+    }
+  };
+
+  const getTypeColorClass = (type: string) => {
+    switch (type) {
+      case "property": return "bg-blue-100 text-blue-800";
+      case "building": return "bg-purple-100 text-purple-800";
+      case "apartment": return "bg-green-100 text-green-800";
+      case "tenant": return "bg-slate-100";
+      default: return "bg-slate-100";
+    }
+  };
+
   return (
     <div className="border rounded-md">
       <Table>
@@ -29,16 +49,8 @@ export const SearchResultsTable = ({ results }: SearchResultsTableProps) => {
                 {result.name}
               </TableCell>
               <TableCell>
-                <Badge variant="outline" className={
-                  result.type === "property" ? "bg-blue-100 text-blue-800" :
-                  result.type === "building" ? "bg-purple-100 text-purple-800" : 
-                  result.type === "apartment" ? "bg-green-100 text-green-800" :
-                  "bg-slate-100"
-                }>
-                  {result.type === "property" ? "Fastighet" : 
-                   result.type === "building" ? "Byggnad" : 
-                   result.type === "apartment" ? "Lägenhet" : 
-                   result.type === "tenant" ? "Kund" : ""}
+                <Badge variant="outline" className={getTypeColorClass(result.type)}>
+                  {getTypeDisplay(result.type)}
                 </Badge>
               </TableCell>
               <TableCell>{result.address}</TableCell>

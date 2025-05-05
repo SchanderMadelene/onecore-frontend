@@ -5,8 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PropertySearch } from "@/components/properties/PropertySearch";
 import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters";
 import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
-import { SearchResultsTable } from "@/components/properties/SearchResultsTable";
-import { PropertiesTable } from "@/components/properties/PropertiesTable";
+import { PropertyFilteredResults } from "@/components/properties/PropertyFilteredResults";
 import { usePropertyFilters } from "@/hooks/usePropertyFilters";
 
 const AllPropertiesPage = () => {
@@ -66,11 +65,12 @@ const AllPropertiesPage = () => {
               </div>
             </div>
 
-            {showSearchResults ? (
-              <SearchResultsTable results={filteredSearchResults} />
-            ) : (
-              <PropertiesTable properties={filteredProperties || []} />
-            )}
+            <PropertyFilteredResults
+              showSearchResults={showSearchResults}
+              filteredSearchResults={filteredSearchResults}
+              filteredProperties={filteredProperties || []}
+              searchTypeFilter={searchTypeFilter}
+            />
           </CardContent>
         </Card>
       </div>

@@ -67,8 +67,11 @@ export const usePropertyFilters = () => {
     return matchesSearch && matchesFilter && matchesDistrict && matchesArea;
   });
 
-  // Use search results when there's a search query, otherwise use filtered properties
-  const showSearchResults = searchQuery.trim() !== "";
+  // Determine whether to show search results or regular property list
+  // Now considering both search query and type filter
+  const showSearchResults = 
+    searchQuery.trim() !== "" || 
+    (searchTypeFilter !== "all" && searchTypeFilter !== "property");
 
   return {
     searchQuery,
