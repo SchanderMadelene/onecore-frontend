@@ -8,7 +8,7 @@ interface PropertyFilteredResultsProps {
   showSearchResults: boolean;
   filteredSearchResults: SearchResult[];
   filteredProperties: Property[];
-  searchTypeFilter: "all" | "property" | "building" | "apartment";
+  searchTypeFilter: "property" | "building" | "apartment";
 }
 
 export const PropertyFilteredResults = ({
@@ -17,11 +17,6 @@ export const PropertyFilteredResults = ({
   filteredProperties,
   searchTypeFilter
 }: PropertyFilteredResultsProps) => {
-  // Filtrera sökresultaten baserat på typ
-  const typeFilteredResults = filteredSearchResults.filter(result => 
-    searchTypeFilter === "all" || result.type === searchTypeFilter
-  );
-  
   // Bestäm om innehållet ska visa sökresultat baserat på vald filtertyp
   const shouldShowSearchResults = 
     showSearchResults || 
@@ -34,16 +29,15 @@ export const PropertyFilteredResults = ({
         <>
           <div className="mb-4">
             <h2 className="text-lg font-semibold">
-              {searchTypeFilter === "all" ? "Sökresultat" : 
-               searchTypeFilter === "property" ? "Fastigheter" : 
+              {searchTypeFilter === "property" ? "Fastigheter" : 
                searchTypeFilter === "building" ? "Byggnader" : 
                "Lägenheter"}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Visar {typeFilteredResults.length} resultat
+              Visar {filteredSearchResults.length} resultat
             </p>
           </div>
-          <SearchResultsTable results={typeFilteredResults} />
+          <SearchResultsTable results={filteredSearchResults} />
         </>
       ) : (
         <>

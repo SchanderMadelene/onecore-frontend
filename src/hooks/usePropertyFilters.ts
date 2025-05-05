@@ -1,18 +1,17 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { mockProperties } from "@/data/properties";
 import { mockSearchResults, SearchResult } from "@/data/search";
 import { Property } from "@/types/api";
 
-type SearchTypeFilter = "all" | "property" | "building" | "apartment";
+type SearchTypeFilter = "property" | "building" | "apartment";
 
 export const usePropertyFilters = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "bostad" | "kontor">("all");
   const [districtFilter, setDistrictFilter] = useState<string>("all");
   const [areaFilter, setAreaFilter] = useState<string>("all");
-  const [searchTypeFilter, setSearchTypeFilter] = useState<SearchTypeFilter>("all");
+  const [searchTypeFilter, setSearchTypeFilter] = useState<SearchTypeFilter>("property");
 
   // Property data for the regular property list
   const { data: properties } = useQuery<Property[]>({
@@ -26,9 +25,6 @@ export const usePropertyFilters = () => {
     queryFn: () => Promise.resolve(mockSearchResults)
   });
 
-  const allDistricts = [...new Set(properties?.map(p => p.district) || [])];
-  const allAreas = [...new Set(properties?.map(p => p.propertyManagerArea) || [])];
-
   // Filter the search results by type and search query
   const filteredSearchResults = searchResults.filter(item => {
     const matchesSearch = 
@@ -36,9 +32,7 @@ export const usePropertyFilters = () => {
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.address.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesType = 
-      searchTypeFilter === "all" || 
-      item.type === searchTypeFilter;
+    const matchesType = item.type === searchTypeFilter;
     
     return matchesSearch && matchesType;
   });
@@ -70,10 +64,10 @@ export const usePropertyFilters = () => {
   // Bestäm om sökresultat eller vanliga fastigheter ska visas
   // Visa sökresultat om:
   // 1. Söktermen inte är tom
-  // 2. En annan typ än "property" eller "all" är vald
+  // 2. En annan typ än "property" är vald
   const showSearchResults = 
     searchQuery.trim() !== "" || 
-    (searchTypeFilter !== "all" && searchTypeFilter !== "property");
+    (searchTypeFilter !== "property");
 
   return {
     searchQuery,
@@ -89,8 +83,8 @@ export const usePropertyFilters = () => {
     properties,
     filteredProperties,
     filteredSearchResults,
-    allDistricts,
-    allAreas,
+    allDistricts: [...new Set(properties?.map(p => p.district) || [])],
+    allAreas: [...new Set(properties?.map(p => p.propertyManagerArea) || [])],
     showSearchResults
   };
 };

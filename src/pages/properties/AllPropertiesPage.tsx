@@ -6,6 +6,7 @@ import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters
 import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
 import { PropertyFilteredResults } from "@/components/properties/PropertyFilteredResults";
 import { usePropertyFilters } from "@/hooks/usePropertyFilters";
+
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {
@@ -53,4 +54,5 @@ const AllPropertiesPage = () => {
       </div>
     </PageLayout>;
 };
+
 export default AllPropertiesPage;

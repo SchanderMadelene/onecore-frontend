@@ -1,8 +1,8 @@
 
-import { Layers, Building, Home } from "lucide-react";
+import { Building, Home } from "lucide-react";
 import { FilterChip } from "@/components/ui/filter-chip";
 
-type SearchTypeFilter = "all" | "property" | "building" | "apartment";
+type SearchTypeFilter = "property" | "building" | "apartment";
 
 interface PropertyTypeFiltersProps {
   searchTypeFilter: SearchTypeFilter;
@@ -17,13 +17,6 @@ export const PropertyTypeFilters = ({
     <div className="flex flex-col gap-4">
       <div className="text-sm font-medium">Filter efter typ</div>
       <div className="flex flex-wrap gap-2">
-        <FilterChip
-          selected={searchTypeFilter === "all"}
-          onSelect={() => setSearchTypeFilter("all")}
-        >
-          <Layers className="h-4 w-4" />
-          <span>Alla typer</span>
-        </FilterChip>
         <FilterChip
           selected={searchTypeFilter === "property"}
           onSelect={() => setSearchTypeFilter("property")}
