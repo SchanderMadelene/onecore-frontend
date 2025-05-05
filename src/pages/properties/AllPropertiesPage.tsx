@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -107,26 +106,6 @@ const AllPropertiesPage = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant={filter === "all" ? "default" : "outline"} 
-                    onClick={() => setFilter("all")}
-                  >
-                    <span>Alla</span>
-                  </Button>
-                  <Button 
-                    variant={filter === "bostad" ? "default" : "outline"} 
-                    onClick={() => setFilter("bostad")}
-                  >
-                    <span>Bostad</span>
-                  </Button>
-                  <Button 
-                    variant={filter === "kontor" ? "default" : "outline"} 
-                    onClick={() => setFilter("kontor")}
-                  >
-                    <span>Kontor</span>
-                  </Button>
                 </div>
               </div>
               
