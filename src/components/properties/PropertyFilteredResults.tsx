@@ -17,22 +17,20 @@ export const PropertyFilteredResults = ({
   filteredProperties,
   searchTypeFilter
 }: PropertyFilteredResultsProps) => {
-  // Bestäm om innehållet ska visa sökresultat baserat på vald filtertyp
-  const shouldShowSearchResults = 
-    showSearchResults || 
-    searchTypeFilter === "building" || 
-    searchTypeFilter === "apartment";
+  // Always show search results for building and apartment types
+  const shouldShowSearchResults = showSearchResults;
+  
+  const contentType = 
+    searchTypeFilter === "property" ? "Fastigheter" : 
+    searchTypeFilter === "building" ? "Byggnader" : 
+    "Lägenheter";
 
   return (
     <>
       {shouldShowSearchResults ? (
         <>
           <div className="mb-4">
-            <h2 className="text-lg font-semibold">
-              {searchTypeFilter === "property" ? "Fastigheter" : 
-               searchTypeFilter === "building" ? "Byggnader" : 
-               "Lägenheter"}
-            </h2>
+            <h2 className="text-lg font-semibold">{contentType}</h2>
             <p className="text-sm text-muted-foreground">
               Visar {filteredSearchResults.length} resultat
             </p>

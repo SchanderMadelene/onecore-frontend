@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { mockProperties } from "@/data/properties";
@@ -61,13 +62,12 @@ export const usePropertyFilters = () => {
     return matchesSearch && matchesFilter && matchesDistrict && matchesArea;
   });
 
-  // Bestäm om sökresultat eller vanliga fastigheter ska visas
-  // Visa sökresultat om:
-  // 1. Söktermen inte är tom
-  // 2. En annan typ än "property" är vald
+  // Always show search results for building and apartment types
+  // or when there's a search query for properties
   const showSearchResults = 
-    searchQuery.trim() !== "" || 
-    (searchTypeFilter !== "property");
+    searchTypeFilter === "building" || 
+    searchTypeFilter === "apartment" ||
+    (searchTypeFilter === "property" && searchQuery.trim() !== "");
 
   return {
     searchQuery,

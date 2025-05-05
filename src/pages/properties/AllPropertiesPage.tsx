@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters
 import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
 import { PropertyFilteredResults } from "@/components/properties/PropertyFilteredResults";
 import { usePropertyFilters } from "@/hooks/usePropertyFilters";
+
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {
@@ -23,6 +25,7 @@ const AllPropertiesPage = () => {
     allAreas,
     showSearchResults
   } = usePropertyFilters();
+  
   return <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
         <h1 className="text-3xl font-bold mb-2">Fastigheter</h1>
@@ -47,10 +50,16 @@ const AllPropertiesPage = () => {
               </div>
             </div>
 
-            <PropertyFilteredResults showSearchResults={showSearchResults} filteredSearchResults={filteredSearchResults} filteredProperties={filteredProperties || []} searchTypeFilter={searchTypeFilter} />
+            <PropertyFilteredResults 
+              showSearchResults={showSearchResults} 
+              filteredSearchResults={filteredSearchResults} 
+              filteredProperties={filteredProperties || []} 
+              searchTypeFilter={searchTypeFilter} 
+            />
           </CardContent>
         </Card>
       </div>
     </PageLayout>;
 };
+
 export default AllPropertiesPage;
