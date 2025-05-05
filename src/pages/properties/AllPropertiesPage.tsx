@@ -9,9 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FilterChip } from "@/components/ui/filter-chip";
 import { mockProperties } from "@/data/properties";
 import { mockSearchResults, SearchResult } from "@/data/search";
 import type { Property } from "@/types/api";
+import { Building, Home, Layers } from "lucide-react";
 
 /**
  * Helper function to generate property detail URL path
@@ -128,46 +130,68 @@ const AllPropertiesPage = () => {
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Select value={searchTypeFilter} onValueChange={value => setSearchTypeFilter(value as any)}>
-                  <SelectTrigger className="w-[200px]">
-                    <SelectValue placeholder="Välj söktyp" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Alla typer</SelectItem>
-                    <SelectItem value="property">Fastigheter</SelectItem>
-                    <SelectItem value="building">Byggnader</SelectItem>
-                    <SelectItem value="apartment">Lägenheter</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="flex flex-col gap-4">
+                <div className="text-sm font-medium">Filter efter typ</div>
+                <div className="flex flex-wrap gap-2">
+                  <FilterChip
+                    selected={searchTypeFilter === "all"}
+                    onSelect={() => setSearchTypeFilter("all")}
+                  >
+                    <Layers className="h-4 w-4" />
+                    <span>Alla typer</span>
+                  </FilterChip>
+                  <FilterChip
+                    selected={searchTypeFilter === "property"}
+                    onSelect={() => setSearchTypeFilter("property")}
+                  >
+                    <Building className="h-4 w-4" />
+                    <span>Fastigheter</span>
+                  </FilterChip>
+                  <FilterChip
+                    selected={searchTypeFilter === "building"}
+                    onSelect={() => setSearchTypeFilter("building")}
+                  >
+                    <Building className="h-4 w-4" />
+                    <span>Byggnader</span>
+                  </FilterChip>
+                  <FilterChip
+                    selected={searchTypeFilter === "apartment"}
+                    onSelect={() => setSearchTypeFilter("apartment")}
+                  >
+                    <Home className="h-4 w-4" />
+                    <span>Lägenheter</span>
+                  </FilterChip>
+                </div>
 
-                <Select value={districtFilter} onValueChange={setDistrictFilter}>
-                  <SelectTrigger className="w-[200px]">
-                    <SelectValue placeholder="Välj distrikt" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Alla distrikt</SelectItem>
-                    {allDistricts.map((district) => (
-                      <SelectItem key={district} value={district}>
-                        {district}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Select value={districtFilter} onValueChange={setDistrictFilter}>
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Välj distrikt" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Alla distrikt</SelectItem>
+                      {allDistricts.map((district) => (
+                        <SelectItem key={district} value={district}>
+                          {district}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-                <Select value={areaFilter} onValueChange={setAreaFilter}>
-                  <SelectTrigger className="w-[200px]">
-                    <SelectValue placeholder="Välj kvartersvärdsområde" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Alla områden</SelectItem>
-                    {allAreas.map((area) => (
-                      <SelectItem key={area} value={area}>
-                        {area}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <Select value={areaFilter} onValueChange={setAreaFilter}>
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Välj kvartersvärdsområde" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Alla områden</SelectItem>
+                      {allAreas.map((area) => (
+                        <SelectItem key={area} value={area}>
+                          {area}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 
