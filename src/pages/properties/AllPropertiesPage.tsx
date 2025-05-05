@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { mockProperties } from "@/data/properties";
+import { mockSearchResults, SearchResult } from "@/data/search";
 import type { Property } from "@/types/api";
 
 /**
@@ -24,20 +26,44 @@ const AllPropertiesPage = () => {
   const [filter, setFilter] = useState<"all" | "bostad" | "kontor">("all");
   const [districtFilter, setDistrictFilter] = useState<string>("all");
   const [areaFilter, setAreaFilter] = useState<string>("all");
+  const [searchTypeFilter, setSearchTypeFilter] = useState<"all" | "property" | "building" | "apartment">("all");
 
+  // Property data for the regular property list
   const { data: properties } = useQuery<Property[]>({
     queryKey: ['properties'],
     queryFn: () => Promise.resolve(mockProperties)
   });
 
+  // Search results data for the enhanced search
+  const { data: searchResults = [] } = useQuery<SearchResult[]>({
+    queryKey: ['searchResults'],
+    queryFn: () => Promise.resolve(mockSearchResults)
+  });
+
   const allDistricts = [...new Set(properties?.map(p => p.district) || [])];
   const allAreas = [...new Set(properties?.map(p => p.propertyManagerArea) || [])];
 
-  const filteredProperties = properties?.filter(property => {
-    const matchesSearch = (
-      property.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      property.code.toLowerCase().includes(searchQuery.toLowerCase())
+  // Filter the search results by type if a specific type is selected
+  const filteredSearchResults = searchResults.filter(item => {
+    const matchesSearch = searchQuery.trim() !== "" && (
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.address.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    
+    const matchesType = 
+      searchTypeFilter === "all" || 
+      item.type === searchTypeFilter;
+    
+    return matchesSearch && matchesType;
+  });
+
+  // Regular property filtering logic
+  const filteredProperties = properties?.filter(property => {
+    const matchesSearch = 
+      searchQuery === "" || (
+        property.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        property.code.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     
     const matchesFilter = 
       filter === "all" || 
@@ -54,6 +80,9 @@ const AllPropertiesPage = () => {
     
     return matchesSearch && matchesFilter && matchesDistrict && matchesArea;
   });
+
+  // Use search results when there's a search query, otherwise use filtered properties
+  const showSearchResults = searchQuery.trim() !== "";
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -72,7 +101,7 @@ const AllPropertiesPage = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative flex-1">
                   <Input
-                    placeholder="Sök på beteckning eller kod..."
+                    placeholder="Sök på beteckning, kod, byggnad, lägenhet..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -100,6 +129,18 @@ const AllPropertiesPage = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
+                <Select value={searchTypeFilter} onValueChange={value => setSearchTypeFilter(value as any)}>
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="Välj söktyp" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Alla typer</SelectItem>
+                    <SelectItem value="property">Fastigheter</SelectItem>
+                    <SelectItem value="building">Byggnader</SelectItem>
+                    <SelectItem value="apartment">Lägenheter</SelectItem>
+                  </SelectContent>
+                </Select>
+
                 <Select value={districtFilter} onValueChange={setDistrictFilter}>
                   <SelectTrigger className="w-[200px]">
                     <SelectValue placeholder="Välj distrikt" />
@@ -130,61 +171,122 @@ const AllPropertiesPage = () => {
               </div>
             </div>
 
-            <div className="border rounded-md">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Beteckning</TableHead>
-                    <TableHead>Typ</TableHead>
-                    <TableHead>Användning</TableHead>
-                    <TableHead>Distrikt</TableHead>
-                    <TableHead>Kvartersvärdsområde</TableHead>
-                    <TableHead>Byggnader</TableHead>
-                    <TableHead className="text-right">Åtgärd</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredProperties?.map((property) => (
-                    <TableRow key={property.id}>
-                      <TableCell className="font-medium">
-                        {property.designation}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="bg-slate-100">
-                          {property.buildingType}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="bg-slate-100">
-                          {property.purpose}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{property.district}</TableCell>
-                      <TableCell>{property.propertyManagerArea}</TableCell>
-                      <TableCell>
-                        <div>
-                          <span>{property.buildingCount}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button asChild variant="link" size="sm">
-                          <Link to={getPropertyPath(property)}>
-                            Visa detaljer
-                          </Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {(!filteredProperties || filteredProperties.length === 0) && (
+            {showSearchResults ? (
+              <div className="border rounded-md">
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center py-8">
-                        Inga fastigheter hittades med angivna sökkriterier
-                      </TableCell>
+                      <TableHead>Namn</TableHead>
+                      <TableHead>Typ</TableHead>
+                      <TableHead>Adress</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Åtgärd</TableHead>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredSearchResults.length > 0 ? filteredSearchResults.map((result) => (
+                      <TableRow key={`${result.type}-${result.id}`}>
+                        <TableCell className="font-medium">
+                          {result.name}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className={
+                            result.type === "property" ? "bg-blue-100 text-blue-800" :
+                            result.type === "building" ? "bg-purple-100 text-purple-800" : 
+                            result.type === "apartment" ? "bg-green-100 text-green-800" :
+                            "bg-slate-100"
+                          }>
+                            {result.type === "property" ? "Fastighet" : 
+                             result.type === "building" ? "Byggnad" : 
+                             result.type === "apartment" ? "Lägenhet" : 
+                             result.type === "tenant" ? "Kund" : ""}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{result.address}</TableCell>
+                        <TableCell>
+                          {result.type === "apartment" && (
+                            <Badge variant="outline" className={
+                              result.tenant ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                            }>
+                              {result.tenant ? "Uthyrd" : "Vakant"}
+                            </Badge>
+                          )}
+                          {result.type !== "apartment" && "-"}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button asChild variant="link" size="sm">
+                            <Link to={result.path}>
+                              Visa detaljer
+                            </Link>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    )) : (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center py-8">
+                          Inga resultat hittades med angivna sökkriterier
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            ) : (
+              <div className="border rounded-md">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Beteckning</TableHead>
+                      <TableHead>Typ</TableHead>
+                      <TableHead>Användning</TableHead>
+                      <TableHead>Distrikt</TableHead>
+                      <TableHead>Kvartersvärdsområde</TableHead>
+                      <TableHead>Byggnader</TableHead>
+                      <TableHead className="text-right">Åtgärd</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredProperties?.length ? filteredProperties.map((property) => (
+                      <TableRow key={property.id}>
+                        <TableCell className="font-medium">
+                          {property.designation}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="bg-slate-100">
+                            {property.buildingType}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="bg-slate-100">
+                            {property.purpose}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{property.district}</TableCell>
+                        <TableCell>{property.propertyManagerArea}</TableCell>
+                        <TableCell>
+                          <div>
+                            <span>{property.buildingCount}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button asChild variant="link" size="sm">
+                            <Link to={getPropertyPath(property)}>
+                              Visa detaljer
+                            </Link>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    )) : (
+                      <TableRow>
+                        <TableCell colSpan={7} className="text-center py-8">
+                          Inga fastigheter hittades med angivna sökkriterier
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
