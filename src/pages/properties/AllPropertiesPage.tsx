@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,13 +38,13 @@ const AllPropertiesPage = () => {
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-4 mb-6">
+              <PropertyTypeFilters searchTypeFilter={searchTypeFilter} setSearchTypeFilter={setSearchTypeFilter} />
+              
               <div className="flex flex-col sm:flex-row gap-4">
                 <PropertySearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
               </div>
               
               <div className="flex flex-col gap-4">
-                <PropertyTypeFilters searchTypeFilter={searchTypeFilter} setSearchTypeFilter={setSearchTypeFilter} />
-
                 <PropertySelectionFilters districtFilter={districtFilter} setDistrictFilter={setDistrictFilter} areaFilter={areaFilter} setAreaFilter={setAreaFilter} allDistricts={allDistricts} allAreas={allAreas} />
               </div>
             </div>
