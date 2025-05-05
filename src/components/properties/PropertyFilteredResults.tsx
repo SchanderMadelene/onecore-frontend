@@ -17,9 +17,20 @@ export const PropertyFilteredResults = ({
   filteredProperties,
   searchTypeFilter
 }: PropertyFilteredResultsProps) => {
+  // Filtrera sökresultaten baserat på typ
+  const typeFilteredResults = filteredSearchResults.filter(result => 
+    searchTypeFilter === "all" || result.type === searchTypeFilter
+  );
+  
+  // Bestäm om innehållet ska visa sökresultat baserat på vald filtertyp
+  const shouldShowSearchResults = 
+    showSearchResults || 
+    searchTypeFilter === "building" || 
+    searchTypeFilter === "apartment";
+
   return (
     <>
-      {showSearchResults ? (
+      {shouldShowSearchResults ? (
         <>
           <div className="mb-4">
             <h2 className="text-lg font-semibold">
@@ -29,10 +40,10 @@ export const PropertyFilteredResults = ({
                "Lägenheter"}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Visar {filteredSearchResults.length} resultat
+              Visar {typeFilteredResults.length} resultat
             </p>
           </div>
-          <SearchResultsTable results={filteredSearchResults} />
+          <SearchResultsTable results={typeFilteredResults} />
         </>
       ) : (
         <>

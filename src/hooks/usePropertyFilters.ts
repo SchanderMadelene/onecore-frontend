@@ -29,12 +29,12 @@ export const usePropertyFilters = () => {
   const allDistricts = [...new Set(properties?.map(p => p.district) || [])];
   const allAreas = [...new Set(properties?.map(p => p.propertyManagerArea) || [])];
 
-  // Filter the search results by type if a specific type is selected
+  // Filter the search results by type and search query
   const filteredSearchResults = searchResults.filter(item => {
-    const matchesSearch = searchQuery.trim() !== "" && (
+    const matchesSearch = 
+      searchQuery.trim() === "" || // Visa alla resultat när söktermen är tom
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.address.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+      item.address.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesType = 
       searchTypeFilter === "all" || 
@@ -67,8 +67,10 @@ export const usePropertyFilters = () => {
     return matchesSearch && matchesFilter && matchesDistrict && matchesArea;
   });
 
-  // Determine whether to show search results or regular property list
-  // Now considering both search query and type filter
+  // Bestäm om sökresultat eller vanliga fastigheter ska visas
+  // Visa sökresultat om:
+  // 1. Söktermen inte är tom
+  // 2. En annan typ än "property" eller "all" är vald
   const showSearchResults = 
     searchQuery.trim() !== "" || 
     (searchTypeFilter !== "all" && searchTypeFilter !== "property");
