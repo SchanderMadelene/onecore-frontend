@@ -7,7 +7,7 @@ import { OrdersTable } from "@/components/orders/OrdersTable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 
-export function CreateIssue() {
+export function OrdersManagement() {
   const { activeOrders, historicalOrders } = useOrdersService();
   const [refreshKey, setRefreshKey] = useState(0);
 

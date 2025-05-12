@@ -3,7 +3,7 @@ import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { ResidenceInspection } from "@/components/residence/ResidenceInspection";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
-import { CreateIssue } from "@/components/residence/CreateIssue";
+import { OrdersManagement } from "@/components/residence/OrdersManagement";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room } from "@/types/api";
 import { mockTenant } from "@/data/tenants";
@@ -115,7 +115,7 @@ export const ResidenceContent = ({
             <Card>
               <CardContent className="p-4">
                 {features.showApartmentIssues ? (
-                  <CreateIssue />
+                  <OrdersManagement />
                 ) : (
                   <p className="text-slate-500">
                     För att se felanmälningar, aktivera funktionen i inställningarna.
