@@ -3,7 +3,7 @@ import { Info, ClipboardList, Users, MessageSquare } from "lucide-react";
 import { ResidenceInfo } from "./ResidenceInfo";
 import { ResidenceInspection } from "./ResidenceInspection";
 import { TenantInformation } from "./inspection/form/TenantInformation";
-import { CreateIssue } from "./CreateIssue";
+import { OrdersManagement } from "./OrdersManagement";
 import type { Room } from "@/types/api";
 import { mockTenant } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
@@ -64,7 +64,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       icon: MessageSquare,
       title: "Ärenden",
       content: features.showApartmentIssues ? (
-        <CreateIssue />
+        <OrdersManagement />
       ) : (
         <p className="text-slate-500 p-1">
           För att se felanmälningar, aktivera funktionen i inställningarna.
