@@ -53,7 +53,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
-              <p className="font-medium">{isSecondaryRental ? "JA" : "NEJ"}</p>
+              <p className="font-medium">{isSecondaryRental ? "Ja" : "Nej"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>
@@ -73,4 +73,3 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
     </>
   );
 };
-
