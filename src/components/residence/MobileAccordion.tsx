@@ -5,7 +5,7 @@ import { ResidenceInspection } from "./ResidenceInspection";
 import { TenantInformation } from "./inspection/form/TenantInformation";
 import { OrdersManagement } from "./OrdersManagement";
 import type { Room } from "@/types/api";
-import { mockTenant, mockMultipleTenants } from "@/data/tenants";
+import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
 import { useParams } from "react-router-dom";
@@ -19,8 +19,17 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
   const { features } = useFeatureToggles();
   const { id } = useParams<{ id: string }>();
   
-  // Använd olika tenant data beroende på lägenhets-id
-  const tenantData = id === "lgh-1001" ? mockMultipleTenants : mockTenant;
+  // Välj tenant data baserat på lägenhets-ID
+  const getTenantData = () => {
+    switch(id) {
+      case "lgh-1001":
+        return mockMultipleTenants;
+      case "lgh-1002":
+        return mockSecondHandTenants;
+      default:
+        return mockTenant;
+    }
+  };
   
   const accordionItems: MobileAccordionItem[] = [
     {
@@ -57,7 +66,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       icon: Users,
       title: "Hyresgäst",
       content: features.showTenantInfo ? (
-        <TenantInformation tenant={tenantData} />
+        <TenantInformation tenant={getTenantData()} />
       ) : (
         <p className="text-slate-500 p-1">
           För att se hyresgästinformation, aktivera funktionen i inställningarna.

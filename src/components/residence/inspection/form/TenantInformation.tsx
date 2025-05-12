@@ -3,19 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Phone, Mail, MessageSquare, User, Calendar, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
-// Uppdaterad typ för att stödja flera hyresgäster
+// Uppdaterad typ för att stödja flera hyresgäster och relationsstyper
 interface Tenant {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
-  contractStatus: "permanent" | "terminated";
+  contractStatus: "permanent" | "temporary" | "terminated";
   moveInDate: string;
   moveOutDate?: string;
   contractNumber: string;
   personalNumber: string;
   isPrimaryTenant?: boolean;
+  relationshipType?: "sambo" | "primaryTenant" | "secondaryTenant";
 }
 
 interface TenantInformationProps {
@@ -27,6 +29,9 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
   const tenants = Array.isArray(tenant) ? tenant : [tenant];
   const primaryTenant = tenants.find(t => t.isPrimaryTenant) || tenants[0];
   const additionalTenants = tenants.filter(t => t !== primaryTenant);
+  
+  // Avgör vilken typ av kontraktsrelation vi har
+  const isSecondaryRental = tenants.some(t => t.relationshipType === "secondaryTenant");
   
   const handleCall = (phone: string) => {
     window.location.href = `tel:${phone.replace(/[\s-]/g, '')}`;
@@ -40,14 +45,44 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
     window.location.href = `mailto:${email}`;
   };
 
+  // Helper function för att visa rätt etikett baserat på relationshipType
+  const getTenantTypeLabel = (tenant: Tenant) => {
+    if (tenant.relationshipType === "primaryTenant") return "Förstahandshyresgäst";
+    if (tenant.relationshipType === "secondaryTenant") return "Andrahandshyresgäst";
+    if (tenant.relationshipType === "sambo") {
+      return tenant.isPrimaryTenant ? "Primär hyresgäst" : "Sambo/Partner";
+    }
+    return tenant.isPrimaryTenant ? "Primär hyresgäst" : "Ytterligare hyresgäst";
+  };
+
+  // Helper function för att visa rätt badge för kontraktsstatus
+  const getContractStatusBadge = (status: string) => {
+    switch(status) {
+      case "permanent":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Tillsvidare</Badge>;
+      case "temporary":
+        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">Tidsbegränsat</Badge>;
+      case "terminated":
+        return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Uppsagt</Badge>;
+      default:
+        return <Badge variant="outline">Okänd</Badge>;
+    }
+  };
+
   return (
     <div className="space-y-6">
       {tenants.length > 1 && (
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium">Kontraktsinformation</h3>
-          <span className="bg-blue-50 text-blue-700 text-xs font-medium px-2.5 py-0.5 rounded border border-blue-200">
-            {tenants.length} personer på kontraktet
-          </span>
+          {isSecondaryRental ? (
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+              Andrahandsuthyrning
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+              {tenants.length} personer på kontraktet
+            </Badge>
+          )}
         </div>
       )}
       
@@ -57,7 +92,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Users className="h-5 w-5 mr-2 text-slate-500" />
-              <h4 className="font-medium">{primaryTenant.isPrimaryTenant ? "Primär hyresgäst" : "Hyresgäst"}</h4>
+              <h4 className="font-medium">{getTenantTypeLabel(primaryTenant)}</h4>
             </div>
             <Button variant="outline" asChild className="shrink-0">
               <Link to={`/tenants/detail/${primaryTenant.personalNumber}`}>
@@ -75,9 +110,9 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Kontraktstatus</p>
-                <p className="font-medium">
-                  {primaryTenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
-                </p>
+                <div className="flex items-center gap-2">
+                  {getContractStatusBadge(primaryTenant.contractStatus)}
+                </div>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
@@ -124,6 +159,10 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                 <p className="text-sm text-muted-foreground">Personnummer</p>
                 <p className="font-medium">{primaryTenant.personalNumber}</p>
               </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
+                <p className="font-medium">{primaryTenant.contractNumber}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -137,7 +176,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <Users className="h-5 w-5 mr-2 text-slate-500" />
-                    <h4 className="font-medium">Ytterligare hyresgäst {additionalTenants.length > 1 ? index + 1 : ''}</h4>
+                    <h4 className="font-medium">{getTenantTypeLabel(additionalTenant)}</h4>
                   </div>
                   <Button variant="outline" asChild className="shrink-0">
                     <Link to={`/tenants/detail/${additionalTenant.personalNumber}`}>
@@ -154,12 +193,27 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                       <p className="font-medium">{additionalTenant.firstName} {additionalTenant.lastName}</p>
                     </div>
                     <div>
+                      <p className="text-sm text-muted-foreground">Kontraktstatus</p>
+                      <div className="flex items-center gap-2">
+                        {getContractStatusBadge(additionalTenant.contractStatus)}
+                      </div>
+                    </div>
+                    <div>
                       <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
                       <div className="flex items-center gap-2">
                         <p className="font-medium">{new Date(additionalTenant.moveInDate).toLocaleDateString('sv-SE')}</p>
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                       </div>
                     </div>
+                    {additionalTenant.moveOutDate && (
+                      <div>
+                        <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{new Date(additionalTenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="space-y-4">
                     <div>
@@ -185,6 +239,16 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                         </Button>
                       </div>
                     </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Personnummer</p>
+                      <p className="font-medium">{additionalTenant.personalNumber}</p>
+                    </div>
+                    {additionalTenant.relationshipType === "secondaryTenant" && (
+                      <div>
+                        <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
+                        <p className="font-medium">{additionalTenant.contractNumber}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

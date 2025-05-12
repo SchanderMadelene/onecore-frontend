@@ -6,7 +6,7 @@ import { TenantInformation } from "@/components/residence/inspection/form/Tenant
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room } from "@/types/api";
-import { mockTenant, mockMultipleTenants } from "@/data/tenants";
+import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,8 +32,17 @@ export const ResidenceContent = ({
   const isMobile = useIsMobile();
   const { id } = useParams<{ id: string }>();
   
-  // Använd olika tenant data beroende på lägenhets-id
-  const tenantData = id === "lgh-1001" ? mockMultipleTenants : mockTenant;
+  // Välj tenant data baserat på lägenhets-ID
+  const getTenantData = () => {
+    switch(id) {
+      case "lgh-1001":
+        return mockMultipleTenants;
+      case "lgh-1002":
+        return mockSecondHandTenants;
+      default:
+        return mockTenant;
+    }
+  };
   
   return (
     <div className="w-full space-y-6">
@@ -106,7 +115,7 @@ export const ResidenceContent = ({
             <Card>
               <CardContent className="p-4">
                 {features.showTenantInfo ? (
-                  <TenantInformation tenant={tenantData} />
+                  <TenantInformation tenant={getTenantData()} />
                 ) : (
                   <p className="text-slate-500">
                     För att se hyresgästinformation, aktivera funktionen i inställningarna.
