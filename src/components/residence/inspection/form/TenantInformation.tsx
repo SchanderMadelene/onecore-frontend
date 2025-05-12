@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, User, Calendar, Users } from "lucide-react";
+import { Phone, Mail, MessageSquare, User, Calendar, Users, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -61,16 +61,36 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <div className="space-y-6">
-      {tenants.length > 1 && (
+      {/* Kontraktsinformation överst */}
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium">Kontraktsinformation</h3>
+          <div className="flex items-center">
+            <FileText className="h-5 w-5 mr-2 text-slate-500" />
+            <h3 className="text-lg font-medium">Kontraktsinformation</h3>
+          </div>
           {isSecondaryRental && (
             <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
               Andrahandsuthyrning
             </Badge>
           )}
         </div>
-      )}
+        
+        {/* Kontraktsnummer visas här för båda hyresgästerna */}
+        <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
+              <p className="font-medium">{primaryTenant.contractNumber}</p>
+            </div>
+            {isSecondaryRental && additionalTenants.length > 0 && additionalTenants[0].relationshipType === "secondaryTenant" && (
+              <div>
+                <p className="text-sm text-muted-foreground">Andrahandskontraktsnummer</p>
+                <p className="font-medium">{additionalTenants[0].contractNumber}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
       
       <div className="space-y-6">
         {/* Primär hyresgäst */}
@@ -138,10 +158,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
               <div>
                 <p className="text-sm text-muted-foreground">Personnummer</p>
                 <p className="font-medium">{primaryTenant.personalNumber}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-                <p className="font-medium">{primaryTenant.contractNumber}</p>
               </div>
             </div>
           </div>
@@ -217,12 +233,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                       <p className="text-sm text-muted-foreground">Personnummer</p>
                       <p className="font-medium">{additionalTenant.personalNumber}</p>
                     </div>
-                    {additionalTenant.relationshipType === "secondaryTenant" && (
-                      <div>
-                        <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-                        <p className="font-medium">{additionalTenant.contractNumber}</p>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
