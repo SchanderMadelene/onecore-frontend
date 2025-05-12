@@ -7,7 +7,11 @@ import { OrdersTable } from "@/components/orders/OrdersTable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 
-export function OrdersManagement() {
+export interface OrdersManagementProps {
+  contextType?: "tenant" | "residence";
+}
+
+export function OrdersManagement({ contextType = "residence" }: OrdersManagementProps) {
   const { activeOrders, historicalOrders } = useOrdersService();
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -20,7 +24,7 @@ export function OrdersManagement() {
     <div className="space-y-4">
       <div className="flex items-center justify-start">
         <CreateOrderDialog 
-          contextType="residence"
+          contextType={contextType}
           onOrderCreated={handleOrderCreated}
         />
       </div>
@@ -39,7 +43,7 @@ export function OrdersManagement() {
               ))}
             </div>
           ) : (
-            <p className="text-slate-500 p-2">Inga aktiva ärenden för denna lägenhet.</p>
+            <p className="text-slate-500 p-2">Inga aktiva ärenden.</p>
           )}
         </TabsContent>
         
@@ -47,7 +51,7 @@ export function OrdersManagement() {
           {historicalOrders.length > 0 ? (
             <OrdersTable orders={historicalOrders} />
           ) : (
-            <p className="text-slate-500 p-2">Ingen ärendehistorik för denna lägenhet.</p>
+            <p className="text-slate-500 p-2">Ingen ärendehistorik.</p>
           )}
         </TabsContent>
       </Tabs>
