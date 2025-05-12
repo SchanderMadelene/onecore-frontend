@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useParams } from "react-router-dom";
 
 interface ResidenceBasicInfoProps {
   residence: Residence;
@@ -11,6 +12,11 @@ interface ResidenceBasicInfoProps {
 
 export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceBasicInfoProps) => {
   const isMobile = useIsMobile();
+  const { id } = useParams<{ id: string }>();
+  
+  // Check if this is a secondary rental based on ID
+  // In a real application, this would come from the API data
+  const isSecondaryRental = id === "lgh-1002";
   
   return (
     <>
@@ -46,6 +52,10 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
               <p className="font-medium">{residence.malarenergiFacilityId || "-"}</p>
             </div>
             <div>
+              <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
+              <p className="font-medium">{isSecondaryRental ? "JA" : "NEJ"}</p>
+            </div>
+            <div>
               <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>
               <p className="font-medium">
                 {new Date(residence.validityPeriod.fromDate).toLocaleDateString('sv-SE')}
@@ -63,3 +73,4 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
     </>
   );
 };
+
