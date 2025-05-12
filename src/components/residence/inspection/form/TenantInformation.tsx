@@ -45,16 +45,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
     window.location.href = `mailto:${email}`;
   };
 
-  // Helper function för att visa rätt etikett baserat på relationshipType
-  const getTenantTypeLabel = (tenant: Tenant) => {
-    if (tenant.relationshipType === "primaryTenant") return "Förstahandshyresgäst";
-    if (tenant.relationshipType === "secondaryTenant") return "Andrahandshyresgäst";
-    if (tenant.relationshipType === "sambo") {
-      return tenant.isPrimaryTenant ? "Primär hyresgäst" : "Sambo/Partner";
-    }
-    return tenant.isPrimaryTenant ? "Primär hyresgäst" : "Ytterligare hyresgäst";
-  };
-
   // Helper function för att visa rätt badge för kontraktsstatus
   const getContractStatusBadge = (status: string) => {
     switch(status) {
@@ -74,13 +64,9 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
       {tenants.length > 1 && (
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium">Kontraktsinformation</h3>
-          {isSecondaryRental ? (
+          {isSecondaryRental && (
             <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
               Andrahandsuthyrning
-            </Badge>
-          ) : (
-            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-              {tenants.length} personer på kontraktet
             </Badge>
           )}
         </div>
@@ -92,7 +78,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Users className="h-5 w-5 mr-2 text-slate-500" />
-              <h4 className="font-medium">{getTenantTypeLabel(primaryTenant)}</h4>
+              <h4 className="font-medium">Hyresgäst</h4>
             </div>
             <Button variant="outline" asChild className="shrink-0">
               <Link to={`/tenants/detail/${primaryTenant.personalNumber}`}>
@@ -107,12 +93,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
               <div>
                 <p className="text-sm text-muted-foreground">Namn</p>
                 <p className="font-medium">{primaryTenant.firstName} {primaryTenant.lastName}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Kontraktstatus</p>
-                <div className="flex items-center gap-2">
-                  {getContractStatusBadge(primaryTenant.contractStatus)}
-                </div>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
@@ -176,7 +156,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <Users className="h-5 w-5 mr-2 text-slate-500" />
-                    <h4 className="font-medium">{getTenantTypeLabel(additionalTenant)}</h4>
+                    <h4 className="font-medium">Hyresgäst</h4>
                   </div>
                   <Button variant="outline" asChild className="shrink-0">
                     <Link to={`/tenants/detail/${additionalTenant.personalNumber}`}>
@@ -191,12 +171,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                     <div>
                       <p className="text-sm text-muted-foreground">Namn</p>
                       <p className="font-medium">{additionalTenant.firstName} {additionalTenant.lastName}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Kontraktstatus</p>
-                      <div className="flex items-center gap-2">
-                        {getContractStatusBadge(additionalTenant.contractStatus)}
-                      </div>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
