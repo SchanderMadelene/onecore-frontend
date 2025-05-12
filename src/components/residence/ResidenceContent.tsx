@@ -6,13 +6,14 @@ import { TenantInformation } from "@/components/residence/inspection/form/Tenant
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room } from "@/types/api";
-import { mockTenant } from "@/data/tenants";
+import { mockTenant, mockMultipleTenants } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ClipboardList, Users, MessageSquare } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAccordion } from "./MobileAccordion";
+import { useParams } from "react-router-dom";
 
 interface ResidenceContentProps {
   residenceData: Residence;
@@ -29,6 +30,10 @@ export const ResidenceContent = ({
 }: ResidenceContentProps) => {
   const { features } = useFeatureToggles();
   const isMobile = useIsMobile();
+  const { id } = useParams<{ id: string }>();
+  
+  // Använd olika tenant data beroende på lägenhets-id
+  const tenantData = id === "lgh-1001" ? mockMultipleTenants : mockTenant;
   
   return (
     <div className="w-full space-y-6">
@@ -101,7 +106,7 @@ export const ResidenceContent = ({
             <Card>
               <CardContent className="p-4">
                 {features.showTenantInfo ? (
-                  <TenantInformation tenant={mockTenant} />
+                  <TenantInformation tenant={tenantData} />
                 ) : (
                   <p className="text-slate-500">
                     För att se hyresgästinformation, aktivera funktionen i inställningarna.
