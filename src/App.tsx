@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -41,7 +42,7 @@ const AppRoutes = () => {
       <Route 
         path="/tenants/all" 
         element={
-          <ProtectedRoute isEnabled={features.showRentals}>
+          <ProtectedRoute isEnabled={features.showTenants}>
             <AllTenantsPage />
           </ProtectedRoute>
         } 
@@ -49,7 +50,7 @@ const AppRoutes = () => {
       <Route 
         path="/tenants/detail/:id" 
         element={
-          <ProtectedRoute isEnabled={features.showRentals}>
+          <ProtectedRoute isEnabled={features.showTenants}>
             <TenantDetailPage />
           </ProtectedRoute>
         } 
