@@ -1,26 +1,22 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building, Calendar, Home, MapPin } from "lucide-react";
 import type { PropertyDetail } from "@/types/api";
-
 interface PropertyBasicInfoProps {
   propertyDetail: PropertyDetail;
   showBasicInfoOnly?: boolean;
   showDetailedInfo?: boolean;
 }
-
-export const PropertyBasicInfo = ({ 
-  propertyDetail, 
+export const PropertyBasicInfo = ({
+  propertyDetail,
   showBasicInfoOnly = false,
-  showDetailedInfo = false 
+  showDetailedInfo = false
 }: PropertyBasicInfoProps) => {
   // Extract the current route information from the window location
   const routeParts = window.location.pathname.split('/');
   const propertyKey = routeParts.slice(2).join('/');
-  
+
   // Basic information card that should always show at the top
-  const renderBasicInfoCard = () => (
-    <Card className="mb-6">
+  const renderBasicInfoCard = () => <Card className="mb-6">
       <CardHeader className="pb-4">
         <CardTitle>Grundläggande information</CardTitle>
       </CardHeader>
@@ -60,20 +56,16 @@ export const PropertyBasicInfo = ({
             <div>
               <p className="text-sm text-muted-foreground">Byggnadsår</p>
               <p className="font-medium">
-                {propertyDetail.buildings.length > 0 
-                  ? propertyDetail.buildings[0].constructionYear 
-                  : "-"}
+                {propertyDetail.buildings.length > 0 ? propertyDetail.buildings[0].constructionYear : "-"}
               </p>
             </div>
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 
   // Detailed property information card that should show at the bottom
-  const renderDetailedInfoCard = () => (
-    <Card className="mb-6">
+  const renderDetailedInfoCard = () => <Card className="mb-6">
       <CardHeader className="pb-4">
         <CardTitle>Fastighet</CardTitle>
       </CardHeader>
@@ -113,7 +105,7 @@ export const PropertyBasicInfo = ({
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Fastighetsbeteckning:</p>
-              <p className="font-medium">{propertyDetail.designation}</p>
+              
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Trakt:</p>
@@ -164,8 +156,7 @@ export const PropertyBasicInfo = ({
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 
   // If we're only showing the basic info card
   if (showBasicInfoOnly) {
@@ -178,10 +169,8 @@ export const PropertyBasicInfo = ({
   }
 
   // Default: show both cards (for backwards compatibility)
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       {renderBasicInfoCard()}
       {renderDetailedInfoCard()}
-    </div>
-  );
+    </div>;
 };
