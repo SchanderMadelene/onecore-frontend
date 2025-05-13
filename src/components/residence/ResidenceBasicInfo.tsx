@@ -22,7 +22,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
     <>
       <div className="mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2">Lägenhet {residence.code}</h1>
-        <p className="text-muted-foreground">{property?.replace("-", " ")}, {district}</p>
+        <p className="text-muted-foreground">Älgen 1, {district}</p>
       </div>
 
       <Card>
