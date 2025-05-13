@@ -29,7 +29,7 @@ export const PropertyBasicInfo = ({
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Fastighetsbeteckning</p>
-              <p className="font-medium">{propertyDetail.designation}</p>
+              <p className="font-medium">Älgen 1</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Kommun</p>
