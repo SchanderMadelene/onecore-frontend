@@ -33,12 +33,7 @@ export function ContractInfo({
             <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
             <p className="font-medium">{primaryContractNumber}</p>
           </div>
-          {isSecondaryRental && secondaryContractNumber && (
-            <div>
-              <p className="text-sm text-muted-foreground">Andrahandskontraktsnummer</p>
-              <p className="font-medium">{secondaryContractNumber}</p>
-            </div>
-          )}
+          {/* Secondary contract number is not displayed anymore */}
         </div>
       </div>
     </div>
