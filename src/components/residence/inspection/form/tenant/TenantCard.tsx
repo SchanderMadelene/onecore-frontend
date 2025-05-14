@@ -33,17 +33,6 @@ export function TenantCard({
 }: TenantCardProps) {
   const isSecondary = isSecondaryTenant || relationshipType === "secondaryTenant";
   
-  const handleCustomerCardClick = () => {
-    if (isSecondary) {
-      toast({
-        title: "Begränsad åtkomst",
-        description: "Du kan inte öppna kundkort för andrahandshyresgäster.",
-        variant: "destructive"
-      });
-      return;
-    }
-  };
-  
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -59,16 +48,6 @@ export function TenantCard({
               <User className="h-4 w-4 mr-2" />
               Öppna kundkort
             </Link>
-          </Button>
-        )}
-        {isSecondary && (
-          <Button 
-            variant="outline" 
-            className="shrink-0"
-            onClick={handleCustomerCardClick}
-          >
-            <User className="h-4 w-4 mr-2" />
-            Öppna kundkort
           </Button>
         )}
       </div>
