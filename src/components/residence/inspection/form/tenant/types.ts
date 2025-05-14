@@ -11,4 +11,5 @@ export interface Tenant {
   personalNumber: string;
   isPrimaryTenant?: boolean;
   relationshipType?: "sambo" | "primaryTenant" | "secondaryTenant";
+  isPrimaryContractHolder?: boolean;
 }

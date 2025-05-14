@@ -41,6 +41,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
           moveOutDate={primaryTenant.moveOutDate}
           personalNumber={primaryTenant.personalNumber}
           relationshipType={primaryTenant.relationshipType}
+          isPrimaryContractHolder={primaryTenant.isPrimaryContractHolder || primaryTenant.isPrimaryTenant}
         />
         
         {/* Ytterligare hyresgäster om det finns några */}
@@ -59,6 +60,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
                 personalNumber={additionalTenant.personalNumber}
                 relationshipType={additionalTenant.relationshipType}
                 isSecondaryTenant={additionalTenant.relationshipType === "secondaryTenant"}
+                isPrimaryContractHolder={additionalTenant.isPrimaryContractHolder}
               />
             ))}
           </>

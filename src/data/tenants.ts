@@ -61,7 +61,8 @@ export const mockSecondHandTenants = [
     contractNumber: "KT2022-005",
     personalNumber: "19781120-3344",
     isPrimaryTenant: true,
-    relationshipType: "primaryTenant" as const
+    relationshipType: "primaryTenant" as const,
+    isPrimaryContractHolder: true
   },
   {
     firstName: "Sofia",

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { TenantPersonalInfo } from "./TenantPersonalInfo";
 import { TenantContactActions } from "./TenantContactActions";
+import { toast } from "@/components/ui/use-toast";
 
 interface TenantCardProps {
   firstName: string;
@@ -15,6 +16,7 @@ interface TenantCardProps {
   personalNumber: string;
   isSecondaryTenant?: boolean;
   relationshipType?: "sambo" | "primaryTenant" | "secondaryTenant";
+  isPrimaryContractHolder?: boolean;
 }
 
 export function TenantCard({
@@ -26,9 +28,21 @@ export function TenantCard({
   moveOutDate,
   personalNumber,
   isSecondaryTenant = false,
-  relationshipType
+  relationshipType,
+  isPrimaryContractHolder = false
 }: TenantCardProps) {
   const isSecondary = isSecondaryTenant || relationshipType === "secondaryTenant";
+  
+  const handleCustomerCardClick = () => {
+    if (isSecondary) {
+      toast({
+        title: "Begränsad åtkomst",
+        description: "Du kan inte öppna kundkort för andrahandshyresgäster.",
+        variant: "destructive"
+      });
+      return;
+    }
+  };
   
   return (
     <div className="space-y-4">
@@ -36,7 +50,7 @@ export function TenantCard({
         <div className="flex items-center">
           <Users className="h-5 w-5 mr-2 text-slate-500" />
           <h4 className="font-medium">
-            {isSecondary ? "Andrahandsuthyrning" : "Hyresgäst"}
+            {isSecondary ? "Andrahandsuthyrning" : isPrimaryContractHolder ? "Kontraktsinnehavare" : "Hyresgäst"}
           </h4>
         </div>
         {!isSecondary && (
@@ -45,6 +59,16 @@ export function TenantCard({
               <User className="h-4 w-4 mr-2" />
               Öppna kundkort
             </Link>
+          </Button>
+        )}
+        {isSecondary && (
+          <Button 
+            variant="outline" 
+            className="shrink-0"
+            onClick={handleCustomerCardClick}
+          >
+            <User className="h-4 w-4 mr-2" />
+            Öppna kundkort
           </Button>
         )}
       </div>
@@ -58,12 +82,10 @@ export function TenantCard({
           personalNumber={personalNumber}
           isSecondaryTenant={isSecondary}
         />
-        {!isSecondary && (
-          <TenantContactActions
-            phone={phone}
-            email={email}
-          />
-        )}
+        <TenantContactActions
+          phone={phone}
+          email={email}
+        />
       </div>
     </div>
   );
