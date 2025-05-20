@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { TenantPersonalInfo } from "./TenantPersonalInfo";
 import { TenantContactActions } from "./TenantContactActions";
-import { toast } from "@/components/ui/use-toast";
 
 interface TenantCardProps {
   firstName: string;
