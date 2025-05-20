@@ -19,7 +19,7 @@ interface TenantInformationCardProps {
 }
 
 export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleCall = () => {
     window.location.href = `tel:${tenant.phone.replace(/[\s-]/g, '')}`;
@@ -50,7 +50,7 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
           <h3 className="font-medium text-lg">Hyresgästinformation</h3>
           <CollapsibleTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8">
-              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? '' : 'transform rotate-180'}`} />
+              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
               <span className="sr-only">Visa hyresgästinformation</span>
             </Button>
           </CollapsibleTrigger>
