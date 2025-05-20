@@ -7,6 +7,8 @@ import { InspectionReadOnly } from "@/components/residence/inspection/Inspection
 import { useState } from "react";
 import type { Inspection } from "@/components/residence/inspection/types";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
+import { mockRoomsData } from "@/data/rooms";
+import type { Room } from "@/types/api";
 
 // Example inspection data
 const exampleInspection: Inspection = {
@@ -64,12 +66,8 @@ export const OrdersShowcase = () => {
     assignedTo: "Johan Andersson"
   };
 
-  // Sample rooms data for the inspection form
-  const sampleRooms = [
-    { id: "Room1", name: "Vardagsrum", orientation: "N" },
-    { id: "Room2", name: "Kök", orientation: "S" },
-    { id: "Room3", name: "Sovrum", orientation: "E" }
-  ];
+  // Use proper Room data from our mock data
+  const sampleRooms = mockRoomsData.content;
 
   const handleSubmitInspection = (inspectorName: string, rooms: any) => {
     console.log("Inspection submitted:", { inspectorName, rooms });
