@@ -119,6 +119,7 @@ export const OrdersShowcase = () => {
               onClose={() => setIsCreateInspectionOpen(false)}
               onSubmit={handleSubmitInspection}
               rooms={sampleRooms}
+              tenant={mockSecondHandTenants}
               buttonSize="default"
             />
           </div>

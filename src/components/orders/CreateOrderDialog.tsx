@@ -33,10 +33,8 @@ export function CreateOrderDialog({
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
 
-  // Use second-hand tenants for a better showcase when in design system
-  const tenant = window.location.pathname.includes('design-system')
-    ? mockSecondHandTenants
-    : mockTenant;
+  // Always use mockSecondHandTenants for consistency in the design system
+  const tenantData = mockSecondHandTenants;
 
   const handleCreateOrder = (orderData: Omit<Order, "id" | "status" | "reportedDate">) => {
     createOrder({
@@ -69,7 +67,7 @@ export function CreateOrderDialog({
           onCancel={() => setIsOpen(false)} 
           contextType={contextType}
           rooms={contextType === "residence" ? roomsData : []}
-          tenant={tenant}
+          tenant={tenantData}
         />
       </DialogContent>
     </Dialog>
