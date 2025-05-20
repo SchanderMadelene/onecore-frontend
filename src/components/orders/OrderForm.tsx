@@ -19,7 +19,7 @@ type OrderFormProps = {
   onCancel: () => void;
   contextType?: "tenant" | "residence";
   rooms?: Room[];
-  tenant?: Tenant;
+  tenant?: Tenant | Tenant[];
 };
 
 export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = [], tenant = mockTenant }: OrderFormProps) {
