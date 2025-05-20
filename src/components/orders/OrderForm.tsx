@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,15 +12,17 @@ import { useResidenceData } from "@/hooks/useResidenceData";
 import { useParams } from "react-router-dom";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
 import { mockTenant } from "@/data/tenants";
+import type { Tenant } from "@/components/residence/inspection/form/tenant/types";
 
 type OrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
   onCancel: () => void;
   contextType?: "tenant" | "residence";
   rooms?: Room[];
+  tenant?: Tenant;
 };
 
-export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = [] }: OrderFormProps) {
+export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = [], tenant = mockTenant }: OrderFormProps) {
   const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -31,7 +34,6 @@ export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = 
   
   const availableRooms = rooms.length > 0 ? rooms : roomsData || [];
 
-  
   // Update title when room is selected
   useEffect(() => {
     if (selectedRoom && contextType === "residence") {
@@ -81,8 +83,8 @@ export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = 
     <div className="space-y-6">
       {/* Show tenant information when in residence context */}
       {contextType === "residence" && (
-        <div className="border rounded-md p-4 bg-muted/10">
-          <TenantInformation tenant={mockTenant} />
+        <div className="border rounded-md p-4 mb-4">
+          <TenantInformation tenant={tenant} />
         </div>
       )}
 

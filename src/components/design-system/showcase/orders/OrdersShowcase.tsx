@@ -8,7 +8,7 @@ import { useState } from "react";
 import type { Inspection } from "@/components/residence/inspection/types";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
 import { mockRoomsData } from "@/data/rooms";
-import type { Room } from "@/types/api";
+import { mockSecondHandTenants } from "@/data/tenants";
 
 // Example inspection data
 const exampleInspection: Inspection = {
