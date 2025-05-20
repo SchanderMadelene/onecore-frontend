@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { useState } from "react";
 import type { Inspection } from "@/components/residence/inspection/types";
+import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
 
 // Example inspection data
 const exampleInspection: Inspection = {
@@ -51,6 +52,7 @@ const exampleInspection: Inspection = {
 
 export const OrdersShowcase = () => {
   const [isInspectionOpen, setIsInspectionOpen] = useState(false);
+  const [isCreateInspectionOpen, setIsCreateInspectionOpen] = useState(false);
 
   const sampleOrder = {
     id: "OD-123",
@@ -60,6 +62,18 @@ export const OrdersShowcase = () => {
     status: "pending",
     priority: "medium",
     assignedTo: "Johan Andersson"
+  };
+
+  // Sample rooms data for the inspection form
+  const sampleRooms = [
+    { id: "Room1", name: "Vardagsrum", orientation: "N" },
+    { id: "Room2", name: "Kök", orientation: "S" },
+    { id: "Room3", name: "Sovrum", orientation: "E" }
+  ];
+
+  const handleSubmitInspection = (inspectorName: string, rooms: any) => {
+    console.log("Inspection submitted:", { inspectorName, rooms });
+    setIsCreateInspectionOpen(false);
   };
 
   return (
@@ -89,10 +103,25 @@ export const OrdersShowcase = () => {
               Visa besiktningsprotokoll
             </Button>
             
+            <Button 
+              variant="outline" 
+              onClick={() => setIsCreateInspectionOpen(true)}
+            >
+              Skapa besiktning
+            </Button>
+            
             <InspectionReadOnly 
               inspection={exampleInspection} 
               isOpen={isInspectionOpen} 
               onClose={() => setIsInspectionOpen(false)} 
+            />
+            
+            <InspectionFormDialog 
+              isOpen={isCreateInspectionOpen}
+              onClose={() => setIsCreateInspectionOpen(false)}
+              onSubmit={handleSubmitInspection}
+              rooms={sampleRooms}
+              buttonSize="default"
             />
           </div>
         </div>
