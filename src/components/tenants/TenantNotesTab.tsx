@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Save } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Simple in-memory storage for notes (would be replaced by a real API in production)
 const notesStorage: Record<string, Array<{ id: string; content: string; date: string }>> = {};
@@ -82,14 +83,16 @@ export function TenantNotesTab({ tenantId }: TenantNotesTabProps) {
       )}
       
       {notes.length > 0 ? (
-        <div className="space-y-3">
-          {notes.map((note) => (
-            <div key={note.id} className="border rounded-md p-3">
-              <p className="text-xs text-muted-foreground mb-1">{note.date}</p>
-              <p className="text-sm">{note.content}</p>
-            </div>
-          ))}
-        </div>
+        <ScrollArea className="h-[300px] pr-4">
+          <div className="space-y-3">
+            {notes.map((note) => (
+              <div key={note.id} className="border rounded-md p-3">
+                <p className="text-xs text-muted-foreground mb-1">{note.date}</p>
+                <p className="text-sm">{note.content}</p>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
       ) : (
         <div className="text-center py-4 text-sm text-muted-foreground">
           Inga noteringar än
