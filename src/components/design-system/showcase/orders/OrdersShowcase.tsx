@@ -8,7 +8,6 @@ import { useState } from "react";
 import type { Inspection } from "@/components/residence/inspection/types";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
 import { mockRoomsData } from "@/data/rooms";
-import { mockSecondHandTenants } from "@/data/tenants";
 
 // Example inspection data
 const exampleInspection: Inspection = {
@@ -119,7 +118,6 @@ export const OrdersShowcase = () => {
               onClose={() => setIsCreateInspectionOpen(false)}
               onSubmit={handleSubmitInspection}
               rooms={sampleRooms}
-              tenant={mockSecondHandTenants}
               buttonSize="default"
             />
           </div>
@@ -127,4 +125,4 @@ export const OrdersShowcase = () => {
       </CardContent>
     </Card>
   );
-};
+}

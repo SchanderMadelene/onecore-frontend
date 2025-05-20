@@ -4,7 +4,6 @@ import { BasicInformation } from "./BasicInformation";
 import { RoomInspectionList } from "./RoomInspectionList";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "../types";
-import { mockTenant } from "@/data/tenants";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -14,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ClipboardList, Home, MapPin, Users } from "lucide-react";
+import { ClipboardList, Home, MapPin } from "lucide-react";
 
 // List of available inspectors
 const inspectors = [
@@ -38,7 +37,6 @@ interface InspectionTabsProps {
   onConditionUpdate: (roomId: string, field: keyof InspectionRoomType["conditions"], value: string) => void;
   onActionUpdate: (roomId: string, field: keyof InspectionRoomType["actions"], action: string) => void;
   onComponentNoteUpdate: (roomId: string, field: keyof InspectionRoomType["componentNotes"], note: string) => void;
-  tenant?: typeof mockTenant;
 }
 
 export function InspectionTabs({
@@ -52,7 +50,6 @@ export function InspectionTabs({
   onConditionUpdate,
   onActionUpdate,
   onComponentNoteUpdate,
-  tenant = mockTenant // Default to mockTenant
 }: InspectionTabsProps) {
   const isMobile = useIsMobile();
   
@@ -101,7 +98,6 @@ export function InspectionTabs({
             inspectorName={inspectorName || inspectors[0]}
             roomCount={rooms.length}
             apartmentInfo={apartmentInfo}
-            tenant={tenant}
           />
         </div>
       </TabsContent>

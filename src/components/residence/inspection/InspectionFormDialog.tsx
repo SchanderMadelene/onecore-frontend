@@ -12,9 +12,7 @@ import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";
 import { InspectionTabs } from "./form/InspectionTabs";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
-import { mockTenant } from "@/data/tenants";
 import { useIsMobile } from "@/hooks/use-mobile";
-import type { Tenant } from "@/components/residence/inspection/form/tenant/types";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -22,10 +20,9 @@ interface InspectionFormDialogProps {
   onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
   rooms: Room[];
   buttonSize?: string;
-  tenant?: Tenant | Tenant[]; // Add tenant prop to the interface
 }
 
-export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms, buttonSize, tenant = mockTenant }: InspectionFormDialogProps) {
+export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms, buttonSize }: InspectionFormDialogProps) {
   const isMobile = useIsMobile();
   
   const {
@@ -87,7 +84,6 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms, buttonS
               onConditionUpdate={handleConditionUpdate}
               onActionUpdate={handleActionUpdate}
               onComponentNoteUpdate={handleComponentNoteUpdate}
-              tenant={tenant}
             />
           </div>
 

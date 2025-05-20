@@ -13,7 +13,6 @@ import { useState } from "react";
 import { useOrdersService, Order } from "@/hooks/useOrdersService";
 import { useParams } from "react-router-dom";
 import { useResidenceData } from "@/hooks/useResidenceData";
-import { mockTenant, mockSecondHandTenants } from "@/data/tenants";
 
 type CreateOrderDialogProps = {
   buttonSize?: "default" | "sm" | "lg" | "icon";
@@ -32,9 +31,6 @@ export function CreateOrderDialog({
   const { createOrder } = useOrdersService();
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
-
-  // Always use mockSecondHandTenants for consistency in the design system
-  const tenantData = mockSecondHandTenants;
 
   const handleCreateOrder = (orderData: Omit<Order, "id" | "status" | "reportedDate">) => {
     createOrder({
@@ -67,7 +63,6 @@ export function CreateOrderDialog({
           onCancel={() => setIsOpen(false)} 
           contextType={contextType}
           rooms={contextType === "residence" ? roomsData : []}
-          tenant={tenantData}
         />
       </DialogContent>
     </Dialog>
