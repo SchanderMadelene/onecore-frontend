@@ -11,6 +11,8 @@ import {
 import { OrderForm } from "./OrderForm";
 import { useState } from "react";
 import { useOrdersService, Order } from "@/hooks/useOrdersService";
+import { useParams } from "react-router-dom";
+import { useResidenceData } from "@/hooks/useResidenceData";
 
 type CreateOrderDialogProps = {
   buttonSize?: "default" | "sm" | "lg" | "icon";
@@ -27,6 +29,8 @@ export function CreateOrderDialog({
 }: CreateOrderDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { createOrder } = useOrdersService();
+  const { id } = useParams();
+  const { roomsData } = useResidenceData(id);
 
   const handleCreateOrder = (orderData: Omit<Order, "id" | "status" | "reportedDate">) => {
     createOrder({
@@ -58,6 +62,7 @@ export function CreateOrderDialog({
           onSubmit={handleCreateOrder}
           onCancel={() => setIsOpen(false)} 
           contextType={contextType}
+          rooms={contextType === "residence" ? roomsData : []}
         />
       </DialogContent>
     </Dialog>

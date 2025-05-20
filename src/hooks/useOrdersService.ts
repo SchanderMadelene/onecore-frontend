@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 export interface Order {
@@ -9,6 +10,7 @@ export interface Order {
   description: string;
   assignedTo: string;
   resolvedDate?: string;
+  roomId?: string;
 }
 
 // Mock order data

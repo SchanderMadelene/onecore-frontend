@@ -4,22 +4,41 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Order } from "@/hooks/useOrdersService";
+import type { Room } from "@/types/api";
+import { useResidenceData } from "@/hooks/useResidenceData";
+import { useParams } from "react-router-dom";
 
 type OrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
   onCancel: () => void;
   contextType?: "tenant" | "residence";
+  rooms?: Room[];
 };
 
-export function OrderForm({ onSubmit, onCancel, contextType = "tenant" }: OrderFormProps) {
+export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = [] }: OrderFormProps) {
   const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("medium");
   const [assignedTo, setAssignedTo] = useState("Johan Andersson");
+  const [selectedRoom, setSelectedRoom] = useState("");
+  const { id } = useParams();
+  const { roomsData } = useResidenceData(id);
+  
+  const availableRooms = rooms.length > 0 ? rooms : roomsData || [];
+
+  // Update title when room is selected
+  useEffect(() => {
+    if (selectedRoom && contextType === "residence") {
+      const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
+      if (roomName) {
+        setTitle(`Problem i ${roomName}`);
+      }
+    }
+  }, [selectedRoom, availableRooms, contextType]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,11 +52,21 @@ export function OrderForm({ onSubmit, onCancel, contextType = "tenant" }: OrderF
       return;
     }
     
+    // Add room information to the description if selected
+    let finalDescription = description;
+    if (selectedRoom && contextType === "residence") {
+      const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
+      if (roomName) {
+        finalDescription = `Rum: ${roomName}\n\n${description}`;
+      }
+    }
+    
     onSubmit({
       title,
-      description,
+      description: finalDescription,
       priority,
-      assignedTo
+      assignedTo,
+      roomId: contextType === "residence" ? selectedRoom : undefined
     });
 
     toast({
@@ -48,6 +77,27 @@ export function OrderForm({ onSubmit, onCancel, contextType = "tenant" }: OrderF
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {contextType === "residence" && availableRooms.length > 0 && (
+        <div className="space-y-2">
+          <Label htmlFor="room">Rum</Label>
+          <Select 
+            value={selectedRoom} 
+            onValueChange={setSelectedRoom}
+          >
+            <SelectTrigger id="room">
+              <SelectValue placeholder="Välj rum" />
+            </SelectTrigger>
+            <SelectContent>
+              {availableRooms.map(room => (
+                <SelectItem key={room.id} value={room.id}>
+                  {room.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+      
       <div className="space-y-2">
         <Label htmlFor="title">Titel</Label>
         <Input
