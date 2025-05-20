@@ -10,7 +10,6 @@ import { Order } from "@/hooks/useOrdersService";
 import type { Room } from "@/types/api";
 import { useResidenceData } from "@/hooks/useResidenceData";
 import { useParams } from "react-router-dom";
-import { TenantInfoCard } from "./TenantInfoCard";
 
 type OrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
@@ -78,9 +77,6 @@ export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Show tenant information when in tenant context */}
-      <TenantInfoCard contextType={contextType} />
-      
       {contextType === "residence" && availableRooms.length > 0 && (
         <div className="space-y-2">
           <Label htmlFor="room">Rum</Label>
