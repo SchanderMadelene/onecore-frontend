@@ -83,7 +83,7 @@ export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = 
     <div className="space-y-6">
       {/* Show tenant information when in residence context */}
       {contextType === "residence" && (
-        <div className="border rounded-md p-4 mb-4">
+        <div className="bg-slate-50 rounded-lg border border-slate-200">
           <TenantInformation tenant={tenant} />
         </div>
       )}
