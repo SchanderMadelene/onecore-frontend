@@ -13,6 +13,8 @@ import type { InspectionRoom as InspectionRoomType } from "./types";
 import { InspectionTabs } from "./form/InspectionTabs";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
+import { mockTenant } from "@/data/tenants";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -20,9 +22,17 @@ interface InspectionFormDialogProps {
   onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
   rooms: Room[];
   buttonSize?: string;
+  tenant?: any; // Optional tenant prop if we want to pass different tenant data
 }
 
-export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms, buttonSize }: InspectionFormDialogProps) {
+export function InspectionFormDialog({ 
+  isOpen, 
+  onClose, 
+  onSubmit, 
+  rooms, 
+  buttonSize,
+  tenant = mockTenant // Default to mock tenant if not provided
+}: InspectionFormDialogProps) {
   const isMobile = useIsMobile();
   
   const {
@@ -73,6 +83,9 @@ export function InspectionFormDialog({ isOpen, onClose, onSubmit, rooms, buttonS
 
         <form onSubmit={handleSubmit} className="mt-2">
           <div className="space-y-4">
+            {/* Tenant information section */}
+            <TenantInformationCard tenant={tenant} />
+            
             <InspectionTabs
               inspectorName={inspectorName}
               setInspectorName={setInspectorName}

@@ -8,6 +8,7 @@ import { useState } from "react";
 import type { Inspection } from "@/components/residence/inspection/types";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
 import { mockRoomsData } from "@/data/rooms";
+import { mockTenant } from "@/data/tenants";
 
 // Example inspection data
 const exampleInspection: Inspection = {
@@ -90,7 +91,8 @@ export const OrdersShowcase = () => {
             <CreateOrderDialog 
               buttonSize="default" 
               buttonVariant="outline"
-              contextType="residence" 
+              contextType="residence"
+              tenant={mockTenant}
             />
             
             <Button 
@@ -119,6 +121,7 @@ export const OrdersShowcase = () => {
               onSubmit={handleSubmitInspection}
               rooms={sampleRooms}
               buttonSize="default"
+              tenant={mockTenant}
             />
           </div>
         </div>

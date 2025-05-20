@@ -10,15 +10,24 @@ import { Order } from "@/hooks/useOrdersService";
 import type { Room } from "@/types/api";
 import { useResidenceData } from "@/hooks/useResidenceData";
 import { useParams } from "react-router-dom";
+import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
+import { mockTenant } from "@/data/tenants";
 
 type OrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
   onCancel: () => void;
   contextType?: "tenant" | "residence";
   rooms?: Room[];
+  tenant?: any; // Optional tenant prop
 };
 
-export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = [] }: OrderFormProps) {
+export function OrderForm({ 
+  onSubmit, 
+  onCancel, 
+  contextType = "tenant", 
+  rooms = [],
+  tenant = mockTenant // Default to mock tenant if not provided
+}: OrderFormProps) {
   const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -77,6 +86,9 @@ export function OrderForm({ onSubmit, onCancel, contextType = "tenant", rooms = 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Tenant information section */}
+      <TenantInformationCard tenant={tenant} />
+      
       {contextType === "residence" && availableRooms.length > 0 && (
         <div className="space-y-2">
           <Label htmlFor="room">Rum</Label>

@@ -13,19 +13,22 @@ import { useState } from "react";
 import { useOrdersService, Order } from "@/hooks/useOrdersService";
 import { useParams } from "react-router-dom";
 import { useResidenceData } from "@/hooks/useResidenceData";
+import { mockTenant } from "@/data/tenants";
 
 type CreateOrderDialogProps = {
   buttonSize?: "default" | "sm" | "lg" | "icon";
   buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
   contextType?: "tenant" | "residence";
   onOrderCreated?: () => void;
+  tenant?: any; // Optional tenant prop
 };
 
 export function CreateOrderDialog({ 
   buttonSize = "default", 
   buttonVariant = "default",
   contextType = "tenant",
-  onOrderCreated
+  onOrderCreated,
+  tenant = mockTenant // Default to mock tenant if not provided
 }: CreateOrderDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { createOrder } = useOrdersService();
@@ -63,6 +66,7 @@ export function CreateOrderDialog({
           onCancel={() => setIsOpen(false)} 
           contextType={contextType}
           rooms={contextType === "residence" ? roomsData : []}
+          tenant={tenant}
         />
       </DialogContent>
     </Dialog>
