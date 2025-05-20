@@ -5,32 +5,46 @@ import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
 import { Button } from "@/components/ui/button";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { useState } from "react";
+import type { Inspection } from "@/components/residence/inspection/types";
 
 // Example inspection data
-const exampleInspection = {
+const exampleInspection: Inspection = {
   id: "i1",
   date: new Date().toISOString(),
   inspectedBy: "Anna Johansson",
   rooms: {
     "Room1": {
+      roomId: "Room1",
       conditions: {
-        "walls": "good",
-        "floor": "acceptable",
-        "ceiling": "good",
-        "windows": "poor"
+        wall1: "good",
+        wall2: "good",
+        wall3: "good",
+        wall4: "good",
+        floor: "acceptable",
+        ceiling: "good",
+        details: "poor"
       },
       actions: {
-        "walls": [],
-        "floor": [],
-        "ceiling": [],
-        "windows": ["Replace window seals", "Fix window latch"]
+        wall1: [],
+        wall2: [],
+        wall3: [],
+        wall4: [],
+        floor: [],
+        ceiling: [],
+        details: ["Replace window seals", "Fix window latch"]
       },
       componentNotes: {
-        "walls": "",
-        "floor": "Some scratches near the entrance",
-        "ceiling": "",
-        "windows": "Window in north wall doesn't seal properly"
-      }
+        wall1: "",
+        wall2: "",
+        wall3: "",
+        wall4: "",
+        floor: "Some scratches near the entrance",
+        ceiling: "",
+        details: "Window in north wall doesn't seal properly"
+      },
+      photos: [],
+      isApproved: false,
+      isHandled: false
     }
   }
 };
