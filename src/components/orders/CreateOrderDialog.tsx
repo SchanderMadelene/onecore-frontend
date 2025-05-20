@@ -54,7 +54,7 @@ export function CreateOrderDialog({
           Skapa ärende
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Skapa nytt ärende</DialogTitle>
         </DialogHeader>
