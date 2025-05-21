@@ -11,6 +11,7 @@ export interface Order {
   assignedTo: string;
   resolvedDate?: string;
   roomId?: string;
+  needsMasterKey?: boolean; // Added this property
 }
 
 // Mock order data
