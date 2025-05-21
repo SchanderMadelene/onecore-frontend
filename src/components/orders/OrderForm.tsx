@@ -27,13 +27,15 @@ type OrderFormProps = {
   contextType?: "tenant" | "residence";
   rooms?: Room[];
   tenant?: any; // Optional tenant prop
+  residenceId?: string; // Added residenceId prop
 };
 export function OrderForm({
   onSubmit,
   onCancel,
   contextType = "tenant",
   rooms = [],
-  tenant = mockTenant // Default to mock tenant if not provided
+  tenant = mockTenant, // Default to mock tenant if not provided
+  residenceId
 }: OrderFormProps) {
   const {
     toast
@@ -107,7 +109,8 @@ export function OrderForm({
       roomId: contextType === "residence" ? selectedRoom : undefined,
       needsMasterKey: needsMasterKey === "ja",
       plannedExecutionDate: plannedExecutionDate ? format(plannedExecutionDate, 'yyyy-MM-dd') : undefined,
-      dueDate: dueDate ? format(dueDate, 'yyyy-MM-dd') : undefined
+      dueDate: dueDate ? format(dueDate, 'yyyy-MM-dd') : undefined,
+      residenceId: residenceId // Pass the residenceId to the createOrder function
     });
     toast({
       title: "Ärende skapat",
