@@ -21,6 +21,7 @@ type CreateOrderDialogProps = {
   contextType?: "tenant" | "residence";
   onOrderCreated?: () => void;
   tenant?: any; // Optional tenant prop
+  residenceId?: string; // Added residenceId prop
 };
 
 export function CreateOrderDialog({ 
@@ -28,7 +29,8 @@ export function CreateOrderDialog({
   buttonVariant = "default",
   contextType = "tenant",
   onOrderCreated,
-  tenant = mockTenant // Default to mock tenant if not provided
+  tenant = mockTenant, // Default to mock tenant if not provided
+  residenceId // Add the residenceId prop
 }: CreateOrderDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { createOrder } = useOrdersService();
@@ -67,6 +69,7 @@ export function CreateOrderDialog({
           contextType={contextType}
           rooms={contextType === "residence" ? roomsData : []}
           tenant={tenant}
+          residenceId={residenceId} // Pass the residenceId prop to OrderForm
         />
       </DialogContent>
     </Dialog>
