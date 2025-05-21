@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
 import { mockTenant } from "@/data/tenants";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // Lista över möjliga komponenter för ett rum
 const roomComponents = [
@@ -56,6 +56,7 @@ export function OrderForm({
   const [assignedTo, setAssignedTo] = useState("Johan Andersson");
   const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedComponent, setSelectedComponent] = useState("");
+  const [needsMasterKey, setNeedsMasterKey] = useState("nej"); // Ny state för huvudnyckel
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
   
@@ -101,6 +102,9 @@ export function OrderForm({
         locationInfo += `Komponent: ${selectedComponent}\n`;
       }
       
+      // Lägg till information om huvudnyckel
+      locationInfo += `Huvudnyckel behövs: ${needsMasterKey}\n`;
+      
       if (locationInfo) {
         finalDescription = `${locationInfo}\n${description}`;
       }
@@ -111,7 +115,8 @@ export function OrderForm({
       description: finalDescription,
       priority,
       assignedTo,
-      roomId: contextType === "residence" ? selectedRoom : undefined
+      roomId: contextType === "residence" ? selectedRoom : undefined,
+      needsMasterKey: needsMasterKey === "ja" // Lägg till i ordern
     });
 
     toast({
@@ -169,6 +174,28 @@ export function OrderForm({
           </div>
         )}
         
+        {/* Ny radiogrupp för huvudnyckel */}
+        <div className="space-y-2">
+          <Label htmlFor="masterKey" className="block text-sm font-medium">
+            Huvudnyckel?
+          </Label>
+          <RadioGroup
+            id="masterKey"
+            value={needsMasterKey}
+            onValueChange={setNeedsMasterKey}
+            className="flex space-x-4"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="ja" id="masterKeyYes" />
+              <Label htmlFor="masterKeyYes" className="cursor-pointer">Ja</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="nej" id="masterKeyNo" />
+              <Label htmlFor="masterKeyNo" className="cursor-pointer">Nej</Label>
+            </div>
+          </RadioGroup>
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="title">Titel</Label>
           <Input
