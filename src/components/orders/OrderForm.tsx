@@ -14,6 +14,26 @@ import { TenantInformationCard } from "@/components/tenants/TenantInformationCar
 import { mockTenant } from "@/data/tenants";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+// Lista över möjliga komponenter för ett rum
+const roomComponents = [
+  "Golv",
+  "Vägg",
+  "Tak",
+  "Dörr",
+  "Fönster",
+  "Kök",
+  "Badrum",
+  "Värme",
+  "El",
+  "Ventilation",
+  "Tvättmaskin",
+  "Torktumlare",
+  "Diskmaskin",
+  "Kyl/frys",
+  "Spis",
+  "Övrigt"
+];
+
 type OrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
   onCancel: () => void;
@@ -35,20 +55,25 @@ export function OrderForm({
   const [priority, setPriority] = useState("medium");
   const [assignedTo, setAssignedTo] = useState("Johan Andersson");
   const [selectedRoom, setSelectedRoom] = useState("");
+  const [selectedComponent, setSelectedComponent] = useState("");
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
   
   const availableRooms = rooms.length > 0 ? rooms : roomsData || [];
 
-  // Update title when room is selected
+  // Update title when room and component are selected
   useEffect(() => {
     if (selectedRoom && contextType === "residence") {
       const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
       if (roomName) {
-        setTitle(`Problem i ${roomName}`);
+        let newTitle = `Problem i ${roomName}`;
+        if (selectedComponent) {
+          newTitle = `Problem med ${selectedComponent.toLowerCase()} i ${roomName}`;
+        }
+        setTitle(newTitle);
       }
     }
-  }, [selectedRoom, availableRooms, contextType]);
+  }, [selectedRoom, selectedComponent, availableRooms, contextType]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,12 +87,22 @@ export function OrderForm({
       return;
     }
     
-    // Add room information to the description if selected
+    // Add room and component information to the description if selected
     let finalDescription = description;
-    if (selectedRoom && contextType === "residence") {
-      const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
-      if (roomName) {
-        finalDescription = `Rum: ${roomName}\n\n${description}`;
+    if (contextType === "residence") {
+      let locationInfo = "";
+      if (selectedRoom) {
+        const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
+        if (roomName) {
+          locationInfo += `Rum: ${roomName}\n`;
+        }
+      }
+      if (selectedComponent) {
+        locationInfo += `Komponent: ${selectedComponent}\n`;
+      }
+      
+      if (locationInfo) {
+        finalDescription = `${locationInfo}\n${description}`;
       }
     }
     
@@ -105,6 +140,28 @@ export function OrderForm({
                 {availableRooms.map(room => (
                   <SelectItem key={room.id} value={room.id}>
                     {room.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+        
+        {/* Ny dropdown för komponent */}
+        {contextType === "residence" && (
+          <div className="space-y-2">
+            <Label htmlFor="component">Komponent</Label>
+            <Select 
+              value={selectedComponent} 
+              onValueChange={setSelectedComponent}
+            >
+              <SelectTrigger id="component">
+                <SelectValue placeholder="Välj komponent" />
+              </SelectTrigger>
+              <SelectContent>
+                {roomComponents.map(component => (
+                  <SelectItem key={component} value={component}>
+                    {component}
                   </SelectItem>
                 ))}
               </SelectContent>
