@@ -41,7 +41,7 @@ export function CreateOrderDialog({
     createOrder({
       ...orderData,
       reportedDate: new Date().toISOString().split('T')[0],
-      status: "active"
+      status: "active" // Ändrat från "pending" till "active" för att visa det direkt i aktiva ärenden
     });
 
     setIsOpen(false);

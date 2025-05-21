@@ -76,7 +76,7 @@ export function useOrdersService() {
     const newOrder: Order = {
       ...orderData,
       id: `C${(activeOrders.length + historicalOrders.length + 10).toString().padStart(3, '0')}`,
-      status: "pending", // Default status for new orders
+      status: orderData.status || "pending", // Använd den status som skickas in eller "pending" som default
     };
 
     console.log("Creating new order:", newOrder);
@@ -92,12 +92,16 @@ export function useOrdersService() {
       return { activeOrders, historicalOrders };
     }
     
+    // Filter active orders - includes both "active" and "pending" status för att visa nya ärenden direkt
     const filteredActive = activeOrders.filter(order => 
-      order.residenceId === residenceId
+      order.residenceId === residenceId && 
+      (order.status === "active" || order.status === "pending")
     );
     
+    // Filter historical orders - only "resolved" status
     const filteredHistorical = historicalOrders.filter(order => 
-      order.residenceId === residenceId
+      order.residenceId === residenceId && 
+      order.status === "resolved"
     );
     
     return { 
