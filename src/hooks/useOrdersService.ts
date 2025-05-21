@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 export interface Order {
@@ -11,7 +10,9 @@ export interface Order {
   assignedTo: string;
   resolvedDate?: string;
   roomId?: string;
-  needsMasterKey?: boolean; // Added this property
+  needsMasterKey?: boolean;
+  plannedExecutionDate?: string;
+  dueDate?: string;
 }
 
 // Mock order data

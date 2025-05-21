@@ -13,6 +13,11 @@ import { TenantInformationCard } from "@/components/tenants/TenantInformationCar
 import { mockTenant } from "@/data/tenants";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 // Lista över möjliga komponenter för ett rum
 const roomComponents = [
@@ -56,7 +61,9 @@ export function OrderForm({
   const [assignedTo, setAssignedTo] = useState("Johan Andersson");
   const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedComponent, setSelectedComponent] = useState("");
-  const [needsMasterKey, setNeedsMasterKey] = useState("nej"); // Ny state för huvudnyckel
+  const [needsMasterKey, setNeedsMasterKey] = useState("nej");
+  const [plannedExecutionDate, setPlannedExecutionDate] = useState<Date | undefined>(undefined);
+  const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
   
@@ -116,7 +123,9 @@ export function OrderForm({
       priority,
       assignedTo,
       roomId: contextType === "residence" ? selectedRoom : undefined,
-      needsMasterKey: needsMasterKey === "ja" // Lägg till i ordern
+      needsMasterKey: needsMasterKey === "ja",
+      plannedExecutionDate: plannedExecutionDate ? format(plannedExecutionDate, 'yyyy-MM-dd') : undefined,
+      dueDate: dueDate ? format(dueDate, 'yyyy-MM-dd') : undefined
     });
 
     toast({
@@ -244,6 +253,64 @@ export function OrderForm({
               <SelectItem value="Erik Svensson">Erik Svensson</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+        
+        {/* Date picker for planned execution */}
+        <div className="space-y-2">
+          <Label htmlFor="plannedExecution">Planerat utförande</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="plannedExecution"
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !plannedExecutionDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {plannedExecutionDate ? format(plannedExecutionDate, "yyyy-MM-dd") : <span>Välj datum...</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={plannedExecutionDate}
+                onSelect={setPlannedExecutionDate}
+                initialFocus
+                className={cn("p-3 pointer-events-auto")}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        
+        {/* Date picker for due date */}
+        <div className="space-y-2">
+          <Label htmlFor="dueDate">Förfallodatum</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="dueDate"
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !dueDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {dueDate ? format(dueDate, "yyyy-MM-dd") : <span>Välj datum...</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={dueDate}
+                onSelect={setDueDate}
+                initialFocus
+                className={cn("p-3 pointer-events-auto")}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
         
         <div className="flex justify-end space-x-2 pt-4">
