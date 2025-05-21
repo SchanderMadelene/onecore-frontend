@@ -76,7 +76,6 @@ export function useOrdersService() {
     const newOrder: Order = {
       ...orderData,
       id: `C${(activeOrders.length + historicalOrders.length + 10).toString().padStart(3, '0')}`,
-      reportedDate: new Date().toISOString().split('T')[0], // Set the report date to today
       status: "pending", // Default status for new orders
     };
 
@@ -94,7 +93,7 @@ export function useOrdersService() {
     }
     
     const filteredActive = activeOrders.filter(order => 
-      order.residenceId === residenceId || !order.residenceId // Include orders without a specific residence
+      order.residenceId === residenceId
     );
     
     const filteredHistorical = historicalOrders.filter(order => 

@@ -9,7 +9,7 @@ export function TenantOrders() {
         <CardTitle className="text-lg font-semibold">Ärenden</CardTitle>
       </CardHeader>
       <CardContent>
-        <OrdersManagement />
+        <OrdersManagement contextType="tenant" />
       </CardContent>
     </Card>
   );
