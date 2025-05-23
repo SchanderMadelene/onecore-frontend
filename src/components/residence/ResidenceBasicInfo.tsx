@@ -33,11 +33,11 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
           <div className={`grid ${isMobile ? 'grid-cols-1 gap-y-4' : 'grid-cols-2 md:grid-cols-3 gap-4'}`}>
             <div>
               <p className="text-sm text-muted-foreground">Lägenhetskod</p>
-              <p className="font-medium">{residence.code || "N/A"}</p>
+              <p className="font-medium">{residence.code}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
-              <p className="font-medium">{residence.name || "N/A"}</p>
+              <p className="font-medium">{residence.name}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Kontraktstatus</p>
@@ -45,11 +45,11 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Yta</p>
-              <p className="font-medium">{residence.size ? `${residence.size} m²` : "N/A"}</p>
+              <p className="font-medium">{residence.size ? `${residence.size} m²` : "-"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Anläggnings ID Mälarenergi</p>
-              <p className="font-medium">{residence.malarenergiFacilityId || "N/A"}</p>
+              <p className="font-medium">{residence.malarenergiFacilityId || "-"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
@@ -58,13 +58,13 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
             <div>
               <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>
               <p className="font-medium">
-                {residence.validityPeriod?.fromDate ? new Date(residence.validityPeriod.fromDate).toLocaleDateString('sv-SE') : "N/A"}
+                {new Date(residence.validityPeriod.fromDate).toLocaleDateString('sv-SE')}
               </p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Befintligt kontrakt till</p>
               <p className="font-medium">
-                {residence.validityPeriod?.toDate ? new Date(residence.validityPeriod.toDate).toLocaleDateString('sv-SE') : "N/A"}
+                {new Date(residence.validityPeriod.toDate).toLocaleDateString('sv-SE')}
               </p>
             </div>
           </div>
