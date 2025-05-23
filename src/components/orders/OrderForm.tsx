@@ -26,17 +26,15 @@ type OrderFormProps = {
   residenceId?: string; // Added residenceId prop
 };
 
-// Function to get tenant data based on residence ID
+// Function to get tenant data based on residence ID - samma logik som i ResidenceContent
 const getTenantDataByResidenceId = (residenceId?: string) => {
   switch(residenceId) {
     case "lgh-1001":
-      return mockTenant; // Single tenant, no secondary rental
+      return mockMultipleTenants; // Sambos
     case "lgh-1002":
-      return mockSecondHandTenants; // Secondary rental scenario
-    case "lgh-1003":
-      return mockMultipleTenants; // Multiple tenants (sambos)
+      return mockSecondHandTenants; // Andrahandsuthyrning
     default:
-      return mockTenant;
+      return mockTenant; // Enskild hyresgäst
   }
 };
 
