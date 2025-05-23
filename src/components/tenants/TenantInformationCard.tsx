@@ -77,20 +77,6 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
   // Check if we have multiple tenants
   const isMultipleTenants = Array.isArray(tenant);
   const tenants = isMultipleTenants ? tenant : [tenant];
-  
-  // Get relationship description
-  const getRelationshipDescription = () => {
-    if (!isMultipleTenants) return null;
-    
-    const primaryTenant = tenants.find(t => t.isPrimaryTenant);
-    const secondaryTenant = tenants.find(t => !t.isPrimaryTenant);
-    
-    if (primaryTenant && secondaryTenant) {
-      return `${primaryTenant.firstName} ${primaryTenant.lastName} hyr ut i andra hand till ${secondaryTenant.firstName} ${secondaryTenant.lastName}`;
-    }
-    
-    return "Andrahandsuthyrning";
-  };
 
   const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => (
     <div key={index} className="space-y-4">
@@ -180,12 +166,6 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
         
         <CollapsibleContent>
           <CardContent className="p-4 pt-4">
-            {isMultipleTenants && (
-              <div className="mb-4 p-3 bg-slate-50 rounded-lg">
-                <p className="text-sm text-slate-600">{getRelationshipDescription()}</p>
-              </div>
-            )}
-            
             <Tabs defaultValue="info" className="w-full">
               <TabsList className="mb-4 grid grid-cols-2">
                 <TabsTrigger value="info" className="flex items-center gap-1.5">
