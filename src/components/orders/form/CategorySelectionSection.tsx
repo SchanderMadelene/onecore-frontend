@@ -28,7 +28,7 @@ export function CategorySelectionSection({
   ];
 
   return (
-    <div className="space-y-2 bg-white p-4 rounded-lg border border-slate-200">
+    <div className="space-y-2">
       <Label htmlFor="category" className="font-medium">Kategori</Label>
       <Select
         value={selectedCategory}
