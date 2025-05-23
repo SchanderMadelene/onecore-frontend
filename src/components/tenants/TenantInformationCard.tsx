@@ -1,3 +1,4 @@
+
 import { ChevronDown, Mail, MessageSquare, Phone, FileText, StickyNote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -81,13 +82,12 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
   // Check if this is actually a second-hand rental (has temporary contract status)
   const isSecondHandRental = tenants.some(t => t.contractStatus === "temporary");
 
-  // For compact mode, filter out secondary tenants but keep indication of secondary rental
-  const tenantsToShow = displayMode === "compact" 
-    ? tenants.filter(t => t.contractStatus !== "temporary" || t.isPrimaryTenant)
-    : tenants;
+  // For compact mode, show all tenants but with limited info for secondary tenant
+  const tenantsToShow = tenants;
 
   const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => {
-    const showLimitedInfo = displayMode === "compact" && tenantData.contractStatus === "temporary";
+    const isSecondaryTenant = tenantData.contractStatus === "temporary";
+    const showLimitedInfo = displayMode === "compact" && isSecondaryTenant;
     
     return (
       <div key={index} className="space-y-4">
@@ -157,6 +157,25 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
                 <p className="font-medium">{tenantData.personalNumber}</p>
               </div>
             )}
+          </>
+        )}
+
+        {showLimitedInfo && (
+          <>
+            <div>
+              <p className="text-sm text-muted-foreground">Kontaktinfo</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium text-sm">{tenantData.phone} • {tenantData.email}</p>
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-sm text-muted-foreground">Kontraktsperiod</p>
+              <p className="font-medium text-sm">
+                {new Date(tenantData.moveInDate).toLocaleDateString('sv-SE')} - {' '}
+                {tenantData.moveOutDate ? new Date(tenantData.moveOutDate).toLocaleDateString('sv-SE') : 'Tillsvidare'}
+              </p>
+            </div>
           </>
         )}
       </div>
