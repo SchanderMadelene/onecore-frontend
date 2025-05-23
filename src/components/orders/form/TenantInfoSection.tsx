@@ -2,9 +2,9 @@
 import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
 
 type TenantInfoSectionProps = {
-  tenant: any;
+  tenant: any | any[];
 };
 
 export function TenantInfoSection({ tenant }: TenantInfoSectionProps) {
-  return <TenantInformationCard tenant={tenant} />;
+  return <TenantInformationCard tenant={tenant} displayMode="compact" />;
 }

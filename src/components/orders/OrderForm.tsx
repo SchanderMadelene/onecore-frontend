@@ -1,11 +1,10 @@
-
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { Order } from "@/hooks/useOrdersService";
 import type { Room } from "@/types/api";
 import { useResidenceData } from "@/hooks/useResidenceData";
 import { useParams } from "react-router-dom";
-import { mockTenant } from "@/data/tenants";
+import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 
@@ -27,12 +26,24 @@ type OrderFormProps = {
   residenceId?: string; // Added residenceId prop
 };
 
+// Function to get tenant data based on residence ID - samma logik som i ResidenceContent
+const getTenantDataByResidenceId = (residenceId?: string) => {
+  switch(residenceId) {
+    case "lgh-1001":
+      return mockMultipleTenants; // Sambos
+    case "lgh-1002":
+      return mockSecondHandTenants; // Andrahandsuthyrning
+    default:
+      return mockTenant; // Enskild hyresgäst
+  }
+};
+
 export function OrderForm({
   onSubmit,
   onCancel,
   contextType = "tenant",
   rooms = [],
-  tenant = mockTenant, // Default to mock tenant if not provided
+  tenant, // Remove default value here
   residenceId
 }: OrderFormProps) {
   const { toast } = useToast();
@@ -49,6 +60,10 @@ export function OrderForm({
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
   const availableRooms = rooms.length > 0 ? rooms : roomsData || [];
+  
+  // Get the effective residence ID and corresponding tenant data
+  const effectiveResidenceId = residenceId || id;
+  const tenantData = tenant || getTenantDataByResidenceId(effectiveResidenceId);
 
   // Update title when room and component are selected
   useEffect(() => {
@@ -117,7 +132,7 @@ export function OrderForm({
     <ScrollArea className="max-h-[calc(95vh-10rem)]">
       <form onSubmit={handleSubmit} className="space-y-4 pr-4">
         {/* Tenant information section */}
-        <TenantInfoSection tenant={tenant} />
+        <TenantInfoSection tenant={tenantData} />
         
         {/* Room selection section - only shown in residence context */}
         {contextType === "residence" && (
