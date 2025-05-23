@@ -6,15 +6,16 @@ import { useParams } from "react-router-dom";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useOrderForm } from "@/hooks/useOrderForm";
+import { Form } from "@/components/ui/form";
 
-// Importing the component sections
-import { TenantInfoSection } from "./form/TenantInfoSection";
-import { CategorySelectionSection } from "./form/CategorySelectionSection";
-import { RoomSelectionSection } from "./form/RoomSelectionSection";
-import { ComponentSelectionSection } from "./form/ComponentSelectionSection";
-import { MasterKeySection } from "./form/MasterKeySection";
-import { OrderDetailsSection } from "./form/OrderDetailsSection";
-import { DateSelectionSection } from "./form/DateSelectionSection";
+// Importing the new form components
+import { TenantInfoSection } from "./form-rhf/TenantInfoSection";
+import { CategorySelectionSection } from "./form-rhf/CategorySelectionSection";
+import { RoomSelectionSection } from "./form-rhf/RoomSelectionSection";
+import { ComponentSelectionSection } from "./form-rhf/ComponentSelectionSection";
+import { MasterKeySection } from "./form-rhf/MasterKeySection";
+import { OrderDetailsSection } from "./form-rhf/OrderDetailsSection";
+import { DateSelectionSection } from "./form-rhf/DateSelectionSection";
 import { FormActions } from "./form/FormActions";
 
 type OrderFormProps = {
@@ -22,19 +23,19 @@ type OrderFormProps = {
   onCancel: () => void;
   contextType?: "tenant" | "residence";
   rooms?: Room[];
-  tenant?: any; // Optional tenant prop
-  residenceId?: string; // Added residenceId prop
+  tenant?: any;
+  residenceId?: string;
 };
 
-// Function to get tenant data based on residence ID - samma logik som i ResidenceContent
+// Function to get tenant data based on residence ID
 const getTenantDataByResidenceId = (residenceId?: string) => {
   switch(residenceId) {
     case "lgh-1001":
-      return mockMultipleTenants; // Sambos
+      return mockMultipleTenants;
     case "lgh-1002":
-      return mockSecondHandTenants; // Andrahandsuthyrning
+      return mockSecondHandTenants;
     default:
-      return mockTenant; // Enskild hyresgäst
+      return mockTenant;
   }
 };
 
@@ -50,15 +51,10 @@ export function OrderForm({
   const { roomsData } = useResidenceData(id);
   const availableRooms = rooms.length > 0 ? rooms : roomsData || [];
   
-  // Get the effective residence ID and corresponding tenant data
   const effectiveResidenceId = residenceId || id;
   const tenantData = tenant || getTenantDataByResidenceId(effectiveResidenceId);
 
-  const { 
-    formState, 
-    setters, 
-    handleSubmit 
-  } = useOrderForm({
+  const { form, handleSubmit } = useOrderForm({
     onSubmit,
     contextType,
     rooms: availableRooms,
@@ -66,63 +62,25 @@ export function OrderForm({
   });
 
   return (
-    <FormWrapper onSubmit={handleSubmit}>
-      {/* Tenant information section */}
-      <TenantInfoSection tenant={tenantData} />
-      
-      {/* Category selection section - only shown in residence context */}
-      {contextType === "residence" && (
-        <CategorySelectionSection 
-          selectedCategory={formState.selectedCategory}
-          setSelectedCategory={setters.setSelectedCategory}
-        />
-      )}
-      
-      {/* Room selection section - only shown in residence context */}
-      {contextType === "residence" && (
-        <RoomSelectionSection 
-          selectedRoom={formState.selectedRoom}
-          setSelectedRoom={setters.setSelectedRoom}
-          availableRooms={availableRooms}
-        />
-      )}
-      
-      {/* Component selection section - only shown in residence context */}
-      {contextType === "residence" && (
-        <ComponentSelectionSection
-          selectedComponent={formState.selectedComponent}
-          setSelectedComponent={setters.setSelectedComponent}
-        />
-      )}
-      
-      {/* Master Key section */}
-      <MasterKeySection
-        needsMasterKey={formState.needsMasterKey}
-        setNeedsMasterKey={setters.setNeedsMasterKey}
-      />
-      
-      {/* Order details section */}
-      <OrderDetailsSection
-        title={formState.title}
-        setTitle={setters.setTitle}
-        description={formState.description}
-        setDescription={setters.setDescription}
-        priority={formState.priority}
-        setPriority={setters.setPriority}
-        assignedTo={formState.assignedTo}
-        setAssignedTo={setters.setAssignedTo}
-      />
-      
-      {/* Date selection section */}
-      <DateSelectionSection
-        plannedExecutionDate={formState.plannedExecutionDate}
-        setPlannedExecutionDate={setters.setPlannedExecutionDate}
-        dueDate={formState.dueDate}
-        setDueDate={setters.setDueDate}
-      />
-      
-      {/* Form actions section */}
-      <FormActions onCancel={onCancel} />
+    <FormWrapper>
+      <Form {...form}>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <TenantInfoSection tenant={tenantData} />
+          
+          {contextType === "residence" && (
+            <>
+              <CategorySelectionSection />
+              <RoomSelectionSection availableRooms={availableRooms} />
+              <ComponentSelectionSection />
+            </>
+          )}
+          
+          <MasterKeySection />
+          <OrderDetailsSection />
+          <DateSelectionSection />
+          <FormActions onCancel={onCancel} />
+        </form>
+      </Form>
     </FormWrapper>
   );
 }
