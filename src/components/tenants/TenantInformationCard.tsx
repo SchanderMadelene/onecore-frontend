@@ -40,7 +40,7 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
   const getContractStatus = (status: string) => {
     switch (status) {
       case "permanent": return "Tillsvidare";
-      case "temporary": return "Tidsbegränsat";
+      case "temporary": return "Andrahandsuthyrning";
       case "terminated": return "Uppsagt";
       default: return status;
     }
