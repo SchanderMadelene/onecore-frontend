@@ -1,4 +1,5 @@
 
+
 import { ChevronDown, Mail, MessageSquare, Phone, FileText, StickyNote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -87,7 +88,7 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
 
   const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => {
     const isSecondaryTenant = tenantData.contractStatus === "temporary";
-    const showLimitedInfo = displayMode === "compact" && isSecondaryTenant;
+    const showCompactInfo = displayMode === "compact" && isSecondaryTenant;
     
     return (
       <div key={index} className="space-y-4">
@@ -112,7 +113,56 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
           <p className="font-medium">{getContractStatus(tenantData.contractStatus)}</p>
         </div>
         
-        {!showLimitedInfo && (
+        {showCompactInfo ? (
+          <>
+            {/* Basic personal info */}
+            {tenantData.personalNumber && (
+              <div>
+                <p className="text-sm text-muted-foreground">Personnummer</p>
+                <p className="font-medium">{tenantData.personalNumber}</p>
+              </div>
+            )}
+            
+            {/* Contact info */}
+            <div>
+              <p className="text-sm text-muted-foreground">Telefon</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{tenantData.phone}</p>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="icon" onClick={() => handleCall(tenantData.phone)} title="Ring">
+                    <Phone className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="icon" onClick={() => handleSMS(tenantData.phone)} title="Skicka SMS">
+                    <MessageSquare className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-sm text-muted-foreground">E-post</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{tenantData.email}</p>
+                <Button variant="outline" size="icon" onClick={() => handleEmail(tenantData.email)} title="Skicka e-post">
+                  <Mail className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            
+            {/* Contract info */}
+            <div>
+              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
+              <p className="font-medium">{new Date(tenantData.moveInDate).toLocaleDateString('sv-SE')}</p>
+            </div>
+            
+            {tenantData.moveOutDate && (
+              <div>
+                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+                <p className="font-medium">{new Date(tenantData.moveOutDate).toLocaleDateString('sv-SE')}</p>
+              </div>
+            )}
+          </>
+        ) : !isSecondaryTenant && (
           <>
             <div>
               <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
@@ -157,25 +207,6 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
                 <p className="font-medium">{tenantData.personalNumber}</p>
               </div>
             )}
-          </>
-        )}
-
-        {showLimitedInfo && (
-          <>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontaktinfo</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium text-sm">{tenantData.phone} • {tenantData.email}</p>
-              </div>
-            </div>
-            
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsperiod</p>
-              <p className="font-medium text-sm">
-                {new Date(tenantData.moveInDate).toLocaleDateString('sv-SE')} - {' '}
-                {tenantData.moveOutDate ? new Date(tenantData.moveOutDate).toLocaleDateString('sv-SE') : 'Tillsvidare'}
-              </p>
-            </div>
           </>
         )}
       </div>
@@ -239,3 +270,4 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
     </Card>
   );
 }
+
