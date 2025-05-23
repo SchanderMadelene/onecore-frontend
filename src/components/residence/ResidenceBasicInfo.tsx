@@ -40,7 +40,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
               <p className="font-medium">{residence.name}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Status</p>
+              <p className="text-sm text-muted-foreground">Kontraktstatus</p>
               <p className="font-medium">{residence.deleted ? "Borttagen" : "Aktiv"}</p>
             </div>
             <div>
