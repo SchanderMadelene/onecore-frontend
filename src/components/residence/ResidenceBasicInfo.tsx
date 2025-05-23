@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -37,7 +36,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
-              <p className="font-medium">{residence.name}</p>
+              <p className="font-medium">N/A</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Kontraktstatus</p>
