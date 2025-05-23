@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TenantNotesTab } from "./TenantNotesTab";
@@ -18,22 +19,35 @@ interface TenantInformationCardProps {
     moveInDate: string;
     moveOutDate?: string;
     personalNumber?: string;
-  };
+    isPrimaryTenant?: boolean;
+    relationshipType?: string;
+  } | Array<{
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    contractStatus: "permanent" | "temporary" | "terminated";
+    moveInDate: string;
+    moveOutDate?: string;
+    personalNumber?: string;
+    isPrimaryTenant?: boolean;
+    relationshipType?: string;
+  }>;
 }
 
 export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleCall = () => {
-    window.location.href = `tel:${tenant.phone.replace(/[\s-]/g, '')}`;
+  const handleCall = (phone: string) => {
+    window.location.href = `tel:${phone.replace(/[\s-]/g, '')}`;
   };
 
-  const handleSMS = () => {
-    window.location.href = `sms:${tenant.phone.replace(/[\s-]/g, '')}`;
+  const handleSMS = (phone: string) => {
+    window.location.href = `sms:${phone.replace(/[\s-]/g, '')}`;
   };
 
-  const handleEmail = () => {
-    window.location.href = `mailto:${tenant.email}`;
+  const handleEmail = (email: string) => {
+    window.location.href = `mailto:${email}`;
   };
 
   // Format contract status in Swedish
@@ -60,24 +74,101 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
     }
   };
 
+  // Check if we have multiple tenants
+  const isMultipleTenants = Array.isArray(tenant);
+  const tenants = isMultipleTenants ? tenant : [tenant];
+  
+  // Get relationship description
+  const getRelationshipDescription = () => {
+    if (!isMultipleTenants) return null;
+    
+    const primaryTenant = tenants.find(t => t.isPrimaryTenant);
+    const secondaryTenant = tenants.find(t => !t.isPrimaryTenant);
+    
+    if (primaryTenant && secondaryTenant) {
+      return `${primaryTenant.firstName} ${primaryTenant.lastName} hyr ut i andra hand till ${secondaryTenant.firstName} ${secondaryTenant.lastName}`;
+    }
+    
+    return "Andrahandsuthyrning";
+  };
+
+  const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => (
+    <div key={index} className="space-y-4">
+      {isMultipleTenants && (
+        <div className="mb-3">
+          <h4 className="font-medium text-base">
+            {tenantData.isPrimaryTenant ? "Förstahandskontrakt" : "Andrahandskontrakt"}
+          </h4>
+        </div>
+      )}
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Namn</p>
+        <p className="font-medium">{tenantData.firstName} {tenantData.lastName}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Kontraktstatus</p>
+        <p className="font-medium">{getContractStatus(tenantData.contractStatus)}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
+        <p className="font-medium">{new Date(tenantData.moveInDate).toLocaleDateString('sv-SE')}</p>
+      </div>
+      
+      {tenantData.moveOutDate && (
+        <div>
+          <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+          <p className="font-medium">{new Date(tenantData.moveOutDate).toLocaleDateString('sv-SE')}</p>
+        </div>
+      )}
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Telefon</p>
+        <div className="flex items-center gap-2">
+          <p className="font-medium">{tenantData.phone}</p>
+          <div className="flex gap-2">
+            <Button variant="outline" size="icon" onClick={() => handleCall(tenantData.phone)} title="Ring">
+              <Phone className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" onClick={() => handleSMS(tenantData.phone)} title="Skicka SMS">
+              <MessageSquare className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">E-post</p>
+        <div className="flex items-center gap-2">
+          <p className="font-medium">{tenantData.email}</p>
+          <Button variant="outline" size="icon" onClick={() => handleEmail(tenantData.email)} title="Skicka e-post">
+            <Mail className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+      
+      {tenantData.personalNumber && (
+        <div>
+          <p className="text-sm text-muted-foreground">Personnummer</p>
+          <p className="font-medium">{tenantData.personalNumber}</p>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <Card className="border-slate-200">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
           <div className="flex items-center gap-3">
             <h3 className="font-medium text-lg">Hyresgästinformation</h3>
-            <Badge 
-              variant={getStatusBadgeVariant(tenant.contractStatus)}
-              className={`${
-                tenant.contractStatus === "permanent" 
-                  ? "bg-green-50 text-green-700 hover:bg-green-50 border-green-200" 
-                  : tenant.contractStatus === "temporary"
-                  ? "bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200"
-                  : "bg-red-50 text-red-700 hover:bg-red-50 border-red-200"
-              }`}
-            >
-              {getContractStatus(tenant.contractStatus)}
-            </Badge>
+            {isMultipleTenants && (
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">
+                Andrahandsuthyrning
+              </Badge>
+            )}
           </div>
           <CollapsibleTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -89,6 +180,12 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
         
         <CollapsibleContent>
           <CardContent className="p-4 pt-4">
+            {isMultipleTenants && (
+              <div className="mb-4 p-3 bg-slate-50 rounded-lg">
+                <p className="text-sm text-slate-600">{getRelationshipDescription()}</p>
+              </div>
+            )}
+            
             <Tabs defaultValue="info" className="w-full">
               <TabsList className="mb-4 grid grid-cols-2">
                 <TabsTrigger value="info" className="flex items-center gap-1.5">
@@ -102,65 +199,20 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
               </TabsList>
 
               <TabsContent value="info">
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Namn</p>
-                    <p className="font-medium">{tenant.firstName} {tenant.lastName}</p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-muted-foreground">Kontraktstatus</p>
-                    <p className="font-medium">{getContractStatus(tenant.contractStatus)}</p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-                    <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
-                  </div>
-                  
-                  {tenant.moveOutDate && (
-                    <div>
-                      <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-                      <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                <div className="space-y-6">
+                  {tenants.map((tenantData, index) => (
+                    <div key={index}>
+                      {renderTenantInfo(tenantData, index)}
+                      {index < tenants.length - 1 && (
+                        <Separator className="my-6" />
+                      )}
                     </div>
-                  )}
-                  
-                  <div>
-                    <p className="text-sm text-muted-foreground">Telefon</p>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{tenant.phone}</p>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="icon" onClick={handleCall} title="Ring">
-                          <Phone className="h-4 w-4" />
-                        </Button>
-                        <Button variant="outline" size="icon" onClick={handleSMS} title="Skicka SMS">
-                          <MessageSquare className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-muted-foreground">E-post</p>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{tenant.email}</p>
-                      <Button variant="outline" size="icon" onClick={handleEmail} title="Skicka e-post">
-                        <Mail className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {tenant.personalNumber && (
-                    <div>
-                      <p className="text-sm text-muted-foreground">Personnummer</p>
-                      <p className="font-medium">{tenant.personalNumber}</p>
-                    </div>
-                  )}
+                  ))}
                 </div>
               </TabsContent>
               
               <TabsContent value="notes">
-                <TenantNotesTab tenantId={tenant.personalNumber || `${tenant.firstName}-${tenant.lastName}`} />
+                <TenantNotesTab tenantId={tenants[0].personalNumber || `${tenants[0].firstName}-${tenants[0].lastName}`} />
               </TabsContent>
             </Tabs>
           </CardContent>
