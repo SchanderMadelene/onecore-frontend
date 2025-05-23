@@ -78,6 +78,9 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
   const isMultipleTenants = Array.isArray(tenant);
   const tenants = isMultipleTenants ? tenant : [tenant];
 
+  // Check if this is actually a second-hand rental (has temporary contract status)
+  const isSecondHandRental = isMultipleTenants && tenants.some(t => t.contractStatus === "temporary");
+
   const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => (
     <div key={index} className="space-y-4">
       {isMultipleTenants && (
@@ -150,7 +153,7 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
           <div className="flex items-center gap-3">
             <h3 className="font-medium text-lg">Hyresgästinformation</h3>
-            {isMultipleTenants && (
+            {isSecondHandRental && (
               <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">
                 Andrahandsuthyrning
               </Badge>
