@@ -32,9 +32,10 @@ interface TenantInformationCardProps {
     isPrimaryTenant?: boolean;
     relationshipType?: string;
   }>;
+  displayMode?: "full" | "compact";
 }
 
-export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
+export function TenantInformationCard({ tenant, displayMode = "full" }: TenantInformationCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCall = (phone: string) => {
@@ -80,74 +81,87 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
   // Check if this is actually a second-hand rental (has temporary contract status)
   const isSecondHandRental = tenants.some(t => t.contractStatus === "temporary");
 
-  const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => (
-    <div key={index} className="space-y-4">
-      {isMultipleTenants && (
-        <div className="mb-3">
-          <h4 className="font-medium text-base">
-            {tenantData.contractStatus === "temporary" 
-              ? "Andrahandsuthyrning"
-              : (tenantData.isPrimaryTenant ? "Kontraktsinnehavare" : "Hyresgäst")
-            }
-          </h4>
-        </div>
-      )}
-      
-      <div>
-        <p className="text-sm text-muted-foreground">Namn</p>
-        <p className="font-medium">{tenantData.firstName} {tenantData.lastName}</p>
-      </div>
-      
-      <div>
-        <p className="text-sm text-muted-foreground">Kontraktstatus</p>
-        <p className="font-medium">{getContractStatus(tenantData.contractStatus)}</p>
-      </div>
-      
-      <div>
-        <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-        <p className="font-medium">{new Date(tenantData.moveInDate).toLocaleDateString('sv-SE')}</p>
-      </div>
-      
-      {tenantData.moveOutDate && (
-        <div>
-          <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-          <p className="font-medium">{new Date(tenantData.moveOutDate).toLocaleDateString('sv-SE')}</p>
-        </div>
-      )}
-      
-      <div>
-        <p className="text-sm text-muted-foreground">Telefon</p>
-        <div className="flex items-center gap-2">
-          <p className="font-medium">{tenantData.phone}</p>
-          <div className="flex gap-2">
-            <Button variant="outline" size="icon" onClick={() => handleCall(tenantData.phone)} title="Ring">
-              <Phone className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="icon" onClick={() => handleSMS(tenantData.phone)} title="Skicka SMS">
-              <MessageSquare className="h-4 w-4" />
-            </Button>
+  // For compact mode, filter out secondary tenants but keep indication of secondary rental
+  const tenantsToShow = displayMode === "compact" 
+    ? tenants.filter(t => t.contractStatus !== "temporary" || t.isPrimaryTenant)
+    : tenants;
+
+  const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => {
+    const showLimitedInfo = displayMode === "compact" && tenantData.contractStatus === "temporary";
+    
+    return (
+      <div key={index} className="space-y-4">
+        {isMultipleTenants && (
+          <div className="mb-3">
+            <h4 className="font-medium text-base">
+              {tenantData.contractStatus === "temporary" 
+                ? "Andrahandsuthyrning"
+                : (tenantData.isPrimaryTenant ? "Kontraktsinnehavare" : "Hyresgäst")
+              }
+            </h4>
           </div>
-        </div>
-      </div>
-      
-      <div>
-        <p className="text-sm text-muted-foreground">E-post</p>
-        <div className="flex items-center gap-2">
-          <p className="font-medium">{tenantData.email}</p>
-          <Button variant="outline" size="icon" onClick={() => handleEmail(tenantData.email)} title="Skicka e-post">
-            <Mail className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-      
-      {tenantData.personalNumber && (
+        )}
+        
         <div>
-          <p className="text-sm text-muted-foreground">Personnummer</p>
-          <p className="font-medium">{tenantData.personalNumber}</p>
+          <p className="text-sm text-muted-foreground">Namn</p>
+          <p className="font-medium">{tenantData.firstName} {tenantData.lastName}</p>
         </div>
-      )}
-    </div>
-  );
+        
+        <div>
+          <p className="text-sm text-muted-foreground">Kontraktstatus</p>
+          <p className="font-medium">{getContractStatus(tenantData.contractStatus)}</p>
+        </div>
+        
+        {!showLimitedInfo && (
+          <>
+            <div>
+              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
+              <p className="font-medium">{new Date(tenantData.moveInDate).toLocaleDateString('sv-SE')}</p>
+            </div>
+            
+            {tenantData.moveOutDate && (
+              <div>
+                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+                <p className="font-medium">{new Date(tenantData.moveOutDate).toLocaleDateString('sv-SE')}</p>
+              </div>
+            )}
+            
+            <div>
+              <p className="text-sm text-muted-foreground">Telefon</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{tenantData.phone}</p>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="icon" onClick={() => handleCall(tenantData.phone)} title="Ring">
+                    <Phone className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="icon" onClick={() => handleSMS(tenantData.phone)} title="Skicka SMS">
+                    <MessageSquare className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-sm text-muted-foreground">E-post</p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{tenantData.email}</p>
+                <Button variant="outline" size="icon" onClick={() => handleEmail(tenantData.email)} title="Skicka e-post">
+                  <Mail className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            
+            {tenantData.personalNumber && (
+              <div>
+                <p className="text-sm text-muted-foreground">Personnummer</p>
+                <p className="font-medium">{tenantData.personalNumber}</p>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    );
+  };
 
   return (
     <Card className="border-slate-200">
@@ -185,10 +199,10 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
 
               <TabsContent value="info">
                 <div className="space-y-6">
-                  {tenants.map((tenantData, index) => (
+                  {tenantsToShow.map((tenantData, index) => (
                     <div key={index}>
                       {renderTenantInfo(tenantData, index)}
-                      {index < tenants.length - 1 && (
+                      {index < tenantsToShow.length - 1 && (
                         <Separator className="my-6" />
                       )}
                     </div>
