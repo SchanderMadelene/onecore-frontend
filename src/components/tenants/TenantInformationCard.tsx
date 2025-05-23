@@ -1,4 +1,3 @@
-
 import { ChevronDown, Mail, MessageSquare, Phone, FileText, StickyNote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -86,8 +85,8 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
       {isMultipleTenants && (
         <div className="mb-3">
           <h4 className="font-medium text-base">
-            {isSecondHandRental 
-              ? (tenantData.contractStatus === "temporary" ? "Andrahandskontrakt" : "Förstahandskontrakt")
+            {tenantData.contractStatus === "temporary" 
+              ? "Andrahandsuthyrning"
               : (tenantData.isPrimaryTenant ? "Kontraktsinnehavare" : "Hyresgäst")
             }
           </h4>
