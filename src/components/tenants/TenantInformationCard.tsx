@@ -79,14 +79,17 @@ export function TenantInformationCard({ tenant }: TenantInformationCardProps) {
   const tenants = isMultipleTenants ? tenant : [tenant];
 
   // Check if this is actually a second-hand rental (has temporary contract status)
-  const isSecondHandRental = isMultipleTenants && tenants.some(t => t.contractStatus === "temporary");
+  const isSecondHandRental = tenants.some(t => t.contractStatus === "temporary");
 
   const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => (
     <div key={index} className="space-y-4">
       {isMultipleTenants && (
         <div className="mb-3">
           <h4 className="font-medium text-base">
-            {tenantData.isPrimaryTenant ? "Förstahandskontrakt" : "Andrahandskontrakt"}
+            {isSecondHandRental 
+              ? (tenantData.contractStatus === "temporary" ? "Andrahandskontrakt" : "Förstahandskontrakt")
+              : (tenantData.isPrimaryTenant ? "Kontraktsinnehavare" : "Hyresgäst")
+            }
           </h4>
         </div>
       )}
