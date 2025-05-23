@@ -1,4 +1,3 @@
-
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { Order } from "@/hooks/useOrdersService";
@@ -31,11 +30,9 @@ type OrderFormProps = {
 const getTenantDataByResidenceId = (residenceId?: string) => {
   switch(residenceId) {
     case "lgh-1001":
-      return mockTenant; // Enskild hyresgäst
+      return mockMultipleTenants; // Sambos
     case "lgh-1002":
       return mockSecondHandTenants; // Andrahandsuthyrning
-    case "lgh-1003":
-      return mockMultipleTenants; // Sambos
     default:
       return mockTenant; // Enskild hyresgäst
   }
