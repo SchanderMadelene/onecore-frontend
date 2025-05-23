@@ -30,9 +30,11 @@ type OrderFormProps = {
 const getTenantDataByResidenceId = (residenceId?: string) => {
   switch(residenceId) {
     case "lgh-1001":
-      return mockMultipleTenants;
+      return mockTenant; // Single tenant, no secondary rental
     case "lgh-1002":
-      return mockSecondHandTenants;
+      return mockSecondHandTenants; // Secondary rental scenario
+    case "lgh-1003":
+      return mockMultipleTenants; // Multiple tenants (sambos)
     default:
       return mockTenant;
   }
