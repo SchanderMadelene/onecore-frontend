@@ -5,8 +5,8 @@ import type { Room } from "@/types/api";
 import { useResidenceData } from "@/hooks/useResidenceData";
 import { useParams } from "react-router-dom";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
+import { FormWrapper } from "@/components/ui/form-wrapper";
 
 // Importing the component sections
 import { TenantInfoSection } from "./form/TenantInfoSection";
@@ -146,67 +146,63 @@ export function OrderForm({
   };
 
   return (
-    <ScrollArea className="h-[70vh] w-full">
-      <div className="p-6 space-y-6">
-        {/* Tenant information section */}
-        <TenantInfoSection tenant={tenantData} />
-        
-        {/* Category selection section - only shown in residence context */}
-        {contextType === "residence" && (
-          <CategorySelectionSection 
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-        )}
-        
-        {/* Room selection section - only shown in residence context */}
-        {contextType === "residence" && (
-          <RoomSelectionSection 
-            selectedRoom={selectedRoom}
-            setSelectedRoom={setSelectedRoom}
-            availableRooms={availableRooms}
-          />
-        )}
-        
-        {/* Component selection section - only shown in residence context */}
-        {contextType === "residence" && (
-          <ComponentSelectionSection
-            selectedComponent={selectedComponent}
-            setSelectedComponent={setSelectedComponent}
-          />
-        )}
-        
-        {/* Master Key section */}
-        <MasterKeySection
-          needsMasterKey={needsMasterKey}
-          setNeedsMasterKey={setNeedsMasterKey}
+    <FormWrapper onSubmit={handleSubmit}>
+      {/* Tenant information section */}
+      <TenantInfoSection tenant={tenantData} />
+      
+      {/* Category selection section - only shown in residence context */}
+      {contextType === "residence" && (
+        <CategorySelectionSection 
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
         />
-        
-        {/* Order details section */}
-        <OrderDetailsSection
-          title={title}
-          setTitle={setTitle}
-          description={description}
-          setDescription={setDescription}
-          priority={priority}
-          setPriority={setPriority}
-          assignedTo={assignedTo}
-          setAssignedTo={setAssignedTo}
+      )}
+      
+      {/* Room selection section - only shown in residence context */}
+      {contextType === "residence" && (
+        <RoomSelectionSection 
+          selectedRoom={selectedRoom}
+          setSelectedRoom={setSelectedRoom}
+          availableRooms={availableRooms}
         />
-        
-        {/* Date selection section */}
-        <DateSelectionSection
-          plannedExecutionDate={plannedExecutionDate}
-          setPlannedExecutionDate={setPlannedExecutionDate}
-          dueDate={dueDate}
-          setDueDate={setDueDate}
+      )}
+      
+      {/* Component selection section - only shown in residence context */}
+      {contextType === "residence" && (
+        <ComponentSelectionSection
+          selectedComponent={selectedComponent}
+          setSelectedComponent={setSelectedComponent}
         />
-        
-        {/* Form actions section */}
-        <form onSubmit={handleSubmit}>
-          <FormActions onCancel={onCancel} />
-        </form>
-      </div>
-    </ScrollArea>
+      )}
+      
+      {/* Master Key section */}
+      <MasterKeySection
+        needsMasterKey={needsMasterKey}
+        setNeedsMasterKey={setNeedsMasterKey}
+      />
+      
+      {/* Order details section */}
+      <OrderDetailsSection
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+        priority={priority}
+        setPriority={setPriority}
+        assignedTo={assignedTo}
+        setAssignedTo={setAssignedTo}
+      />
+      
+      {/* Date selection section */}
+      <DateSelectionSection
+        plannedExecutionDate={plannedExecutionDate}
+        setPlannedExecutionDate={setPlannedExecutionDate}
+        dueDate={dueDate}
+        setDueDate={setDueDate}
+      />
+      
+      {/* Form actions section */}
+      <FormActions onCancel={onCancel} />
+    </FormWrapper>
   );
 }
