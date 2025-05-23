@@ -10,6 +10,26 @@ interface ResidenceBasicInfoProps {
   district?: string;
 }
 
+// Function to determine the contract status based on residence data
+const getContractStatus = (residence: Residence): string => {
+  if (residence.deleted) return "Borttagen";
+  
+  const now = new Date();
+  const fromDate = new Date(residence.validityPeriod.fromDate);
+  const toDate = new Date(residence.validityPeriod.toDate);
+  
+  if (fromDate > now) {
+    return "Kommande";
+  } else if (toDate < now) {
+    return "Upphört";
+  } else if (toDate.getTime() - now.getTime() < 90 * 24 * 60 * 60 * 1000) {
+    // If contract expires within 90 days, consider it as "Uppsagt"
+    return "Uppsagt";
+  } else {
+    return "Gällande";
+  }
+};
+
 export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceBasicInfoProps) => {
   const isMobile = useIsMobile();
   const { id } = useParams<{ id: string }>();
@@ -41,15 +61,15 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Kontraktstatus</p>
-              <p className="font-medium">{residence.deleted ? "Borttagen" : "Aktiv"}</p>
+              <p className="font-medium">{getContractStatus(residence)}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Yta</p>
-              <p className="font-medium">{residence.size ? `${residence.size} m²` : "-"}</p>
+              <p className="font-medium">{residence.size ? `${residence.size} m²` : "N/A"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Anläggnings ID Mälarenergi</p>
-              <p className="font-medium">{residence.malarenergiFacilityId || "-"}</p>
+              <p className="font-medium">{residence.malarenergiFacilityId || "N/A"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
