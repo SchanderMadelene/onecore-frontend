@@ -1,26 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Order } from "@/hooks/useOrdersService";
 import type { Room } from "@/types/api";
 import { useResidenceData } from "@/hooks/useResidenceData";
 import { useParams } from "react-router-dom";
-import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
 import { mockTenant } from "@/data/tenants";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 
-// Lista över möjliga komponenter för ett rum
-const roomComponents = ["Golv", "Vägg", "Tak", "Dörr", "Fönster", "Kök", "Badrum", "Värme", "El", "Ventilation", "Tvättmaskin", "Torktumlare", "Diskmaskin", "Kyl/frys", "Spis", "Övrigt"];
+// Importing the new component sections
+import { TenantInfoSection } from "./form/TenantInfoSection";
+import { RoomSelectionSection } from "./form/RoomSelectionSection";
+import { ComponentSelectionSection } from "./form/ComponentSelectionSection";
+import { MasterKeySection } from "./form/MasterKeySection";
+import { OrderDetailsSection } from "./form/OrderDetailsSection";
+import { DateSelectionSection } from "./form/DateSelectionSection";
+import { FormActions } from "./form/FormActions";
+
 type OrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
   onCancel: () => void;
@@ -29,6 +26,7 @@ type OrderFormProps = {
   tenant?: any; // Optional tenant prop
   residenceId?: string; // Added residenceId prop
 };
+
 export function OrderForm({
   onSubmit,
   onCancel,
@@ -37,9 +35,7 @@ export function OrderForm({
   tenant = mockTenant, // Default to mock tenant if not provided
   residenceId
 }: OrderFormProps) {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("medium");
@@ -49,12 +45,9 @@ export function OrderForm({
   const [needsMasterKey, setNeedsMasterKey] = useState("nej");
   const [plannedExecutionDate, setPlannedExecutionDate] = useState<Date | undefined>(undefined);
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
-  const {
-    id
-  } = useParams();
-  const {
-    roomsData
-  } = useResidenceData(id);
+  
+  const { id } = useParams();
+  const { roomsData } = useResidenceData(id);
   const availableRooms = rooms.length > 0 ? rooms : roomsData || [];
 
   // Update title when room and component are selected
@@ -70,6 +63,7 @@ export function OrderForm({
       }
     }
   }, [selectedRoom, selectedComponent, availableRooms, contextType]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
@@ -101,6 +95,7 @@ export function OrderForm({
         finalDescription = `${locationInfo}\n${description}`;
       }
     }
+
     onSubmit({
       title,
       description: finalDescription,
@@ -117,133 +112,59 @@ export function OrderForm({
       description: "Ditt ärende har skapats framgångsrikt."
     });
   };
-  return <ScrollArea className="max-h-[calc(95vh-10rem)]">
+
+  return (
+    <ScrollArea className="max-h-[calc(95vh-10rem)]">
       <form onSubmit={handleSubmit} className="space-y-4 pr-4">
         {/* Tenant information section */}
-        <TenantInformationCard tenant={tenant} />
+        <TenantInfoSection tenant={tenant} />
         
-        {contextType === "residence" && availableRooms.length > 0 && <div className="space-y-2">
-            <Label htmlFor="room">Rum</Label>
-            <Select value={selectedRoom} onValueChange={setSelectedRoom}>
-              <SelectTrigger id="room">
-                <SelectValue placeholder="Välj rum" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableRooms.map(room => <SelectItem key={room.id} value={room.id}>
-                    {room.name}
-                  </SelectItem>)}
-              </SelectContent>
-            </Select>
-          </div>}
+        {/* Room selection section - only shown in residence context */}
+        {contextType === "residence" && (
+          <RoomSelectionSection 
+            selectedRoom={selectedRoom}
+            setSelectedRoom={setSelectedRoom}
+            availableRooms={availableRooms}
+          />
+        )}
         
-        {/* Ny dropdown för komponent */}
-        {contextType === "residence" && <div className="space-y-2">
-            <Label htmlFor="component">Komponent</Label>
-            <Select value={selectedComponent} onValueChange={setSelectedComponent}>
-              <SelectTrigger id="component">
-                <SelectValue placeholder="Välj komponent" />
-              </SelectTrigger>
-              <SelectContent>
-                {roomComponents.map(component => <SelectItem key={component} value={component}>
-                    {component}
-                  </SelectItem>)}
-              </SelectContent>
-            </Select>
-          </div>}
+        {/* Component selection section - only shown in residence context */}
+        {contextType === "residence" && (
+          <ComponentSelectionSection
+            selectedComponent={selectedComponent}
+            setSelectedComponent={setSelectedComponent}
+          />
+        )}
         
-        {/* Ny radiogrupp för huvudnyckel */}
-        <div className="space-y-2">
-          <Label htmlFor="masterKey" className="block text-sm font-medium">
-            Huvudnyckel?
-          </Label>
-          <RadioGroup id="masterKey" value={needsMasterKey} onValueChange={setNeedsMasterKey} className="flex space-x-4">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="ja" id="masterKeyYes" />
-              <Label htmlFor="masterKeyYes" className="cursor-pointer">Ja</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="nej" id="masterKeyNo" />
-              <Label htmlFor="masterKeyNo" className="cursor-pointer">Nej</Label>
-            </div>
-          </RadioGroup>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="title">Titel</Label>
-          <Input id="title" value={title} onChange={e => setTitle(e.target.value)} placeholder="Kort beskrivning av ärendet" required />
-        </div>
+        {/* Master Key section */}
+        <MasterKeySection
+          needsMasterKey={needsMasterKey}
+          setNeedsMasterKey={setNeedsMasterKey}
+        />
         
-        <div className="space-y-2">
-          <Label htmlFor="description">Beskrivning</Label>
-          <Textarea id="description" value={description} onChange={e => setDescription(e.target.value)} placeholder="Detaljerad beskrivning av ärendet" rows={4} />
-        </div>
+        {/* Order details section */}
+        <OrderDetailsSection
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          priority={priority}
+          setPriority={setPriority}
+          assignedTo={assignedTo}
+          setAssignedTo={setAssignedTo}
+        />
         
-        <div className="space-y-2">
-          <Label htmlFor="priority">Prioritet</Label>
-          <Select value={priority} onValueChange={setPriority}>
-            <SelectTrigger id="priority">
-              <SelectValue placeholder="Välj prioritet" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="low">Låg</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">Hög</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Date selection section */}
+        <DateSelectionSection
+          plannedExecutionDate={plannedExecutionDate}
+          setPlannedExecutionDate={setPlannedExecutionDate}
+          dueDate={dueDate}
+          setDueDate={setDueDate}
+        />
         
-        <div className="space-y-2">
-          <Label htmlFor="assignedTo">Resursgrupp</Label>
-          <Select value={assignedTo} onValueChange={setAssignedTo}>
-            <SelectTrigger id="assignedTo">
-              <SelectValue placeholder="Välj handläggare" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Johan Andersson">Johan Andersson</SelectItem>
-              <SelectItem value="Maria Nilsson">Maria Nilsson</SelectItem>
-              <SelectItem value="Erik Svensson">Erik Svensson</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        
-        {/* Date picker for planned execution */}
-        <div className="space-y-2">
-          <Label htmlFor="plannedExecution">Planerat utförande</Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button id="plannedExecution" variant="outline" className={cn("w-full justify-start text-left font-normal", !plannedExecutionDate && "text-muted-foreground")}>
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {plannedExecutionDate ? format(plannedExecutionDate, "yyyy-MM-dd") : <span>Välj datum...</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar mode="single" selected={plannedExecutionDate} onSelect={setPlannedExecutionDate} initialFocus className={cn("p-3 pointer-events-auto")} />
-            </PopoverContent>
-          </Popover>
-        </div>
-        
-        {/* Date picker for due date */}
-        <div className="space-y-2">
-          <Label htmlFor="dueDate">Förfallodatum</Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button id="dueDate" variant="outline" className={cn("w-full justify-start text-left font-normal", !dueDate && "text-muted-foreground")}>
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {dueDate ? format(dueDate, "yyyy-MM-dd") : <span>Välj datum...</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar mode="single" selected={dueDate} onSelect={setDueDate} initialFocus className={cn("p-3 pointer-events-auto")} />
-            </PopoverContent>
-          </Popover>
-        </div>
-        
-        <div className="flex justify-end space-x-2 pt-4">
-          <Button variant="outline" type="button" onClick={onCancel}>
-            Avbryt
-          </Button>
-          <Button type="submit">Skapa ärende</Button>
-        </div>
+        {/* Form actions section */}
+        <FormActions onCancel={onCancel} />
       </form>
-    </ScrollArea>;
+    </ScrollArea>
+  );
 }
