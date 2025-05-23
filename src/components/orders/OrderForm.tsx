@@ -1,4 +1,3 @@
-
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { Order } from "@/hooks/useOrdersService";
@@ -147,8 +146,8 @@ export function OrderForm({
   };
 
   return (
-    <ScrollArea className="max-h-[calc(95vh-10rem)]">
-      <form onSubmit={handleSubmit} className="space-y-4 pr-4">
+    <ScrollArea className="h-[70vh] w-full">
+      <div className="p-6 space-y-6">
         {/* Tenant information section */}
         <TenantInfoSection tenant={tenantData} />
         
@@ -204,8 +203,10 @@ export function OrderForm({
         />
         
         {/* Form actions section */}
-        <FormActions onCancel={onCancel} />
-      </form>
+        <form onSubmit={handleSubmit}>
+          <FormActions onCancel={onCancel} />
+        </form>
+      </div>
     </ScrollArea>
   );
 }
