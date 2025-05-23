@@ -1,3 +1,4 @@
+
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { Order } from "@/hooks/useOrdersService";
@@ -8,8 +9,9 @@ import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/t
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 
-// Importing the new component sections
+// Importing the component sections
 import { TenantInfoSection } from "./form/TenantInfoSection";
+import { CategorySelectionSection } from "./form/CategorySelectionSection";
 import { RoomSelectionSection } from "./form/RoomSelectionSection";
 import { ComponentSelectionSection } from "./form/ComponentSelectionSection";
 import { MasterKeySection } from "./form/MasterKeySection";
@@ -43,7 +45,7 @@ export function OrderForm({
   onCancel,
   contextType = "tenant",
   rooms = [],
-  tenant, // Remove default value here
+  tenant,
   residenceId
 }: OrderFormProps) {
   const { toast } = useToast();
@@ -51,6 +53,7 @@ export function OrderForm({
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("medium");
   const [assignedTo, setAssignedTo] = useState("Johan Andersson");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedComponent, setSelectedComponent] = useState("");
   const [needsMasterKey, setNeedsMasterKey] = useState("nej");
@@ -65,19 +68,25 @@ export function OrderForm({
   const effectiveResidenceId = residenceId || id;
   const tenantData = tenant || getTenantDataByResidenceId(effectiveResidenceId);
 
-  // Update title when room and component are selected
+  // Update title when room, category and component are selected
   useEffect(() => {
     if (selectedRoom && contextType === "residence") {
       const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
       if (roomName) {
         let newTitle = `Problem i ${roomName}`;
-        if (selectedComponent) {
+        
+        if (selectedCategory && selectedComponent) {
+          newTitle = `${selectedCategory}: Problem med ${selectedComponent.toLowerCase()} i ${roomName}`;
+        } else if (selectedCategory) {
+          newTitle = `${selectedCategory}: Problem i ${roomName}`;
+        } else if (selectedComponent) {
           newTitle = `Problem med ${selectedComponent.toLowerCase()} i ${roomName}`;
         }
+        
         setTitle(newTitle);
       }
     }
-  }, [selectedRoom, selectedComponent, availableRooms, contextType]);
+  }, [selectedRoom, selectedCategory, selectedComponent, availableRooms, contextType]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,22 +99,29 @@ export function OrderForm({
       return;
     }
 
-    // Add room and component information to the description if selected
+    // Add room, category and component information to the description if selected
     let finalDescription = description;
     if (contextType === "residence") {
       let locationInfo = "";
+      
+      if (selectedCategory) {
+        locationInfo += `Kategori: ${selectedCategory}\n`;
+      }
+      
       if (selectedRoom) {
         const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
         if (roomName) {
           locationInfo += `Rum: ${roomName}\n`;
         }
       }
+      
       if (selectedComponent) {
         locationInfo += `Komponent: ${selectedComponent}\n`;
       }
 
       // Lägg till information om huvudnyckel
       locationInfo += `Huvudnyckel behövs: ${needsMasterKey}\n`;
+      
       if (locationInfo) {
         finalDescription = `${locationInfo}\n${description}`;
       }
@@ -116,12 +132,14 @@ export function OrderForm({
       description: finalDescription,
       priority,
       assignedTo,
+      category: selectedCategory,
       roomId: contextType === "residence" ? selectedRoom : undefined,
       needsMasterKey: needsMasterKey === "ja",
       plannedExecutionDate: plannedExecutionDate ? format(plannedExecutionDate, 'yyyy-MM-dd') : undefined,
       dueDate: dueDate ? format(dueDate, 'yyyy-MM-dd') : undefined,
-      residenceId: residenceId // Pass the residenceId to the createOrder function
+      residenceId: residenceId
     });
+    
     toast({
       title: "Ärende skapat",
       description: "Ditt ärende har skapats framgångsrikt."
@@ -133,6 +151,14 @@ export function OrderForm({
       <form onSubmit={handleSubmit} className="space-y-4 pr-4">
         {/* Tenant information section */}
         <TenantInfoSection tenant={tenantData} />
+        
+        {/* Category selection section - only shown in residence context */}
+        {contextType === "residence" && (
+          <CategorySelectionSection 
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+        )}
         
         {/* Room selection section - only shown in residence context */}
         {contextType === "residence" && (
