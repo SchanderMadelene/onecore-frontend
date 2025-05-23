@@ -13,7 +13,6 @@ import { useState } from "react";
 import { useOrdersService, Order } from "@/hooks/useOrdersService";
 import { useParams } from "react-router-dom";
 import { useResidenceData } from "@/hooks/useResidenceData";
-import { mockTenant } from "@/data/tenants";
 
 type CreateOrderDialogProps = {
   buttonSize?: "default" | "sm" | "lg" | "icon";
@@ -29,13 +28,15 @@ export function CreateOrderDialog({
   buttonVariant = "default",
   contextType = "tenant",
   onOrderCreated,
-  tenant = mockTenant, // Default to mock tenant if not provided
+  tenant, // Remove default value
   residenceId // Add the residenceId prop
 }: CreateOrderDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { createOrder } = useOrdersService();
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
+
+  const effectiveResidenceId = residenceId || id;
 
   const handleCreateOrder = (orderData: Omit<Order, "id" | "status" | "reportedDate">) => {
     createOrder({
@@ -69,7 +70,7 @@ export function CreateOrderDialog({
           contextType={contextType}
           rooms={contextType === "residence" ? roomsData : []}
           tenant={tenant}
-          residenceId={residenceId} // Pass the residenceId prop to OrderForm
+          residenceId={effectiveResidenceId}
         />
       </DialogContent>
     </Dialog>
