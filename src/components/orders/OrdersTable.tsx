@@ -11,11 +11,11 @@ export function OrdersTable({ orders }: OrdersTableProps) {
   const getPriorityBadge = (priority: Order["priority"]) => {
     switch (priority) {
       case "high":
-        return <Badge variant="outline">Hög</Badge>;
+        return <Badge variant="outline" className="bg-red-100 text-red-800">Hög</Badge>;
       case "medium":
-        return <Badge variant="outline">Medium</Badge>;
+        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Medium</Badge>;
       case "low":
-        return <Badge variant="outline">Låg</Badge>;
+        return <Badge variant="outline" className="bg-blue-100 text-blue-800">Låg</Badge>;
       default:
         return null;
     }
@@ -24,11 +24,11 @@ export function OrdersTable({ orders }: OrdersTableProps) {
   const getStatusBadge = (status: Order["status"]) => {
     switch (status) {
       case "active":
-        return <Badge variant="outline">Pågående</Badge>;
+        return <Badge variant="outline" className="bg-green-100 text-green-800">Pågående</Badge>;
       case "pending":
-        return <Badge variant="outline">Väntande</Badge>;
+        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Väntande</Badge>;
       case "resolved":
-        return <Badge variant="outline">Åtgärdat</Badge>;
+        return <Badge variant="outline" className="bg-slate-100 text-slate-800">Åtgärdat</Badge>;
       default:
         return null;
     }

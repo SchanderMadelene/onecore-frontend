@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 export interface Order {
@@ -9,6 +10,11 @@ export interface Order {
   description: string;
   assignedTo: string;
   resolvedDate?: string;
+  roomId?: string;
+  needsMasterKey?: boolean;
+  plannedExecutionDate?: string;
+  dueDate?: string;
+  residenceId?: string; // Added to track which residence an order belongs to
 }
 
 // Mock order data
@@ -20,7 +26,8 @@ const activeOrdersMock: Order[] = [
     status: "pending",
     priority: "medium",
     description: "Väntar på handläggning",
-    assignedTo: "Johan Andersson"
+    assignedTo: "Johan Andersson",
+    residenceId: "lgh-1001" // Associate this order with lgh-1001
   }
 ];
 
@@ -33,7 +40,8 @@ const historicalOrdersMock: Order[] = [
     priority: "medium",
     description: "Handfatet i badrummet töms långsamt.",
     resolvedDate: "2023-05-12",
-    assignedTo: "Erik Svensson"
+    assignedTo: "Erik Svensson",
+    residenceId: "lgh-1002"
   },
   {
     id: "C003",
@@ -43,7 +51,8 @@ const historicalOrdersMock: Order[] = [
     priority: "medium",
     description: "Kylskåpet kyler inte tillräckligt.",
     resolvedDate: "2023-04-25",
-    assignedTo: "Johan Andersson"
+    assignedTo: "Johan Andersson",
+    residenceId: "lgh-1001"
   },
   {
     id: "C004",
@@ -53,7 +62,8 @@ const historicalOrdersMock: Order[] = [
     priority: "medium",
     description: "Elementet i vardagsrummet blir inte varmt.",
     resolvedDate: "2023-02-07",
-    assignedTo: "Maria Nilsson"
+    assignedTo: "Maria Nilsson",
+    residenceId: "lgh-1001"
   }
 ];
 
@@ -66,6 +76,7 @@ export function useOrdersService() {
     const newOrder: Order = {
       ...orderData,
       id: `C${(activeOrders.length + historicalOrders.length + 10).toString().padStart(3, '0')}`,
+      status: orderData.status || "pending", // Använd den status som skickas in eller "pending" som default
     };
 
     console.log("Creating new order:", newOrder);
@@ -75,11 +86,34 @@ export function useOrdersService() {
     return newOrder;
   };
 
-  // More methods could be added here, like resolving an order, updating an order, etc.
+  // Get orders for a specific residence ID
+  const getOrdersByResidence = (residenceId?: string) => {
+    if (!residenceId) {
+      return { activeOrders, historicalOrders };
+    }
+    
+    // Filter active orders - includes both "active" and "pending" status för att visa nya ärenden direkt
+    const filteredActive = activeOrders.filter(order => 
+      order.residenceId === residenceId && 
+      (order.status === "active" || order.status === "pending")
+    );
+    
+    // Filter historical orders - only "resolved" status
+    const filteredHistorical = historicalOrders.filter(order => 
+      order.residenceId === residenceId && 
+      order.status === "resolved"
+    );
+    
+    return { 
+      activeOrders: filteredActive, 
+      historicalOrders: filteredHistorical 
+    };
+  };
   
   return {
     activeOrders,
     historicalOrders,
     createOrder,
+    getOrdersByResidence,
   };
 }

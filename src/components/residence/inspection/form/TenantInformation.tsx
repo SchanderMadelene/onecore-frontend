@@ -9,21 +9,21 @@ interface TenantInformationProps {
 }
 
 export function TenantInformation({ tenant }: TenantInformationProps) {
-  // Konvertera till en array om det bara är en hyresgäst
+  // Convert to array if it's a single tenant
   const tenants = Array.isArray(tenant) ? tenant : [tenant];
   const primaryTenant = tenants.find(t => t.isPrimaryTenant) || tenants[0];
   const additionalTenants = tenants.filter(t => t !== primaryTenant);
   
-  // Avgör vilken typ av kontraktsrelation vi har
+  // Determine relationship type
   const isSecondaryRental = tenants.some(t => t.relationshipType === "secondaryTenant");
   
-  // Hitta andrahandskontraktnummer om det finns
+  // Find secondary contract number if it exists
   const secondaryTenant = tenants.find(t => t.relationshipType === "secondaryTenant");
   const secondaryContractNumber = secondaryTenant?.contractNumber;
 
   return (
     <div className="space-y-6">
-      {/* Kontraktsinformation överst */}
+      {/* Contract information at the top */}
       <ContractInfo
         primaryContractNumber={primaryTenant.contractNumber}
         secondaryContractNumber={secondaryContractNumber}
@@ -31,7 +31,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
       />
       
       <div className="space-y-6">
-        {/* Primär hyresgäst */}
+        {/* Primary tenant */}
         <TenantCard
           firstName={primaryTenant.firstName}
           lastName={primaryTenant.lastName}
@@ -44,7 +44,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
           isPrimaryContractHolder={primaryTenant.isPrimaryContractHolder || primaryTenant.isPrimaryTenant}
         />
         
-        {/* Ytterligare hyresgäster om det finns några */}
+        {/* Additional tenants if any */}
         {additionalTenants.length > 0 && (
           <>
             <Separator />

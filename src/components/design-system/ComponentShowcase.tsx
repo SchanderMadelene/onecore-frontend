@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ButtonShowcase } from "./showcase/buttons/ButtonShowcase";
 import { FormControlsShowcase } from "./showcase/forms/FormControlsShowcase";
@@ -117,7 +118,9 @@ export const ComponentShowcase = () => {
 
   return (
     <div className="space-y-8">
+      {/* Give OrdersShowcase more prominence by placing it first */}
       <OrdersShowcase />
+      
       <Card>
         <CardHeader>
           <CardTitle>Maintenance Unit Card</CardTitle>

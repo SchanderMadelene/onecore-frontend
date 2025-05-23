@@ -129,7 +129,7 @@ export const ResidenceContent = ({
             <Card>
               <CardContent className="p-4">
                 {features.showApartmentIssues ? (
-                  <OrdersManagement />
+                  <OrdersManagement residenceId={id} />
                 ) : (
                   <p className="text-slate-500">
                     För att se felanmälningar, aktivera funktionen i inställningarna.

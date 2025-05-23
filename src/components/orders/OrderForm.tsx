@@ -1,109 +1,170 @@
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState, useEffect } from "react";
 import { Order } from "@/hooks/useOrdersService";
+import type { Room } from "@/types/api";
+import { useResidenceData } from "@/hooks/useResidenceData";
+import { useParams } from "react-router-dom";
+import { mockTenant } from "@/data/tenants";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { format } from "date-fns";
+
+// Importing the new component sections
+import { TenantInfoSection } from "./form/TenantInfoSection";
+import { RoomSelectionSection } from "./form/RoomSelectionSection";
+import { ComponentSelectionSection } from "./form/ComponentSelectionSection";
+import { MasterKeySection } from "./form/MasterKeySection";
+import { OrderDetailsSection } from "./form/OrderDetailsSection";
+import { DateSelectionSection } from "./form/DateSelectionSection";
+import { FormActions } from "./form/FormActions";
 
 type OrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
   onCancel: () => void;
   contextType?: "tenant" | "residence";
+  rooms?: Room[];
+  tenant?: any; // Optional tenant prop
+  residenceId?: string; // Added residenceId prop
 };
 
-export function OrderForm({ onSubmit, onCancel, contextType = "tenant" }: OrderFormProps) {
+export function OrderForm({
+  onSubmit,
+  onCancel,
+  contextType = "tenant",
+  rooms = [],
+  tenant = mockTenant, // Default to mock tenant if not provided
+  residenceId
+}: OrderFormProps) {
   const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("medium");
   const [assignedTo, setAssignedTo] = useState("Johan Andersson");
+  const [selectedRoom, setSelectedRoom] = useState("");
+  const [selectedComponent, setSelectedComponent] = useState("");
+  const [needsMasterKey, setNeedsMasterKey] = useState("nej");
+  const [plannedExecutionDate, setPlannedExecutionDate] = useState<Date | undefined>(undefined);
+  const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
+  
+  const { id } = useParams();
+  const { roomsData } = useResidenceData(id);
+  const availableRooms = rooms.length > 0 ? rooms : roomsData || [];
+
+  // Update title when room and component are selected
+  useEffect(() => {
+    if (selectedRoom && contextType === "residence") {
+      const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
+      if (roomName) {
+        let newTitle = `Problem i ${roomName}`;
+        if (selectedComponent) {
+          newTitle = `Problem med ${selectedComponent.toLowerCase()} i ${roomName}`;
+        }
+        setTitle(newTitle);
+      }
+    }
+  }, [selectedRoom, selectedComponent, availableRooms, contextType]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!title.trim()) {
       toast({
         title: "Titel krävs",
         description: "Vänligen ange en titel för ärendet.",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-    
+
+    // Add room and component information to the description if selected
+    let finalDescription = description;
+    if (contextType === "residence") {
+      let locationInfo = "";
+      if (selectedRoom) {
+        const roomName = availableRooms.find(room => room.id === selectedRoom)?.name || "";
+        if (roomName) {
+          locationInfo += `Rum: ${roomName}\n`;
+        }
+      }
+      if (selectedComponent) {
+        locationInfo += `Komponent: ${selectedComponent}\n`;
+      }
+
+      // Lägg till information om huvudnyckel
+      locationInfo += `Huvudnyckel behövs: ${needsMasterKey}\n`;
+      if (locationInfo) {
+        finalDescription = `${locationInfo}\n${description}`;
+      }
+    }
+
     onSubmit({
       title,
-      description,
+      description: finalDescription,
       priority,
-      assignedTo
+      assignedTo,
+      roomId: contextType === "residence" ? selectedRoom : undefined,
+      needsMasterKey: needsMasterKey === "ja",
+      plannedExecutionDate: plannedExecutionDate ? format(plannedExecutionDate, 'yyyy-MM-dd') : undefined,
+      dueDate: dueDate ? format(dueDate, 'yyyy-MM-dd') : undefined,
+      residenceId: residenceId // Pass the residenceId to the createOrder function
     });
-
     toast({
       title: "Ärende skapat",
-      description: "Ditt ärende har skapats framgångsrikt.",
+      description: "Ditt ärende har skapats framgångsrikt."
     });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="title">Titel</Label>
-        <Input
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Kort beskrivning av ärendet"
-          required
+    <ScrollArea className="max-h-[calc(95vh-10rem)]">
+      <form onSubmit={handleSubmit} className="space-y-4 pr-4">
+        {/* Tenant information section */}
+        <TenantInfoSection tenant={tenant} />
+        
+        {/* Room selection section - only shown in residence context */}
+        {contextType === "residence" && (
+          <RoomSelectionSection 
+            selectedRoom={selectedRoom}
+            setSelectedRoom={setSelectedRoom}
+            availableRooms={availableRooms}
+          />
+        )}
+        
+        {/* Component selection section - only shown in residence context */}
+        {contextType === "residence" && (
+          <ComponentSelectionSection
+            selectedComponent={selectedComponent}
+            setSelectedComponent={setSelectedComponent}
+          />
+        )}
+        
+        {/* Master Key section */}
+        <MasterKeySection
+          needsMasterKey={needsMasterKey}
+          setNeedsMasterKey={setNeedsMasterKey}
         />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="description">Beskrivning</Label>
-        <Textarea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Detaljerad beskrivning av ärendet"
-          rows={4}
+        
+        {/* Order details section */}
+        <OrderDetailsSection
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          priority={priority}
+          setPriority={setPriority}
+          assignedTo={assignedTo}
+          setAssignedTo={setAssignedTo}
         />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="priority">Prioritet</Label>
-        <Select value={priority} onValueChange={setPriority}>
-          <SelectTrigger id="priority">
-            <SelectValue placeholder="Välj prioritet" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="low">Låg</SelectItem>
-            <SelectItem value="medium">Medium</SelectItem>
-            <SelectItem value="high">Hög</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="assignedTo">Tilldela till</Label>
-        <Select value={assignedTo} onValueChange={setAssignedTo}>
-          <SelectTrigger id="assignedTo">
-            <SelectValue placeholder="Välj handläggare" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Johan Andersson">Johan Andersson</SelectItem>
-            <SelectItem value="Maria Nilsson">Maria Nilsson</SelectItem>
-            <SelectItem value="Erik Svensson">Erik Svensson</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      
-      <div className="flex justify-end space-x-2 pt-4">
-        <Button variant="outline" type="button" onClick={onCancel}>
-          Avbryt
-        </Button>
-        <Button type="submit">Skapa ärende</Button>
-      </div>
-    </form>
+        
+        {/* Date selection section */}
+        <DateSelectionSection
+          plannedExecutionDate={plannedExecutionDate}
+          setPlannedExecutionDate={setPlannedExecutionDate}
+          dueDate={dueDate}
+          setDueDate={setDueDate}
+        />
+        
+        {/* Form actions section */}
+        <FormActions onCancel={onCancel} />
+      </form>
+    </ScrollArea>
   );
 }

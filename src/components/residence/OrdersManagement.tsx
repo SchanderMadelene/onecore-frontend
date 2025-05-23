@@ -6,14 +6,23 @@ import { OrderCard } from "@/components/orders/OrderCard";
 import { OrdersTable } from "@/components/orders/OrdersTable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 export interface OrdersManagementProps {
   contextType?: "tenant" | "residence";
+  residenceId?: string;
 }
 
-export function OrdersManagement({ contextType = "residence" }: OrdersManagementProps) {
-  const { activeOrders, historicalOrders } = useOrdersService();
+export function OrdersManagement({ contextType = "residence", residenceId }: OrdersManagementProps) {
+  const { id } = useParams<{ id: string }>();
+  const { getOrdersByResidence } = useOrdersService();
   const [refreshKey, setRefreshKey] = useState(0);
+
+  // Get the actual ID, either from props or URL params
+  const effectiveResidenceId = residenceId || id;
+  
+  // Get orders filtered by residence ID
+  const { activeOrders, historicalOrders } = getOrdersByResidence(effectiveResidenceId);
 
   const handleOrderCreated = () => {
     // Force a re-render to show the new order
@@ -26,6 +35,7 @@ export function OrdersManagement({ contextType = "residence" }: OrdersManagement
         <CreateOrderDialog 
           contextType={contextType}
           onOrderCreated={handleOrderCreated}
+          residenceId={effectiveResidenceId}
         />
       </div>
       
