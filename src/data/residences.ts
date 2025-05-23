@@ -11,7 +11,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       size: 56,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
-        toDate: "2024-12-31T23:59:59Z"
+        toDate: "2025-12-31T23:59:59Z" // Extended to ensure "Gällande" status
       },
       malarenergiFacilityId: "ME-1001"
     }
@@ -25,7 +25,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       size: 72,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
-        toDate: "2024-12-31T23:59:59Z"
+        toDate: "2025-12-31T23:59:59Z" // Extended to ensure "Gällande" status
       },
       malarenergiFacilityId: "ME-1002"
     }
@@ -39,7 +39,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       size: 45,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
-        toDate: "2024-12-31T23:59:59Z"
+        toDate: "2025-02-28T23:59:59Z" // Set to expire within 90 days to show "Uppsagt"
       },
       malarenergiFacilityId: "ME-1003"
     }
