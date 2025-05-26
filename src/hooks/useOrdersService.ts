@@ -10,11 +10,12 @@ export interface Order {
   description: string;
   assignedTo: string;
   resolvedDate?: string;
+  category?: string;
   roomId?: string;
   needsMasterKey?: boolean;
   plannedExecutionDate?: string;
   dueDate?: string;
-  residenceId?: string; // Added to track which residence an order belongs to
+  residenceId?: string;
 }
 
 // Mock order data
@@ -27,6 +28,7 @@ const activeOrdersMock: Order[] = [
     priority: "medium",
     description: "Väntar på handläggning",
     assignedTo: "Johan Andersson",
+    category: "Vitvaror",
     residenceId: "lgh-1001" // Associate this order with lgh-1001
   }
 ];
