@@ -1,7 +1,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { orderFormSchema, OrderFormData } from "./useOrderFormValidation";
+import { orderFormSchema, OrderFormData, transformFormDataToOrder } from "./useOrderFormValidation";
 import { Order } from "./useOrdersService";
 import { Room } from "@/types/api";
 
@@ -30,12 +30,11 @@ export const useOrderForm = ({ onSubmit, contextType, rooms, residenceId }: UseO
   });
 
   const handleSubmit = form.handleSubmit((data) => {
-    const orderData = {
-      ...data,
-      residenceId: residenceId || "",
-      contextType,
-      rooms: contextType === "residence" ? rooms : [],
-    };
+    const orderData = transformFormDataToOrder(
+      data,
+      residenceId || "",
+      contextType
+    );
     onSubmit(orderData);
   });
 
