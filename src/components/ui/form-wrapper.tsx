@@ -18,7 +18,7 @@ export function FormWrapper({
 }: FormWrapperProps) {
   return (
     <div className="max-h-screen overflow-hidden p-4">
-      <ScrollArea className={cn(`h-[${maxHeight}] w-full`, className)}>
+      <ScrollArea className={cn("w-full", className)} style={{ height: maxHeight }}>
         <div className="p-6 space-y-6">
           {onSubmit ? (
             <form onSubmit={onSubmit} className="space-y-6">
