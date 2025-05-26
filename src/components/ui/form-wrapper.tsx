@@ -16,7 +16,7 @@ export function FormWrapper({
   children, 
   className, 
   onSubmit,
-  maxHeight = "70vh",
+  maxHeight = "100vh",
   header,
   footer
 }: FormWrapperProps) {
@@ -63,7 +63,10 @@ export function FormWrapper({
   );
 
   return (
-    <div className={cn("flex flex-col h-full max-h-screen", className)}>
+    <div 
+      className={cn("flex flex-col h-full", className)} 
+      style={{ maxHeight }}
+    >
       {content}
     </div>
   );
