@@ -61,25 +61,37 @@ export function OrderForm({
     residenceId: effectiveResidenceId
   });
 
+  const headerContent = (
+    <div>
+      <h2 className="text-lg font-semibold">Skapa nytt ärende</h2>
+      <p className="text-sm text-muted-foreground">Fyll i informationen nedan</p>
+    </div>
+  );
+
+  const footerContent = (
+    <FormActions onCancel={onCancel} />
+  );
+
   return (
-    <FormWrapper>
+    <FormWrapper 
+      onSubmit={handleSubmit}
+      header={headerContent}
+      footer={footerContent}
+    >
       <Form {...form}>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <TenantInfoSection tenant={tenantData} />
-          
-          {contextType === "residence" && (
-            <>
-              <CategorySelectionSection />
-              <RoomSelectionSection availableRooms={availableRooms} />
-              <ComponentSelectionSection />
-            </>
-          )}
-          
-          <MasterKeySection />
-          <OrderDetailsSection />
-          <DateSelectionSection />
-          <FormActions onCancel={onCancel} />
-        </form>
+        <TenantInfoSection tenant={tenantData} />
+        
+        {contextType === "residence" && (
+          <>
+            <CategorySelectionSection />
+            <RoomSelectionSection availableRooms={availableRooms} />
+            <ComponentSelectionSection />
+          </>
+        )}
+        
+        <MasterKeySection />
+        <OrderDetailsSection />
+        <DateSelectionSection />
       </Form>
     </FormWrapper>
   );
