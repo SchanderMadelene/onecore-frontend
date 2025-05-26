@@ -29,13 +29,13 @@ export function FormWrapper({
       )}
       
       <ScrollArea className="flex-1 overflow-auto">
-        <div className="p-6 space-y-6">
+        <div className={cn("p-6 space-y-6", footer && "pb-24")}>
           {children}
         </div>
       </ScrollArea>
       
       {footer && (
-        <div className="sticky bottom-0 z-10 bg-background border-t p-4">
+        <div className="fixed bottom-0 left-0 right-0 z-10 bg-background border-t p-4">
           {footer}
         </div>
       )}
@@ -49,13 +49,13 @@ export function FormWrapper({
       )}
       
       <ScrollArea className="flex-1 overflow-auto">
-        <div className="p-6 space-y-6">
+        <div className={cn("p-6 space-y-6", footer && "pb-24")}>
           {children}
         </div>
       </ScrollArea>
       
       {footer && (
-        <div className="sticky bottom-0 z-10 bg-background border-t p-4">
+        <div className="fixed bottom-0 left-0 right-0 z-10 bg-background border-t p-4">
           {footer}
         </div>
       )}
