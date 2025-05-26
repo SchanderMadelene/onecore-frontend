@@ -23,19 +23,19 @@ export function FormWrapper({
   const content = onSubmit ? (
     <form onSubmit={onSubmit} className="h-full flex flex-col">
       {header && (
-        <div className="sticky top-0 z-10 bg-background border-b p-4">
+        <div className="flex-shrink-0 bg-background border-b p-4">
           {header}
         </div>
       )}
       
-      <ScrollArea className="flex-1 overflow-auto">
+      <ScrollArea className="flex-1 min-h-0">
         <div className={cn("p-6 space-y-6", footer && "pb-24")}>
           {children}
         </div>
       </ScrollArea>
       
       {footer && (
-        <div className="fixed bottom-0 left-0 right-0 z-10 bg-background border-t p-4">
+        <div className="flex-shrink-0 bg-background border-t p-4">
           {footer}
         </div>
       )}
@@ -43,19 +43,19 @@ export function FormWrapper({
   ) : (
     <div className="h-full flex flex-col">
       {header && (
-        <div className="sticky top-0 z-10 bg-background border-b p-4">
+        <div className="flex-shrink-0 bg-background border-b p-4">
           {header}
         </div>
       )}
       
-      <ScrollArea className="flex-1 overflow-auto">
+      <ScrollArea className="flex-1 min-h-0">
         <div className={cn("p-6 space-y-6", footer && "pb-24")}>
           {children}
         </div>
       </ScrollArea>
       
       {footer && (
-        <div className="fixed bottom-0 left-0 right-0 z-10 bg-background border-t p-4">
+        <div className="flex-shrink-0 bg-background border-t p-4">
           {footer}
         </div>
       )}
@@ -64,7 +64,7 @@ export function FormWrapper({
 
   return (
     <div 
-      className={cn("flex flex-col h-full", className)} 
+      className={cn("flex flex-col h-full max-h-screen overflow-hidden", className)} 
       style={{ maxHeight }}
     >
       {content}
