@@ -1,102 +1,124 @@
 
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { FormWrapper } from "@/components/ui/form-wrapper";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-const exampleSchema = z.object({
-  name: z.string().min(1, "Namn krävs"),
-  email: z.string().email("Ogiltig e-postadress"),
-  priority: z.enum(["low", "medium", "high"], {
-    required_error: "Prioritet krävs",
-  }),
-});
-
-type ExampleFormData = z.infer<typeof exampleSchema>;
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const StandardizedFormShowcase = () => {
-  const form = useForm<ExampleFormData>({
-    resolver: zodResolver(exampleSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      priority: "medium",
-    },
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    category: "",
+    description: "",
+    priority: "",
+    notifications: false,
   });
 
-  const onSubmit = (data: ExampleFormData) => {
-    console.log("Form submitted:", data);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Standardiserad formulärhantering</CardTitle>
-        <CardDescription>
-          Exempel på standardiserat formulär med React Hook Form + Zod validering
-        </CardDescription>
+        <CardTitle>Standardized Form Layout</CardTitle>
+        <CardDescription>Consistent form styling using FormWrapper</CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Namn</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ange namn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+        <FormWrapper onSubmit={handleSubmit} maxHeight="60vh">
+          <div className="space-y-2">
+            <Label htmlFor="name">Namn</Label>
+            <Input 
+              id="name" 
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              placeholder="Ange ditt namn" 
             />
-            
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>E-post</FormLabel>
-                  <FormControl>
-                    <Input type="email" placeholder="ange@email.se" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email">E-post</Label>
+            <Input 
+              id="email" 
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              placeholder="din@email.se" 
             />
-            
-            <FormField
-              control={form.control}
-              name="priority"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Prioritet</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Välj prioritet" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="low">Låg</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">Hög</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="category">Kategori</Label>
+            <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
+              <SelectTrigger id="category">
+                <SelectValue placeholder="Välj kategori" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="support">Support</SelectItem>
+                <SelectItem value="sales">Försäljning</SelectItem>
+                <SelectItem value="technical">Teknisk</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Beskrivning</Label>
+            <Textarea 
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              placeholder="Beskriv ditt ärende..."
+              rows={4}
             />
-            
+          </div>
+
+          <div className="space-y-2">
+            <Label>Prioritet</Label>
+            <RadioGroup 
+              value={formData.priority} 
+              onValueChange={(value) => setFormData({...formData, priority: value})}
+              className="flex space-x-4"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="low" id="low" />
+                <Label htmlFor="low" className="cursor-pointer">Låg</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="medium" id="medium" />
+                <Label htmlFor="medium" className="cursor-pointer">Medium</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="high" id="high" />
+                <Label htmlFor="high" className="cursor-pointer">Hög</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="notifications" 
+              checked={formData.notifications}
+              onCheckedChange={(checked) => setFormData({...formData, notifications: !!checked})}
+            />
+            <Label htmlFor="notifications" className="cursor-pointer">
+              Få notifikationer via e-post
+            </Label>
+          </div>
+
+          <div className="flex justify-end space-x-2 pt-4 border-t border-border">
+            <Button variant="outline" type="button">
+              Avbryt
+            </Button>
             <Button type="submit">Skicka</Button>
-          </form>
-        </Form>
+          </div>
+        </FormWrapper>
       </CardContent>
     </Card>
   );
