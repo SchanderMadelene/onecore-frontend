@@ -63,11 +63,13 @@ export function FormWrapper({
   );
 
   return (
-    <div 
-      className={cn("flex flex-col h-full max-h-screen overflow-hidden", className)} 
-      style={{ maxHeight }}
-    >
-      {content}
+    <div className="p-4 max-h-screen overflow-hidden">
+      <div 
+        className={cn("flex flex-col h-full max-h-full overflow-hidden rounded-lg border bg-card shadow-lg", className)} 
+        style={{ maxHeight: `calc(${maxHeight} - 2rem)` }}
+      >
+        {content}
+      </div>
     </div>
   );
 }
