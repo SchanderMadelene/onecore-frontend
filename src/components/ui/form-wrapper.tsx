@@ -14,21 +14,23 @@ export function FormWrapper({
   children, 
   className, 
   onSubmit,
-  maxHeight = "70vh" 
+  maxHeight = "80vh" 
 }: FormWrapperProps) {
   return (
-    <ScrollArea className={cn(`h-[${maxHeight}] w-full`, className)}>
-      <div className="p-6 space-y-6">
-        {onSubmit ? (
-          <form onSubmit={onSubmit} className="space-y-6">
-            {children}
-          </form>
-        ) : (
-          <div className="space-y-6">
-            {children}
-          </div>
-        )}
-      </div>
-    </ScrollArea>
+    <div className="max-h-screen overflow-hidden p-4">
+      <ScrollArea className={cn(`h-[${maxHeight}] w-full`, className)}>
+        <div className="p-6 space-y-6">
+          {onSubmit ? (
+            <form onSubmit={onSubmit} className="space-y-6">
+              {children}
+            </form>
+          ) : (
+            <div className="space-y-6">
+              {children}
+            </div>
+          )}
+        </div>
+      </ScrollArea>
+    </div>
   );
 }
