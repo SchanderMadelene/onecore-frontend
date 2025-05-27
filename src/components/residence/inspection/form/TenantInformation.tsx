@@ -31,34 +31,34 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <div className="space-y-6">
-      {/* Contract information at the top */}
+      {/* Contract information and tabs */}
       <div className="space-y-4">
         <ContractInfo
           primaryContractNumber={primaryTenant.contractNumber}
           secondaryContractNumber={secondaryContractNumber}
           isSecondaryRental={isSecondaryRental}
         />
-        
-        {/* Contract tabs directly under ContractInfo */}
-        <Tabs defaultValue="active" className="w-full">
-          <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
-            <TabsTrigger value="active">
-              Aktivt kontrakt
-            </TabsTrigger>
-            <TabsTrigger value="historical">
-              Historiska kontrakt
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="active">
-            <TenantContracts contracts={activeContracts} />
-          </TabsContent>
-
-          <TabsContent value="historical">
-            <TenantContracts contracts={historicalContracts} />
-          </TabsContent>
-        </Tabs>
       </div>
+      
+      {/* Contract tabs directly under the ContractInfo section */}
+      <Tabs defaultValue="active" className="w-full">
+        <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+          <TabsTrigger value="active">
+            Aktivt kontrakt
+          </TabsTrigger>
+          <TabsTrigger value="historical">
+            Historiska kontrakt
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active">
+          <TenantContracts contracts={activeContracts} />
+        </TabsContent>
+
+        <TabsContent value="historical">
+          <TenantContracts contracts={historicalContracts} />
+        </TabsContent>
+      </Tabs>
       
       <Separator />
       
