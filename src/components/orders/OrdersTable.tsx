@@ -42,6 +42,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
             <TableHead>Skapad datum</TableHead>
             <TableHead>Förfallodatum</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead>Typ</TableHead>
             <TableHead>Åtgärd</TableHead>
           </TableRow>
         </TableHeader>
@@ -53,6 +54,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
               <TableCell>{order.reportedDate}</TableCell>
               <TableCell>{order.dueDate || "-"}</TableCell>
               <TableCell>{getStatusBadge(order.status)}</TableCell>
+              <TableCell>{order.type || "-"}</TableCell>
               <TableCell>
                 <Button 
                   variant="outline" 
