@@ -38,6 +38,28 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
         isSecondaryRental={isSecondaryRental}
       />
       
+      {/* Contract tabs directly under ContractInfo */}
+      <Tabs defaultValue="active" className="w-full">
+        <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+          <TabsTrigger value="active">
+            Aktivt kontrakt
+          </TabsTrigger>
+          <TabsTrigger value="historical">
+            Historiska kontrakt
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active">
+          <TenantContracts contracts={activeContracts} />
+        </TabsContent>
+
+        <TabsContent value="historical">
+          <TenantContracts contracts={historicalContracts} />
+        </TabsContent>
+      </Tabs>
+      
+      <Separator />
+      
       <div className="space-y-6">
         {/* Primary tenant */}
         <TenantCard
@@ -74,27 +96,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
           </>
         )}
       </div>
-
-      {/* Contract tabs */}
-      <Separator />
-      <Tabs defaultValue="active" className="w-full">
-        <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
-          <TabsTrigger value="active">
-            Aktivt kontrakt
-          </TabsTrigger>
-          <TabsTrigger value="historical">
-            Historiska kontrakt
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="active">
-          <TenantContracts contracts={activeContracts} />
-        </TabsContent>
-
-        <TabsContent value="historical">
-          <TenantContracts contracts={historicalContracts} />
-        </TabsContent>
-      </Tabs>
     </div>
   );
 }
