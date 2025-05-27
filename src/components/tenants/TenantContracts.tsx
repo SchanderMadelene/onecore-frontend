@@ -23,16 +23,7 @@ interface TenantContractsProps {
 
 export function TenantContracts({ contracts }: TenantContractsProps) {
   if (!contracts.length) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Kontrakt</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">Inga kontrakt tillgängliga</p>
-        </CardContent>
-      </Card>
-    );
+    return null;
   }
 
   const getContractTypeName = (type: Contract["type"]) => {
