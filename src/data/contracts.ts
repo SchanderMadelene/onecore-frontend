@@ -10,6 +10,13 @@ export interface Contract {
   status: "active" | "pending" | "terminated";
   terminationDate?: string;
   noticeDate?: string;
+  tenant?: {
+    firstName: string;
+    lastName: string;
+    personalNumber: string;
+    moveInDate: string;
+    moveOutDate: string;
+  };
 }
 
 // Mock data for tenant contracts
@@ -79,6 +86,44 @@ export const getMockContractsForTenant = (tenantId: string): Contract[] => {
           status: "terminated",
           terminationDate: "2023-06-01",
           noticeDate: "2023-05-01"
+        }
+      ];
+    default:
+      return [];
+  }
+};
+
+// Mock data for historical tenants by residence ID
+export const getHistoricalTenantsForResidence = (residenceId: string) => {
+  switch (residenceId) {
+    case "lgh-1001":
+      return [
+        {
+          firstName: "Gustav",
+          lastName: "Svensson",
+          personalNumber: "19801215-4567",
+          moveInDate: "2020-03-01",
+          moveOutDate: "2022-12-31",
+          contractNumber: "KT2020-045"
+        },
+        {
+          firstName: "Helena",
+          lastName: "Lindqvist",
+          personalNumber: "19751008-2345",
+          moveInDate: "2018-08-15",
+          moveOutDate: "2020-02-28",
+          contractNumber: "KT2018-123"
+        }
+      ];
+    case "lgh-1002":
+      return [
+        {
+          firstName: "Per",
+          lastName: "Nilsson",
+          personalNumber: "19850920-6789",
+          moveInDate: "2019-11-01",
+          moveOutDate: "2023-10-31",
+          contractNumber: "KT2019-087"
         }
       ];
     default:

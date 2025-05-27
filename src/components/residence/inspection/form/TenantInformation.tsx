@@ -4,7 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ContractInfo } from "./tenant/ContractInfo";
 import { TenantCard } from "./tenant/TenantCard";
 import { TenantContracts } from "@/components/tenants/TenantContracts";
-import { getMockContractsForTenant } from "@/data/contracts";
+import { HistoricalTenants } from "./tenant/HistoricalTenants";
+import { getMockContractsForTenant, getHistoricalTenantsForResidence } from "@/data/contracts";
+import { useParams } from "react-router-dom";
 import type { Tenant } from "./tenant/types";
 
 interface TenantInformationProps {
@@ -12,6 +14,8 @@ interface TenantInformationProps {
 }
 
 export function TenantInformation({ tenant }: TenantInformationProps) {
+  const { id } = useParams<{ id: string }>();
+  
   // Convert to array if it's a single tenant
   const tenants = Array.isArray(tenant) ? tenant : [tenant];
   const primaryTenant = tenants.find(t => t.isPrimaryTenant) || tenants[0];
@@ -27,7 +31,9 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
   // Get contracts for the primary tenant
   const allContracts = getMockContractsForTenant(primaryTenant.personalNumber);
   const activeContracts = allContracts.filter(contract => contract.status === "active");
-  const historicalContracts = allContracts.filter(contract => contract.status === "terminated");
+  
+  // Get historical tenants for this residence
+  const historicalTenants = getHistoricalTenantsForResidence(id || "");
 
   return (
     <div className="space-y-6">
@@ -47,7 +53,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
         </TabsContent>
 
         <TabsContent value="historical">
-          <TenantContracts contracts={historicalContracts} />
+          <HistoricalTenants tenants={historicalTenants} />
         </TabsContent>
       </Tabs>
       
