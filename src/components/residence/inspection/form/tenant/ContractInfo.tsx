@@ -1,5 +1,4 @@
 
-import { FileText } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface ContractInfoProps {
@@ -15,11 +14,7 @@ export function ContractInfo({
 }: ContractInfoProps) {
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <FileText className="h-5 w-5 mr-2 text-slate-500" />
-          <h3 className="text-lg font-medium">Kontraktsinformation</h3>
-        </div>
+      <div className="flex items-center justify-end">
         {isSecondaryRental && (
           <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
             Andrahandsuthyrning
