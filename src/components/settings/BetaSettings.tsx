@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -101,9 +102,9 @@ export function BetaSettings() {
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
                           <MessageSquare className="h-4 w-4" />
-                          <Label htmlFor="apartment-issues">Felanmälan</Label>
+                          <Label htmlFor="apartment-issues">Ärenden</Label>
                         </div>
-                        <p className="text-sm text-muted-foreground">Visa felanmälansfunktioner på lägenhetskortet</p>
+                        <p className="text-sm text-muted-foreground">Visa ärendefunktioner på lägenhetskortet</p>
                       </div>
                       <Switch 
                         id="apartment-issues" 

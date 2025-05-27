@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 export interface Order {
@@ -16,6 +15,7 @@ export interface Order {
   plannedExecutionDate?: string;
   dueDate?: string;
   residenceId?: string;
+  type?: "Odoo" | "Xpand";
 }
 
 // Mock order data
@@ -29,7 +29,8 @@ const activeOrdersMock: Order[] = [
     description: "Väntar på handläggning",
     assignedTo: "Johan Andersson",
     category: "Vitvaror",
-    residenceId: "lgh-1001" // Associate this order with lgh-1001
+    residenceId: "lgh-1001",
+    type: "Odoo"
   }
 ];
 
@@ -43,7 +44,9 @@ const historicalOrdersMock: Order[] = [
     description: "Handfatet i badrummet töms långsamt.",
     resolvedDate: "2023-05-12",
     assignedTo: "Erik Svensson",
-    residenceId: "lgh-1002"
+    dueDate: "2023-05-15",
+    residenceId: "lgh-1002",
+    type: "Xpand"
   },
   {
     id: "C003",
@@ -54,7 +57,9 @@ const historicalOrdersMock: Order[] = [
     description: "Kylskåpet kyler inte tillräckligt.",
     resolvedDate: "2023-04-25",
     assignedTo: "Johan Andersson",
-    residenceId: "lgh-1001"
+    dueDate: "2023-04-30",
+    residenceId: "lgh-1001",
+    type: "Odoo"
   },
   {
     id: "C004",
@@ -65,7 +70,100 @@ const historicalOrdersMock: Order[] = [
     description: "Elementet i vardagsrummet blir inte varmt.",
     resolvedDate: "2023-02-07",
     assignedTo: "Maria Nilsson",
-    residenceId: "lgh-1001"
+    dueDate: "2023-02-10",
+    residenceId: "lgh-1001",
+    type: "Xpand"
+  },
+  {
+    id: "C005",
+    title: "Trasig spis",
+    reportedDate: "2023-01-15",
+    status: "resolved",
+    priority: "high",
+    description: "Spisen fungerar inte, två plattor är trasiga.",
+    resolvedDate: "2023-01-18",
+    assignedTo: "Per Gustafsson",
+    dueDate: "2023-01-20",
+    residenceId: "lgh-1001",
+    type: "Odoo"
+  },
+  {
+    id: "C006",
+    title: "Fuktskada i badrummet",
+    reportedDate: "2022-12-10",
+    status: "resolved",
+    priority: "high",
+    description: "Fukt upptäckt bakom kaklet i duschen.",
+    resolvedDate: "2022-12-20",
+    assignedTo: "Anna Lindström",
+    dueDate: "2022-12-25",
+    residenceId: "lgh-1001",
+    type: "Xpand"
+  },
+  {
+    id: "C007",
+    title: "Trasig dörrklocka",
+    reportedDate: "2022-11-05",
+    status: "resolved",
+    priority: "low",
+    description: "Dörrklockan fungerar inte.",
+    resolvedDate: "2022-11-08",
+    assignedTo: "Erik Svensson",
+    dueDate: "2022-11-15",
+    residenceId: "lgh-1001",
+    type: "Odoo"
+  },
+  {
+    id: "C008",
+    title: "Glödlampa i hall",
+    reportedDate: "2022-10-20",
+    status: "resolved",
+    priority: "low",
+    description: "Glödlampan i hallen behöver bytas.",
+    resolvedDate: "2022-10-21",
+    assignedTo: "Johan Andersson",
+    dueDate: "2022-10-25",
+    residenceId: "lgh-1001",
+    type: "Xpand"
+  },
+  {
+    id: "C009",
+    title: "Läckage från diskmaskin",
+    reportedDate: "2022-09-12",
+    status: "resolved",
+    priority: "medium",
+    description: "Diskmaskinens dörr läcker vatten på golvet.",
+    resolvedDate: "2022-09-15",
+    assignedTo: "Maria Nilsson",
+    dueDate: "2022-09-20",
+    residenceId: "lgh-1001",
+    type: "Odoo"
+  },
+  {
+    id: "C010",
+    title: "Ventilationsproblem",
+    reportedDate: "2022-08-30",
+    status: "resolved",
+    priority: "medium",
+    description: "Ventilationen i köket fungerar dåligt.",
+    resolvedDate: "2022-09-05",
+    assignedTo: "Per Gustafsson",
+    dueDate: "2022-09-10",
+    residenceId: "lgh-1001",
+    type: "Xpand"
+  },
+  {
+    id: "C011",
+    title: "Knarrande golvbrädor",
+    reportedDate: "2022-07-18",
+    status: "resolved",
+    priority: "low",
+    description: "Golvbrädorna i sovrummet knarrar mycket.",
+    resolvedDate: "2022-07-25",
+    assignedTo: "Anna Lindström",
+    dueDate: "2022-08-01",
+    residenceId: "lgh-1001",
+    type: "Odoo"
   }
 ];
 
