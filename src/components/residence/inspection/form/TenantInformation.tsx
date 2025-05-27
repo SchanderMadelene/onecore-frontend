@@ -31,16 +31,7 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <div className="space-y-6">
-      {/* Contract information and tabs */}
-      <div className="space-y-4">
-        <ContractInfo
-          primaryContractNumber={primaryTenant.contractNumber}
-          secondaryContractNumber={secondaryContractNumber}
-          isSecondaryRental={isSecondaryRental}
-        />
-      </div>
-      
-      {/* Contract tabs directly under the ContractInfo section */}
+      {/* Contract tabs */}
       <Tabs defaultValue="active" className="w-full">
         <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
           <TabsTrigger value="active">
@@ -63,6 +54,13 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
       <Separator />
       
       <div className="space-y-6">
+        {/* Contract information together with tenant information */}
+        <ContractInfo
+          primaryContractNumber={primaryTenant.contractNumber}
+          secondaryContractNumber={secondaryContractNumber}
+          isSecondaryRental={isSecondaryRental}
+        />
+        
         {/* Primary tenant */}
         <TenantCard
           firstName={primaryTenant.firstName}
