@@ -45,6 +45,29 @@ export const getMockContractsForTenant = (tenantId: string): Contract[] => {
           status: "active"
         }
       ];
+    // For sambos - both tenants share the same contracts (same contract number KT2024-002)
+    case "19900405-5678":
+    case "19920712-4321":
+      return [
+        {
+          id: "KT2024-002",
+          type: "housing",
+          objectName: "Lägenhet 1001",
+          objectId: "lgh-101",
+          startDate: "2024-01-15",
+          rent: 9200,
+          status: "active"
+        },
+        {
+          id: "P2024-023",
+          type: "parking",
+          objectName: "Parkeringsplats 08",
+          objectId: "park-08",
+          startDate: "2024-01-15",
+          rent: 650,
+          status: "active"
+        }
+      ];
     case "19760315-5678":
       return [
         {
@@ -81,6 +104,21 @@ export const getMockContractsForTenant = (tenantId: string): Contract[] => {
           noticeDate: "2023-05-01"
         }
       ];
+    // For second-hand rental scenarios
+    case "19781120-3344": // Lars (primary tenant)
+      return [
+        {
+          id: "KT2022-005",
+          type: "housing",
+          objectName: "Lägenhet 2001",
+          objectId: "lgh-201",
+          startDate: "2022-05-01",
+          rent: 8800,
+          status: "active"
+        }
+      ];
+    case "19950630-8877": // Sofia (secondary tenant) - no contracts in main system
+      return [];
     default:
       return [];
   }
