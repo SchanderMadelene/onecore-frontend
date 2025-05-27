@@ -4,6 +4,7 @@ import { StandardizedFormShowcase } from "./showcase/forms/StandardizedFormShowc
 import { ButtonShowcase } from "./showcase/buttons/ButtonShowcase";
 import { CardsShowcase } from "./showcase/cards/CardsShowcase";
 import { OrdersShowcase } from "./showcase/orders/OrdersShowcase";
+import { MaintenanceShowcase } from "./showcase/maintenance/MaintenanceShowcase";
 
 export const ComponentShowcase = () => {
   return (
@@ -12,6 +13,7 @@ export const ComponentShowcase = () => {
       <FormControlsShowcase />
       <ButtonShowcase />
       <CardsShowcase />
+      <MaintenanceShowcase />
       <OrdersShowcase />
     </div>
   );

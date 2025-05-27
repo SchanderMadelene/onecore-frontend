@@ -17,3 +17,23 @@ export const orderFormSchema = z.object({
 });
 
 export type OrderFormData = z.infer<typeof orderFormSchema>;
+
+// Transform function to convert form data to order data
+export const transformFormDataToOrder = (
+  formData: OrderFormData,
+  residenceId: string,
+  contextType: "tenant" | "residence"
+) => {
+  return {
+    title: formData.title,
+    description: formData.description || "",
+    priority: formData.priority,
+    assignedTo: formData.assignedTo,
+    category: formData.selectedCategory,
+    roomId: formData.selectedRoom,
+    needsMasterKey: formData.needsMasterKey === "ja",
+    plannedExecutionDate: formData.plannedExecutionDate?.toISOString().split('T')[0],
+    dueDate: formData.dueDate?.toISOString().split('T')[0],
+    residenceId,
+  };
+};
