@@ -1,7 +1,10 @@
 
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ContractInfo } from "./tenant/ContractInfo";
 import { TenantCard } from "./tenant/TenantCard";
+import { TenantContracts } from "@/components/tenants/TenantContracts";
+import { getMockContractsForTenant } from "@/data/contracts";
 import type { Tenant } from "./tenant/types";
 
 interface TenantInformationProps {
@@ -20,6 +23,11 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
   // Find secondary contract number if it exists
   const secondaryTenant = tenants.find(t => t.relationshipType === "secondaryTenant");
   const secondaryContractNumber = secondaryTenant?.contractNumber;
+
+  // Get contracts for the primary tenant
+  const allContracts = getMockContractsForTenant(primaryTenant.personalNumber);
+  const activeContracts = allContracts.filter(contract => contract.status === "active");
+  const historicalContracts = allContracts.filter(contract => contract.status === "terminated");
 
   return (
     <div className="space-y-6">
@@ -66,6 +74,27 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
           </>
         )}
       </div>
+
+      {/* Contract tabs */}
+      <Separator />
+      <Tabs defaultValue="active" className="w-full">
+        <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+          <TabsTrigger value="active">
+            Aktivt kontrakt
+          </TabsTrigger>
+          <TabsTrigger value="historical">
+            Historiska kontrakt
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active">
+          <TenantContracts contracts={activeContracts} />
+        </TabsContent>
+
+        <TabsContent value="historical">
+          <TenantContracts contracts={historicalContracts} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
