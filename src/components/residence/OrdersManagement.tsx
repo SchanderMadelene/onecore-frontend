@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
 import { useOrdersService } from "@/hooks/useOrdersService";
@@ -11,9 +10,10 @@ import { useParams } from "react-router-dom";
 export interface OrdersManagementProps {
   contextType?: "tenant" | "residence";
   residenceId?: string;
+  tenant?: any; // Adding the missing tenant prop
 }
 
-export function OrdersManagement({ contextType = "residence", residenceId }: OrdersManagementProps) {
+export function OrdersManagement({ contextType = "residence", residenceId, tenant }: OrdersManagementProps) {
   const { id } = useParams<{ id: string }>();
   const { getOrdersByResidence } = useOrdersService();
   const [refreshKey, setRefreshKey] = useState(0);
