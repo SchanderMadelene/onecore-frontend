@@ -38,20 +38,10 @@ export function HistoricalTenants({ tenants }: HistoricalTenantsProps) {
     <div className="space-y-4">
       {Object.values(groupedTenants).map((contractTenants, index) => {
         const firstTenant = contractTenants[0];
-        const isMultipleTenants = contractTenants.length > 1;
         
         return (
           <Card key={index} className="border-slate-200">
             <CardContent className="p-4">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center mb-3">
-                  <Users className="h-5 w-5 mr-2 text-slate-500" />
-                  <h4 className="font-medium">
-                    {isMultipleTenants ? "Tidigare hyresgäster" : "Tidigare hyresgäst"}
-                  </h4>
-                </div>
-              </div>
-              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div>
