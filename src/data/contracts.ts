@@ -98,6 +98,7 @@ export const getHistoricalTenantsForResidence = (residenceId: string) => {
   switch (residenceId) {
     case "lgh-1001":
       return [
+        // Two tenants who shared the same contract period (sambos)
         {
           firstName: "Gustav",
           lastName: "Svensson",
@@ -106,6 +107,15 @@ export const getHistoricalTenantsForResidence = (residenceId: string) => {
           moveOutDate: "2022-12-31",
           contractNumber: "KT2020-045"
         },
+        {
+          firstName: "Maria",
+          lastName: "Svensson",
+          personalNumber: "19820408-1234",
+          moveInDate: "2020-03-01",
+          moveOutDate: "2022-12-31",
+          contractNumber: "KT2020-045"
+        },
+        // Single tenant from earlier period
         {
           firstName: "Helena",
           lastName: "Lindqvist",
