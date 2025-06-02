@@ -1,5 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useParams } from "react-router-dom";
@@ -30,6 +32,18 @@ const getContractStatus = (residence: Residence): string => {
   }
 };
 
+const requiresSpecialHandling = (residenceId: string): boolean => {
+  // For demo purposes, mark lgh-1002 as requiring special handling
+  // In a real application, this would come from the API data
+  return residenceId === "lgh-1002";
+};
+
+const requiresPestControl = (residenceId: string): boolean => {
+  // For demo purposes, mark lgh-1002 as having pest issues
+  // In a real application, this would come from the API data
+  return residenceId === "lgh-1002";
+};
+
 export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceBasicInfoProps) => {
   const isMobile = useIsMobile();
   const { id } = useParams<{ id: string }>();
@@ -37,11 +51,39 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
   // Check if this is a secondary rental based on ID
   // In a real application, this would come from the API data
   const isSecondaryRental = id === "lgh-1002";
+  const needsSpecialHandling = requiresSpecialHandling(id || "");
+  const hasPestIssues = requiresPestControl(id || "");
   
   return (
-    <>
+    <TooltipProvider>
       <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-2">Lägenhet {residence.code}</h1>
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold">Lägenhet {residence.code}</h1>
+          {needsSpecialHandling && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200 cursor-help">
+                  <TriangleAlert className="h-4 w-4 text-amber-600" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Kräver särskild hantering</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+          {hasPestIssues && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full border border-red-200 cursor-help">
+                  <Bug className="h-4 w-4 text-red-600" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Skadedjursproblem rapporterat</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
         <p className="text-muted-foreground">Älgen 1, {district}</p>
       </div>
 
@@ -76,6 +118,10 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
               <p className="font-medium">{isSecondaryRental ? "Ja" : "Nej"}</p>
             </div>
             <div>
+              <p className="text-sm text-muted-foreground">Hyra</p>
+              <p className="font-medium">{residence.rent ? `${residence.rent} kr/mån` : "N/A"}</p>
+            </div>
+            <div>
               <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>
               <p className="font-medium">
                 {new Date(residence.validityPeriod.fromDate).toLocaleDateString('sv-SE')}
@@ -90,6 +136,6 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
           </div>
         </CardContent>
       </Card>
-    </>
+    </TooltipProvider>
   );
 };

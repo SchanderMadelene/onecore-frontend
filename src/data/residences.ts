@@ -9,6 +9,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       name: "2 rum och kök, Odenplan",
       deleted: false,
       size: 56,
+      rent: 8500,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2025-12-31T23:59:59Z" // Extended to ensure "Gällande" status
@@ -23,6 +24,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       name: "3 rum och kök, Odenplan",
       deleted: false,
       size: 72,
+      rent: 9200,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2025-12-31T23:59:59Z" // Extended to ensure "Gällande" status
@@ -37,6 +39,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       name: "1 rum och kök, Odenplan",
       deleted: false,
       size: 45,
+      rent: 7800,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2025-02-28T23:59:59Z" // Set to expire within 90 days to show "Uppsagt"
@@ -50,6 +53,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-2001",
       name: "2 rum och kök, Odenplan",
       deleted: false,
+      rent: 8300,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -62,6 +66,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-2002",
       name: "3 rum och kök, Odenplan",
       deleted: false,
+      rent: 9000,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -74,6 +79,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "3001",
       name: "3 rum och kök, Götgatan",
       deleted: false,
+      rent: 9500,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -86,6 +92,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "3002",
       name: "2 rum och kök, Götgatan",
       deleted: false,
+      rent: 8700,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -98,6 +105,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "3003",
       name: "4 rum och kök, Götgatan",
       deleted: false,
+      rent: 10200,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -110,6 +118,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-101",
       name: "3 rum och kök, Odenplan",
       deleted: false,
+      rent: 9100,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -122,6 +131,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-201",
       name: "4 rum och kök, Sveavägen",
       deleted: false,
+      rent: 11500,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -134,6 +144,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-301",
       name: "3 rum och kök, Götgatan",
       deleted: false,
+      rent: 9300,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"
@@ -146,6 +157,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       code: "LGH-302",
       name: "2 rum och kök, Götgatan",
       deleted: false,
+      rent: 8600,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
         toDate: "2024-12-31T23:59:59Z"

@@ -1,8 +1,7 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 export function BetaSettings() {
@@ -79,6 +78,38 @@ export function BetaSettings() {
                         checked={features.showRoomInformation} 
                         disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
                         onCheckedChange={() => handleFeatureToggle('showRoomInformation')} 
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <FileImage className="h-4 w-4" />
+                          <Label htmlFor="floorplan">Planritning</Label>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Visa planritningsflik på lägenhetskortet</p>
+                      </div>
+                      <Switch 
+                        id="floorplan" 
+                        checked={features.showFloorplan} 
+                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
+                        onCheckedChange={() => handleFeatureToggle('showFloorplan')} 
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <FileText className="h-4 w-4" />
+                          <Label htmlFor="documents">Dokument</Label>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Visa dokumentflik på lägenhetskortet</p>
+                      </div>
+                      <Switch 
+                        id="documents" 
+                        checked={features.showDocuments} 
+                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
+                        onCheckedChange={() => handleFeatureToggle('showDocuments')} 
                       />
                     </div>
 
