@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -55,19 +56,33 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
   const hasPestIssues = requiresPestControl(id || "");
   
   return (
-    <>
+    <TooltipProvider>
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-2xl sm:text-3xl font-bold">Lägenhet {residence.code}</h1>
           {needsSpecialHandling && (
-            <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200">
-              <TriangleAlert className="h-4 w-4 text-amber-600" />
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200 cursor-help">
+                  <TriangleAlert className="h-4 w-4 text-amber-600" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Kräver särskild hantering</p>
+              </TooltipContent>
+            </Tooltip>
           )}
           {hasPestIssues && (
-            <div className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full border border-red-200">
-              <Bug className="h-4 w-4 text-red-600" />
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full border border-red-200 cursor-help">
+                  <Bug className="h-4 w-4 text-red-600" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Skadedjursproblem rapporterat</p>
+              </TooltipContent>
+            </Tooltip>
           )}
         </div>
         <p className="text-muted-foreground">Älgen 1, {district}</p>
@@ -118,6 +133,6 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
           </div>
         </CardContent>
       </Card>
-    </>
+    </TooltipProvider>
   );
 };
