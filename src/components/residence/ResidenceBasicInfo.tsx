@@ -1,5 +1,5 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Shield } from "lucide-react";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useParams } from "react-router-dom";
@@ -30,6 +30,13 @@ const getContractStatus = (residence: Residence): string => {
   }
 };
 
+// Function to check if special handling is required
+const requiresSpecialHandling = (residenceId: string): boolean => {
+  // For demo purposes, mark lgh-1002 as requiring special handling
+  // In a real application, this would come from the API data
+  return residenceId === "lgh-1002";
+};
+
 export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceBasicInfoProps) => {
   const isMobile = useIsMobile();
   const { id } = useParams<{ id: string }>();
@@ -37,6 +44,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
   // Check if this is a secondary rental based on ID
   // In a real application, this would come from the API data
   const isSecondaryRental = id === "lgh-1002";
+  const needsSpecialHandling = requiresSpecialHandling(id || "");
   
   return (
     <>
@@ -45,7 +53,14 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
         <p className="text-muted-foreground">Älgen 1, {district}</p>
       </div>
 
-      <Card>
+      <Card className="relative">
+        {needsSpecialHandling && (
+          <div className="absolute top-4 right-4 z-10">
+            <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200">
+              <Shield className="h-4 w-4 text-amber-600" />
+            </div>
+          </div>
+        )}
         <CardHeader>
           <CardTitle className="text-lg sm:text-xl">Grundinformation</CardTitle>
         </CardHeader>
