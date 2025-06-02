@@ -32,14 +32,11 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{room.name || room.roomType?.name || room.code}</span>
-                          {room.size && (
-                            <span className="text-sm text-muted-foreground">({room.size} m²)</span>
-                          )}
-                        </div>
-                        <span className="text-sm text-muted-foreground">{room.code}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{room.name || room.roomType?.name || room.code}</span>
+                        {room.size && (
+                          <span className="text-sm text-muted-foreground">({room.size} m²)</span>
+                        )}
                       </div>
                     </div>
                     {expandedRoomId === room.id ? (
