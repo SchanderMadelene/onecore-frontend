@@ -1,4 +1,3 @@
-
 import type { Room, APIResponse } from "@/types/api";
 
 // Room mock data
@@ -220,6 +219,80 @@ export const mockRoomsData: APIResponse<Room[]> = {
         roomTypeCode: "HALL",
         name: "Hall",
         use: 4,
+        optionAllowed: 0,
+        isSystemStandard: 1,
+        allowSmallRoomsInValuation: 0,
+        timestamp: "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      id: "7",
+      code: "RUM-107",
+      name: "Uteplats",
+      size: 25.0,
+      usage: {
+        shared: false,
+        allowPeriodicWorks: true,
+        spaceType: 5
+      },
+      features: {
+        hasToilet: false,
+        isHeated: false,
+        hasThermostatValve: false,
+        orientation: 2
+      },
+      dates: {
+        installation: null,
+        from: "2024-01-01T00:00:00Z",
+        to: "2024-12-31T23:59:59Z",
+        availableFrom: null,
+        availableTo: null
+      },
+      sortingOrder: 7,
+      deleted: false,
+      timestamp: "2024-01-01T00:00:00Z",
+      roomType: {
+        roomTypeId: "6",
+        roomTypeCode: "UTEPLATS",
+        name: "Uteplats",
+        use: 5,
+        optionAllowed: 0,
+        isSystemStandard: 1,
+        allowSmallRoomsInValuation: 0,
+        timestamp: "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      id: "8",
+      code: "RUM-108",
+      name: "Balkong",
+      size: 8.0,
+      usage: {
+        shared: false,
+        allowPeriodicWorks: true,
+        spaceType: 5
+      },
+      features: {
+        hasToilet: false,
+        isHeated: false,
+        hasThermostatValve: false,
+        orientation: 1
+      },
+      dates: {
+        installation: null,
+        from: "2024-01-01T00:00:00Z",
+        to: "2024-12-31T23:59:59Z",
+        availableFrom: null,
+        availableTo: null
+      },
+      sortingOrder: 8,
+      deleted: false,
+      timestamp: "2024-01-01T00:00:00Z",
+      roomType: {
+        roomTypeId: "7",
+        roomTypeCode: "BALKONG",
+        name: "Balkong",
+        use: 5,
         optionAllowed: 0,
         isSystemStandard: 1,
         allowSmallRoomsInValuation: 0,
