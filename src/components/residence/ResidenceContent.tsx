@@ -1,3 +1,4 @@
+
 import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 import { ResidenceFloorplan } from "@/components/residence/ResidenceFloorplan";
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
@@ -65,18 +66,14 @@ export const ResidenceContent = ({
               <Info className="h-4 w-4" />
               Rumsinformation
             </TabsTrigger>
-            {features.showFloorplan && (
-              <TabsTrigger value="floorplan" className="flex items-center gap-1.5">
-                <FileImage className="h-4 w-4" />
-                Planritning
-              </TabsTrigger>
-            )}
-            {features.showDocuments && (
-              <TabsTrigger value="documents" className="flex items-center gap-1.5">
-                <FileText className="h-4 w-4" />
-                Dokument
-              </TabsTrigger>
-            )}
+            <TabsTrigger value="floorplan" className="flex items-center gap-1.5">
+              <FileImage className="h-4 w-4" />
+              Planritning
+            </TabsTrigger>
+            <TabsTrigger value="documents" className="flex items-center gap-1.5">
+              <FileText className="h-4 w-4" />
+              Dokument
+            </TabsTrigger>
             <TabsTrigger value="inspections" className="flex items-center gap-1.5">
               <ClipboardList className="h-4 w-4" />
               Besiktningar
@@ -108,25 +105,33 @@ export const ResidenceContent = ({
             </Card>
           </TabsContent>
 
-          {features.showFloorplan && (
-            <TabsContent value="floorplan">
-              <Card>
-                <CardContent className="p-4">
+          <TabsContent value="floorplan">
+            <Card>
+              <CardContent className="p-4">
+                {features.showFloorplan ? (
                   <ResidenceFloorplan />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          )}
+                ) : (
+                  <p className="text-slate-500">
+                    För att se planritning, aktivera funktionen i inställningarna.
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-          {features.showDocuments && (
-            <TabsContent value="documents">
-              <Card>
-                <CardContent className="p-4">
+          <TabsContent value="documents">
+            <Card>
+              <CardContent className="p-4">
+                {features.showDocuments ? (
                   <ResidenceDocuments />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          )}
+                ) : (
+                  <p className="text-slate-500">
+                    För att se dokument, aktivera funktionen i inställningarna.
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="inspections">
             <Card>
