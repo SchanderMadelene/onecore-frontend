@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
 import type { Room } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -13,6 +14,37 @@ interface ResidenceInfoProps {
 export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps) => {
   const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
   const isMobile = useIsMobile();
+
+  // Mock data för underhållsenheter i köket
+  const getMaintenanceUnitsForRoom = (roomId: string) => {
+    if (roomId === "2") { // Kök (RUM-102)
+      return [
+        {
+          name: "Diskmaskin",
+          specs: {
+            ekonomiskLivslangd: "12 år",
+            tekniskLivslangd: "15 år", 
+            year: "2019",
+            quantity: "1 st",
+            brand: "Electrolux",
+            model: "ESF5555LOX"
+          }
+        },
+        {
+          name: "Spis",
+          specs: {
+            ekonomiskLivslangd: "15 år",
+            tekniskLivslangd: "20 år",
+            year: "2018", 
+            quantity: "1 st",
+            brand: "IKEA",
+            model: "TILLREDA"
+          }
+        }
+      ];
+    }
+    return [];
+  };
 
   return (
     <div className="space-y-4">
@@ -86,6 +118,21 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
                         <p className="font-medium">{room.usage.allowPeriodicWorks ? 'Tillåtet' : 'Ej tillåtet'}</p>
                       </div>
                     </div>
+
+                    {/* Underhållsenheter */}
+                    {getMaintenanceUnitsForRoom(room.id).length > 0 && (
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-semibold text-slate-700">Underhållsenheter</h4>
+                        <div className="grid gap-3">
+                          {getMaintenanceUnitsForRoom(room.id).map((unit, index) => (
+                            <MaintenanceUnitCard 
+                              key={index} 
+                              subComponents={[unit]} 
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
