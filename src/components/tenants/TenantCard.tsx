@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MessageSquare, User } from "lucide-react";
@@ -12,6 +13,7 @@ interface TenantCardProps {
     moveInDate: string;
     moveOutDate?: string;
     contractNumber: string;
+    personalNumber: string;
     nationality?: string;
     language?: string;
     hasLegalGuardian?: boolean;
@@ -48,6 +50,10 @@ export function TenantCard({ tenant }: TenantCardProps) {
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
               <p className="font-medium">{tenant.firstName} {tenant.lastName}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Kundnummer/P-nummer</p>
+              <p className="font-medium">{tenant.personalNumber}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Telefon</p>
