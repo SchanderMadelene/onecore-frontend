@@ -32,7 +32,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
   return (
     <div className="space-y-6">
-      {/* Historical tenants tab */}
       <Tabs defaultValue="active" className="w-full">
         <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
           <TabsTrigger value="active">
@@ -45,14 +44,12 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
 
         <TabsContent value="active">
           <div className="space-y-6">
-            {/* Contract information together with tenant information */}
             <ContractInfo
               primaryContractNumber={primaryTenant.contractNumber}
               secondaryContractNumber={secondaryContractNumber}
               isSecondaryRental={isSecondaryRental}
             />
             
-            {/* Primary tenant */}
             <TenantCard
               firstName={primaryTenant.firstName}
               lastName={primaryTenant.lastName}
@@ -65,7 +62,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
               isPrimaryContractHolder={primaryTenant.isPrimaryContractHolder || primaryTenant.isPrimaryTenant}
             />
             
-            {/* Additional tenants if any */}
             {additionalTenants.length > 0 && (
               <>
                 <Separator />
