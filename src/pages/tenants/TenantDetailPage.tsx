@@ -12,10 +12,12 @@ import { Badge } from "@/components/ui/badge";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 import { TenantNotes } from "@/components/tenants/TenantNotes";
 import { TenantOrders } from "@/components/tenants/TenantOrders";
+import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { features } = useFeatureToggles();
   const tenantId = id || mockTenant.personalNumber;
   const contracts = getMockContractsForTenant(tenantId);
   
@@ -78,47 +80,111 @@ const TenantDetailPage = () => {
           </TabsList>
 
           <TabsContent value="contracts">
-            <TenantContracts contracts={contracts} />
+            {features.showTenantContracts ? (
+              <TenantContracts contracts={contracts} />
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <p className="text-slate-500">
+                  För att se hyreskontrakt, aktivera funktionen i inställningarna.
+                </p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="events">
-            <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-4">Händelselogg</h3>
-              <p className="text-muted-foreground">Ingen händelsehistorik tillgänglig för denna kund.</p>
-            </div>
+            {features.showTenantEvents ? (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <h3 className="text-lg font-medium mb-4">Händelselogg</h3>
+                <p className="text-muted-foreground">Ingen händelsehistorik tillgänglig för denna kund.</p>
+              </div>
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <p className="text-slate-500">
+                  För att se händelselogg, aktivera funktionen i inställningarna.
+                </p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="cases">
-            <TenantOrders />
+            {features.showTenantCases ? (
+              <TenantOrders />
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <p className="text-slate-500">
+                  För att se ärenden, aktivera funktionen i inställningarna.
+                </p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="queue">
-            <TenantQueueSystem />
+            {features.showTenantQueue ? (
+              <TenantQueueSystem />
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <p className="text-slate-500">
+                  För att se kösystem, aktivera funktionen i inställningarna.
+                </p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="notes">
-            <TenantNotes />
+            {features.showTenantNotes ? (
+              <TenantNotes />
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <p className="text-slate-500">
+                  För att se noteringar, aktivera funktionen i inställningarna.
+                </p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="ledger">
-            <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-4">Kundreskontra</h3>
-              <p className="text-muted-foreground">Ingen information om kundreskontra tillgänglig.</p>
-            </div>
+            {features.showTenantLedger ? (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <h3 className="text-lg font-medium mb-4">Kundreskontra</h3>
+                <p className="text-muted-foreground">Ingen information om kundreskontra tillgänglig.</p>
+              </div>
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <p className="text-slate-500">
+                  För att se kundreskontra, aktivera funktionen i inställningarna.
+                </p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="keys">
-            <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-4">Nycklar</h3>
-              <p className="text-muted-foreground">Inga nycklar registrerade för denna kund.</p>
-            </div>
+            {features.showTenantKeys ? (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <h3 className="text-lg font-medium mb-4">Nycklar</h3>
+                <p className="text-muted-foreground">Inga nycklar registrerade för denna kund.</p>
+              </div>
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <p className="text-slate-500">
+                  För att se nycklar, aktivera funktionen i inställningarna.
+                </p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="documents">
-            <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-              <h3 className="text-lg font-medium mb-4">Dokument</h3>
-              <p className="text-muted-foreground">Inga dokument tillgängliga för denna kund.</p>
-            </div>
+            {features.showTenantDocuments ? (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <h3 className="text-lg font-medium mb-4">Dokument</h3>
+                <p className="text-muted-foreground">Inga dokument tillgängliga för denna kund.</p>
+              </div>
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                <p className="text-slate-500">
+                  För att se dokument, aktivera funktionen i inställningarna.
+                </p>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>

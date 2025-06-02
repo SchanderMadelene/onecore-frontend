@@ -15,6 +15,15 @@ interface FeatureToggles {
   showTenantInfo: boolean;
   showDocuments: boolean;
   showFloorplan: boolean;
+  // Tenant detail page tabs
+  showTenantContracts: boolean;
+  showTenantQueue: boolean;
+  showTenantCases: boolean;
+  showTenantLedger: boolean;
+  showTenantNotes: boolean;
+  showTenantKeys: boolean;
+  showTenantEvents: boolean;
+  showTenantDocuments: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -36,6 +45,15 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenantInfo: false,
   showDocuments: false,
   showFloorplan: false,
+  // Tenant detail page tabs
+  showTenantContracts: false,
+  showTenantQueue: false,
+  showTenantCases: false,
+  showTenantLedger: false,
+  showTenantNotes: false,
+  showTenantKeys: false,
+  showTenantEvents: false,
+  showTenantDocuments: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
