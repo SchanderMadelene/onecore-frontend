@@ -1,3 +1,4 @@
+
 // residence = apartment
 export interface Residence {
   id: string;
@@ -22,6 +23,7 @@ export interface Room {
   id: string;
   code: string;
   name: string | null;
+  size?: number; // Added size property in square meters
   usage: {
     shared: boolean;
     allowPeriodicWorks: boolean;

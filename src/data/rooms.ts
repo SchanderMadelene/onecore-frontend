@@ -8,6 +8,7 @@ export const mockRoomsData: APIResponse<Room[]> = {
       id: "1",
       code: "RUM-101",
       name: "Vardagsrum",
+      size: 22.5,
       usage: {
         shared: false,
         allowPeriodicWorks: true,
@@ -44,6 +45,7 @@ export const mockRoomsData: APIResponse<Room[]> = {
       id: "2",
       code: "RUM-102",
       name: "Kök",
+      size: 12.0,
       usage: {
         shared: false,
         allowPeriodicWorks: true,
@@ -80,6 +82,7 @@ export const mockRoomsData: APIResponse<Room[]> = {
       id: "3",
       code: "RUM-103",
       name: "Sovrum 1",
+      size: 15.8,
       usage: {
         shared: false,
         allowPeriodicWorks: true,
@@ -116,6 +119,7 @@ export const mockRoomsData: APIResponse<Room[]> = {
       id: "4",
       code: "RUM-104",
       name: "Badrum",
+      size: 6.2,
       usage: {
         shared: false,
         allowPeriodicWorks: true,
@@ -152,6 +156,7 @@ export const mockRoomsData: APIResponse<Room[]> = {
       id: "5",
       code: "RUM-105",
       name: "Sovrum 2",
+      size: 13.5,
       usage: {
         shared: false,
         allowPeriodicWorks: true,
@@ -188,6 +193,7 @@ export const mockRoomsData: APIResponse<Room[]> = {
       id: "6",
       code: "RUM-106",
       name: "Hall",
+      size: 8.3,
       usage: {
         shared: false,
         allowPeriodicWorks: true,

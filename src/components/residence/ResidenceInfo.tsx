@@ -1,7 +1,8 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
 import type { Room } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -14,54 +15,46 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
   const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
+  // Mock data för underhållsenheter i köket
+  const getMaintenanceUnitsForRoom = (roomId: string) => {
+    if (roomId === "2") { // Kök (RUM-102)
+      return [
+        {
+          name: "Diskmaskin",
+          specs: {
+            ekonomiskLivslangd: "12 år",
+            tekniskLivslangd: "15 år", 
+            year: "2019",
+            quantity: "1 st",
+            brand: "Electrolux",
+            model: "ESF5555LOX"
+          }
+        },
+        {
+          name: "Spis",
+          specs: {
+            ekonomiskLivslangd: "15 år",
+            tekniskLivslangd: "20 år",
+            year: "2018", 
+            quantity: "1 st",
+            brand: "IKEA",
+            model: "TILLREDA"
+          }
+        }
+      ];
+    }
+    return [];
+  };
+
   return (
-    <>
-      <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-6'}`}>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg sm:text-xl">Rumsöversikt</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm text-muted-foreground mb-4">
-              Totalt antal rum: {rooms.length}
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Uppvärmda rum</p>
-                <p className="font-medium">{rooms.filter(room => room.features.isHeated).length}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Med termostatventil</p>
-                <p className="font-medium">{rooms.filter(room => room.features.hasThermostatValve).length}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+    <div className="space-y-4">
+      <Tabs defaultValue="rooms" className="w-full">
+        <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+          <TabsTrigger value="rooms">Rumsinformation</TabsTrigger>
+          <TabsTrigger value="floorplan">Planritning</TabsTrigger>
+        </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg sm:text-xl">Orientering</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              {[1, 2, 3, 4].map(orientation => (
-                <div key={orientation}>
-                  <p className="text-sm text-muted-foreground">{getOrientationText(orientation)}</p>
-                  <p className="font-medium">
-                    {rooms.filter(room => room.features.orientation === orientation).length} rum
-                  </p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl">Rumsinformation</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <TabsContent value="rooms">
           <div className="grid grid-cols-1 gap-2">
             {rooms.map(room => (
               <div key={room.id}>
@@ -71,9 +64,11 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-                        <span className="font-medium">{room.name || room.roomType?.name || room.code}</span>
-                        <span className="text-sm text-muted-foreground">{room.code}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{room.name || room.roomType?.name}</span>
+                        {room.size && (
+                          <span className="text-sm text-muted-foreground">({room.size} m²)</span>
+                        )}
                       </div>
                     </div>
                     {expandedRoomId === room.id ? (
@@ -86,50 +81,30 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
 
                 {expandedRoomId === room.id && (
                   <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
-                    <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4'} gap-4`}>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Typ</p>
-                        <p className="font-medium">{room.roomType?.name || '-'}</p>
+                    {/* Underhållsenheter */}
+                    {getMaintenanceUnitsForRoom(room.id).length > 0 && (
+                      <div className="grid gap-3">
+                        {getMaintenanceUnitsForRoom(room.id).map((unit, index) => (
+                          <MaintenanceUnitCard 
+                            key={index} 
+                            subComponents={[unit]} 
+                          />
+                        ))}
                       </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Orientering</p>
-                        <p className="font-medium">{getOrientationText(room.features.orientation)}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Status</p>
-                        <p className="font-medium">{room.deleted ? 'Borttagen' : 'Aktiv'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Delat utrymme</p>
-                        <p className="font-medium">{room.usage.shared ? 'Ja' : 'Nej'}</p>
-                      </div>
-                    </div>
-
-                    <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4'} gap-4`}>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Uppvärmd</p>
-                        <p className="font-medium">{room.features.isHeated ? 'Ja' : 'Nej'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Termostatventil</p>
-                        <p className="font-medium">{room.features.hasThermostatValve ? 'Ja' : 'Nej'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Toalett</p>
-                        <p className="font-medium">{room.features.hasToilet ? 'Ja' : 'Nej'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Periodiskt arbete</p>
-                        <p className="font-medium">{room.usage.allowPeriodicWorks ? 'Tillåtet' : 'Ej tillåtet'}</p>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 )}
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-    </>
+        </TabsContent>
+
+        <TabsContent value="floorplan">
+          <div className="flex items-center justify-center h-[200px] sm:h-[400px] border-2 border-dashed rounded-lg bg-muted/10">
+            <p className="text-muted-foreground text-sm">Planritning är inte tillgänglig</p>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };

@@ -20,10 +20,13 @@ interface MaintenanceUnitCardProps {
 }
 
 export const MaintenanceUnitCard = ({ subComponents }: MaintenanceUnitCardProps) => {
+  // Use the first component's name as the card title, or fallback to "Underhållsenhet"
+  const cardTitle = subComponents.length > 0 ? subComponents[0].name : "Underhållsenhet";
+
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-6 space-y-4">
-        <h3 className="font-semibold text-lg">Tak</h3>
+        <h3 className="font-semibold text-lg">{cardTitle}</h3>
         <div className="space-y-3 text-sm">
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Årsintervall:</span>
