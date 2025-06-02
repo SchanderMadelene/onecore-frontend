@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TriangleAlert, Bug } from "lucide-react";
@@ -31,14 +32,12 @@ const getContractStatus = (residence: Residence): string => {
   }
 };
 
-// Function to check if special handling is required
 const requiresSpecialHandling = (residenceId: string): boolean => {
   // For demo purposes, mark lgh-1002 as requiring special handling
   // In a real application, this would come from the API data
   return residenceId === "lgh-1002";
 };
 
-// Function to check if pest control is needed
 const requiresPestControl = (residenceId: string): boolean => {
   // For demo purposes, mark lgh-1002 as having pest issues
   // In a real application, this would come from the API data
@@ -117,6 +116,10 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
             <div>
               <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
               <p className="font-medium">{isSecondaryRental ? "Ja" : "Nej"}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Hyra</p>
+              <p className="font-medium">{residence.rent ? `${residence.rent} kr/mån` : "N/A"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>

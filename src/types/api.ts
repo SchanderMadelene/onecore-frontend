@@ -1,4 +1,3 @@
-
 // residence = apartment
 export interface Residence {
   id: string;
@@ -6,6 +5,7 @@ export interface Residence {
   name: string;
   deleted: boolean;
   size?: number;
+  rent?: number;
   malarenergiFacilityId?: string;
   validityPeriod: {
     fromDate: string;
