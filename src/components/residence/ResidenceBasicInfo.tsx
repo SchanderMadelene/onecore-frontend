@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence } from "@/types/api";
@@ -58,25 +57,23 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
   return (
     <>
       <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-2">Lägenhet {residence.code}</h1>
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold">Lägenhet {residence.code}</h1>
+          {needsSpecialHandling && (
+            <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200">
+              <TriangleAlert className="h-4 w-4 text-amber-600" />
+            </div>
+          )}
+          {hasPestIssues && (
+            <div className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full border border-red-200">
+              <Bug className="h-4 w-4 text-red-600" />
+            </div>
+          )}
+        </div>
         <p className="text-muted-foreground">Älgen 1, {district}</p>
       </div>
 
-      <Card className="relative">
-        {(needsSpecialHandling || hasPestIssues) && (
-          <div className="absolute top-4 right-4 z-10 flex gap-2">
-            {needsSpecialHandling && (
-              <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200">
-                <TriangleAlert className="h-4 w-4 text-amber-600" />
-              </div>
-            )}
-            {hasPestIssues && (
-              <div className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full border border-red-200">
-                <Bug className="h-4 w-4 text-red-600" />
-              </div>
-            )}
-          </div>
-        )}
+      <Card>
         <CardHeader>
           <CardTitle className="text-lg sm:text-xl">Grundinformation</CardTitle>
         </CardHeader>
