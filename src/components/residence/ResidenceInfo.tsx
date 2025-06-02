@@ -15,7 +15,6 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg sm:text-xl font-semibold">Rumsinformation</h3>
       <div className="grid grid-cols-1 gap-2">
         {rooms.map(room => (
           <div key={room.id}>
