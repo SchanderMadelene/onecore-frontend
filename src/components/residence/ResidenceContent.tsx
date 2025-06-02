@@ -1,5 +1,6 @@
 
 import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
+import { ResidenceFloorplan } from "@/components/residence/ResidenceFloorplan";
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { ResidenceInspection } from "@/components/residence/ResidenceInspection";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
@@ -10,7 +11,7 @@ import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/t
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Info, ClipboardList, Users, MessageSquare } from "lucide-react";
+import { Info, ClipboardList, Users, MessageSquare, FileImage } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAccordion } from "./MobileAccordion";
 import { useParams } from "react-router-dom";
@@ -64,6 +65,10 @@ export const ResidenceContent = ({
               <Info className="h-4 w-4" />
               Rumsinformation
             </TabsTrigger>
+            <TabsTrigger value="floorplan" className="flex items-center gap-1.5">
+              <FileImage className="h-4 w-4" />
+              Planritning
+            </TabsTrigger>
             <TabsTrigger value="inspections" className="flex items-center gap-1.5">
               <ClipboardList className="h-4 w-4" />
               Besiktningar
@@ -91,6 +96,14 @@ export const ResidenceContent = ({
                     För att se rumsinformation, aktivera funktionen i inställningarna.
                   </p>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="floorplan">
+            <Card>
+              <CardContent className="p-4">
+                <ResidenceFloorplan />
               </CardContent>
             </Card>
           </TabsContent>
