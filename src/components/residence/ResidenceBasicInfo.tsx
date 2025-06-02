@@ -1,5 +1,6 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TriangleAlert, Rat } from "lucide-react";
+import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useParams } from "react-router-dom";
@@ -71,7 +72,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
             )}
             {hasPestIssues && (
               <div className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full border border-red-200">
-                <Rat className="h-4 w-4 text-red-600" />
+                <Bug className="h-4 w-4 text-red-600" />
               </div>
             )}
           </div>
