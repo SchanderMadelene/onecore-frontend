@@ -1,5 +1,6 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useParams } from "react-router-dom";
@@ -57,7 +58,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
         {needsSpecialHandling && (
           <div className="absolute top-4 right-4 z-10">
             <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200">
-              <Shield className="h-4 w-4 text-amber-600" />
+              <TriangleAlert className="h-4 w-4 text-amber-600" />
             </div>
           </div>
         )}
