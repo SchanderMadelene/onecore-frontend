@@ -1,9 +1,9 @@
-
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { TenantCard } from "@/components/tenants/TenantCard";
 import { TenantContracts } from "@/components/tenants/TenantContracts";
+import { TenantSafetyWarning } from "@/components/tenants/TenantSafetyWarning";
 import { mockTenant } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,6 +30,8 @@ const TenantDetailPage = () => {
         <h1 className="text-3xl font-bold mb-6">
           {mockTenant.firstName} {mockTenant.lastName}
         </h1>
+
+        <TenantSafetyWarning />
 
         <div className="grid grid-cols-1 gap-6 mb-6">
           <TenantCard tenant={mockTenant} />
