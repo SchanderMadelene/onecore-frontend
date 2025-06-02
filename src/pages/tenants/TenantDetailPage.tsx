@@ -1,14 +1,15 @@
+
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { TenantCard } from "@/components/tenants/TenantCard";
 import { TenantContracts } from "@/components/tenants/TenantContracts";
-import { TenantSafetyWarning } from "@/components/tenants/TenantSafetyWarning";
 import { mockTenant } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote } from "lucide-react";
+import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote, TriangleAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 import { TenantNotes } from "@/components/tenants/TenantNotes";
 import { TenantOrders } from "@/components/tenants/TenantOrders";
@@ -27,11 +28,23 @@ const TenantDetailPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
-        <h1 className="text-3xl font-bold mb-6">
-          {mockTenant.firstName} {mockTenant.lastName}
-        </h1>
-
-        <TenantSafetyWarning />
+        <TooltipProvider>
+          <div className="flex items-center gap-3 mb-6">
+            <h1 className="text-3xl font-bold">
+              {mockTenant.firstName} {mockTenant.lastName}
+            </h1>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200 cursor-help">
+                  <TriangleAlert className="h-4 w-4 text-amber-600" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Åk aldrig ensam till kund. Ta alltid med dig en kollega vid hembesök.</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
 
         <div className="grid grid-cols-1 gap-6 mb-6">
           <TenantCard tenant={mockTenant} />
