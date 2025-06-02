@@ -65,7 +65,7 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium">{room.name || room.roomType?.name || room.code}</span>
+                        <span className="font-medium">{room.name || room.roomType?.name}</span>
                         {room.size && (
                           <span className="text-sm text-muted-foreground">({room.size} m²)</span>
                         )}
@@ -81,44 +81,6 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
 
                 {expandedRoomId === room.id && (
                   <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
-                    <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4'} gap-4`}>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Typ</p>
-                        <p className="font-medium">{room.roomType?.name || '-'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Orientering</p>
-                        <p className="font-medium">{getOrientationText(room.features.orientation)}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Status</p>
-                        <p className="font-medium">{room.deleted ? 'Borttagen' : 'Aktiv'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Delat utrymme</p>
-                        <p className="font-medium">{room.usage.shared ? 'Ja' : 'Nej'}</p>
-                      </div>
-                    </div>
-
-                    <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4'} gap-4`}>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Uppvärmd</p>
-                        <p className="font-medium">{room.features.isHeated ? 'Ja' : 'Nej'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Termostatventil</p>
-                        <p className="font-medium">{room.features.hasThermostatValve ? 'Ja' : 'Nej'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Toalett</p>
-                        <p className="font-medium">{room.features.hasToilet ? 'Ja' : 'Nej'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Periodiskt arbete</p>
-                        <p className="font-medium">{room.usage.allowPeriodicWorks ? 'Tillåtet' : 'Ej tillåtet'}</p>
-                      </div>
-                    </div>
-
                     {/* Underhållsenheter */}
                     {getMaintenanceUnitsForRoom(room.id).length > 0 && (
                       <div className="space-y-3">
