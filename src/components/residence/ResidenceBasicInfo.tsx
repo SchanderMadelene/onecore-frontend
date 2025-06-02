@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TriangleAlert } from "lucide-react";
+import { rat } from "lucide-react";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useParams } from "react-router-dom";
@@ -38,6 +39,13 @@ const requiresSpecialHandling = (residenceId: string): boolean => {
   return residenceId === "lgh-1002";
 };
 
+// Function to check if pest control is needed
+const requiresPestControl = (residenceId: string): boolean => {
+  // For demo purposes, mark lgh-1002 as having pest issues
+  // In a real application, this would come from the API data
+  return residenceId === "lgh-1002";
+};
+
 export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceBasicInfoProps) => {
   const isMobile = useIsMobile();
   const { id } = useParams<{ id: string }>();
@@ -46,6 +54,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
   // In a real application, this would come from the API data
   const isSecondaryRental = id === "lgh-1002";
   const needsSpecialHandling = requiresSpecialHandling(id || "");
+  const hasPestIssues = requiresPestControl(id || "");
   
   return (
     <>
@@ -55,11 +64,18 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
       </div>
 
       <Card className="relative">
-        {needsSpecialHandling && (
-          <div className="absolute top-4 right-4 z-10">
-            <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200">
-              <TriangleAlert className="h-4 w-4 text-amber-600" />
-            </div>
+        {(needsSpecialHandling || hasPestIssues) && (
+          <div className="absolute top-4 right-4 z-10 flex gap-2">
+            {needsSpecialHandling && (
+              <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200">
+                <TriangleAlert className="h-4 w-4 text-amber-600" />
+              </div>
+            )}
+            {hasPestIssues && (
+              <div className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full border border-red-200">
+                <rat className="h-4 w-4 text-red-600" />
+              </div>
+            )}
           </div>
         )}
         <CardHeader>
