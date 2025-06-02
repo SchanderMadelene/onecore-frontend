@@ -83,16 +83,13 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
                   <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
                     {/* Underhållsenheter */}
                     {getMaintenanceUnitsForRoom(room.id).length > 0 && (
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-semibold text-slate-700">Underhållsenheter</h4>
-                        <div className="grid gap-3">
-                          {getMaintenanceUnitsForRoom(room.id).map((unit, index) => (
-                            <MaintenanceUnitCard 
-                              key={index} 
-                              subComponents={[unit]} 
-                            />
-                          ))}
-                        </div>
+                      <div className="grid gap-3">
+                        {getMaintenanceUnitsForRoom(room.id).map((unit, index) => (
+                          <MaintenanceUnitCard 
+                            key={index} 
+                            subComponents={[unit]} 
+                          />
+                        ))}
                       </div>
                     )}
                   </div>
