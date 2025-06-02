@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface FeatureToggles {
@@ -12,6 +13,8 @@ interface FeatureToggles {
   showInspections: boolean;
   showApartmentIssues: boolean;
   showTenantInfo: boolean;
+  showDocuments: boolean;
+  showFloorplan: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -31,6 +34,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showInspections: false,
   showApartmentIssues: false,
   showTenantInfo: false,
+  showDocuments: false,
+  showFloorplan: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
