@@ -1,5 +1,4 @@
 
-import { PropertyStatisticsSummary } from "@/components/properties";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyInfoTabProps {
@@ -9,7 +8,9 @@ interface PropertyInfoTabProps {
 export const PropertyInfoTab = ({ property }: PropertyInfoTabProps) => {
   return (
     <div className="space-y-8">
-      <PropertyStatisticsSummary property={property} />
+      <div className="text-muted-foreground">
+        Grundläggande fastighetsinformation visas här.
+      </div>
     </div>
   );
 };
