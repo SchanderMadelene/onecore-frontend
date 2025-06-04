@@ -7,6 +7,7 @@ import { PropertyBuildingsTab } from "./tabs/PropertyBuildingsTab";
 import { PropertyMapTab } from "./tabs/PropertyMapTab";
 import { PropertyStatisticsTab } from "./tabs/PropertyStatisticsTab";
 import { PropertyMaintenanceUnitsTab } from "./tabs/PropertyMaintenanceUnitsTab";
+import { PropertyOrdersTab } from "./tabs/PropertyOrdersTab";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyDetailTabsProps {
@@ -37,6 +38,10 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
           <span className="hidden sm:inline">Underhållsenheter</span>
           <span className="sm:hidden">Underhåll</span>
         </TabsTrigger>
+        <TabsTrigger value="orders">
+          <span className="hidden sm:inline">Ärenden</span>
+          <span className="sm:hidden">Ärende</span>
+        </TabsTrigger>
         <TabsTrigger value="map">
           <span>Ritningar</span>
         </TabsTrigger>
@@ -64,6 +69,10 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
 
       <TabsContent value="maintenance">
         <PropertyMaintenanceUnitsTab maintenanceUnits={propertyDetail.maintenanceUnits} />
+      </TabsContent>
+
+      <TabsContent value="orders">
+        <PropertyOrdersTab propertyDetail={propertyDetail} />
       </TabsContent>
 
       <TabsContent value="map">
