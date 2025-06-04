@@ -87,12 +87,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
               </div>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Nationalitet</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{tenant.nationality || "Ej angivet"}</p>
-              </div>
-            </div>
-            <div>
               <p className="text-sm text-muted-foreground">Språk</p>
               <div className="flex items-center gap-2">
                 <p className="font-medium">{tenant.language || "Svenska"}</p>
