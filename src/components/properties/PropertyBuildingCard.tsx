@@ -26,7 +26,7 @@ export const PropertyBuildingCard = ({ building }: PropertyBuildingCardProps) =>
       </CardHeader>
       <CardContent className="pt-0">
         <Button 
-          variant="outline" 
+          variant="ghost" 
           size="sm"
           onClick={handleOpenBuilding}
           className="w-full justify-between"
