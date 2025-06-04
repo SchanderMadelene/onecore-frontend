@@ -63,18 +63,11 @@ const PropertyDetailPage = () => {
       <div className="py-4 space-y-6">
         <PropertyHeader propertyDetail={propertyDetail} />
         
-        {/* Grundläggande information comes first */}
-        <div className="mb-6">
-          <PropertyBasicInfo propertyDetail={propertyDetail} showBasicInfoOnly={true} />
-        </div>
+        {/* Grundläggande information always visible above tabs */}
+        <PropertyBasicInfo propertyDetail={propertyDetail} showBasicInfoOnly={true} />
         
-        {/* Tabs in the middle */}
+        {/* Tabs with detailed info only in PropertyInfoTab */}
         <PropertyDetailTabs propertyDetail={propertyDetail} />
-        
-        {/* Detailed property information at the bottom */}
-        <div className="mt-6">
-          <PropertyBasicInfo propertyDetail={propertyDetail} showBasicInfoOnly={false} showDetailedInfo={true} />
-        </div>
       </div>
     );
   };

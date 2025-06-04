@@ -1,12 +1,14 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PropertyInfoTab } from "./tabs/PropertyInfoTab";
 import { PropertyDocumentsTab } from "./tabs/PropertyDocumentsTab";
 import { PropertyPlanningTab } from "./tabs/PropertyPlanningTab";
 import { PropertyBuildingsTab } from "./tabs/PropertyBuildingsTab";
 import { PropertyMapTab } from "./tabs/PropertyMapTab";
-import { PropertyResidenceTab } from "./tabs/PropertyResidenceTab";
 import { PropertyStatisticsTab } from "./tabs/PropertyStatisticsTab";
 import { PropertyMaintenanceUnitsTab } from "./tabs/PropertyMaintenanceUnitsTab";
+import { PropertyOrdersTab } from "./tabs/PropertyOrdersTab";
+import { PropertyAccessTab } from "./tabs/PropertyAccessTab";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyDetailTabsProps {
@@ -21,12 +23,16 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
           <span className="hidden sm:inline">Fastighet</span>
           <span className="sm:hidden">Info</span>
         </TabsTrigger>
+        <TabsTrigger value="statistics">
+          <span className="hidden sm:inline">Fastighetssammanställning</span>
+          <span className="sm:hidden">Sammanst.</span>
+        </TabsTrigger>
         <TabsTrigger value="documents">
           <span className="hidden sm:inline">Dokument</span>
           <span className="sm:hidden">Dok</span>
         </TabsTrigger>
         <TabsTrigger value="planning">
-          <span className="hidden sm:inline">Planering</span>
+          <span className="hidden sm:inline">Planerat underhåll</span>
           <span className="sm:hidden">Plan</span>
         </TabsTrigger>
         <TabsTrigger value="buildings">
@@ -37,21 +43,25 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
           <span className="hidden sm:inline">Underhållsenheter</span>
           <span className="sm:hidden">Underhåll</span>
         </TabsTrigger>
+        <TabsTrigger value="orders">
+          <span className="hidden sm:inline">Ärenden</span>
+          <span className="sm:hidden">Ärende</span>
+        </TabsTrigger>
+        <TabsTrigger value="access">
+          <span className="hidden sm:inline">Lås & passage</span>
+          <span className="sm:hidden">Lås</span>
+        </TabsTrigger>
         <TabsTrigger value="map">
           <span>Ritningar</span>
-        </TabsTrigger>
-        <TabsTrigger value="apartments">
-          <span className="hidden sm:inline">Portar/Adresser</span>
-          <span className="sm:hidden">Portar</span>
-        </TabsTrigger>
-        <TabsTrigger value="statistics">
-          <span className="hidden sm:inline">Statistik</span>
-          <span className="sm:hidden">Stat</span>
         </TabsTrigger>
       </TabsList>
 
       <TabsContent value="info">
         <PropertyInfoTab property={propertyDetail} />
+      </TabsContent>
+
+      <TabsContent value="statistics">
+        <PropertyStatisticsTab property={propertyDetail} />
       </TabsContent>
 
       <TabsContent value="documents">
@@ -70,16 +80,16 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
         <PropertyMaintenanceUnitsTab maintenanceUnits={propertyDetail.maintenanceUnits} />
       </TabsContent>
 
+      <TabsContent value="orders">
+        <PropertyOrdersTab propertyDetail={propertyDetail} />
+      </TabsContent>
+
+      <TabsContent value="access">
+        <PropertyAccessTab />
+      </TabsContent>
+
       <TabsContent value="map">
         <PropertyMapTab propertyDetail={propertyDetail} />
-      </TabsContent>
-
-      <TabsContent value="apartments">
-        <PropertyResidenceTab buildings={propertyDetail.buildings} />
-      </TabsContent>
-
-      <TabsContent value="statistics">
-        <PropertyStatisticsTab />
       </TabsContent>
     </Tabs>
   );

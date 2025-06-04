@@ -1,11 +1,15 @@
 
-export const PropertyStatisticsTab = () => {
+import { PropertyStatisticsSummary } from "@/components/properties/PropertyStatisticsSummary";
+import type { PropertyDetail } from "@/types/api";
+
+interface PropertyStatisticsTabProps {
+  property: PropertyDetail;
+}
+
+export const PropertyStatisticsTab = ({ property }: PropertyStatisticsTabProps) => {
   return (
-    <div className="border rounded-lg p-6 text-center">
-      <h3 className="text-xl font-medium mb-2">Statistik</h3>
-      <p className="text-muted-foreground">
-        Ingen statistik tillgänglig för denna fastighet.
-      </p>
+    <div className="space-y-6">
+      <PropertyStatisticsSummary property={property} />
     </div>
   );
 };
