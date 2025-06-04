@@ -99,7 +99,7 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardContent>
+                <CardContent className="p-6">
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
                       För att se rumsinformation, aktivera funktionen i inställningarna.
@@ -119,7 +119,7 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardContent>
+                <CardContent className="p-6">
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
                       För att se planritning, aktivera funktionen i inställningarna.
@@ -139,7 +139,7 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardContent>
+                <CardContent className="p-6">
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
                       För att se dokument, aktivera funktionen i inställningarna.
@@ -161,7 +161,7 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardContent>
+                <CardContent className="p-6">
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
                       För att se besiktningar, aktivera funktionen i inställningarna.
@@ -181,7 +181,7 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardContent>
+                <CardContent className="p-6">
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
                       För att se hyresgästinformation, aktivera funktionen i inställningarna.
@@ -201,7 +201,7 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardContent>
+                <CardContent className="p-6">
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
                       För att se felanmälningar, aktivera funktionen i inställningarna.
