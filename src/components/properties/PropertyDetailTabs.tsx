@@ -23,6 +23,10 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
           <span className="hidden sm:inline">Fastighet</span>
           <span className="sm:hidden">Info</span>
         </TabsTrigger>
+        <TabsTrigger value="statistics">
+          <span className="hidden sm:inline">Fastighetssammanställning</span>
+          <span className="sm:hidden">Sammanst.</span>
+        </TabsTrigger>
         <TabsTrigger value="documents">
           <span className="hidden sm:inline">Dokument</span>
           <span className="sm:hidden">Dok</span>
@@ -50,14 +54,14 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
         <TabsTrigger value="map">
           <span>Ritningar</span>
         </TabsTrigger>
-        <TabsTrigger value="statistics">
-          <span className="hidden sm:inline">Fastighetssammanställning</span>
-          <span className="sm:hidden">Sammanst.</span>
-        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="info">
         <PropertyInfoTab property={propertyDetail} />
+      </TabsContent>
+
+      <TabsContent value="statistics">
+        <PropertyStatisticsTab property={propertyDetail} />
       </TabsContent>
 
       <TabsContent value="documents">
@@ -86,10 +90,6 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
 
       <TabsContent value="map">
         <PropertyMapTab propertyDetail={propertyDetail} />
-      </TabsContent>
-
-      <TabsContent value="statistics">
-        <PropertyStatisticsTab property={propertyDetail} />
       </TabsContent>
     </Tabs>
   );
