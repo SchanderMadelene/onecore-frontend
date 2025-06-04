@@ -5,10 +5,10 @@ import { PropertyDocumentsTab } from "./tabs/PropertyDocumentsTab";
 import { PropertyPlanningTab } from "./tabs/PropertyPlanningTab";
 import { PropertyBuildingsTab } from "./tabs/PropertyBuildingsTab";
 import { PropertyMapTab } from "./tabs/PropertyMapTab";
-import { PropertyStatisticsTab } from "./tabs/PropertyStatisticsTab";
 import { PropertyMaintenanceUnitsTab } from "./tabs/PropertyMaintenanceUnitsTab";
 import { PropertyOrdersTab } from "./tabs/PropertyOrdersTab";
 import { PropertyAccessTab } from "./tabs/PropertyAccessTab";
+import { PropertyStatisticsSummary } from "./PropertyStatisticsSummary";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyDetailTabsProps {
@@ -22,6 +22,10 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
         <TabsTrigger value="info">
           <span className="hidden sm:inline">Fastighet</span>
           <span className="sm:hidden">Info</span>
+        </TabsTrigger>
+        <TabsTrigger value="statistics">
+          <span className="hidden sm:inline">Statistik</span>
+          <span className="sm:hidden">Stat</span>
         </TabsTrigger>
         <TabsTrigger value="documents">
           <span className="hidden sm:inline">Dokument</span>
@@ -50,14 +54,14 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
         <TabsTrigger value="map">
           <span>Ritningar</span>
         </TabsTrigger>
-        <TabsTrigger value="statistics">
-          <span className="hidden sm:inline">Statistik</span>
-          <span className="sm:hidden">Stat</span>
-        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="info">
         <PropertyInfoTab property={propertyDetail} />
+      </TabsContent>
+
+      <TabsContent value="statistics">
+        <PropertyStatisticsSummary property={propertyDetail} />
       </TabsContent>
 
       <TabsContent value="documents">
@@ -86,10 +90,6 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
 
       <TabsContent value="map">
         <PropertyMapTab propertyDetail={propertyDetail} />
-      </TabsContent>
-
-      <TabsContent value="statistics">
-        <PropertyStatisticsTab />
       </TabsContent>
     </Tabs>
   );
