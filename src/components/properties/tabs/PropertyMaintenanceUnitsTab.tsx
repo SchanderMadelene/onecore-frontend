@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { MaintenanceUnit } from "@/types/api";
+import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
 
 interface PropertyMaintenanceUnitsTabProps {
   maintenanceUnits?: MaintenanceUnit[];
@@ -76,6 +77,16 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
 
             {expandedUnitId === unit.id && (
               <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-medium text-lg">Detaljer för {unit.type}</h3>
+                  <CreateOrderDialog 
+                    buttonSize="sm"
+                    buttonVariant="outline"
+                    contextType="residence"
+                    maintenanceUnit={unit}
+                  />
+                </div>
+                
                 {unit.type === "Återvinning" ? (
                   renderRecyclingSubComponents()
                 ) : (
