@@ -1,3 +1,4 @@
+
 // residence = apartment
 export interface Residence {
   id: string;
@@ -107,10 +108,8 @@ export interface Apartment {
 export interface MaintenanceUnit {
   id: string;
   name: string;
-  type: "Miljöbod" | "Tvättstuga" | "Undercentral" | "Annat" | 
-        "Tak" | "Fasad" | "Fönster" | "Balkong" | "Uteplats" | 
-        "Hiss" | "Allmänna ytor" | "Källare" | "Vind" | 
-        "Förråd" | "Skyddsrum" | "Lokal" | "Lås & passage";
+  type: "Parkeringsområde" | "Lekplats" | "Rekreationsytor" | "Återvinning" | 
+        "Tvättsugor" | "Skyddsrum" | "Förråd" | "Installation" | "Lås & passage";
   area: number;
   constructionYear: number;
   lastRenovated?: string;

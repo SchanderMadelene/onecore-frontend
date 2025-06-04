@@ -1,3 +1,4 @@
+
 import { PropertyDetail } from "@/types/api";
 
 // Property 1 (Odenplan 5) details
@@ -63,16 +64,44 @@ export const property1: PropertyDetail = {
   maintenanceUnits: [
     {
       id: "M1",
-      name: "Miljöhuset",
-      type: "Miljöbod",
-      area: 45,
-      constructionYear: 1980,
-      status: "Aktiv"
+      name: "Parkeringsplats",
+      type: "Parkeringsområde",
+      area: 800,
+      constructionYear: 1973,
+      status: "Aktiv",
+      description: "Utomhusparkering för hyresgäster"
     },
     {
       id: "M2",
-      name: "Tvättstugan",
-      type: "Tvättstuga",
+      name: "Lekplats för barn",
+      type: "Lekplats",
+      area: 120,
+      constructionYear: 1980,
+      status: "Aktiv",
+      description: "Lekplats med gungor och klätterställning"
+    },
+    {
+      id: "M3",
+      name: "Innergård",
+      type: "Rekreationsytor",
+      area: 300,
+      constructionYear: 1973,
+      status: "Aktiv",
+      description: "Gemensam rekreationsyta för hyresgäster"
+    },
+    {
+      id: "M4",
+      name: "Återvinningsstation",
+      type: "Återvinning",
+      area: 45,
+      constructionYear: 1980,
+      status: "Aktiv",
+      description: "Sorterat avfall och återvinning"
+    },
+    {
+      id: "M5",
+      name: "Tvättstuga A",
+      type: "Tvättsugor",
       area: 65,
       constructionYear: 1973,
       lastRenovated: "2015-08-01",
@@ -80,119 +109,42 @@ export const property1: PropertyDetail = {
       description: "Fyra tvättmaskiner, två torktumlare och ett torkskåp"
     },
     {
-      id: "M3",
-      name: "Undervåning",
-      type: "Undercentral",
-      area: 30,
-      constructionYear: 1973,
-      status: "Aktiv"
-    },
-    {
-      id: "M4",
-      name: "Takbeläggning",
-      type: "Tak",
-      area: 800,
-      constructionYear: 1973,
-      lastRenovated: "2010-06-15",
-      status: "Aktiv"
-    },
-    {
-      id: "M5",
-      name: "Fasadbeklädnad",
-      type: "Fasad",
-      area: 1200,
-      constructionYear: 1973,
-      status: "Under renovering"
-    },
-    {
       id: "M6",
-      name: "Fönsterpartier",
-      type: "Fönster",
-      area: 240,
-      constructionYear: 1973,
-      status: "Planerad"
-    },
-    {
-      id: "M7",
-      name: "Balkonger",
-      type: "Balkong",
-      area: 180,
-      constructionYear: 1973,
-      status: "Aktiv"
-    },
-    {
-      id: "M8",
-      name: "Uteplats",
-      type: "Uteplats",
-      area: 120,
-      constructionYear: 1973,
-      status: "Aktiv"
-    },
-    {
-      id: "M9",
-      name: "Hiss A",
-      type: "Hiss",
-      area: 4,
-      constructionYear: 1973,
-      lastRenovated: "2019-03-20",
-      status: "Aktiv"
-    },
-    {
-      id: "M10",
-      name: "Trapphus och korridorer",
-      type: "Allmänna ytor",
-      area: 450,
-      constructionYear: 1973,
-      status: "Aktiv"
-    },
-    {
-      id: "M11",
-      name: "Källarutrymmen",
-      type: "Källare",
-      area: 600,
-      constructionYear: 1973,
-      status: "Aktiv"
-    },
-    {
-      id: "M12",
-      name: "Vindsutrymme",
-      type: "Vind",
-      area: 700,
-      constructionYear: 1973,
-      status: "Aktiv"
-    },
-    {
-      id: "M13",
-      name: "Förrådsutrymmen",
-      type: "Förråd",
-      area: 350,
-      constructionYear: 1973,
-      status: "Aktiv"
-    },
-    {
-      id: "M14",
-      name: "Skyddsrum",
+      name: "Skyddsrum källare",
       type: "Skyddsrum",
       area: 120,
       constructionYear: 1973,
-      status: "Aktiv"
+      status: "Aktiv",
+      description: "Skyddsrum enligt BBR"
     },
     {
-      id: "M15",
-      name: "Butikslokal",
-      type: "Lokal",
-      area: 85,
+      id: "M7",
+      name: "Förråd källare",
+      type: "Förråd",
+      area: 350,
       constructionYear: 1973,
-      status: "Aktiv"
+      status: "Aktiv",
+      description: "Förrådsutrymmen för hyresgäster"
     },
     {
-      id: "M16",
+      id: "M8",
+      name: "Ventilation och värme",
+      type: "Installation",
+      area: 50,
+      constructionYear: 1973,
+      lastRenovated: "2018-05-01",
+      status: "Aktiv",
+      description: "Ventilationsaggregat och värmesystem"
+    },
+    {
+      id: "M9",
       name: "Passagesystem",
       type: "Lås & passage",
       area: 0,
       constructionYear: 1973,
       lastRenovated: "2021-09-10",
-      status: "Aktiv"
+      status: "Aktiv",
+      description: "Elektroniska lås och passagesystem"
     }
   ],
   propertyMap: {

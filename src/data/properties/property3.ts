@@ -38,30 +38,61 @@ export const property3: PropertyDetail = {
   ],
   maintenanceUnits: [
     {
-      id: "M6",
-      name: "Parkering",
-      type: "Annat",
+      id: "M1",
+      name: "Parkeringsgarage",
+      type: "Parkeringsområde",
       area: 800,
       constructionYear: 1992,
       status: "Aktiv",
-      description: "Utomhusparkering för 32 bilar"
+      description: "Underjordisk parkering för 32 bilar"
     },
     {
-      id: "M7",
-      name: "Undercentral",
-      type: "Undercentral",
-      area: 40,
+      id: "M2",
+      name: "Uteområde",
+      type: "Rekreationsytor",
+      area: 200,
       constructionYear: 1992,
-      status: "Aktiv"
+      status: "Aktiv",
+      description: "Utomhusyta med bänkar och planteringar"
     },
     {
-      id: "M8",
+      id: "M3",
       name: "Avfallshantering",
-      type: "Miljöbod",
+      type: "Återvinning",
       area: 35,
       constructionYear: 1992,
       lastRenovated: "2019-03-15",
-      status: "Aktiv"
+      status: "Aktiv",
+      description: "Återvinningsstation för kontorsbyggnaden"
+    },
+    {
+      id: "M4",
+      name: "Förrådslokal",
+      type: "Förråd",
+      area: 80,
+      constructionYear: 1992,
+      status: "Aktiv",
+      description: "Förrådsutrymme för kontorshyresgäster"
+    },
+    {
+      id: "M5",
+      name: "Tekniska installationer",
+      type: "Installation",
+      area: 120,
+      constructionYear: 1992,
+      lastRenovated: "2020-09-01",
+      status: "Aktiv",
+      description: "Ventilation, värme och kyla"
+    },
+    {
+      id: "M6",
+      name: "Säkerhetssystem",
+      type: "Lås & passage",
+      area: 0,
+      constructionYear: 1992,
+      lastRenovated: "2021-05-20",
+      status: "Aktiv",
+      description: "Säkerhetslås och passagesystem"
     }
   ],
   propertyMap: {

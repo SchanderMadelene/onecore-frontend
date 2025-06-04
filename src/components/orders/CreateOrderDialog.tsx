@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useOrdersService, Order } from "@/hooks/useOrdersService";
 import { useParams } from "react-router-dom";
 import { useResidenceData } from "@/hooks/useResidenceData";
+import { MaintenanceUnit } from "@/types/api";
 
 type CreateOrderDialogProps = {
   buttonSize?: "default" | "sm" | "lg" | "icon";
@@ -21,6 +22,7 @@ type CreateOrderDialogProps = {
   onOrderCreated?: () => void;
   tenant?: any; // Optional tenant prop
   residenceId?: string; // Added residenceId prop
+  maintenanceUnit?: MaintenanceUnit; // Add maintenance unit prop
 };
 
 export function CreateOrderDialog({ 
@@ -29,7 +31,8 @@ export function CreateOrderDialog({
   contextType = "tenant",
   onOrderCreated,
   tenant, // Remove default value
-  residenceId // Add the residenceId prop
+  residenceId, // Add the residenceId prop
+  maintenanceUnit // Add maintenance unit prop
 }: CreateOrderDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { createOrder } = useOrdersService();
@@ -62,7 +65,12 @@ export function CreateOrderDialog({
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Skapa nytt ärende</DialogTitle>
+          <DialogTitle>
+            {maintenanceUnit 
+              ? `Skapa ärende för ${maintenanceUnit.type}` 
+              : "Skapa nytt ärende"
+            }
+          </DialogTitle>
         </DialogHeader>
         <OrderForm 
           onSubmit={handleCreateOrder}
@@ -71,6 +79,7 @@ export function CreateOrderDialog({
           rooms={contextType === "residence" ? roomsData : []}
           tenant={tenant}
           residenceId={effectiveResidenceId}
+          maintenanceUnit={maintenanceUnit}
         />
       </DialogContent>
     </Dialog>

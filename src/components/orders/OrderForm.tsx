@@ -1,4 +1,3 @@
-
 import { Order } from "@/hooks/useOrdersService";
 import type { Room } from "@/types/api";
 import { useResidenceData } from "@/hooks/useResidenceData";
@@ -7,6 +6,7 @@ import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/t
 import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useOrderForm } from "@/hooks/useOrderForm";
 import { Form } from "@/components/ui/form";
+import { MaintenanceUnit } from "@/types/api";
 
 // Importing the new form components
 import { TenantInfoSection } from "./form-rhf/TenantInfoSection";
@@ -25,6 +25,7 @@ type OrderFormProps = {
   rooms?: Room[];
   tenant?: any;
   residenceId?: string;
+  maintenanceUnit?: MaintenanceUnit;
 };
 
 // Function to get tenant data based on residence ID
@@ -45,7 +46,8 @@ export function OrderForm({
   contextType = "tenant",
   rooms = [],
   tenant,
-  residenceId
+  residenceId,
+  maintenanceUnit
 }: OrderFormProps) {
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
