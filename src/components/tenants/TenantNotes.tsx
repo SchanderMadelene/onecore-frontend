@@ -20,6 +20,48 @@ const initialNotes = [
     createdAt: "2023-12-02T09:15:00",
     createdBy: "Johan Karlsson",
     isPinned: false
+  },
+  {
+    id: "note-3",
+    content: "Hyresgästen ringer ofta på kvällstid. Försök att ta kontakt på dagtid om möjligt.",
+    createdAt: "2023-10-22T16:45:00",
+    createdBy: "Lisa Andersson",
+    isPinned: true
+  },
+  {
+    id: "note-4",
+    content: "Störningsanmälan inkom 2023-11-20 gällande musik från grannlägenhet. Kontaktade grannen, problemet löst.",
+    createdAt: "2023-11-20T10:20:00",
+    createdBy: "Erik Johansson",
+    isPinned: false
+  },
+  {
+    id: "note-5",
+    content: "Hyresgästen har betalningsproblem. Uppsökande verksamhet planerad för nästa vecka.",
+    createdAt: "2023-12-01T13:15:00",
+    createdBy: "Maria Svensson",
+    isPinned: true
+  },
+  {
+    id: "note-6",
+    content: "Besikting genomförd 2023-10-15. Mindre skador på köksluckor noterade, åtgärd planerad till våren.",
+    createdAt: "2023-10-15T14:00:00",
+    createdBy: "Stefan Larsson",
+    isPinned: false
+  },
+  {
+    id: "note-7",
+    content: "Hyresgästen rapporterar dragiga fönster. Bokar tid för kontroll av fönsterbyte.",
+    createdAt: "2023-11-28T09:30:00",
+    createdBy: "Anna Petersson",
+    isPinned: false
+  },
+  {
+    id: "note-8",
+    content: "Uppsägning mottagen. Slutbesiktning bokad för 2024-01-15.",
+    createdAt: "2023-12-05T11:45:00",
+    createdBy: "Johan Karlsson",
+    isPinned: true
   }
 ];
 
