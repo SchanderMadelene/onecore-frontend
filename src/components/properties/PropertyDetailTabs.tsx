@@ -27,7 +27,7 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
           <span className="sm:hidden">Dok</span>
         </TabsTrigger>
         <TabsTrigger value="planning">
-          <span className="hidden sm:inline">Planering</span>
+          <span className="hidden sm:inline">Planerat underhåll</span>
           <span className="sm:hidden">Plan</span>
         </TabsTrigger>
         <TabsTrigger value="buildings">
