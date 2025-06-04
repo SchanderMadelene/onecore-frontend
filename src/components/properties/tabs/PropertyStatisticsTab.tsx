@@ -1,15 +1,16 @@
 
-import { PropertyStatisticsSummary } from "@/components/properties/PropertyStatisticsSummary";
-import type { PropertyDetail } from "@/types/api";
+import { Card, CardContent } from "@/components/ui/card";
 
-interface PropertyStatisticsTabProps {
-  property: PropertyDetail;
-}
-
-export const PropertyStatisticsTab = ({ property }: PropertyStatisticsTabProps) => {
+export const PropertyStatisticsTab = () => {
   return (
-    <div className="space-y-8">
-      <PropertyStatisticsSummary property={property} />
-    </div>
+    <Card className="w-full">
+      <CardContent className="p-6">
+        <div className="space-y-4">
+          <p className="text-muted-foreground">
+            Ingen statistik tillgänglig för denna fastighet.
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
