@@ -1,4 +1,3 @@
-
 import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
 import { ResidenceFloorplan } from "@/components/residence/ResidenceFloorplan";
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
@@ -100,9 +99,6 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Rumsinformation</CardTitle>
-                </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
@@ -123,9 +119,6 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Planritning</CardTitle>
-                </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
@@ -146,9 +139,6 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Dokument</CardTitle>
-                </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
@@ -171,9 +161,6 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Besiktningar</CardTitle>
-                </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
@@ -194,9 +181,6 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Hyresgäst</CardTitle>
-                </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
@@ -217,9 +201,6 @@ export const ResidenceContent = ({
               </Card>
             ) : (
               <Card className="w-full">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">Ärenden</CardTitle>
-                </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
