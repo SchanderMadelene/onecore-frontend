@@ -1,13 +1,10 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const PropertyAccessTab = () => {
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Lås & passage</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6">
         <div className="space-y-4">
           <p className="text-muted-foreground">
             Information om lås och passagesystem för fastigheten kommer att visas här.
