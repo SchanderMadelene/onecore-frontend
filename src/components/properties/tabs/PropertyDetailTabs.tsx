@@ -80,7 +80,7 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
       </TabsContent>
 
       <TabsContent value="statistics">
-        <PropertyStatisticsTab />
+        <PropertyStatisticsTab property={propertyDetail} />
       </TabsContent>
     </Tabs>
   );
