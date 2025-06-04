@@ -1,4 +1,5 @@
 
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { PropertyStatisticsSummary } from "@/components/properties/PropertyStatisticsSummary";
 import type { PropertyDetail } from "@/types/api";
 
@@ -8,8 +9,11 @@ interface PropertyStatisticsTabProps {
 
 export const PropertyStatisticsTab = ({ property }: PropertyStatisticsTabProps) => {
   return (
-    <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Fastighetssammanställning</CardTitle>
+      </CardHeader>
       <PropertyStatisticsSummary property={property} />
-    </div>
+    </Card>
   );
 };

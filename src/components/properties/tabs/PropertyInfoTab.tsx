@@ -1,4 +1,5 @@
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyInfoTabProps {
@@ -7,10 +8,15 @@ interface PropertyInfoTabProps {
 
 export const PropertyInfoTab = ({ property }: PropertyInfoTabProps) => {
   return (
-    <div className="space-y-8">
-      <div className="text-muted-foreground">
-        Grundläggande fastighetsinformation visas här.
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Fastighet</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-muted-foreground">
+          Grundläggande fastighetsinformation visas här.
+        </div>
+      </CardContent>
+    </Card>
   );
 };
