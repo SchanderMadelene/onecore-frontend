@@ -77,8 +77,7 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
 
             {expandedUnitId === unit.id && (
               <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-medium text-lg">Detaljer för {unit.type}</h3>
+                <div className="flex justify-end mb-4">
                   <CreateOrderDialog 
                     buttonSize="sm"
                     buttonVariant="outline"
