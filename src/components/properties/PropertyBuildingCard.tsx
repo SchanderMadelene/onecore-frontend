@@ -3,6 +3,7 @@ import type { Building } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 interface PropertyBuildingCardProps {
   building: Building;
@@ -19,16 +20,19 @@ export const PropertyBuildingCard = ({ building }: PropertyBuildingCardProps) =>
   };
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xl">{building.name}</CardTitle>
+    <Card className="hover:shadow-md transition-shadow">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">{building.name}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-0">
         <Button 
+          variant="outline" 
+          size="sm"
           onClick={handleOpenBuilding}
-          className="w-full"
+          className="w-full justify-between"
         >
-          Öppna byggnad
+          Visa detaljer
+          <ArrowRight className="h-4 w-4" />
         </Button>
       </CardContent>
     </Card>
