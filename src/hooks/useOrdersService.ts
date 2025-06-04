@@ -203,7 +203,6 @@ const historicalOrdersMock: Order[] = [
     residenceId: "vasteras/lundby/odenplan-5",
     type: "Odoo"
   },
-  // ... keep existing code (tenant apartment orders)
   {
     id: "C004",
     title: "Problem med element",
@@ -319,33 +318,39 @@ export function useOrdersService() {
     const newOrder: Order = {
       ...orderData,
       id: `C${(activeOrders.length + historicalOrders.length + 10).toString().padStart(3, '0')}`,
-      status: orderData.status || "pending", // Använd den status som skickas in eller "pending" som default
+      status: orderData.status || "pending",
     };
 
     console.log("Creating new order:", newOrder);
     
-    // In a real app, this would be an API call
     setActiveOrders([newOrder, ...activeOrders]);
     return newOrder;
   };
 
   // Get orders for a specific residence ID
   const getOrdersByResidence = (residenceId?: string) => {
+    console.log("Filtering orders for residenceId:", residenceId);
+    
     if (!residenceId) {
       return { activeOrders, historicalOrders };
     }
     
-    // Filter active orders - includes both "active" and "pending" status för att visa nya ärenden direkt
-    const filteredActive = activeOrders.filter(order => 
-      order.residenceId === residenceId && 
-      (order.status === "active" || order.status === "pending")
-    );
+    // Filter active orders - includes both "active" and "pending" status
+    const filteredActive = activeOrders.filter(order => {
+      const matches = order.residenceId === residenceId && 
+        (order.status === "active" || order.status === "pending");
+      console.log(`Order ${order.id} (${order.residenceId}) matches ${residenceId}:`, matches);
+      return matches;
+    });
     
     // Filter historical orders - only "resolved" status
     const filteredHistorical = historicalOrders.filter(order => 
       order.residenceId === residenceId && 
       order.status === "resolved"
     );
+    
+    console.log("Filtered active orders:", filteredActive.length);
+    console.log("Filtered historical orders:", filteredHistorical.length);
     
     return { 
       activeOrders: filteredActive, 
