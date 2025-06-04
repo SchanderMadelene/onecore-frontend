@@ -42,22 +42,51 @@ export const property2: PropertyDetail = {
   ],
   maintenanceUnits: [
     {
-      id: "M4",
-      name: "Miljöstation",
-      type: "Miljöbod",
+      id: "M1",
+      name: "Parkeringsområde",
+      type: "Parkeringsområde",
+      area: 500,
+      constructionYear: 1985,
+      status: "Aktiv",
+      description: "Bilparkering för 25 bilar"
+    },
+    {
+      id: "M2",
+      name: "Återvinningscentral",
+      type: "Återvinning",
       area: 60,
       constructionYear: 1985,
       status: "Aktiv",
       description: "Sorterat avfall, källsortering"
     },
     {
-      id: "M5",
+      id: "M3",
       name: "Tvättrum",
-      type: "Tvättstuga",
+      type: "Tvättsugor",
       area: 75,
       constructionYear: 1985,
       lastRenovated: "2018-05-01",
-      status: "Aktiv"
+      status: "Aktiv",
+      description: "Tvättmaskiner och torkutrustning"
+    },
+    {
+      id: "M4",
+      name: "Teknisk installation",
+      type: "Installation",
+      area: 40,
+      constructionYear: 1985,
+      status: "Aktiv",
+      description: "Värme- och ventilationssystem"
+    },
+    {
+      id: "M5",
+      name: "Låssystem",
+      type: "Lås & passage",
+      area: 0,
+      constructionYear: 1985,
+      lastRenovated: "2020-03-15",
+      status: "Aktiv",
+      description: "Digital passagekontroll"
     }
   ],
   propertyMap: {
