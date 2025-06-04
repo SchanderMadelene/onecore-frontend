@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { MaintenanceUnit } from "@/types/api";
 
 interface PropertyMaintenanceUnitsTabProps {
@@ -8,49 +9,30 @@ interface PropertyMaintenanceUnitsTabProps {
 }
 
 export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMaintenanceUnitsTabProps) => {
-  // Skapa subkomponenter för återvinning
-  const getSubComponentsForUnit = (unit: MaintenanceUnit) => {
-    if (unit.type === "Återvinning") {
-      return [
-        {
-          name: "Miljöbod",
-          specs: {
-            ekonomiskLivslangd: "20 år",
-            tekniskLivslangd: "25 år",
-            year: "2018",
-            quantity: "1 st",
-            brand: "EcoContainers",
-            model: "EcoBod 2000"
-          }
-        },
-        {
-          name: "Markbehållare",
-          specs: {
-            ekonomiskLivslangd: "15 år",
-            tekniskLivslangd: "20 år",
-            year: "2020",
-            quantity: "4 st",
-            brand: "WasteManager",
-            model: "Underground 500L"
-          }
-        }
-      ];
-    }
-    
-    // För andra enhetstyper, returnera en tom array eller standardkomponent
-    return [
-      {
-        name: unit.name,
-        specs: {
-          ekonomiskLivslangd: "25 år",
-          tekniskLivslangd: "30 år",
-          year: unit.constructionYear.toString(),
-          quantity: unit.area > 0 ? `${unit.area} m²` : "1 st",
-          brand: "Standard AB",
-          model: "Standard Model"
-        }
-      }
-    ];
+  const [expandedUnitId, setExpandedUnitId] = useState<string | null>(null);
+
+  const handleUnitToggle = (unitId: string) => {
+    setExpandedUnitId(expandedUnitId === unitId ? null : unitId);
+  };
+
+  // Subkomponenter för återvinning
+  const renderRecyclingSubComponents = () => {
+    return (
+      <div className="space-y-3">
+        <div className="border rounded-lg p-3 bg-background">
+          <h4 className="font-medium text-sm mb-2">Miljöbod</h4>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p>Subkomponent för återvinning</p>
+          </div>
+        </div>
+        <div className="border rounded-lg p-3 bg-background">
+          <h4 className="font-medium text-sm mb-2">Markbehållare</h4>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p>Subkomponent för återvinning</p>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   if (!maintenanceUnits || maintenanceUnits.length === 0) {
@@ -65,12 +47,45 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-2">
         {maintenanceUnits.map(unit => (
-          <MaintenanceUnitCard
-            key={unit.id}
-            subComponents={getSubComponentsForUnit(unit)}
-          />
+          <div key={unit.id}>
+            <button
+              className="w-full bg-card hover:bg-accent/50 border rounded-lg p-3 sm:p-4 transition-colors text-left"
+              onClick={() => handleUnitToggle(unit.id)}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">{unit.type}</span>
+                    {unit.area > 0 && (
+                      <span className="text-sm text-muted-foreground">({unit.area} m²)</span>
+                    )}
+                  </div>
+                  {unit.description && (
+                    <p className="text-sm text-muted-foreground mt-1">{unit.description}</p>
+                  )}
+                </div>
+                {expandedUnitId === unit.id ? (
+                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                )}
+              </div>
+            </button>
+
+            {expandedUnitId === unit.id && (
+              <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
+                {unit.type === "Återvinning" ? (
+                  renderRecyclingSubComponents()
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-muted-foreground text-sm">Innehåll kommer att läggas till senare</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         ))}
       </div>
     </div>
