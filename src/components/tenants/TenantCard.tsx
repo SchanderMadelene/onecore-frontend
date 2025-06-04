@@ -1,7 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Phone, Mail, MessageSquare, User } from "lucide-react";
 
 interface TenantCardProps {
@@ -49,17 +48,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
     const lastSixDigits = numbersOnly.slice(-6);
     return `P${lastSixDigits.padStart(6, '0')}`;
   };
-
-  const housingContractTypes = [
-    "Ungdomslägenhet",
-    "Kooperativ",
-    "Lätt att leva",
-    "Trygghetsboende",
-    "Poängfritt",
-    "Korttid",
-    "Snabb infytt",
-    "Renoverad"
-  ];
 
   return (
     <Card>
@@ -116,18 +104,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Kontrakttyp bostad</p>
-              <Select value={tenant.housingContractType || ""}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Välj kontrakttyp" />
-                </SelectTrigger>
-                <SelectContent>
-                  {housingContractTypes.map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <p className="font-medium">{tenant.housingContractType || "Ej angivet"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
