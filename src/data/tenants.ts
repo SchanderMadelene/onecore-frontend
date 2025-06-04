@@ -13,6 +13,7 @@ export const mockTenant = {
   nationality: "Svensk",
   language: "Svenska",
   hasLegalGuardian: false,
+  housingContractType: "Korttid",
   portalCredentials: {
     username: "anna.andersson",
     password: "password123"

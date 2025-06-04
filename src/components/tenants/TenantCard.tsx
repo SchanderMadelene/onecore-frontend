@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MessageSquare, User } from "lucide-react";
@@ -12,9 +13,11 @@ interface TenantCardProps {
     moveInDate: string;
     moveOutDate?: string;
     contractNumber: string;
+    personalNumber: string;
     nationality?: string;
     language?: string;
     hasLegalGuardian?: boolean;
+    housingContractType?: string;
     portalCredentials?: {
       username: string;
       password: string;
@@ -37,6 +40,15 @@ export function TenantCard({ tenant }: TenantCardProps) {
     window.location.href = `mailto:${tenant.email}`;
   };
 
+  // Format personal number to P-number format
+  const formatPersonalNumber = (personalNumber: string) => {
+    // Remove any existing formatting and extract just the numbers
+    const numbersOnly = personalNumber.replace(/\D/g, '');
+    // Take the last 6 digits and prefix with P
+    const lastSixDigits = numbersOnly.slice(-6);
+    return `P${lastSixDigits.padStart(6, '0')}`;
+  };
+
   return (
     <Card>
       <CardHeader className="pb-4">
@@ -48,6 +60,10 @@ export function TenantCard({ tenant }: TenantCardProps) {
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
               <p className="font-medium">{tenant.firstName} {tenant.lastName}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Kundnummer/P-nummer</p>
+              <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Telefon</p>
@@ -73,12 +89,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
               </div>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Nationalitet</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{tenant.nationality || "Ej angivet"}</p>
-              </div>
-            </div>
-            <div>
               <p className="text-sm text-muted-foreground">Språk</p>
               <div className="flex items-center gap-2">
                 <p className="font-medium">{tenant.language || "Svenska"}</p>
@@ -91,6 +101,10 @@ export function TenantCard({ tenant }: TenantCardProps) {
               <p className="font-medium">
                 {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
               </p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Kontrakttyp bostad</p>
+              <p className="font-medium">{tenant.housingContractType || "Ej angivet"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>

@@ -1,7 +1,8 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 export function BetaSettings() {
@@ -174,6 +175,136 @@ export function BetaSettings() {
                 <p className="text-sm text-muted-foreground">Visa kundfunktioner</p>
               </div>
               <Switch id="tenants" checked={features.showTenants} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showTenants')} />
+            </div>
+
+            <div className="pl-6 space-y-3 border-l">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    <Label htmlFor="tenant-contracts">Hyreskontrakt</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa hyreskontrakt på kundkort</p>
+                </div>
+                <Switch 
+                  id="tenant-contracts" 
+                  checked={features.showTenantContracts} 
+                  disabled={!features.showTenants || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showTenantContracts')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    <Label htmlFor="tenant-queue">Kösystem</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa kösystem på kundkort</p>
+                </div>
+                <Switch 
+                  id="tenant-queue" 
+                  checked={features.showTenantQueue} 
+                  disabled={!features.showTenants || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showTenantQueue')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-4 w-4" />
+                    <Label htmlFor="tenant-cases">Ärenden</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa ärenden på kundkort</p>
+                </div>
+                <Switch 
+                  id="tenant-cases" 
+                  checked={features.showTenantCases} 
+                  disabled={!features.showTenants || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showTenantCases')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <Wallet className="h-4 w-4" />
+                    <Label htmlFor="tenant-ledger">Kundreskontra</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa kundreskontra på kundkort</p>
+                </div>
+                <Switch 
+                  id="tenant-ledger" 
+                  checked={features.showTenantLedger} 
+                  disabled={!features.showTenants || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showTenantLedger')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <StickyNote className="h-4 w-4" />
+                    <Label htmlFor="tenant-notes">Noteringar</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa noteringar på kundkort</p>
+                </div>
+                <Switch 
+                  id="tenant-notes" 
+                  checked={features.showTenantNotes} 
+                  disabled={!features.showTenants || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showTenantNotes')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <Key className="h-4 w-4" />
+                    <Label htmlFor="tenant-keys">Nyckelknippa</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa nyckelknippa på kundkort</p>
+                </div>
+                <Switch 
+                  id="tenant-keys" 
+                  checked={features.showTenantKeys} 
+                  disabled={!features.showTenants || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showTenantKeys')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <Bell className="h-4 w-4" />
+                    <Label htmlFor="tenant-events">Händelselogg</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa händelselogg på kundkort</p>
+                </div>
+                <Switch 
+                  id="tenant-events" 
+                  checked={features.showTenantEvents} 
+                  disabled={!features.showTenants || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showTenantEvents')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    <Label htmlFor="tenant-documents">Dokument</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa dokument på kundkort</p>
+                </div>
+                <Switch 
+                  id="tenant-documents" 
+                  checked={features.showTenantDocuments} 
+                  disabled={!features.showTenants || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showTenantDocuments')} 
+                />
+              </div>
             </div>
 
             <div className="flex items-center justify-between">
