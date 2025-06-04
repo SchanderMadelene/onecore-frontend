@@ -39,6 +39,19 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
     }
   };
 
+  const getContractCategory = (type: Contract["type"]) => {
+    switch (type) {
+      case "housing":
+        return "Korttid";
+      case "parking":
+        return "Poängfri";
+      case "storage":
+        return "";
+      default:
+        return "";
+    }
+  };
+
   const getStatusBadge = (status: Contract["status"]) => {
     switch (status) {
       case "active":
@@ -78,6 +91,7 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
               <TableHead>Objekt</TableHead>
               <TableHead>Startdatum</TableHead>
               <TableHead>Månadshyra</TableHead>
+              <TableHead>Kontrakttyp</TableHead>
               <TableHead>Status</TableHead>
               <TableHead></TableHead>
             </TableRow>
@@ -98,6 +112,7 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
                   </div>
                 </TableCell>
                 <TableCell>{formatCurrency(contract.rent)}</TableCell>
+                <TableCell>{getContractCategory(contract.type)}</TableCell>
                 <TableCell>{getStatusBadge(contract.status)}</TableCell>
                 <TableCell>
                   <Button variant="outline" size="sm">
