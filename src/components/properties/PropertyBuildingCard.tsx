@@ -29,7 +29,7 @@ export const PropertyBuildingCard = ({ building }: PropertyBuildingCardProps) =>
           size="sm"
           onClick={handleOpenBuilding}
         >
-          Öppna
+          Öppna byggnad
         </Button>
       </CardContent>
     </Card>
