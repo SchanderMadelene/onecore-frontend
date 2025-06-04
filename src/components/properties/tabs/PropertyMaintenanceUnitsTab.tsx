@@ -15,6 +15,26 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
     setExpandedUnitId(expandedUnitId === unitId ? null : unitId);
   };
 
+  // Subkomponenter för återvinning
+  const renderRecyclingSubComponents = () => {
+    return (
+      <div className="space-y-3">
+        <div className="border rounded-lg p-3 bg-background">
+          <h4 className="font-medium text-sm mb-2">Miljöbod</h4>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p>Subkomponent för återvinning</p>
+          </div>
+        </div>
+        <div className="border rounded-lg p-3 bg-background">
+          <h4 className="font-medium text-sm mb-2">Markbehållare</h4>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p>Subkomponent för återvinning</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   if (!maintenanceUnits || maintenanceUnits.length === 0) {
     return (
       <div className="text-center py-10">
@@ -56,10 +76,13 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
 
             {expandedUnitId === unit.id && (
               <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
-                {/* Tomt innehåll - användaren kommer tillbaka till detta */}
-                <div className="text-center py-4">
-                  <p className="text-muted-foreground text-sm">Innehåll kommer att läggas till senare</p>
-                </div>
+                {unit.type === "Återvinning" ? (
+                  renderRecyclingSubComponents()
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-muted-foreground text-sm">Innehåll kommer att läggas till senare</p>
+                  </div>
+                )}
               </div>
             )}
           </div>
