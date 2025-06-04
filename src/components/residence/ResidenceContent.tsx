@@ -11,7 +11,7 @@ import type { Residence, Room } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Info, ClipboardList, Users, MessageSquare, FileImage, FileText } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAccordion } from "./MobileAccordion";
@@ -89,92 +89,146 @@ export const ResidenceContent = ({
           </TabsList>
 
           <TabsContent value="info">
-            <Card>
-              <CardContent className="p-4">
-                {features.showRoomInformation ? (
+            {features.showRoomInformation ? (
+              <Card>
+                <CardContent className="p-4">
                   <ResidenceInfo 
                     rooms={roomsData}
                     getOrientationText={getOrientationText}
                   />
-                ) : (
-                  <p className="text-slate-500">
-                    För att se rumsinformation, aktivera funktionen i inställningarna.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="w-full">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Rumsinformation</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">
+                      För att se rumsinformation, aktivera funktionen i inställningarna.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="floorplan">
-            <Card>
-              <CardContent className="p-4">
-                {features.showFloorplan ? (
+            {features.showFloorplan ? (
+              <Card>
+                <CardContent className="p-4">
                   <ResidenceFloorplan />
-                ) : (
-                  <p className="text-slate-500">
-                    För att se planritning, aktivera funktionen i inställningarna.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="w-full">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Planritning</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">
+                      För att se planritning, aktivera funktionen i inställningarna.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="documents">
-            <Card>
-              <CardContent className="p-4">
-                {features.showDocuments ? (
+            {features.showDocuments ? (
+              <Card>
+                <CardContent className="p-4">
                   <ResidenceDocuments />
-                ) : (
-                  <p className="text-slate-500">
-                    För att se dokument, aktivera funktionen i inställningarna.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="w-full">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Dokument</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">
+                      För att se dokument, aktivera funktionen i inställningarna.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="inspections">
-            <Card>
-              <CardContent className="p-4">
-                {features.showInspections ? (
+            {features.showInspections ? (
+              <Card>
+                <CardContent className="p-4">
                   <ResidenceInspection
                     rooms={roomsData}
                   />
-                ) : (
-                  <p className="text-slate-500">
-                    För att se besiktningar, aktivera funktionen i inställningarna.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="w-full">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Besiktningar</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">
+                      För att se besiktningar, aktivera funktionen i inställningarna.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="tenant">
-            <Card>
-              <CardContent className="p-4">
-                {features.showTenantInfo ? (
+            {features.showTenantInfo ? (
+              <Card>
+                <CardContent className="p-4">
                   <TenantInformation tenant={getTenantData()} />
-                ) : (
-                  <p className="text-slate-500">
-                    För att se hyresgästinformation, aktivera funktionen i inställningarna.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="w-full">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Hyresgäst</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">
+                      För att se hyresgästinformation, aktivera funktionen i inställningarna.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="issues">
-            <Card>
-              <CardContent className="p-4">
-                {features.showApartmentIssues ? (
+            {features.showApartmentIssues ? (
+              <Card>
+                <CardContent className="p-4">
                   <OrdersManagement residenceId={id} />
-                ) : (
-                  <p className="text-slate-500">
-                    För att se felanmälningar, aktivera funktionen i inställningarna.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="w-full">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg font-semibold">Ärenden</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground">
+                      För att se felanmälningar, aktivera funktionen i inställningarna.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
       )}
