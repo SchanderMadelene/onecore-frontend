@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MessageSquare, User } from "lucide-react";
@@ -39,6 +38,15 @@ export function TenantCard({ tenant }: TenantCardProps) {
     window.location.href = `mailto:${tenant.email}`;
   };
 
+  // Format personal number to P-number format
+  const formatPersonalNumber = (personalNumber: string) => {
+    // Remove any existing formatting and extract just the numbers
+    const numbersOnly = personalNumber.replace(/\D/g, '');
+    // Take the last 6 digits and prefix with P
+    const lastSixDigits = numbersOnly.slice(-6);
+    return `P${lastSixDigits.padStart(6, '0')}`;
+  };
+
   return (
     <Card>
       <CardHeader className="pb-4">
@@ -53,7 +61,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Kundnummer/P-nummer</p>
-              <p className="font-medium">{tenant.personalNumber}</p>
+              <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Telefon</p>
