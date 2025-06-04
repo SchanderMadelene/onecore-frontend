@@ -9,10 +9,7 @@ interface PropertyInfoTabProps {
 export const PropertyInfoTab = ({ property }: PropertyInfoTabProps) => {
   return (
     <div className="space-y-6">
-      {/* Basic information card */}
-      <PropertyBasicInfo propertyDetail={property} showBasicInfoOnly={true} />
-      
-      {/* Detailed property information */}
+      {/* Only show detailed property information here, basic info is shown above tabs */}
       <PropertyBasicInfo propertyDetail={property} showBasicInfoOnly={false} showDetailedInfo={true} />
     </div>
   );
