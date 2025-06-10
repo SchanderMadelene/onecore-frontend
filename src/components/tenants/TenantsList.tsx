@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +10,7 @@ import { getAllTenants } from "@/data/tenants";
 const tenants = getAllTenants().map(tenant => ({
   ...tenant,
   id: tenant.personalNumber,
-  type: tenant.isCompany ? "company" : "private",
+  type: (tenant.isCompany ?? false) ? "company" : "private",
   property: getPropertyForTenant(tenant.personalNumber)
 }));
 

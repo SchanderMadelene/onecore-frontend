@@ -1,4 +1,3 @@
-
 // Tenant mock data
 export const mockTenant = {
   firstName: "Anna",
@@ -20,7 +19,8 @@ export const mockTenant = {
   },
   loginCount: 12,
   lastLogin: "2023-11-15T14:30:00",
-  isPrimaryTenant: true
+  isPrimaryTenant: true,
+  isCompany: false
 };
 
 // Erik Karlsson - Privat kund
@@ -43,7 +43,8 @@ export const mockErikKarlsson = {
   },
   loginCount: 45,
   lastLogin: "2024-06-08T09:15:00",
-  isPrimaryTenant: true
+  isPrimaryTenant: true,
+  isCompany: false
 };
 
 // Maria Lindberg - Privat kund
@@ -66,7 +67,8 @@ export const mockMariaLindberg = {
   },
   loginCount: 28,
   lastLogin: "2024-06-09T16:45:00",
-  isPrimaryTenant: true
+  isPrimaryTenant: true,
+  isCompany: false
 };
 
 // Svenssons Bygg AB - Företagskund
