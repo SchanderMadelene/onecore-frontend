@@ -3,16 +3,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { orderFormSchema, OrderFormData, transformFormDataToOrder } from "./useOrderFormValidation";
 import { Order } from "./useOrdersService";
-import { Room } from "@/types/api";
+import { Room, MaintenanceUnit } from "@/types/api";
 
 type UseOrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
   contextType: "tenant" | "residence";
   rooms: Room[];
   residenceId?: string;
+  maintenanceUnit?: MaintenanceUnit;
 };
 
-export const useOrderForm = ({ onSubmit, contextType, rooms, residenceId }: UseOrderFormProps) => {
+export const useOrderForm = ({ onSubmit, contextType, rooms, residenceId, maintenanceUnit }: UseOrderFormProps) => {
   const form = useForm<OrderFormData>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
@@ -33,7 +34,8 @@ export const useOrderForm = ({ onSubmit, contextType, rooms, residenceId }: UseO
     const orderData = transformFormDataToOrder(
       data,
       residenceId || "",
-      contextType
+      contextType,
+      maintenanceUnit
     );
     onSubmit(orderData);
   });
