@@ -69,6 +69,76 @@ export const mockMariaLindberg = {
   isPrimaryTenant: true
 };
 
+// Johan Svensson - Privat kund
+export const mockJohanSvensson = {
+  firstName: "Johan",
+  lastName: "Svensson",
+  phone: "070-234 56 78",
+  email: "johan.svensson@example.com",
+  contractStatus: "permanent" as const,
+  moveInDate: "2019-08-12",
+  contractNumber: "KT2019-087",
+  personalNumber: "19820812-3456",
+  nationality: "Svensk",
+  language: "Svenska",
+  hasLegalGuardian: false,
+  housingContractType: "Tillsvidare",
+  portalCredentials: {
+    username: "johan.svensson",
+    password: "password321"
+  },
+  loginCount: 67,
+  lastLogin: "2024-06-10T11:20:00",
+  isPrimaryTenant: true
+};
+
+// Lisa Nilsson - Privat kund
+export const mockLisaNilsson = {
+  firstName: "Lisa",
+  lastName: "Nilsson",
+  phone: "073-345 67 89",
+  email: "lisa.nilsson@example.com",
+  contractStatus: "permanent" as const,
+  moveInDate: "2022-02-28",
+  contractNumber: "KT2022-028",
+  personalNumber: "19900228-7890",
+  nationality: "Svensk",
+  language: "Svenska",
+  hasLegalGuardian: false,
+  housingContractType: "Tillsvidare",
+  portalCredentials: {
+    username: "lisa.nilsson",
+    password: "password654"
+  },
+  loginCount: 23,
+  lastLogin: "2024-06-07T14:45:00",
+  isPrimaryTenant: true
+};
+
+// Pär Gustafsson - Privat kund
+export const mockParGustafsson = {
+  firstName: "Pär",
+  lastName: "Gustafsson",
+  phone: "070-456 78 90",
+  email: "par.gustafsson@example.com",
+  contractStatus: "terminated" as const,
+  moveInDate: "2021-05-15",
+  moveOutDate: "2024-05-15",
+  contractNumber: "KT2021-055",
+  personalNumber: "19750515-2345",
+  nationality: "Svensk",
+  language: "Svenska",
+  hasLegalGuardian: false,
+  housingContractType: "Korttid",
+  portalCredentials: {
+    username: "par.gustafsson",
+    password: "password987"
+  },
+  loginCount: 8,
+  lastLogin: "2024-05-10T10:30:00",
+  isPrimaryTenant: true
+};
+
 // Scenario 1: Sambos (båda står på kontraktet)
 export const mockMultipleTenants = [
   {
@@ -134,6 +204,12 @@ export const getTenantById = (id: string) => {
       return mockErikKarlsson;
     case "19911122-9012":
       return mockMariaLindberg;
+    case "19820812-3456":
+      return mockJohanSvensson;
+    case "19900228-7890":
+      return mockLisaNilsson;
+    case "19750515-2345":
+      return mockParGustafsson;
     default:
       return mockTenant;
   }
@@ -143,5 +219,8 @@ export const getTenantById = (id: string) => {
 export const getAllTenants = () => [
   mockTenant,
   mockErikKarlsson,
-  mockMariaLindberg
+  mockMariaLindberg,
+  mockJohanSvensson,
+  mockLisaNilsson,
+  mockParGustafsson
 ];

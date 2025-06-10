@@ -19,6 +19,9 @@ function getPropertyForTenant(personalNumber: string) {
     case "19850101-1234": return "Älgen 1";
     case "19760315-5678": return "Björnen 4";
     case "19911122-9012": return "Lindaren 2";
+    case "19820812-3456": return "Ekoxen 3";
+    case "19900228-7890": return "Granen 5";
+    case "19750515-2345": return "Vildsvinet 7";
     default: return "Okänd fastighet";
   }
 }
