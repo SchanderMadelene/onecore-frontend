@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -26,9 +25,6 @@ const TenantDetailPage = () => {
   // This would typically come from API data
   const hasActiveCases = true;
   
-  // Safe check for isCompany property
-  const isCompany = tenant.isCompany ?? false;
-
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
@@ -37,18 +33,16 @@ const TenantDetailPage = () => {
             <h1 className="text-3xl font-bold">
               {tenant.firstName} {tenant.lastName}
             </h1>
-            {!isCompany && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200 cursor-help">
-                    <TriangleAlert className="h-4 w-4 text-amber-600" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Åk aldrig ensam till kund. Ta alltid med dig en kollega vid hembesök.</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200 cursor-help">
+                  <TriangleAlert className="h-4 w-4 text-amber-600" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Åk aldrig ensam till kund. Ta alltid med dig en kollega vid hembesök.</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </TooltipProvider>
 
@@ -60,7 +54,7 @@ const TenantDetailPage = () => {
           <TabsList className="mb-6">
             <TabsTrigger value="contracts" className="flex items-center gap-1.5">
               <FileText className="h-4 w-4" />
-              {isCompany ? "Företagskontrakt" : "Hyreskontrakt"}
+              Hyreskontrakt
             </TabsTrigger>
             <TabsTrigger value="queue" className="flex items-center gap-1.5">
               <Users className="h-4 w-4" />
@@ -80,7 +74,7 @@ const TenantDetailPage = () => {
             </TabsTrigger>
             <TabsTrigger value="ledger" className="flex items-center gap-1.5">
               <Wallet className="h-4 w-4" />
-              {isCompany ? "Fakturareskontra" : "Kundreskontra"}
+              Kundreskontra
             </TabsTrigger>
             <TabsTrigger value="notes" className="flex items-center gap-1.5">
               <StickyNote className="h-4 w-4" />

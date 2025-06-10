@@ -1,3 +1,4 @@
+
 // Tenant mock data
 export const mockTenant = {
   firstName: "Anna",
@@ -19,8 +20,7 @@ export const mockTenant = {
   },
   loginCount: 12,
   lastLogin: "2023-11-15T14:30:00",
-  isPrimaryTenant: true,
-  isCompany: false
+  isPrimaryTenant: true
 };
 
 // Erik Karlsson - Privat kund
@@ -43,8 +43,7 @@ export const mockErikKarlsson = {
   },
   loginCount: 45,
   lastLogin: "2024-06-08T09:15:00",
-  isPrimaryTenant: true,
-  isCompany: false
+  isPrimaryTenant: true
 };
 
 // Maria Lindberg - Privat kund
@@ -67,68 +66,7 @@ export const mockMariaLindberg = {
   },
   loginCount: 28,
   lastLogin: "2024-06-09T16:45:00",
-  isPrimaryTenant: true,
-  isCompany: false
-};
-
-// Svenssons Bygg AB - Företagskund
-export const mockSvenssonsBuilding = {
-  firstName: "Svenssons",
-  lastName: "Bygg AB",
-  phone: "08-555 123 45",
-  email: "info@svenssonsbygg.se",
-  contractStatus: "permanent" as const,
-  moveInDate: "2019-01-01",
-  contractNumber: "FT2019-001",
-  personalNumber: "5566778899",
-  nationality: "Svensk",
-  language: "Svenska",
-  hasLegalGuardian: false,
-  housingContractType: "Företagskontrakt",
-  companyInfo: {
-    organizationNumber: "556677-8899",
-    contactPerson: "Lars Svensson",
-    contactTitle: "VD",
-    invoiceAddress: "Byggvägen 12, 123 45 Stockholm"
-  },
-  portalCredentials: {
-    username: "svenssons.bygg",
-    password: "company123"
-  },
-  loginCount: 67,
-  lastLogin: "2024-06-10T08:30:00",
-  isPrimaryTenant: true,
-  isCompany: true
-};
-
-// Johanssons Fastigheter KB - Företagskund
-export const mockJohanssonsFastigheter = {
-  firstName: "Johanssons",
-  lastName: "Fastigheter KB",
-  phone: "08-444 567 89",
-  email: "kontakt@johanssonsfastigheter.se",
-  contractStatus: "permanent" as const,
-  moveInDate: "2018-06-01",
-  contractNumber: "FT2018-006",
-  personalNumber: "1122334455",
-  nationality: "Svensk",
-  language: "Svenska",
-  hasLegalGuardian: false,
-  housingContractType: "Företagskontrakt",
-  companyInfo: {
-    organizationNumber: "112233-4455",
-    contactPerson: "Anna Johansson",
-    contactTitle: "Fastighetschef",
-    invoiceAddress: "Fastighetsvägen 8, 456 78 Göteborg"
-  },
-  portalCredentials: {
-    username: "johanssons.fastigheter",
-    password: "company456"
-  },
-  loginCount: 89,
-  lastLogin: "2024-06-09T14:20:00",
-  isPrimaryTenant: true,
-  isCompany: true
+  isPrimaryTenant: true
 };
 
 // Scenario 1: Sambos (båda står på kontraktet)
@@ -196,10 +134,6 @@ export const getTenantById = (id: string) => {
       return mockErikKarlsson;
     case "19911122-9012":
       return mockMariaLindberg;
-    case "5566778899":
-      return mockSvenssonsBuilding;
-    case "1122334455":
-      return mockJohanssonsFastigheter;
     default:
       return mockTenant;
   }
@@ -209,7 +143,5 @@ export const getTenantById = (id: string) => {
 export const getAllTenants = () => [
   mockTenant,
   mockErikKarlsson,
-  mockMariaLindberg,
-  mockSvenssonsBuilding,
-  mockJohanssonsFastigheter
+  mockMariaLindberg
 ];
