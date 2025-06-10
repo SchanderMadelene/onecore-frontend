@@ -1,7 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Phone, Mail, MessageSquare, User, Users, Clock } from "lucide-react";
 
 interface TenantCardProps {
   tenant: {
@@ -9,10 +10,11 @@ interface TenantCardProps {
     lastName: string;
     phone: string;
     email: string;
-    contractStatus: "permanent" | "terminated";
-    moveInDate: string;
+    customerType: "tenant" | "applicant";
+    contractStatus?: "permanent" | "terminated";
+    moveInDate?: string;
     moveOutDate?: string;
-    contractNumber: string;
+    contractNumber?: string;
     personalNumber: string;
     nationality?: string;
     language?: string;
@@ -24,6 +26,9 @@ interface TenantCardProps {
     };
     loginCount?: number;
     lastLogin?: string;
+    registrationDate?: string;
+    queuePosition?: number;
+    housingInterests?: string[];
   };
 }
 
@@ -42,9 +47,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
 
   // Format personal number to P-number format
   const formatPersonalNumber = (personalNumber: string) => {
-    // Remove any existing formatting and extract just the numbers
     const numbersOnly = personalNumber.replace(/\D/g, '');
-    // Take the last 6 digits and prefix with P
     const lastSixDigits = numbersOnly.slice(-6);
     return `P${lastSixDigits.padStart(6, '0')}`;
   };
@@ -54,9 +57,16 @@ export function TenantCard({ tenant }: TenantCardProps) {
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
-            Personuppgifter
+            {tenant.customerType === "tenant" ? (
+              <User className="h-5 w-5" />
+            ) : (
+              <Users className="h-5 w-5" />
+            )}
+            {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
           </CardTitle>
+          <Badge variant={tenant.customerType === "tenant" ? "default" : "secondary"}>
+            {tenant.customerType === "tenant" ? "Aktiv hyresgäst" : "Registrerad sökande"}
+          </Badge>
         </div>
       </CardHeader>
       <CardContent>
@@ -98,33 +108,65 @@ export function TenantCard({ tenant }: TenantCardProps) {
           </div>
           
           <div className="space-y-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
-              <p className="font-medium">
-                {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontrakttyp</p>
-              <p className="font-medium">{tenant.housingContractType || "Ej angivet"}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-              <p className="font-medium">{tenant.contractNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{new Date(tenant.moveInDate).toLocaleDateString('sv-SE')}</p>
-              </div>
-            </div>
-            {tenant.moveOutDate && (
-              <div>
-                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+            {tenant.customerType === "tenant" ? (
+              <>
+                <div>
+                  <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
+                  <p className="font-medium">
+                    {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
+                  </p>
                 </div>
-              </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Kontrakttyp</p>
+                  <p className="font-medium">{tenant.housingContractType || "Ej angivet"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
+                  <p className="font-medium">{tenant.contractNumber}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium">{tenant.moveInDate ? new Date(tenant.moveInDate).toLocaleDateString('sv-SE') : "Ej angivet"}</p>
+                  </div>
+                </div>
+                {tenant.moveOutDate && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <div>
+                  <p className="text-sm text-muted-foreground">Registreringsdatum</p>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <p className="font-medium">{tenant.registrationDate ? new Date(tenant.registrationDate).toLocaleDateString('sv-SE') : "Ej angivet"}</p>
+                  </div>
+                </div>
+                {tenant.queuePosition && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">Köposition</p>
+                    <p className="font-medium">#{tenant.queuePosition}</p>
+                  </div>
+                )}
+                {tenant.housingInterests && tenant.housingInterests.length > 0 && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">Intresseanmälningar</p>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {tenant.housingInterests.map((interest, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">
+                          {interest}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
             <div>
               <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>

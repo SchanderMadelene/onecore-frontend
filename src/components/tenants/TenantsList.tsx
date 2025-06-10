@@ -5,13 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getAllTenants } from "@/data/tenants";
+import { Badge } from "@/components/ui/badge";
+import { getAllCustomers } from "@/data/tenants";
 
-// Get all tenants and create display data
-const tenants = getAllTenants().map(tenant => ({
-  ...tenant,
-  id: tenant.personalNumber,
-  property: getPropertyForTenant(tenant.personalNumber)
+// Get all customers (tenants and applicants) and create display data
+const customers = getAllCustomers().map(customer => ({
+  ...customer,
+  id: customer.personalNumber,
+  property: customer.customerType === "tenant" ? getPropertyForTenant(customer.personalNumber) : "Ingen bostad"
 }));
 
 function getPropertyForTenant(personalNumber: string) {
@@ -29,12 +30,12 @@ function getPropertyForTenant(personalNumber: string) {
 export function TenantsList() {
   const [searchQuery, setSearchQuery] = useState("");
   
-  const filteredTenants = tenants.filter(tenant => {
+  const filteredCustomers = customers.filter(customer => {
     return (
-      tenant.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tenant.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tenant.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tenant.property.toLowerCase().includes(searchQuery.toLowerCase())
+      customer.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.property.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
 
@@ -61,30 +62,38 @@ export function TenantsList() {
               <TableRow>
                 <TableHead>Namn</TableHead>
                 <TableHead>Personnummer</TableHead>
+                <TableHead>Typ</TableHead>
                 <TableHead>Fastighet</TableHead>
                 <TableHead className="text-right">Åtgärd</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTenants.map((tenant) => (
-                <TableRow key={tenant.id}>
+              {filteredCustomers.map((customer) => (
+                <TableRow key={customer.id}>
                   <TableCell className="font-medium">
-                    {tenant.firstName} {tenant.lastName}
+                    {customer.firstName} {customer.lastName}
                   </TableCell>
-                  <TableCell>{tenant.id}</TableCell>
-                  <TableCell>{tenant.property}</TableCell>
+                  <TableCell>{customer.id}</TableCell>
+                  <TableCell>
+                    <Badge 
+                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
+                    >
+                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{customer.property}</TableCell>
                   <TableCell className="text-right">
                     <Button asChild variant="link" size="sm">
-                      <Link to={`/tenants/detail/${tenant.id}`}>
+                      <Link to={`/tenants/detail/${customer.id}`}>
                         Visa detaljer
                       </Link>
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
-              {filteredTenants.length === 0 && (
+              {filteredCustomers.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center py-8">
+                  <TableCell colSpan={5} className="text-center py-8">
                     Inga kunder hittades med angivna sökkriterier
                   </TableCell>
                 </TableRow>

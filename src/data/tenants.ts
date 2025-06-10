@@ -1,4 +1,3 @@
-
 // Tenant mock data
 export const mockTenant = {
   firstName: "Anna",
@@ -6,6 +5,7 @@ export const mockTenant = {
   phone: "070-123 45 67",
   email: "anna.andersson@example.com",
   contractStatus: "terminated" as const,
+  customerType: "tenant" as const,
   moveInDate: "2023-01-01",
   moveOutDate: "2023-12-31",
   contractNumber: "KT2023-001",
@@ -30,6 +30,7 @@ export const mockErikKarlsson = {
   phone: "073-456 78 90",
   email: "erik.karlsson@example.com",
   contractStatus: "permanent" as const,
+  customerType: "tenant" as const,
   moveInDate: "2020-03-15",
   contractNumber: "KT2020-015",
   personalNumber: "19760315-5678",
@@ -53,6 +54,7 @@ export const mockMariaLindberg = {
   phone: "070-987 65 43",
   email: "maria.lindberg@example.com",
   contractStatus: "permanent" as const,
+  customerType: "tenant" as const,
   moveInDate: "2021-11-22",
   contractNumber: "KT2021-122",
   personalNumber: "19911122-9012",
@@ -76,6 +78,7 @@ export const mockJohanSvensson = {
   phone: "070-234 56 78",
   email: "johan.svensson@example.com",
   contractStatus: "permanent" as const,
+  customerType: "tenant" as const,
   moveInDate: "2019-08-12",
   contractNumber: "KT2019-087",
   personalNumber: "19820812-3456",
@@ -99,6 +102,7 @@ export const mockLisaNilsson = {
   phone: "073-345 67 89",
   email: "lisa.nilsson@example.com",
   contractStatus: "permanent" as const,
+  customerType: "tenant" as const,
   moveInDate: "2022-02-28",
   contractNumber: "KT2022-028",
   personalNumber: "19900228-7890",
@@ -122,6 +126,7 @@ export const mockParGustafsson = {
   phone: "070-456 78 90",
   email: "par.gustafsson@example.com",
   contractStatus: "terminated" as const,
+  customerType: "tenant" as const,
   moveInDate: "2021-05-15",
   moveOutDate: "2024-05-15",
   contractNumber: "KT2021-055",
@@ -138,6 +143,70 @@ export const mockParGustafsson = {
   lastLogin: "2024-05-10T10:30:00",
   isPrimaryTenant: true
 };
+
+// Sökande kunder (ännu inte hyresgäster)
+export const mockSeekers = [
+  {
+    firstName: "Sarah",
+    lastName: "Blomberg",
+    phone: "073-111 22 33",
+    email: "sarah.blomberg@example.com",
+    customerType: "applicant" as const,
+    registrationDate: "2024-05-20",
+    personalNumber: "19950425-1122",
+    nationality: "Svensk",
+    language: "Svenska",
+    hasLegalGuardian: false,
+    portalCredentials: {
+      username: "sarah.blomberg",
+      password: "password111"
+    },
+    loginCount: 5,
+    lastLogin: "2024-06-09T12:30:00",
+    queuePosition: 456,
+    housingInterests: ["1 rum och kök", "2 rum och kök"]
+  },
+  {
+    firstName: "Marcus",
+    lastName: "Hedström",
+    phone: "070-444 55 66",
+    email: "marcus.hedstrom@example.com",
+    customerType: "applicant" as const,
+    registrationDate: "2024-03-12",
+    personalNumber: "19881203-4455",
+    nationality: "Svensk",
+    language: "Svenska",
+    hasLegalGuardian: false,
+    portalCredentials: {
+      username: "marcus.hedstrom",
+      password: "password222"
+    },
+    loginCount: 18,
+    lastLogin: "2024-06-10T08:45:00",
+    queuePosition: 234,
+    housingInterests: ["2 rum och kök", "3 rum och kök"]
+  },
+  {
+    firstName: "Emma",
+    lastName: "Östberg",
+    phone: "073-777 88 99",
+    email: "emma.ostberg@example.com",
+    customerType: "applicant" as const,
+    registrationDate: "2024-01-08",
+    personalNumber: "19921015-7788",
+    nationality: "Svensk",
+    language: "Svenska",
+    hasLegalGuardian: false,
+    portalCredentials: {
+      username: "emma.ostberg",
+      password: "password333"
+    },
+    loginCount: 32,
+    lastLogin: "2024-06-08T19:20:00",
+    queuePosition: 123,
+    housingInterests: ["1 rum och kök"]
+  }
+];
 
 // Scenario 1: Sambos (båda står på kontraktet)
 export const mockMultipleTenants = [
@@ -197,6 +266,7 @@ export const mockSecondHandTenants = [
 
 // Funktion för att hämta tenant baserat på ID
 export const getTenantById = (id: string) => {
+  // Först kolla hyresgäster
   switch(id) {
     case "19850101-1234":
       return mockTenant;
@@ -210,12 +280,22 @@ export const getTenantById = (id: string) => {
       return mockLisaNilsson;
     case "19750515-2345":
       return mockParGustafsson;
-    default:
-      return mockTenant;
   }
+  
+  // Sedan kolla sökande
+  const seeker = mockSeekers.find(s => s.personalNumber === id);
+  if (seeker) return seeker;
+  
+  return mockTenant;
 };
 
-// Funktion för att hämta alla tenants
+// Funktion för att hämta alla kunder (både hyresgäster och sökande)
+export const getAllCustomers = () => [
+  ...getAllTenants(),
+  ...mockSeekers
+];
+
+// Funktion för att hämta alla hyresgäster
 export const getAllTenants = () => [
   mockTenant,
   mockErikKarlsson,
@@ -224,3 +304,6 @@ export const getAllTenants = () => [
   mockLisaNilsson,
   mockParGustafsson
 ];
+
+// Funktion för att hämta alla sökande
+export const getAllApplicants = () => mockSeekers;
