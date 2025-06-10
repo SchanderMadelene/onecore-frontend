@@ -5,51 +5,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { mockTenant } from "@/data/tenants";
+import { getAllTenants } from "@/data/tenants";
 
-// Create an array of tenants for demo
-const tenants = [
-  { 
-    ...mockTenant, 
-    id: "19850101-1234", 
-    firstName: "Anna", 
-    lastName: "Andersson", 
-    type: "private", 
-    property: "Älgen 1" 
-  },
-  { 
-    ...mockTenant, 
-    id: "19760315-5678", 
-    firstName: "Erik", 
-    lastName: "Karlsson", 
-    type: "private", 
-    property: "Björnen 4" 
-  },
-  { 
-    ...mockTenant, 
-    id: "19911122-9012", 
-    firstName: "Maria", 
-    lastName: "Lindberg", 
-    type: "private", 
-    property: "Lindaren 2" 
-  },
-  { 
-    ...mockTenant, 
-    id: "5566778899", 
-    firstName: "Svenssons", 
-    lastName: "Bygg AB", 
-    type: "company", 
-    property: "Björnen 4" 
-  },
-  { 
-    ...mockTenant, 
-    id: "1122334455", 
-    firstName: "Johanssons", 
-    lastName: "Fastigheter KB", 
-    type: "company", 
-    property: "Älgen 1" 
+// Get all tenants and create display data
+const tenants = getAllTenants().map(tenant => ({
+  ...tenant,
+  id: tenant.personalNumber,
+  type: tenant.isCompany ? "company" : "private",
+  property: getPropertyForTenant(tenant.personalNumber)
+}));
+
+function getPropertyForTenant(personalNumber: string) {
+  switch(personalNumber) {
+    case "19850101-1234": return "Älgen 1";
+    case "19760315-5678": return "Björnen 4";
+    case "19911122-9012": return "Lindaren 2";
+    case "5566778899": return "Björnen 4";
+    case "1122334455": return "Älgen 1";
+    default: return "Okänd fastighet";
   }
-];
+}
 
 export function TenantsList() {
   const [searchQuery, setSearchQuery] = useState("");

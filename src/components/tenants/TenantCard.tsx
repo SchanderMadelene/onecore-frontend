@@ -1,7 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MessageSquare, User } from "lucide-react";
+import { Phone, Mail, MessageSquare, User, Building } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface TenantCardProps {
   tenant: {
@@ -24,6 +25,13 @@ interface TenantCardProps {
     };
     loginCount?: number;
     lastLogin?: string;
+    isCompany?: boolean;
+    companyInfo?: {
+      organizationNumber: string;
+      contactPerson: string;
+      contactTitle: string;
+      invoiceAddress: string;
+    };
   };
 }
 
@@ -40,8 +48,11 @@ export function TenantCard({ tenant }: TenantCardProps) {
     window.location.href = `mailto:${tenant.email}`;
   };
 
-  // Format personal number to P-number format
+  // Format personal number to P-number format for individuals
   const formatPersonalNumber = (personalNumber: string) => {
+    if (tenant.isCompany) {
+      return personalNumber; // For companies, show org number as-is
+    }
     // Remove any existing formatting and extract just the numbers
     const numbersOnly = personalNumber.replace(/\D/g, '');
     // Take the last 6 digits and prefix with P
@@ -52,19 +63,58 @@ export function TenantCard({ tenant }: TenantCardProps) {
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle>Personuppgifter</CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            {tenant.isCompany ? (
+              <>
+                <Building className="h-5 w-5" />
+                Företagsinformation
+              </>
+            ) : (
+              <>
+                <User className="h-5 w-5" />
+                Personuppgifter
+              </>
+            )}
+          </CardTitle>
+          <Badge variant={tenant.isCompany ? "secondary" : "outline"}>
+            {tenant.isCompany ? "Företag" : "Privat"}
+          </Badge>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-muted-foreground">Namn</p>
+              <p className="text-sm text-muted-foreground">
+                {tenant.isCompany ? "Företagsnamn" : "Namn"}
+              </p>
               <p className="font-medium">{tenant.firstName} {tenant.lastName}</p>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kundnummer/P-nummer</p>
-              <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
-            </div>
+            
+            {tenant.isCompany ? (
+              <>
+                <div>
+                  <p className="text-sm text-muted-foreground">Organisationsnummer</p>
+                  <p className="font-medium">{tenant.companyInfo?.organizationNumber}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Kontaktperson</p>
+                  <p className="font-medium">{tenant.companyInfo?.contactPerson}</p>
+                  <p className="text-sm text-muted-foreground">{tenant.companyInfo?.contactTitle}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Fakturaadress</p>
+                  <p className="font-medium text-sm">{tenant.companyInfo?.invoiceAddress}</p>
+                </div>
+              </>
+            ) : (
+              <div>
+                <p className="text-sm text-muted-foreground">Kundnummer/P-nummer</p>
+                <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
+              </div>
+            )}
+            
             <div>
               <p className="text-sm text-muted-foreground">Telefon</p>
               <div className="flex items-center gap-2">
@@ -88,13 +138,8 @@ export function TenantCard({ tenant }: TenantCardProps) {
                 </Button>
               </div>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Språk</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{tenant.language || "Svenska"}</p>
-              </div>
-            </div>
           </div>
+          
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
@@ -103,8 +148,12 @@ export function TenantCard({ tenant }: TenantCardProps) {
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Kontrakttyp bostad</p>
+              <p className="text-sm text-muted-foreground">Kontrakttyp</p>
               <p className="font-medium">{tenant.housingContractType || "Ej angivet"}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
+              <p className="font-medium">{tenant.contractNumber}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
@@ -120,13 +169,16 @@ export function TenantCard({ tenant }: TenantCardProps) {
                 </div>
               </div>
             )}
-            <div>
-              <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
+            {!tenant.isCompany && (
+              <div>
+                <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
+          
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground">Mina Sidor</p>
