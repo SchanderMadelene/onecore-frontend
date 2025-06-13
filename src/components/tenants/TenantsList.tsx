@@ -5,70 +5,38 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { mockTenant } from "@/data/tenants";
+import { Badge } from "@/components/ui/badge";
+import { getAllCustomers } from "@/data/tenants";
 
-// Create an array of tenants for demo
-const tenants = [
-  { 
-    ...mockTenant, 
-    id: "19850101-1234", 
-    firstName: "Anna", 
-    lastName: "Andersson", 
-    type: "private", 
-    property: "Älgen 1" 
-  },
-  { 
-    ...mockTenant, 
-    id: "19760315-5678", 
-    firstName: "Erik", 
-    lastName: "Karlsson", 
-    type: "private", 
-    property: "Björnen 4" 
-  },
-  { 
-    ...mockTenant, 
-    id: "19911122-9012", 
-    firstName: "Maria", 
-    lastName: "Lindberg", 
-    type: "private", 
-    property: "Lindaren 2" 
-  },
-  { 
-    ...mockTenant, 
-    id: "5566778899", 
-    firstName: "Svenssons", 
-    lastName: "Bygg AB", 
-    type: "company", 
-    property: "Björnen 4" 
-  },
-  { 
-    ...mockTenant, 
-    id: "1122334455", 
-    firstName: "Johanssons", 
-    lastName: "Fastigheter KB", 
-    type: "company", 
-    property: "Älgen 1" 
+// Get all customers (tenants and applicants) and create display data
+const customers = getAllCustomers().map(customer => ({
+  ...customer,
+  id: customer.personalNumber,
+  property: customer.customerType === "tenant" ? getPropertyForTenant(customer.personalNumber) : "Ingen bostad"
+}));
+
+function getPropertyForTenant(personalNumber: string) {
+  switch(personalNumber) {
+    case "19850101-1234": return "Älgen 1";
+    case "19760315-5678": return "Björnen 4";
+    case "19911122-9012": return "Lindaren 2";
+    case "19820812-3456": return "Ekoxen 3";
+    case "19900228-7890": return "Granen 5";
+    case "19750515-2345": return "Vildsvinet 7";
+    default: return "Okänd fastighet";
   }
-];
+}
 
 export function TenantsList() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState<"all" | "private" | "company">("all");
   
-  const filteredTenants = tenants.filter(tenant => {
-    const matchesSearch = (
-      tenant.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tenant.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tenant.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tenant.property.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredCustomers = customers.filter(customer => {
+    return (
+      customer.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      customer.property.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    
-    const matchesFilter = 
-      filter === "all" || 
-      (filter === "private" && tenant.type === "private") || 
-      (filter === "company" && tenant.type === "company");
-    
-    return matchesSearch && matchesFilter;
   });
 
   return (
@@ -86,26 +54,6 @@ export function TenantsList() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="flex gap-2">
-            <Button 
-              variant={filter === "all" ? "default" : "outline"} 
-              onClick={() => setFilter("all")}
-            >
-              <span className="sm:inline">Alla</span>
-            </Button>
-            <Button 
-              variant={filter === "private" ? "default" : "outline"} 
-              onClick={() => setFilter("private")}
-            >
-              <span className="sm:inline">Privat</span>
-            </Button>
-            <Button 
-              variant={filter === "company" ? "default" : "outline"} 
-              onClick={() => setFilter("company")}
-            >
-              <span className="sm:inline">Företag</span>
-            </Button>
-          </div>
         </div>
 
         <div className="border rounded-md">
@@ -113,33 +61,37 @@ export function TenantsList() {
             <TableHeader>
               <TableRow>
                 <TableHead>Namn</TableHead>
-                <TableHead>ID-nummer</TableHead>
+                <TableHead>Personnummer</TableHead>
                 <TableHead>Typ</TableHead>
                 <TableHead>Fastighet</TableHead>
                 <TableHead className="text-right">Åtgärd</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTenants.map((tenant) => (
-                <TableRow key={tenant.id}>
+              {filteredCustomers.map((customer) => (
+                <TableRow key={customer.id}>
                   <TableCell className="font-medium">
-                    {tenant.firstName} {tenant.lastName}
+                    {customer.firstName} {customer.lastName}
                   </TableCell>
-                  <TableCell>{tenant.id}</TableCell>
+                  <TableCell>{customer.id}</TableCell>
                   <TableCell>
-                    {tenant.type === "private" ? "Privat" : "Företag"}
+                    <Badge 
+                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
+                    >
+                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+                    </Badge>
                   </TableCell>
-                  <TableCell>{tenant.property}</TableCell>
+                  <TableCell>{customer.property}</TableCell>
                   <TableCell className="text-right">
                     <Button asChild variant="link" size="sm">
-                      <Link to={`/tenants/detail/${tenant.id}`}>
+                      <Link to={`/tenants/detail/${customer.id}`}>
                         Visa detaljer
                       </Link>
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
-              {filteredTenants.length === 0 && (
+              {filteredCustomers.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-8">
                     Inga kunder hittades med angivna sökkriterier

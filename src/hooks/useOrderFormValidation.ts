@@ -1,5 +1,6 @@
 
 import { z } from "zod";
+import { MaintenanceUnit } from "@/types/api";
 
 export const orderFormSchema = z.object({
   title: z.string().min(1, "Titel krävs"),
@@ -22,7 +23,8 @@ export type OrderFormData = z.infer<typeof orderFormSchema>;
 export const transformFormDataToOrder = (
   formData: OrderFormData,
   residenceId: string,
-  contextType: "tenant" | "residence"
+  contextType: "tenant" | "residence",
+  maintenanceUnit?: MaintenanceUnit
 ) => {
   return {
     title: formData.title,

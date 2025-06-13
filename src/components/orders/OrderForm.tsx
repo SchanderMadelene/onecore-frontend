@@ -1,3 +1,4 @@
+
 import { Order } from "@/hooks/useOrdersService";
 import type { Room } from "@/types/api";
 import { useResidenceData } from "@/hooks/useResidenceData";
@@ -60,7 +61,8 @@ export function OrderForm({
     onSubmit,
     contextType,
     rooms: availableRooms,
-    residenceId: effectiveResidenceId
+    residenceId: effectiveResidenceId,
+    maintenanceUnit
   });
 
   return (

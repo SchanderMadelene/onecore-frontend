@@ -1,10 +1,9 @@
-
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { TenantCard } from "@/components/tenants/TenantCard";
 import { TenantContracts } from "@/components/tenants/TenantContracts";
-import { mockTenant } from "@/data/tenants";
+import { getTenantById } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote, TriangleAlert } from "lucide-react";
@@ -19,19 +18,20 @@ const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { features } = useFeatureToggles();
-  const tenantId = id || mockTenant.personalNumber;
-  const contracts = getMockContractsForTenant(tenantId);
+  
+  const tenant = getTenantById(id || "");
+  const contracts = getMockContractsForTenant(id || "");
   
   // This would typically come from API data
   const hasActiveCases = true;
-
+  
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
         <TooltipProvider>
           <div className="flex items-center gap-3 mb-6">
             <h1 className="text-3xl font-bold">
-              {mockTenant.firstName} {mockTenant.lastName}
+              {tenant.firstName} {tenant.lastName}
             </h1>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -47,7 +47,7 @@ const TenantDetailPage = () => {
         </TooltipProvider>
 
         <div className="grid grid-cols-1 gap-6 mb-6">
-          <TenantCard tenant={mockTenant} />
+          <TenantCard tenant={tenant} />
         </div>
 
         <Tabs defaultValue="contracts" className="w-full">
