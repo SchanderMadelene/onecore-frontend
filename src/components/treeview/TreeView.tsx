@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { TreeItem } from "./TreeItem";
 import { TreeViewProps } from "./types";
 import { treeData } from "./treeData";
@@ -15,7 +15,7 @@ export function TreeView({
 }: TreeViewProps) {
   const [filteredTreeData, setFilteredTreeData] = useState(treeData);
   
-  useEffect(() => {
+  const memoizedFilteredData = useMemo(() => {
     // Filter based on feature toggles
     const toggleFilteredData = treeData.filter(node => {
       // Filter out main navigation nodes based on feature toggles
@@ -54,8 +54,12 @@ export function TreeView({
       return node;
     });
 
-    setFilteredTreeData(toggleFilteredData);
+    return toggleFilteredData;
   }, [showRentals, showDesignSystem, showProperties, showTenants, showBuildings, showApartments]);
+
+  useEffect(() => {
+    setFilteredTreeData(memoizedFilteredData);
+  }, [memoizedFilteredData]);
 
   return (
     <div className="p-4 overflow-y-auto bg-secondary w-full h-full flex flex-col">

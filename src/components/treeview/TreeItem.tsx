@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useCallback } from "react";
 import { ChevronDown, ChevronRight, MapPin, Tag, Building, Users, Home, Key, Palette, FileText } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
@@ -21,11 +22,17 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
     }
   }, [isParentOfActive, location.pathname]);
 
-  const handleNodeClick = () => {
+  const handleToggleExpand = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsExpanded(!isExpanded);
+  }, [isExpanded]);
+
+  const handleNodeClick = useCallback(() => {
     if (!hasChildren && node.path && onNavigate) {
       onNavigate();
     }
-  };
+  }, [hasChildren, node.path, onNavigate]);
 
   const renderNodeIcon = () => {
     switch (node.id) {
@@ -50,14 +57,12 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
     <div className="flex flex-col w-full">
       <div
         className={`
-          flex items-center rounded-full px-3 py-2 cursor-pointer transition-colors
+          flex items-center rounded-full px-3 py-2 cursor-pointer
           text-ellipsis whitespace-nowrap w-full
+          transition-all duration-150 ease-out
           ${isActive 
             ? 'bg-white text-foreground font-medium shadow-sm' 
-            : isExpanded 
-              ? 'text-foreground hover:bg-white/60' 
-              : 'hover:bg-white/60'}
-          ${node.path ? 'hover:bg-white/60' : ''} 
+            : 'hover:bg-white/60'}
         `}
         style={{ paddingLeft: `${level * 12 + 16}px` }}
       >
@@ -65,14 +70,14 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
           <Button
             variant="ghost"
             size="icon"
-            className={`h-5 w-5 p-0 mr-2 flex-shrink-0 ${isExpanded ? 'text-foreground' : 'text-muted-foreground'} hover:text-foreground hover:bg-transparent`}
-            onClick={() => setIsExpanded(!isExpanded)}
+            className="h-5 w-5 p-0 mr-2 flex-shrink-0 transition-colors duration-150 hover:bg-transparent"
+            onClick={handleToggleExpand}
           >
-            {isExpanded ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
+            <ChevronRight 
+              className={`h-4 w-4 transition-transform duration-200 ease-out ${
+                isExpanded ? 'rotate-90' : 'rotate-0'
+              }`} 
+            />
           </Button>
         ) : (
           <div className="w-6 mr-1 flex-shrink-0" />
@@ -81,7 +86,9 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
         {node.path ? (
           <Link 
             to={node.path} 
-            className={`flex items-center text-sm py-1 flex-1 min-w-0 ${isActive ? 'font-medium' : ''}`}
+            className={`flex items-center text-sm py-1 flex-1 min-w-0 transition-colors duration-150 ${
+              isActive ? 'font-medium' : ''
+            }`}
             onClick={handleNodeClick}
           >
             <span className="mr-3 text-foreground flex-shrink-0">
@@ -103,7 +110,9 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
             </div>
           </Link>
         ) : (
-          <span className={`flex items-center text-sm text-foreground w-full ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
+          <span className={`flex items-center text-sm text-foreground w-full ${
+            isActive || isParentOfActive ? 'font-medium' : ''
+          }`}>
             <span className="mr-3 text-foreground flex-shrink-0">
               {renderNodeIcon()}
             </span>
@@ -113,18 +122,19 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
       </div>
       
       {hasChildren && (
-        <div className={`
-          ${isExpanded ? 'animate-fade-in' : 'hidden'}
-          relative ml-4 w-full
-        `}>
-          {isExpanded && (
-            <div className="absolute left-0 top-0 bottom-0 w-px bg-border"></div>
-          )}
-          <div className="pl-2 w-full">
-            {isExpanded &&
-              node.children.map((child) => (
+        <div 
+          className={`
+            overflow-hidden transition-all duration-200 ease-out
+            ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}
+          `}
+        >
+          <div className="relative ml-4 w-full">
+            <div className="absolute left-0 top-0 bottom-0 w-px bg-border opacity-30"></div>
+            <div className="pl-2 w-full">
+              {node.children?.map((child) => (
                 <TreeItem key={child.id} node={child} level={level + 1} onNavigate={onNavigate} />
               ))}
+            </div>
           </div>
         </div>
       )}
