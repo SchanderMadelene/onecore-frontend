@@ -4,7 +4,7 @@ export interface BreadcrumbItem {
   path: string;
 }
 
-export const getBreadcrumbLabel = (segment: string, type: 'property' | 'building'): string => {
+export const getBreadcrumbLabel = (segment: string, type: 'property' | 'building' | 'residence'): string => {
   const mappings = {
     // Properties
     "odenplan-5": "Älgen 1",
@@ -25,6 +25,13 @@ export const getBreadcrumbLabel = (segment: string, type: 'property' | 'building
     "kontorsbyggnad-oskaria": "Kontorsbyggnad",
     "radhus-styrhylsan": "Radhus",
     "kontorskomplex-bavern": "Kontorskomplex",
+    
+    // Residences
+    "lgh-1001": "Lägenhet 1001",
+    "lgh-1002": "Lägenhet 1002",
+    "lgh-1003": "Lägenhet 1003",
+    "lgh-2001": "Lägenhet 2001",
+    "lgh-2002": "Lägenhet 2002",
   };
   
   return mappings[segment] || segment;
@@ -45,6 +52,7 @@ export const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
   // Extract relevant segments: skip 'properties', 'city', 'district'
   const propertySegment = segments[3]; // The property segment
   const buildingSegment = segments[4]; // The building segment (if exists)
+  const residenceSegment = segments[5]; // The residence segment (if exists)
   
   if (propertySegment) {
     // Add property breadcrumb
@@ -61,6 +69,15 @@ export const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
         label: getBreadcrumbLabel(buildingSegment, 'building'),
         path: buildingPath
       });
+      
+      // Add residence breadcrumb if exists
+      if (residenceSegment) {
+        const residencePath = `${buildingPath}/${residenceSegment}`;
+        breadcrumbs.push({
+          label: getBreadcrumbLabel(residenceSegment, 'residence'),
+          path: residencePath
+        });
+      }
     }
   }
   
