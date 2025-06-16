@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TriangleAlert, Bug } from "lucide-react";
@@ -84,7 +83,6 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
             </Tooltip>
           )}
         </div>
-        <p className="text-muted-foreground">Älgen 1, {district}</p>
       </div>
 
       <Card>
