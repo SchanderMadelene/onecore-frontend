@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -7,7 +8,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { FeatureTogglesProvider } from "@/contexts/FeatureTogglesContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import Index from "./pages/Index";
-import PropertyPage from "./pages/properties/PropertyPage";
 import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
 import BuildingDetailPage from "./pages/properties/BuildingDetailPage";
 import ResidencePage from "./pages/properties/ResidencePage";
