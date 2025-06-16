@@ -1,12 +1,11 @@
-
 import { PropertyDetail } from "@/types/api";
 
-// Property 1 (Odenplan 5) details
+// Property 1 (Älgen 1) details
 export const property1: PropertyDetail = {
   id: "1",
   propertyObjectId: "P1",
   code: "FAST-001",
-  designation: "Odenplan 5",
+  designation: "Älgen 1",
   municipality: "Västerås",
   parish: "Lundby",
   propertyNumber: "2:145",
@@ -19,7 +18,7 @@ export const property1: PropertyDetail = {
   buildings: [
     {
       id: "B1",
-      name: "Byggnad A",
+      name: "Bellmansgatan 1A - 2C",
       type: "Flerbostadshus",
       constructionYear: 1973,
       area: 1450,
