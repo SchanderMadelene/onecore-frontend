@@ -66,8 +66,8 @@ const BuildingDetailPage = () => {
         <BuildingBasicInfo 
           building={buildingDetail} 
           propertyName={propertyDetail?.designation}
-          address="Bellmansgatan 1A - 2C"
-          objectNumber="OBJ-001"
+          address={buildingDetail.name}
+          objectNumber={buildingDetail.id}
         />
         <BuildingEntrances building={buildingDetail} basePath={basePath} />
       </div>

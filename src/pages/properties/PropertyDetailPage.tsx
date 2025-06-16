@@ -8,6 +8,7 @@ import { PropertyDetailTabs } from "@/components/properties/PropertyDetailTabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { PropertyHeader } from "@/components/properties/PropertyHeader";
 import { PropertyBasicInfo } from "@/components/properties/PropertyBasicInfo";
+import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
 
 const PropertyDetailPage = () => {
   const { city, district, property } = useParams();
@@ -61,6 +62,7 @@ const PropertyDetailPage = () => {
 
     return (
       <div className="py-4 space-y-6">
+        <PropertyBreadcrumb />
         <PropertyHeader propertyDetail={propertyDetail} />
         
         {/* Grundläggande information always visible above tabs */}
