@@ -4,20 +4,8 @@ export interface BreadcrumbItem {
   path: string;
 }
 
-export const getBreadcrumbLabel = (segment: string, type: 'city' | 'district' | 'property' | 'building'): string => {
+export const getBreadcrumbLabel = (segment: string, type: 'property' | 'building'): string => {
   const mappings = {
-    // Cities
-    vasteras: "Västerås",
-    
-    // Districts
-    lundby: "Lundby",
-    backby: "Bäckby", 
-    domkyrkan: "Domkyrkan",
-    pettersberg: "Pettersberg",
-    oxbacken: "Oxbacken",
-    hammarby: "Hammarby",
-    centrum: "Centrum",
-    
     // Properties
     "odenplan-5": "Älgen 1",
     "gotgatan-15": "Lindaren 2",
@@ -52,28 +40,29 @@ export const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
     path: "/properties"
   });
   
-  if (segments.length < 2) return breadcrumbs;
+  if (segments.length < 4) return breadcrumbs; // Need at least /properties/city/district/property
   
-  // Build path progressively
-  let currentPath = "";
+  // Extract relevant segments: skip 'properties', 'city', 'district'
+  const propertySegment = segments[3]; // The property segment
+  const buildingSegment = segments[4]; // The building segment (if exists)
   
-  segments.forEach((segment, index) => {
-    if (segment === 'properties') return; // Skip the properties segment
-    
-    currentPath += `/${segment}`;
-    const fullPath = `/properties${currentPath}`;
-    
-    let type: 'city' | 'district' | 'property' | 'building';
-    if (index === 1) type = 'city';
-    else if (index === 2) type = 'district';  
-    else if (index === 3) type = 'property';
-    else type = 'building';
-    
+  if (propertySegment) {
+    // Add property breadcrumb
+    const propertyPath = `/properties/${segments[1]}/${segments[2]}/${propertySegment}`;
     breadcrumbs.push({
-      label: getBreadcrumbLabel(segment, type),
-      path: fullPath
+      label: getBreadcrumbLabel(propertySegment, 'property'),
+      path: propertyPath
     });
-  });
+    
+    // Add building breadcrumb if exists
+    if (buildingSegment) {
+      const buildingPath = `${propertyPath}/${buildingSegment}`;
+      breadcrumbs.push({
+        label: getBreadcrumbLabel(buildingSegment, 'building'),
+        path: buildingPath
+      });
+    }
+  }
   
   return breadcrumbs;
 };
