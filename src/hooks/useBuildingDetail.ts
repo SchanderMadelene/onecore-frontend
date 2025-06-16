@@ -3,16 +3,29 @@ import { useQuery } from "@tanstack/react-query";
 import { Building } from "@/types/api";
 import { mockPropertyDetails } from "@/data/properties";
 
-// Mapping of building URL segments to building IDs in mock data
+// Korrigerad mapping som matchar treeData struktur
 const buildingIdMappings = {
-  "building-a": "B1",
-  "building-b": "B2", 
+  // Älgen 1 (odenplan-5)
+  "building-a": "B1", 
+  "building-b": "B2",
+  
+  // Lindaren 2 (gotgatan-15)
   "hus-a-lindaren": "B1",
+  
+  // Björnen 4 (sveavagen-10) 
   "kontorsbyggnad-a": "B1",
   "kontorsbyggnad-b": "B2",
+  
+  // Pipan 1
   "flerfamiljshus-pipan": "B1",
-  "kontorsbyggnad-oskaria": "B1", 
-  "radhus-styrhylsan": "B1",
+  
+  // Oskaria 1
+  "kontorsbyggnad-oskaria": "B1",
+  
+  // Styrhylsan 9
+  "radhus-styrhylsan": "B1", 
+  
+  // Bävern 1
   "kontorskomplex-bavern": "B1",
 };
 
@@ -23,26 +36,33 @@ export const useBuildingDetail = (
   return useQuery({
     queryKey: ['building', propertyKey, buildingId],
     queryFn: async () => {
-      // Simulating API call with a slight delay
       await new Promise(resolve => setTimeout(resolve, 300));
       
       if (!propertyKey || !buildingId) return null;
       
-      // Get property from mockPropertyDetails using propertyKey
+      console.log("Looking for property:", propertyKey, "building:", buildingId);
+      
       const property = mockPropertyDetails[propertyKey];
       
-      if (!property) return null;
-      
-      // Map URL building ID to actual building ID in mock data
-      const actualBuildingId = buildingIdMappings[buildingId];
-      
-      if (!actualBuildingId) {
-        console.warn(`No mapping found for building ID: ${buildingId}`);
+      if (!property) {
+        console.warn(`Property not found: ${propertyKey}`);
         return null;
       }
       
-      // Find the building using the mapped ID
+      const actualBuildingId = buildingIdMappings[buildingId];
+      
+      if (!actualBuildingId) {
+        console.warn(`No building mapping found for: ${buildingId}`);
+        console.log("Available mappings:", Object.keys(buildingIdMappings));
+        return null;
+      }
+      
       const building = property.buildings.find(b => b.id === actualBuildingId);
+      
+      if (!building) {
+        console.warn(`Building not found with ID: ${actualBuildingId} in property: ${propertyKey}`);
+        console.log("Available buildings:", property.buildings.map(b => b.id));
+      }
       
       return building || null;
     },

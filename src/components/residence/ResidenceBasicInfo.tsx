@@ -48,7 +48,6 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
   const { id } = useParams<{ id: string }>();
   
   // Check if this is a secondary rental based on ID
-  // In a real application, this would come from the API data
   const isSecondaryRental = id === "lgh-1002";
   const needsSpecialHandling = requiresSpecialHandling(id || "");
   const hasPestIssues = requiresPestControl(id || "");
@@ -57,7 +56,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
     <TooltipProvider>
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-2xl sm:text-3xl font-bold">Lägenhet {residence.code}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{residence.name}</h1>
           {needsSpecialHandling && (
             <Tooltip>
               <TooltipTrigger asChild>

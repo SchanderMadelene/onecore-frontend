@@ -6,19 +6,19 @@ export interface BreadcrumbItem {
 
 export const getBreadcrumbLabel = (segment: string, type: 'property' | 'building' | 'residence'): string => {
   const mappings = {
-    // Properties
+    // Properties - matchar treeData
     "odenplan-5": "Älgen 1",
-    "gotgatan-15": "Lindaren 2",
+    "gotgatan-15": "Lindaren 2", 
     "sveavagen-10": "Björnen 4",
     "pipan-1": "Pipan 1",
     "oskaria-1": "Oskaria 1",
     "styrhylsan-9": "Styrhylsan 9",
     "bavern-1": "Bävern 1",
     
-    // Buildings
+    // Buildings - matchar treeData exakt
     "building-a": "Bellmansgatan 1A - 2C",
     "building-b": "Byggnad B",
-    "hus-a-lindaren": "Byggnad A",
+    "hus-a-lindaren": "Byggnad A", 
     "kontorsbyggnad-a": "Kontorsbyggnad A",
     "kontorsbyggnad-b": "Kontorsbyggnad B",
     "flerfamiljshus-pipan": "Flerfamiljshus",
@@ -26,12 +26,25 @@ export const getBreadcrumbLabel = (segment: string, type: 'property' | 'building
     "radhus-styrhylsan": "Radhus",
     "kontorskomplex-bavern": "Kontorskomplex",
     
-    // Residences
-    "lgh-1001": "Lägenhet 1001",
-    "lgh-1002": "Lägenhet 1002",
-    "lgh-1003": "Lägenhet 1003",
-    "lgh-2001": "Lägenhet 2001",
-    "lgh-2002": "Lägenhet 2002",
+    // Residences - konsistent med treeData
+    "lgh-1001": "LGH-1001",
+    "lgh-1002": "LGH-1002", 
+    "lgh-1003": "LGH-1003",
+    "lgh-2001": "LGH-2001",
+    "lgh-2002": "LGH-2002",
+    "lgh-3001": "3001",
+    "lgh-3002": "3002",
+    "lgh-3003": "3003",
+    "kontor-101": "101",
+    "kontor-102": "102",
+    "kontor-201": "201", 
+    "kontor-202": "202",
+    "lgh-4001": "4001",
+    "lgh-4002": "4002",
+    "lgh-5001": "5001",
+    "lgh-5002": "5002",
+    "kontor-301": "301",
+    "kontor-302": "302",
   };
   
   return mappings[segment] || segment;

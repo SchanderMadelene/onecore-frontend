@@ -12,8 +12,8 @@ interface BuildingBasicInfoProps {
 export const BuildingBasicInfo = ({ 
   building, 
   propertyName, 
-  address = "Bellmansgatan 1A - 2C",
-  objectNumber = "OBJ-001"
+  address,
+  objectNumber
 }: BuildingBasicInfoProps) => {
   return (
     <Card>
@@ -26,7 +26,7 @@ export const BuildingBasicInfo = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-muted-foreground">Objektsnummer</p>
-            <p className="font-medium">{objectNumber}</p>
+            <p className="font-medium">{objectNumber || building.id}</p>
           </div>
           
           <div>
@@ -41,7 +41,19 @@ export const BuildingBasicInfo = ({
           
           <div>
             <p className="text-sm text-muted-foreground">Byggnadsår</p>
-            <p className="font-medium">{building.constructionYear}</p>
+            <p className="font-medium">{building.constructionYear || "Ej angivet"}</p>
+          </div>
+          
+          {address && (
+            <div>
+              <p className="text-sm text-muted-foreground">Adress</p>
+              <p className="font-medium">{address}</p>
+            </div>
+          )}
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Byggnadstyp</p>
+            <p className="font-medium">{building.type}</p>
           </div>
         </div>
       </CardContent>
