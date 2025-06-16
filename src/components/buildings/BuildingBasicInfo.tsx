@@ -1,3 +1,4 @@
+
 import { Building } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -23,11 +24,6 @@ export const BuildingBasicInfo = ({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <p className="text-sm text-muted-foreground">Adress</p>
-            <p className="font-medium">{address}</p>
-          </div>
-          
           <div>
             <p className="text-sm text-muted-foreground">Objektsnummer</p>
             <p className="font-medium">{objectNumber}</p>

@@ -15,12 +15,12 @@ export const BuildingHeader = ({ building, propertyName }: BuildingHeaderProps) 
         <span>Älgen 1</span>
         <span>/</span>
         <BuildingIcon className="h-4 w-4" />
-        <span>{building.name}</span>
+        <span>Bellmansgatan 1A - 2C</span>
       </div>
       
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold">{building.name}</h1>
+          <h1 className="text-3xl font-bold">Bellmansgatan 1A - 2C</h1>
           <div className="flex items-center gap-2 mt-1 text-muted-foreground">
             <BuildingIcon className="h-4 w-4" />
             <span>{building.type}</span>
