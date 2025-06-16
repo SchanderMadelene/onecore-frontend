@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -34,10 +33,9 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/properties" element={<AllPropertiesPage />} />
-      <Route path="/properties/:city/:district" element={<PropertyPage />} />
-      <Route path="/properties/:city/:district/:property" element={<PropertyDetailPage />} />
-      <Route path="/properties/:city/:district/:property/:building" element={<BuildingDetailPage />} />
-      <Route path="/properties/:city/:district/:property/:building/:id" element={<ResidencePage />} />
+      <Route path="/properties/:property" element={<PropertyDetailPage />} />
+      <Route path="/properties/:property/:building" element={<BuildingDetailPage />} />
+      <Route path="/properties/:property/:building/:id" element={<ResidencePage />} />
       
       <Route 
         path="/tenants/all" 

@@ -10,14 +10,12 @@ import { BuildingBasicInfo } from "@/components/buildings/BuildingBasicInfo";
 import { BuildingEntrances } from "@/components/buildings/BuildingEntrances";
 
 const BuildingDetailPage = () => {
-  const { city, district, property, building } = useParams();
+  const { property, building } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { toast } = useToast();
   
-  // Create proper propertyKey format to match key in mockData
-  const propertyKey = city && district && property 
-    ? `${city}/${district}/${property}`
-    : undefined;
+  // Use property directly as the key
+  const propertyKey = property;
   
   // Fetch building data
   const { data: buildingDetail, isLoading: isBuildingLoading, error: buildingError } = useBuildingDetail(propertyKey, building);
@@ -26,7 +24,7 @@ const BuildingDetailPage = () => {
   const { data: propertyDetail } = usePropertyFromBuilding(propertyKey);
 
   // Base path for apartment links
-  const basePath = `/properties/${city}/${district}/${property}/${building}`;
+  const basePath = `/properties/${property}/${building}`;
 
   useEffect(() => {
     if (buildingError) {

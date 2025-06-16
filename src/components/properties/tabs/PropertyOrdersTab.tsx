@@ -8,12 +8,10 @@ interface PropertyOrdersTabProps {
 }
 
 export const PropertyOrdersTab = ({ propertyDetail }: PropertyOrdersTabProps) => {
-  const { city, district, property } = useParams<{ city: string; district: string; property: string }>();
+  const { property } = useParams<{ property: string }>();
   
-  // Skapa property ID från URL-parametrarna för att matcha residenceId i mock data
-  const propertyId = city && district && property 
-    ? `${city}/${district}/${property}`
-    : propertyDetail.id || "property-default";
+  // Use property directly as the property ID
+  const propertyId = property || propertyDetail.id || "property-default";
   
   console.log("PropertyOrdersTab - Using propertyId:", propertyId);
   

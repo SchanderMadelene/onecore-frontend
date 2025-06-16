@@ -47,16 +47,16 @@ export const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
     path: "/properties"
   });
   
-  if (segments.length < 4) return breadcrumbs; // Need at least /properties/city/district/property
+  if (segments.length < 2) return breadcrumbs; // Need at least /properties/property
   
-  // Extract relevant segments: skip 'properties', 'city', 'district'
-  const propertySegment = segments[3]; // The property segment
-  const buildingSegment = segments[4]; // The building segment (if exists)
-  const residenceSegment = segments[5]; // The residence segment (if exists)
+  // Extract relevant segments: skip 'properties'
+  const propertySegment = segments[1]; // The property segment
+  const buildingSegment = segments[2]; // The building segment (if exists)
+  const residenceSegment = segments[3]; // The residence segment (if exists)
   
   if (propertySegment) {
     // Add property breadcrumb
-    const propertyPath = `/properties/${segments[1]}/${segments[2]}/${propertySegment}`;
+    const propertyPath = `/properties/${propertySegment}`;
     breadcrumbs.push({
       label: getBreadcrumbLabel(propertySegment, 'property'),
       path: propertyPath

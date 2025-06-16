@@ -9,7 +9,7 @@ import { useResidenceData } from "@/hooks/useResidenceData";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const ResidencePage = () => {
-  const { city, district, property, building, id } = useParams();
+  const { property, building, id } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -25,9 +25,9 @@ export const ResidencePage = () => {
   const { residenceData, roomsData, isLoading, error } = useResidenceData(residenceId);
 
   useEffect(() => {
-    console.log("Current route params:", { city, district, property, building, id });
+    console.log("Current route params:", { property, building, id });
     console.log("Using residence ID:", residenceId);
-  }, [city, district, property, building, id, residenceId]);
+  }, [property, building, id, residenceId]);
 
   const renderContent = () => {
     if (isLoading) {
@@ -53,7 +53,7 @@ export const ResidencePage = () => {
             residenceData={residenceData}
             roomsData={roomsData}
             property={property}
-            district={district}
+            district={undefined}
           />
         </div>
       );

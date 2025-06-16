@@ -11,7 +11,7 @@ import { PropertyBasicInfo } from "@/components/properties/PropertyBasicInfo";
 import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
 
 const PropertyDetailPage = () => {
-  const { city, district, property } = useParams();
+  const { property } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { toast } = useToast();
   const isMobile = useIsMobile();
@@ -21,10 +21,8 @@ const PropertyDetailPage = () => {
     // Default sidebar state is handled in PageLayout based on route
   }, [isMobile]);
   
-  // Create proper propertyId format to match key in mockData
-  const propertyKey = city && district && property 
-    ? `${city}/${district}/${property}`
-    : undefined;
+  // Use property directly as the key
+  const propertyKey = property;
   
   const { data: propertyDetail, isLoading, error } = usePropertyDetail(propertyKey);
 

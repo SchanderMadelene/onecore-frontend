@@ -10,12 +10,12 @@ interface PropertyBuildingCardProps {
 
 export const PropertyBuildingCard = ({ building }: PropertyBuildingCardProps) => {
   const navigate = useNavigate();
-  const { city, district, property } = useParams();
+  const { property } = useParams();
   
   const handleOpenBuilding = () => {
     // Create a URL-friendly building name
     const buildingSlug = building.name.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/properties/${city}/${district}/${property}/${buildingSlug}`);
+    navigate(`/properties/${property}/${buildingSlug}`);
   };
 
   return (
