@@ -1,7 +1,5 @@
-
 import { Building } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building as BuildingIcon } from "lucide-react";
 
 interface BuildingBasicInfoProps {
   building: Building;
@@ -19,8 +17,7 @@ export const BuildingBasicInfo = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BuildingIcon className="h-5 w-5" />
+        <CardTitle>
           Grundinformation
         </CardTitle>
       </CardHeader>
