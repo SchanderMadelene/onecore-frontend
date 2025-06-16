@@ -1,6 +1,6 @@
 
-import { useState, useEffect } from "react";
-import { ChevronRight, MapPin, Tag } from "lucide-react";
+import { useState } from "react";
+import { ChevronRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { TreeItemProps } from "./types";
 import { getNodeIcon } from "./treeViewUtils";
@@ -11,97 +11,79 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   const location = useLocation();
   
   const hasChildren = node.children && node.children.length > 0;
-  const isActive = node.path && location.pathname === node.path;
-  const isParentOfActive = hasChildren && node.children!.some(child => 
-    child.path && location.pathname.includes(child.path)
-  );
+  const isActive = node.path === location.pathname;
+  const indent = level * 16;
 
-  // Auto-expand if parent of active route
-  useEffect(() => {
-    if (isParentOfActive && !isExpanded) {
-      setIsExpanded(true);
-    }
-  }, [isParentOfActive, isExpanded]);
-
-  const toggleExpanded = () => setIsExpanded(!isExpanded);
-
-  const renderIcon = () => {
-    const iconMap: Record<string, React.ReactNode> = {
-      "properties": getNodeIcon("location"),
-      "buildings": getNodeIcon("building"),
-      "apartments": getNodeIcon("home"),
-      "tenants": getNodeIcon("users"),
-      "rentals": getNodeIcon("key"),
-      "design-system": getNodeIcon("palette"),
-    };
-    
-    return iconMap[node.id] || getNodeIcon(node.icon);
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsExpanded(!isExpanded);
   };
 
-  const nodeContent = (
-    <>
-      <span className="mr-3 flex-shrink-0">
-        {renderIcon()}
-      </span>
-      <div className="flex flex-col min-w-0 flex-1">
-        <div className="flex items-center">
-          <span className="truncate">{node.label}</span>
-          {isActive && <MapPin className="h-3 w-3 ml-2 text-primary flex-shrink-0" />}
-        </div>
+  const content = (
+    <div className="flex items-center gap-2 flex-1 min-w-0">
+      {getNodeIcon(node.icon)}
+      <div className="flex-1 min-w-0">
+        <div className="truncate text-sm">{node.label}</div>
         {node.area && (
-          <Badge variant="outline" className="text-xs px-1 py-0 h-auto mt-1 self-start">
-            <Tag className="h-3 w-3 mr-1" />
-            <span>{node.area}</span>
+          <Badge variant="outline" className="text-xs h-4 px-1 mt-1">
+            {node.area}
           </Badge>
         )}
       </div>
-    </>
+    </div>
   );
 
   return (
     <div className="w-full">
-      <div
+      <div 
         className={`
-          flex items-center px-3 py-2 cursor-pointer transition-colors
-          ${isActive ? 'bg-white text-foreground font-medium shadow-sm rounded-lg' : 'hover:bg-white/60 rounded-lg'}
+          flex items-center py-1.5 px-2 rounded-md transition-colors cursor-pointer
+          ${isActive 
+            ? 'bg-primary text-primary-foreground shadow-sm' 
+            : 'hover:bg-muted/50'
+          }
         `}
-        style={{ paddingLeft: `${level * 12 + 16}px` }}
+        style={{ marginLeft: `${indent}px` }}
       >
-        {/* Expand/Collapse Button */}
+        {/* Expand button */}
         {hasChildren && (
           <button
-            onClick={toggleExpanded}
-            className="h-5 w-5 mr-2 flex-shrink-0 flex items-center justify-center hover:bg-white/60 rounded"
+            onClick={handleToggle}
+            className="p-1 hover:bg-background/10 rounded mr-1"
           >
             <ChevronRight 
-              className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`} 
+              className={`h-3 w-3 transition-transform ${
+                isExpanded ? 'rotate-90' : ''
+              }`} 
             />
           </button>
         )}
-        
-        {!hasChildren && <div className="w-7 mr-1 flex-shrink-0" />}
-        
-        {/* Node Content */}
+
+        {/* Content */}
         {node.path ? (
           <Link 
             to={node.path} 
-            className="flex items-center text-sm flex-1 min-w-0"
+            className="flex-1 min-w-0"
             onClick={onNavigate}
           >
-            {nodeContent}
+            {content}
           </Link>
         ) : (
-          <div className="flex items-center text-sm flex-1 min-w-0">
-            {nodeContent}
-          </div>
+          <div className="flex-1 min-w-0">{content}</div>
         )}
       </div>
       
       {/* Children */}
       {hasChildren && isExpanded && (
-        <div className="ml-4 border-l border-border/30 pl-2">
+        <div>
           {node.children!.map((child) => (
-            <TreeItem key={child.id} node={child} level={level + 1} onNavigate={onNavigate} />
+            <TreeItem 
+              key={child.id} 
+              node={child} 
+              level={level + 1} 
+              onNavigate={onNavigate} 
+            />
           ))}
         </div>
       )}
