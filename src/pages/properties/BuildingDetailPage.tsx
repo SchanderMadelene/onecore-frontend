@@ -6,6 +6,7 @@ import { useBuildingDetail } from "@/hooks/useBuildingDetail";
 import { usePropertyFromBuilding } from "@/hooks/usePropertyFromBuilding";
 import { useToast } from "@/hooks/use-toast";
 import { BuildingHeader } from "@/components/buildings/BuildingHeader";
+import { BuildingBasicInfo } from "@/components/buildings/BuildingBasicInfo";
 import { BuildingEntrances } from "@/components/buildings/BuildingEntrances";
 
 const BuildingDetailPage = () => {
@@ -62,6 +63,12 @@ const BuildingDetailPage = () => {
     return (
       <div className="py-4 space-y-8">
         <BuildingHeader building={buildingDetail} propertyName={propertyDetail?.designation} />
+        <BuildingBasicInfo 
+          building={buildingDetail} 
+          propertyName={propertyDetail?.designation}
+          address="Bellmansgatan 1A - 2C"
+          objectNumber="OBJ-001"
+        />
         <BuildingEntrances building={buildingDetail} basePath={basePath} />
       </div>
     );
