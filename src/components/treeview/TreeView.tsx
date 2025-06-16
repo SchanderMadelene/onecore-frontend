@@ -39,16 +39,18 @@ export function TreeView({
   }, [showRentals, showDesignSystem, showProperties, showTenants, showBuildings, showApartments]);
 
   return (
-    <div className="p-3 overflow-y-auto bg-secondary/30 w-full h-full space-y-1">
-      {filteredData.length > 0 ? (
-        filteredData.map((node) => (
-          <TreeItem key={node.id} node={node} onNavigate={onNavigate} />
-        ))
-      ) : (
-        <div className="text-muted-foreground text-center py-8 text-sm">
-          Inga resultat hittades
-        </div>
-      )}
+    <div className="p-4 h-full overflow-y-auto bg-white">
+      <div className="space-y-1">
+        {filteredData.length > 0 ? (
+          filteredData.map((node) => (
+            <TreeItem key={node.id} node={node} onNavigate={onNavigate} />
+          ))
+        ) : (
+          <div className="text-gray-500 text-center py-8 text-sm">
+            Inga resultat hittades
+          </div>
+        )}
+      </div>
     </div>
   );
 }

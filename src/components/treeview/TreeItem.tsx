@@ -4,7 +4,6 @@ import { ChevronRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { TreeItemProps } from "./types";
 import { getNodeIcon } from "./treeViewUtils";
-import { Badge } from "../ui/badge";
 
 export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -12,71 +11,56 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
   
   const hasChildren = node.children && node.children.length > 0;
   const isActive = node.path === location.pathname;
-  const indent = level * 16;
 
-  const handleToggle = (e: React.MouseEvent) => {
+  const handleExpand = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsExpanded(!isExpanded);
   };
 
-  const content = (
-    <div className="flex items-center gap-2 flex-1 min-w-0">
-      {getNodeIcon(node.icon)}
-      <div className="flex-1 min-w-0">
-        <div className="truncate text-sm">{node.label}</div>
-        {node.area && (
-          <Badge variant="outline" className="text-xs h-4 px-1 mt-1">
-            {node.area}
-          </Badge>
-        )}
+  const ItemContent = () => (
+    <div 
+      className={`
+        flex items-center gap-2 py-2 px-3 rounded-md cursor-pointer transition-all duration-150
+        ${isActive 
+          ? 'bg-blue-50 text-blue-700 border-l-2 border-blue-500' 
+          : 'text-gray-700 hover:bg-gray-50'
+        }
+      `}
+      style={{ paddingLeft: `${12 + level * 16}px` }}
+    >
+      {hasChildren && (
+        <button
+          onClick={handleExpand}
+          className="p-0.5 hover:bg-gray-200 rounded transition-colors"
+        >
+          <ChevronRight 
+            className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`} 
+          />
+        </button>
+      )}
+      
+      {!hasChildren && <div className="w-5" />}
+      
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        {getNodeIcon(node.icon)}
+        <span className="truncate font-medium">{node.label}</span>
       </div>
     </div>
   );
 
   return (
-    <div className="w-full">
-      <div 
-        className={`
-          flex items-center py-1.5 px-2 rounded-md transition-colors cursor-pointer
-          ${isActive 
-            ? 'bg-primary text-primary-foreground shadow-sm' 
-            : 'hover:bg-muted/50'
-          }
-        `}
-        style={{ marginLeft: `${indent}px` }}
-      >
-        {/* Expand button */}
-        {hasChildren && (
-          <button
-            onClick={handleToggle}
-            className="p-1 hover:bg-background/10 rounded mr-1"
-          >
-            <ChevronRight 
-              className={`h-3 w-3 transition-transform ${
-                isExpanded ? 'rotate-90' : ''
-              }`} 
-            />
-          </button>
-        )}
-
-        {/* Content */}
-        {node.path ? (
-          <Link 
-            to={node.path} 
-            className="flex-1 min-w-0"
-            onClick={onNavigate}
-          >
-            {content}
-          </Link>
-        ) : (
-          <div className="flex-1 min-w-0">{content}</div>
-        )}
-      </div>
+    <div>
+      {node.path ? (
+        <Link to={node.path} onClick={onNavigate}>
+          <ItemContent />
+        </Link>
+      ) : (
+        <ItemContent />
+      )}
       
-      {/* Children */}
       {hasChildren && isExpanded && (
-        <div>
+        <div className="mt-1">
           {node.children!.map((child) => (
             <TreeItem 
               key={child.id} 
