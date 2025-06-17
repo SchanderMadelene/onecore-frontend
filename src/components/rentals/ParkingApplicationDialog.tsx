@@ -11,6 +11,8 @@ import { PlusCircle, Search, User } from "lucide-react";
 import { searchCustomers, getCustomerById } from "@/data/customers";
 import type { ParkingSpace, Customer } from "./types/parking";
 
+//Kom ihåg att ..
+
 interface ParkingApplicationDialogProps {
   parkingSpace: ParkingSpace;
 }
