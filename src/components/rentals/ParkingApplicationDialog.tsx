@@ -123,7 +123,6 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="relative">
-                <Label htmlFor="customer-search">Sök kund (kundnummer eller personnummer)</Label>
                 <div className="relative">
                   <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
