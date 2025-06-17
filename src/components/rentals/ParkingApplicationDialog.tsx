@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -24,6 +23,7 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [applicationType, setApplicationType] = useState<"Byte" | "Hyra flera">("Hyra flera");
   const [notes, setNotes] = useState("");
+  const [applicationTypeError, setApplicationTypeError] = useState("");
 
   const searchResults = searchCustomers(searchQuery);
   const showResults = searchQuery.length >= 2 && searchResults.length > 0 && !selectedCustomer;
@@ -43,8 +43,19 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
     }
   };
 
+  const handleApplicationTypeChange = (value: "Byte" | "Hyra flera") => {
+    setApplicationType(value);
+    setApplicationTypeError(""); // Clear error when user makes a selection
+  };
+
   const handleSubmit = () => {
     if (!selectedCustomer) return;
+
+    // Validate application type (example validation)
+    if (!applicationType) {
+      setApplicationTypeError("Du måste välja en ärendetyp");
+      return;
+    }
 
     console.log("Anmälan skickad:", {
       parkingSpace: parkingSpace.id,
@@ -58,6 +69,7 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
     setSearchQuery("");
     setApplicationType("Hyra flera");
     setNotes("");
+    setApplicationTypeError("");
     setOpen(false);
   };
 
@@ -66,6 +78,7 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
     setSearchQuery("");
     setApplicationType("Hyra flera");
     setNotes("");
+    setApplicationTypeError("");
   };
 
   const getContractTypeName = (type: string) => {
@@ -289,8 +302,8 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
           {selectedCustomer && (
             <div className="space-y-2">
               <Label htmlFor="application-type">Ärendetyp</Label>
-              <Select value={applicationType} onValueChange={(value: "Byte" | "Hyra flera") => setApplicationType(value)}>
-                <SelectTrigger>
+              <Select value={applicationType} onValueChange={handleApplicationTypeChange}>
+                <SelectTrigger className={applicationTypeError ? "border-red-500" : ""}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -298,6 +311,9 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
                   <SelectItem value="Byte">Byte</SelectItem>
                 </SelectContent>
               </Select>
+              {applicationTypeError && (
+                <p className="text-sm text-red-600 mt-1">{applicationTypeError}</p>
+              )}
             </div>
           )}
 
