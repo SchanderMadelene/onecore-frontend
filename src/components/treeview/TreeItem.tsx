@@ -1,16 +1,35 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { TreeItemProps } from "./types";
 import { getNodeIcon } from "./treeViewUtils";
 
 export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const location = useLocation();
   
   const hasChildren = node.children && node.children.length > 0;
   const isActive = node.path === location.pathname;
+  
+  // Check if any child is active (recursively)
+  const isChildActive = (children: typeof node.children): boolean => {
+    if (!children) return false;
+    return children.some(child => 
+      child.path === location.pathname || isChildActive(child.children)
+    );
+  };
+  
+  const hasActiveChild = hasChildren && isChildActive(node.children);
+  
+  // Auto-expand if this node or any child is active
+  const [isExpanded, setIsExpanded] = useState(isActive || hasActiveChild);
+  
+  // Update expansion when route changes
+  useEffect(() => {
+    if (isActive || hasActiveChild) {
+      setIsExpanded(true);
+    }
+  }, [location.pathname, isActive, hasActiveChild]);
 
   const handleExpand = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -24,6 +43,8 @@ export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
         flex items-center gap-2 py-2 px-3 rounded-md cursor-pointer transition-all duration-150
         ${isActive 
           ? 'bg-blue-50 text-blue-700 border-l-2 border-blue-500' 
+          : hasActiveChild
+          ? 'bg-blue-25 text-blue-600'
           : 'text-gray-700 hover:bg-gray-50'
         }
       `}
