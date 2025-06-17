@@ -32,6 +32,7 @@ export const ResidenceContent = ({
       case "lgh-1001":
         return mockMultipleTenants;
       case "lgh-1002":
+      case "lgh-002":
         return mockSecondHandTenants;
       default:
         return mockTenant;
