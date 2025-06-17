@@ -1,4 +1,3 @@
-
 import { TreeNode } from "./types";
 
 export const treeData: TreeNode[] = [
@@ -22,22 +21,58 @@ export const treeData: TreeNode[] = [
             path: "/properties/odenplan-5/building-a",
             children: [
               {
-                id: "lgh-1001",
-                label: "LGH-1001",
+                id: "lgh-001",
+                label: "LGH-001",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-1001"
+                path: "/properties/odenplan-5/building-a/lgh-001"
               },
               {
-                id: "lgh-1002",
-                label: "LGH-1002",
+                id: "lgh-002",
+                label: "LGH-002",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-1002"
+                path: "/properties/odenplan-5/building-a/lgh-002"
               },
               {
-                id: "lgh-1003",
-                label: "LGH-1003",
+                id: "lgh-003",
+                label: "LGH-003",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-1003"
+                path: "/properties/odenplan-5/building-a/lgh-003"
+              },
+              {
+                id: "lgh-004",
+                label: "LGH-004",
+                icon: "home",
+                path: "/properties/odenplan-5/building-a/lgh-004"
+              },
+              {
+                id: "lgh-005",
+                label: "LGH-005",
+                icon: "home",
+                path: "/properties/odenplan-5/building-a/lgh-005"
+              },
+              {
+                id: "lgh-006",
+                label: "LGH-006",
+                icon: "home",
+                path: "/properties/odenplan-5/building-a/lgh-006"
+              },
+              {
+                id: "lgh-007",
+                label: "LGH-007",
+                icon: "home",
+                path: "/properties/odenplan-5/building-a/lgh-007"
+              },
+              {
+                id: "lgh-008",
+                label: "LGH-008",
+                icon: "home",
+                path: "/properties/odenplan-5/building-a/lgh-008"
+              },
+              {
+                id: "lgh-009",
+                label: "LGH-009",
+                icon: "home",
+                path: "/properties/odenplan-5/building-a/lgh-009"
               }
             ]
           },
