@@ -240,28 +240,27 @@ export const mockSecondHandTenants = [
   {
     firstName: "Lars",
     lastName: "Eriksson", 
-    phone: "070-123-4567",
-    email: "lars.eriksson@email.com",
-    moveInDate: "2022-08-15",
-    personalNumber: "198205141234",
-    contractNumber: "K2024-001-002",
+    phone: "070-222 33 44",
+    email: "lars.eriksson@example.com",
+    contractStatus: "permanent" as const,
+    moveInDate: "2022-05-01",
+    contractNumber: "KT2022-005",
+    personalNumber: "19781120-3344",
     isPrimaryTenant: true,
-    isPrimaryContractHolder: true,
-    relationshipType: "primaryTenant" as const
+    relationshipType: "primaryTenant" as const,
+    isPrimaryContractHolder: true
   },
   {
     firstName: "Sofia",
     lastName: "Bergström",
-    phone: "073-987-6543", 
-    email: "sofia.bergstrom@email.com",
-    moveInDate: "2024-01-01",
-    moveOutDate: "2024-12-31",
-    personalNumber: "199103281567",
-    contractNumber: "K2024-SH-002",
-    isPrimaryTenant: false,
-    isPrimaryContractHolder: false,
-    relationshipType: "secondaryTenant" as const,
-    secondHandApproved: true
+    phone: "073-555 66 77", 
+    email: "sofia.bergstrom@example.com",
+    contractStatus: "temporary" as const,
+    moveInDate: "2024-03-01",
+    moveOutDate: "2024-09-01",
+    contractNumber: "AH2024-001",
+    personalNumber: "19950630-8877",
+    relationshipType: "secondaryTenant" as const
   }
 ];
 
