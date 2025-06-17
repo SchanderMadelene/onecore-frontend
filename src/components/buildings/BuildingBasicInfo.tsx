@@ -15,6 +15,10 @@ export const BuildingBasicInfo = ({
   address,
   objectNumber
 }: BuildingBasicInfoProps) => {
+  // Calculate total apartments across all entrances
+  const totalApartments = building.entrances?.reduce((total, entrance) => 
+    total + (entrance.apartments?.length || 0), 0) || 0;
+
   return (
     <Card>
       <CardHeader>
@@ -54,6 +58,11 @@ export const BuildingBasicInfo = ({
           <div>
             <p className="text-sm text-muted-foreground">Byggnadstyp</p>
             <p className="font-medium">{building.type}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground">Antal lägenheter</p>
+            <p className="font-medium">{totalApartments}</p>
           </div>
         </div>
       </CardContent>
