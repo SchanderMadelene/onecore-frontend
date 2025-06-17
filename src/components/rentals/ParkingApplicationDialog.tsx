@@ -73,7 +73,7 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
           <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Anmäl hyresgäst för bilplats</DialogTitle>
         </DialogHeader>
