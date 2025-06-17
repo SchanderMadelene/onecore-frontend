@@ -12,7 +12,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       rent: 8500,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
-        toDate: "2025-12-31T23:59:59Z" // Extended to ensure "Gällande" status
+        toDate: "2025-12-31T23:59:59Z"
       },
       malarenergiFacilityId: "ME-1001"
     }
@@ -27,7 +27,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       rent: 9200,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
-        toDate: "2025-12-31T23:59:59Z" // Extended to ensure "Gällande" status
+        toDate: "2025-12-31T23:59:59Z"
       },
       malarenergiFacilityId: "ME-1002"
     }
@@ -42,9 +42,144 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
       rent: 7800,
       validityPeriod: {
         fromDate: "2024-01-01T00:00:00Z",
-        toDate: "2025-02-28T23:59:59Z" // Set to expire within 90 days to show "Uppsagt"
+        toDate: "2025-02-28T23:59:59Z"
       },
       malarenergiFacilityId: "ME-1003"
+    }
+  },
+  "lgh-001": {
+    content: {
+      id: "lgh-001",
+      code: "LGH-001",
+      name: "2 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 65,
+      rent: 8500,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-001"
+    }
+  },
+  "lgh-002": {
+    content: {
+      id: "lgh-002",
+      code: "LGH-002",
+      name: "1 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 45,
+      rent: 7800,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-002"
+    }
+  },
+  "lgh-003": {
+    content: {
+      id: "lgh-003",
+      code: "LGH-003",
+      name: "3 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 85,
+      rent: 9200,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-003"
+    }
+  },
+  "lgh-004": {
+    content: {
+      id: "lgh-004",
+      code: "LGH-004",
+      name: "3 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 72,
+      rent: 9000,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-004"
+    }
+  },
+  "lgh-005": {
+    content: {
+      id: "lgh-005",
+      code: "LGH-005",
+      name: "2 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 58,
+      rent: 8300,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-005"
+    }
+  },
+  "lgh-006": {
+    content: {
+      id: "lgh-006",
+      code: "LGH-006",
+      name: "4 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 91,
+      rent: 10500,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-006"
+    }
+  },
+  "lgh-007": {
+    content: {
+      id: "lgh-007",
+      code: "LGH-007",
+      name: "1 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 48,
+      rent: 7500,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-007"
+    }
+  },
+  "lgh-008": {
+    content: {
+      id: "lgh-008",
+      code: "LGH-008",
+      name: "2 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 67,
+      rent: 8700,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-008"
+    }
+  },
+  "lgh-009": {
+    content: {
+      id: "lgh-009",
+      code: "LGH-009",
+      name: "3 rum och kök, Bellmansgatan",
+      deleted: false,
+      size: 82,
+      rent: 9400,
+      validityPeriod: {
+        fromDate: "2024-01-01T00:00:00Z",
+        toDate: "2025-12-31T23:59:59Z"
+      },
+      malarenergiFacilityId: "ME-009"
     }
   },
   "lgh-2001": {

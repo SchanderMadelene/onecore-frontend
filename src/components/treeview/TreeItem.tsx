@@ -1,131 +1,95 @@
+
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, MapPin, Tag, Building, Users, Home, Key, Palette, FileText } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "../ui/button";
 import { TreeItemProps } from "./types";
 import { getNodeIcon } from "./treeViewUtils";
-import { Badge } from "../ui/badge";
 
 export function TreeItem({ node, level = 0, onNavigate }: TreeItemProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const hasChildren = node.children && node.children.length > 0;
   const location = useLocation();
-  const isActive = node.path && location.pathname === node.path;
-  const isParentOfActive = node.children && node.children.some(child => 
-    child.path && location.pathname.includes(child.path)
-  );
-
+  
+  const hasChildren = node.children && node.children.length > 0;
+  const isActive = node.path === location.pathname;
+  
+  // Check if any child is active (recursively)
+  const isChildActive = (children: typeof node.children): boolean => {
+    if (!children) return false;
+    return children.some(child => 
+      child.path === location.pathname || isChildActive(child.children)
+    );
+  };
+  
+  const hasActiveChild = hasChildren && isChildActive(node.children);
+  
+  // Auto-expand if this node or any child is active
+  const [isExpanded, setIsExpanded] = useState(isActive || hasActiveChild);
+  
+  // Update expansion when route changes
   useEffect(() => {
-    if (isParentOfActive) {
+    if (isActive || hasActiveChild) {
       setIsExpanded(true);
     }
-  }, [isParentOfActive, location.pathname]);
+  }, [location.pathname, isActive, hasActiveChild]);
 
-  const handleNodeClick = () => {
-    if (!hasChildren && node.path && onNavigate) {
-      onNavigate();
-    }
+  const handleExpand = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsExpanded(!isExpanded);
   };
 
-  const renderNodeIcon = () => {
-    switch (node.id) {
-      case "properties":
-        return <Building className="h-4 w-4 text-muted-foreground" />;
-      case "buildings":
-        return <Building className="h-4 w-4 text-muted-foreground" />;
-      case "apartments":
-        return <Home className="h-4 w-4 text-muted-foreground" />;
-      case "tenants":
-        return <Users className="h-4 w-4 text-muted-foreground" />;
-      case "rentals":
-        return <Key className="h-4 w-4 text-muted-foreground" />;
-      case "design-system":
-        return <Palette className="h-4 w-4 text-muted-foreground" />;
-      default:
-        return getNodeIcon(node.icon);
-    }
-  };
+  const ItemContent = () => (
+    <div 
+      className={`
+        flex items-center gap-2 py-2 px-3 rounded-md cursor-pointer transition-all duration-150
+        ${isActive 
+          ? 'bg-blue-50 text-blue-700 border-l-2 border-blue-500' 
+          : hasActiveChild
+          ? 'bg-blue-25 text-blue-600'
+          : 'text-gray-700 hover:bg-gray-50'
+        }
+      `}
+      style={{ paddingLeft: `${12 + level * 16}px` }}
+    >
+      {hasChildren && (
+        <button
+          onClick={handleExpand}
+          className="p-0.5 hover:bg-gray-200 rounded transition-colors"
+        >
+          <ChevronRight 
+            className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`} 
+          />
+        </button>
+      )}
+      
+      {!hasChildren && <div className="w-5" />}
+      
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        {getNodeIcon(node.icon)}
+        <span className="truncate font-medium">{node.label}</span>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="flex flex-col w-full">
-      <div
-        className={`
-          flex items-center rounded-full px-3 py-2 cursor-pointer transition-colors
-          text-ellipsis whitespace-nowrap w-full
-          ${isActive 
-            ? 'bg-white text-foreground font-medium shadow-sm' 
-            : isExpanded 
-              ? 'text-foreground hover:bg-white/60' 
-              : 'hover:bg-white/60'}
-          ${node.path ? 'hover:bg-white/60' : ''} 
-        `}
-        style={{ paddingLeft: `${level * 12 + 16}px` }}
-      >
-        {hasChildren ? (
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`h-5 w-5 p-0 mr-2 flex-shrink-0 ${isExpanded ? 'text-foreground' : 'text-muted-foreground'} hover:text-foreground hover:bg-transparent`}
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            {isExpanded ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
-          </Button>
-        ) : (
-          <div className="w-6 mr-1 flex-shrink-0" />
-        )}
-        
-        {node.path ? (
-          <Link 
-            to={node.path} 
-            className={`flex items-center text-sm py-1 flex-1 min-w-0 ${isActive ? 'font-medium' : ''}`}
-            onClick={handleNodeClick}
-          >
-            <span className="mr-3 text-foreground flex-shrink-0">
-              {renderNodeIcon()}
-            </span>
-            <div className="flex flex-col text-foreground min-w-0">
-              <div className="flex items-center w-full overflow-hidden">
-                <span className="break-words">{node.label}</span>
-                {isActive && (
-                  <MapPin className="h-3 w-3 ml-2 text-primary flex-shrink-0" />
-                )}
-              </div>
-              {node.area && (
-                <Badge variant="outline" className="text-xs px-1 py-0 h-auto mt-1 bg-accent/5 w-full">
-                  <Tag className="h-3 w-3 mr-1 flex-shrink-0" />
-                  <span className="break-words">{node.area}</span>
-                </Badge>
-              )}
-            </div>
-          </Link>
-        ) : (
-          <span className={`flex items-center text-sm text-foreground w-full ${isActive || isParentOfActive ? 'font-medium' : ''}`}>
-            <span className="mr-3 text-foreground flex-shrink-0">
-              {renderNodeIcon()}
-            </span>
-            <span className="break-words">{node.label}</span>
-          </span>
-        )}
-      </div>
+    <div>
+      {node.path ? (
+        <Link to={node.path} onClick={onNavigate}>
+          <ItemContent />
+        </Link>
+      ) : (
+        <ItemContent />
+      )}
       
-      {hasChildren && (
-        <div className={`
-          ${isExpanded ? 'animate-fade-in' : 'hidden'}
-          relative ml-4 w-full
-        `}>
-          {isExpanded && (
-            <div className="absolute left-0 top-0 bottom-0 w-px bg-border"></div>
-          )}
-          <div className="pl-2 w-full">
-            {isExpanded &&
-              node.children.map((child) => (
-                <TreeItem key={child.id} node={child} level={level + 1} onNavigate={onNavigate} />
-              ))}
-          </div>
+      {hasChildren && isExpanded && (
+        <div className="mt-1">
+          {node.children!.map((child) => (
+            <TreeItem 
+              key={child.id} 
+              node={child} 
+              level={level + 1} 
+              onNavigate={onNavigate} 
+            />
+          ))}
         </div>
       )}
     </div>

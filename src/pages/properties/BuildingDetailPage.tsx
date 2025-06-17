@@ -6,17 +6,16 @@ import { useBuildingDetail } from "@/hooks/useBuildingDetail";
 import { usePropertyFromBuilding } from "@/hooks/usePropertyFromBuilding";
 import { useToast } from "@/hooks/use-toast";
 import { BuildingHeader } from "@/components/buildings/BuildingHeader";
+import { BuildingBasicInfo } from "@/components/buildings/BuildingBasicInfo";
 import { BuildingEntrances } from "@/components/buildings/BuildingEntrances";
 
 const BuildingDetailPage = () => {
-  const { city, district, property, building } = useParams();
+  const { property, building } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { toast } = useToast();
   
-  // Create proper propertyKey format to match key in mockData
-  const propertyKey = city && district && property 
-    ? `${city}/${district}/${property}`
-    : undefined;
+  // Use property directly as the key
+  const propertyKey = property;
   
   // Fetch building data
   const { data: buildingDetail, isLoading: isBuildingLoading, error: buildingError } = useBuildingDetail(propertyKey, building);
@@ -25,7 +24,7 @@ const BuildingDetailPage = () => {
   const { data: propertyDetail } = usePropertyFromBuilding(propertyKey);
 
   // Base path for apartment links
-  const basePath = `/properties/${city}/${district}/${property}/${building}`;
+  const basePath = `/properties/${property}/${building}`;
 
   useEffect(() => {
     if (buildingError) {
@@ -62,6 +61,12 @@ const BuildingDetailPage = () => {
     return (
       <div className="py-4 space-y-8">
         <BuildingHeader building={buildingDetail} propertyName={propertyDetail?.designation} />
+        <BuildingBasicInfo 
+          building={buildingDetail} 
+          propertyName={propertyDetail?.designation}
+          address={buildingDetail.name}
+          objectNumber={buildingDetail.id}
+        />
         <BuildingEntrances building={buildingDetail} basePath={basePath} />
       </div>
     );

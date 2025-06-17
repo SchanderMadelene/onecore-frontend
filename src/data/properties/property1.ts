@@ -1,12 +1,11 @@
-
 import { PropertyDetail } from "@/types/api";
 
-// Property 1 (Odenplan 5) details
+// Property 1 (Älgen 1) details
 export const property1: PropertyDetail = {
   id: "1",
   propertyObjectId: "P1",
   code: "FAST-001",
-  designation: "Odenplan 5",
+  designation: "Älgen 1",
   municipality: "Västerås",
   parish: "Lundby",
   propertyNumber: "2:145",
@@ -19,7 +18,7 @@ export const property1: PropertyDetail = {
   buildings: [
     {
       id: "B1",
-      name: "Byggnad A",
+      name: "Bellmansgatan 1A - 2C",
       type: "Flerbostadshus",
       constructionYear: 1973,
       area: 1450,
@@ -47,6 +46,65 @@ export const property1: PropertyDetail = {
           area: 85,
           rooms: 3,
           status: "Uthyrd"
+        },
+        {
+          id: "A4",
+          code: "LGH-004",
+          area: 72,
+          rooms: 3,
+          status: "Uthyrd"
+        },
+        {
+          id: "A5",
+          code: "LGH-005",
+          area: 58,
+          rooms: 2,
+          status: "Uthyrd"
+        },
+        {
+          id: "A6",
+          code: "LGH-006",
+          area: 91,
+          rooms: 4,
+          status: "Uthyrd"
+        },
+        {
+          id: "A7",
+          code: "LGH-007",
+          area: 48,
+          rooms: 1,
+          status: "Ledig"
+        },
+        {
+          id: "A8",
+          code: "LGH-008",
+          area: 67,
+          rooms: 2,
+          status: "Uthyrd"
+        },
+        {
+          id: "A9",
+          code: "LGH-009",
+          area: 82,
+          rooms: 3,
+          status: "Uthyrd"
+        }
+      ],
+      entrances: [
+        {
+          id: "E1",
+          name: "Bellmansgatan 1A",
+          apartments: ["A1", "A2", "A3"]
+        },
+        {
+          id: "E2", 
+          name: "Bellmansgatan 1B",
+          apartments: ["A4", "A5", "A6"]
+        },
+        {
+          id: "E3",
+          name: "Bellmansgatan 1C", 
+          apartments: ["A7", "A8", "A9"]
         }
       ]
     },

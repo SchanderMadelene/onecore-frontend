@@ -2,6 +2,7 @@
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { ResidenceTabsList } from "@/components/residence/tabs/ResidenceTabsList";
 import { ResidenceTabsContent } from "@/components/residence/tabs/ResidenceTabsContent";
+import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
@@ -31,6 +32,7 @@ export const ResidenceContent = ({
       case "lgh-1001":
         return mockMultipleTenants;
       case "lgh-1002":
+      case "lgh-002":
         return mockSecondHandTenants;
       default:
         return mockTenant;
@@ -39,6 +41,8 @@ export const ResidenceContent = ({
   
   return (
     <div className="w-full space-y-6">
+      <PropertyBreadcrumb />
+      
       <ResidenceBasicInfo
         residence={residenceData}
         property={property}

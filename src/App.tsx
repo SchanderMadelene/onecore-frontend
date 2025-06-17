@@ -8,7 +8,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { FeatureTogglesProvider } from "@/contexts/FeatureTogglesContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import Index from "./pages/Index";
-import PropertyPage from "./pages/properties/PropertyPage";
 import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
 import BuildingDetailPage from "./pages/properties/BuildingDetailPage";
 import ResidencePage from "./pages/properties/ResidencePage";
@@ -34,10 +33,9 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/properties" element={<AllPropertiesPage />} />
-      <Route path="/properties/:city/:district" element={<PropertyPage />} />
-      <Route path="/properties/:city/:district/:property" element={<PropertyDetailPage />} />
-      <Route path="/properties/:city/:district/:property/:building" element={<BuildingDetailPage />} />
-      <Route path="/properties/:city/:district/:property/:building/:id" element={<ResidencePage />} />
+      <Route path="/properties/:property" element={<PropertyDetailPage />} />
+      <Route path="/properties/:property/:building" element={<BuildingDetailPage />} />
+      <Route path="/properties/:property/:building/:id" element={<ResidencePage />} />
       
       <Route 
         path="/tenants/all" 
