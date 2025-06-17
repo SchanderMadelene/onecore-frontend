@@ -4,6 +4,7 @@ import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useParams } from "react-router-dom";
+import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 
 interface ResidenceBasicInfoProps {
   residence: Residence;
@@ -43,12 +44,26 @@ const requiresPestControl = (residenceId: string): boolean => {
   return residenceId === "lgh-1002";
 };
 
+// Function to check if residence has second-hand rental
+const checkSecondHandRental = (residenceId: string): boolean => {
+  // Get tenant data based on residence ID
+  switch(residenceId) {
+    case "lgh-1001":
+      return false; // Multiple tenants but not second-hand
+    case "lgh-1002":
+    case "lgh-002":
+      return mockSecondHandTenants.some(t => t.relationshipType === "secondaryTenant");
+    default:
+      return false;
+  }
+};
+
 export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceBasicInfoProps) => {
   const isMobile = useIsMobile();
   const { id } = useParams<{ id: string }>();
   
-  // Check if this is a secondary rental based on ID
-  const isSecondaryRental = id === "lgh-1002";
+  // Check if this is a secondary rental based on tenant data
+  const isSecondaryRental = checkSecondHandRental(id || "");
   const needsSpecialHandling = requiresSpecialHandling(id || "");
   const hasPestIssues = requiresPestControl(id || "");
   
