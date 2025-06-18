@@ -65,7 +65,7 @@ export const CustomerInfo = ({ customer }: CustomerInfoProps) => {
           </TabsList>
 
           <TabsContent value="kundinformation">
-            <Card className="bg-accent/50">
+            <Card>
               <CardContent className="pt-4">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
