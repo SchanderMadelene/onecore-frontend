@@ -1,84 +1,75 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PlusCircle, Search, Trash2, ChevronRight, CircleParking, Car } from "lucide-react";
+import { PlusCircle, Search, Trash2, Car } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ParkingSpaceDetail } from "./ParkingSpaceDetail";
+import { ParkingApplicationDialog } from "./ParkingApplicationDialog";
+import type { ParkingSpace } from "./types/parking";
 
-interface ParkingSpace {
-  id: string;
-  address: string;
-  area: string;
-  type: string;
-  queueType: string;
-  rent: string;
-  seekers: number;
-  publishedFrom: string;
-  publishedTo: string;
-}
-
-const demoData: ParkingSpace[] = [{
-  id: "123-123-123-0201",
-  address: "Bellmansgatan 1",
-  area: "Centrum (Områdesbegränsning)",
-  type: "Garage m el",
-  queueType: "Poängfri",
-  rent: "540kr/mån",
-  seekers: 0,
-  publishedFrom: "2024-01-01",
-  publishedTo: "2024-01-01"
-}, {
-  id: "123-123-123-0202",
-  address: "Bellmansgatan 2",
-  area: "Gryta",
-  type: "Garage m el",
-  queueType: "Poängfri",
-  rent: "540kr/mån",
-  seekers: 1,
-  publishedFrom: "2024-01-01",
-  publishedTo: "2024-01-01"
-}, {
-  id: "123-123-123-0203",
-  address: "Kungsgatan 15",
-  area: "Centrum",
-  type: "Carport",
-  queueType: "Poängfri",
-  rent: "450kr/mån",
-  seekers: 3,
-  publishedFrom: "2024-01-01",
-  publishedTo: "2024-02-01"
-}, {
-  id: "123-123-123-0204",
-  address: "Stigbergsgatan 7",
-  area: "Stigberget",
-  type: "Utomhusplats",
-  queueType: "Poängfri",
-  rent: "350kr/mån",
-  seekers: 2,
-  publishedFrom: "2024-01-15",
-  publishedTo: "2024-02-15"
-}, {
-  id: "123-123-123-0205",
-  address: "Vasagatan 22",
-  area: "Vasastaden",
-  type: "Garage m el",
-  queueType: "Poängfri",
-  rent: "595kr/mån",
-  seekers: 5,
-  publishedFrom: "2024-01-10",
-  publishedTo: "2024-02-10"
-}, {
-  id: "123-123-123-0206",
-  address: "Östra Hamngatan 11",
-  area: "Nordstan",
-  type: "Garage m el",
-  queueType: "Poängfri",
-  rent: "650kr/mån",
-  seekers: 4,
-  publishedFrom: "2024-01-05",
-  publishedTo: "2024-02-05"
-}];
+const demoData: ParkingSpace[] = [
+  {
+    id: "123-123-123-0201",
+    address: "Bellmansgatan 1",
+    area: "Centrum (Områdesbegränsning)",
+    type: "Garage m el",
+    queueType: "Poängfri",
+    rent: "540kr/mån",
+    seekers: 0,
+    publishedFrom: "2024-01-01",
+    publishedTo: "2024-01-01"
+  }, {
+    id: "123-123-123-0202",
+    address: "Bellmansgatan 2",
+    area: "Gryta",
+    type: "Garage m el",
+    queueType: "Poängfri",
+    rent: "540kr/mån",
+    seekers: 1,
+    publishedFrom: "2024-01-01",
+    publishedTo: "2024-01-01"
+  }, {
+    id: "123-123-123-0203",
+    address: "Kungsgatan 15",
+    area: "Centrum",
+    type: "Carport",
+    queueType: "Poängfri",
+    rent: "450kr/mån",
+    seekers: 3,
+    publishedFrom: "2024-01-01",
+    publishedTo: "2024-02-01"
+  }, {
+    id: "123-123-123-0204",
+    address: "Stigbergsgatan 7",
+    area: "Stigberget",
+    type: "Utomhusplats",
+    queueType: "Poängfri",
+    rent: "350kr/mån",
+    seekers: 2,
+    publishedFrom: "2024-01-15",
+    publishedTo: "2024-02-15"
+  }, {
+    id: "123-123-123-0205",
+    address: "Vasagatan 22",
+    area: "Vasastaden",
+    type: "Garage m el",
+    queueType: "Poängfri",
+    rent: "595kr/mån",
+    seekers: 5,
+    publishedFrom: "2024-01-10",
+    publishedTo: "2024-02-10"
+  }, {
+    id: "123-123-123-0206",
+    address: "Östra Hamngatan 11",
+    area: "Nordstan",
+    type: "Garage m el",
+    queueType: "Poängfri",
+    rent: "650kr/mån",
+    seekers: 4,
+    publishedFrom: "2024-01-05",
+    publishedTo: "2024-02-05"
+  }
+];
 
 export function ParkingSpacesTable() {
   return (
@@ -154,10 +145,7 @@ export function ParkingSpacesTable() {
                             <Trash2 className="h-4 w-4" />
                             <span>Ta bort</span>
                           </Button>
-                          <Button size="sm" className="flex items-center gap-1">
-                            <PlusCircle className="h-4 w-4" />
-                            <span>Ny anmälan</span>
-                          </Button>
+                          <ParkingApplicationDialog parkingSpace={space} />
                           <ParkingSpaceDetail space={space} />
                         </div>
                       </TableCell>
