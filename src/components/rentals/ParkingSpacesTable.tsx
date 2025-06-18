@@ -187,10 +187,40 @@ export function ParkingSpacesTable() {
         </TabsContent>
 
         <TabsContent value="klaraForErbjudande">
-          <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
-            <div className="text-center">
-              <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-              <p>Inga bilplatser klara för erbjudande</p>
+          <div className="flex flex-col space-y-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+              </div>
+            </div>
+
+            <div className="rounded-md border bg-card">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead className="w-[250px] whitespace-nowrap">Bilplats</TableHead>
+                    <TableHead className="whitespace-nowrap">Område</TableHead>
+                    <TableHead className="whitespace-nowrap">Bilplatstyp</TableHead>
+                    <TableHead className="whitespace-nowrap">Kötyp</TableHead>
+                    <TableHead className="whitespace-nowrap">Hyra</TableHead>
+                    <TableHead className="whitespace-nowrap">Sökande</TableHead>
+                    <TableHead className="whitespace-nowrap">Publicerad t.om</TableHead>
+                    <TableHead className="whitespace-nowrap">Publicerad fr.o.m</TableHead>
+                    <TableHead className="text-right whitespace-nowrap">Åtgärder</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                      <div className="flex flex-col items-center gap-2">
+                        <Car className="h-10 w-10 text-muted-foreground/50" />
+                        <p>Inga bilplatser klara för erbjudande</p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </div>
           </div>
         </TabsContent>
