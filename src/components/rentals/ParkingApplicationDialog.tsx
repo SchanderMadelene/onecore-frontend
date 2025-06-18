@@ -110,7 +110,7 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
             disabled={!selectedCustomer}
             className="bg-primary hover:bg-primary/90"
           >
-            Skicka anmälan
+            Lägg till
           </Button>
         </div>
       </DialogContent>
