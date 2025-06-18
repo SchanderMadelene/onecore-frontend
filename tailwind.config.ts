@@ -34,7 +34,7 @@ export default {
           foreground: "#1A1F2C",
         },
         accent: {
-          DEFAULT: "#6C87AB",
+          DEFAULT: "#64748B", // Changed from blue to neutral slate
           foreground: "#FFFFFF",
         },
         destructive: {
