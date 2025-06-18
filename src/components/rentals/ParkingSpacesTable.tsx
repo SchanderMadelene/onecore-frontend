@@ -1,5 +1,3 @@
-
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +5,7 @@ import { PlusCircle, Search, Trash2, Car } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ParkingSpaceDetail } from "./ParkingSpaceDetail";
 import { ParkingApplicationDialog } from "./ParkingApplicationDialog";
+import { PublishParkingSpacesDialog } from "./PublishParkingSpacesDialog";
 import type { ParkingSpace } from "./types/parking";
 
 const demoData: ParkingSpace[] = [
@@ -130,10 +129,7 @@ export function ParkingSpacesTable() {
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
               </div>
-              <Button variant="default" className="flex items-center gap-2">
-                <PlusCircle className="h-4 w-4" />
-                Publicera bilplatser från Xpand
-              </Button>
+              <PublishParkingSpacesDialog />
             </div>
 
             <div className="rounded-md border bg-card">
@@ -356,4 +352,3 @@ export function ParkingSpacesTable() {
     </div>
   );
 }
-
