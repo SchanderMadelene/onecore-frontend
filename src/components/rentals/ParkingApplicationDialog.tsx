@@ -64,12 +64,12 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
           <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-4xl h-[85vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>Anmäl hyresgäst för bilplats</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="flex-1 overflow-y-auto space-y-6 pr-2">
           {/* Objektsinformation */}
           <ParkingSpaceInfo parkingSpace={parkingSpace} />
 
@@ -94,23 +94,23 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
               applicationTypeError={applicationTypeError}
             />
           )}
+        </div>
 
-          {/* Åtgärder */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button 
-              variant="outline" 
-              onClick={() => setOpen(false)}
-            >
-              Avbryt
-            </Button>
-            <Button 
-              onClick={handleSubmit}
-              disabled={!selectedCustomer}
-              className="bg-primary hover:bg-primary/90"
-            >
-              Skicka anmälan
-            </Button>
-          </div>
+        {/* Åtgärder */}
+        <div className="flex justify-end gap-3 pt-4 border-t flex-shrink-0 bg-background">
+          <Button 
+            variant="outline" 
+            onClick={() => setOpen(false)}
+          >
+            Avbryt
+          </Button>
+          <Button 
+            onClick={handleSubmit}
+            disabled={!selectedCustomer}
+            className="bg-primary hover:bg-primary/90"
+          >
+            Skicka anmälan
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
