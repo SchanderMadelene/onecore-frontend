@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PlusCircle } from "lucide-react";
 import { FormWrapper } from "@/components/ui/form-wrapper";
@@ -17,7 +16,10 @@ interface ParkingSpaceToPublish {
   rentIncl: string;
   rentExcl: string;
   publications: number;
-  queueType: string;
+  queueTypes: {
+    intern: boolean;
+    poangfri: boolean;
+  };
   selected: boolean;
 }
 
@@ -31,7 +33,7 @@ const demoData: ParkingSpaceToPublish[] = [
     rentIncl: "540kr/mån (in)",
     rentExcl: "540kr/mån (ex)",
     publications: 1,
-    queueType: "Intern",
+    queueTypes: { intern: true, poangfri: false },
     selected: false
   },
   {
@@ -43,7 +45,7 @@ const demoData: ParkingSpaceToPublish[] = [
     rentIncl: "540kr/mån (in)",
     rentExcl: "540kr/mån (ex)",
     publications: 1,
-    queueType: "Intern",
+    queueTypes: { intern: true, poangfri: false },
     selected: false
   },
   {
@@ -55,7 +57,7 @@ const demoData: ParkingSpaceToPublish[] = [
     rentIncl: "540kr/mån (in)",
     rentExcl: "540kr/mån (ex)",
     publications: 1,
-    queueType: "Intern",
+    queueTypes: { intern: true, poangfri: false },
     selected: false
   },
   {
@@ -67,7 +69,7 @@ const demoData: ParkingSpaceToPublish[] = [
     rentIncl: "540kr/mån (in)",
     rentExcl: "540kr/mån (ex)",
     publications: 1,
-    queueType: "Poängfri",
+    queueTypes: { intern: false, poangfri: true },
     selected: false
   },
   {
@@ -79,7 +81,7 @@ const demoData: ParkingSpaceToPublish[] = [
     rentIncl: "540kr/mån (in)",
     rentExcl: "540kr/mån (ex)",
     publications: 1,
-    queueType: "Intern",
+    queueTypes: { intern: true, poangfri: false },
     selected: false
   }
 ];
@@ -105,9 +107,15 @@ export function PublishParkingSpacesDialog() {
     setSelectedCount(updated.filter(space => space.selected).length);
   };
 
-  const handleQueueTypeChange = (index: number, value: string) => {
+  const handleQueueTypeChange = (index: number, queueType: 'intern' | 'poangfri', checked: boolean) => {
     const updated = [...parkingSpaces];
-    updated[index] = { ...updated[index], queueType: value };
+    updated[index] = { 
+      ...updated[index], 
+      queueTypes: {
+        ...updated[index].queueTypes,
+        [queueType]: checked
+      }
+    };
     setParkingSpaces(updated);
   };
 
@@ -178,18 +186,24 @@ export function PublishParkingSpacesDialog() {
                     </TableCell>
                     <TableCell className="text-center">{space.publications}</TableCell>
                     <TableCell>
-                      <Select 
-                        value={space.queueType} 
-                        onValueChange={(value) => handleQueueTypeChange(index, value)}
-                      >
-                        <SelectTrigger className="w-[120px]">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Intern">Intern</SelectItem>
-                          <SelectItem value="Poängfri">Poängfri</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={`intern-${index}`}
+                            checked={space.queueTypes.intern}
+                            onCheckedChange={(checked) => handleQueueTypeChange(index, 'intern', !!checked)}
+                          />
+                          <label htmlFor={`intern-${index}`} className="text-sm">Intern</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id={`poangfri-${index}`}
+                            checked={space.queueTypes.poangfri}
+                            onCheckedChange={(checked) => handleQueueTypeChange(index, 'poangfri', !!checked)}
+                          />
+                          <label htmlFor={`poangfri-${index}`} className="text-sm">Poängfri</label>
+                        </div>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
