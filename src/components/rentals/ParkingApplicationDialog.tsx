@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -195,17 +196,28 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
                     {searchResults.map((customer) => (
                       <div
                         key={customer.customerNumber}
-                        className="p-3 hover:bg-accent cursor-pointer border-b last:border-b-0"
+                        className="p-4 hover:bg-accent/50 cursor-pointer border-b last:border-b-0 transition-colors"
                         onClick={() => handleCustomerSelect(customer)}
                       >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">{customer.firstName} {customer.lastName}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {customer.customerNumber} | {customer.personalNumber}
-                            </p>
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
+                              <User className="h-5 w-5 text-primary" />
+                            </div>
+                            <div>
+                              <p className="font-semibold text-base">{customer.firstName} {customer.lastName}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {customer.customerNumber} | {customer.personalNumber}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {customer.phone} | {customer.email}
+                              </p>
+                            </div>
                           </div>
-                          <Badge variant={customer.customerType === "tenant" ? "default" : "secondary"}>
+                          <Badge 
+                            variant={customer.customerType === "tenant" ? "default" : "secondary"}
+                            className="shrink-0"
+                          >
                             {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
                           </Badge>
                         </div>
