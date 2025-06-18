@@ -33,7 +33,7 @@ export const ParkingSpaceInfo = ({ parkingSpace }: ParkingSpaceInfoProps) => {
           </div>
           <div>
             <Label className="text-sm text-muted-foreground">Hyra</Label>
-            <p className="font-medium text-green-600">{parkingSpace.rent}</p>
+            <p className="font-medium">{parkingSpace.rent}</p>
           </div>
           <div>
             <Label className="text-sm text-muted-foreground">Kötyp</Label>
