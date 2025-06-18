@@ -92,6 +92,7 @@ export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDia
               notes={notes}
               onNotesChange={setNotes}
               applicationTypeError={applicationTypeError}
+              hasAreaRestriction={true} // Set to true to show the example error
             />
           )}
         </div>
