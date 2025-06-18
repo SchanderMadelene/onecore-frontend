@@ -1,4 +1,5 @@
 
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -125,14 +126,14 @@ export function ParkingSpacesTable() {
         <TabsContent value="publicerade">
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col sm:flex-row justify-between gap-4">
-              <Button variant="default" className="flex items-center gap-2">
-                <PlusCircle className="h-4 w-4" />
-                Publicera bilplatser från Xpand
-              </Button>
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
               </div>
+              <Button variant="default" className="flex items-center gap-2">
+                <PlusCircle className="h-4 w-4" />
+                Publicera bilplatser från Xpand
+              </Button>
             </div>
 
             <div className="rounded-md border bg-card">
@@ -188,7 +189,7 @@ export function ParkingSpacesTable() {
 
         <TabsContent value="klaraForErbjudande">
           <div className="flex flex-col space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between gap-4">
+            <div className="flex flex-col sm:flex-row justify-start gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
@@ -227,7 +228,7 @@ export function ParkingSpacesTable() {
 
         <TabsContent value="erbjudna">
           <div className="flex flex-col space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between gap-4">
+            <div className="flex flex-col sm:flex-row justify-start gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
@@ -278,7 +279,7 @@ export function ParkingSpacesTable() {
 
         <TabsContent value="historik">
           <div className="flex flex-col space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between gap-4">
+            <div className="flex flex-col sm:flex-row justify-start gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
@@ -316,7 +317,7 @@ export function ParkingSpacesTable() {
 
         <TabsContent value="behovAvPublicering">
           <div className="flex flex-col space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between gap-4">
+            <div className="flex flex-col sm:flex-row justify-start gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
@@ -355,3 +356,4 @@ export function ParkingSpacesTable() {
     </div>
   );
 }
+
