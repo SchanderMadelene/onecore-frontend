@@ -54,7 +54,7 @@ export const CustomerSearch = ({ onCustomerSelect, selectedCustomer }: CustomerS
               {searchResults.map((customer) => (
                 <div
                   key={customer.customerNumber}
-                  className="p-4 hover:bg-accent/50 cursor-pointer border-b last:border-b-0 transition-colors"
+                  className="p-4 hover:bg-muted/30 cursor-pointer border-b last:border-b-0 transition-colors"
                   onClick={() => handleCustomerSelect(customer)}
                 >
                   <div className="flex items-start justify-between">
