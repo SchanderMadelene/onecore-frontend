@@ -5,6 +5,7 @@ import { PlusCircle, Search, Trash2, Car } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ParkingSpaceDetail } from "./ParkingSpaceDetail";
 import { ParkingApplicationDialog } from "./ParkingApplicationDialog";
+import { DeleteListingDialog } from "./DeleteListingDialog";
 import type { ParkingSpace } from "./types/parking";
 
 const demoData: ParkingSpace[] = [
@@ -141,10 +142,7 @@ export function ParkingSpacesTable() {
                       <TableCell>{space.publishedFrom}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button variant="destructive" size="sm" className="flex items-center gap-1">
-                            <Trash2 className="h-4 w-4" />
-                            <span>Ta bort</span>
-                          </Button>
+                          <DeleteListingDialog parkingSpace={space} />
                           <ParkingApplicationDialog parkingSpace={space} />
                           <ParkingSpaceDetail space={space} />
                         </div>
