@@ -9,9 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PlusCircle, Search, User } from "lucide-react";
-import { searchCustomers, getCustomerById } from "@/data/customers";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { PlusCircle, Search, User, AlertTriangle } from "lucide-react";
+import { searchCustomers } from "@/data/customers";
 import { getMockContractsForTenant } from "@/data/contracts";
+import { useTenantValidation } from "@/hooks/useTenantValidation";
+import { useCreateInterestApplication } from "@/hooks/useCreateInterestApplication";
+import { CustomerInfoLoading } from "./CustomerInfoLoading";
+import { useToast } from "@/hooks/use-toast";
 import type { ParkingSpace, Customer } from "./types/parking";
 
 interface CreateInterestApplicationDialogProps {
@@ -24,7 +29,15 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [applicationType, setApplicationType] = useState<"Replace" | "Additional">("Additional");
   const [notes, setNotes] = useState("");
-  const [validationError, setValidationError] = useState("");
+
+  const { toast } = useToast();
+  const createApplication = useCreateInterestApplication();
+  
+  const tenantValidation = useTenantValidation(
+    selectedCustomer?.customerNumber,
+    "CENTRUM", // Mock district code
+    parkingSpace.id
+  );
 
   const searchResults = searchCustomers(searchQuery);
   const showResults = searchQuery.length >= 2 && searchResults.length > 0 && !selectedCustomer;
@@ -35,36 +48,40 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
   const handleCustomerSelect = (customer: Customer) => {
     setSelectedCustomer(customer);
     setSearchQuery(`${customer.firstName} ${customer.lastName}`);
-    
-    // Simulate validation logic from legacy component
-    if (customer.customerType === "applicant") {
-      setValidationError("Kunden saknar giltigt bostadskontrakt. Det går endast att söka bilplats med gällande och kommande bostadskontrakt");
-    } else {
-      setValidationError("");
-    }
   };
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
     if (!value.trim()) {
       setSelectedCustomer(null);
-      setValidationError("");
     }
   };
 
   const handleSubmit = () => {
     if (!selectedCustomer) return;
 
-    console.log("Intresseanmälan skapad:", {
-      parkingSpace: parkingSpace.id,
-      customer: selectedCustomer.customerNumber,
+    createApplication.mutate({
+      parkingSpaceId: parkingSpace.id,
+      customerNumber: selectedCustomer.customerNumber,
       applicationType,
       notes
+    }, {
+      onSuccess: () => {
+        toast({
+          title: "Intresseanmälan skapad",
+          description: `Anmälan för ${selectedCustomer.firstName} ${selectedCustomer.lastName} har skapats`,
+        });
+        resetForm();
+        setOpen(false);
+      },
+      onError: (error) => {
+        toast({
+          title: "Fel",
+          description: error.message || "Kunde inte skapa intresseanmälan",
+          variant: "destructive",
+        });
+      }
     });
-
-    // Reset form and close
-    resetForm();
-    setOpen(false);
   };
 
   const resetForm = () => {
@@ -72,7 +89,6 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
     setSearchQuery("");
     setApplicationType("Additional");
     setNotes("");
-    setValidationError("");
   };
 
   const getContractTypeName = (type: string) => {
@@ -109,8 +125,23 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
     }).format(amount);
   };
 
-  const hasValidationIssues = selectedCustomer?.customerType === "applicant" || validationError;
-  const canSubmit = selectedCustomer && !validationError;
+  const getValidationMessage = (result: string) => {
+    switch (result) {
+      case 'has-at-least-one-parking-space':
+        return 'Kunden har redan bilplats. Välj "Byte" eller "Hyra flera"';
+      case 'needs-replace-by-property':
+        return 'Kunden måste byta bilplats eftersom denna bilplats ligger i ett begränsat område eller fastighet.';
+      case 'needs-replace-by-residential-area':
+        return 'Kunden måste byta bilplats eftersom denna bilplats ligger i ett begränsat område eller fastighet.';
+      case 'no-contract':
+        return 'Kunden saknar giltigt bostadskontrakt. Det går endast att söka bilplats med gällande och kommande bostadskontrakt';
+      default:
+        return '';
+    }
+  };
+
+  const hasValidationIssues = tenantValidation.data?.validationResult !== 'ok';
+  const canSubmit = selectedCustomer && tenantValidation.data?.validationResult !== 'no-contract' && !createApplication.isPending;
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => {
@@ -208,82 +239,104 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
 
           {/* Vald kund med flikar */}
           {selectedCustomer && (
-            <Tabs defaultValue="kundinformation" className="w-full">
-              <TabsList className="mb-4">
-                <TabsTrigger value="kundinformation">
-                  Kundinformation
-                </TabsTrigger>
-                <TabsTrigger value="kontrakt">
-                  Kontrakt ({customerContracts.length})
-                </TabsTrigger>
-              </TabsList>
+            <>
+              {tenantValidation.isLoading && <CustomerInfoLoading />}
+              
+              {tenantValidation.data && (
+                <Tabs defaultValue="kundinformation" className="w-full">
+                  <TabsList className="mb-4">
+                    <TabsTrigger value="kundinformation">
+                      Kundinformation
+                    </TabsTrigger>
+                    <TabsTrigger value="kontrakt">
+                      Kontrakt ({customerContracts.length})
+                    </TabsTrigger>
+                  </TabsList>
 
-              <TabsContent value="kundinformation">
-                <Card className="bg-accent/50">
-                  <CardContent className="pt-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
-                        <User className="h-5 w-5 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-medium">{selectedCustomer.firstName} {selectedCustomer.lastName}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {selectedCustomer.customerNumber} | {selectedCustomer.personalNumber}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {selectedCustomer.phone} | {selectedCustomer.email}
-                        </p>
-                      </div>
-                      <Badge variant={selectedCustomer.customerType === "tenant" ? "default" : "secondary"}>
-                        {selectedCustomer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                      </Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+                  <TabsContent value="kundinformation">
+                    <Card className="bg-accent/50">
+                      <CardContent className="pt-4">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
+                            <User className="h-5 w-5 text-primary" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium">{selectedCustomer.firstName} {selectedCustomer.lastName}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {selectedCustomer.customerNumber} | {selectedCustomer.personalNumber}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {selectedCustomer.phone} | {selectedCustomer.email}
+                            </p>
+                            <p className="text-sm font-medium text-primary">
+                              Köpoäng: {tenantValidation.data.queuePoints}
+                            </p>
+                          </div>
+                          <Badge variant={selectedCustomer.customerType === "tenant" ? "default" : "secondary"}>
+                            {selectedCustomer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
 
-              <TabsContent value="kontrakt">
-                {customerContracts.length > 0 ? (
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Typ</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Adress</TableHead>
-                          <TableHead>Hyra</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {customerContracts.map((contract) => (
-                          <TableRow key={contract.id}>
-                            <TableCell>{getContractTypeName(contract.type)}</TableCell>
-                            <TableCell>{getStatusBadge(contract.status)}</TableCell>
-                            <TableCell>{contract.objectName}</TableCell>
-                            <TableCell>{formatCurrency(contract.rent)}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <p>Inga kontrakt hittades för denna kund</p>
-                  </div>
-                )}
-              </TabsContent>
-            </Tabs>
+                  <TabsContent value="kontrakt">
+                    {customerContracts.length > 0 ? (
+                      <div className="rounded-md border">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Typ</TableHead>
+                              <TableHead>Status</TableHead>
+                              <TableHead>Adress</TableHead>
+                              <TableHead>Hyra</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {customerContracts.map((contract) => (
+                              <TableRow key={contract.id}>
+                                <TableCell>{getContractTypeName(contract.type)}</TableCell>
+                                <TableCell>{getStatusBadge(contract.status)}</TableCell>
+                                <TableCell>{contract.objectName}</TableCell>
+                                <TableCell>{formatCurrency(contract.rent)}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <p>Inga kontrakt hittades för denna kund</p>
+                      </div>
+                    )}
+                  </TabsContent>
+                </Tabs>
+              )}
+            </>
           )}
 
           {/* Validationsfelmeddelanden */}
-          {validationError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-sm text-red-600">{validationError}</p>
-            </div>
+          {tenantValidation.data && hasValidationIssues && (
+            <Alert variant="destructive">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                {getValidationMessage(tenantValidation.data.validationResult)}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Områdesvarning */}
+          {tenantValidation.data && !tenantValidation.data.hasValidContract && (
+            <Alert>
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                Observera att kunden saknar boendekontrakt i området för parkeringsplatsen
+              </AlertDescription>
+            </Alert>
           )}
 
           {/* Ärendetyp - endast synlig när kund är vald och har valideringsproblem */}
-          {selectedCustomer && hasValidationIssues && (
+          {tenantValidation.data && hasValidationIssues && tenantValidation.data.validationResult !== 'no-contract' && (
             <div className="space-y-3">
               <Label>Ärendetyp</Label>
               <RadioGroup 
@@ -322,6 +375,7 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
             <Button 
               variant="outline" 
               onClick={() => setOpen(false)}
+              disabled={createApplication.isPending}
             >
               Avbryt
             </Button>
@@ -330,7 +384,7 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
               disabled={!canSubmit}
               className="bg-primary hover:bg-primary/90"
             >
-              Lägg till
+              {createApplication.isPending ? "Skapar..." : "Lägg till"}
             </Button>
           </div>
         </div>
