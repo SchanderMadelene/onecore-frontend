@@ -17,6 +17,9 @@ export interface TenantValidation {
   queuePoints: number;
   hasValidContract: boolean;
   parkingSpaceCount: number;
+  hasContractInDistrict: boolean;
+  hasUpcomingContractInDistrict: boolean;
+  isAboutToLeave: boolean;
 }
 
 export const useTenantValidation = (
@@ -52,27 +55,48 @@ export const useTenantValidation = (
       const parkingContracts = contracts.filter(c => c.type === "parking");
       const activeHousingContracts = housingContracts.filter(c => c.status === "active");
 
+      // Mock district validation - simulate checking if customer has contract in same district
+      const hasContractInDistrict = activeHousingContracts.length > 0;
+      const hasUpcomingContractInDistrict = false; // Mock - no upcoming contracts in our data
+      const isAboutToLeave = customer.customerType === "tenant" && Math.random() < 0.1; // 10% chance mock
+
       let validationResult: ValidationResult = 'ok';
 
       // Check if customer is just an applicant
       if (customer.customerType === "applicant") {
         validationResult = 'no-contract';
       }
-      // Check if customer has parking spaces
-      else if (parkingContracts.length > 0) {
-        validationResult = 'has-at-least-one-parking-space';
-      }
-      // Check if customer has valid housing contract in district
+      // Check if customer has no valid housing contract
       else if (activeHousingContracts.length === 0) {
         validationResult = 'no-contract';
+      }
+      // Check if customer is about to leave (has termination notice)
+      else if (isAboutToLeave) {
+        validationResult = 'no-contract';
+      }
+      // Check if customer has parking spaces already
+      else if (parkingContracts.length > 0) {
+        // In legacy system, this triggers the need for application type selection
+        validationResult = 'has-at-least-one-parking-space';
+      }
+      // Mock property restrictions - simulate restricted areas/properties
+      else if (rentalObjectCode.includes('RESTRICTED') || Math.random() < 0.2) {
+        validationResult = 'needs-replace-by-property';
+      }
+      // Mock residential area restrictions
+      else if (!hasContractInDistrict && Math.random() < 0.3) {
+        validationResult = 'needs-replace-by-residential-area';
       }
 
       setData({
         customer,
         validationResult,
-        queuePoints: Math.floor(Math.random() * 500) + 100, // Mock queue points
+        queuePoints: Math.floor(Math.random() * 500) + 100,
         hasValidContract: activeHousingContracts.length > 0,
-        parkingSpaceCount: parkingContracts.length
+        parkingSpaceCount: parkingContracts.length,
+        hasContractInDistrict,
+        hasUpcomingContractInDistrict,
+        isAboutToLeave
       });
       
       setIsLoading(false);

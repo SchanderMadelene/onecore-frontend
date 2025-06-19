@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -125,7 +124,8 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
     }).format(amount);
   };
 
-  const getValidationMessage = (result: string) => {
+  // Legacy-compatible validation message function
+  const getValidationMessage = (result: ValidationResult) => {
     switch (result) {
       case 'has-at-least-one-parking-space':
         return 'Kunden har redan bilplats. Välj "Byte" eller "Hyra flera"';
@@ -134,14 +134,31 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
       case 'needs-replace-by-residential-area':
         return 'Kunden måste byta bilplats eftersom denna bilplats ligger i ett begränsat område eller fastighet.';
       case 'no-contract':
-        return 'Kunden saknar giltigt bostadskontrakt. Det går endast att söka bilplats med gällande och kommande bostadskontrakt';
+        return 'Kunden saknar kontrakt i detta område eller denna fastighet.';
       default:
         return '';
     }
   };
 
+  // Legacy-compatible function to check if tenant has valid contract for district
+  const tenantHasValidContractForTheDistrict = () => {
+    if (!tenantValidation.data) return false;
+    return tenantValidation.data.hasContractInDistrict || tenantValidation.data.hasUpcomingContractInDistrict;
+  };
+
+  // Legacy-compatible function to render district mismatch warning
+  const renderWarningIfDistrictsMismatch = () => {
+    if (!tenantValidation.data || tenantHasValidContractForTheDistrict()) {
+      return null;
+    }
+    return 'Observera att kunden saknar boendekontrakt i området för parkeringsplatsen';
+  };
+
   const hasValidationIssues = tenantValidation.data?.validationResult !== 'ok';
-  const canSubmit = selectedCustomer && tenantValidation.data?.validationResult !== 'no-contract' && !createApplication.isPending;
+  const canSubmit = selectedCustomer && 
+                   tenantValidation.data?.validationResult !== 'no-contract' && 
+                   tenantHasValidContractForTheDistrict() &&
+                   !createApplication.isPending;
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => {
@@ -312,30 +329,40 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
                   </TabsContent>
                 </Tabs>
               )}
+
+              {/* Legacy-compatible validation messages */}
+              {tenantValidation.data && hasValidationIssues && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {getValidationMessage(tenantValidation.data.validationResult)}
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {/* Legacy-compatible "about to leave" warning */}
+              {tenantValidation.data && tenantValidation.data.isAboutToLeave && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    Kunden saknar giltigt bostadskontrakt. Det går endast att söka bilplats med gällande och kommande bostadskontrakt
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {/* Legacy-compatible district mismatch warning */}
+              {tenantValidation.data && renderWarningIfDistrictsMismatch() && (
+                <Alert>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {renderWarningIfDistrictsMismatch()}
+                  </AlertDescription>
+                </Alert>
+              )}
             </>
           )}
 
-          {/* Validationsfelmeddelanden */}
-          {tenantValidation.data && hasValidationIssues && (
-            <Alert variant="destructive">
-              <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>
-                {getValidationMessage(tenantValidation.data.validationResult)}
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* Områdesvarning */}
-          {tenantValidation.data && !tenantValidation.data.hasValidContract && (
-            <Alert>
-              <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>
-                Observera att kunden saknar boendekontrakt i området för parkeringsplatsen
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* Ärendetyp - endast synlig när kund är vald och har valideringsproblem */}
+          {/* Legacy-compatible ärendetyp - only visible when validation issues exist */}
           {tenantValidation.data && hasValidationIssues && tenantValidation.data.validationResult !== 'no-contract' && (
             <div className="space-y-3">
               <Label>Ärendetyp</Label>
@@ -345,11 +372,19 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
                 className="flex gap-6"
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="Replace" id="replace" />
+                  <RadioGroupItem 
+                    value="Replace" 
+                    id="replace"
+                    disabled={tenantValidation.data?.validationResult === 'no-contract'}
+                  />
                   <Label htmlFor="replace">Byte</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="Additional" id="additional" />
+                  <RadioGroupItem 
+                    value="Additional" 
+                    id="additional"
+                    disabled={tenantValidation.data?.validationResult === 'no-contract'}
+                  />
                   <Label htmlFor="additional">Hyra flera</Label>
                 </div>
               </RadioGroup>
@@ -370,7 +405,7 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
             </div>
           )}
 
-          {/* Åtgärder */}
+          {/* Åtgärder - Legacy-compatible submit logic */}
           <div className="flex justify-end gap-3 pt-4 border-t">
             <Button 
               variant="outline" 
