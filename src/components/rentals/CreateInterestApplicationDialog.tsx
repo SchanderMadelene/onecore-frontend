@@ -102,9 +102,11 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
           <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Ny intresseanmälan, {parkingSpace.address}</DialogTitle>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-xl font-semibold text-left">
+            Ny intresseanmälan, {parkingSpace.address}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -144,23 +146,24 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
               )}
             </>
           )}
+        </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button 
-              variant="outline" 
-              onClick={() => setOpen(false)}
-              disabled={createApplication.isPending}
-            >
-              Avbryt
-            </Button>
-            <Button 
-              onClick={handleSubmit}
-              disabled={!canSubmit}
-              className="bg-primary hover:bg-primary/90"
-            >
-              {createApplication.isPending ? "Skapar..." : "Lägg till"}
-            </Button>
-          </div>
+        <div className="flex justify-between gap-4 pt-6 border-t">
+          <Button 
+            variant="outline" 
+            onClick={() => setOpen(false)}
+            disabled={createApplication.isPending}
+            className="flex-1"
+          >
+            Avbryt
+          </Button>
+          <Button 
+            onClick={handleSubmit}
+            disabled={!canSubmit}
+            className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            {createApplication.isPending ? "Skapar..." : "Lägg till"}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
