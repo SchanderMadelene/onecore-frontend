@@ -15,8 +15,9 @@ export const ApplicationTypeSelection = ({
   tenantValidation 
 }: ApplicationTypeSelectionProps) => {
   const hasValidationIssues = tenantValidation.validationResult !== 'ok';
+  const isNoContract = tenantValidation.validationResult === 'no-contract';
   
-  if (!hasValidationIssues || tenantValidation.validationResult === 'no-contract') {
+  if (!hasValidationIssues || isNoContract) {
     return null;
   }
 
@@ -32,7 +33,7 @@ export const ApplicationTypeSelection = ({
           <RadioGroupItem 
             value="Replace" 
             id="replace"
-            disabled={tenantValidation.validationResult === 'no-contract'}
+            disabled={isNoContract}
           />
           <Label htmlFor="replace">Byte</Label>
         </div>
@@ -40,7 +41,7 @@ export const ApplicationTypeSelection = ({
           <RadioGroupItem 
             value="Additional" 
             id="additional"
-            disabled={tenantValidation.validationResult === 'no-contract'}
+            disabled={isNoContract}
           />
           <Label htmlFor="additional">Hyra flera</Label>
         </div>
