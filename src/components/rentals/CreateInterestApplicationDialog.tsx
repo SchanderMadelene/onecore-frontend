@@ -102,8 +102,8 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
           <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-6">
-        <DialogHeader className="pb-4">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-left">
             Ny intresseanmälan, {parkingSpace.address}
           </DialogTitle>
