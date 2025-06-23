@@ -1,6 +1,7 @@
 
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Car, Home, Archive, Key } from "lucide-react";
@@ -10,6 +11,7 @@ import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 const RentalsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const { features } = useFeatureToggles();
 
   // Bestäm vilken flik som ska vara default baserat på vilka som är aktiverade
@@ -20,12 +22,18 @@ const RentalsPage = () => {
     return "bostad"; // fallback
   };
 
+  const currentTab = searchParams.get("tab") || getDefaultTab();
+
+  const handleTabChange = (value: string) => {
+    setSearchParams({ tab: value });
+  };
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
         <h1 className="text-3xl font-bold mb-6">Uthyrning</h1>
         
-        <Tabs defaultValue={getDefaultTab()} className="w-full">
+        <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="grid grid-cols-3 mb-6">
             {features.showRentalsHousing && (
               <TabsTrigger value="bostad" className="flex items-center gap-2">

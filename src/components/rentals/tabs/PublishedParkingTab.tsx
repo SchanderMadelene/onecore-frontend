@@ -2,14 +2,14 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Trash2, Download } from "lucide-react";
-import { ParkingSpaceDetail } from "../ParkingSpaceDetail";
+import { Search, ChevronRight } from "lucide-react";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { PublishParkingSpacesDialog } from "../PublishParkingSpacesDialog";
 import { SyncParkingSpacesDialog } from "../SyncParkingSpacesDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
 import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
 import { Loader2, Car } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const PublishedParkingTab = () => {
   const { data: publishedSpaces, isLoading, error } = useParkingSpaceListingsByType('published');
@@ -108,7 +108,11 @@ export const PublishedParkingTab = () => {
                   <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <DeleteListingDialog parkingSpace={space} />
                     <ParkingApplicationDialog parkingSpace={space} />
-                    <ParkingSpaceDetail space={space} />
+                    <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
+                      <Button variant="ghost" size="icon">
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </Link>
                   </div>
                 </TableCell>
               </TableRow>

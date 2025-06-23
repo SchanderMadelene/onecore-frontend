@@ -17,6 +17,7 @@ import DesignSystemPage from "./pages/design-system/DesignSystemPage";
 import NotFound from "./pages/NotFound";
 import AllPropertiesPage from "./pages/properties/AllPropertiesPage";
 import RentalsPage from "./pages/rentals/RentalsPage";
+import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 
 const ProtectedRoute = ({ children, isEnabled }: { children: React.ReactNode, isEnabled: boolean }) => {
@@ -58,6 +59,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <RentalsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/parking/:parkingSpaceId" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <ParkingSpaceDetailPage />
           </ProtectedRoute>
         } 
       />

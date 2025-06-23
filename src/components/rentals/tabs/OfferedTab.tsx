@@ -1,10 +1,11 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Car, Loader2 } from "lucide-react";
-import { ParkingSpaceDetail } from "../ParkingSpaceDetail";
+import { Button } from "@/components/ui/button";
+import { Car, Loader2, ChevronRight } from "lucide-react";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
 import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
+import { Link } from "react-router-dom";
 
 export const OfferedTab = () => {
   const { data: offeredSpaces, isLoading, error } = useParkingSpaceListingsByType('offered');
@@ -69,7 +70,11 @@ export const OfferedTab = () => {
                 <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <DeleteListingDialog parkingSpace={space} />
                   <ParkingApplicationDialog parkingSpace={space} />
-                  <ParkingSpaceDetail space={space} />
+                  <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=erbjudna" }}>
+                    <Button variant="ghost" size="icon">
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
                 </div>
               </TableCell>
             </TableRow>

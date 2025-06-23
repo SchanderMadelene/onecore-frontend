@@ -1,5 +1,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSearchParams } from "react-router-dom";
 import { PublishedParkingTab } from "./tabs/PublishedParkingTab";
 import { ReadyForOfferTab } from "./tabs/ReadyForOfferTab";
 import { OfferedTab } from "./tabs/OfferedTab";
@@ -7,9 +8,18 @@ import { HistoryTab } from "./tabs/HistoryTab";
 import { NeedsRepublishTab } from "./tabs/NeedsRepublishTab";
 
 export function ParkingSpacesTable() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentSubTab = searchParams.get("subtab") || "publicerade";
+
+  const handleSubTabChange = (value: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("subtab", value);
+    setSearchParams(newParams);
+  };
+
   return (
     <div className="w-full space-y-8">
-      <Tabs defaultValue="publicerade" className="w-full">
+      <Tabs value={currentSubTab} onValueChange={handleSubTabChange} className="w-full">
         <TabsList className="grid grid-cols-5 mb-8">
           <TabsTrigger value="publicerade">
             Publicerade

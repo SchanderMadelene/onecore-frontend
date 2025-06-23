@@ -1,11 +1,11 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Car, X, Loader2 } from "lucide-react";
-import { ParkingSpaceDetail } from "../ParkingSpaceDetail";
+import { Car, X, Loader2, ChevronRight } from "lucide-react";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
 import { useCloseParkingSpaceListing } from "@/hooks/useParkingSpaceActions";
+import { Link } from "react-router-dom";
 
 export const NeedsRepublishTab = () => {
   const { data: needsRepublishSpaces, isLoading, error } = useParkingSpaceListingsByType('needs-republish');
@@ -82,7 +82,11 @@ export const NeedsRepublishTab = () => {
                     <span>{closeListing.isPending ? "Stänger..." : "Stäng listning"}</span>
                   </Button>
                   <ParkingApplicationDialog parkingSpace={space} />
-                  <ParkingSpaceDetail space={space} />
+                  <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=behovAvPublicering" }}>
+                    <Button variant="ghost" size="icon">
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
                 </div>
               </TableCell>
             </TableRow>
