@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Loader2 } from "lucide-react";
-import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useParkingSpaceListings, type ParkingSpaceForPublishing } from "@/hooks/useParkingSpaceListings";
 import { useToast } from "@/hooks/use-toast";
 import { DialogContentHeader } from "./publish-dialog/DialogContentHeader";
@@ -52,7 +51,8 @@ export const PublishParkingSpacesDialog = () => {
     setParkingSpaces(updated);
   };
 
-  const handlePublish = async () => {
+  const handlePublish = async (e: React.FormEvent) => {
+    e.preventDefault();
     const selectedSpaces = parkingSpaces.filter(space => space.selected);
     
     setIsPublishing(true);
@@ -102,45 +102,43 @@ export const PublishParkingSpacesDialog = () => {
           <DialogTitle>Publicera bilplatser från Xpand</DialogTitle>
         </DialogHeader>
 
-        <FormWrapper onSubmit={handlePublish}>
-          <div className="space-y-6">
-            <DialogContentHeader selectedCount={selectedCount} />
+        <form onSubmit={handlePublish} className="space-y-6">
+          <DialogContentHeader selectedCount={selectedCount} />
 
-            <ParkingSpacesTable 
-              parkingSpaces={parkingSpaces}
-              selectedCount={selectedCount}
-              isLoading={isLoading}
-              onSelectAll={handleSelectAll}
-              onSelectSpace={handleSelectSpace}
-              onQueueTypeChange={handleQueueTypeChange}
-            />
+          <ParkingSpacesTable 
+            parkingSpaces={parkingSpaces}
+            selectedCount={selectedCount}
+            isLoading={isLoading}
+            onSelectAll={handleSelectAll}
+            onSelectSpace={handleSelectSpace}
+            onQueueTypeChange={handleQueueTypeChange}
+          />
 
-            <div className="flex justify-between gap-3 pt-4 border-t">
-              <Button 
-                type="button"
-                variant="outline" 
-                onClick={handleCancel}
-                disabled={isPublishing}
-              >
-                Avbryt
-              </Button>
-              <Button 
-                type="submit"
-                disabled={selectedCount === 0 || isLoading || isPublishing}
-                className="flex items-center gap-2"
-              >
-                {isPublishing ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Publicerar...
-                  </>
-                ) : (
-                  `Publicera bilplatser (${selectedCount})`
-                )}
-              </Button>
-            </div>
+          <div className="flex justify-between gap-3 pt-4 border-t">
+            <Button 
+              type="button"
+              variant="outline" 
+              onClick={handleCancel}
+              disabled={isPublishing}
+            >
+              Avbryt
+            </Button>
+            <Button 
+              type="submit"
+              disabled={selectedCount === 0 || isLoading || isPublishing}
+              className="flex items-center gap-2"
+            >
+              {isPublishing ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Publicerar...
+                </>
+              ) : (
+                `Publicera bilplatser (${selectedCount})`
+              )}
+            </Button>
           </div>
-        </FormWrapper>
+        </form>
       </DialogContent>
     </Dialog>
   );
