@@ -3,7 +3,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Car, Home, Archive } from "lucide-react";
+import { Car, Home, Archive, Key } from "lucide-react";
 import { ParkingSpacesTable } from "@/components/rentals/ParkingSpacesTable";
 import { HousingSpacesTable } from "@/components/rentals/HousingSpacesTable";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
