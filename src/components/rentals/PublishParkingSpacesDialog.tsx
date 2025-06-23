@@ -2,12 +2,12 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
 import { PlusCircle, Loader2 } from "lucide-react";
 import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useParkingSpaceListings, type ParkingSpaceForPublishing } from "@/hooks/useParkingSpaceListings";
 import { useToast } from "@/hooks/use-toast";
+import { DialogContentHeader } from "./publish-dialog/DialogContentHeader";
+import { ParkingSpacesTable } from "./publish-dialog/ParkingSpacesTable";
 
 export const PublishParkingSpacesDialog = () => {
   const [open, setOpen] = useState(false);
@@ -104,99 +104,16 @@ export const PublishParkingSpacesDialog = () => {
 
         <FormWrapper onSubmit={handlePublish}>
           <div className="space-y-6">
-            {/* Beskrivande text som i legacy-koden */}
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Nedan listas alla bilplatser som behöver ompubliceras från Xpand och som ej är spärrade.
-              </p>
-              <div className="flex justify-between items-center">
-                <p className="text-sm font-medium">
-                  Välj bilplatser att publicera ({selectedCount} valda)
-                </p>
-              </div>
-            </div>
+            <DialogContentHeader selectedCount={selectedCount} />
 
-            {isLoading ? (
-              <div className="flex items-center justify-center p-8">
-                <Loader2 className="h-6 w-6 animate-spin mr-2" />
-                <span>Hämtar bilplatser...</span>
-              </div>
-            ) : (
-              <div className="border rounded-md">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-12">
-                        <Checkbox 
-                          checked={selectedCount === parkingSpaces.length && selectedCount > 0}
-                          onCheckedChange={handleSelectAll}
-                        />
-                      </TableHead>
-                      <TableHead>Bilplats</TableHead>
-                      <TableHead>Område</TableHead>
-                      <TableHead>Distrikt</TableHead>
-                      <TableHead>Typ</TableHead>
-                      <TableHead>Hyra inkl.</TableHead>
-                      <TableHead>Hyra exkl.</TableHead>
-                      <TableHead className="text-center">Publiceringar</TableHead>
-                      <TableHead>Kötyp</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {parkingSpaces.map((space, index) => (
-                      <TableRow key={space.id}>
-                        <TableCell>
-                          <Checkbox 
-                            checked={space.selected}
-                            onCheckedChange={(checked) => handleSelectSpace(index, !!checked)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <div>
-                            <div className="font-medium">{space.address}</div>
-                            <div className="text-sm text-muted-foreground">{space.id}</div>
-                          </div>
-                        </TableCell>
-                        <TableCell>{space.area}</TableCell>
-                        <TableCell>{space.district}</TableCell>
-                        <TableCell>{space.type}</TableCell>
-                        <TableCell>{space.rentIncl}</TableCell>
-                        <TableCell>{space.rentExcl}</TableCell>
-                        <TableCell className="text-center">{space.publications}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-col gap-2">
-                            <div className="flex items-center space-x-2">
-                              <Checkbox 
-                                id={`intern-${index}`}
-                                checked={space.queueTypes.intern}
-                                onCheckedChange={(checked) => handleQueueTypeChange(index, 'intern', !!checked)}
-                              />
-                              <label htmlFor={`intern-${index}`} className="text-sm">Intern</label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <Checkbox 
-                                id={`external-${index}`}
-                                checked={space.queueTypes.external}
-                                onCheckedChange={(checked) => handleQueueTypeChange(index, 'external', !!checked)}
-                              />
-                              <label htmlFor={`external-${index}`} className="text-sm">Extern</label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <Checkbox 
-                                id={`poangfri-${index}`}
-                                checked={space.queueTypes.poangfri}
-                                onCheckedChange={(checked) => handleQueueTypeChange(index, 'poangfri', !!checked)}
-                              />
-                              <label htmlFor={`poangfri-${index}`} className="text-sm">Poängfri</label>
-                            </div>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
+            <ParkingSpacesTable 
+              parkingSpaces={parkingSpaces}
+              selectedCount={selectedCount}
+              isLoading={isLoading}
+              onSelectAll={handleSelectAll}
+              onSelectSpace={handleSelectSpace}
+              onQueueTypeChange={handleQueueTypeChange}
+            />
 
             <div className="flex justify-between gap-3 pt-4 border-t">
               <Button 
