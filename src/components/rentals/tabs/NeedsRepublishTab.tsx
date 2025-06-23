@@ -1,44 +1,30 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Car, X } from "lucide-react";
+import { Car, X, Loader2 } from "lucide-react";
 import { ParkingSpaceDetail } from "../ParkingSpaceDetail";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
-import type { ParkingSpace } from "../types/parking";
-
-// Mock data för demonstration
-const needsRepublishData: ParkingSpace[] = [
-  {
-    id: "P-008",
-    address: "Bellmansgatan 7",
-    area: "Centrum",
-    type: "Garage m el",
-    queueType: "Kronologisk",
-    rent: "620 kr/mån",
-    seekers: 0,
-    publishedFrom: "2024-01-01",
-    publishedTo: "2024-01-31"
-  },
-  {
-    id: "P-009",
-    address: "Gustavsbergsvägen 14",
-    area: "Gryta",
-    type: "Carport",
-    queueType: "Poängfri",
-    rent: "425 kr/mån",
-    seekers: 1,
-    publishedFrom: "2024-01-05",
-    publishedTo: "2024-02-05"
-  }
-];
+import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
+import { useCloseParkingSpaceListing } from "@/hooks/useParkingSpaceActions";
 
 export const NeedsRepublishTab = () => {
+  const { data: needsRepublishSpaces, isLoading, error } = useParkingSpaceListingsByType('needs-republish');
+  const closeListing = useCloseParkingSpaceListing();
+
   const handleCloseListing = (listingId: string) => {
-    console.log("Stäng listning:", listingId);
-    // Här skulle vi anropa API för att stänga listningen
+    closeListing.mutate(listingId);
   };
 
-  if (needsRepublishData.length === 0) {
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[200px]">
+        <Loader2 className="h-6 w-6 animate-spin mr-2" />
+        <span>Hämtar bilplatser som behöver publiceras...</span>
+      </div>
+    );
+  }
+
+  if (error || !needsRepublishSpaces || needsRepublishSpaces.length === 0) {
     return (
       <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
         <div className="text-center">
@@ -66,7 +52,7 @@ export const NeedsRepublishTab = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {needsRepublishData.map(space => (
+          {needsRepublishSpaces.map(space => (
             <TableRow key={space.id} className="group">
               <TableCell>
                 <div className="font-medium">{space.address}</div>
@@ -89,10 +75,11 @@ export const NeedsRepublishTab = () => {
                     variant="destructive" 
                     size="sm" 
                     onClick={() => handleCloseListing(space.id)}
+                    disabled={closeListing.isPending}
                     className="flex items-center gap-1"
                   >
                     <X className="h-4 w-4" />
-                    <span>Stäng listning</span>
+                    <span>{closeListing.isPending ? "Stänger..." : "Stäng listning"}</span>
                   </Button>
                   <ParkingApplicationDialog parkingSpace={space} />
                   <ParkingSpaceDetail space={space} />

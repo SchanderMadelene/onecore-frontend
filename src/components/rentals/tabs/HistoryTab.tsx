@@ -1,50 +1,24 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Car } from "lucide-react";
+import { Car, Loader2 } from "lucide-react";
 import { ParkingSpaceDetail } from "../ParkingSpaceDetail";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
-import type { ParkingSpace } from "../types/parking";
-
-// Mock data för demonstration
-const historyData: ParkingSpace[] = [
-  {
-    id: "P-005",
-    address: "Stigbergsgatan 15",
-    area: "Stigberget",
-    type: "Carport",
-    queueType: "Kronologisk",
-    rent: "475 kr/mån",
-    seekers: 12,
-    publishedFrom: "2023-12-01",
-    publishedTo: "2023-12-31"
-  },
-  {
-    id: "P-006",
-    address: "Drottninggatan 33",
-    area: "Centrum",
-    type: "Garage m el",
-    queueType: "Poängfri",
-    rent: "580 kr/mån",
-    seekers: 7,
-    publishedFrom: "2023-11-15",
-    publishedTo: "2023-12-15"
-  },
-  {
-    id: "P-007",
-    address: "Munkgatan 9",
-    area: "Malmaberg",
-    type: "Utomhusplats",
-    queueType: "Kronologisk",
-    rent: "320 kr/mån",
-    seekers: 4,
-    publishedFrom: "2023-10-20",
-    publishedTo: "2023-11-20"
-  }
-];
+import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
 
 export const HistoryTab = () => {
-  if (historyData.length === 0) {
+  const { data: historySpaces, isLoading, error } = useParkingSpaceListingsByType('history');
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[200px]">
+        <Loader2 className="h-6 w-6 animate-spin mr-2" />
+        <span>Hämtar historik...</span>
+      </div>
+    );
+  }
+
+  if (error || !historySpaces || historySpaces.length === 0) {
     return (
       <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
         <div className="text-center">
@@ -72,7 +46,7 @@ export const HistoryTab = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {historyData.map(space => (
+          {historySpaces.map(space => (
             <TableRow key={space.id} className="group">
               <TableCell>
                 <div className="font-medium">{space.address}</div>

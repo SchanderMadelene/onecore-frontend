@@ -1,46 +1,24 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Car } from "lucide-react";
+import { Car, Loader2 } from "lucide-react";
 import { ParkingSpaceDetail } from "../ParkingSpaceDetail";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
-import type { ParkingSpace } from "../types/parking";
-
-// Utökad typ för erbjudna bilplatser med sista svarsdatum
-interface OfferedParkingSpace extends ParkingSpace {
-  lastResponseDate: string;
-}
-
-// Mock data för demonstration
-const offeredData: OfferedParkingSpace[] = [
-  {
-    id: "P-003",
-    address: "Vasagatan 22",
-    area: "Vasastaden",
-    type: "Garage m el",
-    queueType: "Kronologisk",
-    rent: "595 kr/mån",
-    seekers: 5,
-    publishedFrom: "2024-01-10",
-    publishedTo: "2024-02-10",
-    lastResponseDate: "2024-02-25"
-  },
-  {
-    id: "P-004",
-    address: "Högloftsvägen 8",
-    area: "Gryta",
-    type: "Utomhusplats",
-    queueType: "Poängfri",
-    rent: "350 kr/mån",
-    seekers: 2,
-    publishedFrom: "2024-01-25",
-    publishedTo: "2024-02-25",
-    lastResponseDate: "2024-02-28"
-  }
-];
+import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
 
 export const OfferedTab = () => {
-  if (offeredData.length === 0) {
+  const { data: offeredSpaces, isLoading, error } = useParkingSpaceListingsByType('offered');
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[200px]">
+        <Loader2 className="h-6 w-6 animate-spin mr-2" />
+        <span>Hämtar erbjudna bilplatser...</span>
+      </div>
+    );
+  }
+
+  if (error || !offeredSpaces || offeredSpaces.length === 0) {
     return (
       <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
         <div className="text-center">
@@ -69,7 +47,7 @@ export const OfferedTab = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {offeredData.map(space => (
+          {offeredSpaces.map(space => (
             <TableRow key={space.id} className="group">
               <TableCell>
                 <div className="font-medium">{space.address}</div>
@@ -86,7 +64,7 @@ export const OfferedTab = () => {
               </TableCell>
               <TableCell>{space.publishedTo}</TableCell>
               <TableCell>{space.publishedFrom}</TableCell>
-              <TableCell>{space.lastResponseDate}</TableCell>
+              <TableCell>{space.offer?.expiresAt || ""}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <DeleteListingDialog parkingSpace={space} />
