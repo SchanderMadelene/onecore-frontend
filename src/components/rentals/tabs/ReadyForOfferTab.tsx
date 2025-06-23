@@ -8,7 +8,30 @@ import { DeleteListingDialog } from "../DeleteListingDialog";
 import type { ParkingSpace } from "../types/parking";
 
 // Mock data för demonstration - i verkligheten skulle detta komma från API
-const readyForOfferData: ParkingSpace[] = [];
+const readyForOfferData: ParkingSpace[] = [
+  {
+    id: "P-001",
+    address: "Stenhamravägen 12",
+    area: "Centrum",
+    type: "Garage m el",
+    queueType: "Kronologisk",
+    rent: "650 kr/mån",
+    seekers: 8,
+    publishedFrom: "2024-01-15",
+    publishedTo: "2024-02-15"
+  },
+  {
+    id: "P-002", 
+    address: "Karlsgatan 5",
+    area: "Malmaberg",
+    type: "Carport",
+    queueType: "Poängfri",
+    rent: "450 kr/mån",
+    seekers: 3,
+    publishedFrom: "2024-01-20",
+    publishedTo: "2024-02-20"
+  }
+];
 
 export const ReadyForOfferTab = () => {
   if (readyForOfferData.length === 0) {

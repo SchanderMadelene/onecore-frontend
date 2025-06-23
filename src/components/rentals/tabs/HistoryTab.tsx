@@ -7,7 +7,41 @@ import { DeleteListingDialog } from "../DeleteListingDialog";
 import type { ParkingSpace } from "../types/parking";
 
 // Mock data för demonstration
-const historyData: ParkingSpace[] = [];
+const historyData: ParkingSpace[] = [
+  {
+    id: "P-005",
+    address: "Stigbergsgatan 15",
+    area: "Stigberget",
+    type: "Carport",
+    queueType: "Kronologisk",
+    rent: "475 kr/mån",
+    seekers: 12,
+    publishedFrom: "2023-12-01",
+    publishedTo: "2023-12-31"
+  },
+  {
+    id: "P-006",
+    address: "Drottninggatan 33",
+    area: "Centrum",
+    type: "Garage m el",
+    queueType: "Poängfri",
+    rent: "580 kr/mån",
+    seekers: 7,
+    publishedFrom: "2023-11-15",
+    publishedTo: "2023-12-15"
+  },
+  {
+    id: "P-007",
+    address: "Munkgatan 9",
+    area: "Malmaberg",
+    type: "Utomhusplats",
+    queueType: "Kronologisk",
+    rent: "320 kr/mån",
+    seekers: 4,
+    publishedFrom: "2023-10-20",
+    publishedTo: "2023-11-20"
+  }
+];
 
 export const HistoryTab = () => {
   if (historyData.length === 0) {

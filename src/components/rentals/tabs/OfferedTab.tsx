@@ -12,7 +12,32 @@ interface OfferedParkingSpace extends ParkingSpace {
 }
 
 // Mock data för demonstration
-const offeredData: OfferedParkingSpace[] = [];
+const offeredData: OfferedParkingSpace[] = [
+  {
+    id: "P-003",
+    address: "Vasagatan 22",
+    area: "Vasastaden",
+    type: "Garage m el",
+    queueType: "Kronologisk",
+    rent: "595 kr/mån",
+    seekers: 5,
+    publishedFrom: "2024-01-10",
+    publishedTo: "2024-02-10",
+    lastResponseDate: "2024-02-25"
+  },
+  {
+    id: "P-004",
+    address: "Högloftsvägen 8",
+    area: "Gryta",
+    type: "Utomhusplats",
+    queueType: "Poängfri",
+    rent: "350 kr/mån",
+    seekers: 2,
+    publishedFrom: "2024-01-25",
+    publishedTo: "2024-02-25",
+    lastResponseDate: "2024-02-28"
+  }
+];
 
 export const OfferedTab = () => {
   if (offeredData.length === 0) {

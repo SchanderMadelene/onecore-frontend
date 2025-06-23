@@ -7,7 +7,30 @@ import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import type { ParkingSpace } from "../types/parking";
 
 // Mock data för demonstration
-const needsRepublishData: ParkingSpace[] = [];
+const needsRepublishData: ParkingSpace[] = [
+  {
+    id: "P-008",
+    address: "Bellmansgatan 7",
+    area: "Centrum",
+    type: "Garage m el",
+    queueType: "Kronologisk",
+    rent: "620 kr/mån",
+    seekers: 0,
+    publishedFrom: "2024-01-01",
+    publishedTo: "2024-01-31"
+  },
+  {
+    id: "P-009",
+    address: "Gustavsbergsvägen 14",
+    area: "Gryta",
+    type: "Carport",
+    queueType: "Poängfri",
+    rent: "425 kr/mån",
+    seekers: 1,
+    publishedFrom: "2024-01-05",
+    publishedTo: "2024-02-05"
+  }
+];
 
 export const NeedsRepublishTab = () => {
   const handleCloseListing = (listingId: string) => {
