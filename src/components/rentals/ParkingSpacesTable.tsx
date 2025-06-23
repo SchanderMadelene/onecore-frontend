@@ -7,7 +7,6 @@ import { ParkingSpaceDetail } from "./ParkingSpaceDetail";
 import { ParkingApplicationDialog } from "./ParkingApplicationDialog";
 import { DeleteListingDialog } from "./DeleteListingDialog";
 import { PublishParkingSpacesDialog } from "./PublishParkingSpacesDialog";
-import { ParkingSpaceNotesDialog } from "./ParkingSpaceNotesDialog";
 import type { ParkingSpace } from "./types/parking";
 
 const demoData: ParkingSpace[] = [
@@ -141,7 +140,6 @@ export function ParkingSpacesTable() {
                       <TableCell>{space.publishedFrom}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ParkingSpaceNotesDialog parkingSpace={space} />
                           <DeleteListingDialog parkingSpace={space} />
                           <ParkingApplicationDialog parkingSpace={space} />
                           <ParkingSpaceDetail space={space} />
