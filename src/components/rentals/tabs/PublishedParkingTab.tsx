@@ -39,13 +39,13 @@ export const PublishedParkingTab = () => {
     return (
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col sm:flex-row justify-between gap-4">
-          <div className="flex gap-2">
-            <PublishParkingSpacesDialog />
-            <SyncParkingSpacesDialog />
-          </div>
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+          </div>
+          <div className="flex gap-2">
+            <PublishParkingSpacesDialog />
+            <SyncParkingSpacesDialog />
           </div>
         </div>
         <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
@@ -61,13 +61,13 @@ export const PublishedParkingTab = () => {
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <div className="flex gap-2">
-          <PublishParkingSpacesDialog />
-          <SyncParkingSpacesDialog />
-        </div>
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+        </div>
+        <div className="flex gap-2">
+          <PublishParkingSpacesDialog />
+          <SyncParkingSpacesDialog />
         </div>
       </div>
 
