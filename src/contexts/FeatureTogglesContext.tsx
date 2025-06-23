@@ -24,6 +24,10 @@ interface FeatureToggles {
   showTenantKeys: boolean;
   showTenantEvents: boolean;
   showTenantDocuments: boolean;
+  // Rentals sections
+  showRentalsHousing: boolean;
+  showRentalsParking: boolean;
+  showRentalsStorage: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -54,6 +58,10 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenantKeys: false,
   showTenantEvents: false,
   showTenantDocuments: false,
+  // Rentals sections
+  showRentalsHousing: false,
+  showRentalsParking: false,
+  showRentalsStorage: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
@@ -91,6 +99,13 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
         newFeatures.showProperties = false;
         newFeatures.showBuildings = false;
         newFeatures.showApartments = false;
+      } else if (feature === 'showRentals' && !prev.showRentals) {
+        newFeatures.showRentals = true;
+      } else if (feature === 'showRentals' && prev.showRentals) {
+        newFeatures.showRentals = false;
+        newFeatures.showRentalsHousing = false;
+        newFeatures.showRentalsParking = false;
+        newFeatures.showRentalsStorage = false;
       } else {
         newFeatures[feature] = !prev[feature];
       }
