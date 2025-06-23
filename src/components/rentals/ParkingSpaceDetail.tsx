@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { ChevronRight, ArrowLeft, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,6 @@ import { useCreateOffer } from "@/hooks/useOfferActions";
 import { ApplicantActions } from "./ApplicantActions";
 import { OfferActions } from "./OfferActions";
 import { ParkingApplicationDialog } from "./ParkingApplicationDialog";
-import { ParkingSpaceComments } from "./ParkingSpaceComments";
 import { useToast } from "@/hooks/use-toast";
 import type { ParkingSpace } from "./types/parking";
 
@@ -379,8 +379,6 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
                     </div>
                   </section>
                 </div>
-
-                <ParkingSpaceComments parkingSpaceId={space.id} />
               </div>
             </ScrollArea>
           </div>
