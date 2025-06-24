@@ -1,4 +1,3 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -77,6 +76,10 @@ export function HousingSpacesTable() {
         <TabsContent value="publicerade">
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col sm:flex-row justify-between gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input placeholder="Sök bostad..." className="pl-9 w-full sm:w-[300px]" />
+              </div>
               <div className="flex gap-2">
                 <Button 
                   variant="outline" 
@@ -86,10 +89,6 @@ export function HousingSpacesTable() {
                   <UserPlus className="h-4 w-4" />
                   Skapa sökandeprofil
                 </Button>
-              </div>
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Sök bostad..." className="pl-9 w-full sm:w-[300px]" />
               </div>
             </div>
 
