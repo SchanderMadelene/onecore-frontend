@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
@@ -16,6 +15,7 @@ import { OfferActions } from "@/components/rentals/OfferActions";
 import { ParkingApplicationDialog } from "@/components/rentals/ParkingApplicationDialog";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { Notes } from "@/components/shared/Notes";
 
 const ParkingSpaceDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -425,6 +425,19 @@ const ParkingSpaceDetailPage = () => {
               </div>
             </section>
           </div>
+
+          {/* Ny sektion för noteringar */}
+          <section>
+            <Notes
+              entityType="parkingSpace"
+              entityId={parkingSpaceId || ""}
+              title="Noteringar för bilplats"
+              placeholder="Skriv en notering om denna bilplats..."
+              emptyMessage="Inga noteringar har lagts till för denna bilplats ännu."
+              categories={["Underhåll", "Klagomål", "Allmänt", "Uthyrning"]}
+              showCategory={true}
+            />
+          </section>
         </div>
       </div>
     </PageLayout>
