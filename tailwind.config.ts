@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -34,7 +33,7 @@ export default {
           foreground: "#1A1F2C",
         },
         accent: {
-          DEFAULT: "#6C87AB",
+          DEFAULT: "#8B9499",
           foreground: "#FFFFFF",
         },
         destructive: {
