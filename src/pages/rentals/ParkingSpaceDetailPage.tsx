@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
@@ -14,6 +13,7 @@ import { useCreateOffer } from "@/hooks/useOfferActions";
 import { ApplicantActions } from "@/components/rentals/ApplicantActions";
 import { OfferActions } from "@/components/rentals/OfferActions";
 import { ParkingApplicationDialog } from "@/components/rentals/ParkingApplicationDialog";
+import { ParkingSpaceNotes } from "@/components/rentals/ParkingSpaceNotes";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
@@ -370,8 +370,8 @@ const ParkingSpaceDetailPage = () => {
             </section>
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <section>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <section className="lg:col-span-2">
               <h3 className="text-lg font-semibold mb-4">Objektsinformation</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1">
@@ -410,20 +410,24 @@ const ParkingSpaceDetailPage = () => {
               </div>
             </section>
 
-            <section>
-              <h3 className="text-lg font-semibold mb-4">
-                Översiktskarta
-              </h3>
-              <div className="border rounded-lg overflow-hidden">
-                <AspectRatio ratio={16/9}>
-                  <img
-                    src="/lovable-uploads/f737d3ef-60f9-4e0f-a979-12d80d6f4efe.png"
-                    alt="Översiktskarta för bilplats"
-                    className="w-full h-full object-cover"
-                  />
-                </AspectRatio>
-              </div>
-            </section>
+            <div className="space-y-8">
+              <section>
+                <h3 className="text-lg font-semibold mb-4">
+                  Översiktskarta
+                </h3>
+                <div className="border rounded-lg overflow-hidden">
+                  <AspectRatio ratio={16/9}>
+                    <img
+                      src="/lovable-uploads/f737d3ef-60f9-4e0f-a979-12d80d6f4efe.png"
+                      alt="Översiktskarta för bilplats"
+                      className="w-full h-full object-cover"
+                    />
+                  </AspectRatio>
+                </div>
+              </section>
+
+              <ParkingSpaceNotes parkingSpaceId={parkingSpaceId} />
+            </div>
           </div>
         </div>
       </div>
