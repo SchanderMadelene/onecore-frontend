@@ -11,6 +11,13 @@ interface CustomerInformationProps {
 }
 
 export const CustomerInformation = ({ customer, tenantValidation }: CustomerInformationProps) => {
+  const badge = {
+    label: customer.customerType === "tenant" ? "Hyresgäst" : "Sökande",
+    variant: customer.customerType === "tenant" ? "default" : "secondary"
+  } as const;
+
+  const fullName = `${customer.firstName} ${customer.lastName}`;
+
   return (
     <Card className="bg-muted/30 border-muted">
       <CardContent className="p-4">
@@ -21,26 +28,34 @@ export const CustomerInformation = ({ customer, tenantValidation }: CustomerInfo
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2 mb-2">
               <h3 className="font-semibold text-foreground text-lg">
-                {customer.firstName} {customer.lastName}
+                {fullName}
               </h3>
-              <Badge variant={customer.customerType === "tenant" ? "default" : "secondary"}>
-                {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+              <Badge variant={badge.variant}>
+                {badge.label}
               </Badge>
             </div>
             
             <div className="space-y-1 text-sm">
-              <p className="text-foreground">
-                <span className="font-medium">Kundnummer:</span> {customer.customerNumber}
-              </p>
-              <p className="text-foreground">
-                <span className="font-medium">Personnummer:</span> {customer.personalNumber}
-              </p>
-              <p className="text-foreground">
-                <span className="font-medium">Telefon:</span> {customer.phone}
-              </p>
-              <p className="text-foreground">
-                <span className="font-medium">E-post:</span> {customer.email}
-              </p>
+              {customer.customerNumber && (
+                <p className="text-foreground">
+                  <span className="font-medium">Kundnummer:</span> {customer.customerNumber}
+                </p>
+              )}
+              {customer.personalNumber && (
+                <p className="text-foreground">
+                  <span className="font-medium">Personnummer:</span> {customer.personalNumber}
+                </p>
+              )}
+              {customer.phone && (
+                <p className="text-foreground">
+                  <span className="font-medium">Telefon:</span> {customer.phone}
+                </p>
+              )}
+              {customer.email && (
+                <p className="text-foreground">
+                  <span className="font-medium">E-post:</span> {customer.email}
+                </p>
+              )}
               {tenantValidation.queuePoints && (
                 <p className="text-foreground">
                   <span className="font-medium">Köpoäng:</span> {tenantValidation.queuePoints}
