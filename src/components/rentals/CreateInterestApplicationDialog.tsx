@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useTenantValidation } from "@/hooks/useTenantValidation";
 import { useCreateInterestApplication } from "@/hooks/useCreateInterestApplication";
 import { CustomerInfoLoading } from "./CustomerInfoLoading";
@@ -47,7 +48,8 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (!selectedCustomer) return;
 
     createApplication.mutate({
@@ -102,14 +104,14 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
           <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl max-h-[90vh] p-0">
+        <DialogHeader className="p-6 pb-0">
           <DialogTitle className="text-xl font-semibold text-left">
             Ny intresseanmälan, {parkingSpace.address}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <FormWrapper onSubmit={handleSubmit} maxHeight="70vh">
           <ObjectInformation parkingSpace={parkingSpace} />
 
           <CustomerSearch 
@@ -146,25 +148,26 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
               )}
             </>
           )}
-        </div>
 
-        <div className="flex justify-between gap-4 pt-6 border-t">
-          <Button 
-            variant="outline" 
-            onClick={() => setOpen(false)}
-            disabled={createApplication.isPending}
-            className="flex-1"
-          >
-            Avbryt
-          </Button>
-          <Button 
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
-          >
-            {createApplication.isPending ? "Skapar..." : "Lägg till"}
-          </Button>
-        </div>
+          <div className="flex justify-between gap-4 pt-4 border-t border-border">
+            <Button 
+              variant="outline" 
+              type="button"
+              onClick={() => setOpen(false)}
+              disabled={createApplication.isPending}
+              className="flex-1"
+            >
+              Avbryt
+            </Button>
+            <Button 
+              type="submit"
+              disabled={!canSubmit}
+              className="flex-1"
+            >
+              {createApplication.isPending ? "Skapar..." : "Lägg till"}
+            </Button>
+          </div>
+        </FormWrapper>
       </DialogContent>
     </Dialog>
   );
