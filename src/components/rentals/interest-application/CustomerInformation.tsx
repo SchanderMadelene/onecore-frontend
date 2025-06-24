@@ -41,9 +41,9 @@ export const CustomerInformation = ({ customer, tenantValidation }: CustomerInfo
               <p className="text-foreground">
                 <span className="font-medium">E-post:</span> {customer.email}
               </p>
-              {tenantValidation.queuePosition && (
+              {tenantValidation.queuePoints && (
                 <p className="text-foreground">
-                  <span className="font-medium">Köpoäng:</span> {tenantValidation.queuePosition}
+                  <span className="font-medium">Köpoäng:</span> {tenantValidation.queuePoints}
                 </p>
               )}
             </div>
