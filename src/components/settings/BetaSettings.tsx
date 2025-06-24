@@ -1,8 +1,7 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 export function BetaSettings() {
@@ -316,6 +315,56 @@ export function BetaSettings() {
                 <p className="text-sm text-muted-foreground">Aktivera uthyrningsfunktioner</p>
               </div>
               <Switch id="rentals" checked={features.showRentals} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showRentals')} />
+            </div>
+
+            <div className="pl-6 space-y-3 border-l">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <Home className="h-4 w-4" />
+                    <Label htmlFor="rentals-housing">Bostad</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa bostadsuthyrning</p>
+                </div>
+                <Switch 
+                  id="rentals-housing" 
+                  checked={features.showRentalsHousing} 
+                  disabled={!features.showRentals || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showRentalsHousing')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <Car className="h-4 w-4" />
+                    <Label htmlFor="rentals-parking">Bilplats</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa bilplatsuthyrning</p>
+                </div>
+                <Switch 
+                  id="rentals-parking" 
+                  checked={features.showRentalsParking} 
+                  disabled={!features.showRentals || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showRentalsParking')} 
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <Archive className="h-4 w-4" />
+                    <Label htmlFor="rentals-storage">Förråd</Label>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Visa förrådsuthyrning</p>
+                </div>
+                <Switch 
+                  id="rentals-storage" 
+                  checked={features.showRentalsStorage} 
+                  disabled={!features.showRentals || !features.showNavigation}
+                  onCheckedChange={() => handleFeatureToggle('showRentalsStorage')} 
+                />
+              </div>
             </div>
 
             <div className="flex items-center justify-between">

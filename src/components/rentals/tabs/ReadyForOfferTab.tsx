@@ -1,41 +1,25 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ChevronRight } from "lucide-react";
+import { Search, Car, Loader2, ChevronRight } from "lucide-react";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
-import { PublishParkingSpacesDialog } from "../PublishParkingSpacesDialog";
-import { SyncParkingSpacesDialog } from "../SyncParkingSpacesDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
 import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
-import { Loader2, Car } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export const PublishedParkingTab = () => {
-  const { data: publishedSpaces, isLoading, error } = useParkingSpaceListingsByType('published');
+export const ReadyForOfferTab = () => {
+  const { data: readyForOfferSpaces, isLoading, error } = useParkingSpaceListingsByType('ready-for-offer');
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[200px]">
         <Loader2 className="h-6 w-6 animate-spin mr-2" />
-        <span>Hämtar publicerade bilplatser...</span>
+        <span>Hämtar bilplatser klara för erbjudande...</span>
       </div>
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
-        <div className="text-center">
-          <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-          <p>Kunde inte hämta bilplatser</p>
-          <p className="text-sm mt-2">Kontrollera din anslutning och försök igen</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!publishedSpaces || publishedSpaces.length === 0) {
+  if (error || !readyForOfferSpaces || readyForOfferSpaces.length === 0) {
     return (
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -43,15 +27,11 @@ export const PublishedParkingTab = () => {
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
           </div>
-          <div className="flex gap-2">
-            <PublishParkingSpacesDialog />
-            <SyncParkingSpacesDialog />
-          </div>
         </div>
         <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
           <div className="text-center">
             <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-            <p>Inga publicerade bilplatser</p>
+            <p>Inga bilplatser klara för erbjudande</p>
           </div>
         </div>
       </div>
@@ -64,10 +44,6 @@ export const PublishedParkingTab = () => {
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
-        </div>
-        <div className="flex gap-2">
-          <PublishParkingSpacesDialog />
-          <SyncParkingSpacesDialog />
         </div>
       </div>
 
@@ -87,7 +63,7 @@ export const PublishedParkingTab = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {publishedSpaces.map(space => (
+            {readyForOfferSpaces.map(space => (
               <TableRow key={space.id} className="group">
                 <TableCell>
                   <div className="font-medium">{space.address}</div>
@@ -108,7 +84,7 @@ export const PublishedParkingTab = () => {
                   <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <DeleteListingDialog parkingSpace={space} />
                     <ParkingApplicationDialog parkingSpace={space} />
-                    <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
+                    <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=klaraForErbjudande" }}>
                       <Button variant="ghost" size="icon">
                         <ChevronRight className="h-4 w-4" />
                       </Button>
