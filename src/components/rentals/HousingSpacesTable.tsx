@@ -1,10 +1,10 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PlusCircle, Search, Trash2, Home } from "lucide-react";
+import { PlusCircle, Search, Trash2, Home, UserPlus } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HousingSpaceDetail } from "./HousingSpaceDetail";
+import { useNavigate } from "react-router-dom";
 import type { HousingSpace } from "./types/housing";
 
 const demoData: HousingSpace[] = [{
@@ -46,6 +46,12 @@ const demoData: HousingSpace[] = [{
 }];
 
 export function HousingSpacesTable() {
+  const navigate = useNavigate();
+
+  const handleCreateProfile = () => {
+    navigate('/rentals/residence-profile');
+  };
+
   return (
     <div className="w-full space-y-8">
       <Tabs defaultValue="publicerade" className="w-full">
@@ -70,10 +76,20 @@ export function HousingSpacesTable() {
         <TabsContent value="publicerade">
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col sm:flex-row justify-between gap-4">
-              <Button variant="default" className="flex items-center gap-2">
-                <PlusCircle className="h-4 w-4" />
-                Publicera bostäder från Xpand
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="default" className="flex items-center gap-2">
+                  <PlusCircle className="h-4 w-4" />
+                  Publicera bostäder från Xpand
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex items-center gap-2"
+                  onClick={handleCreateProfile}
+                >
+                  <UserPlus className="h-4 w-4" />
+                  Skapa sökandeprofil
+                </Button>
+              </div>
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Sök bostad..." className="pl-9 w-full sm:w-[300px]" />
