@@ -1,3 +1,4 @@
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -134,7 +135,7 @@ export function HousingSpacesTable() {
                             <span>Ta bort</span>
                           </Button>
                           <Button size="sm" className="flex items-center gap-1">
-                            <PlusCircle className="h-4 w-4" />
+                            <UserPlus className="h-4 w-4" />
                             <span>Ny anmälan</span>
                           </Button>
                           <HousingSpaceDetail space={space} />
