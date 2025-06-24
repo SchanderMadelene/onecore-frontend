@@ -16,6 +16,8 @@ export const CustomerInformation = ({ customer, tenantValidation }: CustomerInfo
     variant: customer.customerType === "tenant" ? "default" : "secondary"
   } as const;
 
+  const fullName = `${customer.firstName} ${customer.lastName}`;
+
   return (
     <Card className="bg-muted/30 border-muted">
       <CardContent className="p-4">
@@ -26,7 +28,7 @@ export const CustomerInformation = ({ customer, tenantValidation }: CustomerInfo
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2 mb-2">
               <h3 className="font-semibold text-foreground text-lg">
-                {customer.fullName}
+                {fullName}
               </h3>
               <Badge variant={badge.variant}>
                 {badge.label}
