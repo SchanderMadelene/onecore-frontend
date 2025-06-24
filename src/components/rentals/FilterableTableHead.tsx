@@ -1,15 +1,16 @@
 
 import { useState } from "react";
 import { TableHead } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Filter, X } from "lucide-react";
+import { Filter, X, Check } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
 interface FilterableTableHeadProps {
   children: React.ReactNode;
   onFilter?: (value: string) => void;
   filterValue?: string;
+  filterOptions?: string[];
   placeholder?: string;
   className?: string;
 }
@@ -18,19 +19,18 @@ export const FilterableTableHead = ({
   children, 
   onFilter, 
   filterValue = "", 
+  filterOptions = [],
   placeholder = "Filtrera...",
   className 
 }: FilterableTableHeadProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [localValue, setLocalValue] = useState(filterValue);
 
-  const handleApplyFilter = () => {
-    onFilter?.(localValue);
+  const handleSelect = (value: string) => {
+    onFilter?.(value === filterValue ? "" : value);
     setIsOpen(false);
   };
 
-  const handleClearFilter = () => {
-    setLocalValue("");
+  const handleClear = () => {
     onFilter?.("");
     setIsOpen(false);
   };
@@ -52,32 +52,41 @@ export const FilterableTableHead = ({
                 <Filter className="h-3 w-3" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-64 p-3" align="start">
-              <div className="space-y-3">
-                <div className="font-medium text-sm">Filtrera {children?.toString().toLowerCase()}</div>
-                <Input
-                  placeholder={placeholder}
-                  value={localValue}
-                  onChange={(e) => setLocalValue(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleApplyFilter();
-                    }
-                    if (e.key === 'Escape') {
-                      setIsOpen(false);
-                    }
-                  }}
-                  autoFocus
-                />
-                <div className="flex gap-2">
-                  <Button size="sm" onClick={handleApplyFilter} className="flex-1">
-                    Filtrera
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={handleClearFilter}>
-                    <X className="h-3 w-3" />
-                  </Button>
-                </div>
-              </div>
+            <PopoverContent className="w-64 p-0" align="start">
+              <Command>
+                <CommandInput placeholder={placeholder} />
+                <CommandList>
+                  <CommandEmpty>Inga alternativ hittades.</CommandEmpty>
+                  <CommandGroup>
+                    {filterOptions.map((option) => (
+                      <CommandItem
+                        key={option}
+                        value={option}
+                        onSelect={() => handleSelect(option)}
+                        className="flex items-center justify-between"
+                      >
+                        <span>{option}</span>
+                        {filterValue === option && (
+                          <Check className="h-4 w-4" />
+                        )}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+                {filterValue && (
+                  <div className="border-t p-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={handleClear}
+                      className="w-full"
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Rensa filter
+                    </Button>
+                  </div>
+                )}
+              </Command>
             </PopoverContent>
           </Popover>
         )}

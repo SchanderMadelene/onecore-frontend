@@ -36,6 +36,17 @@ export const ReadyForOfferTab = () => {
     });
   }, [readyForOfferSpaces, filters]);
 
+  const filterOptions = useMemo(() => {
+    if (!readyForOfferSpaces) return { addresses: [], areas: [], types: [], queueTypes: [] };
+    
+    return {
+      addresses: [...new Set(readyForOfferSpaces.map(space => space.address))].sort(),
+      areas: [...new Set(readyForOfferSpaces.map(space => space.area))].sort(),
+      types: [...new Set(readyForOfferSpaces.map(space => space.type))].sort(),
+      queueTypes: [...new Set(readyForOfferSpaces.map(space => space.queueType))].sort(),
+    };
+  }, [readyForOfferSpaces]);
+
   const handleFilterChange = (field: keyof typeof filters) => (value: string) => {
     setFilters(prev => ({ ...prev, [field]: value }));
   };
@@ -85,7 +96,8 @@ export const ReadyForOfferTab = () => {
                 className="w-[250px] whitespace-nowrap"
                 onFilter={handleFilterChange('address')}
                 filterValue={filters.address}
-                placeholder="Filtrera på adress..."
+                filterOptions={filterOptions.addresses}
+                placeholder="Sök adress..."
               >
                 Bilplats
               </FilterableTableHead>
@@ -93,7 +105,8 @@ export const ReadyForOfferTab = () => {
                 className="whitespace-nowrap"
                 onFilter={handleFilterChange('area')}
                 filterValue={filters.area}
-                placeholder="Filtrera på område..."
+                filterOptions={filterOptions.areas}
+                placeholder="Sök område..."
               >
                 Område
               </FilterableTableHead>
@@ -101,7 +114,8 @@ export const ReadyForOfferTab = () => {
                 className="whitespace-nowrap"
                 onFilter={handleFilterChange('type')}
                 filterValue={filters.type}
-                placeholder="Filtrera på typ..."
+                filterOptions={filterOptions.types}
+                placeholder="Sök typ..."
               >
                 Bilplatstyp
               </FilterableTableHead>
@@ -109,7 +123,8 @@ export const ReadyForOfferTab = () => {
                 className="whitespace-nowrap"
                 onFilter={handleFilterChange('queueType')}
                 filterValue={filters.queueType}
-                placeholder="Filtrera på kötyp..."
+                filterOptions={filterOptions.queueTypes}
+                placeholder="Sök kötyp..."
               >
                 Kötyp
               </FilterableTableHead>

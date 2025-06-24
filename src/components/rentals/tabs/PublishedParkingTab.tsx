@@ -39,6 +39,17 @@ export const PublishedParkingTab = () => {
     });
   }, [publishedSpaces, filters]);
 
+  const filterOptions = useMemo(() => {
+    if (!publishedSpaces) return { addresses: [], areas: [], types: [], queueTypes: [] };
+    
+    return {
+      addresses: [...new Set(publishedSpaces.map(space => space.address))].sort(),
+      areas: [...new Set(publishedSpaces.map(space => space.area))].sort(),
+      types: [...new Set(publishedSpaces.map(space => space.type))].sort(),
+      queueTypes: [...new Set(publishedSpaces.map(space => space.queueType))].sort(),
+    };
+  }, [publishedSpaces]);
+
   const handleFilterChange = (field: keyof typeof filters) => (value: string) => {
     setFilters(prev => ({ ...prev, [field]: value }));
   };
@@ -108,7 +119,8 @@ export const PublishedParkingTab = () => {
                 className="w-[250px] whitespace-nowrap"
                 onFilter={handleFilterChange('address')}
                 filterValue={filters.address}
-                placeholder="Filtrera på adress..."
+                filterOptions={filterOptions.addresses}
+                placeholder="Sök adress..."
               >
                 Bilplats
               </FilterableTableHead>
@@ -116,7 +128,8 @@ export const PublishedParkingTab = () => {
                 className="whitespace-nowrap"
                 onFilter={handleFilterChange('area')}
                 filterValue={filters.area}
-                placeholder="Filtrera på område..."
+                filterOptions={filterOptions.areas}
+                placeholder="Sök område..."
               >
                 Område
               </FilterableTableHead>
@@ -124,7 +137,8 @@ export const PublishedParkingTab = () => {
                 className="whitespace-nowrap"
                 onFilter={handleFilterChange('type')}
                 filterValue={filters.type}
-                placeholder="Filtrera på typ..."
+                filterOptions={filterOptions.types}
+                placeholder="Sök typ..."
               >
                 Bilplatstyp
               </FilterableTableHead>
@@ -132,7 +146,8 @@ export const PublishedParkingTab = () => {
                 className="whitespace-nowrap"
                 onFilter={handleFilterChange('queueType')}
                 filterValue={filters.queueType}
-                placeholder="Filtrera på kötyp..."
+                filterOptions={filterOptions.queueTypes}
+                placeholder="Sök kötyp..."
               >
                 Kötyp
               </FilterableTableHead>
