@@ -1,10 +1,12 @@
 
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
 import { CustomerInfo } from "./form/CustomerInfo";
 import { HousingTypeSection } from "./form/HousingTypeSection";
 import { ReviewStatusSection } from "./form/ReviewStatusSection";
 import { HousingReferenceComment } from "./form/HousingReferenceComment";
+import { CustomerReference } from "./form/CustomerReference";
 import type { ContactSearchData, ProfileFormData } from "./types";
 import { toast } from "sonner";
 
@@ -20,6 +22,7 @@ const getFormDefaults = (): ProfileFormData => ({
     phone: '',
     reviewStatus: 'PENDING',
     reasonRejected: '',
+    expiresAt: undefined,
   },
 });
 
@@ -37,27 +40,41 @@ export function ProfileForm({ contact }: ProfileFormProps) {
     toast.success("Boendeprofilen har sparats");
   };
 
-  return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-      <CustomerInfo contact={contact} />
-      
-      <div className="border-t pt-6">
-        <HousingTypeSection form={form} />
-      </div>
-      
-      <div className="border-t pt-6">
-        <ReviewStatusSection form={form} />
-      </div>
-      
-      <div className="border-t pt-6">
-        <HousingReferenceComment form={form} />
-      </div>
+  // Mock data för CustomerReference - i verkligheten skulle detta komma från backend
+  const mockReferenceData = {
+    customerReferenceReceivedAt: new Date('2024-01-15'),
+    housingReferenceUpdatedAt: new Date('2024-01-10'),
+    updatedBy: 'Anna Andersson',
+    expiresAt: undefined,
+  };
 
-      <div className="flex justify-center pt-6">
-        <Button type="submit" size="lg">
-          Spara/uppdatera boendereferens
-        </Button>
-      </div>
-    </form>
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <CustomerInfo contact={contact} />
+        
+        <div className="border-t pt-6">
+          <HousingTypeSection form={form} />
+        </div>
+        
+        <div className="border-t pt-6">
+          <ReviewStatusSection form={form} />
+        </div>
+        
+        <div className="border-t pt-6">
+          <CustomerReference {...mockReferenceData} />
+        </div>
+        
+        <div className="border-t pt-6">
+          <HousingReferenceComment form={form} />
+        </div>
+
+        <div className="flex justify-center pt-6">
+          <Button type="submit" size="lg">
+            Spara/uppdatera boendereferens
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }
