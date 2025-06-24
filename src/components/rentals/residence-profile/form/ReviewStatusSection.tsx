@@ -3,9 +3,9 @@ import { UseFormReturn } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { CheckCircle, XCircle, Clock, Phone, Shield } from "lucide-react";
 import type { ProfileFormData, ReviewStatus, RejectedReason } from "../types";
+import { housingFieldMatrix } from "../model/conditional";
 
 interface ReviewStatusSectionProps {
   form: UseFormReturn<ProfileFormData>;
@@ -27,9 +27,19 @@ const rejectedReasonOptions: { value: RejectedReason; label: string }[] = [
 ];
 
 export function ReviewStatusSection({ form }: ReviewStatusSectionProps) {
-  const { register, watch, setValue } = form;
+  const { watch, setValue } = form;
   const reviewStatus = watch("housingReference.reviewStatus");
+  const housingType = watch("housingType");
   const showRejectedReason = reviewStatus === "REJECTED";
+  
+  // Kontrollera om denna boendeform kräver referens
+  const fieldsToShow = housingType ? housingFieldMatrix[housingType as keyof typeof housingFieldMatrix] || [] : [];
+  const requiresReference = fieldsToShow.includes('housingReference.phone') || fieldsToShow.includes('housingReference.email');
+
+  // Visa inte denna sektion om referens inte krävs för denna boendeform
+  if (!requiresReference) {
+    return null;
+  }
 
   return (
     <Card>
@@ -83,26 +93,6 @@ export function ReviewStatusSection({ form }: ReviewStatusSectionProps) {
               </Select>
             </div>
           )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="referenceEmail">E-post för referens</Label>
-            <Input
-              id="referenceEmail"
-              type="email"
-              {...register("housingReference.email")}
-              placeholder="referens@exempel.se"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="referencePhone">Telefon för referens</Label>
-            <Input
-              id="referencePhone"
-              {...register("housingReference.phone")}
-              placeholder="070-123 45 67"
-            />
-          </div>
         </div>
       </CardContent>
     </Card>
