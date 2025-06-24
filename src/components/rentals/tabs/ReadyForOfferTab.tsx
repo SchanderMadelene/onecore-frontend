@@ -1,3 +1,4 @@
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,9 +7,38 @@ import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
 import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
 import { Link } from "react-router-dom";
+import { FilterableTableHead } from "../FilterableTableHead";
+import { useState, useMemo } from "react";
 
 export const ReadyForOfferTab = () => {
   const { data: readyForOfferSpaces, isLoading, error } = useParkingSpaceListingsByType('ready-for-offer');
+  const [filters, setFilters] = useState({
+    address: "",
+    area: "",
+    type: "",
+    queueType: ""
+  });
+
+  const filteredSpaces = useMemo(() => {
+    if (!readyForOfferSpaces) return [];
+    
+    return readyForOfferSpaces.filter(space => {
+      const matchesAddress = !filters.address || 
+        space.address.toLowerCase().includes(filters.address.toLowerCase());
+      const matchesArea = !filters.area || 
+        space.area.toLowerCase().includes(filters.area.toLowerCase());
+      const matchesType = !filters.type || 
+        space.type.toLowerCase().includes(filters.type.toLowerCase());
+      const matchesQueueType = !filters.queueType || 
+        space.queueType.toLowerCase().includes(filters.queueType.toLowerCase());
+      
+      return matchesAddress && matchesArea && matchesType && matchesQueueType;
+    });
+  }, [readyForOfferSpaces, filters]);
+
+  const handleFilterChange = (field: keyof typeof filters) => (value: string) => {
+    setFilters(prev => ({ ...prev, [field]: value }));
+  };
 
   if (isLoading) {
     return (
@@ -51,10 +81,38 @@ export const ReadyForOfferTab = () => {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="w-[250px] whitespace-nowrap">Bilplats</TableHead>
-              <TableHead className="whitespace-nowrap">Område</TableHead>
-              <TableHead className="whitespace-nowrap">Bilplatstyp</TableHead>
-              <TableHead className="whitespace-nowrap">Kötyp</TableHead>
+              <FilterableTableHead 
+                className="w-[250px] whitespace-nowrap"
+                onFilter={handleFilterChange('address')}
+                filterValue={filters.address}
+                placeholder="Filtrera på adress..."
+              >
+                Bilplats
+              </FilterableTableHead>
+              <FilterableTableHead 
+                className="whitespace-nowrap"
+                onFilter={handleFilterChange('area')}
+                filterValue={filters.area}
+                placeholder="Filtrera på område..."
+              >
+                Område
+              </FilterableTableHead>
+              <FilterableTableHead 
+                className="whitespace-nowrap"
+                onFilter={handleFilterChange('type')}
+                filterValue={filters.type}
+                placeholder="Filtrera på typ..."
+              >
+                Bilplatstyp
+              </FilterableTableHead>
+              <FilterableTableHead 
+                className="whitespace-nowrap"
+                onFilter={handleFilterChange('queueType')}
+                filterValue={filters.queueType}
+                placeholder="Filtrera på kötyp..."
+              >
+                Kötyp
+              </FilterableTableHead>
               <TableHead className="whitespace-nowrap">Hyra</TableHead>
               <TableHead className="whitespace-nowrap">Sökande</TableHead>
               <TableHead className="whitespace-nowrap">Publicerad t.om</TableHead>
@@ -63,7 +121,7 @@ export const ReadyForOfferTab = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {readyForOfferSpaces.map(space => (
+            {filteredSpaces.map(space => (
               <TableRow key={space.id} className="group">
                 <TableCell>
                   <div className="font-medium">{space.address}</div>
