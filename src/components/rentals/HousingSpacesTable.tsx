@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PlusCircle, Search, Trash2, Home, UserPlus } from "lucide-react";
+import { Search, Trash2, Home, UserPlus } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HousingSpaceDetail } from "./HousingSpaceDetail";
 import { useNavigate } from "react-router-dom";
@@ -77,10 +77,6 @@ export function HousingSpacesTable() {
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col sm:flex-row justify-between gap-4">
               <div className="flex gap-2">
-                <Button variant="default" className="flex items-center gap-2">
-                  <PlusCircle className="h-4 w-4" />
-                  Publicera bostäder från Xpand
-                </Button>
                 <Button 
                   variant="outline" 
                   className="flex items-center gap-2"
