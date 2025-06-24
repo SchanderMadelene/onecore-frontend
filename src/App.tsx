@@ -17,6 +17,7 @@ import DesignSystemPage from "./pages/design-system/DesignSystemPage";
 import NotFound from "./pages/NotFound";
 import AllPropertiesPage from "./pages/properties/AllPropertiesPage";
 import RentalsPage from "./pages/rentals/RentalsPage";
+import ResidenceProfilePage from "./pages/rentals/ResidenceProfilePage";
 import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 
@@ -59,6 +60,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <RentalsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/residence-profile" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <ResidenceProfilePage />
           </ProtectedRoute>
         } 
       />
