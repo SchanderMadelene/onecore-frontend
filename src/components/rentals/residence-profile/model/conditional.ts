@@ -1,5 +1,13 @@
 
-export const housingFieldMatrix = {
+export type HousingFieldKey = 
+  | 'landlord' 
+  | 'housingReference.phone' 
+  | 'housingReference.email' 
+  | 'numAdults' 
+  | 'numChildren'
+  | 'housingTypeDescription';
+
+export const housingFieldMatrix: Record<string, HousingFieldKey[]> = {
   RENTAL: ['landlord', 'housingReference.phone', 'housingReference.email', 'numAdults', 'numChildren'],
   SUB_RENTAL: ['landlord', 'housingReference.phone', 'housingReference.email', 'numAdults', 'numChildren'],
   LIVES_WITH_FAMILY: ['housingTypeDescription', 'numAdults', 'numChildren'],
