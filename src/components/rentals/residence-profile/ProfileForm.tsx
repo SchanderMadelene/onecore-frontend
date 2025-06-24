@@ -1,28 +1,12 @@
 
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CustomerInfo } from "./form/CustomerInfo";
 import { HousingTypeSection } from "./form/HousingTypeSection";
 import { ReviewStatusSection } from "./form/ReviewStatusSection";
 import { HousingReferenceComment } from "./form/HousingReferenceComment";
-import type { ContactSearchData, HousingType, ReviewStatus, RejectedReason } from "./types";
+import type { ContactSearchData, ProfileFormData } from "./types";
 import { toast } from "sonner";
-
-export interface ProfileFormData {
-  housingType: HousingType | '';
-  housingTypeDescription: string;
-  landlord: string;
-  numAdults: number;
-  numChildren: number;
-  housingReference: {
-    comment: string;
-    email: string;
-    phone: string;
-    reviewStatus: ReviewStatus;
-    reasonRejected: RejectedReason | '';
-  };
-}
 
 const getFormDefaults = (): ProfileFormData => ({
   housingType: '',

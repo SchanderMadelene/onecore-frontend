@@ -44,6 +44,21 @@ export interface HousingReference {
   reviewedBy?: string;
 }
 
+export interface ProfileFormData {
+  housingType: HousingType | '';
+  housingTypeDescription: string;
+  landlord: string;
+  numAdults: number;
+  numChildren: number;
+  housingReference: {
+    comment: string;
+    email: string;
+    phone: string;
+    reviewStatus: ReviewStatus;
+    reasonRejected: RejectedReason | '';
+  };
+}
+
 export type HousingType = 
   | "RENTAL" 
   | "SUB_RENTAL" 
