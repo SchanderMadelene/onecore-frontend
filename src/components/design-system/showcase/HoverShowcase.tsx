@@ -10,7 +10,7 @@ export const HoverShowcase = () => {
       <CardHeader>
         <CardTitle>Hover Effects</CardTitle>
         <CardDescription>
-          Demonstration av hover-effekter i systemet med kontrast-förbättringar
+          Demonstration av förbättrade hover-effekter med bättre kontrast
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -20,47 +20,53 @@ export const HoverShowcase = () => {
           <h3 className="text-lg font-semibold mb-4">Button Hover Effects</h3>
           <div className="grid gap-6 md:grid-cols-2">
             
-            {/* Current Implementation */}
+            {/* Before (Simulated) */}
             <div className="space-y-3">
-              <h4 className="font-medium text-muted-foreground">Nuvarande implementation</h4>
+              <h4 className="font-medium text-red-600">❌ Före (dålig kontrast)</h4>
               <div className="flex flex-wrap gap-2">
-                <Button variant="default" className="hover:bg-primary/90">
+                <Button variant="default">
                   Primary Hover
                 </Button>
-                <Button variant="outline" className="border border-input bg-background hover:bg-accent hover:text-accent-foreground">
+                <Button 
+                  variant="outline" 
+                  className="border border-input bg-background hover:bg-gray-500 hover:text-white"
+                >
                   Outline Hover (Dålig kontrast)
                 </Button>
-                <Button variant="ghost" className="hover:bg-accent hover:text-accent-foreground">
+                <Button 
+                  variant="ghost" 
+                  className="hover:bg-gray-500 hover:text-white"
+                >
                   Ghost Hover (Dålig kontrast)
                 </Button>
-                <Button variant="secondary" className="hover:bg-secondary/80">
+                <Button variant="secondary">
                   Secondary Hover
                 </Button>
               </div>
               <p className="text-sm text-muted-foreground">
-                Problem: Outline och Ghost buttons har vit text på grå bakgrund vid hover
+                Problem: Vit text på mörk grå bakgrund blev svårläslig vid hover
               </p>
             </div>
 
-            {/* Improved Implementation */}
+            {/* After (Current Implementation) */}
             <div className="space-y-3">
-              <h4 className="font-medium text-green-600">Förbättrad implementation</h4>
+              <h4 className="font-medium text-green-600">✅ Efter (bättre kontrast)</h4>
               <div className="flex flex-wrap gap-2">
-                <Button variant="default" className="hover:bg-primary/90">
+                <Button variant="default">
                   Primary Hover
                 </Button>
-                <Button variant="outline" className="border border-input bg-background hover:bg-accent hover:text-primary">
+                <Button variant="outline">
                   Outline Hover (Bättre kontrast)
                 </Button>
-                <Button variant="ghost" className="hover:bg-accent hover:text-primary">
+                <Button variant="ghost">
                   Ghost Hover (Bättre kontrast)
                 </Button>
-                <Button variant="secondary" className="hover:bg-secondary/80">
+                <Button variant="secondary">
                   Secondary Hover
                 </Button>
               </div>
               <p className="text-sm text-muted-foreground">
-                Lösning: Använd mörk text (#1A1F2C) istället för vit på grå hover-bakgrund
+                Lösning: Ljus grå bakgrund (#E5E7EB) med mörk text (#1A1F2C) för optimal läsbarhet
               </p>
             </div>
           </div>
@@ -73,43 +79,43 @@ export const HoverShowcase = () => {
           <h3 className="text-lg font-semibold mb-4">Table Header Hover Effects</h3>
           <div className="grid gap-6 md:grid-cols-2">
             
-            {/* Current FilterableTableHead */}
+            {/* Before */}
             <div className="space-y-3">
-              <h4 className="font-medium text-muted-foreground">Nuvarande FilterableTableHead</h4>
+              <h4 className="font-medium text-red-600">❌ Före (dålig kontrast)</h4>
               <div className="border rounded p-4 bg-muted/50">
                 <div className="flex items-center justify-between group">
                   <span className="font-medium">Kolumnrubrik</span>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent hover:text-accent-foreground"
+                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-500 hover:text-white"
                   >
                     <Filter className="h-3 w-3" />
                   </Button>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                Problem: Filter-ikonen blir svårläslig vid hover (vit på grå)
+                Problem: Filter-ikonen blev vit på mörk grå bakgrund
               </p>
             </div>
 
-            {/* Improved FilterableTableHead */}
+            {/* After */}
             <div className="space-y-3">
-              <h4 className="font-medium text-green-600">Förbättrad FilterableTableHead</h4>
+              <h4 className="font-medium text-green-600">✅ Efter (bättre kontrast)</h4>
               <div className="border rounded p-4 bg-muted/50">
                 <div className="flex items-center justify-between group">
                   <span className="font-medium">Kolumnrubrik</span>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent hover:text-primary"
+                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <Filter className="h-3 w-3" />
                   </Button>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                Lösning: Mörk text för bättre läsbarhet på grå hover-bakgrund
+                Lösning: Mörk ikon på ljus grå bakgrund för tydlig synlighet
               </p>
             </div>
           </div>
@@ -160,7 +166,7 @@ export const HoverShowcase = () => {
                     <Button 
                       variant="ghost" 
                       size="icon"
-                      className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent hover:text-primary"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <Check className="h-4 w-4" />
                     </Button>
@@ -180,7 +186,7 @@ export const HoverShowcase = () => {
             <div className="space-y-2">
               <h4 className="font-medium text-red-600">❌ Undvik</h4>
               <ul className="text-sm space-y-1 text-muted-foreground">
-                <li>• Vit text (#FFFFFF) på grå bakgrund (#6B7280)</li>
+                <li>• Vit text (#FFFFFF) på mörk grå bakgrund (#6B7280)</li>
                 <li>• Ljusgrå text på ljusgrå bakgrund</li>
                 <li>• Kontrast-förhållande under 4.5:1</li>
               </ul>
@@ -188,10 +194,32 @@ export const HoverShowcase = () => {
             <div className="space-y-2">
               <h4 className="font-medium text-green-600">✅ Använd istället</h4>
               <ul className="text-sm space-y-1 text-muted-foreground">
-                <li>• Mörk text (#1A1F2C) på grå bakgrund (#6B7280)</li>
+                <li>• Mörk text (#1A1F2C) på ljus grå bakgrund (#E5E7EB)</li>
                 <li>• Vit text på mörk bakgrund</li>
                 <li>• Kontrast-förhållande över 4.5:1</li>
               </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Color Examples */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Färgexempel</h3>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="p-4 bg-accent text-accent-foreground rounded-md border text-center">
+              <div className="font-medium">Accent Hover</div>
+              <div className="text-sm mt-1">Bakgrund: #E5E7EB</div>
+              <div className="text-sm">Text: #1A1F2C</div>
+            </div>
+            <div className="p-4 bg-primary text-primary-foreground rounded-md text-center">
+              <div className="font-medium">Primary</div>
+              <div className="text-sm mt-1">Bakgrund: #1A1F2C</div>
+              <div className="text-sm">Text: #FFFFFF</div>
+            </div>
+            <div className="p-4 bg-secondary text-secondary-foreground rounded-md border text-center">
+              <div className="font-medium">Secondary</div>
+              <div className="text-sm mt-1">Bakgrund: #F6F7F9</div>
+              <div className="text-sm">Text: #1A1F2C</div>
             </div>
           </div>
         </div>
