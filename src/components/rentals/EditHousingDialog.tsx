@@ -95,6 +95,24 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
     },
   });
 
+  // Define available description items for read-only display
+  const descriptionItems = [
+    "Diskmaskin",
+    "Frontmatad tvättmaskin installerad",
+    "Individuell mätning av hushållsel",
+    "TV via fiber",
+    "Individuell mätning av varmvatten",
+    "Tillgång till gemensamhetsutrymme",
+    "Kombinerad kyl och frys",
+    "Tillgång till övernattningsrum",
+    "Mikrovågsugn",
+    "Handduschstork",
+    "Spiskåpa",
+    "Rökfritt hus",
+    "Torktumlare",
+    "Fastighetsägarsttyrt lägenhetsunderhåll FLU"
+  ];
+
   const onSubmit = (data: EditHousingFormData) => {
     console.log('Saving housing space:', data);
     toast.success("Bostadsannonsen har sparats");
@@ -117,7 +135,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Redigera annons</DialogTitle>
+          <DialogTitle className="text-xl font-bold">Redigera Annons</DialogTitle>
           <DialogDescription>
             Redigera detaljer för {housingSpace.address}
           </DialogDescription>
@@ -126,7 +144,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
         <Tabs defaultValue="grundlaggande" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="grundlaggande" className="font-semibold">Grundläggande</TabsTrigger>
-            <TabsTrigger value="detaljerad" className="font-semibold text-muted-foreground">Detaljerad beskrivning</TabsTrigger>
+            <TabsTrigger value="detaljerad" className="font-semibold text-muted-foreground">Detaljerad Beskrivning</TabsTrigger>
             <TabsTrigger value="planritning" className="font-semibold text-muted-foreground">Planritning</TabsTrigger>
           </TabsList>
 
@@ -399,230 +417,15 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                 <div className="space-y-4">
                   <FormLabel className="text-sm font-medium">Beskrivning</FormLabel>
                   
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-                    <FormField
-                      control={form.control}
-                      name="dishwasher"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Diskmaskin</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="frontLoadingWasher"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Frontmatad tvättmaskin installerad</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="individualKitchenMeasurement"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Individuell mätning av hushållsel</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="tvViaFiber"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">TV via fiber</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="individualWaterHeaterMeasurement"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Individuell mätning av varmvatten</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="accessToCommonRoom"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Tillgång till till gemenssamhetsutrymme</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="combinedRefrigeratorFreezer"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Kombinerad kyl och frys</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="accessToOvernightRoom"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Tillgång till övernattningsrum</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="microwave"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Mikrovågsugn</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="handshower"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Handduschstork</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="pantry"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Spiskåpa</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="smokeFreeHouse"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Rökfritt hus</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="tumbleDryer"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Torktumlare</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="propertyOwnerPaidApartmentInsurance"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">Fastighetsägarsttyrt lägenhetsunderhåll FLU</FormLabel>
-                        </FormItem>
-                      )}
-                    />
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+                      {descriptionItems.map((item, index) => (
+                        <div key={index} className="flex items-center space-x-2">
+                          <div className="w-1.5 h-1.5 bg-gray-600 rounded-full flex-shrink-0 mt-2"></div>
+                          <span className="text-sm text-gray-700">{item}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
