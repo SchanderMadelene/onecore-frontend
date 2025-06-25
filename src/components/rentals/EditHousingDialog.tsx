@@ -417,15 +417,13 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                 <div className="space-y-4">
                   <FormLabel className="text-sm font-medium">Beskrivning</FormLabel>
                   
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-2">
-                      {descriptionItems.map((item, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                          <div className="w-1.5 h-1.5 bg-gray-600 rounded-full flex-shrink-0 mt-2"></div>
-                          <span className="text-sm text-gray-700">{item}</span>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="space-y-2">
+                    {descriptionItems.map((item, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 bg-gray-600 rounded-full flex-shrink-0 mt-2"></div>
+                        <span className="text-sm text-gray-700">{item}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
