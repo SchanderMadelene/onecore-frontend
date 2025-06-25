@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,7 +73,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">REDIGERA ANNONS</DialogTitle>
+          <DialogTitle className="text-xl font-bold">Redigera annons</DialogTitle>
           <DialogDescription>
             Redigera detaljer för {housingSpace.address}
           </DialogDescription>
@@ -80,9 +81,9 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
         
         <Tabs defaultValue="grundlaggande" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="grundlaggande" className="font-semibold">GRUNDLÄGGANDE</TabsTrigger>
-            <TabsTrigger value="detaljerad" className="font-semibold text-muted-foreground">DETALJERAD BESKRIVNING</TabsTrigger>
-            <TabsTrigger value="planritning" className="font-semibold text-muted-foreground">PLANRITNING</TabsTrigger>
+            <TabsTrigger value="grundlaggande" className="font-semibold">Grundläggande</TabsTrigger>
+            <TabsTrigger value="detaljerad" className="font-semibold text-muted-foreground">Detaljerad beskrivning</TabsTrigger>
+            <TabsTrigger value="planritning" className="font-semibold text-muted-foreground">Planritning</TabsTrigger>
           </TabsList>
 
           <TabsContent value="grundlaggande" className="mt-6">
@@ -327,3 +328,4 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
     </Dialog>
   );
 }
+
