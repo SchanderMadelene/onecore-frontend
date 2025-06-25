@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { Edit, CalendarIcon } from "lucide-react";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 import { toast } from "sonner";
+import { SubHeadingsSection } from "./edit-housing/SubHeadingsSection";
 
 interface EditHousingDialogProps {
   housingSpace: UnpublishedHousingSpace;
@@ -395,19 +394,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="subHeading"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium">Underrubrik</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Ny underrubrik" className="h-12" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <SubHeadingsSection control={form.control} />
 
                 <div className="space-y-4">
                   <FormLabel className="text-sm font-medium">Beskrivning</FormLabel>
@@ -701,4 +688,3 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
     </Dialog>
   );
 }
-
