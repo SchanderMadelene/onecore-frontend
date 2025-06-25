@@ -86,7 +86,7 @@ export function DetailedDescriptionTab({ control }: DetailedDescriptionTabProps)
       <div className="space-y-4">
         <FormLabel className="text-sm font-medium">Beskrivning</FormLabel>
         
-        <div className="space-y-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
           {descriptionItems.map((item, index) => (
             <div key={index} className="flex items-start gap-3">
               <div className="w-1.5 h-1.5 bg-gray-600 rounded-full flex-shrink-0 mt-2"></div>
