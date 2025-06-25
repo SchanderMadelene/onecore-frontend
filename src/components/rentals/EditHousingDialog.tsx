@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -93,73 +92,37 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                   <CardTitle className="text-lg">Grundläggande information</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Adress</label>
-                        <div className="text-sm font-medium mt-1">{housingSpace.address}</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Nummer</label>
-                        <div className="text-sm font-medium mt-1">-</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Område</label>
-                        <div className="text-sm font-medium mt-1">{housingSpace.area}</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Rum</label>
-                        <div className="text-sm font-medium mt-1">{housingSpace.rooms}</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Yta</label>
-                        <div className="text-sm font-medium mt-1">{housingSpace.size}</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Hiss</label>
-                        <div className="text-sm font-medium mt-1">Ja/Nej</div>
-                      </div>
+                  <div className="grid grid-cols-3 gap-6">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Adress</label>
+                      <div className="text-sm font-medium mt-1">{housingSpace.address}</div>
                     </div>
 
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Adress</label>
-                        <div className="text-sm font-medium mt-1">{housingSpace.address}</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Nummer</label>
-                        <div className="text-sm font-medium mt-1">-</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Område</label>
-                        <div className="text-sm font-medium mt-1">{housingSpace.area}</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Antal rum</label>
-                        <div className="text-sm font-medium mt-1">{housingSpace.rooms}</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Yta</label>
-                        <div className="text-sm font-medium mt-1">{housingSpace.size}</div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Ja/Nej</label>
-                        <div className="text-sm font-medium mt-1">Ja/Nej</div>
-                      </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Nummer</label>
+                      <div className="text-sm font-medium mt-1">-</div>
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-4 mt-6">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Område</label>
+                      <div className="text-sm font-medium mt-1">{housingSpace.area}</div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Rum</label>
+                      <div className="text-sm font-medium mt-1">{housingSpace.rooms}</div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Yta</label>
+                      <div className="text-sm font-medium mt-1">{housingSpace.size}</div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Hiss</label>
+                      <div className="text-sm font-medium mt-1">Ja/Nej</div>
+                    </div>
+
                     <div>
                       <label className="text-sm font-medium text-muted-foreground">Hyra/månad</label>
                       <div className="text-sm font-medium mt-1">{housingSpace.rent || "10 000 kr"}</div>
@@ -169,9 +132,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                       <label className="text-sm font-medium text-muted-foreground">Byggnadsår</label>
                       <div className="text-sm font-medium mt-1">1950</div>
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-4 mt-4">
                     <div>
                       <label className="text-sm font-medium text-muted-foreground">Objektsnummer</label>
                       <div className="text-sm font-medium mt-1">xxxx</div>
