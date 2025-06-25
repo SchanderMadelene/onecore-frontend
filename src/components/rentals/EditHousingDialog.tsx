@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { Edit, CalendarIcon } from "lucide-react";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 import { toast } from "sonner";
-import { SubHeadingsSection } from "./edit-housing/SubHeadingsSection";
+import { SubHeadingsSection } from "./SubHeadingsSection";
 
 interface EditHousingDialogProps {
   housingSpace: UnpublishedHousingSpace;
