@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -154,7 +155,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                     name="housingObjectType"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-medium">HYRESOBJEKTSTYP</FormLabel>
+                        <FormLabel className="text-sm font-medium">Hyresobjektstyp</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger className="h-12">
@@ -179,7 +180,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                       name="moveIn"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-sm font-medium">INFLYTTNING</FormLabel>
+                          <FormLabel className="text-sm font-medium">Inflyttning</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger className="h-12">
@@ -201,7 +202,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                       name="moveInDate"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-sm font-medium">INFLYTTNING</FormLabel>
+                          <FormLabel className="text-sm font-medium">Inflyttning</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
@@ -220,7 +221,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                       name="availableFrom"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-sm font-medium">TILLGÄNGLIG FRÅN</FormLabel>
+                          <FormLabel className="text-sm font-medium">Tillgänglig från</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
@@ -237,7 +238,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                       name="eventuallyAvailableFrom"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-sm font-medium">EVENTUELLT TILLGÄNGLIG FRÅN</FormLabel>
+                          <FormLabel className="text-sm font-medium">Eventuellt tillgänglig från</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
@@ -255,7 +256,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                     name="queue"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-medium">SPÄRRA</FormLabel>
+                        <FormLabel className="text-sm font-medium">Spärra</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger className="h-12">
@@ -278,7 +279,7 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
                     name="standardNote"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-medium">STANDARDNOTERING</FormLabel>
+                        <FormLabel className="text-sm font-medium">Standardnotering</FormLabel>
                         <FormControl>
                           <Textarea 
                             {...field} 
