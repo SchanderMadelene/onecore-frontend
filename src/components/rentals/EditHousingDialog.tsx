@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,53 +10,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+import { Form } from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
-import { Edit, CalendarIcon } from "lucide-react";
+import { Edit } from "lucide-react";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 import { toast } from "sonner";
-import { SubHeadingsSection } from "./SubHeadingsSection";
+import { BasicInfoSection } from "./edit-housing/BasicInfoSection";
+import { EditableFormSection } from "./edit-housing/EditableFormSection";
+import { DetailedDescriptionTab } from "./edit-housing/DetailedDescriptionTab";
+import { PlanritningTab } from "./edit-housing/PlanritningTab";
+import type { EditHousingFormData } from "./edit-housing/types";
 
 interface EditHousingDialogProps {
   housingSpace: UnpublishedHousingSpace;
-}
-
-interface EditHousingFormData {
-  housingObjectType: string;
-  moveIn: string;
-  moveInDate: string;
-  availableFrom: string;
-  eventuallyAvailableFrom: string;
-  queue: string;
-  standardNote: string;
-  // Detailed description fields
-  mainHeading: string;
-  sellingPoint: string;
-  webNote: string;
-  subHeading: string;
-  description: string;
-  dishwasher: boolean;
-  frontLoadingWasher: boolean;
-  individualKitchenMeasurement: boolean;
-  tvViaFiber: boolean;
-  individualWaterHeaterMeasurement: boolean;
-  accessToCommonRoom: boolean;
-  combinedRefrigeratorFreezer: boolean;
-  accessToOvernightRoom: boolean;
-  microwave: boolean;
-  handshower: boolean;
-  pantry: boolean;
-  smokeFreeHouse: boolean;
-  tumbleDryer: boolean;
-  propertyOwnerPaidApartmentInsurance: boolean;
-  parkingInfo: string;
-  visitorParkingInfo: string;
 }
 
 export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
@@ -95,24 +63,6 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
     },
   });
 
-  // Define available description items for read-only display
-  const descriptionItems = [
-    "Diskmaskin",
-    "Frontmatad tvättmaskin installerad",
-    "Individuell mätning av hushållsel",
-    "TV via fiber",
-    "Individuell mätning av varmvatten",
-    "Tillgång till gemensamhetsutrymme",
-    "Kombinerad kyl och frys",
-    "Tillgång till övernattningsrum",
-    "Mikrovågsugn",
-    "Handduschstork",
-    "Spiskåpa",
-    "Rökfritt hus",
-    "Torktumlare",
-    "Fastighetsägarsttyrt lägenhetsunderhåll FLU"
-  ];
-
   const onSubmit = (data: EditHousingFormData) => {
     console.log('Saving housing space:', data);
     toast.success("Bostadsannonsen har sparats");
@@ -150,210 +100,10 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
 
           <TabsContent value="grundlaggande" className="mt-6">
             <div className="space-y-6">
-              {/* Read-only information card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Grundläggande information</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-3 gap-6">
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Adress</label>
-                      <div className="text-sm font-medium mt-1">{housingSpace.address}</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Nummer</label>
-                      <div className="text-sm font-medium mt-1">-</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Område</label>
-                      <div className="text-sm font-medium mt-1">{housingSpace.area}</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Rum</label>
-                      <div className="text-sm font-medium mt-1">{housingSpace.rooms}</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Yta</label>
-                      <div className="text-sm font-medium mt-1">{housingSpace.size}</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Hiss</label>
-                      <div className="text-sm font-medium mt-1">Ja/Nej</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Hyra/månad</label>
-                      <div className="text-sm font-medium mt-1">{housingSpace.rent || "10 000 kr"}</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Byggnadsår</label>
-                      <div className="text-sm font-medium mt-1">1950</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Objektsnummer</label>
-                      <div className="text-sm font-medium mt-1">xxxx</div>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Besiktning genomförd</label>
-                      <div className="text-sm font-medium mt-1">dd-mm-yy</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Editable form fields */}
+              <BasicInfoSection housingSpace={housingSpace} />
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="housingObjectType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm font-medium">Hyresobjektstyp</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className="h-12">
-                              <SelectValue placeholder="Standard, Poängfri, Korttidskontrakt, Lätt att ..." />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="standard">Standard</SelectItem>
-                            <SelectItem value="poangfri">Poängfri</SelectItem>
-                            <SelectItem value="korttid">Korttidskontrakt</SelectItem>
-                            <SelectItem value="latt">Lätt att...</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="moveIn"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-sm font-medium">Inflyttning</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger className="h-12">
-                                <SelectValue placeholder="Omgående" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="omgående">Omgående</SelectItem>
-                              <SelectItem value="datum">Specifikt datum</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="moveInDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-sm font-medium">Inflyttning</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
-                              <CalendarIcon className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="availableFrom"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-sm font-medium">Tillgänglig från</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
-                              <CalendarIcon className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="eventuallyAvailableFrom"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-sm font-medium">Eventuellt tillgänglig från</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
-                              <CalendarIcon className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="queue"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm font-medium">Spärra</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className="h-12">
-                              <SelectValue placeholder="Ingen spärr" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="ingen">Ingen spärr</SelectItem>
-                            <SelectItem value="temporar">Temporär spärr</SelectItem>
-                            <SelectItem value="permanent">Permanent spärr</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="standardNote"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm font-medium">Standardnotering</FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            {...field} 
-                            placeholder="Ej visningsbar pga renovering fram till dd-mm-yy"
-                            className="min-h-[80px] resize-none"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <EditableFormSection control={form.control} />
                 </form>
               </Form>
             </div>
@@ -361,117 +111,14 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
 
           <TabsContent value="detaljerad" className="mt-6">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="mainHeading"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium">Huvudrubrik</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Fräsch trea med fantastisk utsikt" className="h-12" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="sellingPoint"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium">Säljande ingress</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          {...field} 
-                          placeholder="Upptäck Bäckby - en levande stadsdel som kombinerar naturskönhet med ett pulserande samhällsliv. Här finner du allt från mysiga caféer till spännande aktiviteter för hela familjen. Välkommen att utforska vad Bäckby har att erbjuda!"
-                          className="min-h-[80px] resize-none"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="webNote"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium">Webbnotering</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          {...field} 
-                          placeholder="Välkommen till denna fantastiska bostad i hjärtat av Bäckby! Här får du en perfekt kombination av modern komfort och naturskön omgivning..."
-                          className="min-h-[120px] resize-none"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <SubHeadingsSection control={form.control} />
-
-                <div className="space-y-4">
-                  <FormLabel className="text-sm font-medium">Beskrivning</FormLabel>
-                  
-                  <div className="space-y-2">
-                    {descriptionItems.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 bg-gray-600 rounded-full flex-shrink-0 mt-2"></div>
-                        <span className="text-sm text-gray-700">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="parkingInfo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium">Parkera bilen</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          {...field} 
-                          placeholder="Parkering i Bäckby är både enkelt och bekvämt. Det finns flera parkeringsalternativ tillgängliga..."
-                          className="min-h-[100px] resize-none"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="visitorParkingInfo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium">Bilplatser till besökare</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          {...field} 
-                          placeholder="Det finns avgiftsbelagda besöksparkeringar i alla våra områden..."
-                          className="min-h-[80px] resize-none"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <DetailedDescriptionTab control={form.control} />
               </form>
             </Form>
           </TabsContent>
 
           <TabsContent value="planritning" className="mt-6">
-            <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
-              <div className="text-center">
-                <p>Planritning kommer att implementeras</p>
-              </div>
-            </div>
+            <PlanritningTab />
           </TabsContent>
         </Tabs>
 
