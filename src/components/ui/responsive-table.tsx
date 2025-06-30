@@ -42,7 +42,7 @@ export function ResponsiveTable({
       <div className="space-y-3">
         {data.map((item) => (
           <Card key={keyExtractor(item)} className="overflow-hidden">
-            <CardContent className="p-4">
+            <CardContent className="p-4 min-h-[44px] flex items-center">
               {mobileCardRenderer(item)}
             </CardContent>
           </Card>
@@ -59,13 +59,13 @@ export function ResponsiveTable({
       <div className="space-y-3">
         {data.map((item) => (
           <Card key={keyExtractor(item)} className="overflow-hidden">
-            <CardContent className="p-4 space-y-2">
+            <CardContent className="p-4 space-y-3 min-h-[44px]">
               {visibleColumns.map((column) => (
-                <div key={column.key} className="flex justify-between items-start">
+                <div key={column.key} className="flex justify-between items-center min-h-[44px]">
                   <span className="text-sm font-medium text-muted-foreground min-w-0 flex-1">
                     {column.label}:
                   </span>
-                  <div className="text-sm text-right ml-2">
+                  <div className="text-sm text-right ml-2 flex items-center min-h-[44px]">
                     {column.render(item)}
                   </div>
                 </div>
@@ -91,9 +91,9 @@ export function ResponsiveTable({
         </TableHeader>
         <TableBody>
           {data.map((item) => (
-            <TableRow key={keyExtractor(item)}>
+            <TableRow key={keyExtractor(item)} className="min-h-[44px]">
               {columns.map((column) => (
-                <TableCell key={column.key} className={column.className}>
+                <TableCell key={column.key} className={cn(column.className, "py-3")}>
                   {column.render(item)}
                 </TableCell>
               ))}
