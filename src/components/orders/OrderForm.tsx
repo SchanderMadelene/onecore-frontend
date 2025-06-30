@@ -8,6 +8,7 @@ import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useOrderForm } from "@/hooks/useOrderForm";
 import { Form } from "@/components/ui/form";
 import { MaintenanceUnit } from "@/types/api";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Importing the new form components
 import { TenantInfoSection } from "./form-rhf/TenantInfoSection";
@@ -52,6 +53,7 @@ export function OrderForm({
 }: OrderFormProps) {
   const { id } = useParams();
   const { roomsData } = useResidenceData(id);
+  const isMobile = useIsMobile();
   const availableRooms = rooms.length > 0 ? rooms : roomsData || [];
   
   const effectiveResidenceId = residenceId || id;
@@ -68,21 +70,28 @@ export function OrderForm({
   return (
     <FormWrapper>
       <Form {...form}>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <TenantInfoSection tenant={tenantData} />
+        <form onSubmit={handleSubmit} className={`space-y-4 ${isMobile ? 'space-y-6' : 'space-y-6'}`}>
+          <div className={isMobile ? "space-y-4" : ""}>
+            <TenantInfoSection tenant={tenantData} />
+          </div>
           
           {contextType === "residence" && (
-            <>
+            <div className={`space-y-4 ${isMobile ? 'space-y-4' : 'space-y-6'}`}>
               <CategorySelectionSection />
               <RoomSelectionSection availableRooms={availableRooms} />
               <ComponentSelectionSection />
-            </>
+            </div>
           )}
           
-          <MasterKeySection />
-          <OrderDetailsSection />
-          <DateSelectionSection />
-          <FormActions onCancel={onCancel} />
+          <div className={`space-y-4 ${isMobile ? 'space-y-4' : 'space-y-6'}`}>
+            <MasterKeySection />
+            <OrderDetailsSection />
+            <DateSelectionSection />
+          </div>
+          
+          <div className={isMobile ? "pt-4 border-t" : ""}>
+            <FormActions onCancel={onCancel} />
+          </div>
         </form>
       </Form>
     </FormWrapper>

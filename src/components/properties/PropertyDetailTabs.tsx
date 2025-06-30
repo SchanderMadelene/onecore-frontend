@@ -9,6 +9,8 @@ import { PropertyStatisticsTab } from "./tabs/PropertyStatisticsTab";
 import { PropertyMaintenanceUnitsTab } from "./tabs/PropertyMaintenanceUnitsTab";
 import { PropertyOrdersTab } from "./tabs/PropertyOrdersTab";
 import { PropertyAccessTab } from "./tabs/PropertyAccessTab";
+import { PropertyDetailTabsMobile } from "./PropertyDetailTabsMobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyDetailTabsProps {
@@ -16,9 +18,15 @@ interface PropertyDetailTabsProps {
 }
 
 export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) => {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return <PropertyDetailTabsMobile propertyDetail={propertyDetail} />;
+  }
+
   return (
     <Tabs defaultValue="info" className="space-y-6">
-      <TabsList className="bg-slate-100/70 p-1 rounded-lg">
+      <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
         <TabsTrigger value="info">
           <span className="hidden sm:inline">Fastighet</span>
           <span className="sm:hidden">Info</span>

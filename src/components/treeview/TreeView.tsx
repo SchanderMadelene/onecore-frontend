@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { TreeItem } from "./TreeItem";
 import { TreeViewProps } from "./types";
 import { treeData } from "./treeData";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function TreeView({ 
   onNavigate, 
@@ -13,6 +14,7 @@ export function TreeView({
   showBuildings,
   showApartments 
 }: TreeViewProps) {
+  const isMobile = useIsMobile();
   
   const filteredData = useMemo(() => {
     return treeData.filter(node => {
@@ -39,14 +41,14 @@ export function TreeView({
   }, [showRentals, showDesignSystem, showProperties, showTenants, showBuildings, showApartments]);
 
   return (
-    <div className="p-4 h-full overflow-y-auto bg-white">
+    <div className={`${isMobile ? 'p-2' : 'p-4'} h-full overflow-y-auto bg-white`}>
       <div className="space-y-1">
         {filteredData.length > 0 ? (
           filteredData.map((node) => (
             <TreeItem key={node.id} node={node} onNavigate={onNavigate} />
           ))
         ) : (
-          <div className="text-gray-500 text-center py-8 text-sm">
+          <div className={`text-gray-500 text-center py-8 ${isMobile ? 'text-xs' : 'text-sm'}`}>
             Inga resultat hittades
           </div>
         )}

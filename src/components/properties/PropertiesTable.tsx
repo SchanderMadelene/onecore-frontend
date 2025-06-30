@@ -2,12 +2,9 @@
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Property } from "@/types/api";
 
-/**
- * Helper function to generate property detail URL path
- */
 const getPropertyPath = (property: Property) => {
   return `/properties/${property.id}`;
 };
@@ -17,60 +14,97 @@ interface PropertiesTableProps {
 }
 
 export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
-  return (
-    <div className="border rounded-md">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Beteckning</TableHead>
-            <TableHead>Typ</TableHead>
-            <TableHead>Användning</TableHead>
-            <TableHead>Distrikt</TableHead>
-            <TableHead>Kvartersvärdsområde</TableHead>
-            <TableHead>Byggnader</TableHead>
-            <TableHead className="text-right">Åtgärd</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {properties?.length ? properties.map((property) => (
-            <TableRow key={property.id}>
-              <TableCell className="font-medium">
-                {property.designation}
-              </TableCell>
-              <TableCell>
-                <Badge variant="outline" className="bg-slate-100">
-                  {property.buildingType}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Badge variant="outline" className="bg-slate-100">
-                  {property.purpose}
-                </Badge>
-              </TableCell>
-              <TableCell>{property.district}</TableCell>
-              <TableCell>{property.propertyManagerArea}</TableCell>
-              <TableCell>
-                <div>
-                  <span>{property.buildingCount}</span>
-                </div>
-              </TableCell>
-              <TableCell className="text-right">
-                <Button asChild variant="link" size="sm">
-                  <Link to={getPropertyPath(property)}>
-                    Visa detaljer
-                  </Link>
-                </Button>
-              </TableCell>
-            </TableRow>
-          )) : (
-            <TableRow>
-              <TableCell colSpan={7} className="text-center py-8">
-                Inga fastigheter hittades med angivna sökkriterier
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+  const columns = [
+    {
+      key: "designation",
+      label: "Beteckning",
+      render: (property: Property) => (
+        <span className="font-medium">{property.designation}</span>
+      )
+    },
+    {
+      key: "buildingType",
+      label: "Typ",
+      render: (property: Property) => (
+        <Badge variant="outline" className="bg-slate-100">
+          {property.buildingType}
+        </Badge>
+      ),
+      hideOnMobile: true
+    },
+    {
+      key: "purpose",
+      label: "Användning",
+      render: (property: Property) => (
+        <Badge variant="outline" className="bg-slate-100">
+          {property.purpose}
+        </Badge>
+      ),
+      hideOnMobile: true
+    },
+    {
+      key: "district",
+      label: "Distrikt",
+      render: (property: Property) => property.district
+    },
+    {
+      key: "propertyManagerArea",
+      label: "Kvartersvärdsområde",
+      render: (property: Property) => property.propertyManagerArea,
+      hideOnMobile: true
+    },
+    {
+      key: "buildingCount",
+      label: "Byggnader",
+      render: (property: Property) => property.buildingCount.toString()
+    },
+    {
+      key: "actions",
+      label: "Åtgärd",
+      render: (property: Property) => (
+        <Button asChild variant="link" size="sm">
+          <Link to={getPropertyPath(property)}>
+            Visa detaljer
+          </Link>
+        </Button>
+      ),
+      className: "text-right"
+    }
+  ];
+
+  const mobileCardRenderer = (property: Property) => (
+    <div className="space-y-2">
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="font-medium text-sm">{property.designation}</h3>
+          <p className="text-xs text-muted-foreground">{property.district}</p>
+        </div>
+        <div className="flex gap-1">
+          <Badge variant="outline" className="bg-slate-100 text-xs">
+            {property.buildingType}
+          </Badge>
+        </div>
+      </div>
+      <div className="flex justify-between items-center pt-1">
+        <span className="text-xs text-muted-foreground">
+          {property.buildingCount} byggnader
+        </span>
+        <Button asChild variant="link" size="sm" className="h-auto p-0">
+          <Link to={getPropertyPath(property)}>
+            Visa detaljer
+          </Link>
+        </Button>
+      </div>
     </div>
+  );
+
+  return (
+    <ResponsiveTable
+      data={properties}
+      columns={columns}
+      keyExtractor={(property) => property.id}
+      emptyMessage="Inga fastigheter hittades med angivna sökkriterier"
+      mobileCardRenderer={mobileCardRenderer}
+    />
   );
 };
