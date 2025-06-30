@@ -19,23 +19,37 @@ export function NavigationBar({
     onMenuClick();
   };
 
+  const handleMenuTouch = (e: React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Hamburger menu touched!', { timestamp: new Date().toISOString() });
+    onMenuClick();
+  };
+
   const handleSearchToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     console.log('Search toggle clicked!', { timestamp: new Date().toISOString() });
     setShowMobileSearch(!showMobileSearch);
   };
+
+  const handleSearchTouch = (e: React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Search toggle touched!', { timestamp: new Date().toISOString() });
+    setShowMobileSearch(!showMobileSearch);
+  };
   
   return (
-    <nav className="h-14 border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/95 fixed top-0 w-full z-[60] shadow-sm">
+    <nav className="h-14 border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/95 fixed top-0 w-full z-[70] shadow-sm">
       <div className="flex h-14 items-center justify-between mx-0 px-[16px]">
         <div className="flex items-center space-x-4">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={handleMenuClick}
-            onTouchStart={handleMenuClick}
-            className="min-h-[44px] min-w-[44px] relative z-[61] touch-manipulation active:scale-95 transition-transform"
+            onTouchStart={handleMenuTouch}
+            className="min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform"
             style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             <Menu className="h-5 w-5" />
@@ -52,9 +66,9 @@ export function NavigationBar({
           <Button 
             variant="ghost" 
             size="icon" 
-            className="sm:hidden min-h-[44px] min-w-[44px] relative z-[61] touch-manipulation active:scale-95 transition-transform" 
+            className="sm:hidden min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform" 
             onClick={handleSearchToggle}
-            onTouchStart={handleSearchToggle}
+            onTouchStart={handleSearchTouch}
             style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             <Search className="h-5 w-5" />
@@ -64,7 +78,7 @@ export function NavigationBar({
             <Button 
               variant="ghost" 
               size="icon" 
-              className="ml-2 min-h-[44px] min-w-[44px] relative z-[61] touch-manipulation active:scale-95 transition-transform"
+              className="ml-2 min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform"
               style={{ WebkitTapHighlightColor: 'transparent' }}
             >
               <Settings className="h-5 w-5" />
