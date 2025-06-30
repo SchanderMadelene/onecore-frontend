@@ -6,20 +6,21 @@ import { TenantCard } from "@/components/tenants/TenantCard";
 import { TenantContracts } from "@/components/tenants/TenantContracts";
 import { getTenantById } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
-import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote, TriangleAlert } from "lucide-react";
+import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote, TriangleAlert, MessageSquare, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 import { TenantNotes } from "@/components/tenants/TenantNotes";
 import { TenantOrders } from "@/components/tenants/TenantOrders";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
-import { MobileTabs } from "@/components/ui/mobile-tabs";
+import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [currentTab, setCurrentTab] = useState("contracts");
   const { features } = useFeatureToggles();
+  const isMobile = useIsMobile();
   
   const tenant = getTenantById(id || "");
   const contracts = getMockContractsForTenant(id || "");
@@ -27,10 +28,11 @@ const TenantDetailPage = () => {
   // This would typically come from API data
   const hasActiveCases = true;
   
-  const tabs = [
+  const accordionItems: MobileAccordionItem[] = [
     {
-      value: "contracts",
-      label: "Hyreskontrakt",
+      id: "contracts",
+      icon: FileText,
+      title: "Hyreskontrakt",
       content: features.showTenantContracts ? (
         <TenantContracts contracts={contracts} />
       ) : (
@@ -42,8 +44,9 @@ const TenantDetailPage = () => {
       )
     },
     {
-      value: "queue",
-      label: "Kösystem",
+      id: "queue",
+      icon: Users,
+      title: "Kösystem",
       content: features.showTenantQueue ? (
         <TenantQueueSystem />
       ) : (
@@ -55,18 +58,9 @@ const TenantDetailPage = () => {
       )
     },
     {
-      value: "cases",
-      label: hasActiveCases ? (
-        <div className="flex items-center gap-1.5">
-          <span>Ärenden</span>
-          <Badge 
-            variant="outline" 
-            className="py-0 px-1.5 h-5 text-[10px] font-semibold bg-slate-200 text-slate-700 border-slate-300"
-          >
-            2
-          </Badge>
-        </div>
-      ) : "Ärenden",
+      id: "cases",
+      icon: MessageSquare,
+      title: hasActiveCases ? `Ärenden (2)` : "Ärenden",
       content: features.showTenantCases ? (
         <TenantOrders />
       ) : (
@@ -78,8 +72,9 @@ const TenantDetailPage = () => {
       )
     },
     {
-      value: "ledger",
-      label: "Kundreskontra",
+      id: "ledger",
+      icon: Wallet,
+      title: "Kundreskontra",
       content: features.showTenantLedger ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-medium mb-4">Kundreskontra</h3>
@@ -94,8 +89,9 @@ const TenantDetailPage = () => {
       )
     },
     {
-      value: "notes",
-      label: "Noteringar",
+      id: "notes",
+      icon: StickyNote,
+      title: "Noteringar",
       content: features.showTenantNotes ? (
         <TenantNotes />
       ) : (
@@ -107,8 +103,9 @@ const TenantDetailPage = () => {
       )
     },
     {
-      value: "keys",
-      label: "Nyckelknippa",
+      id: "keys",
+      icon: Key,
+      title: "Nyckelknippa",
       content: features.showTenantKeys ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-medium mb-4">Nycklar</h3>
@@ -123,8 +120,9 @@ const TenantDetailPage = () => {
       )
     },
     {
-      value: "events",
-      label: "Händelselogg",
+      id: "events",
+      icon: Calendar,
+      title: "Händelselogg",
       content: features.showTenantEvents ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-medium mb-4">Händelselogg</h3>
@@ -139,8 +137,9 @@ const TenantDetailPage = () => {
       )
     },
     {
-      value: "documents",
-      label: "Dokument",
+      id: "documents",
+      icon: FileWarning,
+      title: "Dokument",
       content: features.showTenantDocuments ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-medium mb-4">Dokument</h3>
@@ -181,10 +180,10 @@ const TenantDetailPage = () => {
           <TenantCard tenant={tenant} />
         </div>
 
-        <MobileTabs 
-          value={currentTab} 
-          onValueChange={setCurrentTab}
-          tabs={tabs}
+        <MobileAccordion 
+          items={accordionItems}
+          defaultOpen={["contracts"]}
+          className="space-y-3"
         />
       </div>
     </PageLayout>
