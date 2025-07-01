@@ -1,0 +1,278 @@
+
+import { Building, Entrance, EntranceAddress, EntranceComponent, ComponentType, ApartmentType } from "@/types/api";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown, ChevronRight, Home, Monitor, Mail, Package, Wrench } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+
+interface BuildingEntranceHierarchyProps {
+  building: Building;
+  basePath: string;
+}
+
+// Helper function to get icon for component type
+const getComponentIcon = (type: ComponentType) => {
+  switch (type) {
+    case "Digital bokningstavla":
+      return <Monitor className="h-4 w-4 text-blue-600" />;
+    case "Postboxar":
+    case "Brevlådor":
+      return <Mail className="h-4 w-4 text-green-600" />;
+    case "Cykelrum":
+    case "Barnvagnsförvaring":
+    case "Soprum":
+      return <Package className="h-4 w-4 text-gray-600" />;
+    case "El-mätare":
+    case "Värme-mätare":
+    case "Ventilation":
+      return <Wrench className="h-4 w-4 text-orange-600" />;
+    default:
+      return <Package className="h-4 w-4 text-gray-600" />;
+  }
+};
+
+// Helper function to get status badge color
+const getStatusBadge = (status?: string) => {
+  if (!status) return null;
+  
+  const variant = status === "Aktiv" ? "default" : 
+                  status === "Under underhåll" ? "secondary" : "destructive";
+  
+  return <Badge variant={variant} className="text-xs">{status}</Badge>;
+};
+
+// Helper function to get apartment type styling
+const getApartmentTypeStyle = (type?: ApartmentType) => {
+  switch (type) {
+    case "Övernattning":
+      return "border-l-4 border-blue-500 bg-blue-50";
+    case "Korttidsboende":
+      return "border-l-4 border-yellow-500 bg-yellow-50";
+    default:
+      return "";
+  }
+};
+
+export const BuildingEntranceHierarchy = ({
+  building,
+  basePath
+}: BuildingEntranceHierarchyProps) => {
+  const [expandedEntrances, setExpandedEntrances] = useState<Set<string>>(new Set());
+  const [expandedAddresses, setExpandedAddresses] = useState<Set<string>>(new Set());
+
+  // Return early if no entrances
+  if (!building.entrances || building.entrances.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <h3 className="text-xl font-medium mb-2">Inga uppgångar</h3>
+        <p className="text-muted-foreground">
+          Det finns inga uppgångar registrerade för denna byggnad.
+        </p>
+      </div>
+    );
+  }
+
+  // Function to find apartment by ID
+  const getApartment = (id: string) => {
+    return building.apartments?.find(apt => apt.id === id);
+  };
+
+  const toggleEntrance = (entranceId: string) => {
+    const newExpanded = new Set(expandedEntrances);
+    if (newExpanded.has(entranceId)) {
+      newExpanded.delete(entranceId);
+    } else {
+      newExpanded.add(entranceId);
+    }
+    setExpandedEntrances(newExpanded);
+  };
+
+  const toggleAddress = (addressId: string) => {
+    const newExpanded = new Set(expandedAddresses);
+    if (newExpanded.has(addressId)) {
+      newExpanded.delete(addressId);
+    } else {
+      newExpanded.add(addressId);
+    }
+    setExpandedAddresses(newExpanded);
+  };
+
+  return (
+    <div className="space-y-4">
+      {building.entrances.map(entrance => (
+        <Card key={entrance.id}>
+          <Collapsible
+            open={expandedEntrances.has(entrance.id)}
+            onOpenChange={() => toggleEntrance(entrance.id)}
+          >
+            <CollapsibleTrigger asChild>
+              <CardHeader className="pb-2 cursor-pointer hover:bg-muted/50 transition-colors">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    {expandedEntrances.has(entrance.id) ? 
+                      <ChevronDown className="h-4 w-4" /> : 
+                      <ChevronRight className="h-4 w-4" />
+                    }
+                    <CardTitle className="text-lg">{entrance.name}</CardTitle>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {entrance.components && entrance.components.length > 0 && (
+                      <Badge variant="outline" className="text-xs">
+                        {entrance.components.length} komponenter
+                      </Badge>
+                    )}
+                    <Badge className="text-xs">
+                      {entrance.addresses?.reduce((total, addr) => total + addr.apartments.length, 0) || entrance.apartments.length} lgh
+                    </Badge>
+                  </div>
+                </div>
+              </CardHeader>
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent>
+              <CardContent className="pt-0">
+                {/* Entrance-level components */}
+                {entrance.components && entrance.components.length > 0 && (
+                  <div className="mb-4">
+                    <h4 className="text-sm font-medium mb-2 text-muted-foreground">Komponenter på uppgångsnivå</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                      {entrance.components.map(component => (
+                        <div key={component.id} className="flex items-center gap-2 p-2 bg-muted/30 rounded-md">
+                          {getComponentIcon(component.type)}
+                          <span className="text-sm font-medium">{component.name}</span>
+                          {getStatusBadge(component.status)}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Hierarchical addresses or direct apartments */}
+                {entrance.addresses ? (
+                  <div className="space-y-3">
+                    {entrance.addresses.map(address => (
+                      <div key={address.id} className="border rounded-md">
+                        <Collapsible
+                          open={expandedAddresses.has(address.id)}
+                          onOpenChange={() => toggleAddress(address.id)}
+                        >
+                          <CollapsibleTrigger asChild>
+                            <div className="flex justify-between items-center p-3 cursor-pointer hover:bg-muted/30 transition-colors">
+                              <div className="flex items-center gap-2">
+                                {expandedAddresses.has(address.id) ? 
+                                  <ChevronDown className="h-3 w-3" /> : 
+                                  <ChevronRight className="h-3 w-3" />
+                                }
+                                <span className="font-medium">{address.name}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                {address.components.length > 0 && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {address.components.length} komp.
+                                  </Badge>
+                                )}
+                                <Badge variant="secondary" className="text-xs">
+                                  {address.apartments.length} lgh
+                                </Badge>
+                              </div>
+                            </div>
+                          </CollapsibleTrigger>
+                          
+                          <CollapsibleContent>
+                            <div className="p-3 pt-0 border-t">
+                              {/* Address-level components */}
+                              {address.components.length > 0 && (
+                                <div className="mb-3">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 mb-2">
+                                    {address.components.map(component => (
+                                      <div key={component.id} className="flex items-center gap-2 p-1.5 bg-muted/20 rounded text-xs">
+                                        {getComponentIcon(component.type)}
+                                        <span>{component.name}</span>
+                                        {getStatusBadge(component.status)}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {/* Apartments */}
+                              <div className="space-y-1">
+                                {address.apartments.map(aptId => {
+                                  const apartment = getApartment(aptId);
+                                  return apartment ? (
+                                    <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
+                                      <div className="flex items-center gap-2">
+                                        <Home className="h-3 w-3" />
+                                        <span className="font-medium">{apartment.code}</span>
+                                        {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
+                                          <Badge variant="outline" className="text-xs">
+                                            {apartment.apartmentType}
+                                          </Badge>
+                                        )}
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
+                                        <Link to={`${basePath}/${apartment.id}`}>
+                                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                            <ChevronRight className="h-3 w-3" />
+                                          </Button>
+                                        </Link>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
+                                      <span className="text-muted-foreground text-sm">Lägenhet saknas (ID: {aptId})</span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  // Fallback to direct apartments for backward compatibility
+                  <div className="space-y-2">
+                    {entrance.apartments.map(aptId => {
+                      const apartment = getApartment(aptId);
+                      return apartment ? (
+                        <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
+                          <div className="flex items-center gap-2">
+                            <Home className="h-4 w-4" />
+                            <span className="font-medium">{apartment.code}</span>
+                            {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
+                              <Badge variant="outline" className="text-xs">
+                                {apartment.apartmentType}
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
+                            <Link to={`${basePath}/${apartment.id}`}>
+                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      ) : (
+                        <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
+                          <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </CardContent>
+            </CollapsibleContent>
+          </Collapsible>
+        </Card>
+      ))}
+    </div>
+  );
+};
