@@ -14,10 +14,42 @@ export interface Residence {
   };
 }
 
+// New types for hierarchical entrance structure
+export type ComponentType = 
+  | "Digital bokningstavla" 
+  | "Postboxar" 
+  | "Brevlådor"
+  | "Cykelrum"
+  | "Barnvagnsförvaring"
+  | "Soprum"
+  | "El-mätare"
+  | "Värme-mätare"
+  | "Ventilation";
+
+export type ApartmentType = "Standard" | "Övernattning" | "Korttidsboende";
+
+export interface EntranceComponent {
+  id: string;
+  name: string;
+  type: ComponentType;
+  icon?: string;
+  status?: "Aktiv" | "Under underhåll" | "Ur funktion";
+  description?: string;
+}
+
+export interface EntranceAddress {
+  id: string;
+  name: string; // Address name like "Odenplan 5A", "Odenplan 5B"
+  apartments: string[]; // Array of apartment IDs
+  components: EntranceComponent[]; // Components specific to this address
+}
+
 export interface Entrance {
   id: string;
   name: string;
-  apartments: string[]; // Array of apartment IDs
+  apartments: string[]; // Array of apartment IDs (kept for backward compatibility)
+  addresses?: EntranceAddress[]; // New hierarchical structure
+  components?: EntranceComponent[]; // Components at entrance level
 }
 
 export interface Room {
@@ -103,6 +135,7 @@ export interface Apartment {
   area: number;
   rooms: number;
   status: string;
+  apartmentType?: ApartmentType; // New field to distinguish apartment types
 }
 
 export interface MaintenanceUnit {

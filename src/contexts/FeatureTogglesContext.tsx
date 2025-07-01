@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface FeatureToggles {
@@ -28,6 +27,12 @@ interface FeatureToggles {
   showRentalsHousing: boolean;
   showRentalsParking: boolean;
   showRentalsStorage: boolean;
+  // Building detail page tabs
+  showBuildingEntrances: boolean;
+  showBuildingParts: boolean;
+  showBuildingSpaces: boolean;
+  showBuildingInstallations: boolean;
+  showBuildingParking: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -62,6 +67,12 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showRentalsHousing: false,
   showRentalsParking: false,
   showRentalsStorage: false,
+  // Building detail page tabs
+  showBuildingEntrances: false,
+  showBuildingParts: false,
+  showBuildingSpaces: false,
+  showBuildingInstallations: false,
+  showBuildingParking: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
@@ -106,6 +117,15 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
         newFeatures.showRentalsHousing = false;
         newFeatures.showRentalsParking = false;
         newFeatures.showRentalsStorage = false;
+      } else if (feature === 'showBuildings' && !prev.showBuildings) {
+        newFeatures.showBuildings = true;
+      } else if (feature === 'showBuildings' && prev.showBuildings) {
+        newFeatures.showBuildings = false;
+        newFeatures.showBuildingEntrances = false;
+        newFeatures.showBuildingParts = false;
+        newFeatures.showBuildingSpaces = false;
+        newFeatures.showBuildingInstallations = false;
+        newFeatures.showBuildingParking = false;
       } else {
         newFeatures[feature] = !prev[feature];
       }

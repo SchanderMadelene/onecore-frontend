@@ -10,7 +10,11 @@ import {
   User, 
   Users, 
   FileText, 
-  Tag
+  Tag,
+  Monitor,
+  Mail,
+  Package,
+  Wrench
 } from "lucide-react";
 
 export const getNodeIcon = (iconName?: string): ReactNode => {
@@ -33,6 +37,14 @@ export const getNodeIcon = (iconName?: string): ReactNode => {
       return <Users className="h-4 w-4 text-muted-foreground" />;
     case "contact":
       return <FileText className="h-4 w-4 text-primary" />;
+    case "monitor":
+      return <Monitor className="h-4 w-4 text-blue-600" />;
+    case "mail":
+      return <Mail className="h-4 w-4 text-green-600" />;
+    case "package":
+      return <Package className="h-4 w-4 text-gray-600" />;
+    case "wrench":
+      return <Wrench className="h-4 w-4 text-orange-600" />;
     default:
       return <LayoutGrid className="h-4 w-4 text-muted-foreground" />;
   }
