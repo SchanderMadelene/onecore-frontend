@@ -7,7 +7,7 @@ import { usePropertyFromBuilding } from "@/hooks/usePropertyFromBuilding";
 import { useToast } from "@/hooks/use-toast";
 import { BuildingHeader } from "@/components/buildings/BuildingHeader";
 import { BuildingBasicInfo } from "@/components/buildings/BuildingBasicInfo";
-import { BuildingEntrances } from "@/components/buildings/BuildingEntrances";
+import { BuildingDetailTabs } from "@/components/buildings/BuildingDetailTabs";
 
 const BuildingDetailPage = () => {
   const { property, building } = useParams();
@@ -67,7 +67,7 @@ const BuildingDetailPage = () => {
           address={buildingDetail.name}
           objectNumber={buildingDetail.id}
         />
-        <BuildingEntrances building={buildingDetail} basePath={basePath} />
+        <BuildingDetailTabs building={buildingDetail} basePath={basePath} />
       </div>
     );
   };
