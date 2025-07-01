@@ -1,3 +1,4 @@
+
 import { PropertyDetail } from "@/types/api";
 
 // Property 2 (Götgatan 15) details
@@ -29,44 +30,12 @@ export const property2: PropertyDetail = {
         {
           id: "E1",
           name: "A",
-          apartments: ["A4", "A5", "A6", "A7"],
-          components: [
-            {
-              id: "C1",
-              name: "Postboxar A1-A20",
-              type: "Postboxar",
-              status: "Aktiv",
-              description: "Postboxar för uppgång A, lägenheter A1-A20"
-            },
-            {
-              id: "C2", 
-              name: "Digital bokningstavla",
-              type: "Digital bokningstavla",
-              status: "Aktiv",
-              description: "Digital tavla för bokning av gemensamma utrymmen"
-            }
-          ]
+          apartments: ["A4", "A5", "A6", "A7"]
         },
         {
           id: "E2",
           name: "B",
-          apartments: ["A8", "A9", "A10", "A11"],
-          components: [
-            {
-              id: "C3",
-              name: "Postboxar B1-B18",
-              type: "Postboxar", 
-              status: "Under underhåll",
-              description: "Postboxar för uppgång B, lägenheter B1-B18"
-            },
-            {
-              id: "C4",
-              name: "Digital bokningstavla",
-              type: "Digital bokningstavla",
-              status: "Aktiv",
-              description: "Digital tavla för bokning av tvättstuga och partylokal"
-            }
-          ]
+          apartments: ["A8", "A9", "A10", "A11"]
         }
       ]
     }
