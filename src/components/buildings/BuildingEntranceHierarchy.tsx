@@ -3,10 +3,9 @@ import { Building, Entrance, EntranceAddress, EntranceComponent, ComponentType, 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight, Home, Monitor, Mail, Package, Wrench } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ChevronRight, Home, Monitor, Mail, Package, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 interface BuildingEntranceHierarchyProps {
   building: Building;
@@ -60,9 +59,6 @@ export const BuildingEntranceHierarchy = ({
   building,
   basePath
 }: BuildingEntranceHierarchyProps) => {
-  const [expandedEntrances, setExpandedEntrances] = useState<Set<string>>(new Set());
-  const [expandedAddresses, setExpandedAddresses] = useState<Set<string>>(new Set());
-
   // Return early if no entrances
   if (!building.entrances || building.entrances.length === 0) {
     return (
@@ -80,60 +76,31 @@ export const BuildingEntranceHierarchy = ({
     return building.apartments?.find(apt => apt.id === id);
   };
 
-  const toggleEntrance = (entranceId: string) => {
-    const newExpanded = new Set(expandedEntrances);
-    if (newExpanded.has(entranceId)) {
-      newExpanded.delete(entranceId);
-    } else {
-      newExpanded.add(entranceId);
-    }
-    setExpandedEntrances(newExpanded);
-  };
-
-  const toggleAddress = (addressId: string) => {
-    const newExpanded = new Set(expandedAddresses);
-    if (newExpanded.has(addressId)) {
-      newExpanded.delete(addressId);
-    } else {
-      newExpanded.add(addressId);
-    }
-    setExpandedAddresses(newExpanded);
-  };
-
   return (
     <div className="space-y-4">
-      {building.entrances.map(entrance => (
-        <Card key={entrance.id}>
-          <Collapsible
-            open={expandedEntrances.has(entrance.id)}
-            onOpenChange={() => toggleEntrance(entrance.id)}
-          >
-            <CollapsibleTrigger asChild>
-              <CardHeader className="pb-2 cursor-pointer hover:bg-muted/50 transition-colors">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    {expandedEntrances.has(entrance.id) ? 
-                      <ChevronDown className="h-4 w-4" /> : 
-                      <ChevronRight className="h-4 w-4" />
-                    }
-                    <CardTitle className="text-lg">{entrance.name}</CardTitle>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {entrance.components && entrance.components.length > 0 && (
-                      <Badge variant="outline" className="text-xs">
-                        {entrance.components.length} komponenter
-                      </Badge>
-                    )}
-                    <Badge className="text-xs">
-                      {entrance.addresses?.reduce((total, addr) => total + addr.apartments.length, 0) || entrance.apartments.length} lgh
-                    </Badge>
-                  </div>
+      <Accordion type="multiple" className="space-y-4">
+        {building.entrances.map(entrance => (
+          <AccordionItem key={entrance.id} value={entrance.id} className="rounded-lg border border-slate-200 bg-white">
+            <AccordionTrigger className="px-4 py-3 hover:bg-muted/50">
+              <div className="flex justify-between items-center w-full mr-4">
+                <div className="flex items-center gap-2">
+                  <CardTitle className="text-lg">{entrance.name}</CardTitle>
                 </div>
-              </CardHeader>
-            </CollapsibleTrigger>
+                <div className="flex items-center gap-2">
+                  {entrance.components && entrance.components.length > 0 && (
+                    <Badge variant="outline" className="text-xs">
+                      {entrance.components.length} komponenter
+                    </Badge>
+                  )}
+                  <Badge className="text-xs">
+                    {entrance.addresses?.reduce((total, addr) => total + addr.apartments.length, 0) || entrance.apartments.length} lgh
+                  </Badge>
+                </div>
+              </div>
+            </AccordionTrigger>
             
-            <CollapsibleContent>
-              <CardContent className="pt-0">
+            <AccordionContent>
+              <div className="px-4 pb-4">
                 {/* Entrance-level components */}
                 {entrance.components && entrance.components.length > 0 && (
                   <div className="mb-4">
@@ -153,21 +120,12 @@ export const BuildingEntranceHierarchy = ({
                 {/* Hierarchical addresses or direct apartments */}
                 {entrance.addresses ? (
                   <div className="space-y-3">
-                    {entrance.addresses.map(address => (
-                      <div key={address.id} className="border rounded-md">
-                        <Collapsible
-                          open={expandedAddresses.has(address.id)}
-                          onOpenChange={() => toggleAddress(address.id)}
-                        >
-                          <CollapsibleTrigger asChild>
-                            <div className="flex justify-between items-center p-3 cursor-pointer hover:bg-muted/30 transition-colors">
-                              <div className="flex items-center gap-2">
-                                {expandedAddresses.has(address.id) ? 
-                                  <ChevronDown className="h-3 w-3" /> : 
-                                  <ChevronRight className="h-3 w-3" />
-                                }
-                                <span className="font-medium">{address.name}</span>
-                              </div>
+                    <Accordion type="multiple" className="space-y-3">
+                      {entrance.addresses.map(address => (
+                        <AccordionItem key={address.id} value={address.id} className="border rounded-md">
+                          <AccordionTrigger className="px-3 py-2 hover:bg-muted/30">
+                            <div className="flex justify-between items-center w-full mr-2">
+                              <span className="font-medium">{address.name}</span>
                               <div className="flex items-center gap-2">
                                 {address.components.length > 0 && (
                                   <Badge variant="outline" className="text-xs">
@@ -179,10 +137,10 @@ export const BuildingEntranceHierarchy = ({
                                 </Badge>
                               </div>
                             </div>
-                          </CollapsibleTrigger>
+                          </AccordionTrigger>
                           
-                          <CollapsibleContent>
-                            <div className="p-3 pt-0 border-t">
+                          <AccordionContent>
+                            <div className="px-3 pb-3">
                               {/* Address-level components */}
                               {address.components.length > 0 && (
                                 <div className="mb-3">
@@ -230,10 +188,10 @@ export const BuildingEntranceHierarchy = ({
                                 })}
                               </div>
                             </div>
-                          </CollapsibleContent>
-                        </Collapsible>
-                      </div>
-                    ))}
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
                   </div>
                 ) : (
                   // Fallback to direct apartments for backward compatibility
@@ -268,11 +226,11 @@ export const BuildingEntranceHierarchy = ({
                     })}
                   </div>
                 )}
-              </CardContent>
-            </CollapsibleContent>
-          </Collapsible>
-        </Card>
-      ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </div>
   );
 };
