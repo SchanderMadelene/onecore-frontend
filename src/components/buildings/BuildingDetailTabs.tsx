@@ -5,6 +5,7 @@ import { BuildingPartsTab } from "./tabs/BuildingPartsTab";
 import { BuildingSpacesTab } from "./tabs/BuildingSpacesTab";
 import { BuildingInstallationsTab } from "./tabs/BuildingInstallationsTab";
 import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
+import { Home, Building2, Box, Settings, Car } from "lucide-react";
 import type { Building } from "@/types/api";
 
 interface BuildingDetailTabsProps {
@@ -15,12 +16,27 @@ interface BuildingDetailTabsProps {
 export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsProps) => {
   return (
     <Tabs defaultValue="entrances" className="w-full">
-      <TabsList className="grid w-full grid-cols-5">
-        <TabsTrigger value="entrances">Uppgångar</TabsTrigger>
-        <TabsTrigger value="parts">Byggnadsdelar</TabsTrigger>
-        <TabsTrigger value="spaces">Utrymmen</TabsTrigger>
-        <TabsTrigger value="installations">Installationer</TabsTrigger>
-        <TabsTrigger value="parking">Parkering</TabsTrigger>
+      <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+        <TabsTrigger value="entrances" className="flex items-center gap-1.5">
+          <Home className="h-4 w-4" />
+          Uppgångar
+        </TabsTrigger>
+        <TabsTrigger value="parts" className="flex items-center gap-1.5">
+          <Building2 className="h-4 w-4" />
+          Byggnadsdelar
+        </TabsTrigger>
+        <TabsTrigger value="spaces" className="flex items-center gap-1.5">
+          <Box className="h-4 w-4" />
+          Utrymmen
+        </TabsTrigger>
+        <TabsTrigger value="installations" className="flex items-center gap-1.5">
+          <Settings className="h-4 w-4" />
+          Installationer
+        </TabsTrigger>
+        <TabsTrigger value="parking" className="flex items-center gap-1.5">
+          <Car className="h-4 w-4" />
+          Parkering
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="entrances" className="mt-6">
