@@ -8,71 +8,71 @@ export const treeData: TreeNode[] = [
     path: "/properties",
     children: [
       {
-        id: "odenplan-5",
+        id: "bellmansgatan-1a-2c",
         label: "Älgen 1",
         icon: "building",
-        path: "/properties/odenplan-5",
+        path: "/properties/bellmansgatan-1a-2c",
         area: "Lundby",
         children: [
           {
             id: "building-a",
             label: "Bellmansgatan 1A - 2C",
             icon: "building",
-            path: "/properties/odenplan-5/building-a",
+            path: "/properties/bellmansgatan-1a-2c/building-a",
             children: [
               {
                 id: "lgh-001",
                 label: "LGH-001",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-001"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-001"
               },
               {
                 id: "lgh-002",
                 label: "LGH-002",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-002"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-002"
               },
               {
                 id: "lgh-003",
                 label: "LGH-003",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-003"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-003"
               },
               {
                 id: "lgh-004",
                 label: "LGH-004",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-004"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-004"
               },
               {
                 id: "lgh-005",
                 label: "LGH-005",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-005"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-005"
               },
               {
                 id: "lgh-006",
                 label: "LGH-006",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-006"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-006"
               },
               {
                 id: "lgh-007",
                 label: "LGH-007",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-007"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-007"
               },
               {
                 id: "lgh-008",
                 label: "LGH-008",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-008"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-008"
               },
               {
                 id: "lgh-009",
                 label: "LGH-009",
                 icon: "home",
-                path: "/properties/odenplan-5/building-a/lgh-009"
+                path: "/properties/bellmansgatan-1a-2c/building-a/lgh-009"
               }
             ]
           },
@@ -80,19 +80,19 @@ export const treeData: TreeNode[] = [
             id: "building-b",
             label: "Byggnad B",
             icon: "building",
-            path: "/properties/odenplan-5/building-b",
+            path: "/properties/bellmansgatan-1a-2c/building-b",
             children: [
               {
                 id: "lgh-2001",
                 label: "LGH-2001",
                 icon: "home",
-                path: "/properties/odenplan-5/building-b/lgh-2001"
+                path: "/properties/bellmansgatan-1a-2c/building-b/lgh-2001"
               },
               {
                 id: "lgh-2002",
                 label: "LGH-2002",
                 icon: "home",
-                path: "/properties/odenplan-5/building-b/lgh-2002"
+                path: "/properties/bellmansgatan-1a-2c/building-b/lgh-2002"
               }
             ]
           }
