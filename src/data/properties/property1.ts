@@ -94,17 +94,65 @@ export const property1: PropertyDetail = {
         {
           id: "E1",
           name: "Bellmansgatan 1A",
-          apartments: ["A1", "A2", "A3"]
+          apartments: ["A1", "A2", "A3"],
+          components: [
+            {
+              id: "C1",
+              name: "Postboxar 1A",
+              type: "Postboxar",
+              status: "Aktiv",
+              description: "Postboxar för uppgång 1A, lägenheter A1-A3"
+            },
+            {
+              id: "C2", 
+              name: "Digital bokningstavla",
+              type: "Digital bokningstavla",
+              status: "Aktiv",
+              description: "Digital tavla för bokning av gemensamma utrymmen"
+            }
+          ]
         },
         {
           id: "E2", 
           name: "Bellmansgatan 1B",
-          apartments: ["A4", "A5", "A6"]
+          apartments: ["A4", "A5", "A6"],
+          components: [
+            {
+              id: "C3",
+              name: "Postboxar 1B",
+              type: "Postboxar", 
+              status: "Aktiv",
+              description: "Postboxar för uppgång 1B, lägenheter A4-A6"
+            },
+            {
+              id: "C4",
+              name: "Digital bokningstavla",
+              type: "Digital bokningstavla",
+              status: "Under underhåll",
+              description: "Digital tavla för bokning av tvättstuga"
+            }
+          ]
         },
         {
           id: "E3",
           name: "Bellmansgatan 1C", 
-          apartments: ["A7", "A8", "A9"]
+          apartments: ["A7", "A8", "A9"],
+          components: [
+            {
+              id: "C5",
+              name: "Postboxar 1C",
+              type: "Postboxar",
+              status: "Aktiv", 
+              description: "Postboxar för uppgång 1C, lägenheter A7-A9"
+            },
+            {
+              id: "C6",
+              name: "Digital bokningstavla",
+              type: "Digital bokningstavla",
+              status: "Aktiv",
+              description: "Digital tavla för bokning av partylokal och cykelrum"
+            }
+          ]
         }
       ]
     },
