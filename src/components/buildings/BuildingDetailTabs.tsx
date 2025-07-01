@@ -14,47 +14,32 @@ interface BuildingDetailTabsProps {
 
 export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsProps) => {
   return (
-    <Tabs defaultValue="entrances" className="space-y-6">
-      <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
-        <TabsTrigger value="entrances">
-          <span className="hidden sm:inline">Uppgångar</span>
-          <span className="sm:hidden">Uppg.</span>
-        </TabsTrigger>
-        <TabsTrigger value="parts">
-          <span className="hidden sm:inline">Byggnadsdelar</span>
-          <span className="sm:hidden">Delar</span>
-        </TabsTrigger>
-        <TabsTrigger value="spaces">
-          <span className="hidden sm:inline">Utrymmen</span>
-          <span className="sm:hidden">Utrymm.</span>
-        </TabsTrigger>
-        <TabsTrigger value="installations">
-          <span className="hidden sm:inline">Installationer</span>
-          <span className="sm:hidden">Install.</span>
-        </TabsTrigger>
-        <TabsTrigger value="parking">
-          <span className="hidden sm:inline">Parkering</span>
-          <span className="sm:hidden">Park.</span>
-        </TabsTrigger>
+    <Tabs defaultValue="entrances" className="w-full">
+      <TabsList className="grid w-full grid-cols-5">
+        <TabsTrigger value="entrances">Uppgångar</TabsTrigger>
+        <TabsTrigger value="parts">Byggnadsdelar</TabsTrigger>
+        <TabsTrigger value="spaces">Utrymmen</TabsTrigger>
+        <TabsTrigger value="installations">Installationer</TabsTrigger>
+        <TabsTrigger value="parking">Parkering</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="entrances">
+      <TabsContent value="entrances" className="mt-6">
         <BuildingEntrances building={building} basePath={basePath} />
       </TabsContent>
 
-      <TabsContent value="parts">
+      <TabsContent value="parts" className="mt-6">
         <BuildingPartsTab building={building} />
       </TabsContent>
 
-      <TabsContent value="spaces">
+      <TabsContent value="spaces" className="mt-6">
         <BuildingSpacesTab building={building} />
       </TabsContent>
 
-      <TabsContent value="installations">
+      <TabsContent value="installations" className="mt-6">
         <BuildingInstallationsTab building={building} />
       </TabsContent>
 
-      <TabsContent value="parking">
+      <TabsContent value="parking" className="mt-6">
         <BuildingParkingTab building={building} />
       </TabsContent>
     </Tabs>
