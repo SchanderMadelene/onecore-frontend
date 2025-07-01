@@ -16,7 +16,7 @@ interface BuildingDetailTabsProps {
 export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsProps) => {
   return (
     <Tabs defaultValue="entrances" className="w-full">
-      <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+      <TabsList className="grid w-full grid-cols-5">
         <TabsTrigger value="entrances" className="flex items-center gap-1.5">
           <Home className="h-4 w-4" />
           Uppgångar
