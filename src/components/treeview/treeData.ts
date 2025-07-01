@@ -99,64 +99,64 @@ export const treeData: TreeNode[] = [
         ]
       },
       {
-        id: "gotgatan-15",
+        id: "lindaren-2",
         label: "Lindaren 2",
         icon: "building",
-        path: "/properties/gotgatan-15",
+        path: "/properties/lindaren-2",
         area: "Bäckby",
         children: [
           {
             id: "hus-a-lindaren",
             label: "Byggnad A",
             icon: "building",
-            path: "/properties/gotgatan-15/hus-a-lindaren",
+            path: "/properties/lindaren-2/hus-a-lindaren",
             children: [
               {
                 id: "lgh-3001",
                 label: "3001",
                 icon: "home",
-                path: "/properties/gotgatan-15/hus-a-lindaren/lgh-3001"
+                path: "/properties/lindaren-2/hus-a-lindaren/lgh-3001"
               },
               {
                 id: "lgh-3002",
                 label: "3002",
                 icon: "home",
-                path: "/properties/gotgatan-15/hus-a-lindaren/lgh-3002"
+                path: "/properties/lindaren-2/hus-a-lindaren/lgh-3002"
               },
               {
                 id: "lgh-3003",
                 label: "3003",
                 icon: "home",
-                path: "/properties/gotgatan-15/hus-a-lindaren/lgh-3003"
+                path: "/properties/lindaren-2/hus-a-lindaren/lgh-3003"
               }
             ]
           }
         ]
       },
       {
-        id: "sveavagen-10",
+        id: "bjornen-4",
         label: "Björnen 4",
         icon: "building",
-        path: "/properties/sveavagen-10",
+        path: "/properties/bjornen-4",
         area: "Domkyrkan",
         children: [
           {
             id: "kontorsbyggnad-a",
             label: "Kontorsbyggnad A",
             icon: "building",
-            path: "/properties/sveavagen-10/kontorsbyggnad-a",
+            path: "/properties/bjornen-4/kontorsbyggnad-a",
             children: [
               {
                 id: "kontor-101",
                 label: "101",
                 icon: "home",
-                path: "/properties/sveavagen-10/kontorsbyggnad-a/kontor-101"
+                path: "/properties/bjornen-4/kontorsbyggnad-a/kontor-101"
               },
               {
                 id: "kontor-102",
                 label: "102",
                 icon: "home",
-                path: "/properties/sveavagen-10/kontorsbyggnad-a/kontor-102"
+                path: "/properties/bjornen-4/kontorsbyggnad-a/kontor-102"
               }
             ]
           },
@@ -164,7 +164,7 @@ export const treeData: TreeNode[] = [
             id: "kontorsbyggnad-b",
             label: "Kontorsbyggnad B",
             icon: "building",
-            path: "/properties/sveavagen-10/kontorsbyggnad-b"
+            path: "/properties/bjornen-4/kontorsbyggnad-b"
           }
         ]
       },

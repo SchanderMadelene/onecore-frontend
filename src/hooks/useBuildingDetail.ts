@@ -9,12 +9,12 @@ const buildingIdMappings = {
   "building-a": "B1", 
   "building-b": "B2",
   
-  // Lindaren 2 (gotgatan-15)
+  // Lindaren 2 (lindaren-2)
   "hus-a-lindaren": "B3",
   
-  // Björnen 4 (sveavagen-10) 
-  "kontorsbyggnad-a": "B1",
-  "kontorsbyggnad-b": "B2",
+  // Björnen 4 (bjornen-4) 
+  "kontorsbyggnad-a": "B4",
+  "kontorsbyggnad-b": "B5",
   
   // Pipan 1
   "flerfamiljshus-pipan": "B1",

@@ -7,8 +7,8 @@ import { property3 } from "./property3";
 // Property details mock data
 export const mockPropertyDetails: Record<string, PropertyDetail> = {
   "bellmansgatan-1a-2c": property1,
-  "gotgatan-15": property2,
-  "sveavagen-10": property3
+  "lindaren-2": property2,
+  "bjornen-4": property3
 };
 
 // Debug information for available property keys
