@@ -16,14 +16,12 @@ export const BuildingEntrances = ({
   // Return early if no entrances
   if (!building.entrances || building.entrances.length === 0) {
     return (
-      <Card className="mt-8">
-        <CardContent className="pt-6 text-center">
-          <h3 className="text-xl font-medium mb-2">Inga uppgångar</h3>
-          <p className="text-muted-foreground">
-            Det finns inga uppgångar registrerade för denna byggnad.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="text-center py-10">
+        <h3 className="text-xl font-medium mb-2">Inga uppgångar</h3>
+        <p className="text-muted-foreground">
+          Det finns inga uppgångar registrerade för denna byggnad.
+        </p>
+      </div>
     );
   }
 

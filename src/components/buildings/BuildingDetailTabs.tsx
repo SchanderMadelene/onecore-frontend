@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BuildingEntrances } from "./BuildingEntrances";
 import { BuildingPartsTab } from "./tabs/BuildingPartsTab";
@@ -20,7 +19,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
 
   return (
     <Tabs defaultValue="entrances" className="w-full">
-      <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+      <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg justify-start">
         <TabsTrigger value="entrances" className="flex items-center gap-1.5">
           <Home className="h-4 w-4" />
           Uppgångar
@@ -48,12 +47,16 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
       </TabsList>
 
       <TabsContent value="entrances" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        <FeatureGatedContent
-          isEnabled={features.showBuildingEntrances}
-          fallbackMessage="Uppgångsfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
-        >
+        {features.showBuildingEntrances ? (
           <BuildingEntrances building={building} basePath={basePath} />
-        </FeatureGatedContent>
+        ) : (
+          <FeatureGatedContent
+            isEnabled={false}
+            fallbackMessage="Uppgångsfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+          >
+            <div />
+          </FeatureGatedContent>
+        )}
       </TabsContent>
 
       <TabsContent value="parts" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
