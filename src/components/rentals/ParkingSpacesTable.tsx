@@ -1,11 +1,11 @@
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSearchParams } from "react-router-dom";
 import { PublishedParkingTab } from "./tabs/PublishedParkingTab";
 import { ReadyForOfferTab } from "./tabs/ReadyForOfferTab";
 import { OfferedTab } from "./tabs/OfferedTab";
 import { HistoryTab } from "./tabs/HistoryTab";
 import { NeedsRepublishTab } from "./tabs/NeedsRepublishTab";
+import { MobileTabs } from "@/components/ui/mobile-tabs";
 
 export function ParkingSpacesTable() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,47 +17,41 @@ export function ParkingSpacesTable() {
     setSearchParams(newParams);
   };
 
+  const tabs = [
+    {
+      value: "publicerade",
+      label: "Publicerade",
+      content: <PublishedParkingTab />
+    },
+    {
+      value: "klaraForErbjudande",
+      label: "Klara för erbjudande",
+      content: <ReadyForOfferTab />
+    },
+    {
+      value: "erbjudna",
+      label: "Erbjudna",
+      content: <OfferedTab />
+    },
+    {
+      value: "historik",
+      label: "Historik",
+      content: <HistoryTab />
+    },
+    {
+      value: "behovAvPublicering",
+      label: "Behov av publicering",
+      content: <NeedsRepublishTab />
+    }
+  ];
+
   return (
     <div className="w-full space-y-8">
-      <Tabs value={currentSubTab} onValueChange={handleSubTabChange} className="w-full">
-        <TabsList className="grid grid-cols-5 mb-8">
-          <TabsTrigger value="publicerade">
-            Publicerade
-          </TabsTrigger>
-          <TabsTrigger value="klaraForErbjudande">
-            Klara för erbjudande
-          </TabsTrigger>
-          <TabsTrigger value="erbjudna">
-            Erbjudna
-          </TabsTrigger>
-          <TabsTrigger value="historik">
-            Historik
-          </TabsTrigger>
-          <TabsTrigger value="behovAvPublicering">
-            Behov av publicering
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="publicerade">
-          <PublishedParkingTab />
-        </TabsContent>
-
-        <TabsContent value="klaraForErbjudande">
-          <ReadyForOfferTab />
-        </TabsContent>
-
-        <TabsContent value="erbjudna">
-          <OfferedTab />
-        </TabsContent>
-
-        <TabsContent value="historik">
-          <HistoryTab />
-        </TabsContent>
-
-        <TabsContent value="behovAvPublicering">
-          <NeedsRepublishTab />
-        </TabsContent>
-      </Tabs>
+      <MobileTabs 
+        value={currentSubTab} 
+        onValueChange={handleSubTabChange}
+        tabs={tabs}
+      />
     </div>
   );
 }
