@@ -9,8 +9,6 @@ interface BuildingInstallationsTabProps {
 export const BuildingInstallationsTab = ({ building }: BuildingInstallationsTabProps) => {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Installationer</h2>
-      
       <Card>
         <CardContent className="pt-6 text-center">
           <h3 className="text-xl font-medium mb-2">Inga installationer</h3>

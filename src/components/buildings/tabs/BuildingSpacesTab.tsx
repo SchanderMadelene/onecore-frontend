@@ -9,8 +9,6 @@ interface BuildingSpacesTabProps {
 export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Utrymmen</h2>
-      
       <Card>
         <CardContent className="pt-6 text-center">
           <h3 className="text-xl font-medium mb-2">Inga utrymmen</h3>

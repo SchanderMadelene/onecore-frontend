@@ -9,8 +9,6 @@ interface BuildingPartsTabProps {
 export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Byggnadsdelar</h2>
-      
       <Card>
         <CardContent className="pt-6 text-center">
           <h3 className="text-xl font-medium mb-2">Inga byggnadsdelar</h3>
