@@ -20,28 +20,28 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
 
   return (
     <Tabs defaultValue="entrances" className="w-full">
-      <TabsList className="inline-flex h-10 items-center justify-center rounded-lg bg-slate-100/70 p-1 text-muted-foreground w-full">
-        <TabsTrigger value="entrances" className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm gap-1.5">
+      <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+        <TabsTrigger value="entrances" className="flex items-center gap-1.5">
           <Home className="h-4 w-4" />
           Uppgångar
         </TabsTrigger>
         
-        <TabsTrigger value="parts" className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm gap-1.5">
+        <TabsTrigger value="parts" className="flex items-center gap-1.5">
           <Building2 className="h-4 w-4" />
           Byggnadsdelar
         </TabsTrigger>
         
-        <TabsTrigger value="spaces" className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm gap-1.5">
+        <TabsTrigger value="spaces" className="flex items-center gap-1.5">
           <Box className="h-4 w-4" />
           Utrymmen
         </TabsTrigger>
         
-        <TabsTrigger value="installations" className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm gap-1.5">
+        <TabsTrigger value="installations" className="flex items-center gap-1.5">
           <Settings className="h-4 w-4" />
           Installationer
         </TabsTrigger>
         
-        <TabsTrigger value="parking" className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm gap-1.5">
+        <TabsTrigger value="parking" className="flex items-center gap-1.5">
           <Car className="h-4 w-4" />
           Parkering
         </TabsTrigger>
