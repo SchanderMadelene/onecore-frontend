@@ -181,34 +181,6 @@ export interface BuildingSpace {
   components: SpaceComponent[];
 }
 
-export type InstallationType = "Lås & Passage" | "Hissar" | "VVS" | "El" | "Fiber";
-export type ParkingType = "Garage" | "Car ports" | "Centralgarage" | "Utomhusparkering";
-
-export interface Installation {
-  id: string;
-  name: string;
-  type: InstallationType;
-  status: "Aktiv" | "Under underhåll" | "Ur funktion";
-  description?: string;
-  lastMaintenance?: string;
-  nextMaintenance?: string;
-  specs?: {
-    [key: string]: string;
-  };
-}
-
-export interface ParkingArea {
-  id: string;
-  name: string;
-  type: ParkingType;
-  spaces: number;
-  availableSpaces?: number;
-  description?: string;
-  monthlyRent?: number;
-  status: "Tillgänglig" | "Full" | "Under underhåll";
-  features?: string[];
-}
-
 export interface Building {
   id: string;
   name: string;
@@ -221,8 +193,6 @@ export interface Building {
   apartments?: Apartment[];
   entrances?: Entrance[];
   spaces?: BuildingSpace[];
-  installations?: Installation[];
-  parking?: ParkingArea[];
 }
 
 export interface PropertyDetail extends Property {
