@@ -1,53 +1,12 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { 
-  MoveUp, 
-  Mountain, 
-  TreePine, 
-  Archive, 
-  Building2, 
-  Shield, 
-  Package, 
-  Shirt, 
-  Recycle, 
-  Settings,
-  Store
-} from "lucide-react";
-import type { Building, SpaceType } from "@/types/api";
+import type { Building } from "@/types/api";
 import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
 
 interface BuildingSpacesTabProps {
   building: Building;
 }
-
-// Helper function to get icon for space type
-const getSpaceIcon = (type: SpaceType) => {
-  switch (type) {
-    case "Trapphus":
-      return <MoveUp className="h-4 w-4 text-blue-600" />;
-    case "Vind":
-      return <Mountain className="h-4 w-4 text-gray-600" />;
-    case "Terrasser":
-      return <TreePine className="h-4 w-4 text-green-600" />;
-    case "Källare":
-      return <Archive className="h-4 w-4 text-gray-700" />;
-    case "Lokaler":
-      return <Store className="h-4 w-4 text-blue-700" />;
-    case "Skyddsrum i byggnaden":
-      return <Shield className="h-4 w-4 text-red-600" />;
-    case "Förråd i byggnaden":
-      return <Package className="h-4 w-4 text-orange-600" />;
-    case "Tvättstugor i byggnaden":
-      return <Shirt className="h-4 w-4 text-cyan-600" />;
-    case "Miljöbodar i byggnaden":
-      return <Recycle className="h-4 w-4 text-green-700" />;
-    case "Teknikutrymmen":
-      return <Settings className="h-4 w-4 text-purple-600" />;
-    default:
-      return <Building2 className="h-4 w-4 text-gray-600" />;
-  }
-};
 
 // Helper function to get status badge
 const getStatusBadge = (status?: string) => {
@@ -85,7 +44,6 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
               <div className="flex-1 text-left">
                 <div className="flex items-center gap-2">
-                  {getSpaceIcon(space.type)}
                   <span className="font-medium">{space.name}</span>
                   {space.totalArea && (
                     <span className="text-sm text-muted-foreground">({space.totalArea} m²)</span>
