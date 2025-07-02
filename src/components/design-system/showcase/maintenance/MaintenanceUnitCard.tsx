@@ -24,7 +24,7 @@ export const MaintenanceUnitCard = ({ subComponents }: MaintenanceUnitCardProps)
   const cardTitle = subComponents.length > 0 ? subComponents[0].name : "Underhållsenhet";
 
   return (
-    <div className="space-y-4">
+    <div className="border border-slate-200 rounded-lg p-4 bg-white space-y-4">
       <h3 className="font-semibold text-base sm:text-lg">{cardTitle}</h3>
       <div className="space-y-3 text-sm">
         <div className="flex items-center gap-2">
