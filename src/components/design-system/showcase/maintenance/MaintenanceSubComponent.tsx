@@ -17,7 +17,7 @@ interface MaintenanceSubComponentProps {
 
 export const MaintenanceSubComponent = ({ name, specs }: MaintenanceSubComponentProps) => {
   return (
-    <div className="border rounded-md p-3">
+    <div className="bg-muted/30 rounded-md p-3">
       <h5 className="font-medium mb-2">{name}</h5>
       <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
         <div className="text-muted-foreground">Ekonomisk livslängd:</div>
