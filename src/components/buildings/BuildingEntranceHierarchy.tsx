@@ -101,144 +101,62 @@ export const BuildingEntranceHierarchy = ({
             </AccordionTrigger>
             
             <AccordionContent>
-              <div className="px-4 pb-4">
-                {/* Entrance-level components */}
-                {entrance.components && entrance.components.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-medium mb-2 text-muted-foreground">Komponenter på uppgångsnivå</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-                      {entrance.components.map(component => (
-                        <div key={component.id} className="flex items-center gap-2 p-2 bg-muted/30 rounded-md">
-                          {getComponentIcon(component.type)}
-                          <span className="text-sm font-medium">{component.name}</span>
-                          {getStatusBadge(component.status)}
+              <div className="px-4 pb-4 space-y-4">
+                {/* Direct apartments */}
+                <div className="bg-white rounded-lg border border-slate-200 p-3">
+                  <div className="space-y-2">
+                    {entrance.apartments.map(aptId => {
+                      const apartment = getApartment(aptId);
+                      return apartment ? (
+                        <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-slate-50 transition-colors border border-slate-100 ${getApartmentTypeStyle(apartment.apartmentType)}`}>
+                          <div className="flex items-center gap-2">
+                            <Home className="h-4 w-4 text-slate-600" />
+                            <span className="font-medium">{apartment.code}</span>
+                            {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
+                              <Badge variant="outline" className="text-xs">
+                                {apartment.apartmentType}
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
+                            <Link to={`${basePath}/${apartment.id}`}>
+                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </Link>
+                          </div>
                         </div>
+                      ) : (
+                        <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
+                          <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Components */}
+                {entrance.components && entrance.components.length > 0 && (
+                  <div className="bg-slate-50 rounded-lg p-3">
+                    <h5 className="text-sm font-medium text-slate-700 mb-3">Komponenter</h5>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {entrance.components.map(component => (
+                        <ComponentCard
+                          key={component.id}
+                          title={component.name}
+                          description={component.description}
+                          type={component.type}
+                          location={entrance.name}
+                          specs={[
+                            { label: "Status", value: component.status || "Aktiv" }
+                          ]}
+                        />
                       ))}
                     </div>
                   </div>
                 )}
 
-                {/* Hierarchical addresses or direct apartments */}
-                {entrance.addresses ? (
-                  <div className="space-y-3">
-                    <Accordion type="multiple" className="space-y-3">
-                      {entrance.addresses.map(address => (
-                        <AccordionItem key={address.id} value={address.id} className="rounded-lg border border-slate-200 bg-white">
-                          <AccordionTrigger className="px-3 py-2 hover:bg-muted/30">
-                            <div className="flex justify-between items-center w-full mr-2">
-                              <span className="font-medium">{address.name}</span>
-                              <div className="flex items-center gap-2">
-                                {address.components.length > 0 && (
-                                  <Badge variant="outline" className="text-xs">
-                                    {address.components.length} komp.
-                                  </Badge>
-                                )}
-                                <Badge variant="secondary" className="text-xs">
-                                  {address.apartments.length} lgh
-                                </Badge>
-                              </div>
-                            </div>
-                          </AccordionTrigger>
-                          
-                           <AccordionContent>
-                            <div className="px-3 pb-3 space-y-4">
-                              {/* Components Section */}
-                               {address.components.length > 0 && (
-                                <div className="bg-slate-50 rounded-lg p-3">
-                                  <h5 className="text-sm font-medium text-slate-700 mb-3">Komponenter</h5>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    {address.components.map(component => (
-                                      <ComponentCard
-                                        key={component.id}
-                                        title={component.name}
-                                        description={component.description}
-                                        type={component.type}
-                                        location={address.name}
-                                        specs={[
-                                          { label: "Status", value: component.status || "Aktiv" }
-                                        ]}
-                                      />
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              
-                              {/* Apartments Section */}
-                              <div className="bg-white rounded-lg border border-slate-200 p-3">
-                                <h5 className="text-sm font-medium text-slate-700 mb-3">Lägenheter</h5>
-                                <div className="space-y-2">
-                                  {address.apartments.map(aptId => {
-                                    const apartment = getApartment(aptId);
-                                    return apartment ? (
-                                      <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-slate-50 transition-colors border border-slate-100 ${getApartmentTypeStyle(apartment.apartmentType)}`}>
-                                        <div className="flex items-center gap-2">
-                                          <Home className="h-4 w-4 text-slate-600" />
-                                          <span className="font-medium">{apartment.code}</span>
-                                          {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
-                                            <Badge variant="outline" className="text-xs">
-                                              {apartment.apartmentType}
-                                            </Badge>
-                                          )}
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                          <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
-                                          <Link to={`${basePath}/${apartment.id}`}>
-                                            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                                              <ChevronRight className="h-3 w-3" />
-                                            </Button>
-                                          </Link>
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
-                                        <span className="text-muted-foreground text-sm">Lägenhet saknas (ID: {aptId})</span>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </div>
-                ) : (
-                  // Fallback to direct apartments for backward compatibility
-                  <div className="bg-white rounded-lg border border-slate-200 p-3">
-                    <h5 className="text-sm font-medium text-slate-700 mb-3">Lägenheter</h5>
-                    <div className="space-y-2">
-                      {entrance.apartments.map(aptId => {
-                        const apartment = getApartment(aptId);
-                        return apartment ? (
-                          <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-slate-50 transition-colors border border-slate-100 ${getApartmentTypeStyle(apartment.apartmentType)}`}>
-                            <div className="flex items-center gap-2">
-                              <Home className="h-4 w-4 text-slate-600" />
-                              <span className="font-medium">{apartment.code}</span>
-                              {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
-                                <Badge variant="outline" className="text-xs">
-                                  {apartment.apartmentType}
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
-                              <Link to={`${basePath}/${apartment.id}`}>
-                                <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                  <ChevronRight className="h-4 w-4" />
-                                </Button>
-                              </Link>
-                            </div>
-                          </div>
-                        ) : (
-                          <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
-                            <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
               </div>
             </AccordionContent>
           </AccordionItem>
