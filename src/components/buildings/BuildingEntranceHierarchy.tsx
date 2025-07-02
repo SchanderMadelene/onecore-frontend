@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ChevronRight, Home, Monitor, Mail, Package, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
 
 interface BuildingEntranceHierarchyProps {
   building: Building;
@@ -142,16 +143,21 @@ export const BuildingEntranceHierarchy = ({
                            <AccordionContent>
                             <div className="px-3 pb-3 space-y-4">
                               {/* Components Section */}
-                              {address.components.length > 0 && (
+                               {address.components.length > 0 && (
                                 <div className="bg-slate-50 rounded-lg p-3">
                                   <h5 className="text-sm font-medium text-slate-700 mb-3">Komponenter</h5>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     {address.components.map(component => (
-                                      <div key={component.id} className="flex items-center gap-2 p-2 bg-white rounded border border-slate-200">
-                                        {getComponentIcon(component.type)}
-                                        <span className="text-sm font-medium">{component.name}</span>
-                                        {getStatusBadge(component.status)}
-                                      </div>
+                                      <ComponentCard
+                                        key={component.id}
+                                        title={component.name}
+                                        description={component.description}
+                                        type={component.type}
+                                        location={address.name}
+                                        specs={[
+                                          { label: "Status", value: component.status || "Aktiv" }
+                                        ]}
+                                      />
                                     ))}
                                   </div>
                                 </div>
