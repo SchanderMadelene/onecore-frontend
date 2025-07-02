@@ -5,8 +5,8 @@ import { mockPropertyDetails } from "@/data/properties";
 
 // Korrigerad mapping som matchar treeData struktur
 const buildingIdMappings = {
-  // Älgen 1 (bellmansgatan-1a-2c)
-  "building-a": "B1", 
+  // Älgen 1 (algen-1)
+  "bellmansgatan-1a-2c": "B1", 
   "building-b": "B2",
   
   // Lindaren 2 (lindaren-2)
