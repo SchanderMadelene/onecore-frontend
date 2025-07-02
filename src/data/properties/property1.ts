@@ -206,12 +206,36 @@ export const property1: PropertyDetail = {
         },
         {
           id: "3",
+          type: "Terrasser",
+          name: "Balkong- och terrassytor",
+          totalArea: 85,
+          components: [
+            {
+              id: "3a",
+              name: "Balkonger våning 1-3",
+              description: "Individuella balkonger per lägenhet",
+              area: 60,
+              status: "Aktiv",
+              specs: { "Antal": "18", "Material": "Betong", "Räcke": "Glas" }
+            },
+            {
+              id: "3b",
+              name: "Gemensam takterrass",
+              description: "Takterrass för alla hyresgäster",
+              area: 25,
+              status: "Aktiv",
+              specs: { "Tillgänglighet": "Alla hyresgäster", "Möblering": "Bänkar, bord" }
+            }
+          ]
+        },
+        {
+          id: "4",
           type: "Källare",
           name: "Källarutrymmen",
           totalArea: 200,
           components: [
             {
-              id: "3a",
+              id: "4a",
               name: "Förråd",
               description: "Individuella förråd för hyresgäster",
               area: 120,
@@ -219,30 +243,94 @@ export const property1: PropertyDetail = {
               specs: { "Antal förråd": "18", "Låstyp": "Hänglås" }
             },
             {
-              id: "3b",
-              name: "Teknikrum",
-              description: "Fastighetsrum för teknik",
+              id: "4b",
+              name: "Allmänna utrymmen",
+              description: "Gemensamma källarutrymmen",
               area: 80,
               status: "Aktiv",
-              specs: { "Innehåll": "Värmepump, El", "Säkerhet": "Låst" }
+              specs: { "Innehåll": "Cykelrum, hobbyrum", "Säkerhet": "Låst" }
             }
           ]
         },
         {
-          id: "4",
+          id: "5",
+          type: "Lokaler",
+          name: "Verksamhetslokaler",
+          totalArea: 150,
+          components: [
+            {
+              id: "5a",
+              name: "Butik bottenvåning",
+              description: "Kommersiell lokal i bottenvåning",
+              area: 100,
+              status: "Aktiv",
+              specs: { "Typ": "Butik", "Hyresgäst": "Livsmedelsbutik", "Öppettider": "07-22" }
+            },
+            {
+              id: "5b",
+              name: "Kontorslokaler",
+              description: "Mindre kontorslokaler",
+              area: 50,
+              status: "Ur funktion",
+              specs: { "Antal rum": "3", "Lämplig för": "Mindre företag" }
+            }
+          ]
+        },
+        {
+          id: "6",
+          type: "Skyddsrum i byggnaden",
+          name: "Skyddsrum källare",
+          totalArea: 120,
+          components: [
+            {
+              id: "6a",
+              name: "Huvudskyddsrum",
+              description: "Skyddsrum enligt BBR",
+              area: 120,
+              status: "Aktiv",
+              specs: { "Kapacitet": "50 personer", "Senast kontroll": "2023-06-15", "Nästa kontroll": "2025-06-15" }
+            }
+          ]
+        },
+        {
+          id: "7",
+          type: "Förråd i byggnaden",
+          name: "Förråd källare",
+          totalArea: 350,
+          components: [
+            {
+              id: "7a",
+              name: "Individuella förråd",
+              description: "Förrådsutrymmen för hyresgäster",
+              area: 300,
+              status: "Aktiv",
+              specs: { "Antal enheter": "24", "Storlek per enhet": "12.5 m²", "Låstyp": "Cylinderlås" }
+            },
+            {
+              id: "7b",
+              name: "Gemensamma förråd",
+              description: "Förråd för fastighetsunderhåll",
+              area: 50,
+              status: "Aktiv",
+              specs: { "Innehåll": "Redskap, reservdelar", "Åtkomst": "Endast personal" }
+            }
+          ]
+        },
+        {
+          id: "8",
           type: "Tvättstugor i byggnaden",
           name: "Tvättstuga",
           totalArea: 25,
           components: [
             {
-              id: "4a",
+              id: "8a",
               name: "Tvättmaskiner",
               description: "4 tvättmaskiner",
               status: "Aktiv",
               specs: { "Antal": "4", "Märke": "Electrolux", "Senast service": "2024-01" }
             },
             {
-              id: "4b",
+              id: "8b",
               name: "Torktumlare",
               description: "2 torktumlare",
               status: "Aktiv",
@@ -251,13 +339,13 @@ export const property1: PropertyDetail = {
           ]
         },
         {
-          id: "5",
+          id: "9",
           type: "Miljöbodar i byggnaden",
           name: "Miljöstation",
           totalArea: 15,
           components: [
             {
-              id: "5a",
+              id: "9a",
               name: "Sopcontainers",
               description: "Containers för olika fraktioner",
               status: "Aktiv",
@@ -266,51 +354,13 @@ export const property1: PropertyDetail = {
           ]
         },
         {
-          id: "inst",
+          id: "10",
           type: "Teknikutrymmen",
-          name: "Installationer",
+          name: "UC Värme",
           totalArea: 45,
           components: [
             {
-              id: "I1",
-              name: "Huvudentré passagesystem",
-              description: "Elektroniskt låssystem för alla uppgångar",
-              status: "Aktiv",
-              specs: {
-                "Typ": "Lås & Passage",
-                "System": "ASSA ABLOY",
-                "Antal lås": "12",
-                "Senast underhåll": "2024-03-15",
-                "Nästa underhåll": "2024-09-15"
-              }
-            },
-            {
-              id: "I2",
-              name: "Passerkort system",
-              description: "RFID-kort för hyresgäster",
-              status: "Aktiv",
-              specs: {
-                "Typ": "Lås & Passage", 
-                "Antal kort": "45",
-                "Teknologi": "RFID 125kHz"
-              }
-            },
-            {
-              id: "I3",
-              name: "Hiss A-C",
-              description: "Personhiss 8 personer, 3 våningar",
-              status: "Aktiv",
-              specs: {
-                "Typ": "Hissar",
-                "Kapacitet": "8 personer",
-                "Våningar": "3",
-                "Märke": "Schindler",
-                "Senast underhåll": "2024-01-20",
-                "Nästa underhåll": "2024-07-20"
-              }
-            },
-            {
-              id: "I4",
+              id: "10a",
               name: "Värmeväxlare",
               description: "Centralvärme distribution",
               status: "Aktiv",
@@ -323,7 +373,27 @@ export const property1: PropertyDetail = {
               }
             },
             {
-              id: "I5",
+              id: "10b",
+              name: "Cirkulationspumpar",
+              description: "Pumpar för värmecirkulation",
+              status: "Aktiv",
+              specs: {
+                "Typ": "VVS",
+                "Antal": "3",
+                "Effekt": "2.2 kW",
+                "Senast service": "2024-02-15"
+              }
+            }
+          ]
+        },
+        {
+          id: "11",
+          type: "Teknikutrymmen",
+          name: "UC Ventilation",
+          totalArea: 30,
+          components: [
+            {
+              id: "11a",
               name: "Ventilationsaggregat",
               description: "Centralt ventilationssystem",
               status: "Under underhåll",
@@ -333,53 +403,93 @@ export const property1: PropertyDetail = {
                 "System": "FTX",
                 "Senast underhåll": "2024-05-01"
               }
+            },
+            {
+              id: "11b",
+              name: "Fläktar",
+              description: "Till- och frånluftsfläktar",
+              status: "Aktiv",
+              specs: {
+                "Typ": "VVS",
+                "Antal": "2",
+                "Kapacitet": "1200 m³/h",
+                "Senast service": "2024-03-20"
+              }
             }
           ]
         },
         {
-          id: "park",
+          id: "12",
           type: "Teknikutrymmen",
-          name: "Parkering",
-          totalArea: 650,
+          name: "UC El",
+          totalArea: 20,
           components: [
             {
-              id: "P1",
-              name: "Innergård parkering",
-              description: "Utomhusparkeringsplatser för hyresgäster",
+              id: "12a",
+              name: "Huvudcentral",
+              description: "Elcentral för hela byggnaden",
               status: "Aktiv",
               specs: {
-                "Typ": "Utomhusparkering",
-                "Totalt platser": "18",
-                "Lediga platser": "3",
-                "Månadsavgift": "450 kr",
-                "Funktioner": "Belysning, Vinterunderhåll"
+                "Typ": "El",
+                "Huvudsäkring": "125A",
+                "Märke": "ABB",
+                "Senast kontroll": "2024-01-15",
+                "Nästa kontroll": "2025-01-15"
               }
             },
             {
-              id: "P2", 
-              name: "Garage källare",
-              description: "Uppvärmda garageplatser i källaren",
+              id: "12b",
+              name: "Lägenhetsfördelning",
+              description: "Fördelningscentraler för lägenheter",
               status: "Aktiv",
               specs: {
-                "Typ": "Garage",
-                "Totalt platser": "12",
-                "Lediga platser": "0",
-                "Status": "Full",
-                "Månadsavgift": "850 kr",
-                "Funktioner": "Uppvärmt, Säkert, Eluttag"
+                "Typ": "El",
+                "Antal centraler": "24",
+                "Senast kontroll": "2024-01-15"
+              }
+            }
+          ]
+        },
+        {
+          id: "13",
+          type: "Teknikutrymmen",
+          name: "UC Tele/data/säkerhet",
+          totalArea: 15,
+          components: [
+            {
+              id: "13a",
+              name: "Huvudentré passagesystem",
+              description: "Elektroniskt låssystem för alla uppgångar",
+              status: "Aktiv",
+              specs: {
+                "Typ": "Säkerhet",
+                "System": "ASSA ABLOY",
+                "Antal lås": "12",
+                "Senast underhåll": "2024-03-15",
+                "Nästa underhåll": "2024-09-15"
               }
             },
             {
-              id: "P3",
-              name: "Carport område B",
-              description: "Överdäckta parkeringsplatser",
+              id: "13b",
+              name: "Passerkort system",
+              description: "RFID-kort för hyresgäster",
               status: "Aktiv",
               specs: {
-                "Typ": "Car ports",
-                "Totalt platser": "8",
-                "Lediga platser": "2", 
-                "Månadsavgift": "650 kr",
-                "Funktioner": "Takskydd, Belysning"
+                "Typ": "Säkerhet", 
+                "Antal kort": "45",
+                "Teknologi": "RFID 125kHz"
+              }
+            },
+            {
+              id: "13c",
+              name: "Dataförbindelser",
+              description: "Fiber och nätverksinfrastruktur",
+              status: "Aktiv",
+              specs: {
+                "Typ": "Data",
+                "Leverantör": "Telia",
+                "Hastighet": "1000/1000 Mbps",
+                "Senast uppgradering": "2023-09-10"
               }
             }
           ]

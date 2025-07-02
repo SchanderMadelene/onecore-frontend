@@ -11,7 +11,8 @@ import {
   Package, 
   Shirt, 
   Recycle, 
-  Settings 
+  Settings,
+  Store
 } from "lucide-react";
 import type { Building, SpaceType } from "@/types/api";
 import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
@@ -32,7 +33,7 @@ const getSpaceIcon = (type: SpaceType) => {
     case "Källare":
       return <Archive className="h-4 w-4 text-gray-700" />;
     case "Lokaler":
-      return <Building2 className="h-4 w-4 text-blue-700" />;
+      return <Store className="h-4 w-4 text-blue-700" />;
     case "Skyddsrum i byggnaden":
       return <Shield className="h-4 w-4 text-red-600" />;
     case "Förråd i byggnaden":
