@@ -1,5 +1,4 @@
 
-import { Card, CardContent } from "@/components/ui/card";
 import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
 import type { Building } from "@/types/api";
 
@@ -14,15 +13,11 @@ export const BuildingInstallationsTab = ({ building }: BuildingInstallationsTabP
 
   if (installations.length === 0) {
     return (
-      <div className="space-y-6">
-        <Card>
-          <CardContent className="pt-6 text-center">
-            <h3 className="text-xl font-medium mb-2">Inga installationer</h3>
-            <p className="text-muted-foreground">
-              Det finns inga installationer registrerade för denna byggnad ännu.
-            </p>
-          </CardContent>
-        </Card>
+      <div className="text-center py-10">
+        <h3 className="text-xl font-medium mb-2">Inga installationer</h3>
+        <p className="text-muted-foreground">
+          Det finns inga installationer registrerade för denna byggnad ännu.
+        </p>
       </div>
     );
   }

@@ -14,15 +14,11 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
 
   if (parking.length === 0) {
     return (
-      <div className="space-y-6">
-        <Card>
-          <CardContent className="pt-6 text-center">
-            <h3 className="text-xl font-medium mb-2">Ingen parkering</h3>
-            <p className="text-muted-foreground">
-              Det finns inga parkeringsplatser registrerade för denna byggnad ännu.
-            </p>
-          </CardContent>
-        </Card>
+      <div className="text-center py-10">
+        <h3 className="text-xl font-medium mb-2">Ingen parkering</h3>
+        <p className="text-muted-foreground">
+          Det finns inga parkeringsplatser registrerade för denna byggnad ännu.
+        </p>
       </div>
     );
   }
