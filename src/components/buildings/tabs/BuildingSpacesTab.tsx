@@ -191,7 +191,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
       <Accordion type="multiple" className="space-y-4">
         {spaces.map(space => (
           <AccordionItem key={space.id} value={space.id} className="rounded-lg border border-slate-200 bg-white">
-            <AccordionTrigger className="px-4 py-3 hover:bg-muted/50">
+            <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
               <div className="flex justify-between items-center w-full mr-4">
                 <div className="flex items-center gap-2">
                   {getSpaceIcon(space.type)}

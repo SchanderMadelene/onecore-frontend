@@ -90,7 +90,7 @@ export const RoomCard = ({
           <Accordion type="single" collapsible className="border-none">
             <AccordionItem value="details" className="border-none rounded-none">
               <div className="flex justify-end px-4 py-1.5">
-                <AccordionTrigger className="py-1 px-2 rounded-md hover:bg-slate-100 justify-end">
+                <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50 justify-end">
                   <span className="text-sm font-medium text-slate-500">Visa detaljer</span>
                 </AccordionTrigger>
               </div>

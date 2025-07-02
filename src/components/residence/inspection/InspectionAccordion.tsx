@@ -37,7 +37,7 @@ export const InspectionAccordion = ({
         value="walls"
         className="rounded-lg border border-slate-200 bg-white"
       >
-        <AccordionTrigger className="px-4 py-3">
+        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">
             <MapPin className="h-4.5 w-4.5 text-slate-500" />
             <span className="font-medium text-base">Väggar</span>
@@ -67,7 +67,7 @@ export const InspectionAccordion = ({
         value="ceiling"
         className="rounded-lg border border-slate-200 bg-white"
       >
-        <AccordionTrigger className="px-4 py-3">
+        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">
             <PanelTop className="h-4.5 w-4.5 text-slate-500" />
             <span className="font-medium text-base">Tak</span>
@@ -96,7 +96,7 @@ export const InspectionAccordion = ({
         value="floor"
         className="rounded-lg border border-slate-200 bg-white"
       >
-        <AccordionTrigger className="px-4 py-3">
+        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">
             <Grid3X3 className="h-4.5 w-4.5 text-slate-500" />
             <span className="font-medium text-base">Golv</span>
@@ -125,7 +125,7 @@ export const InspectionAccordion = ({
         value="details"
         className="rounded-lg border border-slate-200 bg-white"
       >
-        <AccordionTrigger className="px-4 py-3">
+        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">
             <Home className="h-4.5 w-4.5 text-slate-500" />
             <span className="font-medium text-base">Detaljer</span>

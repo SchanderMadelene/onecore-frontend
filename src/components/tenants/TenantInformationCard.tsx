@@ -162,7 +162,7 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="tenant-info">
-        <AccordionTrigger className="px-4 py-3">
+        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-3">
             <h3 className="font-medium text-lg">Hyresgästinformation</h3>
             {isSecondHandRental && (
