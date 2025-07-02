@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ComponentCard } from "./ComponentCard";
-import { Monitor, Mail, Camera, Wifi } from "lucide-react";
 
 export const CardsShowcase = () => {
   return (
@@ -66,8 +65,6 @@ export const CardsShowcase = () => {
             <ComponentCard
               title="Digital bokningstavla"
               description="Interaktiv displayenhet för bokningar"
-              status="active"
-              icon={Monitor}
               type="Digital display"
               location="Entré A"
               specs={[
@@ -80,8 +77,6 @@ export const CardsShowcase = () => {
             <ComponentCard
               title="Postboxar"
               description="Säkra postlådor för hyresgäster"
-              status="active"
-              icon={Mail}
               type="Posthantering"
               location="Entré B"
               specs={[
@@ -94,8 +89,6 @@ export const CardsShowcase = () => {
             <ComponentCard
               title="Övervakningskamera"
               description="Säkerhetsövervakning av entré"
-              status="maintenance"
-              icon={Camera}
               type="Säkerhet"
               location="Entré C"
               specs={[
@@ -108,8 +101,6 @@ export const CardsShowcase = () => {
             <ComponentCard
               title="WiFi Access Point"
               description="Trådlös internetuppkoppling"
-              status="inactive"
-              icon={Wifi}
               type="Nätverk"
               location="Gemensam lokal"
               specs={[
@@ -125,8 +116,6 @@ export const CardsShowcase = () => {
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>• <code>title</code>: Komponentens namn</li>
               <li>• <code>description</code>: Kort beskrivning (optional)</li>
-              <li>• <code>status</code>: "active" | "inactive" | "maintenance"</li>
-              <li>• <code>icon</code>: Lucide React ikon (optional)</li>
               <li>• <code>type</code>: Komponenttyp (optional)</li>
               <li>• <code>location</code>: Placering (optional)</li>
               <li>• <code>specs</code>: Array av specifikationer (optional)</li>
