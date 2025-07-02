@@ -91,15 +91,15 @@ export const BuildingEntranceHierarchy = ({
             </AccordionTrigger>
             
             <AccordionContent>
-              <div className="px-4 pb-4 space-y-4">
+              <div className="px-2 pb-2 space-y-3">
                 {/* Direct apartments */}
-                <div className="bg-card rounded-lg border p-4">
+                <div className="bg-card rounded-lg border p-2">
                   <div className="space-y-2">
                     {entrance.apartments.map(aptId => {
                       const apartment = getApartment(aptId);
                       return apartment ? (
-                        <div key={aptId} className={`flex justify-between items-center p-3 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
-                          <div className="flex items-center gap-3">
+                        <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
+                          <div className="flex items-center gap-2">
                             <Home className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium text-foreground">{apartment.code}</span>
                             {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
@@ -108,7 +108,7 @@ export const BuildingEntranceHierarchy = ({
                               </Badge>
                             )}
                           </div>
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
                             <Link to={`${basePath}/${apartment.id}`}>
                               <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-muted">
@@ -118,7 +118,7 @@ export const BuildingEntranceHierarchy = ({
                           </div>
                         </div>
                       ) : (
-                        <div key={aptId} className="flex justify-between items-center p-3 rounded-md border border-destructive/20 bg-destructive/5">
+                        <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/20 bg-destructive/5">
                           <span className="text-muted-foreground text-sm">Lägenhet saknas (ID: {aptId})</span>
                         </div>
                       );
