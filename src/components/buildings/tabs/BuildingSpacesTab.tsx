@@ -14,6 +14,7 @@ import {
   Settings 
 } from "lucide-react";
 import type { Building, SpaceType } from "@/types/api";
+import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
 
 interface BuildingSpacesTabProps {
   building: Building;
@@ -207,43 +208,30 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             </AccordionTrigger>
             
             <AccordionContent>
-              <div className="px-4 pb-4 pt-1">
+              <div className="px-2 pb-2 space-y-3">
                 {space.components && space.components.length > 0 ? (
                   <div className="space-y-3">
-                    {space.components.map(component => (
-                      <div key={component.id} className="bg-muted/30 rounded-lg p-3">
-                        <div className="flex justify-between items-start mb-2">
-                          <h5 className="font-medium">{component.name}</h5>
-                          {getStatusBadge(component.status)}
-                        </div>
-                        
-                        {component.description && (
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {component.description}
-                          </p>
-                        )}
-                        
-                        {component.area && (
-                          <p className="text-sm text-muted-foreground mb-2">
-                            Yta: {component.area} m²
-                          </p>
-                        )}
-                        
-                        {component.specs && Object.keys(component.specs).length > 0 && (
-                          <div className="text-sm space-y-1">
-                            {Object.entries(component.specs).map(([key, value]) => (
-                              <div key={key} className="flex justify-between">
-                                <span className="text-muted-foreground">{key}:</span>
-                                <span>{String(value)}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {space.components.map(component => (
+                        <ComponentCard
+                          key={component.id}
+                          title={component.name}
+                          description={component.description}
+                          type={space.name}
+                          specs={[
+                            { label: "Status", value: component.status || "Aktiv" },
+                            ...(component.area ? [{ label: "Yta", value: `${component.area} m²` }] : []),
+                            ...(component.specs ? Object.entries(component.specs).map(([key, value]) => ({
+                              label: key,
+                              value: String(value)
+                            })) : [])
+                          ]}
+                        />
+                      ))}
+                    </div>
                   </div>
                 ) : (
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground p-2">
                     Inga komponenter registrerade för detta utrymme.
                   </p>
                 )}
