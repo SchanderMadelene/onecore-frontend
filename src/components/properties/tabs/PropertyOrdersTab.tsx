@@ -1,5 +1,4 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
 import { useParams } from "react-router-dom";
 
@@ -16,16 +15,12 @@ export const PropertyOrdersTab = ({ propertyDetail }: PropertyOrdersTabProps) =>
   console.log("PropertyOrdersTab - Using propertyId:", propertyId);
   
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">Ärenden för fastighet</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <OrdersManagement 
-          contextType="residence" 
-          residenceId={propertyId}
-        />
-      </CardContent>
-    </Card>
+    <div className="w-full">
+      <h3 className="text-lg font-semibold mb-3">Ärenden för fastighet</h3>
+      <OrdersManagement 
+        contextType="residence" 
+        residenceId={propertyId}
+      />
+    </div>
   );
 };
