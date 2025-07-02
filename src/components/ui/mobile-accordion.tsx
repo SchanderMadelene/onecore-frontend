@@ -24,7 +24,7 @@ export function MobileAccordion({
   };
   return <div className={`space-y-3 ${className}`}>
       <Accordion type="multiple" value={openItems} onValueChange={handleValueChange} className="space-y-3">
-        {items.map(item => <AccordionItem key={item.id} value={item.id} disabled={item.disabled} className="rounded-lg border border-slate-200 bg-white">
+        {items.map(item => <AccordionItem key={item.id} value={item.id} disabled={item.disabled} className="rounded-lg border border-slate-200">
             <AccordionTrigger className="px-4 py-3">
               <div className="flex items-center gap-2">
                 <item.icon className="h-5 w-5 text-muted-foreground" />
