@@ -94,80 +94,17 @@ export const property1: PropertyDetail = {
         {
           id: "E1",
           name: "Bellmansgatan 1A",
-          apartments: ["A1", "A2", "A3"],
-          addresses: [
-            {
-              id: "E1A1",
-              name: "Bellmansgatan 1A",
-              apartments: ["A1", "A2", "A3"],
-              components: [
-                {
-                  id: "C1",
-                  name: "Digital bokningstavla",
-                  type: "Digital bokningstavla",
-                  status: "Aktiv"
-                },
-                {
-                  id: "C2", 
-                  name: "Postboxar",
-                  type: "Postboxar",
-                  status: "Aktiv"
-                }
-              ]
-            }
-          ]
+          apartments: ["A1", "A2", "A3"]
         },
         {
           id: "E2", 
           name: "Bellmansgatan 1B",
-          apartments: ["A4", "A5", "A6"],
-          addresses: [
-            {
-              id: "E2A1",
-              name: "Bellmansgatan 1B", 
-              apartments: ["A4", "A5", "A6"],
-              components: [
-                {
-                  id: "C3",
-                  name: "Digital bokningstavla",
-                  type: "Digital bokningstavla", 
-                  status: "Under underhåll"
-                },
-                {
-                  id: "C4",
-                  name: "Postboxar",
-                  type: "Postboxar",
-                  status: "Aktiv"
-                }
-              ]
-            }
-          ]
+          apartments: ["A4", "A5", "A6"]
         },
         {
           id: "E3",
           name: "Bellmansgatan 1C", 
-          apartments: ["A7", "A8", "A9"],
-          addresses: [
-            {
-              id: "E3A1", 
-              name: "Bellmansgatan 1C",
-              apartments: ["A7", "A8", "A9"],
-              components: [
-                {
-                  id: "C5",
-                  name: "Digital bokningstavla",
-                  type: "Digital bokningstavla",
-                  status: "Aktiv"
-                },
-                {
-                  id: "C6",
-                  name: "Brevlådor", 
-                  type: "Brevlådor",
-                  status: "Aktiv"
-                }
-              ]
-            }
-          ]
+          apartments: ["A7", "A8", "A9"]
         }
       ]
     },
