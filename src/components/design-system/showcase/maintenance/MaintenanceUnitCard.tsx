@@ -25,8 +25,8 @@ export const MaintenanceUnitCard = ({ subComponents }: MaintenanceUnitCardProps)
 
   return (
     <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-6 space-y-4">
-        <h3 className="font-semibold text-lg">{cardTitle}</h3>
+      <CardContent className="p-4 sm:p-6 space-y-4">
+        <h3 className="font-semibold text-base sm:text-lg">{cardTitle}</h3>
         <div className="space-y-3 text-sm">
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Årsintervall:</span>

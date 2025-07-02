@@ -59,7 +59,7 @@ const BuildingDetailPage = () => {
     }
 
     return (
-      <div className="py-4 space-y-8">
+      <div className="py-4 space-y-4 sm:space-y-6 lg:space-y-8">
         <BuildingHeader building={buildingDetail} propertyName={propertyDetail?.designation} />
         <BuildingBasicInfo 
           building={buildingDetail} 

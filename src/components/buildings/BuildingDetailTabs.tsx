@@ -1,4 +1,5 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
+import { MobileTabs } from "@/components/ui/mobile-tabs";
 import { BuildingEntrances } from "./BuildingEntrances";
 import { BuildingPartsTab } from "./tabs/BuildingPartsTab";
 import { BuildingSpacesTab } from "./tabs/BuildingSpacesTab";
@@ -16,84 +17,109 @@ interface BuildingDetailTabsProps {
 
 export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsProps) => {
   const { features } = useFeatureToggles();
+  const [activeTab, setActiveTab] = useState("entrances");
 
-  return (
-    <Tabs defaultValue="entrances" className="w-full">
-      <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg justify-start">
-        <TabsTrigger value="entrances" className="flex items-center gap-1.5">
+  const tabs = [
+    {
+      value: "entrances",
+      label: (
+        <div className="flex items-center gap-1.5">
           <Home className="h-4 w-4" />
-          Uppgångar
-        </TabsTrigger>
-        
-        <TabsTrigger value="parts" className="flex items-center gap-1.5">
+          <span className="hidden sm:inline">Uppgångar</span>
+          <span className="sm:hidden">Uppg.</span>
+        </div>
+      ),
+      content: features.showBuildingEntrances ? (
+        <BuildingEntrances building={building} basePath={basePath} />
+      ) : (
+        <FeatureGatedContent
+          isEnabled={false}
+          fallbackMessage="Uppgångsfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
+          <div />
+        </FeatureGatedContent>
+      )
+    },
+    {
+      value: "parts",
+      label: (
+        <div className="flex items-center gap-1.5">
           <Building2 className="h-4 w-4" />
-          Byggnadsdelar
-        </TabsTrigger>
-        
-        <TabsTrigger value="spaces" className="flex items-center gap-1.5">
-          <Box className="h-4 w-4" />
-          Utrymmen
-        </TabsTrigger>
-        
-        <TabsTrigger value="installations" className="flex items-center gap-1.5">
-          <Settings className="h-4 w-4" />
-          Installationer
-        </TabsTrigger>
-        
-        <TabsTrigger value="parking" className="flex items-center gap-1.5">
-          <Car className="h-4 w-4" />
-          Parkering
-        </TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="entrances" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        {features.showBuildingEntrances ? (
-          <BuildingEntrances building={building} basePath={basePath} />
-        ) : (
-          <FeatureGatedContent
-            isEnabled={false}
-            fallbackMessage="Uppgångsfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
-          >
-            <div />
-          </FeatureGatedContent>
-        )}
-      </TabsContent>
-
-      <TabsContent value="parts" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+          <span className="hidden sm:inline">Byggnadsdelar</span>
+          <span className="sm:hidden">Delar</span>
+        </div>
+      ),
+      content: (
         <FeatureGatedContent
           isEnabled={features.showBuildingParts}
           fallbackMessage="Byggnadsdelarfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
         >
           <BuildingPartsTab building={building} />
         </FeatureGatedContent>
-      </TabsContent>
-
-      <TabsContent value="spaces" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      )
+    },
+    {
+      value: "spaces",
+      label: (
+        <div className="flex items-center gap-1.5">
+          <Box className="h-4 w-4" />
+          <span className="hidden sm:inline">Utrymmen</span>
+          <span className="sm:hidden">Utr.</span>
+        </div>
+      ),
+      content: (
         <FeatureGatedContent
           isEnabled={features.showBuildingSpaces}
           fallbackMessage="Utrymmenfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
         >
           <BuildingSpacesTab building={building} />
         </FeatureGatedContent>
-      </TabsContent>
-
-      <TabsContent value="installations" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      )
+    },
+    {
+      value: "installations",
+      label: (
+        <div className="flex items-center gap-1.5">
+          <Settings className="h-4 w-4" />
+          <span className="hidden sm:inline">Installationer</span>
+          <span className="sm:hidden">Inst.</span>
+        </div>
+      ),
+      content: (
         <FeatureGatedContent
           isEnabled={features.showBuildingInstallations}
           fallbackMessage="Installationerfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
         >
           <BuildingInstallationsTab building={building} />
         </FeatureGatedContent>
-      </TabsContent>
-
-      <TabsContent value="parking" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      )
+    },
+    {
+      value: "parking",
+      label: (
+        <div className="flex items-center gap-1.5">
+          <Car className="h-4 w-4" />
+          <span className="hidden sm:inline">Parkering</span>
+          <span className="sm:hidden">Park.</span>
+        </div>
+      ),
+      content: (
         <FeatureGatedContent
           isEnabled={features.showBuildingParking}
           fallbackMessage="Parkeringfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
         >
           <BuildingParkingTab building={building} />
         </FeatureGatedContent>
-      </TabsContent>
-    </Tabs>
+      )
+    }
+  ];
+
+  return (
+    <MobileTabs 
+      value={activeTab}
+      onValueChange={setActiveTab}
+      tabs={tabs}
+      className="w-full"
+    />
   );
 };
