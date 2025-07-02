@@ -122,7 +122,7 @@ export const BuildingEntranceHierarchy = ({
                   <div className="space-y-3">
                     <Accordion type="multiple" className="space-y-3">
                       {entrance.addresses.map(address => (
-                        <AccordionItem key={address.id} value={address.id} className="border rounded-md">
+                        <AccordionItem key={address.id} value={address.id} className="rounded-lg border border-slate-200 bg-white">
                           <AccordionTrigger className="px-3 py-2 hover:bg-muted/30">
                             <div className="flex justify-between items-center w-full mr-2">
                               <span className="font-medium">{address.name}</span>
