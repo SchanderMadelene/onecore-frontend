@@ -139,16 +139,17 @@ export const BuildingEntranceHierarchy = ({
                             </div>
                           </AccordionTrigger>
                           
-                          <AccordionContent>
-                            <div className="px-3 pb-3">
-                              {/* Address-level components */}
+                           <AccordionContent>
+                            <div className="px-3 pb-3 space-y-4">
+                              {/* Components Section */}
                               {address.components.length > 0 && (
-                                <div className="mb-3">
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 mb-2">
+                                <div className="bg-slate-50 rounded-lg p-3">
+                                  <h5 className="text-sm font-medium text-slate-700 mb-3">Komponenter</h5>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                     {address.components.map(component => (
-                                      <div key={component.id} className="flex items-center gap-2 p-1.5 bg-muted/20 rounded text-xs">
+                                      <div key={component.id} className="flex items-center gap-2 p-2 bg-white rounded border border-slate-200">
                                         {getComponentIcon(component.type)}
-                                        <span>{component.name}</span>
+                                        <span className="text-sm font-medium">{component.name}</span>
                                         {getStatusBadge(component.status)}
                                       </div>
                                     ))}
@@ -156,36 +157,39 @@ export const BuildingEntranceHierarchy = ({
                                 </div>
                               )}
                               
-                              {/* Apartments */}
-                              <div className="space-y-1">
-                                {address.apartments.map(aptId => {
-                                  const apartment = getApartment(aptId);
-                                  return apartment ? (
-                                    <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
-                                      <div className="flex items-center gap-2">
-                                        <Home className="h-3 w-3" />
-                                        <span className="font-medium">{apartment.code}</span>
-                                        {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
-                                          <Badge variant="outline" className="text-xs">
-                                            {apartment.apartmentType}
-                                          </Badge>
-                                        )}
+                              {/* Apartments Section */}
+                              <div className="bg-white rounded-lg border border-slate-200 p-3">
+                                <h5 className="text-sm font-medium text-slate-700 mb-3">Lägenheter</h5>
+                                <div className="space-y-2">
+                                  {address.apartments.map(aptId => {
+                                    const apartment = getApartment(aptId);
+                                    return apartment ? (
+                                      <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-slate-50 transition-colors border border-slate-100 ${getApartmentTypeStyle(apartment.apartmentType)}`}>
+                                        <div className="flex items-center gap-2">
+                                          <Home className="h-4 w-4 text-slate-600" />
+                                          <span className="font-medium">{apartment.code}</span>
+                                          {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
+                                            <Badge variant="outline" className="text-xs">
+                                              {apartment.apartmentType}
+                                            </Badge>
+                                          )}
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                          <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
+                                          <Link to={`${basePath}/${apartment.id}`}>
+                                            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                              <ChevronRight className="h-3 w-3" />
+                                            </Button>
+                                          </Link>
+                                        </div>
                                       </div>
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
-                                        <Link to={`${basePath}/${apartment.id}`}>
-                                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                                            <ChevronRight className="h-3 w-3" />
-                                          </Button>
-                                        </Link>
+                                    ) : (
+                                      <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
+                                        <span className="text-muted-foreground text-sm">Lägenhet saknas (ID: {aptId})</span>
                                       </div>
-                                    </div>
-                                  ) : (
-                                    <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
-                                      <span className="text-muted-foreground text-sm">Lägenhet saknas (ID: {aptId})</span>
-                                    </div>
-                                  );
-                                })}
+                                    );
+                                  })}
+                                </div>
                               </div>
                             </div>
                           </AccordionContent>
@@ -195,35 +199,38 @@ export const BuildingEntranceHierarchy = ({
                   </div>
                 ) : (
                   // Fallback to direct apartments for backward compatibility
-                  <div className="space-y-2">
-                    {entrance.apartments.map(aptId => {
-                      const apartment = getApartment(aptId);
-                      return apartment ? (
-                        <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
-                          <div className="flex items-center gap-2">
-                            <Home className="h-4 w-4" />
-                            <span className="font-medium">{apartment.code}</span>
-                            {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
-                              <Badge variant="outline" className="text-xs">
-                                {apartment.apartmentType}
-                              </Badge>
-                            )}
+                  <div className="bg-white rounded-lg border border-slate-200 p-3">
+                    <h5 className="text-sm font-medium text-slate-700 mb-3">Lägenheter</h5>
+                    <div className="space-y-2">
+                      {entrance.apartments.map(aptId => {
+                        const apartment = getApartment(aptId);
+                        return apartment ? (
+                          <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-slate-50 transition-colors border border-slate-100 ${getApartmentTypeStyle(apartment.apartmentType)}`}>
+                            <div className="flex items-center gap-2">
+                              <Home className="h-4 w-4 text-slate-600" />
+                              <span className="font-medium">{apartment.code}</span>
+                              {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
+                                <Badge variant="outline" className="text-xs">
+                                  {apartment.apartmentType}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
+                              <Link to={`${basePath}/${apartment.id}`}>
+                                <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                  <ChevronRight className="h-4 w-4" />
+                                </Button>
+                              </Link>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-muted-foreground">{apartment.area}m² • {apartment.rooms} rum</span>
-                            <Link to={`${basePath}/${apartment.id}`}>
-                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                <ChevronRight className="h-4 w-4" />
-                              </Button>
-                            </Link>
+                        ) : (
+                          <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
+                            <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
                           </div>
-                        </div>
-                      ) : (
-                        <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/30 bg-destructive/5">
-                          <span className="text-muted-foreground">Lägenhet saknas (ID: {aptId})</span>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
