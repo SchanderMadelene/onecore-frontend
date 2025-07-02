@@ -188,27 +188,27 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
 
   return (
     <div className="space-y-4">
-      <Accordion type="multiple" className="space-y-4">
+      <Accordion type="single" collapsible className="space-y-2">
         {spaces.map(space => (
-          <AccordionItem key={space.id} value={space.id} className="rounded-lg border border-slate-200 bg-white">
+          <AccordionItem 
+            key={space.id} 
+            value={space.id}
+            className="rounded-lg border border-slate-200 bg-white"
+          >
             <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
-              <div className="flex justify-between items-center w-full mr-4">
+              <div className="flex-1 text-left">
                 <div className="flex items-center gap-2">
                   {getSpaceIcon(space.type)}
-                  <div className="text-left">
-                    <h4 className="font-medium">{space.name}</h4>
-                    {space.totalArea && (
-                      <p className="text-sm text-muted-foreground">
-                        {space.totalArea} m²
-                      </p>
-                    )}
-                  </div>
+                  <span className="font-medium">{space.name}</span>
+                  {space.totalArea && (
+                    <span className="text-sm text-muted-foreground">({space.totalArea} m²)</span>
+                  )}
                 </div>
               </div>
             </AccordionTrigger>
             
             <AccordionContent>
-              <div className="px-2 pb-2 space-y-3">
+              <div className="px-3 sm:px-4 pb-4 pt-1 space-y-4">
                 {space.components && space.components.length > 0 ? (
                   <div className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
