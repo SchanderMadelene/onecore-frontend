@@ -146,7 +146,7 @@ export const AccordionShowcase = () => {
             <li>• Content har <code>px-4 pb-4 pt-1</code> (eller px-3 sm:px-4 för responsiv)</li>
             <li>• Ikoner använder konsekvent <code>h-4 w-4 text-muted-foreground</code></li>
             <li>• Spacing mellan items: <code>space-y-2</code></li>
-            <li>• Chevron-ikonen roterar automatiskt med <code>[&[data-state=open]>svg]:rotate-180</code></li>
+            <li>• Chevron-ikonen roterar automatiskt med <code>[&[data-state=open]&gt;svg]:rotate-180</code></li>
           </ul>
         </div>
       </CardContent>
