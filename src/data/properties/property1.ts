@@ -154,6 +154,108 @@ export const property1: PropertyDetail = {
             }
           ]
         }
+      ],
+      installations: [
+        {
+          id: "I1",
+          name: "Huvudentré passagesystem",
+          type: "Lås & Passage",
+          status: "Aktiv",
+          description: "Elektroniskt låssystem för alla uppgångar",
+          lastMaintenance: "2024-03-15",
+          nextMaintenance: "2024-09-15",
+          specs: {
+            system: "ASSA ABLOY",
+            "Antal lås": "12",
+            "Typ": "Elektronisk"
+          }
+        },
+        {
+          id: "I2",
+          name: "Passerkort system",
+          type: "Lås & Passage", 
+          status: "Aktiv",
+          description: "RFID-kort för hyresgäster",
+          specs: {
+            "Antal kort": "45",
+            teknologi: "RFID 125kHz"
+          }
+        },
+        {
+          id: "I3",
+          name: "Hiss A-C",
+          type: "Hissar",
+          status: "Aktiv",
+          description: "Personhiss 8 personer, 3 våningar",
+          lastMaintenance: "2024-01-20",
+          nextMaintenance: "2024-07-20",
+          specs: {
+            kapacitet: "8 personer",
+            våningar: "3",
+            märke: "Schindler"
+          }
+        },
+        {
+          id: "I4",
+          name: "Värmeväxlare",
+          type: "VVS",
+          status: "Aktiv", 
+          description: "Centralvärme distribution",
+          lastMaintenance: "2023-10-12",
+          nextMaintenance: "2024-10-12",
+          specs: {
+            typ: "Växlare",
+            kapacitet: "150 kW",
+            medium: "Vatten"
+          }
+        },
+        {
+          id: "I5",
+          name: "Ventilationsaggregat",
+          type: "VVS",
+          status: "Under underhåll",
+          description: "Centralt ventilationssystem",
+          lastMaintenance: "2024-05-01",
+          specs: {
+            luftflöde: "2400 m³/h",
+            typ: "FTX"
+          }
+        }
+      ],
+      parking: [
+        {
+          id: "P1",
+          name: "Innergård parkering",
+          type: "Utomhusparkering",
+          spaces: 18,
+          availableSpaces: 3,
+          status: "Tillgänglig",
+          description: "Utomhusparkeringsplatser för hyresgäster",
+          monthlyRent: 450,
+          features: ["Belysning", "Vinterunderhåll"]
+        },
+        {
+          id: "P2", 
+          name: "Garage källare",
+          type: "Garage",
+          spaces: 12,
+          availableSpaces: 0,
+          status: "Full",
+          description: "Uppvärmda garageplatser i källaren",
+          monthlyRent: 850,
+          features: ["Uppvärmt", "Säkert", "Eluttag"]
+        },
+        {
+          id: "P3",
+          name: "Carport område B",
+          type: "Car ports", 
+          spaces: 8,
+          availableSpaces: 2,
+          status: "Tillgänglig",
+          description: "Överdäckta parkeringsplatser",
+          monthlyRent: 650,
+          features: ["Takskydd", "Belysning"]
+        }
       ]
     },
     {
