@@ -193,6 +193,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
           <AccordionItem 
             key={space.id} 
             value={space.id}
+            className="rounded-lg border border-slate-200 bg-white"
           >
             <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
               <div className="flex-1 text-left">
