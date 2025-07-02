@@ -154,6 +154,52 @@ export const property1: PropertyDetail = {
             }
           ]
         }
+      ],
+      installations: [
+        {
+          id: "I1",
+          type: "Lås & Passage",
+          name: "Elektroniska lås",
+          status: "Aktiv",
+          description: "Kodlås och passerkort",
+          lastService: "2024-01-15"
+        },
+        {
+          id: "I2", 
+          type: "Hissar",
+          name: "Personspissar",
+          status: "Aktiv",
+          description: "2 hissar för 3 våningar",
+          lastService: "2024-02-20"
+        },
+        {
+          id: "I3",
+          type: "VVS", 
+          name: "Vatten och värme",
+          status: "Aktiv",
+          description: "Centralvärme och varmvatten",
+          lastService: "2023-11-10"
+        }
+      ],
+      parking: [
+        {
+          id: "P1",
+          type: "Garage",
+          name: "Undergarage",
+          spaces: 15,
+          availableSpaces: 2,
+          status: "Aktiv",
+          description: "Uppvärmt garage under byggnaden"
+        },
+        {
+          id: "P2",
+          type: "Car ports", 
+          name: "Carport utomhus",
+          spaces: 8,
+          availableSpaces: 1,
+          status: "Aktiv",
+          description: "Överdäckta parkeringsplatser"
+        }
       ]
     },
     {
