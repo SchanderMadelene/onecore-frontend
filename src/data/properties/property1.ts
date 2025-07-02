@@ -157,6 +157,115 @@ export const property1: PropertyDetail = {
       ],
       spaces: [
         {
+          id: "1",
+          type: "Trapphus",
+          name: "Trapphus A-C",
+          totalArea: 45,
+          components: [
+            {
+              id: "1a",
+              name: "Trappor",
+              description: "Betongtrappor med räcke",
+              area: 30,
+              status: "Aktiv",
+              specs: { "Material": "Betong", "Antal våningar": "5" }
+            },
+            {
+              id: "1b", 
+              name: "Väggar",
+              description: "Målade väggar",
+              area: 15,
+              status: "Aktiv",
+              specs: { "Färg": "Vit", "Senast målat": "2022" }
+            }
+          ]
+        },
+        {
+          id: "2",
+          type: "Vind",
+          name: "Vindsutrymme",
+          totalArea: 120,
+          components: [
+            {
+              id: "2a",
+              name: "Förvaringsutrymme",
+              description: "Öppet förvaringsutrymme för hyresgäster",
+              area: 80,
+              status: "Aktiv",
+              specs: { "Antal platser": "24", "Tillgänglighet": "Hyresgäster" }
+            },
+            {
+              id: "2b",
+              name: "Ventilation",
+              description: "Vindventilation",
+              area: 40,
+              status: "Under underhåll",
+              specs: { "Typ": "Naturlig", "Senast service": "2023-08" }
+            }
+          ]
+        },
+        {
+          id: "3",
+          type: "Källare",
+          name: "Källarutrymmen",
+          totalArea: 200,
+          components: [
+            {
+              id: "3a",
+              name: "Förråd",
+              description: "Individuella förråd för hyresgäster",
+              area: 120,
+              status: "Aktiv",
+              specs: { "Antal förråd": "18", "Låstyp": "Hänglås" }
+            },
+            {
+              id: "3b",
+              name: "Teknikrum",
+              description: "Fastighetsrum för teknik",
+              area: 80,
+              status: "Aktiv",
+              specs: { "Innehåll": "Värmepump, El", "Säkerhet": "Låst" }
+            }
+          ]
+        },
+        {
+          id: "4",
+          type: "Tvättstugor i byggnaden",
+          name: "Tvättstuga",
+          totalArea: 25,
+          components: [
+            {
+              id: "4a",
+              name: "Tvättmaskiner",
+              description: "4 tvättmaskiner",
+              status: "Aktiv",
+              specs: { "Antal": "4", "Märke": "Electrolux", "Senast service": "2024-01" }
+            },
+            {
+              id: "4b",
+              name: "Torktumlare",
+              description: "2 torktumlare",
+              status: "Aktiv",
+              specs: { "Antal": "2", "Märke": "Electrolux", "Senast service": "2024-01" }
+            }
+          ]
+        },
+        {
+          id: "5",
+          type: "Miljöbodar i byggnaden",
+          name: "Miljöstation",
+          totalArea: 15,
+          components: [
+            {
+              id: "5a",
+              name: "Sopcontainers",
+              description: "Containers för olika fraktioner",
+              status: "Aktiv",
+              specs: { "Antal containers": "6", "Fraktioner": "Restavfall, Papper, Plast" }
+            }
+          ]
+        },
+        {
           id: "inst",
           type: "Teknikutrymmen",
           name: "Installationer",
