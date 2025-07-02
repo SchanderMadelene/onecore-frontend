@@ -1,9 +1,8 @@
-
 import { ChevronDown, Mail, MessageSquare, Phone, FileText, StickyNote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -37,8 +36,6 @@ interface TenantInformationCardProps {
 }
 
 export function TenantInformationCard({ tenant, displayMode = "full" }: TenantInformationCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
   const handleCall = (phone: string) => {
     window.location.href = `tel:${phone.replace(/[\s-]/g, '')}`;
   };
@@ -163,9 +160,9 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
   };
 
   return (
-    <Card className="border-slate-200">
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="tenant-info">
+        <AccordionTrigger className="px-4 py-3">
           <div className="flex items-center gap-3">
             <h3 className="font-medium text-lg">Hyresgästinformation</h3>
             {isSecondHandRental && (
@@ -174,16 +171,10 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
               </Badge>
             )}
           </div>
-          <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
-              <span className="sr-only">Visa hyresgästinformation</span>
-            </Button>
-          </CollapsibleTrigger>
-        </div>
+        </AccordionTrigger>
         
-        <CollapsibleContent>
-          <CardContent className="p-4 pt-4">
+        <AccordionContent>
+          <div className="px-4 pb-4">
             <Tabs defaultValue="info" className="w-full">
               <TabsList className="mb-4 grid grid-cols-2">
                 <TabsTrigger value="info" className="flex items-center gap-1.5">
@@ -213,9 +204,9 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
                 <TenantNotesTab tenantId={tenants[0].personalNumber || `${tenants[0].firstName}-${tenants[0].lastName}`} />
               </TabsContent>
             </Tabs>
-          </CardContent>
-        </CollapsibleContent>
-      </Collapsible>
-    </Card>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }

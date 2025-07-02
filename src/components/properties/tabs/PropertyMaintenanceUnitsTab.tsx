@@ -1,7 +1,5 @@
 
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { MaintenanceUnit } from "@/types/api";
 import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
 
@@ -10,12 +8,6 @@ interface PropertyMaintenanceUnitsTabProps {
 }
 
 export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMaintenanceUnitsTabProps) => {
-  const [expandedUnitId, setExpandedUnitId] = useState<string | null>(null);
-
-  const handleUnitToggle = (unitId: string) => {
-    setExpandedUnitId(expandedUnitId === unitId ? null : unitId);
-  };
-
   // Subkomponenter för återvinning
   const renderRecyclingSubComponents = () => {
     return (
@@ -48,36 +40,29 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 gap-2">
+      <Accordion type="single" collapsible className="space-y-2">
         {maintenanceUnits.map(unit => (
-          <div key={unit.id}>
-            <button
-              className="w-full bg-card hover:bg-accent/50 border rounded-lg p-3 sm:p-4 transition-colors text-left"
-              onClick={() => handleUnitToggle(unit.id)}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{unit.type}</span>
-                    {unit.area > 0 && (
-                      <span className="text-sm text-muted-foreground">({unit.area} m²)</span>
-                    )}
-                  </div>
-                  {unit.description && (
-                    <p className="text-sm text-muted-foreground mt-1">{unit.description}</p>
+          <AccordionItem 
+            key={unit.id} 
+            value={unit.id}
+            className="rounded-lg border border-slate-200 bg-white"
+          >
+            <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
+              <div className="flex-1 text-left">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">{unit.type}</span>
+                  {unit.area > 0 && (
+                    <span className="text-sm text-muted-foreground">({unit.area} m²)</span>
                   )}
                 </div>
-                {expandedUnitId === unit.id ? (
-                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
-                ) : (
-                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                {unit.description && (
+                  <p className="text-sm text-muted-foreground mt-1">{unit.description}</p>
                 )}
               </div>
-            </button>
-
-            {expandedUnitId === unit.id && (
-              <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
-                <div className="flex justify-end mb-4">
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="px-3 sm:px-4 pb-4 pt-1 space-y-4">
+                <div className="flex justify-end">
                   <CreateOrderDialog 
                     buttonSize="sm"
                     buttonVariant="outline"
@@ -94,10 +79,10 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
                   </div>
                 )}
               </div>
-            )}
-          </div>
+            </AccordionContent>
+          </AccordionItem>
         ))}
-      </div>
+      </Accordion>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { ButtonShowcase } from "./showcase/buttons/ButtonShowcase";
 import { CardsShowcase } from "./showcase/cards/CardsShowcase";
 import { OrdersShowcase } from "./showcase/orders/OrdersShowcase";
 import { MaintenanceShowcase } from "./showcase/maintenance/MaintenanceShowcase";
+import { AccordionShowcase } from "./showcase/accordions/AccordionShowcase";
 
 export const ComponentShowcase = () => {
   return (
@@ -13,6 +14,7 @@ export const ComponentShowcase = () => {
       <FormControlsShowcase />
       <ButtonShowcase />
       <CardsShowcase />
+      <AccordionShowcase />
       <MaintenanceShowcase />
       <OrdersShowcase />
     </div>

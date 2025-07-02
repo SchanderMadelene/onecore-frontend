@@ -1,7 +1,6 @@
 
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { Room } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -11,7 +10,6 @@ interface ResidenceInfoProps {
 }
 
 export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps) => {
-  const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
   console.log("ResidenceInfo rendering with rooms:", rooms);
@@ -52,11 +50,6 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
     return [];
   };
 
-  const handleRoomToggle = (roomId: string) => {
-    console.log("Toggling room:", roomId);
-    setExpandedRoomId(expandedRoomId === roomId ? null : roomId);
-  };
-
   if (!rooms || rooms.length === 0) {
     console.log("No rooms data available");
     return (
@@ -68,33 +61,24 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 gap-2">
+      <Accordion type="single" collapsible className="space-y-2">
         {rooms.map(room => (
-          <div key={room.id}>
-            <button
-              className="w-full bg-card hover:bg-accent/50 border rounded-lg p-3 sm:p-4 transition-colors text-left"
-              onClick={() => handleRoomToggle(room.id)}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{room.name || room.roomType?.name}</span>
-                    {room.size && (
-                      <span className="text-sm text-muted-foreground">({room.size} m²)</span>
-                    )}
-                  </div>
-                </div>
-                {expandedRoomId === room.id ? (
-                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
-                ) : (
-                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
+          <AccordionItem 
+            key={room.id} 
+            value={room.id}
+            className="rounded-lg border border-slate-200 bg-white"
+          >
+            <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
+              <div className="flex items-center gap-2">
+                <span className="font-medium">{room.name || room.roomType?.name}</span>
+                {room.size && (
+                  <span className="text-sm text-muted-foreground">({room.size} m²)</span>
                 )}
               </div>
-            </button>
-
-            {expandedRoomId === room.id && (
-              <div className="mt-2 p-3 sm:p-4 border rounded-lg bg-muted/50 space-y-4">
-                {getMaintenanceUnitsForRoom(room.id).length > 0 && (
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="px-3 sm:px-4 pb-4 pt-1">
+                {getMaintenanceUnitsForRoom(room.id).length > 0 ? (
                   <div className="grid gap-3">
                     {getMaintenanceUnitsForRoom(room.id).map((unit, index) => (
                       <MaintenanceUnitCard 
@@ -103,12 +87,16 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
                       />
                     ))}
                   </div>
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-muted-foreground text-sm">Ingen underhållsinformation tillgänglig</p>
+                  </div>
                 )}
               </div>
-            )}
-          </div>
+            </AccordionContent>
+          </AccordionItem>
         ))}
-      </div>
+      </Accordion>
     </div>
   );
 };

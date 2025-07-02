@@ -1,12 +1,12 @@
 
 import { PropertyDetail } from "@/types/api";
 
-// Property 3 (Sveavägen 10) details
+// Property 3 (Björnen 4) details
 export const property3: PropertyDetail = {
   id: "3",
   propertyObjectId: "P3",
   code: "FAST-003",
-  designation: "Sveavägen 10",
+  designation: "Björnen 4",
   municipality: "Västerås",
   parish: "Domkyrkan",
   propertyNumber: "5:12",
