@@ -115,12 +115,44 @@ export const property1: PropertyDetail = {
         {
           id: "E2", 
           name: "Bellmansgatan 1B",
-          apartments: ["A4", "A5", "A6"]
+          apartments: ["A4", "A5", "A6"],
+          components: [
+            {
+              id: "C3",
+              name: "Postboxar",
+              type: "Postboxar",
+              description: "Säkra postlådor för hyresgäster",
+              status: "Aktiv"
+            },
+            {
+              id: "C4", 
+              name: "Digital bokningstavla",
+              type: "Digital bokningstavla",
+              description: "Interaktiv displayenhet för bokningar",
+              status: "Aktiv"
+            }
+          ]
         },
         {
           id: "E3",
           name: "Bellmansgatan 1C", 
-          apartments: ["A7", "A8", "A9"]
+          apartments: ["A7", "A8", "A9"],
+          components: [
+            {
+              id: "C5",
+              name: "Postboxar",
+              type: "Postboxar",
+              description: "Säkra postlådor för hyresgäster",
+              status: "Aktiv"
+            },
+            {
+              id: "C6", 
+              name: "Digital bokningstavla",
+              type: "Digital bokningstavla",
+              description: "Interaktiv displayenhet för bokningar",
+              status: "Aktiv"
+            }
+          ]
         }
       ]
     },
