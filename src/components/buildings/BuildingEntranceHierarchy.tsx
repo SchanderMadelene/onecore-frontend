@@ -91,14 +91,14 @@ export const BuildingEntranceHierarchy = ({
             </AccordionTrigger>
             
             <AccordionContent>
-              <div className="px-2 pb-2 space-y-3">
+              <div className="pb-2 space-y-3">
                 {/* Direct apartments */}
-                <div className="p-2">
+                <div>
                   <div className="space-y-2">
                     {entrance.apartments.map(aptId => {
                       const apartment = getApartment(aptId);
                       return apartment ? (
-                        <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
+                        <div key={aptId} className={`flex justify-between items-center px-1 py-2 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
                           <div className="flex items-center gap-2">
                             <Home className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium text-foreground">{apartment.code}</span>
@@ -118,7 +118,7 @@ export const BuildingEntranceHierarchy = ({
                           </div>
                         </div>
                       ) : (
-                        <div key={aptId} className="flex justify-between items-center p-2 rounded-md border border-destructive/20 bg-destructive/5">
+                        <div key={aptId} className="flex justify-between items-center px-1 py-2 rounded-md border border-destructive/20 bg-destructive/5">
                           <span className="text-muted-foreground text-sm">Lägenhet saknas (ID: {aptId})</span>
                         </div>
                       );
