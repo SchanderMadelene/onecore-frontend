@@ -1,5 +1,4 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
 import type { Building } from "@/types/api";
 
@@ -134,17 +133,15 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
   ];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Byggnadsdelar</h3>
-        <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-          {buildingParts.map((part, index) => (
-            <MaintenanceUnitCard
-              key={index}
-              subComponents={part.subComponents}
-            />
-          ))}
-        </div>
+    <div>
+      <h3 className="text-lg font-semibold mb-4">Byggnadsdelar</h3>
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+        {buildingParts.map((part, index) => (
+          <MaintenanceUnitCard
+            key={index}
+            subComponents={part.subComponents}
+          />
+        ))}
       </div>
     </div>
   );
