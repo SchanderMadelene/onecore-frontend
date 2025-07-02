@@ -40,11 +40,12 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
 
   return (
     <div className="space-y-4">
-      <Accordion type="single" collapsible>
+      <Accordion type="single" collapsible className="space-y-2">
         {maintenanceUnits.map(unit => (
           <AccordionItem 
             key={unit.id} 
             value={unit.id}
+            className="rounded-lg border border-slate-200 bg-white"
           >
             <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
               <div className="flex-1 text-left">

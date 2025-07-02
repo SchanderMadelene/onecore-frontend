@@ -25,11 +25,12 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
       </div>
 
       <div className="space-y-4">
-        <Accordion type="single" collapsible>
+        <Accordion type="single" collapsible className="space-y-2">
           {Object.entries(inspection.rooms).map(([roomId, room]) => (
             <AccordionItem 
               key={roomId} 
               value={roomId}
+              className="rounded-lg border border-slate-200 bg-white"
             >
               <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <h3 className="text-lg font-medium">Rum {roomId}</h3>

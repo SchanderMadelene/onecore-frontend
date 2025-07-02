@@ -32,9 +32,10 @@ export const InspectionAccordion = ({
   const isMobile = useIsMobile();
   
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" className="space-y-3" collapsible>
       <AccordionItem 
         value="walls"
+        className="rounded-lg border border-slate-200 bg-white"
       >
         <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">
@@ -64,6 +65,7 @@ export const InspectionAccordion = ({
 
       <AccordionItem 
         value="ceiling"
+        className="rounded-lg border border-slate-200 bg-white"
       >
         <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">
@@ -92,6 +94,7 @@ export const InspectionAccordion = ({
 
       <AccordionItem 
         value="floor"
+        className="rounded-lg border border-slate-200 bg-white"
       >
         <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">
@@ -120,6 +123,7 @@ export const InspectionAccordion = ({
 
       <AccordionItem 
         value="details"
+        className="rounded-lg border border-slate-200 bg-white"
       >
         <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">

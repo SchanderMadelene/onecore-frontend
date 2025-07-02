@@ -160,7 +160,7 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
   };
 
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="tenant-info">
         <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-3">

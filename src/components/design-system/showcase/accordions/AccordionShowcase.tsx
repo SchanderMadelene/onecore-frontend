@@ -16,9 +16,10 @@ export const AccordionShowcase = () => {
         {/* Basic Accordion */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-muted-foreground">Grundläggande Accordion</h4>
-          <Accordion type="single" collapsible>
+          <Accordion type="single" collapsible className="space-y-2">
             <AccordionItem 
               value="item-1"
+              className="rounded-lg border border-slate-200 bg-white"
             >
               <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <div className="flex-1 text-left">
@@ -40,6 +41,7 @@ export const AccordionShowcase = () => {
             
             <AccordionItem 
               value="item-2"
+              className="rounded-lg border border-slate-200 bg-white"
             >
               <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <div className="flex-1 text-left">
@@ -63,8 +65,8 @@ export const AccordionShowcase = () => {
         {/* Property Maintenance Style */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-muted-foreground">Fastighetsunderhåll Stil</h4>
-          <Accordion type="single" collapsible>
-            <AccordionItem value="maintenance">
+          <Accordion type="single" collapsible className="space-y-2">
+            <AccordionItem value="maintenance" className="rounded-lg border border-slate-200 bg-white">
               <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <div className="flex-1 text-left">
                   <div className="flex items-center gap-2">
@@ -91,8 +93,8 @@ export const AccordionShowcase = () => {
         {/* Room Information Style */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-muted-foreground">Rumsinformation Stil</h4>
-          <Accordion type="single" collapsible>
-            <AccordionItem value="room">
+          <Accordion type="single" collapsible className="space-y-2">
+            <AccordionItem value="room" className="rounded-lg border border-slate-200 bg-white">
               <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <div className="flex-1 text-left">
                   <div className="flex items-center gap-2">
@@ -123,8 +125,8 @@ export const AccordionShowcase = () => {
         {/* Hierarchical Structure with Sections */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-muted-foreground">Hierarkisk Struktur med Sektioner</h4>
-          <Accordion type="single" collapsible>
-            <AccordionItem value="hierarchy">
+          <Accordion type="single" collapsible className="space-y-2">
+            <AccordionItem value="hierarchy" className="rounded-lg border border-slate-200 bg-white">
               <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <div className="flex-1 text-left">
                   <div className="flex items-center gap-2">
@@ -172,8 +174,8 @@ export const AccordionShowcase = () => {
         {/* Inspection Style */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-muted-foreground">Besiktning Stil</h4>
-          <Accordion type="single" collapsible>
-            <AccordionItem value="inspection">
+          <Accordion type="single" collapsible className="space-y-2">
+            <AccordionItem value="inspection" className="rounded-lg border border-slate-200 bg-white">
               <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <div className="flex-1 text-left">
                   <div className="flex items-center gap-2.5">
