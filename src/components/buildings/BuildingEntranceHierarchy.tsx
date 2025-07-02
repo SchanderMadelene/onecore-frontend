@@ -93,7 +93,7 @@ export const BuildingEntranceHierarchy = ({
             <AccordionContent>
               <div className="px-2 pb-2 space-y-3">
                 {/* Direct apartments */}
-                <div className="bg-card rounded-lg border p-2">
+                <div className="p-2">
                   <div className="space-y-2">
                     {entrance.apartments.map(aptId => {
                       const apartment = getApartment(aptId);
