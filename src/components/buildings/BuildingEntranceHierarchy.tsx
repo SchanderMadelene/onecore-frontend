@@ -87,16 +87,6 @@ export const BuildingEntranceHierarchy = ({
                 <div className="flex items-center gap-2">
                   <CardTitle className="text-lg">{entrance.name}</CardTitle>
                 </div>
-                <div className="flex items-center gap-2">
-                  {entrance.components && entrance.components.length > 0 && (
-                    <Badge variant="outline" className="text-xs">
-                      {entrance.components.length} komponenter
-                    </Badge>
-                  )}
-                  <Badge className="text-xs">
-                    {entrance.addresses?.reduce((total, addr) => total + addr.apartments.length, 0) || entrance.apartments.length} lgh
-                  </Badge>
-                </div>
               </div>
             </AccordionTrigger>
             
