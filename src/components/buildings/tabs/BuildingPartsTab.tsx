@@ -133,16 +133,13 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
   ];
 
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4">Byggnadsdelar</h3>
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-        {buildingParts.map((part, index) => (
-          <MaintenanceUnitCard
-            key={index}
-            subComponents={part.subComponents}
-          />
-        ))}
-      </div>
+    <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      {buildingParts.map((part, index) => (
+        <MaintenanceUnitCard
+          key={index}
+          subComponents={part.subComponents}
+        />
+      ))}
     </div>
   );
 };
