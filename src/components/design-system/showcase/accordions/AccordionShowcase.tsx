@@ -110,6 +110,53 @@ export const AccordionShowcase = () => {
           </Accordion>
         </div>
 
+        {/* Hierarchical Structure with Sections */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-muted-foreground">Hierarkisk Struktur med Sektioner</h4>
+          <Accordion type="single" collapsible className="space-y-2">
+            <AccordionItem value="hierarchy" className="rounded-lg border border-slate-200 bg-white">
+              <AccordionTrigger className="px-4 py-3 hover:bg-accent/50">
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                  <span className="font-medium">Bellmansgatan 1A-2C</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="px-4 pb-4 pt-1 space-y-4">
+                  {/* Components Section */}
+                  <div className="bg-slate-50 rounded-lg p-3">
+                    <h5 className="text-sm font-medium text-slate-700 mb-3">Komponenter</h5>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="flex items-center gap-2 p-2 bg-white rounded border border-slate-200">
+                        <Info className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm font-medium">Digital bokningstavla</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-white rounded border border-slate-200">
+                        <ClipboardList className="h-4 w-4 text-green-600" />
+                        <span className="text-sm font-medium">Postboxar</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Apartments Section */}
+                  <div className="bg-white rounded-lg border border-slate-200 p-3">
+                    <h5 className="text-sm font-medium text-slate-700 mb-3">Lägenheter</h5>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center p-2 rounded-md hover:bg-slate-50 transition-colors border border-slate-100">
+                        <div className="flex items-center gap-2">
+                          <Home className="h-4 w-4 text-slate-600" />
+                          <span className="font-medium">1101</span>
+                        </div>
+                        <span className="text-sm text-muted-foreground">45m² • 2 rum</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+
         {/* Inspection Style */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-muted-foreground">Besiktning Stil</h4>

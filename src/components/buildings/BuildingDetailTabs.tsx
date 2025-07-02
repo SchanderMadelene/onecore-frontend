@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MobileAccordion } from "@/components/ui/mobile-accordion";
 import { BuildingEntrances } from "./BuildingEntrances";
 import { BuildingPartsTab } from "./tabs/BuildingPartsTab";
 import { BuildingSpacesTab } from "./tabs/BuildingSpacesTab";
@@ -7,6 +8,7 @@ import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
 import { FeatureGatedContent } from "@/components/residence/tabs/FeatureGatedContent";
 import { Home, Building2, Box, Settings, Car } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { Building } from "@/types/api";
 
 interface BuildingDetailTabsProps {
@@ -16,6 +18,87 @@ interface BuildingDetailTabsProps {
 
 export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsProps) => {
   const { features } = useFeatureToggles();
+  const isMobile = useIsMobile();
+
+  const accordionItems = [
+    {
+      id: "entrances",
+      icon: Home,
+      title: "Uppgångar",
+      content: features.showBuildingEntrances ? (
+        <BuildingEntrances building={building} basePath={basePath} />
+      ) : (
+        <FeatureGatedContent
+          isEnabled={false}
+          fallbackMessage="Uppgångsfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
+          <div />
+        </FeatureGatedContent>
+      )
+    },
+    {
+      id: "parts",
+      icon: Building2,
+      title: "Byggnadsdelar",
+      content: (
+        <FeatureGatedContent
+          isEnabled={features.showBuildingParts}
+          fallbackMessage="Byggnadsdelarfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
+          <BuildingPartsTab building={building} />
+        </FeatureGatedContent>
+      )
+    },
+    {
+      id: "spaces",
+      icon: Box,
+      title: "Utrymmen",
+      content: (
+        <FeatureGatedContent
+          isEnabled={features.showBuildingSpaces}
+          fallbackMessage="Utrymmenfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
+          <BuildingSpacesTab building={building} />
+        </FeatureGatedContent>
+      )
+    },
+    {
+      id: "installations",
+      icon: Settings,
+      title: "Installationer",
+      content: (
+        <FeatureGatedContent
+          isEnabled={features.showBuildingInstallations}
+          fallbackMessage="Installationerfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
+          <BuildingInstallationsTab building={building} />
+        </FeatureGatedContent>
+      )
+    },
+    {
+      id: "parking",
+      icon: Car,
+      title: "Parkering",
+      content: (
+        <FeatureGatedContent
+          isEnabled={features.showBuildingParking}
+          fallbackMessage="Parkeringfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
+          <BuildingParkingTab building={building} />
+        </FeatureGatedContent>
+      )
+    }
+  ];
+
+  if (isMobile) {
+    return (
+      <MobileAccordion 
+        items={accordionItems}
+        defaultOpen={["entrances"]}
+        className="w-full"
+      />
+    );
+  }
 
   return (
     <Tabs defaultValue="entrances" className="w-full">
