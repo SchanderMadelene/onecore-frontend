@@ -33,6 +33,8 @@ interface FeatureToggles {
   showBuildingSpaces: boolean;
   showBuildingInstallations: boolean;
   showBuildingParking: boolean;
+  // Turnover (In- och utflytt)
+  showTurnover: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -73,6 +75,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showBuildingSpaces: false,
   showBuildingInstallations: false,
   showBuildingParking: false,
+  // Turnover (In- och utflytt)
+  showTurnover: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);

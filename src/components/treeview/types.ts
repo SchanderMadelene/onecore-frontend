@@ -22,6 +22,7 @@ export interface TreeViewProps {
   showDesignSystem: boolean;
   showProperties: boolean;
   showTenants: boolean;
+  showTurnover: boolean;
   showBuildings: boolean;
   showApartments: boolean;
 }
