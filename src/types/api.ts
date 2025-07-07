@@ -150,6 +150,37 @@ export interface MaintenanceUnit {
   description?: string;
 }
 
+export type SpaceType = 
+  | "Trapphus"
+  | "Vind" 
+  | "Terrasser"
+  | "Källare"
+  | "Lokaler"
+  | "Skyddsrum i byggnaden"
+  | "Förråd i byggnaden"
+  | "Tvättstugor i byggnaden"
+  | "Miljöbodar i byggnaden"
+  | "Teknikutrymmen";
+
+export interface SpaceComponent {
+  id: string;
+  name: string;
+  description?: string;
+  area?: number;
+  status?: "Aktiv" | "Under underhåll" | "Ur funktion";
+  specs?: {
+    [key: string]: string;
+  };
+}
+
+export interface BuildingSpace {
+  id: string;
+  type: SpaceType;
+  name: string;
+  totalArea?: number;
+  components: SpaceComponent[];
+}
+
 export interface Building {
   id: string;
   name: string;
@@ -161,6 +192,7 @@ export interface Building {
   tenants?: number;
   apartments?: Apartment[];
   entrances?: Entrance[];
+  spaces?: BuildingSpace[];
 }
 
 export interface PropertyDetail extends Property {

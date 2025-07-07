@@ -1,7 +1,6 @@
 
 import { PropertyMapView } from "@/components/properties";
 import type { PropertyDetail } from "@/types/api";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface PropertyMapTabProps {
   propertyDetail: PropertyDetail;
@@ -11,18 +10,14 @@ export const PropertyMapTab = ({
   propertyDetail
 }: PropertyMapTabProps) => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Ritningar</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {propertyDetail.propertyMap ? (
-          <PropertyMapView propertyDetail={propertyDetail} />
-        ) : (
-          <EmptyDrawingState label="Ritningar" />
-        )}
-      </CardContent>
-    </Card>
+    <div>
+      <h3 className="text-lg font-semibold mb-4">Ritningar</h3>
+      {propertyDetail.propertyMap ? (
+        <PropertyMapView propertyDetail={propertyDetail} />
+      ) : (
+        <EmptyDrawingState label="Ritningar" />
+      )}
+    </div>
   );
 };
 

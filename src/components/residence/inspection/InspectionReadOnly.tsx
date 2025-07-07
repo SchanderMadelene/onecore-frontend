@@ -32,7 +32,7 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
               value={roomId}
               className="rounded-lg border border-slate-200 bg-white"
             >
-              <AccordionTrigger className="px-4 py-3">
+              <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <h3 className="text-lg font-medium">Rum {roomId}</h3>
               </AccordionTrigger>
               <AccordionContent>
