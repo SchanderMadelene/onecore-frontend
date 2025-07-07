@@ -1,13 +1,23 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TurnoverCase, TurnoverStep, TurnoverStatus, TURNOVER_STEP_LABELS } from "@/types/turnover";
 import { TurnoverCaseCard } from "./TurnoverCaseCard";
+import { TurnoverCaseDetailDialog } from "./TurnoverCaseDetailDialog";
 
 interface TurnoverKanbanProps {
   cases: TurnoverCase[];
 }
 
 export function TurnoverKanban({ cases }: TurnoverKanbanProps) {
+  const [selectedCase, setSelectedCase] = useState<TurnoverCase | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleCaseClick = (case_: TurnoverCase) => {
+    setSelectedCase(case_);
+    setDialogOpen(true);
+  };
+
   // Group cases by current step
   const stepColumns = Object.values(TurnoverStep).map(step => {
     const stepCases = cases.filter(case_ => case_.currentStep === step);
@@ -45,7 +55,12 @@ export function TurnoverKanban({ cases }: TurnoverKanbanProps) {
                 <CardContent className="space-y-3 max-h-96 overflow-y-auto">
                   {stepCases.length > 0 ? (
                     stepCases.map(case_ => (
-                      <TurnoverCaseCard key={case_.id} case_={case_} compact />
+                      <TurnoverCaseCard 
+                        key={case_.id} 
+                        case_={case_} 
+                        compact 
+                        onClick={() => handleCaseClick(case_)}
+                      />
                     ))
                   ) : (
                     <div className="text-center py-8 text-muted-foreground text-sm">
@@ -82,6 +97,12 @@ export function TurnoverKanban({ cases }: TurnoverKanbanProps) {
           </div>
         </CardContent>
       </Card>
+
+      <TurnoverCaseDetailDialog 
+        case_={selectedCase}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   );
 }

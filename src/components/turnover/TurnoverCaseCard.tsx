@@ -15,9 +15,10 @@ import { TurnoverStepIndicator } from "./TurnoverStepIndicator";
 interface TurnoverCaseCardProps {
   case_: TurnoverCase;
   compact?: boolean;
+  onClick?: () => void;
 }
 
-export function TurnoverCaseCard({ case_, compact = false }: TurnoverCaseCardProps) {
+export function TurnoverCaseCard({ case_, compact = false, onClick }: TurnoverCaseCardProps) {
   const currentStepData = case_.steps.find(step => step.step === case_.currentStep);
   const completedSteps = case_.steps.filter(step => step.status === TurnoverStatus.COMPLETED).length;
   const totalSteps = case_.steps.length;
@@ -48,7 +49,10 @@ export function TurnoverCaseCard({ case_, compact = false }: TurnoverCaseCardPro
     case_.currentStep !== TurnoverStep.MOVE_IN_COMPLETED;
 
   return (
-    <Card className={`transition-all hover:shadow-md ${compact ? 'text-sm' : ''}`}>
+    <Card 
+      className={`transition-all hover:shadow-md ${compact ? 'text-sm' : ''} ${onClick ? 'cursor-pointer' : ''}`}
+      onClick={onClick}
+    >
       <CardHeader className={compact ? 'pb-2' : 'pb-3'}>
         <div className="flex items-start justify-between">
           <div className="flex-1">

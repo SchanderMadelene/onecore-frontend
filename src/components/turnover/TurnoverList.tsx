@@ -1,12 +1,22 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TurnoverCase } from "@/types/turnover";
 import { TurnoverCaseCard } from "./TurnoverCaseCard";
+import { TurnoverCaseDetailDialog } from "./TurnoverCaseDetailDialog";
 
 interface TurnoverListProps {
   cases: TurnoverCase[];
 }
 
 export function TurnoverList({ cases }: TurnoverListProps) {
+  const [selectedCase, setSelectedCase] = useState<TurnoverCase | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleCaseClick = (case_: TurnoverCase) => {
+    setSelectedCase(case_);
+    setDialogOpen(true);
+  };
+
   // Sort cases by priority and updated date
   const sortedCases = [...cases].sort((a, b) => {
     const priorityOrder = { urgent: 4, high: 3, normal: 2, low: 1 };
@@ -33,7 +43,11 @@ export function TurnoverList({ cases }: TurnoverListProps) {
       {sortedCases.length > 0 ? (
         <div className="space-y-4">
           {sortedCases.map(case_ => (
-            <TurnoverCaseCard key={case_.id} case_={case_} />
+            <TurnoverCaseCard 
+              key={case_.id} 
+              case_={case_} 
+              onClick={() => handleCaseClick(case_)}
+            />
           ))}
         </div>
       ) : (
@@ -45,6 +59,12 @@ export function TurnoverList({ cases }: TurnoverListProps) {
           </CardContent>
         </Card>
       )}
+
+      <TurnoverCaseDetailDialog 
+        case_={selectedCase}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   );
 }
