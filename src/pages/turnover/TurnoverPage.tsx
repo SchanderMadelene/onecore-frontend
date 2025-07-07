@@ -2,18 +2,18 @@ import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useTurnoverCases } from "@/hooks/useTurnoverCases";
-import { Search, Plus } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TurnoverDashboard } from "@/components/turnover/TurnoverDashboard";
 import { TurnoverKanban } from "@/components/turnover/TurnoverKanban";
 import { TurnoverList } from "@/components/turnover/TurnoverList";
+import { useTurnoverCases } from "@/hooks/useTurnoverCases";
+import { Search, Plus } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function TurnoverPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { cases, loading } = useTurnoverCases();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -35,7 +35,7 @@ export default function TurnoverPage() {
 
   if (loading) {
     return (
-      <PageLayout title="In- och utflytt" showBackButton={false}>
+      <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
         <div className="flex items-center justify-center h-64">
           <div className="text-muted-foreground">Laddar in- och utflyttärenden...</div>
         </div>
@@ -44,7 +44,7 @@ export default function TurnoverPage() {
   }
 
   return (
-    <PageLayout title="In- och utflytt" showBackButton={false}>
+    <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
         {/* Header with actions */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
