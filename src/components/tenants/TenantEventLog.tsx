@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { Calendar, Filter, Search, User, Clock, ChevronDown, ChevronRight } from "lucide-react";
+import { Calendar, Filter, Search, User, Clock, ChevronDown, ChevronRight, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 import { getTenantEvents, type TenantEvent } from "@/data/tenant-events";
 
 interface TenantEventLogProps {
@@ -15,11 +19,13 @@ interface TenantEventLogProps {
 export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [dateFrom, setDateFrom] = useState<Date>();
+  const [dateTo, setDateTo] = useState<Date>();
   const [expandedEvents, setExpandedEvents] = useState<Set<string>>(new Set());
 
   const allEvents = getTenantEvents(personalNumber);
   
-  // Filtrera händelser baserat på sökning och typ
+  // Filtrera händelser baserat på sökning, typ och datum
   const filteredEvents = allEvents.filter(event => {
     const matchesSearch = searchQuery === "" || 
       event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -27,7 +33,12 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
     
     const matchesType = typeFilter === "all" || event.type === typeFilter;
     
-    return matchesSearch && matchesType;
+    // Datumfiltrering
+    const eventDate = new Date(event.timestamp);
+    const matchesDateFrom = !dateFrom || eventDate >= dateFrom;
+    const matchesDateTo = !dateTo || eventDate <= dateTo;
+    
+    return matchesSearch && matchesType && matchesDateFrom && matchesDateTo;
   });
 
   const toggleEventExpansion = (eventId: string) => {
@@ -75,31 +86,107 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Sök i händelser..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
+          <div className="flex flex-col gap-4">
+            {/* Första raden med sökning och typfilter */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Sök i händelser..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <Select value={typeFilter} onValueChange={setTypeFilter}>
+                <SelectTrigger className="w-full sm:w-48">
+                  <Filter className="h-4 w-4 mr-2" />
+                  <SelectValue placeholder="Filtrera typ" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla typer</SelectItem>
+                  <SelectItem value="system">System</SelectItem>
+                  <SelectItem value="login">Inloggning</SelectItem>
+                  <SelectItem value="profile_change">Profiländring</SelectItem>
+                  <SelectItem value="contract">Kontrakt</SelectItem>
+                  <SelectItem value="payment">Betalning</SelectItem>
+                  <SelectItem value="support">Support</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-full sm:w-48">
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Filtrera typ" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alla typer</SelectItem>
-                <SelectItem value="system">System</SelectItem>
-                <SelectItem value="login">Inloggning</SelectItem>
-                <SelectItem value="profile_change">Profiländring</SelectItem>
-                <SelectItem value="contract">Kontrakt</SelectItem>
-                <SelectItem value="payment">Betalning</SelectItem>
-                <SelectItem value="support">Support</SelectItem>
-              </SelectContent>
-            </Select>
+
+            {/* Andra raden med datumfilter */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <label className="text-sm font-medium mb-2 block">Från datum</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !dateFrom && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {dateFrom ? format(dateFrom, "PPP") : <span>Välj startdatum</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={dateFrom}
+                      onSelect={setDateFrom}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              
+              <div className="flex-1">
+                <label className="text-sm font-medium mb-2 block">Till datum</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !dateTo && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {dateTo ? format(dateTo, "PPP") : <span>Välj slutdatum</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent
+                      mode="single"
+                      selected={dateTo}
+                      onSelect={setDateTo}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* Rensa datumfilter */}
+              {(dateFrom || dateTo) && (
+                <div className="flex items-end">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setDateFrom(undefined);
+                      setDateTo(undefined);
+                    }}
+                    className="h-10"
+                  >
+                    Rensa datum
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
           
           {filteredEvents.length > 0 && (
