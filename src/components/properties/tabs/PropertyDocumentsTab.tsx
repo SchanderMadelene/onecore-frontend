@@ -114,14 +114,12 @@ export const PropertyDocumentsTab = () => {
 
   return (
     <Card className="w-full">
-      {!isMobile && (
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5" />
-            Dokument ({documents.length})
-          </CardTitle>
-        </CardHeader>
-      )}
+      <CardHeader className={isMobile ? "pb-4" : ""}>
+        <CardTitle className={`flex items-center gap-2 ${isMobile ? "text-lg" : ""}`}>
+          <FileText className="h-5 w-5" />
+          Dokument ({documents.length})
+        </CardTitle>
+      </CardHeader>
       <CardContent className="space-y-6">
         {/* Upload sektion */}
         <div className="border-2 border-dashed border-gray-200 rounded-lg p-6">
