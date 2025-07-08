@@ -11,6 +11,7 @@ interface FeatureToggles {
   showRoomInformation: boolean;
   showInspections: boolean;
   showApartmentIssues: boolean;
+  showResidenceNotes: boolean;
   showTenantInfo: boolean;
   showDocuments: boolean;
   showFloorplan: boolean;
@@ -51,6 +52,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showRoomInformation: false,
   showInspections: false,
   showApartmentIssues: false,
+  showResidenceNotes: false,
   showTenantInfo: false,
   showDocuments: false,
   showFloorplan: false,

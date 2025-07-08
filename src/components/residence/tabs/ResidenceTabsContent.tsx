@@ -6,6 +6,7 @@ import { ResidenceInspection } from "@/components/residence/ResidenceInspection"
 import { ResidenceDocuments } from "@/components/residence/ResidenceDocuments";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
+import { Notes } from "@/components/shared/Notes";
 import { FeatureGatedContent } from "./FeatureGatedContent";
 import type { Room } from "@/types/api";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
@@ -81,6 +82,21 @@ export const ResidenceTabsContent = ({
           fallbackMessage="För att se felanmälningar, aktivera funktionen i inställningarna."
         >
           <OrdersManagement residenceId={residenceId} />
+        </FeatureGatedContent>
+      </TabsContent>
+
+      <TabsContent value="notes">
+        <FeatureGatedContent
+          isEnabled={features.showResidenceNotes}
+          fallbackMessage="För att se noteringar, aktivera funktionen i inställningarna."
+        >
+          <Notes 
+            entityType="residence"
+            entityId={residenceId || ""}
+            title="Noteringar för lägenheten"
+            placeholder="Skriv en notering om lägenheten..."
+            emptyMessage="Inga noteringar har lagts till för denna lägenhet ännu."
+          />
         </FeatureGatedContent>
       </TabsContent>
     </>

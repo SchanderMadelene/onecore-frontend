@@ -35,6 +35,10 @@ export const ResidenceTabsList = ({ defaultValue, children }: ResidenceTabsListP
           <MessageSquare className="h-4 w-4" />
           Ärenden
         </TabsTrigger>
+        <TabsTrigger value="notes" className="flex items-center gap-1.5">
+          <FileText className="h-4 w-4" />
+          Noteringar
+        </TabsTrigger>
       </TabsList>
       {children}
     </Tabs>
