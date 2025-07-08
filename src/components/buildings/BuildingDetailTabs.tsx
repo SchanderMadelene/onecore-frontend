@@ -5,8 +5,9 @@ import { BuildingPartsTab } from "./tabs/BuildingPartsTab";
 import { BuildingSpacesTab } from "./tabs/BuildingSpacesTab";
 import { BuildingInstallationsTab } from "./tabs/BuildingInstallationsTab";
 import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
+import { BuildingDocumentsTab } from "./tabs/BuildingDocumentsTab";
 import { FeatureGatedContent } from "@/components/residence/tabs/FeatureGatedContent";
-import { Home, Building2, Box, Settings, Car } from "lucide-react";
+import { Home, Building2, Box, Settings, Car, FileText } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Building } from "@/types/api";
@@ -87,6 +88,19 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
           <BuildingParkingTab building={building} />
         </FeatureGatedContent>
       )
+    },
+    {
+      id: "documents",
+      icon: FileText,
+      title: "Dokument",
+      content: (
+        <FeatureGatedContent
+          isEnabled={features.showBuildingDocuments}
+          fallbackMessage="Dokumentfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
+          <BuildingDocumentsTab />
+        </FeatureGatedContent>
+      )
     }
   ];
 
@@ -126,6 +140,11 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
         <TabsTrigger value="parking" className="flex items-center gap-1.5">
           <Car className="h-4 w-4" />
           Parkering
+        </TabsTrigger>
+        
+        <TabsTrigger value="documents" className="flex items-center gap-1.5">
+          <FileText className="h-4 w-4" />
+          Dokument
         </TabsTrigger>
       </TabsList>
 
@@ -175,6 +194,15 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
           fallbackMessage="Parkeringfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
         >
           <BuildingParkingTab building={building} />
+        </FeatureGatedContent>
+      </TabsContent>
+
+      <TabsContent value="documents" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <FeatureGatedContent
+          isEnabled={features.showBuildingDocuments}
+          fallbackMessage="Dokumentfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
+          <BuildingDocumentsTab />
         </FeatureGatedContent>
       </TabsContent>
     </Tabs>

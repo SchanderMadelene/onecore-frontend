@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,34 +20,34 @@ interface Document {
 const mockDocuments: Document[] = [
   {
     id: "1",
-    name: "Inflyttningsbesiktning.pdf",
+    name: "Teknisk_beskrivning_2024.pdf",
     type: "PDF",
-    size: "1.2 MB",
-    uploadedBy: "Sara Johansson",
-    uploadedDate: "2024-03-01",
-    category: "Besiktning"
+    size: "3.2 MB",
+    uploadedBy: "Teknisk avdelning",
+    uploadedDate: "2024-02-15",
+    category: "Teknisk"
   },
   {
     id: "2",
-    name: "Hyreskontrakt_Lägenhet.pdf",
+    name: "Besiktningsprotokoll_Ventilation.pdf",
     type: "PDF",
-    size: "0.8 MB",
-    uploadedBy: "Admin",
-    uploadedDate: "2024-01-15",
-    category: "Kontrakt"
+    size: "1.8 MB",
+    uploadedBy: "Erik Nilsson",
+    uploadedDate: "2024-01-28",
+    category: "Besiktning"
   },
   {
     id: "3",
-    name: "Planritning_Lägenhet.jpg",
-    type: "Bild",
-    size: "2.1 MB",
-    uploadedBy: "Teknisk avdelning",
-    uploadedDate: "2023-12-10",
-    category: "Ritningar"
+    name: "Underhållsplan_2024.xlsx",
+    type: "Excel",
+    size: "0.9 MB",
+    uploadedBy: "Maria Svensson",
+    uploadedDate: "2024-01-10",
+    category: "Underhåll"
   }
 ];
 
-export const ResidenceDocuments = () => {
+export const BuildingDocumentsTab = () => {
   const [documents, setDocuments] = useState<Document[]>(mockDocuments);
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
@@ -65,7 +64,7 @@ export const ResidenceDocuments = () => {
       const newDocument: Document = {
         id: Date.now().toString(),
         name: file.name,
-        type: file.type.includes('pdf') ? 'PDF' : file.type.includes('image') ? 'Bild' : 'Okänd',
+        type: file.type.includes('pdf') ? 'PDF' : file.type.includes('excel') ? 'Excel' : 'Okänd',
         size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
         uploadedBy: "Du",
         uploadedDate: new Date().toISOString().split('T')[0],
@@ -101,8 +100,6 @@ export const ResidenceDocuments = () => {
     });
   };
 
-
-
   return (
     <Card className="w-full">
       {!isMobile && (
@@ -119,7 +116,7 @@ export const ResidenceDocuments = () => {
           <div className="text-center space-y-4">
             <Upload className="h-8 w-8 text-gray-400 mx-auto" />
             <div>
-              <Label htmlFor="residence-file-upload" className="cursor-pointer">
+              <Label htmlFor="building-file-upload" className="cursor-pointer">
                 <Button variant="outline" disabled={isUploading} asChild>
                   <span>
                     {isUploading ? "Laddar upp..." : "Välj fil att ladda upp"}
@@ -127,16 +124,16 @@ export const ResidenceDocuments = () => {
                 </Button>
               </Label>
               <Input
-                id="residence-file-upload"
+                id="building-file-upload"
                 type="file"
                 className="hidden"
                 onChange={handleFileUpload}
-                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.dwg,.jpg,.jpeg,.png"
                 disabled={isUploading}
               />
             </div>
             <p className="text-sm text-muted-foreground">
-              Stöder PDF, Word, Excel och bildformaten. Max 10 MB.
+              Stöder PDF, Word, Excel, DWG, och bildformaten. Max 10 MB.
             </p>
           </div>
         </div>
@@ -230,17 +227,17 @@ export const ResidenceDocuments = () => {
               )}
             </Card>
           ))}
-
-          {documents.length === 0 && (
-            <div className="text-center py-8">
-              <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-muted-foreground">Inga dokument uppladdade än</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Ladda upp ditt första dokument för att komma igång
-              </p>
-            </div>
-          )}
         </div>
+
+        {documents.length === 0 && (
+          <div className="text-center py-8">
+            <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-muted-foreground">Inga dokument uppladdade än</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Ladda upp ditt första dokument för att komma igång
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
