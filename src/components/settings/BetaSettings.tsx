@@ -408,6 +408,17 @@ export function BetaSettings() {
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
                   <Key className="h-4 w-4" />
+                  <Label htmlFor="turnover">In- och utflytt</Label>
+                </div>
+                <p className="text-sm text-muted-foreground">Aktivera funktioner för in- och utflytthantering</p>
+              </div>
+              <Switch id="turnover" checked={features.showTurnover} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showTurnover')} />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <Key className="h-4 w-4" />
                   <Label htmlFor="rentals">Uthyrning</Label>
                 </div>
                 <p className="text-sm text-muted-foreground">Aktivera uthyrningsfunktioner</p>

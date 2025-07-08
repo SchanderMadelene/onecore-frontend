@@ -19,6 +19,7 @@ import AllPropertiesPage from "./pages/properties/AllPropertiesPage";
 import RentalsPage from "./pages/rentals/RentalsPage";
 import ResidenceProfilePage from "./pages/rentals/ResidenceProfilePage";
 import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
+import TurnoverPage from "./pages/turnover/TurnoverPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 
 const ProtectedRoute = ({ children, isEnabled }: { children: React.ReactNode, isEnabled: boolean }) => {
@@ -76,6 +77,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <ParkingSpaceDetailPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/turnover" 
+        element={
+          <ProtectedRoute isEnabled={features.showTurnover}>
+            <TurnoverPage />
           </ProtectedRoute>
         } 
       />

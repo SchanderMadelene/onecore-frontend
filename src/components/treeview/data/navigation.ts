@@ -15,6 +15,12 @@ export const navigationNodes: TreeNode[] = [
     path: "/rentals",
   },
   {
+    id: "turnover",
+    label: "In- och utflytt",
+    icon: "arrow-right-left",
+    path: "/turnover",
+  },
+  {
     id: "design-system",
     label: "Design System",
     icon: "palette",
