@@ -286,15 +286,36 @@ export function GlobalSearchBar({
                   />
                 </div>
               ) : (
-                <div className="p-4 space-y-6">
-                  {/* Quick access to favorites */}
+                <div className="p-4 space-y-6 overflow-y-auto max-h-[82vh]">
+                  {/* Recent searches */}
+                  {history.length > 0 && (
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                        Senaste sökningar
+                      </div>
+                      <div className="space-y-1">
+                        {history.slice(0, 5).map((item, index) => (
+                          <button
+                            key={index}
+                            className="block w-full text-left px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            onClick={() => setQuery(item)}
+                          >
+                            <Clock className="h-4 w-4 inline mr-2 text-muted-foreground" />
+                            {item}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Saved searches */}
                   {favorites.length > 0 && (
                     <div>
                       <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
                         Sparade sökningar
                       </div>
                       <div className="space-y-1">
-                        {favorites.slice(0, 6).map((favorite) => (
+                        {favorites.map((favorite) => (
                           <button
                             key={favorite.id}
                             className="block w-full text-left px-3 py-2 hover:bg-accent rounded-md transition-colors"
