@@ -39,9 +39,9 @@ const requiresSpecialHandling = (residenceId: string): boolean => {
 };
 
 const requiresPestControl = (residenceId: string): boolean => {
-  // For demo purposes, mark lgh-1002 as having pest issues
+  // For demo purposes, mark lgh-1002 and lgh-001 as having pest issues
   // In a real application, this would come from the API data
-  return residenceId === "lgh-1002";
+  return residenceId === "lgh-1002" || residenceId === "lgh-001";
 };
 
 // Function to check if residence has second-hand rental
