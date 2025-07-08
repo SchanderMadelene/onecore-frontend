@@ -103,22 +103,3 @@ export const getTenantEvents = (personalNumber: string): TenantEvent[] => {
   return mockTenantEvents.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 };
 
-// Funktion för att få ikonfärger baserat på händelsetyp
-export const getEventTypeColor = (type: TenantEvent['type']): string => {
-  switch (type) {
-    case 'system':
-      return 'text-blue-600 bg-blue-100';
-    case 'login':
-      return 'text-green-600 bg-green-100';
-    case 'profile_change':
-      return 'text-orange-600 bg-orange-100';
-    case 'contract':
-      return 'text-purple-600 bg-purple-100';
-    case 'payment':
-      return 'text-emerald-600 bg-emerald-100';
-    case 'support':
-      return 'text-red-600 bg-red-100';
-    default:
-      return 'text-gray-600 bg-gray-100';
-  }
-};
