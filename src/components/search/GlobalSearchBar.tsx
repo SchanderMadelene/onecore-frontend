@@ -321,49 +321,7 @@ export function GlobalSearchBar({
             {/* Right sidebar */}
             <div className="w-80 border-l bg-accent/20">
               <div className="p-4 space-y-6">
-                {/* Filter section - moved to top/left priority */}
-                <div>
-                  <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-                    Filtrera efter typ
-                  </div>
-                  <div className="space-y-2">
-                    {filters.map((filter) => (
-                      <button
-                        key={filter.type}
-                        onClick={() => toggleFilter(filter.type)}
-                        className={cn(
-                          "flex items-center justify-between w-full px-3 py-2 text-sm rounded-md transition-colors",
-                          filter.active 
-                            ? "bg-primary text-primary-foreground" 
-                            : "hover:bg-accent"
-                        )}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span>{filter.icon}</span>
-                          <span>{filter.label}</span>
-                        </div>
-                        {filter.count !== undefined && filter.count > 0 && (
-                          <Badge variant={filter.active ? "secondary" : "outline"} className="h-5 text-xs">
-                            {filter.count}
-                          </Badge>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                  {hasActiveFilters && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={clearFilters}
-                      className="w-full mt-3 h-8 text-xs"
-                    >
-                      <X className="h-3 w-3 mr-1" />
-                      Rensa alla filter
-                    </Button>
-                  )}
-                </div>
-
-                {/* Recent searches - moved below filters */}
+                {/* Recent searches */}
                 {history.length > 0 && (
                   <div>
                     <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
