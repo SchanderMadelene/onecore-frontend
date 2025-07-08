@@ -108,20 +108,7 @@ export const PropertyDocumentsTab = () => {
     });
   };
 
-  const getFileIcon = (type: string) => {
-    return <FileText className="h-5 w-5 text-blue-500" />;
-  };
 
-  const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      "Energi": "bg-green-100 text-green-800",
-      "Besiktning": "bg-blue-100 text-blue-800",
-      "Ritningar": "bg-purple-100 text-purple-800",
-      "Garanti": "bg-orange-100 text-orange-800",
-      "Övrigt": "bg-gray-100 text-gray-800"
-    };
-    return colors[category] || colors["Övrigt"];
-  };
 
   return (
     <Card className="w-full">
@@ -165,13 +152,9 @@ export const PropertyDocumentsTab = () => {
             <Card key={document.id} className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3 flex-1">
-                  {getFileIcon(document.type)}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <h4 className="font-medium text-sm truncate">{document.name}</h4>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(document.category)}`}>
-                        {document.category}
-                      </span>
                     </div>
                     <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
