@@ -153,12 +153,7 @@ export function TenantQueueSystem() {
               {queueData.activeInterests.map((interest) => (
                 <div key={interest.id} className="border rounded-md p-4">
                   <div className="flex justify-between items-start mb-2">
-                    <div className="flex items-center gap-2">
-                      {interest.type === "housing" ? (
-                        <Home className="h-4 w-4 text-blue-500" />
-                      ) : (
-                        <Car className="h-4 w-4 text-blue-500" />
-                      )}
+                    <div>
                       <span className="font-medium">
                         {interest.address}
                       </span>
