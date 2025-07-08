@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Search, X, Filter, Star, Clock, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -108,11 +109,12 @@ export function GlobalSearchBar({
     <div ref={searchRef} className={cn("relative w-full", className)}>
       {/* Main search input */}
       <div className="relative">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 text-muted-foreground pointer-events-none -translate-y-1/2" />
         <Input
           ref={inputRef}
           type="search"
           placeholder={placeholder}
-          className="w-full pl-3 pr-24 h-10 bg-background border-input focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
+          className="w-full pl-9 pr-24 h-10 bg-background border-input focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={handleInputFocus}
@@ -137,7 +139,7 @@ export function GlobalSearchBar({
               setShowFavorites(false);
             }}
           >
-            Filter
+            <Filter className="h-3 w-3" />
           </Button>
 
           {/* Favorites button */}
@@ -150,7 +152,7 @@ export function GlobalSearchBar({
               setShowFilters(false);
             }}
           >
-            Favoriter
+            <Star className="h-3 w-3" />
           </Button>
 
           {/* Clear button */}
@@ -161,7 +163,7 @@ export function GlobalSearchBar({
               className="h-6 w-6 p-0"
               onClick={handleClearSearch}
             >
-              Rensa
+              <X className="h-3 w-3" />
             </Button>
           )}
         </div>
@@ -201,7 +203,8 @@ export function GlobalSearchBar({
             {/* Show suggestions when typing */}
             {query.length > 0 && suggestions.length > 0 && results.length === 0 && !isLoading && (
               <div className="p-3">
-                <div className="text-xs text-muted-foreground mb-2">
+                <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2">
+                  <Search className="h-3 w-3" />
                   FÖRSLAG
                 </div>
                 {suggestions.map((suggestion, index) => (
@@ -232,7 +235,8 @@ export function GlobalSearchBar({
                 {/* Recent searches */}
                 {history.length > 0 && (
                   <div>
-                    <div className="text-xs text-muted-foreground mb-2">
+                    <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2">
+                      <Clock className="h-3 w-3" />
                       SENASTE SÖKNINGAR
                     </div>
                     {history.slice(0, 5).map((item, index) => (
@@ -250,7 +254,8 @@ export function GlobalSearchBar({
                 {/* Quick access to favorites */}
                 {favorites.length > 0 && (
                   <div>
-                    <div className="text-xs text-muted-foreground mb-2">
+                    <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2">
+                      <Star className="h-3 w-3" />
                       FAVORITER
                     </div>
                     {favorites.slice(0, 3).map((favorite) => (
@@ -268,10 +273,10 @@ export function GlobalSearchBar({
                     
                     {favorites.length > 3 && (
                       <button
-                        className="w-full text-left px-2 py-1 text-xs text-muted-foreground hover:bg-accent rounded"
+                        className="w-full text-left px-2 py-1 text-xs text-muted-foreground hover:bg-accent rounded flex items-center gap-1"
                         onClick={() => setShowFavorites(true)}
                       >
-                        Visa alla favoriter
+                        Visa alla favoriter <ChevronDown className="h-3 w-3" />
                       </button>
                     )}
                   </div>

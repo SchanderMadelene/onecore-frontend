@@ -21,6 +21,7 @@ export interface SearchResult {
 export interface SearchFilter {
   type: SearchResultType;
   label: string;
+  icon: string;
   count?: number;
   active: boolean;
 }

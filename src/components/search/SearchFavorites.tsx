@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Trash2, Star, Plus, Clock } from "lucide-react";
 import { SavedSearch } from "@/types/search";
 import { toast } from "@/hooks/use-toast";
 
@@ -74,7 +75,8 @@ export function SearchFavorites({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-medium">
+        <h4 className="text-sm font-medium flex items-center gap-2">
+          <Star className="h-4 w-4" />
           Sparade sökningar
         </h4>
         
@@ -85,6 +87,7 @@ export function SearchFavorites({
             onClick={() => setIsCreating(true)}
             className="h-6 px-2 text-xs"
           >
+            <Plus className="h-3 w-3 mr-1" />
             Spara denna sökning
           </Button>
         )}
@@ -161,6 +164,7 @@ export function SearchFavorites({
                   </div>
                   <div className="flex items-center gap-3 mt-2">
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" />
                       {formatLastUsed(favorite.lastUsed)}
                     </div>
                     <Badge variant="outline" className="h-4 text-xs">
@@ -183,7 +187,7 @@ export function SearchFavorites({
                   }}
                   className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity ml-2"
                 >
-                  Ta bort
+                  <Trash2 className="h-3 w-3 text-muted-foreground" />
                 </Button>
               </div>
             </div>
@@ -191,6 +195,7 @@ export function SearchFavorites({
         </div>
       ) : (
         <div className="text-center py-6">
+          <Star className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
           <p className="text-sm text-muted-foreground">
             Inga sparade sökningar än
           </p>

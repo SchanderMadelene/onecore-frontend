@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
 import { SearchFilter, SearchResultType } from "@/types/search";
 
 interface SearchFiltersProps {
@@ -26,6 +27,7 @@ export function SearchFilters({
             onClick={onClearFilters}
             className="h-6 px-2 text-xs"
           >
+            <X className="h-3 w-3 mr-1" />
             Rensa alla
           </Button>
         )}
@@ -40,6 +42,7 @@ export function SearchFilters({
             onClick={() => onToggleFilter(filter.type)}
             className="justify-start h-8 text-xs"
           >
+            <span className="mr-2">{filter.icon}</span>
             {filter.label}
             {filter.count !== undefined && filter.count > 0 && (
               <Badge variant="secondary" className="ml-auto h-4 text-xs">
