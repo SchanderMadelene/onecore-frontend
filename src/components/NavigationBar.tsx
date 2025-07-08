@@ -1,7 +1,7 @@
 
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { SearchBar } from "./SearchBar";
+import { GlobalSearchBar } from "./search/GlobalSearchBar";
 import { Link } from "react-router-dom";
 import { Settings, Menu, Search } from "lucide-react";
 
@@ -59,7 +59,7 @@ export function NavigationBar({
         </div>
         
         <div className="mx-48 flex-1 hidden sm:block">
-          <SearchBar />
+          <GlobalSearchBar />
         </div>
         
         <div className="flex items-center space-x-4">
@@ -91,7 +91,7 @@ export function NavigationBar({
       {/* Mobile search bar */}
       {showMobileSearch && (
         <div className="px-4 py-2 bg-background sm:hidden border-t relative z-[60]">
-          <SearchBar />
+          <GlobalSearchBar />
         </div>
       )}
     </nav>

@@ -62,7 +62,6 @@ const Index = () => {
             <CardHeader className="space-y-1">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-2xl">Företag</CardTitle>
-                <Users className="h-5 w-5 text-muted-foreground" />
               </div>
               <CardDescription>Aktiva företag</CardDescription>
             </CardHeader>
