@@ -4,12 +4,12 @@ import { globalSearchService } from "@/services/globalSearchService";
 import { useDebounce } from "./useDebounce";
 
 const SEARCH_FILTERS = [
-  { type: "customer" as const, label: "Kunder", icon: "👤", active: false },
-  { type: "residence" as const, label: "Bostäder", icon: "🏠", active: false },
-  { type: "case" as const, label: "Ärenden", icon: "📌", active: false },
-  { type: "invoice" as const, label: "Fakturor", icon: "🧾", active: false },
-  { type: "key" as const, label: "Nycklar", icon: "🗝️", active: false },
-  { type: "document" as const, label: "Dokument", icon: "📄", active: false },
+  { type: "customer" as const, label: "Kunder", active: false },
+  { type: "residence" as const, label: "Bostäder", active: false },
+  { type: "case" as const, label: "Ärenden", active: false },
+  { type: "invoice" as const, label: "Fakturor", active: false },
+  { type: "key" as const, label: "Nycklar", active: false },
+  { type: "document" as const, label: "Dokument", active: false },
 ];
 
 export function useGlobalSearch() {
@@ -199,8 +199,7 @@ export function useGlobalSearch() {
         type: type as SearchResultType,
         results,
         count: results.length,
-        label: SEARCH_FILTERS.find(f => f.type === type)?.label || type,
-        icon: SEARCH_FILTERS.find(f => f.type === type)?.icon || "📄"
+        label: SEARCH_FILTERS.find(f => f.type === type)?.label || type
       }))
       .filter(group => group.count > 0);
   }, [searchState.results]);

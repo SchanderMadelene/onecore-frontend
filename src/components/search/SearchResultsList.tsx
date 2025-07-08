@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Loader2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SearchResult, SearchResultType } from "@/types/search";
@@ -10,7 +9,6 @@ interface GroupedResult {
   results: SearchResult[];
   count: number;
   label: string;
-  icon: string;
 }
 
 interface SearchResultsListProps {
@@ -108,7 +106,6 @@ export function SearchResultsList({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <span className="ml-2 text-sm text-muted-foreground">Söker...</span>
       </div>
     );
@@ -129,10 +126,9 @@ export function SearchResultsList({
 
   return (
     <div className="divide-y">
-      {groupedResults.map(({ type, results, label, icon }) => (
+      {groupedResults.map(({ type, results, label }) => (
         <div key={type} className="p-3">
           <div className="text-xs text-muted-foreground mb-3 flex items-center gap-2">
-            <span>{icon}</span>
             <span className="font-medium">{label.toUpperCase()}</span>
             <Badge variant="outline" className="h-4 text-xs">
               {results.length}
@@ -165,7 +161,6 @@ export function SearchResultsList({
                       </div>
                       <div className="flex items-center gap-2 ml-2">
                         {statusBadge}
-                        <ExternalLink className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                     </div>
                     
