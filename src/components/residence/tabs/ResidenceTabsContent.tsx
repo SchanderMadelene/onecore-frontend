@@ -6,6 +6,7 @@ import { ResidenceInspection } from "@/components/residence/ResidenceInspection"
 import { ResidenceDocuments } from "@/components/residence/ResidenceDocuments";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
+import { ResidenceAccessControl } from "@/components/residence/ResidenceAccessControl";
 import { Notes } from "@/components/shared/Notes";
 import { FeatureGatedContent } from "./FeatureGatedContent";
 import type { Room } from "@/types/api";
@@ -97,6 +98,15 @@ export const ResidenceTabsContent = ({
             placeholder="Skriv en notering om lägenheten..."
             emptyMessage="Inga noteringar har lagts till för denna lägenhet ännu."
           />
+        </FeatureGatedContent>
+      </TabsContent>
+
+      <TabsContent value="access">
+        <FeatureGatedContent
+          isEnabled={features.showResidenceAccess}
+          fallbackMessage="För att se lås och passage, aktivera funktionen i inställningarna."
+        >
+          <ResidenceAccessControl />
         </FeatureGatedContent>
       </TabsContent>
     </>

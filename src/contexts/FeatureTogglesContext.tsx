@@ -15,6 +15,7 @@ interface FeatureToggles {
   showTenantInfo: boolean;
   showDocuments: boolean;
   showFloorplan: boolean;
+  showResidenceAccess: boolean;
   // Tenant detail page tabs
   showTenantContracts: boolean;
   showTenantQueue: boolean;
@@ -56,6 +57,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenantInfo: false,
   showDocuments: false,
   showFloorplan: false,
+  showResidenceAccess: false,
   // Tenant detail page tabs
   showTenantContracts: false,
   showTenantQueue: false,

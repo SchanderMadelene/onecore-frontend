@@ -1,6 +1,6 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Info, ClipboardList, Users, MessageSquare, FileImage, FileText } from "lucide-react";
+import { Info, ClipboardList, Users, MessageSquare, FileImage, FileText, LockKeyhole } from "lucide-react";
 
 interface ResidenceTabsListProps {
   defaultValue: string;
@@ -38,6 +38,10 @@ export const ResidenceTabsList = ({ defaultValue, children }: ResidenceTabsListP
         <TabsTrigger value="notes" className="flex items-center gap-1.5">
           <FileText className="h-4 w-4" />
           Noteringar
+        </TabsTrigger>
+        <TabsTrigger value="access" className="flex items-center gap-1.5">
+          <LockKeyhole className="h-4 w-4" />
+          Lås och passage
         </TabsTrigger>
       </TabsList>
       {children}

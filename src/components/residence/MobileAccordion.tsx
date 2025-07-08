@@ -1,9 +1,10 @@
 
-import { Info, ClipboardList, Users, MessageSquare, FileText } from "lucide-react";
+import { Info, ClipboardList, Users, MessageSquare, FileText, LockKeyhole } from "lucide-react";
 import { ResidenceInfo } from "./ResidenceInfo";
 import { ResidenceInspection } from "./ResidenceInspection";
 import { TenantInformation } from "./inspection/form/TenantInformation";
 import { OrdersManagement } from "./OrdersManagement";
+import { ResidenceAccessControl } from "./ResidenceAccessControl";
 import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
 import type { Room } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
@@ -101,6 +102,18 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       ) : (
         <p className="text-slate-500 p-1">
           För att se noteringar, aktivera funktionen i inställningarna.
+        </p>
+      )
+    },
+    {
+      id: "access",
+      icon: LockKeyhole,
+      title: "Lås och passage",
+      content: features.showResidenceAccess ? (
+        <ResidenceAccessControl />
+      ) : (
+        <p className="text-slate-500 p-1">
+          För att se lås och passage, aktivera funktionen i inställningarna.
         </p>
       )
     }
