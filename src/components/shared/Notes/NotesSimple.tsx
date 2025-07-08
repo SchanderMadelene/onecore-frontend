@@ -37,21 +37,20 @@ export function NotesSimple({
 
   return (
     <div className="space-y-4">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h3 className="font-medium text-base">{title}</h3>
-        {!state.isAddingNote && (
+      {/* Add note button */}
+      {!state.isAddingNote && (
+        <div className="flex justify-start">
           <Button 
             variant="outline" 
             size="sm" 
-            className="flex items-center gap-1 self-start"
+            className="flex items-center gap-1"
             onClick={startAddingNote}
           >
             <Plus className="h-4 w-4" />
             Ny notering
           </Button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Add note form */}
       {state.isAddingNote && (
