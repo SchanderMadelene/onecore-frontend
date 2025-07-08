@@ -129,8 +129,8 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                   <CollapsibleTrigger asChild>
                     <CardContent className="p-4 cursor-pointer">
                       <div className="flex items-start gap-4">
-                        {/* Färgkodad cirkel för typ */}
-                        <div className={`w-10 h-10 rounded-full ${getEventTypeColor(event.type)}`}></div>
+                        {/* Tidslinjemarkör */}
+                        <div className={`w-3 h-3 rounded-full mt-1 ${getEventTypeColor(event.type)}`}></div>
                         
                         {/* Huvudinnehåll */}
                         <div className="flex-1 min-w-0">
