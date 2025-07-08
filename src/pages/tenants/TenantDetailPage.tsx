@@ -55,7 +55,7 @@ const TenantDetailPage = () => {
           />
         ) : (
           <TenantDetailTabs defaultValue="contracts" hasActiveCases={hasActiveCases}>
-            <TenantDetailTabsContent contracts={contracts} />
+            <TenantDetailTabsContent contracts={contracts} personalNumber={tenant.personalNumber} />
           </TenantDetailTabs>
         )}
       </div>

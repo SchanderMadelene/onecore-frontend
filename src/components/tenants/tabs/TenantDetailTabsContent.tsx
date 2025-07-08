@@ -3,10 +3,12 @@ import { TenantContracts } from "@/components/tenants/TenantContracts";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 import { TenantNotes } from "@/components/tenants/TenantNotes";
 import { TenantOrders } from "@/components/tenants/TenantOrders";
+import { TenantEventLog } from "@/components/tenants/TenantEventLog";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 interface TenantDetailTabsContentProps {
   contracts: any[];
+  personalNumber?: string;
 }
 
 const FeatureGatedTabContent = ({ 
@@ -28,7 +30,7 @@ const FeatureGatedTabContent = ({
   return <>{children}</>;
 };
 
-export const TenantDetailTabsContent = ({ contracts }: TenantDetailTabsContentProps) => {
+export const TenantDetailTabsContent = ({ contracts, personalNumber }: TenantDetailTabsContentProps) => {
   const { features } = useFeatureToggles();
 
   return (
@@ -98,10 +100,7 @@ export const TenantDetailTabsContent = ({ contracts }: TenantDetailTabsContentPr
           isEnabled={features.showTenantEvents}
           fallbackMessage="För att se händelselogg, aktivera funktionen i inställningarna."
         >
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h3 className="text-lg font-medium mb-4">Händelselogg</h3>
-            <p className="text-muted-foreground">Ingen händelsehistorik tillgänglig för denna kund.</p>
-          </div>
+          <TenantEventLog personalNumber={personalNumber || ""} />
         </FeatureGatedTabContent>
       </TabsContent>
 
