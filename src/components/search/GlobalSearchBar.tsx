@@ -178,6 +178,44 @@ export function GlobalSearchBar({
               {/* Search results or suggestions */}
               {query.length > 0 ? (
                 <div className="overflow-y-auto max-h-[76vh]">
+                  {/* Matching favorites - highest priority */}
+                  {favorites.filter(fav => 
+                    fav.name.toLowerCase().includes(query.toLowerCase()) || 
+                    fav.query.toLowerCase().includes(query.toLowerCase())
+                  ).length > 0 && (
+                    <div className="p-4 border-b bg-accent/10">
+                      <div className="text-xs font-semibold text-primary mb-3 uppercase tracking-wide flex items-center gap-2">
+                        <Star className="h-4 w-4" />
+                        Matchande favoriter
+                      </div>
+                      <div className="space-y-1">
+                        {favorites
+                          .filter(fav => 
+                            fav.name.toLowerCase().includes(query.toLowerCase()) || 
+                            fav.query.toLowerCase().includes(query.toLowerCase())
+                          )
+                          .slice(0, 3)
+                          .map((favorite) => (
+                            <button
+                              key={favorite.id}
+                              className="block w-full text-left px-3 py-2 hover:bg-accent rounded-md transition-colors border border-primary/20"
+                              onClick={() => useSavedSearch(favorite)}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Star className="h-4 w-4 text-primary fill-current" />
+                                <div>
+                                  <div className="font-medium text-sm">{favorite.name}</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {favorite.query} • {favorite.useCount} gånger • Sparad sökning
+                                  </div>
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Show suggestions when typing */}
                   {suggestions.length > 0 && results.length === 0 && !isLoading && (
                     <div className="p-4 border-b">
