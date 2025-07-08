@@ -10,7 +10,8 @@ export function BetaSettings() {
     handleFeatureToggle
   } = useFeatureToggles();
   
-  return <Card>
+  return (
+    <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
           <Beaker className="h-5 w-5" />
@@ -507,4 +508,4 @@ export function BetaSettings() {
       </CardContent>
     </Card>
   );
-}
+};
