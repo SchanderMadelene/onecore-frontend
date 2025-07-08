@@ -154,44 +154,42 @@ export const PropertyDocumentsTab = () => {
             <Card key={document.id} className="p-4">
               {isMobile ? (
                 <div className="space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-base mb-2">{document.name}</h4>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <User className="h-4 w-4" />
-                          <span>{document.uploadedBy}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Calendar className="h-4 w-4" />
-                          <span>{document.uploadedDate}</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <span>{document.size}</span>
-                          <span className="bg-gray-100 px-2 py-1 rounded text-xs">
-                            {document.type}
-                          </span>
-                        </div>
+                  <div>
+                    <h4 className="font-medium text-base mb-2">{document.name}</h4>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <User className="h-4 w-4" />
+                        <span>{document.uploadedBy}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Calendar className="h-4 w-4" />
+                        <span>{document.uploadedDate}</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <span>{document.size}</span>
+                        <span className="bg-gray-100 px-2 py-1 rounded text-xs">
+                          {document.type}
+                        </span>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2 ml-3">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDownload(document)}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Download className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(document.id)}
-                        className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+                  </div>
+                  <div className="flex items-center justify-end space-x-2 pt-2 border-t">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDownload(document)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Download className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDelete(document.id)}
+                      className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               ) : (
