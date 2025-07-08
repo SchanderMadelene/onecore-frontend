@@ -1,5 +1,8 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Settings } from "lucide-react";
 import { MaintenanceUnit } from "@/types/api";
 import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
 
@@ -30,16 +33,27 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
 
   if (!maintenanceUnits || maintenanceUnits.length === 0) {
     return (
-      <div className="text-center py-10">
-        <h3 className="text-lg font-medium text-muted-foreground">
-          Inga underhållsenheter registrerade för denna fastighet
-        </h3>
-      </div>
+      <TabLayout 
+        title="Underhållsenheter" 
+        icon={Settings}
+        count={0}
+      >
+        <EmptyState
+          icon={Settings}
+          title="Inga underhållsenheter"
+          description="Inga underhållsenheter registrerade för denna fastighet."
+        />
+      </TabLayout>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <TabLayout 
+      title="Underhållsenheter" 
+      icon={Settings}
+      count={maintenanceUnits.length}
+      showCard={false}
+    >
       <Accordion type="single" collapsible className="space-y-2">
         {maintenanceUnits.map(unit => (
           <AccordionItem 
@@ -83,6 +97,6 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
           </AccordionItem>
         ))}
       </Accordion>
-    </div>
+    </TabLayout>
   );
 };

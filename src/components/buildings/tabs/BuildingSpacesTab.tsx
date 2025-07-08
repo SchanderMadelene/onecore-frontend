@@ -1,6 +1,9 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Box } from "lucide-react";
 import type { Building } from "@/types/api";
 import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
 
@@ -23,17 +26,27 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
 
   if (!spaces || spaces.length === 0) {
     return (
-      <div className="text-center py-10">
-        <h3 className="text-xl font-medium mb-2">Inga utrymmen</h3>
-        <p className="text-muted-foreground">
-          Det finns inga utrymmen registrerade för denna byggnad.
-        </p>
-      </div>
+      <TabLayout 
+        title="Utrymmen" 
+        icon={Box}
+        count={0}
+      >
+        <EmptyState
+          icon={Box}
+          title="Inga utrymmen"
+          description="Det finns inga utrymmen registrerade för denna byggnad."
+        />
+      </TabLayout>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <TabLayout 
+      title="Utrymmen" 
+      icon={Box}
+      count={spaces.length}
+      showCard={false}
+    >
       <Accordion type="single" collapsible className="space-y-2">
         {spaces.map(space => (
           <AccordionItem 
@@ -85,6 +98,6 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
           </AccordionItem>
         ))}
       </Accordion>
-    </div>
+    </TabLayout>
   );
 };

@@ -1,10 +1,16 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { TabLayout } from "@/components/ui/tab-layout";
 import { LockKeyhole, Key, Users, Clock } from "lucide-react";
 
 export const ResidenceAccessControl = () => {
   return (
-    <div className="space-y-6">
+    <TabLayout 
+      title="Lås och passage" 
+      icon={LockKeyhole}
+      showCard={false}
+    >
+      <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
@@ -129,7 +135,8 @@ export const ResidenceAccessControl = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
-    </div>
+        </Card>
+      </div>
+    </TabLayout>
   );
 };

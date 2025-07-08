@@ -1,5 +1,7 @@
 
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { MessageSquare } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 interface PropertyOrdersTabProps {
@@ -15,12 +17,15 @@ export const PropertyOrdersTab = ({ propertyDetail }: PropertyOrdersTabProps) =>
   console.log("PropertyOrdersTab - Using propertyId:", propertyId);
   
   return (
-    <div className="w-full">
-      <h3 className="text-lg font-semibold mb-3">Ärenden för fastighet</h3>
+    <TabLayout 
+      title="Ärenden för fastighet" 
+      icon={MessageSquare}
+      showCard={false}
+    >
       <OrdersManagement 
         contextType="residence" 
         residenceId={propertyId}
       />
-    </div>
+    </TabLayout>
   );
 };

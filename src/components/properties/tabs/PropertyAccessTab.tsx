@@ -1,10 +1,19 @@
 
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { LockKeyhole } from "lucide-react";
+
 export const PropertyAccessTab = () => {
   return (
-    <div className="space-y-4">
-      <p className="text-muted-foreground">
-        Information om lås och passagesystem för fastigheten kommer att visas här.
-      </p>
-    </div>
+    <TabLayout 
+      title="Lås & passage" 
+      icon={LockKeyhole}
+    >
+      <EmptyState
+        icon={LockKeyhole}
+        title="Lås- och passageinformation"
+        description="Information om lås och passagesystem för fastigheten kommer att visas här."
+      />
+    </TabLayout>
   );
 };
