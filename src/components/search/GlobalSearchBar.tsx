@@ -294,7 +294,7 @@ export function GlobalSearchBar({
                         Senaste sökningar
                       </div>
                       <div className="space-y-1">
-                        {history.slice(0, 5).map((item, index) => (
+                        {history.slice(0, 8).map((item, index) => (
                           <button
                             key={index}
                             className="block w-full text-left px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
@@ -302,34 +302,6 @@ export function GlobalSearchBar({
                           >
                             <Clock className="h-4 w-4 inline mr-2 text-muted-foreground" />
                             {item}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Saved searches */}
-                  {favorites.length > 0 && (
-                    <div>
-                      <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-                        Sparade sökningar
-                      </div>
-                      <div className="space-y-1">
-                        {favorites.map((favorite) => (
-                          <button
-                            key={favorite.id}
-                            className="block w-full text-left px-3 py-2 hover:bg-accent rounded-md transition-colors"
-                            onClick={() => useSavedSearch(favorite)}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Star className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <div className="font-medium text-sm">{favorite.name}</div>
-                                <div className="text-xs text-muted-foreground">
-                                  {favorite.query} • {favorite.useCount} gånger
-                                </div>
-                              </div>
-                            </div>
                           </button>
                         ))}
                       </div>
