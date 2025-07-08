@@ -175,27 +175,27 @@ export function GlobalSearchBar({
           <div className="flex">
             {/* Main content area - Left side */}
             <div className="flex-1 min-w-0">
-              {/* Filter section - moved to left side */}
-              <div className="p-4 border-b bg-accent/20">
-                <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+              {/* Filter section - compact horizontal layout */}
+              <div className="p-4 border-b bg-accent/10">
+                <div className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
                   Filtrera efter typ
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 mb-2">
                   {filters.map((filter) => (
                     <button
                       key={filter.type}
                       onClick={() => toggleFilter(filter.type)}
                       className={cn(
-                        "flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors",
+                        "flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-md transition-colors",
                         filter.active 
                           ? "bg-primary text-primary-foreground" 
                           : "hover:bg-accent border border-border"
                       )}
                     >
-                      <span>{filter.icon}</span>
+                      <span className="text-sm">{filter.icon}</span>
                       <span>{filter.label}</span>
                       {filter.count !== undefined && filter.count > 0 && (
-                        <Badge variant={filter.active ? "secondary" : "outline"} className="h-5 text-xs ml-1">
+                        <Badge variant={filter.active ? "secondary" : "outline"} className="h-4 text-xs ml-1 px-1">
                           {filter.count}
                         </Badge>
                       )}
@@ -207,7 +207,7 @@ export function GlobalSearchBar({
                     variant="ghost"
                     size="sm"
                     onClick={clearFilters}
-                    className="mt-3 h-8 text-xs"
+                    className="h-6 text-xs px-2"
                   >
                     <X className="h-3 w-3 mr-1" />
                     Rensa alla filter
@@ -318,9 +318,9 @@ export function GlobalSearchBar({
               )}
             </div>
 
-            {/* Right sidebar */}
-            <div className="w-80 border-l bg-accent/20">
-              <div className="p-4 space-y-6">
+            {/* Right sidebar - More space for saved searches */}
+            <div className="w-96 border-l bg-accent/20">
+              <div className="p-4 space-y-6 h-full overflow-y-auto">
                 {/* Recent searches */}
                 {history.length > 0 && (
                   <div>
