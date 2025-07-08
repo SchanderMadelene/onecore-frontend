@@ -4,7 +4,7 @@ import { globalSearchService } from "@/services/globalSearchService";
 import { useDebounce } from "./useDebounce";
 
 const SEARCH_FILTERS = [
-  { type: "customer" as const, label: "Kunder", icon: "👤", active: false },
+  { type: "customer" as const, label: "Kunder", icon: "", active: false },
   { type: "residence" as const, label: "Bostäder", icon: "🏠", active: false },
   { type: "case" as const, label: "Ärenden", icon: "📌", active: false },
   { type: "invoice" as const, label: "Fakturor", icon: "🧾", active: false },
