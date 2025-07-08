@@ -4,7 +4,7 @@ import { ResidenceInfo } from "./ResidenceInfo";
 import { ResidenceInspection } from "./ResidenceInspection";
 import { TenantInformation } from "./inspection/form/TenantInformation";
 import { OrdersManagement } from "./OrdersManagement";
-import { Notes } from "@/components/shared/Notes";
+import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
 import type { Room } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
@@ -91,7 +91,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       icon: FileText,
       title: "Noteringar",
       content: features.showResidenceNotes ? (
-        <Notes 
+        <NotesSimple 
           entityType="residence"
           entityId={id || ""}
           title="Noteringar för lägenheten"
