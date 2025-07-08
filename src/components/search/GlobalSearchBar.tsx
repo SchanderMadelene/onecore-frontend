@@ -169,121 +169,208 @@ export function GlobalSearchBar({
         </div>
       </div>
 
-      {/* Search dropdown */}
+      {/* Search dropdown - Jira-inspired wide layout */}
       {showDropdown && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-lg shadow-lg max-h-[70vh] overflow-hidden z-50">
-          {/* Filter panel */}
-          {showFilters && (
-            <div className="p-4 border-b">
-              <SearchFilters
-                filters={filters}
-                onToggleFilter={toggleFilter}
-                onClearFilters={clearFilters}
-                hasActiveFilters={hasActiveFilters}
-              />
-            </div>
-          )}
+        <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-lg shadow-xl max-h-[80vh] overflow-hidden z-50 min-w-[800px]">
+          <div className="flex">
+            {/* Main content area - Left side */}
+            <div className="flex-1 min-w-0">
+              {/* Search results or suggestions */}
+              {query.length > 0 ? (
+                <div className="overflow-y-auto max-h-[76vh]">
+                  {/* Show suggestions when typing */}
+                  {suggestions.length > 0 && results.length === 0 && !isLoading && (
+                    <div className="p-4 border-b">
+                      <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                        Sökförslag
+                      </div>
+                      <div className="space-y-1">
+                        {suggestions.map((suggestion, index) => (
+                          <button
+                            key={index}
+                            className="block w-full text-left px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            onClick={() => handleSuggestionClick(suggestion)}
+                          >
+                            <Search className="h-4 w-4 inline mr-2 text-muted-foreground" />
+                            {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-          {/* Favorites panel */}
-          {showFavorites && (
-            <div className="p-4 border-b">
-              <SearchFavorites
-                favorites={favorites}
-                onUseFavorite={useSavedSearch}
-                onDeleteFavorite={deleteSavedSearch}
-                onSaveCurrentSearch={saveCurrentSearch}
-                currentQuery={query}
-                hasActiveFilters={hasActiveFilters}
-              />
-            </div>
-          )}
-
-          {/* Main content area */}
-          <div className="max-h-96 overflow-y-auto">
-            {/* Show suggestions when typing */}
-            {query.length > 0 && suggestions.length > 0 && results.length === 0 && !isLoading && (
-              <div className="p-3">
-                <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2">
-                  <Search className="h-3 w-3" />
-                  FÖRSLAG
+                  {/* Search results */}
+                  <SearchResultsList
+                    query={query}
+                    groupedResults={groupedResults}
+                    isLoading={isLoading}
+                    onResultClick={closeSearch}
+                  />
                 </div>
-                {suggestions.map((suggestion, index) => (
-                  <button
-                    key={index}
-                    className="block w-full text-left px-2 py-1 text-sm hover:bg-accent rounded"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* Search results */}
-            {query.length > 0 && (
-              <SearchResultsList
-                query={query}
-                groupedResults={groupedResults}
-                isLoading={isLoading}
-                onResultClick={closeSearch}
-              />
-            )}
-
-            {/* Show favorites and history when no query */}
-            {query.length === 0 && !showFavorites && !showFilters && (
-              <div className="p-3 space-y-4">
-                {/* Recent searches */}
-                {history.length > 0 && (
-                  <div>
-                    <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2">
-                      <Clock className="h-3 w-3" />
-                      SENASTE SÖKNINGAR
+              ) : (
+                <div className="p-4 space-y-6">
+                  {/* Recent searches */}
+                  {history.length > 0 && (
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                        Senaste sökningar
+                      </div>
+                      <div className="space-y-1">
+                        {history.slice(0, 8).map((item, index) => (
+                          <button
+                            key={index}
+                            className="block w-full text-left px-3 py-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            onClick={() => setQuery(item)}
+                          >
+                            <Clock className="h-4 w-4 inline mr-2 text-muted-foreground" />
+                            {item}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                    {history.slice(0, 5).map((item, index) => (
-                      <button
-                        key={index}
-                        className="block w-full text-left px-2 py-1 text-sm hover:bg-accent rounded"
-                        onClick={() => setQuery(item)}
-                      >
-                        {item}
-                      </button>
-                    ))}
+                  )}
+
+                  {/* Quick access to favorites */}
+                  {favorites.length > 0 && (
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                        Sparade sökningar
+                      </div>
+                      <div className="space-y-1">
+                        {favorites.slice(0, 6).map((favorite) => (
+                          <button
+                            key={favorite.id}
+                            className="block w-full text-left px-3 py-2 hover:bg-accent rounded-md transition-colors"
+                            onClick={() => useSavedSearch(favorite)}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Star className="h-4 w-4 text-muted-foreground" />
+                              <div>
+                                <div className="font-medium text-sm">{favorite.name}</div>
+                                <div className="text-xs text-muted-foreground">
+                                  {favorite.query} • {favorite.useCount} gånger
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Right sidebar */}
+            <div className="w-80 border-l bg-accent/20">
+              <div className="p-4 space-y-6">
+                {/* Filter section */}
+                <div>
+                  <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                    Filtrera efter typ
                   </div>
-                )}
-
-                {/* Quick access to favorites */}
-                {favorites.length > 0 && (
-                  <div>
-                    <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2">
-                      <Star className="h-3 w-3" />
-                      FAVORITER
-                    </div>
-                    {favorites.slice(0, 3).map((favorite) => (
+                  <div className="space-y-2">
+                    {filters.map((filter) => (
                       <button
-                        key={favorite.id}
-                        className="block w-full text-left px-2 py-1 text-sm hover:bg-accent rounded"
-                        onClick={() => useSavedSearch(favorite)}
+                        key={filter.type}
+                        onClick={() => toggleFilter(filter.type)}
+                        className={cn(
+                          "flex items-center justify-between w-full px-3 py-2 text-sm rounded-md transition-colors",
+                          filter.active 
+                            ? "bg-primary text-primary-foreground" 
+                            : "hover:bg-accent"
+                        )}
                       >
-                        <div className="font-medium">{favorite.name}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {favorite.query} • Använd {favorite.useCount} gånger
+                        <div className="flex items-center gap-2">
+                          <span>{filter.icon}</span>
+                          <span>{filter.label}</span>
                         </div>
+                        {filter.count !== undefined && filter.count > 0 && (
+                          <Badge variant={filter.active ? "secondary" : "outline"} className="h-5 text-xs">
+                            {filter.count}
+                          </Badge>
+                        )}
                       </button>
                     ))}
-                    
-                    {favorites.length > 3 && (
-                      <button
-                        className="w-full text-left px-2 py-1 text-xs text-muted-foreground hover:bg-accent rounded flex items-center gap-1"
-                        onClick={() => setShowFavorites(true)}
-                      >
-                        Visa alla favoriter <ChevronDown className="h-3 w-3" />
-                      </button>
-                    )}
+                  </div>
+                  {hasActiveFilters && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearFilters}
+                      className="w-full mt-3 h-8 text-xs"
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Rensa alla filter
+                    </Button>
+                  )}
+                </div>
+
+                {/* Favorites management */}
+                {query && (
+                  <div>
+                    <div className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                      Spara sökning
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowFavorites(true)}
+                      className="w-full h-8 text-xs"
+                    >
+                      <Star className="h-3 w-3 mr-1" />
+                      Spara denna sökning
+                    </Button>
                   </div>
                 )}
               </div>
-            )}
+
+              {/* Quick navigation - bottom of sidebar */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-background">
+                <div className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+                  Gå till alla
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button variant="ghost" size="sm" className="h-8 text-xs justify-start">
+                    Kunder
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-8 text-xs justify-start">
+                    Fastigheter
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-8 text-xs justify-start">
+                    Ärenden
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-8 text-xs justify-start">
+                    Dokument
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* Favorites creation modal overlay */}
+          {showFavorites && (
+            <div className="absolute inset-0 bg-background/95 backdrop-blur-sm">
+              <div className="p-6">
+                <SearchFavorites
+                  favorites={favorites}
+                  onUseFavorite={useSavedSearch}
+                  onDeleteFavorite={deleteSavedSearch}
+                  onSaveCurrentSearch={saveCurrentSearch}
+                  currentQuery={query}
+                  hasActiveFilters={hasActiveFilters}
+                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowFavorites(false)}
+                  className="mt-4"
+                >
+                  Stäng
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
