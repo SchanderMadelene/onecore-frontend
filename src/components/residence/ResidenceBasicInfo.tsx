@@ -33,9 +33,9 @@ const getContractStatus = (residence: Residence): string => {
 };
 
 const requiresSpecialHandling = (residenceId: string): boolean => {
-  // For demo purposes, mark lgh-1002 as requiring special handling
+  // For demo purposes, mark lgh-1002 and lgh-001 as requiring special handling
   // In a real application, this would come from the API data
-  return residenceId === "lgh-1002";
+  return residenceId === "lgh-1002" || residenceId === "lgh-001";
 };
 
 const requiresPestControl = (residenceId: string): boolean => {
