@@ -4,6 +4,7 @@ import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 import { TenantNotes } from "@/components/tenants/TenantNotes";
 import { TenantOrders } from "@/components/tenants/TenantOrders";
 import { TenantEventLog } from "@/components/tenants/TenantEventLog";
+import { TenantDocuments } from "@/components/tenants/TenantDocuments";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 interface TenantDetailTabsContentProps {
@@ -109,10 +110,7 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber }: TenantDet
           isEnabled={features.showTenantDocuments}
           fallbackMessage="För att se dokument, aktivera funktionen i inställningarna."
         >
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h3 className="text-lg font-medium mb-4">Dokument</h3>
-            <p className="text-muted-foreground">Inga dokument tillgängliga för denna kund.</p>
-          </div>
+          <TenantDocuments />
         </FeatureGatedTabContent>
       </TabsContent>
     </>

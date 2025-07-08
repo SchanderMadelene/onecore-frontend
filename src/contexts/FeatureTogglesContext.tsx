@@ -68,7 +68,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenantNotes: false,
   showTenantKeys: false,
   showTenantEvents: true,
-  showTenantDocuments: false,
+  showTenantDocuments: true,
   // Rentals sections
   showRentalsHousing: false,
   showRentalsParking: false,
