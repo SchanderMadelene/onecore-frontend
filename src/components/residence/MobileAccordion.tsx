@@ -1,9 +1,11 @@
 
-import { Info, ClipboardList, Users, MessageSquare } from "lucide-react";
+import { Info, ClipboardList, Users, MessageSquare, FileText, LockKeyhole } from "lucide-react";
 import { ResidenceInfo } from "./ResidenceInfo";
 import { ResidenceInspection } from "./ResidenceInspection";
 import { TenantInformation } from "./inspection/form/TenantInformation";
 import { OrdersManagement } from "./OrdersManagement";
+import { ResidenceAccessControl } from "./ResidenceAccessControl";
+import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
 import type { Room } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
@@ -78,10 +80,40 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       icon: MessageSquare,
       title: "Ärenden",
       content: features.showApartmentIssues ? (
-        <OrdersManagement />
+        <OrdersManagement residenceId={id} />
       ) : (
         <p className="text-slate-500 p-1">
           För att se felanmälningar, aktivera funktionen i inställningarna.
+        </p>
+      )
+    },
+    {
+      id: "notes",
+      icon: FileText,
+      title: "Noteringar",
+      content: features.showResidenceNotes ? (
+        <NotesSimple 
+          entityType="residence"
+          entityId={id || ""}
+          title="Noteringar för lägenheten"
+          placeholder="Skriv en notering om lägenheten..."
+          emptyMessage="Inga noteringar har lagts till för denna lägenhet ännu."
+        />
+      ) : (
+        <p className="text-slate-500 p-1">
+          För att se noteringar, aktivera funktionen i inställningarna.
+        </p>
+      )
+    },
+    {
+      id: "access",
+      icon: LockKeyhole,
+      title: "Lås och passage",
+      content: features.showResidenceAccess ? (
+        <ResidenceAccessControl />
+      ) : (
+        <p className="text-slate-500 p-1">
+          För att se lås och passage, aktivera funktionen i inställningarna.
         </p>
       )
     }

@@ -230,6 +230,22 @@ export function BetaSettings() {
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
+                          <StickyNote className="h-4 w-4" />
+                          <Label htmlFor="residence-notes">Noteringar</Label>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Visa noteringsfunktioner på lägenhetskortet</p>
+                      </div>
+                      <Switch 
+                        id="residence-notes" 
+                        checked={features.showResidenceNotes} 
+                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
+                        onCheckedChange={() => handleFeatureToggle('showResidenceNotes')} 
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
                           <Users className="h-4 w-4" />
                           <Label htmlFor="tenant-info">Hyresgästinformation</Label>
                         </div>

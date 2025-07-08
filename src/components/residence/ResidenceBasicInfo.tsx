@@ -33,15 +33,15 @@ const getContractStatus = (residence: Residence): string => {
 };
 
 const requiresSpecialHandling = (residenceId: string): boolean => {
-  // For demo purposes, mark lgh-1002 as requiring special handling
+  // For demo purposes, mark lgh-1002 and lgh-001 as requiring special handling
   // In a real application, this would come from the API data
-  return residenceId === "lgh-1002";
+  return residenceId === "lgh-1002" || residenceId === "lgh-001";
 };
 
 const requiresPestControl = (residenceId: string): boolean => {
-  // For demo purposes, mark lgh-1002 as having pest issues
+  // For demo purposes, mark lgh-1002 and lgh-001 as having pest issues
   // In a real application, this would come from the API data
-  return residenceId === "lgh-1002";
+  return residenceId === "lgh-1002" || residenceId === "lgh-001";
 };
 
 // Function to check if residence has second-hand rental
@@ -70,31 +70,35 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
   return (
     <TooltipProvider>
       <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
+        <div className="flex flex-col gap-2 mb-2">
           <h1 className="text-2xl sm:text-3xl font-bold">{residence.name}</h1>
-          {needsSpecialHandling && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex items-center justify-center w-8 h-8 bg-amber-100 rounded-full border border-amber-200 cursor-help">
-                  <TriangleAlert className="h-4 w-4 text-amber-600" />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Kräver särskild hantering</p>
-              </TooltipContent>
-            </Tooltip>
-          )}
-          {hasPestIssues && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex items-center justify-center w-8 h-8 bg-red-100 rounded-full border border-red-200 cursor-help">
-                  <Bug className="h-4 w-4 text-red-600" />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Skadedjursproblem rapporterat</p>
-              </TooltipContent>
-            </Tooltip>
+          {(needsSpecialHandling || hasPestIssues) && (
+            <div className="flex items-center gap-2">
+              {needsSpecialHandling && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center justify-center w-7 h-7 bg-amber-100 rounded-full border border-amber-200 cursor-help">
+                      <TriangleAlert className="h-3.5 w-3.5 text-amber-600" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Kräver särskild hantering</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              {hasPestIssues && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center justify-center w-7 h-7 bg-red-100 rounded-full border border-red-200 cursor-help">
+                      <Bug className="h-3.5 w-3.5 text-red-600" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Skadedjursproblem rapporterat</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+            </div>
           )}
         </div>
       </div>
