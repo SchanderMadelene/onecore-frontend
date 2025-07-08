@@ -171,7 +171,7 @@ export function GlobalSearchBar({
 
       {/* Search dropdown - Jira-inspired wide layout */}
       {showDropdown && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-lg shadow-xl max-h-[80vh] overflow-hidden z-50 min-w-[800px]">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-lg shadow-xl max-h-[90vh] overflow-hidden z-50 min-w-[800px]">
           <div className="flex">
             {/* Main content area - Left side */}
             <div className="flex-1 min-w-0">
@@ -217,7 +217,7 @@ export function GlobalSearchBar({
 
               {/* Search results or suggestions */}
               {query.length > 0 ? (
-                <div className="overflow-y-auto max-h-[76vh]">
+                <div className="overflow-y-auto max-h-[82vh]">
                   {/* Matching favorites - highest priority */}
                   {favorites.filter(fav => 
                     fav.name.toLowerCase().includes(query.toLowerCase()) || 
