@@ -122,23 +122,3 @@ export const getEventTypeColor = (type: TenantEvent['type']): string => {
       return 'text-gray-600 bg-gray-100';
   }
 };
-
-// Funktion för att få ikon baserat på händelsetyp
-export const getEventTypeIcon = (type: TenantEvent['type']): string => {
-  switch (type) {
-    case 'system':
-      return '⚙️';
-    case 'login':
-      return '🔑';
-    case 'profile_change':
-      return '✏️';
-    case 'contract':
-      return '📝';
-    case 'payment':
-      return '💰';
-    case 'support':
-      return '🎧';
-    default:
-      return '📋';
-  }
-};

@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { getTenantEvents, getEventTypeColor, getEventTypeIcon, type TenantEvent } from "@/data/tenant-events";
+import { getTenantEvents, getEventTypeColor, type TenantEvent } from "@/data/tenant-events";
 
 interface TenantEventLogProps {
   personalNumber: string;
@@ -129,10 +129,8 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                   <CollapsibleTrigger asChild>
                     <CardContent className="p-4 cursor-pointer">
                       <div className="flex items-start gap-4">
-                        {/* Ikon och typ */}
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${getEventTypeColor(event.type)}`}>
-                          <span className="text-lg">{getEventTypeIcon(event.type)}</span>
-                        </div>
+                        {/* Färgkodad cirkel för typ */}
+                        <div className={`w-10 h-10 rounded-full ${getEventTypeColor(event.type)}`}></div>
                         
                         {/* Huvudinnehåll */}
                         <div className="flex-1 min-w-0">
