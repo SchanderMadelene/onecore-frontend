@@ -42,11 +42,20 @@ export const ParkingSpaceSearch = ({
   const areas = [...new Set(parkingSpaces.map(space => space.area))];
 
   const handleSpaceToggle = (space: ParkingSpaceForPublishing) => {
+    console.log("Toggle called for space:", space.id);
+    console.log("Current selected spaces:", selectedParkingSpaces.map(s => s.id));
+    
     const isSelected = selectedParkingSpaces.some(s => s.id === space.id);
+    console.log("Is selected:", isSelected);
+    
     if (isSelected) {
-      onParkingSpaceSelect(selectedParkingSpaces.filter(s => s.id !== space.id));
+      const newSpaces = selectedParkingSpaces.filter(s => s.id !== space.id);
+      console.log("Removing space, new array:", newSpaces.map(s => s.id));
+      onParkingSpaceSelect(newSpaces);
     } else {
-      onParkingSpaceSelect([...selectedParkingSpaces, space]);
+      const newSpaces = [...selectedParkingSpaces, space];
+      console.log("Adding space, new array:", newSpaces.map(s => s.id));
+      onParkingSpaceSelect(newSpaces);
     }
   };
 
