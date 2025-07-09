@@ -32,8 +32,8 @@ export const ParkingSpaceSearch = ({
     
     const matchesArea = !areaFilter || areaFilter === "all" || space.area === areaFilter;
     
-    const matchesRent = !maxRentFilter || 
-      parseInt(space.rentIncl.replace(/\D/g, '')) <= parseInt(maxRentFilter || '999999');
+    const matchesRent = !maxRentFilter || isNaN(parseInt(maxRentFilter)) || 
+      parseInt(space.rentIncl.replace(/\D/g, '')) <= parseInt(maxRentFilter);
     
     return matchesSearch && matchesArea && matchesRent;
   });
