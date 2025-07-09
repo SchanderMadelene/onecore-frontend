@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -56,6 +57,27 @@ interface TenantQueueSystemProps {
 }
 
 export function TenantQueueSystem({ customerNumber, customerName }: TenantQueueSystemProps) {
+  const [activeInterests, setActiveInterests] = useState(queueData.activeInterests);
+
+  // Listen for new parking interest applications
+  useEffect(() => {
+    const handleNewInterest = (event: CustomEvent) => {
+      const { parkingSpaces } = event.detail;
+      const newInterests = parkingSpaces.map((space: any) => ({
+        id: `int-parking-${Date.now()}-${space.id}`,
+        type: "parking",
+        address: space.address,
+        dateRegistered: new Date().toISOString().split('T')[0],
+        status: "waiting"
+      }));
+      
+      setActiveInterests(prev => [...newInterests, ...prev]);
+    };
+
+    window.addEventListener('parkingInterestCreated', handleNewInterest as EventListener);
+    return () => window.removeEventListener('parkingInterestCreated', handleNewInterest as EventListener);
+  }, []);
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -163,9 +185,9 @@ export function TenantQueueSystem({ customerNumber, customerName }: TenantQueueS
           <CardTitle>Aktiva intresseanmälningar</CardTitle>
         </CardHeader>
         <CardContent>
-          {queueData.activeInterests.length > 0 ? (
+          {activeInterests.length > 0 ? (
             <div className="space-y-4">
-              {queueData.activeInterests.map((interest) => (
+              {activeInterests.map((interest) => (
                 <div key={interest.id} className="border rounded-md p-4">
                   <div className="flex justify-between items-start mb-2">
                     <div>

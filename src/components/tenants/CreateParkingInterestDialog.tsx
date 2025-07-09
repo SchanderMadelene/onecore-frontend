@@ -58,6 +58,12 @@ export const CreateParkingInterestDialog = ({
       }
     }
 
+    // Dispatch event with parking spaces data
+    const event = new CustomEvent('parkingInterestCreated', {
+      detail: { parkingSpaces: selectedParkingSpaces }
+    });
+    window.dispatchEvent(event);
+
     toast({
       title: "Intresseanmälningar skapade",
       description: `${selectedParkingSpaces.length} anmälningar för ${customerName} har skapats`,
