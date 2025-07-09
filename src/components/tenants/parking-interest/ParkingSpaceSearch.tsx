@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Search, Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useParkingSpaceListings } from "@/hooks/useParkingSpaceListings";
@@ -179,40 +180,46 @@ export const ParkingSpaceSearch = ({
             return (
               <Card 
                 key={space.id} 
-                className={`cursor-pointer transition-colors ${
+                className={`transition-colors ${
                   isSelected 
                     ? 'bg-primary/10 border-primary' 
                     : 'hover:bg-muted/50'
                 }`}
-                onClick={() => handleSpaceToggle(space)}
               >
                 <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-medium">{space.address}</h4>
-                        {isSelected && (
-                          <Badge variant="default" className="text-xs">Vald</Badge>
-                        )}
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      checked={isSelected}
+                      onCheckedChange={() => handleSpaceToggle(space)}
+                      className="mt-1"
+                    />
+                    <div className="flex justify-between items-start flex-1">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-medium">{space.address}</h4>
+                          {isSelected && (
+                            <Badge variant="default" className="text-xs">Vald</Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          {space.area} • {space.type}
+                        </p>
+                        <div className="flex gap-1 mt-2">
+                          {space.queueTypes.intern && (
+                            <Badge variant="secondary" className="text-xs">Intern</Badge>
+                          )}
+                          {space.queueTypes.external && (
+                            <Badge variant="secondary" className="text-xs">Extern</Badge>
+                          )}
+                          {space.queueTypes.poangfri && (
+                            <Badge variant="secondary" className="text-xs">Poängfri</Badge>
+                          )}
+                        </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        {space.area} • {space.type}
-                      </p>
-                      <div className="flex gap-1 mt-2">
-                        {space.queueTypes.intern && (
-                          <Badge variant="secondary" className="text-xs">Intern</Badge>
-                        )}
-                        {space.queueTypes.external && (
-                          <Badge variant="secondary" className="text-xs">Extern</Badge>
-                        )}
-                        {space.queueTypes.poangfri && (
-                          <Badge variant="secondary" className="text-xs">Poängfri</Badge>
-                        )}
+                      <div className="text-right">
+                        <p className="font-medium text-green-600">{space.rentIncl}</p>
+                        <p className="text-xs text-muted-foreground">{space.publications} publicerad</p>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium text-green-600">{space.rentIncl}</p>
-                      <p className="text-xs text-muted-foreground">{space.publications} publicerad</p>
                     </div>
                   </div>
                 </CardContent>
