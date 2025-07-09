@@ -22,7 +22,7 @@ export const CreateParkingInterestDialog = ({
   customerName 
 }: CreateParkingInterestDialogProps) => {
   const [open, setOpen] = useState(false);
-  const [selectedParkingSpace, setSelectedParkingSpace] = useState<ParkingSpaceForPublishing | null>(null);
+  const [selectedParkingSpaces, setSelectedParkingSpaces] = useState<ParkingSpaceForPublishing[]>([]);
   const [applicationType, setApplicationType] = useState<"Replace" | "Additional">("Additional");
   const [notes, setNotes] = useState("");
 
@@ -31,40 +31,43 @@ export const CreateParkingInterestDialog = ({
   
   const tenantValidation = useTenantValidation(
     customerNumber,
-    selectedParkingSpace?.district || "",
-    selectedParkingSpace?.id || ""
+    selectedParkingSpaces[0]?.district || "",
+    selectedParkingSpaces[0]?.id || ""
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedParkingSpace) return;
+    if (selectedParkingSpaces.length === 0) return;
 
-    createApplication.mutate({
-      parkingSpaceId: selectedParkingSpace.id,
-      customerNumber,
-      applicationType,
-      notes
-    }, {
-      onSuccess: () => {
-        toast({
-          title: "Intresseanmälan skapad",
-          description: `Anmälan för ${customerName} på ${selectedParkingSpace.address} har skapats`,
+    // Create applications for all selected parking spaces
+    for (const space of selectedParkingSpaces) {
+      try {
+        await createApplication.mutateAsync({
+          parkingSpaceId: space.id,
+          customerNumber,
+          applicationType,
+          notes
         });
-        resetForm();
-        setOpen(false);
-      },
-      onError: (error) => {
+      } catch (error) {
         toast({
           title: "Fel",
-          description: error.message || "Kunde inte skapa intresseanmälan",
+          description: `Kunde inte skapa anmälan för ${space.address}`,
           variant: "destructive",
         });
+        return;
       }
+    }
+
+    toast({
+      title: "Intresseanmälningar skapade",
+      description: `${selectedParkingSpaces.length} anmälningar för ${customerName} har skapats`,
     });
+    resetForm();
+    setOpen(false);
   };
 
   const resetForm = () => {
-    setSelectedParkingSpace(null);
+    setSelectedParkingSpaces([]);
     setApplicationType("Additional");
     setNotes("");
   };
@@ -74,7 +77,7 @@ export const CreateParkingInterestDialog = ({
     return tenantValidation.data.hasContractInDistrict || tenantValidation.data.hasUpcomingContractInDistrict;
   };
 
-  const canSubmit = selectedParkingSpace && 
+  const canSubmit = selectedParkingSpaces.length > 0 && 
                   tenantValidation.data?.validationResult !== 'no-contract' && 
                   tenantHasValidContractForTheDistrict() &&
                   !createApplication.isPending;
@@ -99,11 +102,11 @@ export const CreateParkingInterestDialog = ({
 
         <FormWrapper onSubmit={handleSubmit} maxHeight="70vh">
           <ParkingSpaceSearch 
-            selectedParkingSpace={selectedParkingSpace}
-            onParkingSpaceSelect={setSelectedParkingSpace}
+            selectedParkingSpaces={selectedParkingSpaces}
+            onParkingSpaceSelect={setSelectedParkingSpaces}
           />
 
-          {selectedParkingSpace && tenantValidation.data && (
+          {selectedParkingSpaces.length > 0 && tenantValidation.data && (
             <>
               <ValidationAlerts tenantValidation={tenantValidation.data} />
 
@@ -135,7 +138,7 @@ export const CreateParkingInterestDialog = ({
               disabled={!canSubmit}
               className="flex-1"
             >
-              {createApplication.isPending ? "Skapar..." : "Lägg till"}
+              {createApplication.isPending ? "Skapar..." : `Lägg till (${selectedParkingSpaces.length})`}
             </Button>
           </div>
         </FormWrapper>

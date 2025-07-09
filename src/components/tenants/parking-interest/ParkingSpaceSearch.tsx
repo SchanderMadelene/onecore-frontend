@@ -9,12 +9,12 @@ import { useParkingSpaceListings } from "@/hooks/useParkingSpaceListings";
 import type { ParkingSpaceForPublishing } from "@/hooks/useParkingSpaceListings";
 
 interface ParkingSpaceSearchProps {
-  selectedParkingSpace: ParkingSpaceForPublishing | null;
-  onParkingSpaceSelect: (parkingSpace: ParkingSpaceForPublishing) => void;
+  selectedParkingSpaces: ParkingSpaceForPublishing[];
+  onParkingSpaceSelect: (parkingSpaces: ParkingSpaceForPublishing[]) => void;
 }
 
 export const ParkingSpaceSearch = ({ 
-  selectedParkingSpace, 
+  selectedParkingSpaces, 
   onParkingSpaceSelect 
 }: ParkingSpaceSearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,8 +32,8 @@ export const ParkingSpaceSearch = ({
     
     const matchesArea = !areaFilter || areaFilter === "all" || space.area === areaFilter;
     
-    const matchesRent = !maxRentFilter || maxRentFilter === "none" || 
-      parseInt(space.rentIncl.replace(/\D/g, '')) <= parseInt(maxRentFilter);
+    const matchesRent = !maxRentFilter || 
+      parseInt(space.rentIncl.replace(/\D/g, '')) <= parseInt(maxRentFilter || '999999');
     
     return matchesSearch && matchesArea && matchesRent;
   });
@@ -41,59 +41,79 @@ export const ParkingSpaceSearch = ({
   // Get unique areas for filter
   const areas = [...new Set(parkingSpaces.map(space => space.area))];
 
-  if (selectedParkingSpace) {
+  const handleSpaceToggle = (space: ParkingSpaceForPublishing) => {
+    const isSelected = selectedParkingSpaces.some(s => s.id === space.id);
+    if (isSelected) {
+      onParkingSpaceSelect(selectedParkingSpaces.filter(s => s.id !== space.id));
+    } else {
+      onParkingSpaceSelect([...selectedParkingSpaces, space]);
+    }
+  };
+
+  if (selectedParkingSpaces.length > 0) {
     return (
       <div className="space-y-3">
-        <h3 className="text-lg font-semibold">Vald bilplats</h3>
-        <Card>
-          <CardContent className="pt-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label className="text-sm text-muted-foreground">Adress</Label>
-                <p className="font-medium">{selectedParkingSpace.address}</p>
-              </div>
-              <div>
-                <Label className="text-sm text-muted-foreground">Objekts-ID</Label>
-                <p className="font-medium">{selectedParkingSpace.id}</p>
-              </div>
-              <div>
-                <Label className="text-sm text-muted-foreground">Område</Label>
-                <p className="font-medium">{selectedParkingSpace.area}</p>
-              </div>
-              <div>
-                <Label className="text-sm text-muted-foreground">Bilplatstyp</Label>
-                <p className="font-medium">{selectedParkingSpace.type}</p>
-              </div>
-              <div>
-                <Label className="text-sm text-muted-foreground">Hyra</Label>
-                <p className="font-medium text-green-600">{selectedParkingSpace.rentIncl}</p>
-              </div>
-              <div>
-                <Label className="text-sm text-muted-foreground">Kötyp</Label>
-                <div className="flex gap-1 mt-1">
-                  {selectedParkingSpace.queueTypes.intern && (
-                    <Badge variant="secondary">Intern</Badge>
-                  )}
-                  {selectedParkingSpace.queueTypes.external && (
-                    <Badge variant="secondary">Extern</Badge>
-                  )}
-                  {selectedParkingSpace.queueTypes.poangfri && (
-                    <Badge variant="secondary">Poängfri</Badge>
-                  )}
+        <h3 className="text-lg font-semibold">Valda bilplatser ({selectedParkingSpaces.length})</h3>
+        <div className="space-y-2 max-h-60 overflow-y-auto">
+          {selectedParkingSpaces.map((space) => (
+            <Card key={space.id} className="relative">
+              <CardContent className="pt-4">
+                <button
+                  type="button"
+                  onClick={() => handleSpaceToggle(space)}
+                  className="absolute top-2 right-2 text-muted-foreground hover:text-destructive"
+                >
+                  ✕
+                </button>
+                <div className="grid grid-cols-2 gap-4 pr-8">
+                  <div>
+                    <Label className="text-sm text-muted-foreground">Adress</Label>
+                    <p className="font-medium">{space.address}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm text-muted-foreground">Objekts-ID</Label>
+                    <p className="font-medium">{space.id}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm text-muted-foreground">Område</Label>
+                    <p className="font-medium">{space.area}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm text-muted-foreground">Bilplatstyp</Label>
+                    <p className="font-medium">{space.type}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm text-muted-foreground">Hyra</Label>
+                    <p className="font-medium text-green-600">{space.rentIncl}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm text-muted-foreground">Kötyp</Label>
+                    <div className="flex gap-1 mt-1">
+                      {space.queueTypes.intern && (
+                        <Badge variant="secondary">Intern</Badge>
+                      )}
+                      {space.queueTypes.external && (
+                        <Badge variant="secondary">Extern</Badge>
+                      )}
+                      {space.queueTypes.poangfri && (
+                        <Badge variant="secondary">Poängfri</Badge>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="mt-4">
-              <button
-                type="button"
-                onClick={() => onParkingSpaceSelect(null as any)}
-                className="text-sm text-primary hover:underline"
-              >
-                Välj annan bilplats
-              </button>
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => onParkingSpaceSelect([])}
+            className="text-sm text-primary hover:underline"
+          >
+            Rensa alla val
+          </button>
+        </div>
       </div>
     );
   }
@@ -130,18 +150,14 @@ export const ParkingSpaceSearch = ({
           </div>
           
           <div className="flex-1">
-            <Select value={maxRentFilter} onValueChange={setMaxRentFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Max hyra" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">Ingen gräns</SelectItem>
-                <SelectItem value="400">Max 400 kr</SelectItem>
-                <SelectItem value="500">Max 500 kr</SelectItem>
-                <SelectItem value="600">Max 600 kr</SelectItem>
-                <SelectItem value="700">Max 700 kr</SelectItem>
-              </SelectContent>
-            </Select>
+            <Input
+              type="number"
+              placeholder="Max hyra (kr)"
+              value={maxRentFilter}
+              onChange={(e) => setMaxRentFilter(e.target.value)}
+              min="0"
+              step="50"
+            />
           </div>
         </div>
       </div>
@@ -158,39 +174,51 @@ export const ParkingSpaceSearch = ({
             }
           </p>
         ) : (
-          filteredSpaces.map((space) => (
-            <Card 
-              key={space.id} 
-              className="cursor-pointer hover:bg-muted/50 transition-colors"
-              onClick={() => onParkingSpaceSelect(space)}
-            >
-              <CardContent className="p-4">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h4 className="font-medium">{space.address}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {space.area} • {space.type}
-                    </p>
-                    <div className="flex gap-1 mt-2">
-                      {space.queueTypes.intern && (
-                        <Badge variant="secondary" className="text-xs">Intern</Badge>
-                      )}
-                      {space.queueTypes.external && (
-                        <Badge variant="secondary" className="text-xs">Extern</Badge>
-                      )}
-                      {space.queueTypes.poangfri && (
-                        <Badge variant="secondary" className="text-xs">Poängfri</Badge>
-                      )}
+          filteredSpaces.map((space) => {
+            const isSelected = selectedParkingSpaces.some(s => s.id === space.id);
+            return (
+              <Card 
+                key={space.id} 
+                className={`cursor-pointer transition-colors ${
+                  isSelected 
+                    ? 'bg-primary/10 border-primary' 
+                    : 'hover:bg-muted/50'
+                }`}
+                onClick={() => handleSpaceToggle(space)}
+              >
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-medium">{space.address}</h4>
+                        {isSelected && (
+                          <Badge variant="default" className="text-xs">Vald</Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {space.area} • {space.type}
+                      </p>
+                      <div className="flex gap-1 mt-2">
+                        {space.queueTypes.intern && (
+                          <Badge variant="secondary" className="text-xs">Intern</Badge>
+                        )}
+                        {space.queueTypes.external && (
+                          <Badge variant="secondary" className="text-xs">Extern</Badge>
+                        )}
+                        {space.queueTypes.poangfri && (
+                          <Badge variant="secondary" className="text-xs">Poängfri</Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-medium text-green-600">{space.rentIncl}</p>
+                      <p className="text-xs text-muted-foreground">{space.publications} publicerad</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-medium text-green-600">{space.rentIncl}</p>
-                    <p className="text-xs text-muted-foreground">{space.publications} publicerad</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
+                </CardContent>
+              </Card>
+            );
+          })
         )}
       </div>
     </div>
