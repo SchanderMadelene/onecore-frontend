@@ -1,9 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { InfoIcon, Home, Car, User, UserCheck, Users } from "lucide-react";
-import { CreateHousingInterestDialog } from "@/components/rentals/CreateHousingInterestDialog";
-import { CreateInterestApplicationDialog } from "@/components/rentals/CreateInterestApplicationDialog";
+import { Button } from "@/components/ui/button";
+import { InfoIcon, Home, Car, User, UserCheck, Users, Plus } from "lucide-react";
 
 // Mock data for the queue system
 const queueData = {
@@ -70,7 +69,10 @@ export function TenantQueueSystem() {
                   Motsvarar ca {Math.floor(queueData.housingPoints / 365)} år och {queueData.housingPoints % 365} dagar
                 </p>
               </div>
-              <CreateHousingInterestDialog />
+              <Button variant="outline" className="w-full">
+                <Plus className="h-4 w-4 mr-2" />
+                Ny intresseanmälan bostad
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -91,19 +93,10 @@ export function TenantQueueSystem() {
                   Motsvarar ca {Math.floor(queueData.parkingPoints / 365)} år och {queueData.parkingPoints % 365} dagar
                 </p>
               </div>
-              <CreateInterestApplicationDialog 
-                parkingSpace={{
-                  id: "general-parking",
-                  address: "Allmän bilplatskö",
-                  area: "Centrum",
-                  type: "parking",
-                  queueType: "Allmän kö",
-                  rent: "950 kr/mån",
-                  seekers: 0,
-                  publishedFrom: "",
-                  publishedTo: ""
-                }} 
-              />
+              <Button variant="outline" className="w-full">
+                <Plus className="h-4 w-4 mr-2" />
+                Ny intresseanmälan bilplats
+              </Button>
             </div>
           </CardContent>
         </Card>
