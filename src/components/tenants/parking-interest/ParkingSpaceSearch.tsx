@@ -59,62 +59,39 @@ export const ParkingSpaceSearch = ({
     }
   };
 
-  if (selectedParkingSpaces.length > 0) {
-    return (
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold">Valda bilplatser ({selectedParkingSpaces.length})</h3>
-        <div className="space-y-2 max-h-60 overflow-y-auto">
-          {selectedParkingSpaces.map((space) => (
-            <Card key={space.id} className="relative">
-              <CardContent className="pt-4">
-                <button
-                  type="button"
-                  onClick={() => handleSpaceToggle(space)}
-                  className="absolute top-2 right-2 text-muted-foreground hover:text-destructive"
-                >
-                  ✕
-                </button>
-                <div className="grid grid-cols-2 gap-4 pr-8">
-                  <div>
-                    <Label className="text-sm text-muted-foreground">Adress</Label>
-                    <p className="font-medium">{space.address}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm text-muted-foreground">Objekts-ID</Label>
-                    <p className="font-medium">{space.id}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm text-muted-foreground">Område</Label>
-                    <p className="font-medium">{space.area}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm text-muted-foreground">Bilplatstyp</Label>
-                    <p className="font-medium">{space.type}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm text-muted-foreground">Hyra</Label>
-                    <p className="font-medium text-green-600">{space.rentIncl}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm text-muted-foreground">Kötyp</Label>
-                    <div className="flex gap-1 mt-1">
-                      {space.queueTypes.intern && (
-                        <Badge variant="secondary">Intern</Badge>
-                      )}
-                      {space.queueTypes.external && (
-                        <Badge variant="secondary">Extern</Badge>
-                      )}
-                      {space.queueTypes.poangfri && (
-                        <Badge variant="secondary">Poängfri</Badge>
-                      )}
+  return (
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold">Sök bilplats</h3>
+      
+      {/* Show selected spaces if any */}
+      {selectedParkingSpaces.length > 0 && (
+        <div className="space-y-3">
+          <h4 className="text-md font-medium">Valda bilplatser ({selectedParkingSpaces.length})</h4>
+          <div className="space-y-2 max-h-40 overflow-y-auto">
+            {selectedParkingSpaces.map((space) => (
+              <Card key={space.id} className="relative bg-primary/10 border-primary">
+                <CardContent className="pt-4 pb-3">
+                  <button
+                    type="button"
+                    onClick={() => handleSpaceToggle(space)}
+                    className="absolute top-2 right-2 text-muted-foreground hover:text-destructive"
+                  >
+                    ✕
+                  </button>
+                  <div className="grid grid-cols-2 gap-4 pr-8">
+                    <div>
+                      <Label className="text-sm text-muted-foreground">Adress</Label>
+                      <p className="font-medium">{space.address}</p>
+                    </div>
+                    <div>
+                      <Label className="text-sm text-muted-foreground">Hyra</Label>
+                      <p className="font-medium text-green-600">{space.rentIncl}</p>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <div className="mt-4">
+                </CardContent>
+              </Card>
+            ))}
+          </div>
           <button
             type="button"
             onClick={() => onParkingSpaceSelect([])}
@@ -123,15 +100,9 @@ export const ParkingSpaceSearch = ({
             Rensa alla val
           </button>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Sök bilplats</h3>
+      )}
       
-      {/* Search and filters */}
+      {/* Search and filters - always visible */}
       <div className="space-y-3">
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -171,7 +142,8 @@ export const ParkingSpaceSearch = ({
         </div>
       </div>
 
-      {/* Results */}
+      {/* Results - always visible */}
+      <h4 className="text-md font-medium">Alla tillgängliga bilplatser</h4>
       <div className="space-y-2 max-h-80 overflow-y-auto">
         {isLoading ? (
           <p className="text-muted-foreground">Laddar bilplatser...</p>
