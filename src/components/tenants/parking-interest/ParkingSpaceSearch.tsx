@@ -30,9 +30,9 @@ export const ParkingSpaceSearch = ({
       space.area.toLowerCase().includes(searchQuery.toLowerCase()) ||
       space.type.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesArea = !areaFilter || space.area === areaFilter;
+    const matchesArea = !areaFilter || areaFilter === "all" || space.area === areaFilter;
     
-    const matchesRent = !maxRentFilter || 
+    const matchesRent = !maxRentFilter || maxRentFilter === "none" || 
       parseInt(space.rentIncl.replace(/\D/g, '')) <= parseInt(maxRentFilter);
     
     return matchesSearch && matchesArea && matchesRent;
@@ -121,7 +121,7 @@ export const ParkingSpaceSearch = ({
                 <SelectValue placeholder="Alla områden" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Alla områden</SelectItem>
+                <SelectItem value="all">Alla områden</SelectItem>
                 {areas.map(area => (
                   <SelectItem key={area} value={area}>{area}</SelectItem>
                 ))}
@@ -135,7 +135,7 @@ export const ParkingSpaceSearch = ({
                 <SelectValue placeholder="Max hyra" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Ingen gräns</SelectItem>
+                <SelectItem value="none">Ingen gräns</SelectItem>
                 <SelectItem value="400">Max 400 kr</SelectItem>
                 <SelectItem value="500">Max 500 kr</SelectItem>
                 <SelectItem value="600">Max 600 kr</SelectItem>
