@@ -1,5 +1,8 @@
 
 import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Settings } from "lucide-react";
 import type { Building } from "@/types/api";
 
 interface BuildingInstallationsTabProps {
@@ -13,17 +16,27 @@ export const BuildingInstallationsTab = ({ building }: BuildingInstallationsTabP
 
   if (installations.length === 0) {
     return (
-      <div className="text-center py-10">
-        <h3 className="text-xl font-medium mb-2">Inga installationer</h3>
-        <p className="text-muted-foreground">
-          Det finns inga installationer registrerade för denna byggnad ännu.
-        </p>
-      </div>
+      <TabLayout 
+        title="Installationer" 
+        icon={Settings}
+        count={0}
+      >
+        <EmptyState
+          icon={Settings}
+          title="Inga installationer"
+          description="Det finns inga installationer registrerade för denna byggnad ännu."
+        />
+      </TabLayout>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <TabLayout 
+      title="Installationer" 
+      icon={Settings}
+      count={installations.length}
+      showCard={false}
+    >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {installations.map(installation => (
           <ComponentCard
@@ -40,6 +53,6 @@ export const BuildingInstallationsTab = ({ building }: BuildingInstallationsTabP
           />
         ))}
       </div>
-    </div>
+    </TabLayout>
   );
 };

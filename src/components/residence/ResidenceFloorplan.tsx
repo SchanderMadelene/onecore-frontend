@@ -1,8 +1,19 @@
 
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { FileImage } from "lucide-react";
+
 export const ResidenceFloorplan = () => {
   return (
-    <div className="flex items-center justify-center h-[200px] sm:h-[400px] border-2 border-dashed rounded-lg bg-muted/10">
-      <p className="text-muted-foreground text-sm">Planritning är inte tillgänglig</p>
-    </div>
+    <TabLayout 
+      title="Planritning" 
+      icon={FileImage}
+    >
+      <EmptyState
+        icon={FileImage}
+        title="Planritning inte tillgänglig"
+        description="Planritning för denna lägenhet är inte tillgänglig för tillfället."
+      />
+    </TabLayout>
   );
 };

@@ -1,5 +1,7 @@
 
 import { PropertyBasicInfo } from "@/components/properties/PropertyBasicInfo";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { Info } from "lucide-react";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyInfoTabProps {
@@ -8,9 +10,12 @@ interface PropertyInfoTabProps {
 
 export const PropertyInfoTab = ({ property }: PropertyInfoTabProps) => {
   return (
-    <div className="space-y-6">
-      {/* Only show detailed property information here, basic info is shown above tabs */}
+    <TabLayout 
+      title="Fastighetsinfo" 
+      icon={Info}
+      showCard={false}
+    >
       <PropertyBasicInfo propertyDetail={property} showBasicInfoOnly={false} showDetailedInfo={true} />
-    </div>
+    </TabLayout>
   );
 };

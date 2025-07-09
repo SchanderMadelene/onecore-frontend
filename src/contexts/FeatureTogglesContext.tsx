@@ -35,6 +35,7 @@ interface FeatureToggles {
   showBuildingSpaces: boolean;
   showBuildingInstallations: boolean;
   showBuildingParking: boolean;
+  showBuildingDocuments: boolean;
   // Turnover (In- och utflytt)
   showTurnover: boolean;
 }
@@ -67,8 +68,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenantLedger: false,
   showTenantNotes: false,
   showTenantKeys: false,
-  showTenantEvents: false,
-  showTenantDocuments: false,
+  showTenantEvents: true,
+  showTenantDocuments: true,
   // Rentals sections
   showRentalsHousing: false,
   showRentalsParking: false,
@@ -79,6 +80,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showBuildingSpaces: false,
   showBuildingInstallations: false,
   showBuildingParking: false,
+  showBuildingDocuments: true,
   // Turnover (In- och utflytt)
   showTurnover: false,
 };

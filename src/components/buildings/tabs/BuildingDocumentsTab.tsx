@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,12 +20,12 @@ interface Document {
 const mockDocuments: Document[] = [
   {
     id: "1",
-    name: "Energideklaration_2024.pdf",
+    name: "Teknisk_beskrivning_2024.pdf",
     type: "PDF",
-    size: "2.3 MB",
-    uploadedBy: "Anna Andersson",
-    uploadedDate: "2024-03-15",
-    category: "Energi"
+    size: "3.2 MB",
+    uploadedBy: "Teknisk avdelning",
+    uploadedDate: "2024-02-15",
+    category: "Teknisk"
   },
   {
     id: "2",
@@ -34,30 +33,21 @@ const mockDocuments: Document[] = [
     type: "PDF",
     size: "1.8 MB",
     uploadedBy: "Erik Nilsson",
-    uploadedDate: "2024-02-28",
+    uploadedDate: "2024-01-28",
     category: "Besiktning"
   },
   {
     id: "3",
-    name: "Ritningar_Fasad.dwg",
-    type: "DWG",
-    size: "5.1 MB",
-    uploadedBy: "Maria Svensson",
-    uploadedDate: "2024-01-12",
-    category: "Ritningar"
-  },
-  {
-    id: "4",
-    name: "Garantihandlingar_Hiss.xlsx",
+    name: "Underhållsplan_2024.xlsx",
     type: "Excel",
     size: "0.9 MB",
-    uploadedBy: "Johan Larsson",
-    uploadedDate: "2023-12-08",
-    category: "Garanti"
+    uploadedBy: "Maria Svensson",
+    uploadedDate: "2024-01-10",
+    category: "Underhåll"
   }
 ];
 
-export const PropertyDocumentsTab = () => {
+export const BuildingDocumentsTab = () => {
   const [documents, setDocuments] = useState<Document[]>(mockDocuments);
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
@@ -110,8 +100,6 @@ export const PropertyDocumentsTab = () => {
     });
   };
 
-
-
   return (
     <Card className="w-full">
       {!isMobile && (
@@ -128,7 +116,7 @@ export const PropertyDocumentsTab = () => {
           <div className="text-center space-y-4">
             <Upload className="h-8 w-8 text-gray-400 mx-auto" />
             <div>
-              <Label htmlFor="file-upload" className="cursor-pointer">
+              <Label htmlFor="building-file-upload" className="cursor-pointer">
                 <Button variant="outline" disabled={isUploading} asChild>
                   <span>
                     {isUploading ? "Laddar upp..." : "Välj fil att ladda upp"}
@@ -136,7 +124,7 @@ export const PropertyDocumentsTab = () => {
                 </Button>
               </Label>
               <Input
-                id="file-upload"
+                id="building-file-upload"
                 type="file"
                 className="hidden"
                 onChange={handleFileUpload}

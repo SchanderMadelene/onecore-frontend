@@ -10,7 +10,8 @@ export function BetaSettings() {
     handleFeatureToggle
   } = useFeatureToggles();
   
-  return <Card>
+  return (
+    <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
           <Beaker className="h-5 w-5" />
@@ -132,9 +133,25 @@ export function BetaSettings() {
                       onCheckedChange={() => handleFeatureToggle('showBuildingParking')} 
                     />
                   </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4" />
+                        <Label htmlFor="building-documents">Dokument</Label>
+                      </div>
+                      <p className="text-sm text-muted-foreground">Visa dokumentflik på byggnadskort</p>
+                    </div>
+                    <Switch 
+                      id="building-documents" 
+                      checked={features.showBuildingDocuments} 
+                      disabled={!features.showBuildings || !features.showProperties || !features.showNavigation}
+                      onCheckedChange={() => handleFeatureToggle('showBuildingDocuments')} 
+                    />
+                  </div>
                 </div>
 
-                <div className="space-y-3">
+              <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
@@ -489,5 +506,6 @@ export function BetaSettings() {
           </div>
         </div>
       </CardContent>
-    </Card>;
-}
+    </Card>
+  );
+};

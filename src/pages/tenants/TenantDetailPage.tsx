@@ -52,10 +52,17 @@ const TenantDetailPage = () => {
           <TenantMobileAccordion 
             contracts={contracts}
             hasActiveCases={hasActiveCases}
+            customerNumber={tenant.personalNumber}
+            customerName={`${tenant.firstName} ${tenant.lastName}`}
           />
         ) : (
           <TenantDetailTabs defaultValue="contracts" hasActiveCases={hasActiveCases}>
-            <TenantDetailTabsContent contracts={contracts} />
+            <TenantDetailTabsContent 
+              contracts={contracts} 
+              personalNumber={tenant.personalNumber}
+              customerNumber={tenant.personalNumber}
+              customerName={`${tenant.firstName} ${tenant.lastName}`}
+            />
           </TenantDetailTabs>
         )}
       </div>

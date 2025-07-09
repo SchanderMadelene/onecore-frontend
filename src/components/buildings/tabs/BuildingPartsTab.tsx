@@ -1,5 +1,7 @@
 
 import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { Building2 } from "lucide-react";
 import type { Building } from "@/types/api";
 
 interface BuildingPartsTabProps {
@@ -133,13 +135,19 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
   ];
 
   return (
-    <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-      {buildingParts.map((part, index) => (
-        <MaintenanceUnitCard
-          key={index}
-          subComponents={part.subComponents}
-        />
-      ))}
-    </div>
+    <TabLayout 
+      title="Byggnadsdelar" 
+      icon={Building2}
+      showCard={false}
+    >
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+        {buildingParts.map((part, index) => (
+          <MaintenanceUnitCard
+            key={index}
+            subComponents={part.subComponents}
+          />
+        ))}
+      </div>
+    </TabLayout>
   );
 };

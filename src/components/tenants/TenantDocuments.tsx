@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,43 +20,52 @@ interface Document {
 const mockDocuments: Document[] = [
   {
     id: "1",
-    name: "Energideklaration_2024.pdf",
+    name: "Hyreskontrakt_Huvudhyresgäst.pdf",
     type: "PDF",
-    size: "2.3 MB",
-    uploadedBy: "Anna Andersson",
-    uploadedDate: "2024-03-15",
-    category: "Energi"
+    size: "1.4 MB",
+    uploadedBy: "Uthyrning",
+    uploadedDate: "2023-08-15",
+    category: "Kontrakt"
   },
   {
     id: "2",
-    name: "Besiktningsprotokoll_Ventilation.pdf",
+    name: "Inflyttningsbesiktning_2023.pdf",
     type: "PDF",
-    size: "1.8 MB",
-    uploadedBy: "Erik Nilsson",
-    uploadedDate: "2024-02-28",
+    size: "2.1 MB",
+    uploadedBy: "Sara Johansson",
+    uploadedDate: "2023-08-20",
     category: "Besiktning"
   },
   {
     id: "3",
-    name: "Ritningar_Fasad.dwg",
-    type: "DWG",
-    size: "5.1 MB",
-    uploadedBy: "Maria Svensson",
-    uploadedDate: "2024-01-12",
-    category: "Ritningar"
+    name: "Personbevis_Huvudhyresgäst.pdf",
+    type: "PDF",
+    size: "0.3 MB",
+    uploadedBy: "Kundcenter",
+    uploadedDate: "2023-08-10",
+    category: "Identitet"
   },
   {
     id: "4",
-    name: "Garantihandlingar_Hiss.xlsx",
-    type: "Excel",
-    size: "0.9 MB",
-    uploadedBy: "Johan Larsson",
-    uploadedDate: "2023-12-08",
-    category: "Garanti"
+    name: "Inkomstintyg_2023.pdf",
+    type: "PDF",
+    size: "0.8 MB",
+    uploadedBy: "Kundcenter",
+    uploadedDate: "2023-08-12",
+    category: "Ekonomi"
+  },
+  {
+    id: "5",
+    name: "Boendereferens_Tidigare_Hyresvärd.pdf",
+    type: "PDF",
+    size: "0.5 MB",
+    uploadedBy: "Uthyrning",
+    uploadedDate: "2023-08-05",
+    category: "Referens"
   }
 ];
 
-export const PropertyDocumentsTab = () => {
+export const TenantDocuments = () => {
   const [documents, setDocuments] = useState<Document[]>(mockDocuments);
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
@@ -74,7 +82,7 @@ export const PropertyDocumentsTab = () => {
       const newDocument: Document = {
         id: Date.now().toString(),
         name: file.name,
-        type: file.type.includes('pdf') ? 'PDF' : file.type.includes('excel') ? 'Excel' : 'Okänd',
+        type: file.type.includes('pdf') ? 'PDF' : file.type.includes('image') ? 'Bild' : 'Okänd',
         size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
         uploadedBy: "Du",
         uploadedDate: new Date().toISOString().split('T')[0],
@@ -128,7 +136,7 @@ export const PropertyDocumentsTab = () => {
           <div className="text-center space-y-4">
             <Upload className="h-8 w-8 text-gray-400 mx-auto" />
             <div>
-              <Label htmlFor="file-upload" className="cursor-pointer">
+              <Label htmlFor="tenant-file-upload" className="cursor-pointer">
                 <Button variant="outline" disabled={isUploading} asChild>
                   <span>
                     {isUploading ? "Laddar upp..." : "Välj fil att ladda upp"}
@@ -136,16 +144,16 @@ export const PropertyDocumentsTab = () => {
                 </Button>
               </Label>
               <Input
-                id="file-upload"
+                id="tenant-file-upload"
                 type="file"
                 className="hidden"
                 onChange={handleFileUpload}
-                accept=".pdf,.doc,.docx,.xls,.xlsx,.dwg,.jpg,.jpeg,.png"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
                 disabled={isUploading}
               />
             </div>
             <p className="text-sm text-muted-foreground">
-              Stöder PDF, Word, Excel, DWG, och bildformaten. Max 10 MB.
+              Stöder PDF, Word, Excel och bildformaten. Max 10 MB.
             </p>
           </div>
         </div>
@@ -239,17 +247,17 @@ export const PropertyDocumentsTab = () => {
               )}
             </Card>
           ))}
-        </div>
 
-        {documents.length === 0 && (
-          <div className="text-center py-8">
-            <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-muted-foreground">Inga dokument uppladdade än</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Ladda upp ditt första dokument för att komma igång
-            </p>
-          </div>
-        )}
+          {documents.length === 0 && (
+            <div className="text-center py-8">
+              <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-muted-foreground">Inga dokument uppladdade än</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Ladda upp ditt första dokument för att komma igång
+              </p>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

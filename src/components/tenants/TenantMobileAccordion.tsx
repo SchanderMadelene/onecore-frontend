@@ -9,9 +9,11 @@ import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "
 interface TenantMobileAccordionProps {
   contracts: any[];
   hasActiveCases?: boolean;
+  customerNumber: string;
+  customerName: string;
 }
 
-export function TenantMobileAccordion({ contracts, hasActiveCases }: TenantMobileAccordionProps) {
+export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumber, customerName }: TenantMobileAccordionProps) {
   const { features } = useFeatureToggles();
   
   const accordionItems: MobileAccordionItem[] = [
@@ -34,7 +36,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases }: TenantMobil
       icon: Users,
       title: "Kösystem",
       content: features.showTenantQueue ? (
-        <TenantQueueSystem />
+        <TenantQueueSystem customerNumber={customerNumber} customerName={customerName} />
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <p className="text-slate-500">

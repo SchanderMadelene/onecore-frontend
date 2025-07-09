@@ -1,5 +1,8 @@
 
 import { PropertyMapView } from "@/components/properties";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Map } from "lucide-react";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyMapTabProps {
@@ -10,28 +13,20 @@ export const PropertyMapTab = ({
   propertyDetail
 }: PropertyMapTabProps) => {
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4">Ritningar</h3>
+    <TabLayout 
+      title="Ritningar" 
+      icon={Map}
+      showCard={false}
+    >
       {propertyDetail.propertyMap ? (
         <PropertyMapView propertyDetail={propertyDetail} />
       ) : (
-        <EmptyDrawingState label="Ritningar" />
+        <EmptyState
+          icon={Map}
+          title="Ritningar saknas"
+          description="Ritningar finns inte tillgängliga för denna fastighet."
+        />
       )}
-    </div>
-  );
-};
-
-const EmptyDrawingState = ({
-  label
-}: {
-  label: string;
-}) => {
-  return (
-    <div className="text-center py-6">
-      <h3 className="text-xl font-medium mb-2">Ritningar saknas</h3>
-      <p className="text-muted-foreground">
-        Ritningar för {label} finns inte tillgängliga för denna fastighet.
-      </p>
-    </div>
+    </TabLayout>
   );
 };

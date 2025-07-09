@@ -3,10 +3,15 @@ import { TenantContracts } from "@/components/tenants/TenantContracts";
 import { TenantQueueSystem } from "@/components/tenants/TenantQueueSystem";
 import { TenantNotes } from "@/components/tenants/TenantNotes";
 import { TenantOrders } from "@/components/tenants/TenantOrders";
+import { TenantEventLog } from "@/components/tenants/TenantEventLog";
+import { TenantDocuments } from "@/components/tenants/TenantDocuments";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 interface TenantDetailTabsContentProps {
   contracts: any[];
+  personalNumber?: string;
+  customerNumber: string;
+  customerName: string;
 }
 
 const FeatureGatedTabContent = ({ 
@@ -28,7 +33,7 @@ const FeatureGatedTabContent = ({
   return <>{children}</>;
 };
 
-export const TenantDetailTabsContent = ({ contracts }: TenantDetailTabsContentProps) => {
+export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNumber, customerName }: TenantDetailTabsContentProps) => {
   const { features } = useFeatureToggles();
 
   return (
@@ -47,7 +52,7 @@ export const TenantDetailTabsContent = ({ contracts }: TenantDetailTabsContentPr
           isEnabled={features.showTenantQueue}
           fallbackMessage="För att se kösystem, aktivera funktionen i inställningarna."
         >
-          <TenantQueueSystem />
+          <TenantQueueSystem customerNumber={customerNumber} customerName={customerName} />
         </FeatureGatedTabContent>
       </TabsContent>
 
@@ -98,10 +103,7 @@ export const TenantDetailTabsContent = ({ contracts }: TenantDetailTabsContentPr
           isEnabled={features.showTenantEvents}
           fallbackMessage="För att se händelselogg, aktivera funktionen i inställningarna."
         >
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h3 className="text-lg font-medium mb-4">Händelselogg</h3>
-            <p className="text-muted-foreground">Ingen händelsehistorik tillgänglig för denna kund.</p>
-          </div>
+          <TenantEventLog personalNumber={personalNumber || ""} />
         </FeatureGatedTabContent>
       </TabsContent>
 
@@ -110,10 +112,7 @@ export const TenantDetailTabsContent = ({ contracts }: TenantDetailTabsContentPr
           isEnabled={features.showTenantDocuments}
           fallbackMessage="För att se dokument, aktivera funktionen i inställningarna."
         >
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h3 className="text-lg font-medium mb-4">Dokument</h3>
-            <p className="text-muted-foreground">Inga dokument tillgängliga för denna kund.</p>
-          </div>
+          <TenantDocuments />
         </FeatureGatedTabContent>
       </TabsContent>
     </>

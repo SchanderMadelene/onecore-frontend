@@ -1,6 +1,9 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Car } from "lucide-react";
 import type { Building } from "@/types/api";
 
 interface BuildingParkingTabProps {
@@ -14,12 +17,17 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
 
   if (parking.length === 0) {
     return (
-      <div className="text-center py-10">
-        <h3 className="text-xl font-medium mb-2">Ingen parkering</h3>
-        <p className="text-muted-foreground">
-          Det finns inga parkeringsplatser registrerade för denna byggnad ännu.
-        </p>
-      </div>
+      <TabLayout 
+        title="Parkering" 
+        icon={Car}
+        count={0}
+      >
+        <EmptyState
+          icon={Car}
+          title="Ingen parkering"
+          description="Det finns inga parkeringsplatser registrerade för denna byggnad ännu."
+        />
+      </TabLayout>
     );
   }
 
@@ -35,9 +43,14 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
   }, 0);
 
   return (
-    <div className="space-y-6">
+    <TabLayout 
+      title="Parkering" 
+      icon={Car}
+      count={totalSpaces}
+      showCard={false}
+    >
       {/* Summary */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <Card>
           <CardContent className="pt-4">
             <div className="text-2xl font-bold">{totalSpaces}</div>
@@ -75,6 +88,6 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
           />
         ))}
       </div>
-    </div>
+    </TabLayout>
   );
 };

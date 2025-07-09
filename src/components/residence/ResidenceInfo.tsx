@@ -1,6 +1,9 @@
 
 import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Info } from "lucide-react";
 import type { Room } from "@/types/api";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -53,14 +56,27 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
   if (!rooms || rooms.length === 0) {
     console.log("No rooms data available");
     return (
-      <div className="text-center py-4">
-        <p className="text-muted-foreground">Ingen rumsinformation tillgänglig</p>
-      </div>
+      <TabLayout 
+        title="Rumsinformation" 
+        icon={Info}
+        count={0}
+      >
+        <EmptyState
+          icon={Info}
+          title="Ingen rumsinformation tillgänglig"
+          description="Det finns ingen information om rum i denna lägenhet."
+        />
+      </TabLayout>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <TabLayout 
+      title="Rumsinformation" 
+      icon={Info}
+      count={rooms.length}
+      showCard={false}
+    >
       <Accordion type="single" collapsible className="space-y-2">
         {rooms.map(room => (
           <AccordionItem 
@@ -97,6 +113,6 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
           </AccordionItem>
         ))}
       </Accordion>
-    </div>
+    </TabLayout>
   );
 };
