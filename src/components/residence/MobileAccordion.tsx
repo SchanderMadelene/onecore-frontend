@@ -1,5 +1,4 @@
-
-import { Info, ClipboardList, Users, MessageSquare, FileText, LockKeyhole } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ResidenceInfo } from "./ResidenceInfo";
 import { ResidenceInspection } from "./ResidenceInspection";
 import { TenantInformation } from "./inspection/form/TenantInformation";
@@ -9,7 +8,6 @@ import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
 import type { Room } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
-import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
 import { useParams } from "react-router-dom";
 
 interface ResidenceMobileAccordionProps {
@@ -33,10 +31,9 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
     }
   };
   
-  const accordionItems: MobileAccordionItem[] = [
+  const accordionItems = [
     {
       id: "info",
-      icon: Info,
       title: "Rumsinformation",
       content: features.showRoomInformation ? (
         <ResidenceInfo 
@@ -51,7 +48,6 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
     },
     {
       id: "inspections",
-      icon: ClipboardList,
       title: "Besiktningar",
       content: features.showInspections ? (
         <ResidenceInspection
@@ -65,7 +61,6 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
     },
     {
       id: "tenant",
-      icon: Users,
       title: "Hyresgäst",
       content: features.showTenantInfo ? (
         <TenantInformation tenant={getTenantData()} />
@@ -77,7 +72,6 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
     },
     {
       id: "issues",
-      icon: MessageSquare,
       title: "Ärenden",
       content: features.showApartmentIssues ? (
         <OrdersManagement residenceId={id} />
@@ -89,7 +83,6 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
     },
     {
       id: "notes",
-      icon: FileText,
       title: "Noteringar",
       content: features.showResidenceNotes ? (
         <NotesSimple 
@@ -107,7 +100,6 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
     },
     {
       id: "access",
-      icon: LockKeyhole,
       title: "Lås och passage",
       content: features.showResidenceAccess ? (
         <ResidenceAccessControl />
@@ -120,6 +112,23 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
   ];
   
   return (
-    <GenericMobileAccordion items={accordionItems} defaultOpen={["info"]} className="space-y-3" />
+    <div className="w-full">
+      <Accordion type="multiple" defaultValue={["info"]} className="space-y-2">
+        {accordionItems.map(item => (
+          <AccordionItem key={item.id} value={item.id} className="rounded-lg border border-slate-200">
+            <AccordionTrigger className="px-2 py-2">
+              <div className="flex items-center gap-2">
+                <span className="text-base font-medium">{item.title}</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="px-0 pb-2">
+                {item.content}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </div>
   );
 }
