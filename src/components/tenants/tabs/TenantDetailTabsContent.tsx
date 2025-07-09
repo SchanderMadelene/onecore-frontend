@@ -10,6 +10,8 @@ import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 interface TenantDetailTabsContentProps {
   contracts: any[];
   personalNumber?: string;
+  customerNumber: string;
+  customerName: string;
 }
 
 const FeatureGatedTabContent = ({ 
@@ -31,7 +33,7 @@ const FeatureGatedTabContent = ({
   return <>{children}</>;
 };
 
-export const TenantDetailTabsContent = ({ contracts, personalNumber }: TenantDetailTabsContentProps) => {
+export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNumber, customerName }: TenantDetailTabsContentProps) => {
   const { features } = useFeatureToggles();
 
   return (
@@ -50,7 +52,7 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber }: TenantDet
           isEnabled={features.showTenantQueue}
           fallbackMessage="För att se kösystem, aktivera funktionen i inställningarna."
         >
-          <TenantQueueSystem />
+          <TenantQueueSystem customerNumber={customerNumber} customerName={customerName} />
         </FeatureGatedTabContent>
       </TabsContent>
 

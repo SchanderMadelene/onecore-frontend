@@ -3,6 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { InfoIcon, Home, Car, User, UserCheck, Users, Plus } from "lucide-react";
+import { CreateParkingInterestDialog } from "./CreateParkingInterestDialog";
 
 // Mock data for the queue system
 const queueData = {
@@ -49,7 +50,12 @@ const getReferenceStatusColor = (status: string) => {
   }
 };
 
-export function TenantQueueSystem() {
+interface TenantQueueSystemProps {
+  customerNumber: string;
+  customerName: string;
+}
+
+export function TenantQueueSystem({ customerNumber, customerName }: TenantQueueSystemProps) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -93,10 +99,10 @@ export function TenantQueueSystem() {
                   Motsvarar ca {Math.floor(queueData.parkingPoints / 365)} år och {queueData.parkingPoints % 365} dagar
                 </p>
               </div>
-              <Button variant="outline" className="w-full">
-                <Plus className="h-4 w-4 mr-2" />
-                Ny intresseanmälan bilplats
-              </Button>
+              <CreateParkingInterestDialog 
+                customerNumber={customerNumber}
+                customerName={customerName}
+              />
             </div>
           </CardContent>
         </Card>
