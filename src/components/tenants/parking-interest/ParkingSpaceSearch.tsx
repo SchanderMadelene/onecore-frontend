@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Search, Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useParkingSpaceListings } from "@/hooks/useParkingSpaceListings";
@@ -187,11 +186,12 @@ export const ParkingSpaceSearch = ({
                 }`}
               >
                 <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <Checkbox
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
                       checked={isSelected}
-                      onCheckedChange={() => handleSpaceToggle(space)}
-                      className="mt-1"
+                      onChange={() => handleSpaceToggle(space)}
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                     />
                     <div className="flex justify-between items-start flex-1">
                       <div className="flex-1">
@@ -221,7 +221,7 @@ export const ParkingSpaceSearch = ({
                         <p className="text-xs text-muted-foreground">{space.publications} publicerad</p>
                       </div>
                     </div>
-                  </div>
+                  </label>
                 </CardContent>
               </Card>
             );
