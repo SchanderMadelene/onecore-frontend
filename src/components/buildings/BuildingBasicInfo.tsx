@@ -19,6 +19,9 @@ export const BuildingBasicInfo = ({
   const totalApartments = building.entrances?.reduce((total, entrance) => 
     total + (entrance.apartments?.length || 0), 0) || 0;
 
+  // Calculate total number of spaces/premises
+  const totalSpaces = building.spaces?.length || 0;
+
   return (
     <Card>
       <CardHeader>
@@ -58,6 +61,11 @@ export const BuildingBasicInfo = ({
           <div>
             <p className="text-sm text-muted-foreground">Antal lägenheter</p>
             <p className="font-medium">{totalApartments}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground">Antal lokaler</p>
+            <p className="font-medium">{totalSpaces}</p>
           </div>
 
           <div>
