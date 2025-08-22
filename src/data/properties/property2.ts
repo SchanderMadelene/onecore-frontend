@@ -22,6 +22,7 @@ export const property2: PropertyDetail = {
       name: "Huvudbyggnad",
       type: "Flerbostadshus",
       constructionYear: 1985,
+      renovationYear: 2020,
       area: 2100,
       floors: 4,
       units: 38,

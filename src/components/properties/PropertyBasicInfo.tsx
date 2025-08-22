@@ -59,6 +59,14 @@ export const PropertyBasicInfo = ({
                 {propertyDetail.buildings.length > 0 ? propertyDetail.buildings[0].constructionYear : "-"}
               </p>
             </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
+              <p className="font-medium">
+                {propertyDetail.buildings.length > 0 && propertyDetail.buildings[0].renovationYear 
+                  ? propertyDetail.buildings[0].renovationYear 
+                  : "-"}
+              </p>
+            </div>
           </div>
         </div>
       </CardContent>

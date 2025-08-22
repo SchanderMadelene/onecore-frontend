@@ -186,6 +186,7 @@ export interface Building {
   name: string;
   type: string;
   constructionYear: number;
+  renovationYear?: number;
   area: number;
   floors: number;
   units: number;

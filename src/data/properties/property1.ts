@@ -21,6 +21,7 @@ export const property1: PropertyDetail = {
       name: "Bellmansgatan 1A - 2C",
       type: "Flerbostadshus",
       constructionYear: 1973,
+      renovationYear: 2018,
       area: 1450,
       floors: 3,
       units: 24,
