@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence } from "@/types/api";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useParams } from "react-router-dom";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 
@@ -59,7 +58,6 @@ const checkSecondHandRental = (residenceId: string): boolean => {
 };
 
 export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceBasicInfoProps) => {
-  const isMobile = useIsMobile();
   const { id } = useParams<{ id: string }>();
   
   // Check if this is a secondary rental based on tenant data
@@ -107,8 +105,8 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
         <CardHeader>
           <CardTitle className="text-lg sm:text-xl">Grundinformation</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className={`grid ${isMobile ? 'grid-cols-1 gap-y-4' : 'grid-cols-2 md:grid-cols-3 gap-4'}`}>
+        <CardContent className="space-y-4 p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <div>
               <p className="text-sm text-muted-foreground">Lägenhetskod</p>
               <p className="font-medium">{residence.code}</p>

@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building, Calendar, Home, MapPin } from "lucide-react";
 import type { PropertyDetail } from "@/types/api";
 interface PropertyBasicInfoProps {
   propertyDetail: PropertyDetail;
@@ -20,53 +19,47 @@ export const PropertyBasicInfo = ({
       <CardHeader className="pb-4">
         <CardTitle>Grundläggande information</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Fastighetsbeteckning</p>
-              <p className="font-medium">Älgen 1</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kommun</p>
-              <p className="font-medium">{propertyDetail.municipality}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Adress</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{propertyDetail.address || "-"}</p>
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-              </div>
-            </div>
+      <CardContent className="space-y-4 p-4 sm:p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div>
+            <p className="text-sm text-muted-foreground">Fastighetsbeteckning</p>
+            <p className="font-medium">Älgen 1</p>
           </div>
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Fastighetsstatus</p>
-              <p className="font-medium">
-                Aktiv
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Antal byggnader</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{propertyDetail.buildings.length}</p>
-                <Building className="h-4 w-4 text-muted-foreground" />
-              </div>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Byggnadsår</p>
-              <p className="font-medium">
-                {propertyDetail.buildings.length > 0 ? propertyDetail.buildings[0].constructionYear : "-"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
-              <p className="font-medium">
-                {propertyDetail.buildings.length > 0 && propertyDetail.buildings[0].renovationYear 
-                  ? propertyDetail.buildings[0].renovationYear 
-                  : "-"}
-              </p>
-            </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Kommun</p>
+            <p className="font-medium">{propertyDetail.municipality}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Adress</p>
+            <p className="font-medium">{propertyDetail.address || "-"}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground">Fastighetsstatus</p>
+            <p className="font-medium">Aktiv</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Antal byggnader</p>
+            <p className="font-medium">{propertyDetail.buildings.length}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Byggnadsår</p>
+            <p className="font-medium">
+              {propertyDetail.buildings.length > 0 ? propertyDetail.buildings[0].constructionYear : "-"}
+            </p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
+            <p className="font-medium">
+              {propertyDetail.buildings.length > 0 && propertyDetail.buildings[0].renovationYear 
+                ? propertyDetail.buildings[0].renovationYear 
+                : "-"}
+            </p>
           </div>
         </div>
       </CardContent>
