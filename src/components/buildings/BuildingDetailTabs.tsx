@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MobileAccordion } from "@/components/ui/mobile-accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BuildingEntrances } from "./BuildingEntrances";
 import { BuildingPartsTab } from "./tabs/BuildingPartsTab";
 import { BuildingSpacesTab } from "./tabs/BuildingSpacesTab";
@@ -7,7 +7,7 @@ import { BuildingInstallationsTab } from "./tabs/BuildingInstallationsTab";
 import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
 import { BuildingDocumentsTab } from "./tabs/BuildingDocumentsTab";
 import { FeatureGatedContent } from "@/components/residence/tabs/FeatureGatedContent";
-import { Home, Building2, Box, Settings, Car, FileText } from "lucide-react";
+
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Building } from "@/types/api";
@@ -24,7 +24,6 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
   const accordionItems = [
     {
       id: "entrances",
-      icon: Home,
       title: "Uppgångar",
       content: features.showBuildingEntrances ? (
         <BuildingEntrances building={building} basePath={basePath} />
@@ -39,7 +38,6 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
     },
     {
       id: "parts",
-      icon: Building2,
       title: "Byggnadsdelar",
       content: (
         <FeatureGatedContent
@@ -52,7 +50,6 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
     },
     {
       id: "spaces",
-      icon: Box,
       title: "Utrymmen",
       content: (
         <FeatureGatedContent
@@ -65,7 +62,6 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
     },
     {
       id: "installations",
-      icon: Settings,
       title: "Installationer",
       content: (
         <FeatureGatedContent
@@ -78,7 +74,6 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
     },
     {
       id: "parking",
-      icon: Car,
       title: "Parkering",
       content: (
         <FeatureGatedContent
@@ -91,7 +86,6 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
     },
     {
       id: "documents",
-      icon: FileText,
       title: "Dokument",
       content: (
         <FeatureGatedContent
@@ -106,44 +100,51 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
 
   if (isMobile) {
     return (
-      <MobileAccordion 
-        items={accordionItems}
-        defaultOpen={["entrances"]}
-        className="w-full"
-      />
+      <div className="w-full">
+        <Accordion type="multiple" defaultValue={["entrances"]} className="space-y-2">
+          {accordionItems.map(item => (
+            <AccordionItem key={item.id} value={item.id} className="rounded-lg border border-slate-200">
+              <AccordionTrigger className="px-2 py-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-medium">{item.title}</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="px-0 pb-2">
+                  {item.content}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
     );
   }
 
   return (
     <Tabs defaultValue="entrances" className="w-full">
       <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg justify-start">
-        <TabsTrigger value="entrances" className="flex items-center gap-1.5">
-          <Home className="h-4 w-4" />
+        <TabsTrigger value="entrances">
           Uppgångar
         </TabsTrigger>
         
-        <TabsTrigger value="parts" className="flex items-center gap-1.5">
-          <Building2 className="h-4 w-4" />
+        <TabsTrigger value="parts">
           Byggnadsdelar
         </TabsTrigger>
         
-        <TabsTrigger value="spaces" className="flex items-center gap-1.5">
-          <Box className="h-4 w-4" />
+        <TabsTrigger value="spaces">
           Utrymmen
         </TabsTrigger>
         
-        <TabsTrigger value="installations" className="flex items-center gap-1.5">
-          <Settings className="h-4 w-4" />
+        <TabsTrigger value="installations">
           Installationer
         </TabsTrigger>
         
-        <TabsTrigger value="parking" className="flex items-center gap-1.5">
-          <Car className="h-4 w-4" />
+        <TabsTrigger value="parking">
           Parkering
         </TabsTrigger>
         
-        <TabsTrigger value="documents" className="flex items-center gap-1.5">
-          <FileText className="h-4 w-4" />
+        <TabsTrigger value="documents">
           Dokument
         </TabsTrigger>
       </TabsList>
