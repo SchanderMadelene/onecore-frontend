@@ -23,7 +23,7 @@ export const BuildingBasicInfo = ({
     <Card>
       <CardHeader>
         <CardTitle>
-          Grundinformation
+          Grundläggande information
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 p-4 sm:p-6">

@@ -103,7 +103,7 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg sm:text-xl">Grundinformation</CardTitle>
+          <CardTitle className="text-lg sm:text-xl">Grundläggande information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 p-4 sm:p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
