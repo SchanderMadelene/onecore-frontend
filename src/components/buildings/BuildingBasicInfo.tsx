@@ -43,11 +43,6 @@ export const BuildingBasicInfo = ({
             <p className="font-medium">{building.area} m²</p>
           </div>
           
-          <div>
-            <p className="text-sm text-muted-foreground">Byggnadsår</p>
-            <p className="font-medium">{building.constructionYear || "Ej angivet"}</p>
-          </div>
-          
           {address && (
             <div>
               <p className="text-sm text-muted-foreground">Adress</p>
@@ -63,6 +58,16 @@ export const BuildingBasicInfo = ({
           <div>
             <p className="text-sm text-muted-foreground">Antal lägenheter</p>
             <p className="font-medium">{totalApartments}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground">Byggnadsår</p>
+            <p className="font-medium">{building.constructionYear || "Ej angivet"}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
+            <p className="font-medium">{building.renovationYear || "-"}</p>
           </div>
         </div>
       </CardContent>
