@@ -15,6 +15,7 @@ export interface HousingApplicant {
   applicationType: "Move" | "Additional";
   priority: number | null;
   listingId: string;
+  profileStatus: "Approved" | "PartiallyApproved" | "NotApproved";
   offerId?: number;
 }
 
@@ -54,7 +55,8 @@ export const useHousingListing = (id: string) => {
             status: "Active" as const,
             applicationType: "Move" as const,
             priority: 1,
-            listingId: id
+            listingId: id,
+            profileStatus: "Approved" as const
           },
           {
             id: 2,
@@ -69,7 +71,8 @@ export const useHousingListing = (id: string) => {
             status: "Active" as const,
             applicationType: "Move" as const,
             priority: 2,
-            listingId: id
+            listingId: id,
+            profileStatus: "PartiallyApproved" as const
           },
           {
             id: 3,
@@ -84,7 +87,8 @@ export const useHousingListing = (id: string) => {
             status: "Active" as const,
             applicationType: "Additional" as const,
             priority: 3,
-            listingId: id
+            listingId: id,
+            profileStatus: "NotApproved" as const
           }
         ],
         offers: []

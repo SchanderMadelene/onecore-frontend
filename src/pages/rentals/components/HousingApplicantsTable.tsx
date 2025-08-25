@@ -52,6 +52,19 @@ export function HousingApplicantsTable({
     }
   };
 
+  const getProfileStatusBadge = (status: "Approved" | "PartiallyApproved" | "NotApproved") => {
+    switch (status) {
+      case "Approved":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd</Badge>;
+      case "PartiallyApproved":
+        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Delvis godkänd</Badge>;
+      case "NotApproved":
+        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Ej godkänd</Badge>;
+      default:
+        return <Badge variant="outline">Okänd</Badge>;
+    }
+  };
+
   return (
     <div className="border rounded-lg overflow-hidden">
       <Table>
@@ -65,6 +78,7 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Har lägenhet</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Status sökande</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Sökandeprofil</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Ärende</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Priogrupp</TableHead>
           </TableRow>
@@ -88,6 +102,9 @@ export function HousingApplicantsTable({
                 <Badge variant="outline">{formatApplicantStatus(applicant.status)}</Badge>
               </TableCell>
               <TableCell>
+                {getProfileStatusBadge(applicant.profileStatus)}
+              </TableCell>
+              <TableCell>
                 {applicant.applicationType === "Additional" 
                   ? (applicant.hasApartment ? "Hyra flera" : "Hyra en")
                   : "Flytta"
@@ -97,7 +114,7 @@ export function HousingApplicantsTable({
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan={10} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
                 Inga intresseanmälningar än
               </TableCell>
             </TableRow>
