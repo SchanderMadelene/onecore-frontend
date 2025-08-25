@@ -138,7 +138,7 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap font-semibold">Boendeadress</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Boendereferens</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Inkomstkontroll</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Kreditupplysning/historik</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
