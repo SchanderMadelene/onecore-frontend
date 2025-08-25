@@ -135,7 +135,6 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap font-semibold">Namn</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Kundnummer</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Köpoäng</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Boendeadress</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Boendereferens</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Kreditupplysning/historik</TableHead>
@@ -164,7 +163,6 @@ export function HousingApplicantsTable({
               </TableCell>
               <TableCell>{applicant.contactCode}</TableCell>
               <TableCell>{applicant.queuePoints}</TableCell>
-              <TableCell>{applicant.address}</TableCell>
               <TableCell>{new Date(applicant.applicationDate).toLocaleDateString('sv-SE')}</TableCell>
               <TableCell>
                 <div className="space-y-1">
@@ -187,7 +185,7 @@ export function HousingApplicantsTable({
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                 Inga intresseanmälningar än
               </TableCell>
             </TableRow>
