@@ -1,34 +1,48 @@
 import { publishedHousingSpaces } from "@/data/published-housing";
-import { Card, CardContent } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useNavigate } from "react-router-dom";
 
 export function PublishedHousingTable() {
+  const navigate = useNavigate();
+
+  const handleRowClick = (housingId: string) => {
+    navigate(`/rentals/housing/${housingId}`);
+  };
+
   return (
-    <div className="space-y-3">
-      {publishedHousingSpaces.map((housing) => (
-        <Card key={housing.id} className="hover:bg-muted/50 transition-colors">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-start">
-              <div className="space-y-1">
-                <h3 className="font-medium">{housing.address}</h3>
-                <p className="text-sm text-muted-foreground">{housing.area}</p>
-                <div className="flex gap-4 text-sm text-muted-foreground">
-                  <span>{housing.rooms} rum</span>
-                  <span>{housing.size}</span>
-                  <span>{housing.rent}</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-medium text-primary">
-                  {housing.seekers} sökande
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Ledig: {housing.availableFrom}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+    <div className="border rounded-lg overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent bg-secondary">
+            <TableHead className="whitespace-nowrap font-semibold">Adress</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Område</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Rum</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Yta</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Hyra</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Sökande</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Publicerad till</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Ledig från</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {publishedHousingSpaces.map((housing) => (
+            <TableRow 
+              key={housing.id} 
+              className="hover:bg-secondary/50 cursor-pointer"
+              onClick={() => handleRowClick(housing.id)}
+            >
+              <TableCell className="font-medium">{housing.address}</TableCell>
+              <TableCell>{housing.area}</TableCell>
+              <TableCell>{housing.rooms}</TableCell>
+              <TableCell>{housing.size}</TableCell>
+              <TableCell>{housing.rent}</TableCell>
+              <TableCell>{housing.seekers}</TableCell>
+              <TableCell>{new Date(housing.publishedTo).toLocaleDateString('sv-SE')}</TableCell>
+              <TableCell>{new Date(housing.availableFrom).toLocaleDateString('sv-SE')}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }
