@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, UserPlus } from "lucide-react";
 import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
+import { PublishedHousingTable } from "./PublishedHousingTable";
 import { useNavigate } from "react-router-dom";
 import { MobileTabs } from "@/components/ui/mobile-tabs";
 import { useState } from "react";
@@ -19,13 +20,7 @@ export function HousingSpacesTable() {
     {
       value: "publicerade",
       label: "Publicerade",
-      content: (
-        <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
-          <div className="text-center">
-            <p>Inga publicerade bostäder</p>
-          </div>
-        </div>
-      )
+      content: <PublishedHousingTable />
     },
     {
       value: "klaraForErbjudande",
