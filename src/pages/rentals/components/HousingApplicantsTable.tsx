@@ -1,7 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { AlertTriangle } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { HousingApplicant } from "@/hooks/useHousingListing";
 
@@ -49,16 +48,6 @@ export function HousingApplicantsTable({
     return applicant.profileStatus !== "NotApproved";
   };
 
-  const getSelectionIndicator = (applicant: HousingApplicant) => {
-    if (applicant.profileStatus === "PartiallyApproved") {
-      return (
-        <div className="flex items-center gap-1">
-          <AlertTriangle className="h-4 w-4 text-amber-500" />
-        </div>
-      );
-    }
-    return null;
-  };
   const formatLeaseStatus = (status: string) => {
     const statusMap: Record<string, string> = {
       "Current": "Gällande",
@@ -137,7 +126,6 @@ export function HousingApplicantsTable({
                     disabled={!isApplicantSelectable(applicant)}
                     className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                   />
-                  {getSelectionIndicator(applicant)}
                 </div>
               </TableCell>
               <TableCell className="font-medium">
