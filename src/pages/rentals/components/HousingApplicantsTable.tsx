@@ -120,10 +120,8 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap font-semibold">Köpoäng</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Boendeadress</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Status sökande</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Sökandeprofil</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Ärende</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Priogrupp</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Boendereferens</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Kreditupplysning</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -153,22 +151,15 @@ export function HousingApplicantsTable({
               <TableCell>{applicant.address}</TableCell>
               <TableCell>{new Date(applicant.applicationDate).toLocaleDateString('sv-SE')}</TableCell>
               <TableCell>
-                <Badge variant="outline">{formatApplicantStatus(applicant.status)}</Badge>
+                <span className="text-muted-foreground">-</span>
               </TableCell>
               <TableCell>
-                {getProfileStatusBadge(applicant.profileStatus)}
+                <span className="text-muted-foreground">-</span>
               </TableCell>
-              <TableCell>
-                {applicant.applicationType === "Additional" 
-                  ? (applicant.hasApartment ? "Hyra flera" : "Hyra en")
-                  : "Flytta"
-                }
-              </TableCell>
-              <TableCell>{applicant.priority || <i>N/A</i>}</TableCell>
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan={10} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
                 Inga intresseanmälningar än
               </TableCell>
             </TableRow>
