@@ -1,8 +1,13 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { ContactSearch } from "@/components/rentals/residence-profile/ContactSearch";
+import { ProfileForm } from "@/components/rentals/residence-profile/ProfileForm";
 import { useState, useEffect } from "react";
 import type { HousingApplicant } from "@/hooks/useHousingListing";
+import type { ContactSearchData } from "@/components/rentals/residence-profile/types";
 
 interface HousingApplicantsTableProps {
   applicants: HousingApplicant[];
@@ -20,6 +25,8 @@ export function HousingApplicantsTable({
   onSelectionChange 
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<ContactSearchData | null>(null);
 
   // Automatically select approved applicants on mount or when applicants change
   useEffect(() => {
@@ -46,6 +53,16 @@ export function HousingApplicantsTable({
 
   const isApplicantSelectable = (applicant: HousingApplicant) => {
     return applicant.profileStatus !== "NotApproved";
+  };
+
+  const handleOpenProfile = (applicant: HousingApplicant) => {
+    const contact: ContactSearchData = {
+      contactCode: applicant.contactCode,
+      fullName: applicant.name,
+      nationalRegistrationNumber: applicant.nationalRegistrationNumber
+    };
+    setSelectedContact(contact);
+    setDrawerOpen(true);
   };
 
   const formatLeaseStatus = (status: string) => {
@@ -127,8 +144,9 @@ export function HousingApplicantsTable({
   };
 
   return (
-    <div className="border rounded-lg overflow-hidden">
-      <Table>
+    <>
+      <div className="border rounded-lg overflow-hidden">
+        <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent bg-secondary">
             <TableHead className="w-12 font-semibold">Val</TableHead>
@@ -157,7 +175,13 @@ export function HousingApplicantsTable({
               </TableCell>
               <TableCell className="font-medium">
                 <div>
-                  <div>{applicant.name}</div>
+                  <Button 
+                    variant="link" 
+                    className="p-0 h-auto font-medium text-left justify-start hover:text-primary"
+                    onClick={() => handleOpenProfile(applicant)}
+                  >
+                    {applicant.name}
+                  </Button>
                   <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
                 </div>
               </TableCell>
@@ -193,5 +217,28 @@ export function HousingApplicantsTable({
         </TableBody>
       </Table>
     </div>
+
+    <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+      <DrawerContent className="max-h-[85vh]">
+        <DrawerHeader>
+          <DrawerTitle>Sökandeprofil</DrawerTitle>
+          <DrawerDescription>
+            Granska och hantera sökandens information
+          </DrawerDescription>
+        </DrawerHeader>
+        <div className="px-4 pb-4 overflow-y-auto">
+          {selectedContact && (
+            <div className="space-y-6">
+              <ContactSearch 
+                selectedContact={selectedContact}
+                onSelectContact={setSelectedContact}
+              />
+              <ProfileForm contact={selectedContact} />
+            </div>
+          )}
+        </div>
+      </DrawerContent>
+    </Drawer>
+  </>
   );
 }
