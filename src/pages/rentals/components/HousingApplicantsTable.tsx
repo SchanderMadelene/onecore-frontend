@@ -36,7 +36,7 @@ export function HousingApplicantsTable({
     return statusMap[status] || status;
   };
 
-  const getStatusBadge = (status: string) => {
+  const getLeaseStatusBadge = (status: string) => {
     switch (status) {
       case "Current":
       case "Gällande":
@@ -46,9 +46,29 @@ export function HousingApplicantsTable({
         return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Kommande</Badge>;
       case "AboutToEnd":
       case "Uppsagt":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Uppsagt</Badge>;
+        return <Badge variant="outline" className="bg-orange-50 text-orange-700 hover:bg-orange-50 border-orange-200">Uppsagt</Badge>;
+      case "Ended":
+      case "Upphört":
+        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Upphört</Badge>;
       default:
         return <Badge variant="outline">{formatLeaseStatus(status)}</Badge>;
+    }
+  };
+
+  const getApplicantStatusBadge = (status: string) => {
+    switch (status) {
+      case "Active":
+        return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Aktiv</Badge>;
+      case "Offered":
+        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Erbjuden bostad</Badge>;
+      case "OfferAccepted":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Erbjudande accepterat</Badge>;
+      case "OfferDeclined":
+        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Erbjudande nekat</Badge>;
+      case "Assigned":
+        return <Badge variant="outline" className="bg-purple-50 text-purple-700 hover:bg-purple-50 border-purple-200">Tilldelad</Badge>;
+      default:
+        return <Badge variant="outline">{formatApplicantStatus(status)}</Badge>;
     }
   };
 
@@ -95,11 +115,11 @@ export function HousingApplicantsTable({
               <TableCell>{applicant.contactCode}</TableCell>
               <TableCell>{applicant.queuePoints}</TableCell>
               <TableCell>{applicant.address}</TableCell>
-              <TableCell>{getStatusBadge(applicant.housingLeaseStatus)}</TableCell>
+              <TableCell>{getLeaseStatusBadge(applicant.housingLeaseStatus)}</TableCell>
               <TableCell>{new Date(applicant.applicationDate).toLocaleDateString('sv-SE')}</TableCell>
               <TableCell>{applicant.hasApartment ? "Ja" : "Nej"}</TableCell>
               <TableCell>
-                <Badge variant="outline">{formatApplicantStatus(applicant.status)}</Badge>
+                {getApplicantStatusBadge(applicant.status)}
               </TableCell>
               <TableCell>
                 {getProfileStatusBadge(applicant.profileStatus)}
