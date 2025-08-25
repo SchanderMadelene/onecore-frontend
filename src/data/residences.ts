@@ -5,7 +5,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-1001": {
     content: {
       id: "lgh-1001",
-      code: "LGH-1001",
+      code: "123-456-01-1001",
       name: "2 rum och kök, Odenplan",
       deleted: false,
       size: 56,
@@ -20,7 +20,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-1002": {
     content: {
       id: "lgh-1002",
-      code: "LGH-1002",
+      code: "123-456-01-1002",
       name: "3 rum och kök, Odenplan",
       deleted: false,
       size: 72,
@@ -35,7 +35,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-1003": {
     content: {
       id: "lgh-1003",
-      code: "LGH-1003",
+      code: "123-456-01-1003",
       name: "1 rum och kök, Odenplan",
       deleted: false,
       size: 45,
@@ -50,7 +50,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-001": {
     content: {
       id: "lgh-001",
-      code: "LGH-001",
+      code: "123-456-01-0001",
       name: "2 rum och kök, Bellmansgatan",
       deleted: false,
       size: 65,
@@ -65,7 +65,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-002": {
     content: {
       id: "lgh-002",
-      code: "LGH-002",
+      code: "123-456-01-0002",
       name: "1 rum och kök, Bellmansgatan",
       deleted: false,
       size: 45,
@@ -80,7 +80,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-003": {
     content: {
       id: "lgh-003",
-      code: "LGH-003",
+      code: "123-456-01-0003",
       name: "3 rum och kök, Bellmansgatan",
       deleted: false,
       size: 85,
@@ -95,7 +95,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-004": {
     content: {
       id: "lgh-004",
-      code: "LGH-004",
+      code: "123-456-01-0004",
       name: "3 rum och kök, Bellmansgatan",
       deleted: false,
       size: 72,
@@ -110,7 +110,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-005": {
     content: {
       id: "lgh-005",
-      code: "LGH-005",
+      code: "123-456-01-0005",
       name: "2 rum och kök, Bellmansgatan",
       deleted: false,
       size: 58,
@@ -125,7 +125,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-006": {
     content: {
       id: "lgh-006",
-      code: "LGH-006",
+      code: "123-456-01-0006",
       name: "4 rum och kök, Bellmansgatan",
       deleted: false,
       size: 91,
@@ -140,7 +140,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-007": {
     content: {
       id: "lgh-007",
-      code: "LGH-007",
+      code: "123-456-01-0007",
       name: "1 rum och kök, Bellmansgatan",
       deleted: false,
       size: 48,
@@ -155,7 +155,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-008": {
     content: {
       id: "lgh-008",
-      code: "LGH-008",
+      code: "123-456-01-0008",
       name: "2 rum och kök, Bellmansgatan",
       deleted: false,
       size: 67,
@@ -170,7 +170,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-009": {
     content: {
       id: "lgh-009",
-      code: "LGH-009",
+      code: "123-456-01-0009",
       name: "3 rum och kök, Bellmansgatan",
       deleted: false,
       size: 82,
@@ -185,7 +185,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-2001": {
     content: {
       id: "lgh-2001",
-      code: "LGH-2001",
+      code: "234-567-02-2001",
       name: "2 rum och kök, Odenplan",
       deleted: false,
       rent: 8300,
@@ -198,7 +198,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-2002": {
     content: {
       id: "lgh-2002",
-      code: "LGH-2002",
+      code: "234-567-02-2002",
       name: "3 rum och kök, Odenplan",
       deleted: false,
       rent: 9000,
@@ -211,7 +211,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-3001": {
     content: {
       id: "lgh-3001",
-      code: "3001",
+      code: "345-678-03-3001",
       name: "3 rum och kök, Götgatan",
       deleted: false,
       rent: 9500,
@@ -224,7 +224,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-3002": {
     content: {
       id: "lgh-3002",
-      code: "3002",
+      code: "345-678-03-3002",
       name: "2 rum och kök, Götgatan",
       deleted: false,
       rent: 8700,
@@ -237,7 +237,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-3003": {
     content: {
       id: "lgh-3003",
-      code: "3003",
+      code: "345-678-03-3003",
       name: "4 rum och kök, Götgatan",
       deleted: false,
       rent: 10200,
@@ -250,7 +250,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-101": {
     content: {
       id: "lgh-101",
-      code: "LGH-101",
+      code: "123-456-01-0101",
       name: "3 rum och kök, Odenplan",
       deleted: false,
       rent: 9100,
@@ -263,7 +263,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-201": {
     content: {
       id: "lgh-201",
-      code: "LGH-201",
+      code: "345-678-03-0201",
       name: "4 rum och kök, Sveavägen",
       deleted: false,
       rent: 11500,
@@ -276,7 +276,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-301": {
     content: {
       id: "lgh-301",
-      code: "LGH-301",
+      code: "234-567-02-0301",
       name: "3 rum och kök, Götgatan",
       deleted: false,
       rent: 9300,
@@ -289,7 +289,7 @@ export const mockResidenceData: Record<string, APIResponse<Residence>> = {
   "lgh-302": {
     content: {
       id: "lgh-302",
-      code: "LGH-302",
+      code: "234-567-02-0302",
       name: "2 rum och kök, Götgatan",
       deleted: false,
       rent: 8600,

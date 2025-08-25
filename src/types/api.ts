@@ -6,7 +6,10 @@ export interface Residence {
   name: string;
   deleted: boolean;
   size?: number;
+  rooms?: number;
   rent?: number;
+  status?: string;
+  apartmentType?: ApartmentType;
   malarenergiFacilityId?: string;
   validityPeriod: {
     fromDate: string;
@@ -129,14 +132,6 @@ export interface PropertyMap {
   buildings: BuildingLocation[];
 }
 
-export interface Apartment {
-  id: string;
-  code: string;
-  area: number;
-  rooms: number;
-  status: string;
-  apartmentType?: ApartmentType; // New field to distinguish apartment types
-}
 
 export interface MaintenanceUnit {
   id: string;
@@ -191,7 +186,7 @@ export interface Building {
   floors: number;
   units: number;
   tenants?: number;
-  apartments?: Apartment[];
+  apartments?: Residence[];
   entrances?: Entrance[];
   spaces?: BuildingSpace[];
 }

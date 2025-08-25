@@ -107,10 +107,10 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
         </CardHeader>
         <CardContent className="space-y-4 p-4 sm:p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Lägenhetskod</p>
-              <p className="font-medium">{residence.code}</p>
-            </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Objektsnummer/lägenhetskod</p>
+            <p className="font-medium">{residence.code}</p>
+          </div>
             <div>
               <p className="text-sm text-muted-foreground">Namn</p>
               <p className="font-medium">{residence.name}</p>

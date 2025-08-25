@@ -29,66 +29,147 @@ export const property1: PropertyDetail = {
       apartments: [
         {
           id: "A1",
-          code: "LGH-001",
-          area: 65,
+          code: "123-456-01-0001",
+          name: "Bellmansgatan 1A, lgh 1001",
+          deleted: false,
+          size: 65,
           rooms: 2,
-          status: "Uthyrd"
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 12500,
+          malarenergiFacilityId: "MAL-123-001",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         },
         {
           id: "A2",
-          code: "LGH-002",
-          area: 45,
+          code: "123-456-01-0002",
+          name: "Bellmansgatan 1A, lgh 1002",
+          deleted: false,
+          size: 45,
           rooms: 1,
-          status: "Uthyrd"
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 9800,
+          malarenergiFacilityId: "MAL-123-002",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         },
         {
           id: "A3",
-          code: "LGH-003",
-          area: 85,
+          code: "123-456-01-0003",
+          name: "Bellmansgatan 1A, lgh 1003",
+          deleted: false,
+          size: 85,
           rooms: 3,
-          status: "Uthyrd"
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 16200,
+          malarenergiFacilityId: "MAL-123-003",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         },
         {
           id: "A4",
-          code: "LGH-004",
-          area: 72,
+          code: "123-456-01-0004",
+          name: "Bellmansgatan 1B, lgh 2001",
+          deleted: false,
+          size: 72,
           rooms: 3,
-          status: "Uthyrd"
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 14400,
+          malarenergiFacilityId: "MAL-123-004",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         },
         {
           id: "A5",
-          code: "LGH-005",
-          area: 58,
+          code: "123-456-01-0005",
+          name: "Bellmansgatan 1B, lgh 2002",
+          deleted: false,
+          size: 58,
           rooms: 2,
-          status: "Uthyrd"
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 11600,
+          malarenergiFacilityId: "MAL-123-005",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         },
         {
           id: "A6",
-          code: "LGH-006",
-          area: 91,
+          code: "123-456-01-0006",
+          name: "Bellmansgatan 1B, lgh 2003",
+          deleted: false,
+          size: 91,
           rooms: 4,
-          status: "Uthyrd"
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 18200,
+          malarenergiFacilityId: "MAL-123-006",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         },
         {
           id: "A7",
-          code: "LGH-007",
-          area: 48,
+          code: "123-456-01-0007",
+          name: "Bellmansgatan 1C, lgh 3001",
+          deleted: false,
+          size: 48,
           rooms: 1,
-          status: "Ledig"
+          status: "Ledig",
+          apartmentType: "Standard",
+          rent: 9600,
+          malarenergiFacilityId: "MAL-123-007",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         },
         {
           id: "A8",
-          code: "LGH-008",
-          area: 67,
+          code: "123-456-01-0008",
+          name: "Bellmansgatan 1C, lgh 3002",
+          deleted: false,
+          size: 67,
           rooms: 2,
-          status: "Uthyrd"
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 13400,
+          malarenergiFacilityId: "MAL-123-008",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         },
         {
           id: "A9",
-          code: "LGH-009",
-          area: 82,
+          code: "123-456-01-0009",
+          name: "Bellmansgatan 1C, lgh 3003",
+          deleted: false,
+          size: 82,
           rooms: 3,
-          status: "Uthyrd"
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 16400,
+          malarenergiFacilityId: "MAL-123-009",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
         }
       ],
       entrances: [

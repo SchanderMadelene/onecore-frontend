@@ -27,6 +27,136 @@ export const property2: PropertyDetail = {
       floors: 4,
       units: 38,
       tenants: 59,
+      apartments: [
+        {
+          id: "A4",
+          code: "234-567-02-0001",
+          name: "Götgatan 15A, lgh 1001",
+          deleted: false,
+          size: 68,
+          rooms: 2,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 13600,
+          malarenergiFacilityId: "MAL-234-001",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A5",
+          code: "234-567-02-0002",
+          name: "Götgatan 15A, lgh 1002",
+          deleted: false,
+          size: 52,
+          rooms: 1,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 10400,
+          malarenergiFacilityId: "MAL-234-002",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A6",
+          code: "234-567-02-0003",
+          name: "Götgatan 15A, lgh 2001",
+          deleted: false,
+          size: 78,
+          rooms: 3,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 15600,
+          malarenergiFacilityId: "MAL-234-003",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A7",
+          code: "234-567-02-0004",
+          name: "Götgatan 15A, lgh 2002",
+          deleted: false,
+          size: 64,
+          rooms: 2,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 12800,
+          malarenergiFacilityId: "MAL-234-004",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A8",
+          code: "234-567-02-0005",
+          name: "Götgatan 15B, lgh 1001",
+          deleted: false,
+          size: 58,
+          rooms: 2,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 11600,
+          malarenergiFacilityId: "MAL-234-005",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A9",
+          code: "234-567-02-0006",
+          name: "Götgatan 15B, lgh 1002",
+          deleted: false,
+          size: 75,
+          rooms: 3,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 15000,
+          malarenergiFacilityId: "MAL-234-006",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A10",
+          code: "234-567-02-0007",
+          name: "Götgatan 15B, lgh 2001",
+          deleted: false,
+          size: 48,
+          rooms: 1,
+          status: "Ledig",
+          apartmentType: "Standard",
+          rent: 9600,
+          malarenergiFacilityId: "MAL-234-007",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A11",
+          code: "234-567-02-0008",
+          name: "Götgatan 15B, lgh 2002",
+          deleted: false,
+          size: 82,
+          rooms: 3,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 16400,
+          malarenergiFacilityId: "MAL-234-008",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        }
+      ],
       entrances: [
         {
           id: "E1",

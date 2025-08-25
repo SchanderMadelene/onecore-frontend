@@ -24,7 +24,41 @@ export const property3: PropertyDetail = {
       constructionYear: 1992,
       area: 3200,
       floors: 6,
-      units: 16
+      units: 16,
+      apartments: [
+        {
+          id: "A1",
+          code: "345-678-03-0001",
+          name: "Sveavägen 10, kontor 101",
+          deleted: false,
+          size: 120,
+          rooms: 4,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 24000,
+          malarenergiFacilityId: "MAL-345-001",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A2",
+          code: "345-678-03-0002",
+          name: "Sveavägen 10, kontor 102",
+          deleted: false,
+          size: 85,
+          rooms: 3,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 17000,
+          malarenergiFacilityId: "MAL-345-002",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        }
+      ]
     },
     {
       id: "B5",
@@ -33,7 +67,41 @@ export const property3: PropertyDetail = {
       constructionYear: 1995,
       area: 850,
       floors: 2,
-      units: 4
+      units: 4,
+      apartments: [
+        {
+          id: "A3",
+          code: "345-678-03-0003",
+          name: "Sveavägen 10, annex 201",
+          deleted: false,
+          size: 65,
+          rooms: 2,
+          status: "Ledig",
+          apartmentType: "Standard",
+          rent: 13000,
+          malarenergiFacilityId: "MAL-345-003",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        },
+        {
+          id: "A4",
+          code: "345-678-03-0004",
+          name: "Sveavägen 10, annex 202",
+          deleted: false,
+          size: 78,
+          rooms: 3,
+          status: "Uthyrd",
+          apartmentType: "Standard",
+          rent: 15600,
+          malarenergiFacilityId: "MAL-345-004",
+          validityPeriod: {
+            fromDate: "2020-01-01",
+            toDate: "2025-12-31"
+          }
+        }
+      ]
     }
   ],
   maintenanceUnits: [

@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 export interface OrdersManagementProps {
-  contextType?: "tenant" | "residence";
+  contextType?: "tenant" | "residence" | "building";
   residenceId?: string;
   tenant?: any; // Adding the missing tenant prop
 }
