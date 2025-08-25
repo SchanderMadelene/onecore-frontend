@@ -98,6 +98,34 @@ export function HousingApplicantsTable({
     }
   };
 
+  const getHousingReferenceBadge = (status: "Godkänd" | "Ej godkänd" | "Kontaktad - ej svar" | "Referens krävs ej" | "Ej behandlad") => {
+    switch (status) {
+      case "Godkänd":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd</Badge>;
+      case "Ej godkänd":
+        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Ej godkänd</Badge>;
+      case "Kontaktad - ej svar":
+        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Kontaktad - ej svar</Badge>;
+      case "Referens krävs ej":
+        return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Referens krävs ej</Badge>;
+      case "Ej behandlad":
+        return <Badge variant="outline" className="bg-gray-50 text-gray-700 hover:bg-gray-50 border-gray-200">Ej behandlad</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
+  const getCreditReportBadge = (status: "Godkända inbetalningar" | "Godkänd") => {
+    switch (status) {
+      case "Godkänd":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd</Badge>;
+      case "Godkända inbetalningar":
+        return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Godkända inbetalningar</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
   return (
     <div className="border rounded-lg overflow-hidden">
       <Table>
@@ -139,10 +167,22 @@ export function HousingApplicantsTable({
               <TableCell>{applicant.address}</TableCell>
               <TableCell>{new Date(applicant.applicationDate).toLocaleDateString('sv-SE')}</TableCell>
               <TableCell>
-                <span className="text-muted-foreground">-</span>
+                <div className="space-y-1">
+                  <div>{getHousingReferenceBadge(applicant.housingReference.status)}</div>
+                  {applicant.housingReference.date && (
+                    <div className="text-xs text-muted-foreground">
+                      {applicant.housingReference.date}
+                    </div>
+                  )}
+                </div>
               </TableCell>
               <TableCell>
-                <span className="text-muted-foreground">-</span>
+                <div className="space-y-1">
+                  <div>{getCreditReportBadge(applicant.creditReport.status)}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {applicant.creditReport.date}
+                  </div>
+                </div>
               </TableCell>
             </TableRow>
           )) : (

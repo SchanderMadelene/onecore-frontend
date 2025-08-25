@@ -17,6 +17,14 @@ export interface HousingApplicant {
   listingId: string;
   profileStatus: "Approved" | "PartiallyApproved" | "NotApproved";
   offerId?: number;
+  housingReference: {
+    status: "Godkänd" | "Ej godkänd" | "Kontaktad - ej svar" | "Referens krävs ej" | "Ej behandlad";
+    date?: string;
+  };
+  creditReport: {
+    status: "Godkända inbetalningar" | "Godkänd";
+    date: string;
+  };
 }
 
 export interface HousingListing extends PublishedHousingSpace {
@@ -56,7 +64,15 @@ export const useHousingListing = (id: string) => {
             applicationType: "Move" as const,
             priority: 1,
             listingId: id,
-            profileStatus: "Approved" as const
+            profileStatus: "Approved" as const,
+            housingReference: {
+              status: "Godkänd" as const,
+              date: "2024-01-20"
+            },
+            creditReport: {
+              status: "Godkänd" as const,
+              date: "2024-01-18"
+            }
           },
           {
             id: 2,
@@ -72,7 +88,15 @@ export const useHousingListing = (id: string) => {
             applicationType: "Move" as const,
             priority: 2,
             listingId: id,
-            profileStatus: "PartiallyApproved" as const
+            profileStatus: "PartiallyApproved" as const,
+            housingReference: {
+              status: "Kontaktad - ej svar" as const,
+              date: "2024-01-25"
+            },
+            creditReport: {
+              status: "Godkända inbetalningar" as const,
+              date: "2024-01-22"
+            }
           },
           {
             id: 3,
@@ -88,7 +112,14 @@ export const useHousingListing = (id: string) => {
             applicationType: "Additional" as const,
             priority: 3,
             listingId: id,
-            profileStatus: "NotApproved" as const
+            profileStatus: "NotApproved" as const,
+            housingReference: {
+              status: "Ej behandlad" as const
+            },
+            creditReport: {
+              status: "Godkänd" as const,
+              date: "2024-01-16"
+            }
           }
         ],
         offers: []
