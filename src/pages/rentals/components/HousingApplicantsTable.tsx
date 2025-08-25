@@ -74,9 +74,7 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap font-semibold">Kundnummer</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Köpoäng</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Boendeadress</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Status boendekontrakt</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Har lägenhet</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Status sökande</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Sökandeprofil</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Ärende</TableHead>
@@ -95,9 +93,7 @@ export function HousingApplicantsTable({
               <TableCell>{applicant.contactCode}</TableCell>
               <TableCell>{applicant.queuePoints}</TableCell>
               <TableCell>{applicant.address}</TableCell>
-              <TableCell>{getStatusBadge(applicant.housingLeaseStatus)}</TableCell>
               <TableCell>{new Date(applicant.applicationDate).toLocaleDateString('sv-SE')}</TableCell>
-              <TableCell>{applicant.hasApartment ? "Ja" : "Nej"}</TableCell>
               <TableCell>
                 <Badge variant="outline">{formatApplicantStatus(applicant.status)}</Badge>
               </TableCell>
@@ -114,7 +110,7 @@ export function HousingApplicantsTable({
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                 Inga intresseanmälningar än
               </TableCell>
             </TableRow>
