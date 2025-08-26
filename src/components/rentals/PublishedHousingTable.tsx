@@ -1,13 +1,20 @@
 import { publishedHousingSpaces } from "@/data/published-housing";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
+import { useHousingOffers } from "@/contexts/HousingOffersContext";
 
 export function PublishedHousingTable() {
   const navigate = useNavigate();
+  const { isListingOffered } = useHousingOffers();
 
   const handleRowClick = (housingId: string) => {
     navigate(`/rentals/housing/${housingId}`);
   };
+
+  // Filter out listings that have been offered
+  const availableHousings = publishedHousingSpaces.filter(housing => 
+    !isListingOffered(housing.id)
+  );
 
   return (
     <div className="border rounded-lg overflow-hidden">
@@ -25,7 +32,7 @@ export function PublishedHousingTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {publishedHousingSpaces.map((housing) => (
+          {availableHousings.map((housing) => (
             <TableRow 
               key={housing.id} 
               className="hover:bg-secondary/50 cursor-pointer"

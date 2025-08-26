@@ -4,13 +4,24 @@ import { Input } from "@/components/ui/input";
 import { Search, UserPlus } from "lucide-react";
 import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
 import { PublishedHousingTable } from "./PublishedHousingTable";
-import { useNavigate } from "react-router-dom";
+import { OfferedHousingTable } from "./OfferedHousingTable";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MobileTabs } from "@/components/ui/mobile-tabs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function HousingSpacesTable() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentTab, setCurrentTab] = useState("behovAvPublicering");
+
+  // Handle navigation from offer creation
+  useEffect(() => {
+    if (location.state?.activeHousingTab) {
+      setCurrentTab(location.state.activeHousingTab);
+      // Clear the state to prevent it from persisting
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const handleCreateProfile = () => {
     navigate('/rentals/residence-profile');
@@ -36,13 +47,7 @@ export function HousingSpacesTable() {
     {
       value: "erbjudna",
       label: "Erbjudna",
-      content: (
-        <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
-          <div className="text-center">
-            <p>Inga erbjudna bostäder</p>
-          </div>
-        </div>
-      )
+      content: <OfferedHousingTable />
     },
     {
       value: "historik",

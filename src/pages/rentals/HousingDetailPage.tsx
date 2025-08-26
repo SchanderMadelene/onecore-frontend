@@ -2,7 +2,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { useHousingListing } from "@/hooks/useHousingListing";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
+import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { useState } from "react";
 import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
 import { HousingHeader } from "./components/HousingHeader";
@@ -15,7 +16,7 @@ const HousingDetailPage = () => {
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
+  const { createOffer, isListingOffered } = useHousingOffers();
   
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
@@ -27,11 +28,19 @@ const HousingDetailPage = () => {
   };
 
   const handleCreateOffer = () => {
-    if (!listing) return;
+    if (!housingId || selectedApplicants.length === 0) return;
+    
+    const applicantIds = selectedApplicants.map(id => parseInt(id));
+    createOffer(housingId, applicantIds);
     
     toast({
-      title: "Erbjudandeomgång startad",
-      description: "En ny erbjudandeomgång har skapats",
+      title: "Erbjudande skickat",
+      description: `Erbjudanden har skickats till ${selectedApplicants.length} valda sökande`
+    });
+
+    // Navigate back to rentals page with "erbjudna" tab
+    navigate('/rentals?tab=bostad', { 
+      state: { activeHousingTab: 'erbjudna' }
     });
   };
 
@@ -102,7 +111,7 @@ const HousingDetailPage = () => {
           housingAddress={listing.address}
           offerStatus={offerStatus}
           housing={listing}
-          hasOffers={listing.offers.length > 0}
+          hasOffers={listing.offers.length > 0 || isListingOffered(housingId)}
           hasSelectedApplicants={selectedApplicants.length > 0}
           onBack={handleBack}
           onCreateOffer={handleCreateOffer}
