@@ -177,7 +177,9 @@ export function HousingApplicantsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {applicants.length > 0 ? applicants.map((applicant) => (
+          {applicants.length > 0 ? applicants
+            .sort((a, b) => b.queuePoints - a.queuePoints)
+            .map((applicant) => (
             <TableRow key={applicant.id} className="hover:bg-secondary/50">
               <TableCell className="py-3">
                 <div className="flex items-center gap-2">
