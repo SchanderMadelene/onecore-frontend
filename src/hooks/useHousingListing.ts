@@ -22,11 +22,11 @@ export interface HousingApplicant {
     date?: string;
   };
   creditReport: {
-    status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig";
-    date: string;
+    status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig" | "-";
+    date?: string;
   };
   paymentHistory: {
-    status: "Godkänd" | "Ej godkänd" | "Ej behandlad";
+    status: "Godkänd" | "Ej godkänd" | "Ej behandlad" | "-";
     date?: string;
   };
   viewingBooked?: {
@@ -82,8 +82,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-20"
             },
             creditReport: {
-              status: "Godkänd/låg risk" as const,
-              date: "2024-01-18"
+              status: "-" as const
             },
             paymentHistory: {
               status: "Godkänd" as const,
@@ -117,8 +116,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-25"
             },
             creditReport: {
-              status: "Förhöjd risk" as const,
-              date: "2024-01-22"
+              status: "-" as const
             },
             paymentHistory: {
               status: "Ej godkänd" as const,
@@ -155,7 +153,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-16"
             },
             paymentHistory: {
-              status: "Ej behandlad" as const
+              status: "-" as const
             },
             viewingBooked: {
               status: "Väntar på svar" as const
@@ -184,8 +182,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-28"
             },
             creditReport: {
-              status: "Ingen uppgift tillgänglig" as const,
-              date: "2024-01-26"
+              status: "-" as const
             },
             paymentHistory: {
               status: "Godkänd" as const,
@@ -220,8 +217,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-30"
             },
             creditReport: {
-              status: "Förhöjd risk" as const,
-              date: "2024-01-22"
+              status: "-" as const
             },
             paymentHistory: {
               status: "Ej godkänd" as const,
@@ -260,8 +256,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-27"
             },
             paymentHistory: {
-              status: "Godkänd" as const,
-              date: "2024-01-26"
+              status: "-" as const
             },
             viewingBooked: {
               status: "Ja" as const,
@@ -295,8 +290,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-17"
             },
             paymentHistory: {
-              status: "Ej godkänd" as const,
-              date: "2024-01-16"
+              status: "-" as const
             },
             viewingBooked: {
               status: "Väntar på svar" as const
@@ -325,8 +319,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-02-01"
             },
             creditReport: {
-              status: "Godkänd/låg risk" as const,
-              date: "2024-01-31"
+              status: "-" as const
             },
             paymentHistory: {
               status: "Godkänd" as const
@@ -358,8 +351,7 @@ export const useHousingListing = (id: string) => {
               status: "Ej behandlad" as const
             },
             creditReport: {
-              status: "Förhöjd risk" as const,
-              date: "2024-01-25"
+              status: "-" as const
             },
             paymentHistory: {
               status: "Ej behandlad" as const
@@ -395,8 +387,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-19"
             },
             paymentHistory: {
-              status: "Godkänd" as const,
-              date: "2024-01-17"
+              status: "-" as const
             },
             viewingBooked: {
               status: "Ja" as const,

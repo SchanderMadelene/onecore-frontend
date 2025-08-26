@@ -129,7 +129,7 @@ export function HousingApplicantsTable({
     }
   };
 
-  const getCreditReportBadge = (status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig") => {
+  const getCreditReportBadge = (status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig" | "-") => {
     switch (status) {
       case "Godkänd/låg risk":
         return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd/låg risk</Badge>;
@@ -139,12 +139,14 @@ export function HousingApplicantsTable({
         return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Hög risk</Badge>;
       case "Ingen uppgift tillgänglig":
         return <Badge variant="outline" className="bg-white text-gray-700 hover:bg-white border-gray-200">Ingen uppgift tillgänglig</Badge>;
+      case "-":
+        return <Badge variant="outline" className="bg-gray-50 text-gray-500 hover:bg-gray-50 border-gray-200">-</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
   };
 
-  const getPaymentHistoryBadge = (status: "Godkänd" | "Ej godkänd" | "Ej behandlad") => {
+  const getPaymentHistoryBadge = (status: "Godkänd" | "Ej godkänd" | "Ej behandlad" | "-") => {
     switch (status) {
       case "Godkänd":
         return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd</Badge>;
@@ -152,6 +154,8 @@ export function HousingApplicantsTable({
         return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Ej godkänd</Badge>;
       case "Ej behandlad":
         return <Badge variant="outline" className="bg-gray-50 text-gray-700 hover:bg-gray-50 border-gray-200">Ej behandlad</Badge>;
+      case "-":
+        return <Badge variant="outline" className="bg-gray-50 text-gray-500 hover:bg-gray-50 border-gray-200">-</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
