@@ -16,7 +16,7 @@ const HousingDetailPage = () => {
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { createOffer, isListingOffered } = useHousingOffers();
+  const { createOffer, isListingOffered, getOfferForListing } = useHousingOffers();
   
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
@@ -103,6 +103,16 @@ const HousingDetailPage = () => {
   }
 
   const offerStatus = listing.offers.length > 0 ? "Erbjudandeomgång pågår" : "Publicerad";
+  
+  // Get active offer for this listing
+  const activeOffer = getOfferForListing(housingId);
+  
+  // Filter applicants based on whether there's an active offer
+  const displayedApplicants = activeOffer 
+    ? listing.applicants.filter(applicant => 
+        activeOffer.selectedApplicants.includes(applicant.id)
+      )
+    : listing.applicants;
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -120,9 +130,18 @@ const HousingDetailPage = () => {
 
         <div className="space-y-8">
           <section>
-            <h2 className="text-xl font-semibold mb-4">Intresseanmälningar</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              {activeOffer ? "Erbjudna sökande" : "Intresseanmälningar"}
+            </h2>
+            {activeOffer && (
+              <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                <p className="text-sm text-amber-800">
+                  <strong>Erbjudande skickat:</strong> {new Date(activeOffer.sentAt).toLocaleDateString('sv-SE')} till {activeOffer.selectedApplicants.length} sökande
+                </p>
+              </div>
+            )}
             <HousingApplicantsTable 
-              applicants={listing.applicants}
+              applicants={displayedApplicants}
               housingAddress={listing.address}
               listingId={listing.id}
               showOfferColumns={false}
@@ -132,7 +151,7 @@ const HousingDetailPage = () => {
 
           <HousingInfo 
             housing={listing}
-            applicantCount={listing.applicants.length}
+            applicantCount={displayedApplicants.length}
           />
 
           <section>
