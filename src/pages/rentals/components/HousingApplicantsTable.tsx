@@ -132,12 +132,16 @@ export function HousingApplicantsTable({
     }
   };
 
-  const getCreditReportBadge = (status: "Godkända inbetalningar" | "Godkänd") => {
+  const getCreditReportBadge = (status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig") => {
     switch (status) {
-      case "Godkänd":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd</Badge>;
-      case "Godkända inbetalningar":
-        return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Godkända inbetalningar</Badge>;
+      case "Godkänd/låg risk":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd/låg risk</Badge>;
+      case "Förhöjd risk":
+        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Förhöjd risk</Badge>;
+      case "Hög risk":
+        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Hög risk</Badge>;
+      case "Ingen uppgift tillgänglig":
+        return <Badge variant="outline" className="bg-white text-gray-700 hover:bg-white border-gray-200">Ingen uppgift tillgänglig</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }

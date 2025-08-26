@@ -22,7 +22,7 @@ export interface HousingApplicant {
     date?: string;
   };
   creditReport: {
-    status: "Godkända inbetalningar" | "Godkänd";
+    status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig";
     date: string;
   };
   paymentHistory: {
@@ -74,7 +74,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-20"
             },
             creditReport: {
-              status: "Godkänd" as const,
+              status: "Godkänd/låg risk" as const,
               date: "2024-01-18"
             },
             paymentHistory: {
@@ -102,7 +102,7 @@ export const useHousingListing = (id: string) => {
               date: "2024-01-25"
             },
             creditReport: {
-              status: "Godkända inbetalningar" as const,
+              status: "Förhöjd risk" as const,
               date: "2024-01-22"
             },
             paymentHistory: {
@@ -129,7 +129,7 @@ export const useHousingListing = (id: string) => {
               status: "Ej behandlad" as const
             },
             creditReport: {
-              status: "Godkänd" as const,
+              status: "Hög risk" as const,
               date: "2024-01-16"
             },
             paymentHistory: {
