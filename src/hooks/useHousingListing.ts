@@ -29,6 +29,14 @@ export interface HousingApplicant {
     status: "Godkänd" | "Ej godkänd" | "Ej behandlad";
     date?: string;
   };
+  viewingBooked?: {
+    status: "Ja" | "Nej" | "Väntar på svar";
+    date?: string;
+  };
+  offerResponse?: {
+    status: "Accepterat" | "Nekat" | "Väntar på svar";
+    date?: string;
+  };
 }
 
 export interface HousingListing extends PublishedHousingSpace {
@@ -80,6 +88,13 @@ export const useHousingListing = (id: string) => {
             paymentHistory: {
               status: "Godkänd" as const,
               date: "2024-01-15"
+            },
+            viewingBooked: {
+              status: "Ja" as const,
+              date: "2024-02-05"
+            },
+            offerResponse: {
+              status: "Väntar på svar" as const
             }
           },
           {
@@ -108,6 +123,13 @@ export const useHousingListing = (id: string) => {
             paymentHistory: {
               status: "Ej godkänd" as const,
               date: "2024-01-20"
+            },
+            viewingBooked: {
+              status: "Nej" as const,
+              date: "2024-02-03"
+            },
+            offerResponse: {
+              status: "Väntar på svar" as const
             }
           },
           {
@@ -134,6 +156,12 @@ export const useHousingListing = (id: string) => {
             },
             paymentHistory: {
               status: "Ej behandlad" as const
+            },
+            viewingBooked: {
+              status: "Väntar på svar" as const
+            },
+            offerResponse: {
+              status: "Väntar på svar" as const
             }
           },
           {
@@ -162,6 +190,14 @@ export const useHousingListing = (id: string) => {
             paymentHistory: {
               status: "Godkänd" as const,
               date: "2024-01-24"
+            },
+            viewingBooked: {
+              status: "Ja" as const,
+              date: "2024-02-02"
+            },
+            offerResponse: {
+              status: "Accepterat" as const,
+              date: "2024-02-08"
             }
           },
           {
@@ -190,6 +226,14 @@ export const useHousingListing = (id: string) => {
             paymentHistory: {
               status: "Ej godkänd" as const,
               date: "2024-01-21"
+            },
+            viewingBooked: {
+              status: "Nej" as const,
+              date: "2024-02-01"
+            },
+            offerResponse: {
+              status: "Nekat" as const,
+              date: "2024-02-06"
             }
           },
           {
@@ -218,6 +262,13 @@ export const useHousingListing = (id: string) => {
             paymentHistory: {
               status: "Godkänd" as const,
               date: "2024-01-26"
+            },
+            viewingBooked: {
+              status: "Ja" as const,
+              date: "2024-02-04"
+            },
+            offerResponse: {
+              status: "Väntar på svar" as const
             }
           },
           {
@@ -246,6 +297,12 @@ export const useHousingListing = (id: string) => {
             paymentHistory: {
               status: "Ej godkänd" as const,
               date: "2024-01-16"
+            },
+            viewingBooked: {
+              status: "Väntar på svar" as const
+            },
+            offerResponse: {
+              status: "Väntar på svar" as const
             }
           },
           {
@@ -273,6 +330,13 @@ export const useHousingListing = (id: string) => {
             },
             paymentHistory: {
               status: "Godkänd" as const
+            },
+            viewingBooked: {
+              status: "Ja" as const,
+              date: "2024-02-07"
+            },
+            offerResponse: {
+              status: "Väntar på svar" as const
             }
           },
           {
@@ -299,6 +363,12 @@ export const useHousingListing = (id: string) => {
             },
             paymentHistory: {
               status: "Ej behandlad" as const
+            },
+            viewingBooked: {
+              status: "Väntar på svar" as const
+            },
+            offerResponse: {
+              status: "Väntar på svar" as const
             }
           },
           {
@@ -327,6 +397,13 @@ export const useHousingListing = (id: string) => {
             paymentHistory: {
               status: "Godkänd" as const,
               date: "2024-01-17"
+            },
+            viewingBooked: {
+              status: "Ja" as const,
+              date: "2024-02-06"
+            },
+            offerResponse: {
+              status: "Väntar på svar" as const
             }
           }
         ],

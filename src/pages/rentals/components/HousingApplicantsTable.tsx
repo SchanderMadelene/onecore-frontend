@@ -157,6 +157,32 @@ export function HousingApplicantsTable({
     }
   };
 
+  const getViewingBookedBadge = (status: "Ja" | "Nej" | "Väntar på svar") => {
+    switch (status) {
+      case "Ja":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Ja</Badge>;
+      case "Nej":
+        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Nej</Badge>;
+      case "Väntar på svar":
+        return <Badge variant="outline" className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200">Väntar på svar</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
+  const getOfferResponseBadge = (status: "Accepterat" | "Nekat" | "Väntar på svar") => {
+    switch (status) {
+      case "Accepterat":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Accepterat</Badge>;
+      case "Nekat":
+        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Nekat</Badge>;
+      case "Väntar på svar":
+        return <Badge variant="outline" className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200">Väntar på svar</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
   return (
     <>
       <div className="border rounded-lg overflow-hidden">
@@ -171,6 +197,8 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap font-semibold">Boendereferens</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Kreditupplysning</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Betalningshistorik</TableHead>
+            {!showSelectionColumn && <TableHead className="whitespace-nowrap font-semibold">Visning bokad</TableHead>}
+            {!showSelectionColumn && <TableHead className="whitespace-nowrap font-semibold">Svar på erbjudande</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -233,11 +261,43 @@ export function HousingApplicantsTable({
                     </div>
                   </TableCell>
                   <TableCell>
+                    <div className="space-y-1">
+                      <div>{getPaymentHistoryBadge(applicant.paymentHistory.status)}</div>
+                      {applicant.paymentHistory.date && (
+                        <div className="text-xs text-muted-foreground">
+                          {applicant.paymentHistory.date}
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
+                  {!showSelectionColumn && applicant.viewingBooked && (
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div>{getViewingBookedBadge(applicant.viewingBooked.status)}</div>
+                        {applicant.viewingBooked.date && (
+                          <div className="text-xs text-muted-foreground">
+                            {applicant.viewingBooked.date}
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                  )}
+                  {!showSelectionColumn && applicant.offerResponse && (
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div>{getOfferResponseBadge(applicant.offerResponse.status)}</div>
+                        {applicant.offerResponse.date && (
+                          <div className="text-xs text-muted-foreground">
+                            {applicant.offerResponse.date}
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                  )}
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={showSelectionColumn ? 8 : 7} className="p-0">
+                    <TableCell colSpan={showSelectionColumn ? 8 : 10} className="p-0">
                       <div className="border-t">
                         <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
@@ -247,7 +307,7 @@ export function HousingApplicantsTable({
               </>
             )) : (
               <TableRow>
-                <TableCell colSpan={showSelectionColumn ? 8 : 7} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={showSelectionColumn ? 8 : 10} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>
