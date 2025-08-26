@@ -2,12 +2,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { ContactSearch } from "@/components/rentals/residence-profile/ContactSearch";
-import { ProfileForm } from "@/components/rentals/residence-profile/ProfileForm";
+import { CompactProfileForm } from "@/components/rentals/residence-profile/CompactProfileForm";
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { HousingApplicant } from "@/hooks/useHousingListing";
-import type { ContactSearchData } from "@/components/rentals/residence-profile/types";
+
 
 interface HousingApplicantsTableProps {
   applicants: HousingApplicant[];
@@ -26,7 +25,7 @@ export function HousingApplicantsTable({
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
-  const [selectedContact, setSelectedContact] = useState<ContactSearchData | null>(null);
+  
 
   // Automatically select approved applicants on mount or when applicants change
   useEffect(() => {
@@ -59,14 +58,7 @@ export function HousingApplicantsTable({
     const applicantId = String(applicant.id);
     if (expandedApplicant === applicantId) {
       setExpandedApplicant(null);
-      setSelectedContact(null);
     } else {
-      const contact: ContactSearchData = {
-        contactCode: applicant.contactCode,
-        fullName: applicant.name,
-        nationalRegistrationNumber: applicant.nationalRegistrationNumber
-      };
-      setSelectedContact(contact);
       setExpandedApplicant(applicantId);
     }
   };
@@ -243,15 +235,11 @@ export function HousingApplicantsTable({
                   <TableCell>
                   </TableCell>
                 </TableRow>
-                {expandedApplicant === String(applicant.id) && selectedContact && (
+                {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={8} className="bg-muted/50 p-6">
-                      <div className="space-y-6">
-                        <ContactSearch 
-                          selectedContact={selectedContact}
-                          onSelectContact={setSelectedContact}
-                        />
-                        <ProfileForm contact={selectedContact} />
+                    <TableCell colSpan={8} className="p-0">
+                      <div className="border-t">
+                        <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
                     </TableCell>
                   </TableRow>
