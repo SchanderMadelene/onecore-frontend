@@ -173,7 +173,6 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Boendereferens</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Kreditupplysning</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Betalningshistorik</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -224,20 +223,10 @@ export function HousingApplicantsTable({
                   </div>
                 </div>
               </TableCell>
-              <TableCell>
-                <div className="space-y-1">
-                  <div>{getPaymentHistoryBadge(applicant.paymentHistory.status)}</div>
-                  {applicant.paymentHistory.date && (
-                    <div className="text-xs text-muted-foreground">
-                      {applicant.paymentHistory.date}
-                    </div>
-                  )}
-                </div>
-              </TableCell>
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                 Inga intresseanmälningar än
               </TableCell>
             </TableRow>
