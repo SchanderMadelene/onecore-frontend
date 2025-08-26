@@ -13,6 +13,7 @@ interface HousingApplicantsTableProps {
   housingAddress: string;
   listingId: string;
   showOfferColumns?: boolean;
+  showSelectionColumn?: boolean;
   onSelectionChange?: (selectedIds: string[]) => void;
 }
 
@@ -21,6 +22,7 @@ export function HousingApplicantsTable({
   housingAddress, 
   listingId, 
   showOfferColumns = false,
+  showSelectionColumn = true,
   onSelectionChange 
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
@@ -161,7 +163,7 @@ export function HousingApplicantsTable({
         <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent bg-secondary">
-            <TableHead className="w-12 font-semibold">Val</TableHead>
+            {showSelectionColumn && <TableHead className="w-12 font-semibold">Val</TableHead>}
             <TableHead className="whitespace-nowrap font-semibold">Namn</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Kundnummer</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Köpoäng</TableHead>
@@ -177,17 +179,19 @@ export function HousingApplicantsTable({
             .map((applicant) => (
               <>
                 <TableRow key={applicant.id} className="hover:bg-secondary/50">
-                  <TableCell className="py-3">
-                    <div className="flex items-center gap-2">
-                      <Checkbox
-                        checked={selectedApplicants.has(String(applicant.id))}
-                        onCheckedChange={(checked) => 
-                          handleApplicantSelection(String(applicant.id), checked as boolean)
-                        }
-                        className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                      />
-                    </div>
-                  </TableCell>
+                  {showSelectionColumn && (
+                    <TableCell className="py-3">
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          checked={selectedApplicants.has(String(applicant.id))}
+                          onCheckedChange={(checked) => 
+                            handleApplicantSelection(String(applicant.id), checked as boolean)
+                          }
+                          className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                        />
+                      </div>
+                    </TableCell>
+                  )}
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <Button
@@ -233,7 +237,7 @@ export function HousingApplicantsTable({
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={8} className="p-0">
+                    <TableCell colSpan={showSelectionColumn ? 8 : 7} className="p-0">
                       <div className="border-t">
                         <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
@@ -243,7 +247,7 @@ export function HousingApplicantsTable({
               </>
             )) : (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={showSelectionColumn ? 8 : 7} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>

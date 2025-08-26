@@ -145,6 +145,7 @@ const HousingDetailPage = () => {
               housingAddress={listing.address}
               listingId={listing.id}
               showOfferColumns={false}
+              showSelectionColumn={!activeOffer}
               onSelectionChange={setSelectedApplicants}
             />
           </section>
