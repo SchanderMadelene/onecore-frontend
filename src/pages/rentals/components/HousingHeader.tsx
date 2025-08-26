@@ -7,6 +7,7 @@ interface HousingHeaderProps {
   offerStatus: string;
   housing: any;
   hasOffers: boolean;
+  hasSelectedApplicants?: boolean;
   onBack: () => void;
   onCreateOffer: () => void;
   isCreatingOffer: boolean;
@@ -17,6 +18,7 @@ export function HousingHeader({
   offerStatus,
   housing,
   hasOffers,
+  hasSelectedApplicants = false,
   onBack,
   onCreateOffer,
   isCreatingOffer
@@ -42,11 +44,11 @@ export function HousingHeader({
             {!hasOffers && (
               <Button 
                 onClick={onCreateOffer}
-                disabled={isCreatingOffer}
+                disabled={isCreatingOffer || !hasSelectedApplicants}
                 className="flex items-center gap-1"
               >
                 <PlusCircle className="h-4 w-4" />
-                <span>{isCreatingOffer ? "Startar..." : "Starta erbjudandeomgång"}</span>
+                <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
               </Button>
             )}
           </div>

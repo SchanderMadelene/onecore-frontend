@@ -11,6 +11,7 @@ import { HousingInfo } from "./components/HousingInfo";
 
 const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -102,6 +103,7 @@ const HousingDetailPage = () => {
           offerStatus={offerStatus}
           housing={listing}
           hasOffers={listing.offers.length > 0}
+          hasSelectedApplicants={selectedApplicants.length > 0}
           onBack={handleBack}
           onCreateOffer={handleCreateOffer}
           isCreatingOffer={false}
@@ -115,6 +117,7 @@ const HousingDetailPage = () => {
               housingAddress={listing.address}
               listingId={listing.id}
               showOfferColumns={false}
+              onSelectionChange={setSelectedApplicants}
             />
           </section>
 
