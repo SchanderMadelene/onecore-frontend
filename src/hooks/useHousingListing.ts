@@ -25,6 +25,10 @@ export interface HousingApplicant {
     status: "Godkända inbetalningar" | "Godkänd";
     date: string;
   };
+  paymentHistory: {
+    status: "Godkänd" | "Ej godkänd" | "Ej behandlad";
+    date?: string;
+  };
 }
 
 export interface HousingListing extends PublishedHousingSpace {
@@ -72,6 +76,10 @@ export const useHousingListing = (id: string) => {
             creditReport: {
               status: "Godkänd" as const,
               date: "2024-01-18"
+            },
+            paymentHistory: {
+              status: "Godkänd" as const,
+              date: "2024-01-15"
             }
           },
           {
@@ -96,6 +104,10 @@ export const useHousingListing = (id: string) => {
             creditReport: {
               status: "Godkända inbetalningar" as const,
               date: "2024-01-22"
+            },
+            paymentHistory: {
+              status: "Ej godkänd" as const,
+              date: "2024-01-20"
             }
           },
           {
@@ -119,6 +131,9 @@ export const useHousingListing = (id: string) => {
             creditReport: {
               status: "Godkänd" as const,
               date: "2024-01-16"
+            },
+            paymentHistory: {
+              status: "Ej behandlad" as const
             }
           }
         ],
