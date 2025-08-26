@@ -50,9 +50,6 @@ export function HousingApplicantsTable({
     onSelectionChange?.(Array.from(newSelected));
   };
 
-  const isApplicantSelectable = (applicant: HousingApplicant) => {
-    return applicant.profileStatus !== "NotApproved";
-  };
 
   const handleToggleExpand = (applicant: HousingApplicant) => {
     const applicantId = String(applicant.id);
@@ -187,7 +184,6 @@ export function HousingApplicantsTable({
                         onCheckedChange={(checked) => 
                           handleApplicantSelection(String(applicant.id), checked as boolean)
                         }
-                        disabled={!isApplicantSelectable(applicant)}
                         className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                       />
                     </div>
