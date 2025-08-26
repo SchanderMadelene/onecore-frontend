@@ -2,10 +2,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ContactSearch } from "@/components/rentals/residence-profile/ContactSearch";
 import { ProfileForm } from "@/components/rentals/residence-profile/ProfileForm";
 import { useState, useEffect } from "react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import type { HousingApplicant } from "@/hooks/useHousingListing";
 import type { ContactSearchData } from "@/components/rentals/residence-profile/types";
 
@@ -25,7 +25,7 @@ export function HousingApplicantsTable({
   onSelectionChange 
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
-  const [modalOpen, setModalOpen] = useState(false);
+  const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
   const [selectedContact, setSelectedContact] = useState<ContactSearchData | null>(null);
 
   // Automatically select approved applicants on mount or when applicants change
@@ -55,14 +55,20 @@ export function HousingApplicantsTable({
     return applicant.profileStatus !== "NotApproved";
   };
 
-  const handleOpenProfile = (applicant: HousingApplicant) => {
-    const contact: ContactSearchData = {
-      contactCode: applicant.contactCode,
-      fullName: applicant.name,
-      nationalRegistrationNumber: applicant.nationalRegistrationNumber
-    };
-    setSelectedContact(contact);
-    setModalOpen(true);
+  const handleToggleExpand = (applicant: HousingApplicant) => {
+    const applicantId = String(applicant.id);
+    if (expandedApplicant === applicantId) {
+      setExpandedApplicant(null);
+      setSelectedContact(null);
+    } else {
+      const contact: ContactSearchData = {
+        contactCode: applicant.contactCode,
+        fullName: applicant.name,
+        nationalRegistrationNumber: applicant.nationalRegistrationNumber
+      };
+      setSelectedContact(contact);
+      setExpandedApplicant(applicantId);
+    }
   };
 
   const formatLeaseStatus = (status: string) => {
@@ -180,87 +186,87 @@ export function HousingApplicantsTable({
           {applicants.length > 0 ? applicants
             .sort((a, b) => b.queuePoints - a.queuePoints)
             .map((applicant) => (
-            <TableRow key={applicant.id} className="hover:bg-secondary/50">
-              <TableCell className="py-3">
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    checked={selectedApplicants.has(String(applicant.id))}
-                    onCheckedChange={(checked) => 
-                      handleApplicantSelection(String(applicant.id), checked as boolean)
-                    }
-                    disabled={!isApplicantSelectable(applicant)}
-                    className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                  />
-                </div>
-              </TableCell>
-              <TableCell className="font-medium">
-                <div>
-                  <Button 
-                    variant="link" 
-                    className="p-0 h-auto font-medium text-left justify-start hover:text-primary"
-                    onClick={() => handleOpenProfile(applicant)}
-                  >
-                    {applicant.name}
-                  </Button>
-                  <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
-                </div>
-              </TableCell>
-              <TableCell>{applicant.contactCode}</TableCell>
-              <TableCell>{applicant.queuePoints}</TableCell>
-              <TableCell>{new Date(applicant.applicationDate).toLocaleDateString('sv-SE')}</TableCell>
-              <TableCell>
-                <div className="space-y-1">
-                  <div>{getHousingReferenceBadge(applicant.housingReference.status)}</div>
-                  {applicant.housingReference.date && (
-                    <div className="text-xs text-muted-foreground">
-                      {applicant.housingReference.date}
+              <>
+                <TableRow key={applicant.id} className="hover:bg-secondary/50">
+                  <TableCell className="py-3">
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        checked={selectedApplicants.has(String(applicant.id))}
+                        onCheckedChange={(checked) => 
+                          handleApplicantSelection(String(applicant.id), checked as boolean)
+                        }
+                        disabled={!isApplicantSelectable(applicant)}
+                        className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
                     </div>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="space-y-1">
-                  <div>{getCreditReportBadge(applicant.creditReport.status)}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {applicant.creditReport.date}
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-              </TableCell>
-            </TableRow>
-          )) : (
-            <TableRow>
-              <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                Inga intresseanmälningar än
-              </TableCell>
-            </TableRow>
-          )}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleToggleExpand(applicant)}
+                        className="p-1 h-auto"
+                      >
+                        {expandedApplicant === String(applicant.id) ? 
+                          <ChevronDown className="h-4 w-4" /> : 
+                          <ChevronRight className="h-4 w-4" />
+                        }
+                      </Button>
+                      <div>
+                        <div className="font-medium">{applicant.name}</div>
+                        <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>{applicant.contactCode}</TableCell>
+                  <TableCell>{applicant.queuePoints}</TableCell>
+                  <TableCell>{new Date(applicant.applicationDate).toLocaleDateString('sv-SE')}</TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <div>{getHousingReferenceBadge(applicant.housingReference.status)}</div>
+                      {applicant.housingReference.date && (
+                        <div className="text-xs text-muted-foreground">
+                          {applicant.housingReference.date}
+                        </div>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <div>{getCreditReportBadge(applicant.creditReport.status)}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {applicant.creditReport.date}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                  </TableCell>
+                </TableRow>
+                {expandedApplicant === String(applicant.id) && selectedContact && (
+                  <TableRow>
+                    <TableCell colSpan={8} className="bg-muted/50 p-6">
+                      <div className="space-y-6">
+                        <ContactSearch 
+                          selectedContact={selectedContact}
+                          onSelectContact={setSelectedContact}
+                        />
+                        <ProfileForm contact={selectedContact} />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </>
+            )) : (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                  Inga intresseanmälningar än
+                </TableCell>
+              </TableRow>
+            )}
         </TableBody>
       </Table>
     </div>
-
-    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-      <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Sökandeprofil</DialogTitle>
-          <DialogDescription>
-            Granska och hantera sökandens information
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-6">
-          {selectedContact && (
-            <>
-              <ContactSearch 
-                selectedContact={selectedContact}
-                onSelectContact={setSelectedContact}
-              />
-              <ProfileForm contact={selectedContact} />
-            </>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
   </>
   );
 }
