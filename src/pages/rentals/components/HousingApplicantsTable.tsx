@@ -225,14 +225,6 @@ export function HousingApplicantsTable({
                 </div>
               </TableCell>
               <TableCell>
-                <div className="space-y-1">
-                  <div>{getPaymentHistoryBadge(applicant.paymentHistory.status)}</div>
-                  {applicant.paymentHistory.date && (
-                    <div className="text-xs text-muted-foreground">
-                      {applicant.paymentHistory.date}
-                    </div>
-                  )}
-                </div>
               </TableCell>
             </TableRow>
           )) : (
