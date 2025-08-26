@@ -140,7 +140,7 @@ export function HousingApplicantsTable({
       case "Ingen uppgift tillgänglig":
         return <Badge variant="outline" className="bg-white text-gray-700 hover:bg-white border-gray-200">Ingen uppgift tillgänglig</Badge>;
       case "-":
-        return <Badge variant="outline" className="bg-gray-50 text-gray-500 hover:bg-gray-50 border-gray-200">-</Badge>;
+        return null;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -155,7 +155,7 @@ export function HousingApplicantsTable({
       case "Ej behandlad":
         return <Badge variant="outline" className="bg-gray-50 text-gray-700 hover:bg-gray-50 border-gray-200">Ej behandlad</Badge>;
       case "-":
-        return <Badge variant="outline" className="bg-gray-50 text-gray-500 hover:bg-gray-50 border-gray-200">-</Badge>;
+        return null;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -259,9 +259,11 @@ export function HousingApplicantsTable({
                   <TableCell>
                     <div className="space-y-1">
                       <div>{getCreditReportBadge(applicant.creditReport.status)}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {applicant.creditReport.date}
-                      </div>
+                      {applicant.creditReport.date && (
+                        <div className="text-xs text-muted-foreground">
+                          {applicant.creditReport.date}
+                        </div>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
