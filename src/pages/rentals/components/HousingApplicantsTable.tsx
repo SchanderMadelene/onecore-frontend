@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ContactSearch } from "@/components/rentals/residence-profile/ContactSearch";
 import { ProfileForm } from "@/components/rentals/residence-profile/ProfileForm";
 import { useState, useEffect } from "react";
@@ -25,7 +25,7 @@ export function HousingApplicantsTable({
   onSelectionChange 
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<ContactSearchData | null>(null);
 
   // Automatically select approved applicants on mount or when applicants change
@@ -62,7 +62,7 @@ export function HousingApplicantsTable({
       nationalRegistrationNumber: applicant.nationalRegistrationNumber
     };
     setSelectedContact(contact);
-    setDrawerOpen(true);
+    setModalOpen(true);
   };
 
   const formatLeaseStatus = (status: string) => {
@@ -240,27 +240,27 @@ export function HousingApplicantsTable({
       </Table>
     </div>
 
-    <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-      <DrawerContent className="max-h-[85vh]">
-        <DrawerHeader>
-          <DrawerTitle>Sökandeprofil</DrawerTitle>
-          <DrawerDescription>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+      <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Sökandeprofil</DialogTitle>
+          <DialogDescription>
             Granska och hantera sökandens information
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="px-4 pb-4 overflow-y-auto">
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-6">
           {selectedContact && (
-            <div className="space-y-6">
+            <>
               <ContactSearch 
                 selectedContact={selectedContact}
                 onSelectContact={setSelectedContact}
               />
               <ProfileForm contact={selectedContact} />
-            </div>
+            </>
           )}
         </div>
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   </>
   );
 }
