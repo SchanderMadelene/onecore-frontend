@@ -257,14 +257,11 @@ export function HousingApplicantsTable({
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="space-y-1">
-                      <div>{getCreditReportBadge(applicant.creditReport.status)}</div>
-                      {applicant.creditReport.date && (
-                        <div className="text-xs text-muted-foreground">
-                          {applicant.creditReport.date}
-                        </div>
-                      )}
-                    </div>
+                    {applicant.creditReport.date && (
+                      <div className="text-sm">
+                        {applicant.creditReport.date}
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="space-y-1">
