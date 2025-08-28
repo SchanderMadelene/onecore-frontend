@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, PlusCircle } from "lucide-react";
+import { HousingApplicationDialog } from "@/components/rentals/HousingApplicationDialog";
+import type { HousingSpace } from "@/components/rentals/types/housing";
 
 interface HousingHeaderProps {
   housingAddress: string;
   offerStatus: string;
-  housing: any;
+  housing?: HousingSpace;
   hasOffers: boolean;
   hasSelectedApplicants?: boolean;
   onBack: () => void;
@@ -41,6 +43,7 @@ export function HousingHeader({
             </Badge>
           </div>
           <div className="flex items-center gap-2">
+            {housing && <HousingApplicationDialog housingSpace={housing} />}
             {!hasOffers && (
               <Button 
                 onClick={onCreateOffer}

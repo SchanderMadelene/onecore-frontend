@@ -66,7 +66,7 @@ const HousingDetailPage = () => {
           <HousingHeader 
             housingAddress=""
             offerStatus=""
-            housing={{}}
+            housing={undefined}
             hasOffers={false}
             onBack={handleBack}
             onCreateOffer={() => {}}
@@ -85,7 +85,7 @@ const HousingDetailPage = () => {
           <HousingHeader 
             housingAddress=""
             offerStatus=""
-            housing={{}}
+            housing={undefined}
             hasOffers={false}
             onBack={handleBack}
             onCreateOffer={() => {}}
