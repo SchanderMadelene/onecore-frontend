@@ -30,5 +30,4 @@ export interface Customer {
   phone: string;
   email: string;
   customerType: "tenant" | "applicant";
-  address?: string;
 }
