@@ -121,7 +121,7 @@ export function HousingApplicantsTable({
       case "Kontaktad - ej svar":
         return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Kontaktad - ej svar</Badge>;
       case "Referens krävs ej":
-        return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Referens krävs ej</Badge>;
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Referens krävs ej</Badge>;
       case "Ej behandlad":
         return <Badge variant="outline" className="bg-gray-50 text-gray-700 hover:bg-gray-50 border-gray-200">Ej behandlad</Badge>;
       default:
