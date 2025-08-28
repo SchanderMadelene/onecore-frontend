@@ -26,7 +26,7 @@ export interface HousingApplicant {
     date?: string;
   };
   paymentHistory: {
-    status: "Godkänd" | "Ej godkänd" | "Ej behandlad" | "-";
+    status: "Inga anmärkningar" | "Behöver kontrolleras" | "-";
     date?: string;
   };
   viewingBooked?: {
@@ -85,7 +85,7 @@ export const useHousingListing = (id: string) => {
               status: "-" as const
             },
             paymentHistory: {
-              status: "Godkänd" as const,
+              status: "Inga anmärkningar" as const,
               date: "2024-01-15"
             },
             viewingBooked: {
@@ -119,7 +119,7 @@ export const useHousingListing = (id: string) => {
               status: "-" as const
             },
             paymentHistory: {
-              status: "Ej godkänd" as const,
+              status: "Behöver kontrolleras" as const,
               date: "2024-01-20"
             },
             viewingBooked: {
@@ -185,7 +185,7 @@ export const useHousingListing = (id: string) => {
               status: "-" as const
             },
             paymentHistory: {
-              status: "Godkänd" as const,
+              status: "Inga anmärkningar" as const,
               date: "2024-01-24"
             },
             viewingBooked: {
@@ -220,7 +220,7 @@ export const useHousingListing = (id: string) => {
               status: "-" as const
             },
             paymentHistory: {
-              status: "Ej godkänd" as const,
+              status: "Behöver kontrolleras" as const,
               date: "2024-01-21"
             },
             viewingBooked: {
@@ -322,7 +322,7 @@ export const useHousingListing = (id: string) => {
               status: "-" as const
             },
             paymentHistory: {
-              status: "Godkänd" as const
+              status: "Inga anmärkningar" as const
             },
             viewingBooked: {
               status: "Ja" as const,
@@ -354,7 +354,7 @@ export const useHousingListing = (id: string) => {
               status: "-" as const
             },
             paymentHistory: {
-              status: "Ej behandlad" as const
+              status: "Behöver kontrolleras" as const
             },
             viewingBooked: {
               status: "Väntar på svar" as const

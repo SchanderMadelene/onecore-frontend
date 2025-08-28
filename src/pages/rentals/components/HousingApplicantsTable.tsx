@@ -146,14 +146,12 @@ export function HousingApplicantsTable({
     }
   };
 
-  const getPaymentHistoryBadge = (status: "Godkänd" | "Ej godkänd" | "Ej behandlad" | "-") => {
+  const getPaymentHistoryBadge = (status: "Inga anmärkningar" | "Behöver kontrolleras" | "-") => {
     switch (status) {
-      case "Godkänd":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd</Badge>;
-      case "Ej godkänd":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Ej godkänd</Badge>;
-      case "Ej behandlad":
-        return <Badge variant="outline" className="bg-gray-50 text-gray-700 hover:bg-gray-50 border-gray-200">Ej behandlad</Badge>;
+      case "Inga anmärkningar":
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Inga anmärkningar</Badge>;
+      case "Behöver kontrolleras":
+        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Behöver kontrolleras</Badge>;
       case "-":
         return null;
       default:
