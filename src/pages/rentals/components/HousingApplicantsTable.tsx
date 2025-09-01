@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { CompactProfileForm } from "@/components/rentals/residence-profile/CompactProfileForm";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { HousingApplicant } from "@/hooks/useHousingListing";
 
@@ -29,17 +29,6 @@ export function HousingApplicantsTable({
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
   
 
-  // Automatically select approved applicants on mount or when applicants change
-  useEffect(() => {
-    const autoSelected = new Set<string>();
-    applicants.forEach(applicant => {
-      if (applicant.profileStatus === "Approved") {
-        autoSelected.add(String(applicant.id));
-      }
-    });
-    setSelectedApplicants(autoSelected);
-    onSelectionChange?.(Array.from(autoSelected));
-  }, [applicants, onSelectionChange]);
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
     const newSelected = new Set(selectedApplicants);
