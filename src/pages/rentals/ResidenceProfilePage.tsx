@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ContactSearch } from "@/components/rentals/residence-profile/ContactSearch";
 import { ProfileForm } from "@/components/rentals/residence-profile/ProfileForm";
 import type { ContactSearchData } from "@/components/rentals/residence-profile/types";
@@ -13,9 +13,14 @@ const ResidenceProfilePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<ContactSearchData | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleBack = () => {
-    navigate("/rentals?tab=bostad");
+    // Navigate back to rentals page with bostad tab and the specific housing sub-tab
+    const activeHousingTab = location.state?.activeHousingTab || "publicerade";
+    navigate('/rentals?tab=bostad', { 
+      state: { activeHousingTab }
+    });
   };
 
   return (

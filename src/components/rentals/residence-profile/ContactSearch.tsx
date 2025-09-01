@@ -1,8 +1,10 @@
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { Search, User } from "lucide-react";
 import type { ContactSearchData } from "./types";
 
@@ -34,80 +36,75 @@ interface ContactSearchProps {
 }
 
 export function ContactSearch({ selectedContact, onSelectContact }: ContactSearchProps) {
+  const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<ContactSearchData[]>([]);
-  const [showResults, setShowResults] = useState(false);
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    searchInputRef.current?.focus();
-  }, []);
-
-  useEffect(() => {
-    if (searchTerm.length >= 2) {
-      const filtered = mockContacts.filter(contact =>
+  const filteredContacts = searchTerm.length >= 2 
+    ? mockContacts.filter(contact =>
         contact.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.contactCode.includes(searchTerm) ||
         (contact.nationalRegistrationNumber && contact.nationalRegistrationNumber.includes(searchTerm))
-      );
-      setSearchResults(filtered);
-      setShowResults(true);
-    } else {
-      setSearchResults([]);
-      setShowResults(false);
-    }
-  }, [searchTerm]);
+      )
+    : [];
 
   const handleSelectContact = (contact: ContactSearchData) => {
     onSelectContact(contact);
     setSearchTerm(contact.fullName);
-    setShowResults(false);
+    setOpen(false);
   };
 
   const handleClearSelection = () => {
     onSelectContact(null);
     setSearchTerm("");
-    setShowResults(false);
-    searchInputRef.current?.focus();
+    setOpen(false);
   };
 
   return (
     <div className="space-y-4">
-      <div className="relative">
-        <div className="relative">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            ref={searchInputRef}
-            placeholder="Sök på person eller kundnummer"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-
-        {showResults && searchResults.length > 0 && (
-          <Card className="absolute top-full left-0 right-0 z-10 mt-1">
-            <CardContent className="p-2">
-              {searchResults.map((contact) => (
-                <Button
-                  key={contact.contactCode}
-                  variant="ghost"
-                  className="w-full justify-start p-3 h-auto"
-                  onClick={() => handleSelectContact(contact)}
-                >
-                  <User className="h-4 w-4 mr-3 text-muted-foreground" />
-                  <div className="text-left">
-                    <div className="font-medium">{contact.fullName}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {contact.contactCode} • {contact.nationalRegistrationNumber}
-                    </div>
-                  </div>
-                </Button>
-              ))}
-            </CardContent>
-          </Card>
-        )}
-      </div>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Sök på person eller kundnummer"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setOpen(e.target.value.length >= 2);
+              }}
+              className="pl-9"
+            />
+          </div>
+        </PopoverTrigger>
+        <PopoverContent className="w-[400px] p-0" align="start">
+          <Command>
+            <CommandList>
+              {filteredContacts.length === 0 ? (
+                <CommandEmpty>Inga kontakter hittades.</CommandEmpty>
+              ) : (
+                <CommandGroup>
+                  {filteredContacts.map((contact) => (
+                    <CommandItem
+                      key={contact.contactCode}
+                      value={contact.fullName}
+                      onSelect={() => handleSelectContact(contact)}
+                      className="cursor-pointer"
+                    >
+                      <User className="h-4 w-4 mr-3" />
+                      <div className="flex flex-col">
+                        <span className="font-medium">{contact.fullName}</span>
+                        <span className="text-sm text-muted-foreground">
+                          {contact.contactCode} • {contact.nationalRegistrationNumber}
+                        </span>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
 
       {selectedContact && (
         <Card>

@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { FeatureTogglesProvider } from "@/contexts/FeatureTogglesContext";
+import { HousingOffersProvider } from "@/contexts/HousingOffersContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import Index from "./pages/Index";
 import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
@@ -17,8 +18,9 @@ import DesignSystemPage from "./pages/design-system/DesignSystemPage";
 import NotFound from "./pages/NotFound";
 import AllPropertiesPage from "./pages/properties/AllPropertiesPage";
 import RentalsPage from "./pages/rentals/RentalsPage";
-import ResidenceProfilePage from "./pages/rentals/ResidenceProfilePage";
+import CreateHousingAdPage from "./pages/rentals/CreateHousingAdPage";
 import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
+import HousingDetailPage from "./pages/rentals/HousingDetailPage";
 import TurnoverPage from "./pages/turnover/TurnoverPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 
@@ -65,10 +67,10 @@ const AppRoutes = () => {
         } 
       />
       <Route 
-        path="/rentals/residence-profile" 
+        path="/rentals/create-housing-ad" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <ResidenceProfilePage />
+            <CreateHousingAdPage />
           </ProtectedRoute>
         } 
       />
@@ -77,6 +79,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <ParkingSpaceDetailPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/housing/:housingId" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <HousingDetailPage />
           </ProtectedRoute>
         } 
       />
@@ -110,11 +120,13 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <FeatureTogglesProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
+            <HousingOffersProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+            </HousingOffersProvider>
           </FeatureTogglesProvider>
         </TooltipProvider>
       </QueryClientProvider>
