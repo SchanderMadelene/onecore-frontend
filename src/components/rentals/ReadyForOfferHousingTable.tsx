@@ -1,10 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { publishedHousingSpaces } from "@/data/published-housing";
 import { useHousingStatus } from "@/hooks/useHousingStatus";
-import { Send } from "lucide-react";
 
 export function ReadyForOfferHousingTable() {
   const navigate = useNavigate();
@@ -14,12 +11,6 @@ export function ReadyForOfferHousingTable() {
     navigate(`/rentals/housing/${housingId}`);
   };
 
-  const handleSendOffer = (e: React.MouseEvent, housingId: string) => {
-    e.stopPropagation(); // Prevent row click
-    navigate(`/rentals/housing/${housingId}`, { 
-      state: { showCreateOffer: true } 
-    });
-  };
 
   const readyForOfferHousings = filterHousingByStatus(publishedHousingSpaces, 'ready_for_offer');
 
@@ -46,8 +37,6 @@ export function ReadyForOfferHousingTable() {
             <TableHead className="whitespace-nowrap font-semibold">Hyra</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Sökande</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Publicerad till</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Status</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Åtgärd</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -64,22 +53,6 @@ export function ReadyForOfferHousingTable() {
               <TableCell>{housing.rent}</TableCell>
               <TableCell>{housing.seekers}</TableCell>
               <TableCell>{new Date(housing.publishedTo).toLocaleDateString('sv-SE')}</TableCell>
-              <TableCell>
-                <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
-                  Klar för erbjudande
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Button 
-                  size="sm" 
-                  variant="outline"
-                  onClick={(e) => handleSendOffer(e, housing.id)}
-                  className="flex items-center gap-1"
-                >
-                  <Send className="h-3 w-3" />
-                  Skicka erbjudande
-                </Button>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>
