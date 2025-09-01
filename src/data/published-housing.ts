@@ -101,7 +101,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "1",
     seekers: 42,
     publishedFrom: "2024-02-01",
-    publishedTo: "2025-03-01", // Future - should remain published
+    publishedTo: "2025-04-01", // Future - should remain published
     availableFrom: "2024-03-15",
     description: "Stor fyra för familjen"
   },
@@ -116,7 +116,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "3",
     seekers: 28,
     publishedFrom: "2024-02-05",
-    publishedTo: "2025-03-05", // Future - should remain published
+    publishedTo: "2025-04-05", // Future - should remain published
     availableFrom: "2024-03-20",
     description: "Central tvåa med utsikt"
   },
@@ -131,7 +131,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "2",
     seekers: 12,
     publishedFrom: "2024-02-10",
-    publishedTo: "2025-03-10", // Future - should remain published
+    publishedTo: "2025-04-10", // Future - should remain published
     availableFrom: "2024-03-25",
     description: "Perfekt studentbostad"
   },
@@ -146,7 +146,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "4",
     seekers: 35,
     publishedFrom: "2024-02-15",
-    publishedTo: "2025-03-15", // Future - should remain published
+    publishedTo: "2025-04-15", // Future - should remain published
     availableFrom: "2024-04-01",
     description: "Ljus trea med balkong mot söder"
   },
@@ -161,7 +161,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "1",
     seekers: 18,
     publishedFrom: "2024-02-20",
-    publishedTo: "2025-03-20", // Future - should remain published
+    publishedTo: "2025-04-20", // Future - should remain published
     availableFrom: "2024-04-05",
     description: "Rymlig tvåa i barnvänligt område"
   }
