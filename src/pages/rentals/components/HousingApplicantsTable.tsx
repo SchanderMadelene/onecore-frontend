@@ -15,6 +15,7 @@ interface HousingApplicantsTableProps {
   showOfferColumns?: boolean;
   showSelectionColumn?: boolean;
   onSelectionChange?: (selectedIds: string[]) => void;
+  offeredApplicantIds?: number[];
 }
 
 export function HousingApplicantsTable({ 
@@ -23,7 +24,8 @@ export function HousingApplicantsTable({
   listingId, 
   showOfferColumns = false,
   showSelectionColumn = true,
-  onSelectionChange 
+  onSelectionChange,
+  offeredApplicantIds = []
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
@@ -161,6 +163,13 @@ export function HousingApplicantsTable({
     }
   };
 
+  const getOfferStatusBadge = (applicantId: number) => {
+    if (offeredApplicantIds.includes(applicantId)) {
+      return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Erbjudande skickat</Badge>;
+    }
+    return <Badge variant="outline" className="bg-gray-50 text-gray-700 hover:bg-gray-50 border-gray-200">Inget erbjudande</Badge>;
+  };
+
   const getOfferResponseBadge = (status: "Accepterat" | "Nekat" | "Väntar på svar") => {
     switch (status) {
       case "Accepterat":
@@ -188,6 +197,7 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap font-semibold">Boendereferens</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Kreditupplysning</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Betalningshistorik</TableHead>
+            <TableHead className="whitespace-nowrap font-semibold">Erbjudande</TableHead>
             {!showSelectionColumn && <TableHead className="whitespace-nowrap font-semibold">Visning bokad</TableHead>}
             {!showSelectionColumn && <TableHead className="whitespace-nowrap font-semibold">Svar på erbjudande</TableHead>}
           </TableRow>
@@ -260,6 +270,9 @@ export function HousingApplicantsTable({
                       )}
                     </div>
                   </TableCell>
+                  <TableCell>
+                    {getOfferStatusBadge(applicant.id)}
+                  </TableCell>
                   {!showSelectionColumn && applicant.viewingBooked && (
                     <TableCell>
                       <div className="space-y-1">
@@ -287,7 +300,7 @@ export function HousingApplicantsTable({
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={showSelectionColumn ? 8 : 10} className="p-0">
+                    <TableCell colSpan={showSelectionColumn ? 9 : 11} className="p-0">
                       <div className="border-t">
                         <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
@@ -297,7 +310,7 @@ export function HousingApplicantsTable({
               </>
             )) : (
               <TableRow>
-                <TableCell colSpan={showSelectionColumn ? 8 : 10} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={showSelectionColumn ? 9 : 11} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>

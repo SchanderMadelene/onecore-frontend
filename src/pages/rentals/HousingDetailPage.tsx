@@ -113,12 +113,8 @@ const HousingDetailPage = () => {
   // Get active offer for this listing
   const activeOffer = getOfferForListing(housingId);
   
-  // Filter applicants based on whether there's an active offer
-  const displayedApplicants = activeOffer 
-    ? listing.applicants.filter(applicant => 
-        activeOffer.selectedApplicants.includes(applicant.id)
-      )
-    : listing.applicants;
+  // Show all applicants with offer information
+  const displayedApplicants = listing.applicants;
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -137,7 +133,7 @@ const HousingDetailPage = () => {
         <div className="space-y-8">
           <section>
             <h2 className="text-xl font-semibold mb-4">
-              {activeOffer ? "Erbjudna sökande" : "Intresseanmälningar"}
+              Intresseanmälningar
             </h2>
             <HousingApplicantsTable 
               applicants={displayedApplicants}
@@ -146,6 +142,7 @@ const HousingDetailPage = () => {
               showOfferColumns={false}
               showSelectionColumn={!activeOffer}
               onSelectionChange={setSelectedApplicants}
+              offeredApplicantIds={activeOffer?.selectedApplicants || []}
             />
           </section>
 
