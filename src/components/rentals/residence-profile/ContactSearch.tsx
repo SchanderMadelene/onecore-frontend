@@ -86,8 +86,8 @@ export function ContactSearch({ selectedContact, onSelectContact }: ContactSearc
         </div>
 
         {showResults && searchResults.length > 0 && (
-          <Card className="absolute top-full left-0 right-0 z-10 mt-1">
-            <CardContent className="p-2">
+          <Card className="absolute top-full left-0 right-0 z-50 mt-1 border shadow-lg bg-background">
+            <CardContent className="p-2 max-h-48 overflow-y-auto">
               {searchResults.map((contact) => (
                 <Button
                   key={contact.contactCode}

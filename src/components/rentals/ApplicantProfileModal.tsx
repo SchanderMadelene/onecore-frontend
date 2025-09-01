@@ -34,7 +34,7 @@ export function ApplicantProfileModal() {
           Sökandeprofil
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-visible">
         <DialogHeader>
           <DialogTitle>Sökandeprofil</DialogTitle>
           <DialogDescription>
@@ -42,7 +42,7 @@ export function ApplicantProfileModal() {
           </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-6">
+        <div className="space-y-6 overflow-y-auto max-h-[60vh]">
           <ContactSearch
             selectedContact={selectedContact}
             onSelectContact={handleContactSelect}
