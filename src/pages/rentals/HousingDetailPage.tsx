@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useHousingListing } from "@/hooks/useHousingListing";
 import { toast } from "@/hooks/use-toast";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
+import { useHousingStatus } from "@/hooks/useHousingStatus";
 import { useState } from "react";
 import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
 import { HousingHeader } from "./components/HousingHeader";
@@ -17,6 +18,7 @@ const HousingDetailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { createOffer, isListingOffered, getOfferForListing } = useHousingOffers();
+  const { getHousingStatus } = useHousingStatus();
   
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
@@ -103,7 +105,10 @@ const HousingDetailPage = () => {
     );
   }
 
-  const offerStatus = (listing.offers.length > 0 || isListingOffered(housingId)) ? "Erbjudandeomgång pågår" : "Publicerad";
+  const status = getHousingStatus(listing);
+  const offerStatus = status === 'published' ? "Publicerad" : 
+                    status === 'ready_for_offer' ? "Klara för erbjudande" : 
+                    status === 'offered' ? "Erbjudna" : "Publicerad";
   
   // Get active offer for this listing
   const activeOffer = getOfferForListing(housingId);
