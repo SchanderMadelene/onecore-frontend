@@ -12,7 +12,7 @@ export function OfferedHousingTable() {
 
   const handleRowClick = (housingId: string) => {
     navigate(`/rentals/housing/${housingId}`, {
-      state: { fromTab: "erbjudna" }
+      state: { from: "?tab=erbjudna" }
     });
   };
 

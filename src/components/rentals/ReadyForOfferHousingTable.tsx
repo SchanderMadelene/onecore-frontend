@@ -9,7 +9,7 @@ export function ReadyForOfferHousingTable() {
 
   const handleRowClick = (housingId: string) => {
     navigate(`/rentals/housing/${housingId}`, {
-      state: { fromTab: "redo-for-erbjudande" }
+      state: { from: "?tab=redo-for-erbjudande" }
     });
   };
 

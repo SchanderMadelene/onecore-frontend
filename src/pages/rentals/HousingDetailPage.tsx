@@ -22,8 +22,9 @@ const HousingDetailPage = () => {
 
   const handleBack = () => {
     // Försök att gå tillbaka till rätt flik baserat på state eller default till publicerade
-    const fromTab = location.state?.fromTab || "publicerade";
-    navigate(`/rentals?tab=${fromTab}`);
+    const searchParams = new URLSearchParams(location.state?.from || "");
+    const tab = searchParams.get("tab") || "publicerade";
+    navigate(`/rentals?tab=${tab}`);
   };
 
   const handleCreateOffer = () => {
