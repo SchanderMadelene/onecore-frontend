@@ -9,7 +9,7 @@ export function PublishedHousingTable() {
 
   const handleRowClick = (housingId: string) => {
     navigate(`/rentals/housing/${housingId}`, {
-      state: { from: "?tab=publicerade" }
+      state: { activeHousingTab: "publicerade" }
     });
   };
 
