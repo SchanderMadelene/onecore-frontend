@@ -14,42 +14,36 @@ import { CustomerSearch } from "./interest-application/CustomerSearch";
 import { CustomerInformation } from "./interest-application/CustomerInformation";
 import { ValidationAlerts } from "./housing-application/ValidationAlerts";
 import { NotesSection } from "./interest-application/NotesSection";
-
 interface CreateHousingApplicationDialogProps {
   housingSpace: HousingSpace;
 }
-
-export const CreateHousingApplicationDialog = ({ housingSpace }: CreateHousingApplicationDialogProps) => {
+export const CreateHousingApplicationDialog = ({
+  housingSpace
+}: CreateHousingApplicationDialogProps) => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [notes, setNotes] = useState("");
-
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const createApplication = useCreateHousingApplication();
-  
-  const tenantValidation = useTenantValidation(
-    selectedCustomer?.customerNumber,
-    "CENTRUM", // Mock district code
-    housingSpace.id
-  );
-
+  const tenantValidation = useTenantValidation(selectedCustomer?.customerNumber, "CENTRUM",
+  // Mock district code
+  housingSpace.id);
   const handleCustomerSelect = (customer: Customer) => {
     setSelectedCustomer(customer);
     setSearchQuery(`${customer.firstName} ${customer.lastName}`);
   };
-
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
     if (!value.trim()) {
       setSelectedCustomer(null);
     }
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedCustomer) return;
-
     createApplication.mutate({
       housingSpaceId: housingSpace.id,
       customerNumber: selectedCustomer.customerNumber,
@@ -58,46 +52,38 @@ export const CreateHousingApplicationDialog = ({ housingSpace }: CreateHousingAp
       onSuccess: () => {
         toast({
           title: "Bostadsansökan skapad",
-          description: `Ansökan för ${selectedCustomer.firstName} ${selectedCustomer.lastName} har skapats`,
+          description: `Ansökan för ${selectedCustomer.firstName} ${selectedCustomer.lastName} har skapats`
         });
         resetForm();
         setOpen(false);
       },
-      onError: (error) => {
+      onError: error => {
         toast({
           title: "Fel",
           description: error.message || "Kunde inte skapa bostadsansökan",
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     });
   };
-
   const resetForm = () => {
     setSelectedCustomer(null);
     setSearchQuery("");
     setNotes("");
   };
-
   const tenantHasValidContractForTheDistrict = () => {
     if (!tenantValidation.data) return false;
     return tenantValidation.data.hasContractInDistrict || tenantValidation.data.hasUpcomingContractInDistrict;
   };
-
-  const canSubmit = selectedCustomer && 
-                  tenantValidation.data?.validationResult !== 'no-contract' && 
-                  tenantHasValidContractForTheDistrict() &&
-                  !createApplication.isPending;
-
-  return (
-    <Dialog open={open} onOpenChange={(isOpen) => {
-      setOpen(isOpen);
-      if (!isOpen) resetForm();
-    }}>
+  const canSubmit = selectedCustomer && tenantValidation.data?.validationResult !== 'no-contract' && tenantHasValidContractForTheDistrict() && !createApplication.isPending;
+  return <Dialog open={open} onOpenChange={isOpen => {
+    setOpen(isOpen);
+    if (!isOpen) resetForm();
+  }}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-1">
           <PlusCircle className="h-4 w-4" />
-          <span>Ny ansökan</span>
+          <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] p-0">
@@ -110,55 +96,29 @@ export const CreateHousingApplicationDialog = ({ housingSpace }: CreateHousingAp
         <FormWrapper onSubmit={handleSubmit} maxHeight="70vh">
           <HousingObjectInformation housingSpace={housingSpace} />
 
-          <CustomerSearch 
-            searchQuery={searchQuery}
-            selectedCustomer={selectedCustomer}
-            onSearchChange={handleSearchChange}
-            onCustomerSelect={handleCustomerSelect}
-          />
+          <CustomerSearch searchQuery={searchQuery} selectedCustomer={selectedCustomer} onSearchChange={handleSearchChange} onCustomerSelect={handleCustomerSelect} />
 
-          {selectedCustomer && (
-            <>
+          {selectedCustomer && <>
               {tenantValidation.isLoading && <CustomerInfoLoading />}
               
-              {tenantValidation.data && (
-                <>
-                  <CustomerInformation 
-                    customer={selectedCustomer} 
-                    tenantValidation={tenantValidation.data} 
-                  />
+              {tenantValidation.data && <>
+                  <CustomerInformation customer={selectedCustomer} tenantValidation={tenantValidation.data} />
                   
                   <ValidationAlerts tenantValidation={tenantValidation.data} />
 
-                  <NotesSection 
-                    notes={notes}
-                    onNotesChange={setNotes}
-                  />
-                </>
-              )}
-            </>
-          )}
+                  <NotesSection notes={notes} onNotesChange={setNotes} />
+                </>}
+            </>}
 
           <div className="flex justify-between gap-4 pt-4 border-t border-border">
-            <Button 
-              variant="outline" 
-              type="button"
-              onClick={() => setOpen(false)}
-              disabled={createApplication.isPending}
-              className="flex-1"
-            >
+            <Button variant="outline" type="button" onClick={() => setOpen(false)} disabled={createApplication.isPending} className="flex-1">
               Avbryt
             </Button>
-            <Button 
-              type="submit"
-              disabled={!canSubmit}
-              className="flex-1"
-            >
+            <Button type="submit" disabled={!canSubmit} className="flex-1">
               {createApplication.isPending ? "Skapar..." : "Lägg till"}
             </Button>
           </div>
         </FormWrapper>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 };
