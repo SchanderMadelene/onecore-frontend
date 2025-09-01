@@ -139,13 +139,6 @@ const HousingDetailPage = () => {
             <h2 className="text-xl font-semibold mb-4">
               {activeOffer ? "Erbjudna sökande" : "Intresseanmälningar"}
             </h2>
-            {activeOffer && (
-              <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                <p className="text-sm text-amber-800">
-                  <strong>Erbjudande skickat:</strong> {new Date(activeOffer.sentAt).toLocaleDateString('sv-SE')} till {activeOffer.selectedApplicants.length} sökande
-                </p>
-              </div>
-            )}
             <HousingApplicantsTable 
               applicants={displayedApplicants}
               housingAddress={listing.address}
