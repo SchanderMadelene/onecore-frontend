@@ -86,8 +86,83 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "2",
     seekers: 19,
     publishedFrom: "2024-01-12",
-    publishedTo: "2024-02-12",
+    publishedTo: "2025-02-12", // Future - should remain published
     availableFrom: "2024-02-25",
     description: "Familjevänlig bostad"
+  },
+  {
+    id: "234-234-234-1006",
+    address: "Ringvägen 33, 1tr",
+    area: "Frösunda",
+    type: "Lägenhet",
+    size: "95m²",
+    rent: "12500kr/mån",
+    rooms: 4,
+    floor: "1",
+    seekers: 42,
+    publishedFrom: "2024-02-01",
+    publishedTo: "2025-03-01", // Future - should remain published
+    availableFrom: "2024-03-15",
+    description: "Stor fyra för familjen"
+  },
+  {
+    id: "234-234-234-1007",
+    address: "Storgatan 15, 3tr",
+    area: "Centrum",
+    type: "Lägenhet",
+    size: "58m²",
+    rent: "8200kr/mån",
+    rooms: 2,
+    floor: "3",
+    seekers: 28,
+    publishedFrom: "2024-02-05",
+    publishedTo: "2025-03-05", // Future - should remain published
+    availableFrom: "2024-03-20",
+    description: "Central tvåa med utsikt"
+  },
+  {
+    id: "234-234-234-1008",
+    address: "Lundagatan 7, 2tr",
+    area: "Pettersberg",
+    type: "Lägenhet",
+    size: "42m²",
+    rent: "5800kr/mån",
+    rooms: 1,
+    floor: "2",
+    seekers: 12,
+    publishedFrom: "2024-02-10",
+    publishedTo: "2025-03-10", // Future - should remain published
+    availableFrom: "2024-03-25",
+    description: "Perfekt studentbostad"
+  },
+  {
+    id: "234-234-234-1009",
+    address: "Järnvägsgatan 28, 4tr",
+    area: "Malmaberg",
+    type: "Lägenhet",
+    size: "78m²",
+    rent: "10200kr/mån",
+    rooms: 3,
+    floor: "4",
+    seekers: 35,
+    publishedFrom: "2024-02-15",
+    publishedTo: "2025-03-15", // Future - should remain published
+    availableFrom: "2024-04-01",
+    description: "Ljus trea med balkong mot söder"
+  },
+  {
+    id: "234-234-234-1010",
+    address: "Björkgatan 12, 1tr",
+    area: "Hammarby",
+    type: "Lägenhet",
+    size: "65m²",
+    rent: "8900kr/mån",
+    rooms: 2,
+    floor: "1",
+    seekers: 18,
+    publishedFrom: "2024-02-20",
+    publishedTo: "2025-03-20", // Future - should remain published
+    availableFrom: "2024-04-05",
+    description: "Rymlig tvåa i barnvänligt område"
   }
 ];
