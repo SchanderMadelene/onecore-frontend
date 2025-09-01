@@ -5,6 +5,7 @@ import { Search, UserPlus } from "lucide-react";
 import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
 import { PublishedHousingTable } from "./PublishedHousingTable";
 import { OfferedHousingTable } from "./OfferedHousingTable";
+import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MobileTabs } from "@/components/ui/mobile-tabs";
 import { useState, useEffect } from "react";
@@ -66,11 +67,7 @@ export function HousingSpacesTable() {
               </Button>
             </div>
           </div>
-          <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
-            <div className="text-center">
-              <p>Inga bostäder klara för erbjudande</p>
-            </div>
-          </div>
+          <ReadyForOfferHousingTable />
         </div>
       )
     },

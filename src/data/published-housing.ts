@@ -26,7 +26,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "2",
     seekers: 15,
     publishedFrom: "2024-01-15",
-    publishedTo: "2024-02-15",
+    publishedTo: "2024-01-20", // Expired - should be ready for offer
     availableFrom: "2024-03-01",
     description: "Fin tvårummare med balkong"
   },
@@ -56,7 +56,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "1",
     seekers: 31,
     publishedFrom: "2024-01-08",
-    publishedTo: "2024-02-08",
+    publishedTo: "2024-01-25", // Expired - should be ready for offer
     availableFrom: "2024-02-15",
     description: "Rymlig trea i lugnt område"
   },
@@ -71,7 +71,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     floor: "3",
     seekers: 8,
     publishedFrom: "2024-01-20",
-    publishedTo: "2024-02-20",
+    publishedTo: "2025-03-20", // Future - should remain published
     availableFrom: "2024-03-10",
     description: "Mysig etta för singel"
   },

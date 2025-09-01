@@ -3,19 +3,18 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { publishedHousingSpaces } from "@/data/published-housing";
+import { useHousingStatus } from "@/hooks/useHousingStatus";
 
 export function OfferedHousingTable() {
   const navigate = useNavigate();
   const { offers } = useHousingOffers();
+  const { filterHousingByStatus } = useHousingStatus();
 
   const handleRowClick = (housingId: string) => {
     navigate(`/rentals/housing/${housingId}`);
   };
 
-  // Get housing listings that have offers
-  const offeredHousings = publishedHousingSpaces.filter(housing => 
-    offers.some(offer => offer.listingId === housing.id)
-  );
+  const offeredHousings = filterHousingByStatus(publishedHousingSpaces, 'offered');
 
   if (offeredHousings.length === 0) {
     return (
