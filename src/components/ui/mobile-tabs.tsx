@@ -45,9 +45,9 @@ export function MobileTabs({ value, onValueChange, tabs, className = "" }: Mobil
 
   return (
     <Tabs value={value} onValueChange={onValueChange} className={`w-full ${className}`}>
-      <TabsList className="flex mb-8 min-h-[44px] w-fit">
+      <TabsList className="h-auto mb-8 p-1 flex flex-wrap justify-start gap-1">
         {tabs.map((tab) => (
-          <TabsTrigger key={tab.value} value={tab.value} className="min-h-[40px] px-2 text-xs sm:text-sm sm:px-3 text-center flex items-center justify-center">
+          <TabsTrigger key={tab.value} value={tab.value} className="min-h-[40px] px-3 py-2 text-sm whitespace-nowrap flex-shrink-0">
             {tab.label}
           </TabsTrigger>
         ))}
