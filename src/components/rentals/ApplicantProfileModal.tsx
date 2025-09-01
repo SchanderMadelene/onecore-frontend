@@ -43,7 +43,7 @@ export function ApplicantProfileModal() {
           Sökandeprofil
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-visible">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-visible" style={{ overflow: 'visible' }}>
         <DialogHeader>
           <DialogTitle>Sökandeprofil</DialogTitle>
           <DialogDescription>

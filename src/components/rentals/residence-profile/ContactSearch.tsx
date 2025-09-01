@@ -89,7 +89,7 @@ export function ContactSearch({ selectedContact, onSelectContact }: ContactSearc
 
   return (
     <div className="space-y-4">
-      <div className="relative">
+      <div className="relative" style={{ position: 'relative', zIndex: 1 }}>
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
@@ -108,7 +108,15 @@ export function ContactSearch({ selectedContact, onSelectContact }: ContactSearc
           console.log("Render check - showResults:", showResults, "searchResults.length:", searchResults.length);
           return showResults && searchResults.length > 0;
         })() && (
-          <Card className="absolute top-full left-0 right-0 z-50 mt-1 border shadow-lg bg-background">
+          <Card 
+            className="absolute top-full left-0 right-0 mt-1 border shadow-lg bg-background"
+            style={{ 
+              zIndex: 9999,
+              position: 'absolute',
+              backgroundColor: 'white',
+              border: '1px solid #ccc'
+            }}
+          >
             <CardContent className="p-2 max-h-48 overflow-y-auto">
               {searchResults.map((contact) => (
                 <Button
