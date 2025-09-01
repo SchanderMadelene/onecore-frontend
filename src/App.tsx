@@ -18,7 +18,7 @@ import DesignSystemPage from "./pages/design-system/DesignSystemPage";
 import NotFound from "./pages/NotFound";
 import AllPropertiesPage from "./pages/properties/AllPropertiesPage";
 import RentalsPage from "./pages/rentals/RentalsPage";
-import ResidenceProfilePage from "./pages/rentals/ResidenceProfilePage";
+import CreateHousingAdPage from "./pages/rentals/CreateHousingAdPage";
 import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
 import HousingDetailPage from "./pages/rentals/HousingDetailPage";
 import TurnoverPage from "./pages/turnover/TurnoverPage";
@@ -67,10 +67,10 @@ const AppRoutes = () => {
         } 
       />
       <Route 
-        path="/rentals/residence-profile" 
+        path="/rentals/create-housing-ad" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <ResidenceProfilePage />
+            <CreateHousingAdPage />
           </ProtectedRoute>
         } 
       />

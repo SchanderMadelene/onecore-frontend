@@ -6,6 +6,7 @@ import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
 import { PublishedHousingTable } from "./PublishedHousingTable";
 import { OfferedHousingTable } from "./OfferedHousingTable";
 import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
+import { ApplicantProfileModal } from "./ApplicantProfileModal";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MobileTabs } from "@/components/ui/mobile-tabs";
 import { useState, useEffect } from "react";
@@ -24,8 +25,10 @@ export function HousingSpacesTable() {
     }
   }, [location.state]);
 
-  const handleCreateProfile = () => {
-    navigate('/rentals/residence-profile');
+  const handleCreateHousingAd = () => {
+    navigate('/rentals/create-housing-ad', {
+      state: { activeHousingTab: currentTab }
+    });
   };
 
   const tabs = [
@@ -40,10 +43,11 @@ export function HousingSpacesTable() {
               <Input placeholder="Sök publicerad bostad..." className="pl-9 w-full sm:w-[300px]" />
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateProfile}>
+              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
                 <UserPlus className="h-4 w-4" />
                 Ny bostadsannons
               </Button>
+              <ApplicantProfileModal />
             </div>
           </div>
           <PublishedHousingTable />
@@ -61,10 +65,11 @@ export function HousingSpacesTable() {
               <Input placeholder="Sök bostad klar för erbjudande..." className="pl-9 w-full sm:w-[300px]" />
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateProfile}>
+              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
                 <UserPlus className="h-4 w-4" />
                 Ny bostadsannons
               </Button>
+              <ApplicantProfileModal />
             </div>
           </div>
           <ReadyForOfferHousingTable />
@@ -82,10 +87,11 @@ export function HousingSpacesTable() {
               <Input placeholder="Sök erbjuden bostad..." className="pl-9 w-full sm:w-[300px]" />
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateProfile}>
+              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
                 <UserPlus className="h-4 w-4" />
                 Ny bostadsannons
               </Button>
+              <ApplicantProfileModal />
             </div>
           </div>
           <OfferedHousingTable />
@@ -103,10 +109,11 @@ export function HousingSpacesTable() {
               <Input placeholder="Sök i historik..." className="pl-9 w-full sm:w-[300px]" />
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateProfile}>
+              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
                 <UserPlus className="h-4 w-4" />
                 Ny bostadsannons
               </Button>
+              <ApplicantProfileModal />
             </div>
           </div>
           <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
@@ -128,10 +135,11 @@ export function HousingSpacesTable() {
               <Input placeholder="Sök opublicerad bostad..." className="pl-9 w-full sm:w-[300px]" />
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateProfile}>
+              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
                 <UserPlus className="h-4 w-4" />
                 Ny bostadsannons
               </Button>
+              <ApplicantProfileModal />
             </div>
           </div>
           <UnpublishedHousingTable />
