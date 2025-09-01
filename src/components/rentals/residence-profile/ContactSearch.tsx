@@ -39,22 +39,38 @@ export function ContactSearch({ selectedContact, onSelectContact }: ContactSearc
   const [showResults, setShowResults] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
+  // Debug effect for rendering
   useEffect(() => {
-    searchInputRef.current?.focus();
+    console.log("ContactSearch rendering - searchTerm:", searchTerm, "showResults:", showResults, "selectedContact:", selectedContact);
+  });
+
+  useEffect(() => {
+    console.log("Focus effect running");
+    if (searchInputRef.current) {
+      console.log("Focusing input");
+      searchInputRef.current.focus();
+    } else {
+      console.log("No input ref found");
+    }
   }, []);
 
   useEffect(() => {
+    console.log("SearchTerm changed:", searchTerm, "Length:", searchTerm.length);
     if (searchTerm.length >= 2) {
       const filtered = mockContacts.filter(contact =>
         contact.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         contact.contactCode.includes(searchTerm) ||
         (contact.nationalRegistrationNumber && contact.nationalRegistrationNumber.includes(searchTerm))
       );
+      console.log("Filtered results:", filtered);
+      console.log("Available contacts:", mockContacts);
       setSearchResults(filtered);
       setShowResults(true);
+      console.log("Should show results:", true, "Results count:", filtered.length);
     } else {
       setSearchResults([]);
       setShowResults(false);
+      console.log("Should show results:", false);
     }
   }, [searchTerm]);
 
@@ -80,12 +96,18 @@ export function ContactSearch({ selectedContact, onSelectContact }: ContactSearc
             ref={searchInputRef}
             placeholder="Sök på person eller kundnummer"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              console.log("Input change:", e.target.value);
+              setSearchTerm(e.target.value);
+            }}
             className="pl-9"
           />
         </div>
 
-        {showResults && searchResults.length > 0 && (
+        {(() => {
+          console.log("Render check - showResults:", showResults, "searchResults.length:", searchResults.length);
+          return showResults && searchResults.length > 0;
+        })() && (
           <Card className="absolute top-full left-0 right-0 z-50 mt-1 border shadow-lg bg-background">
             <CardContent className="p-2 max-h-48 overflow-y-auto">
               {searchResults.map((contact) => (
