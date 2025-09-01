@@ -103,7 +103,7 @@ const HousingDetailPage = () => {
     );
   }
 
-  const offerStatus = listing.offers.length > 0 ? "Erbjudandeomgång pågår" : "Publicerad";
+  const offerStatus = (listing.offers.length > 0 || isListingOffered(housingId)) ? "Erbjudandeomgång pågår" : "Publicerad";
   
   // Get active offer for this listing
   const activeOffer = getOfferForListing(housingId);
