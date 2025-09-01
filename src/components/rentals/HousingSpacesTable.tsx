@@ -8,7 +8,7 @@ import { OfferedHousingTable } from "./OfferedHousingTable";
 import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { ApplicantProfileModal } from "./ApplicantProfileModal";
 import { useNavigate, useLocation } from "react-router-dom";
-import { MobileTabs } from "@/components/ui/mobile-tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 
 export function HousingSpacesTable() {
@@ -150,11 +150,20 @@ export function HousingSpacesTable() {
 
   return (
     <div className="w-full space-y-8">
-      <MobileTabs 
-        value={currentTab} 
-        onValueChange={setCurrentTab}
-        tabs={tabs}
-      />
+      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
+        <TabsList className="grid mb-8 min-h-[44px]" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
+          {tabs.map((tab) => (
+            <TabsTrigger key={tab.value} value={tab.value} className="min-h-[40px] px-2 text-xs sm:text-sm sm:px-3">
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {tabs.map((tab) => (
+          <TabsContent key={tab.value} value={tab.value}>
+            {tab.content}
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 }
