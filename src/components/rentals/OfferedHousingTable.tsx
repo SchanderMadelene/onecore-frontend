@@ -11,7 +11,9 @@ export function OfferedHousingTable() {
   const { filterHousingByStatus } = useHousingStatus();
 
   const handleRowClick = (housingId: string) => {
-    navigate(`/rentals/housing/${housingId}`);
+    navigate(`/rentals/housing/${housingId}`, {
+      state: { fromTab: "erbjudna" }
+    });
   };
 
   const offeredHousings = filterHousingByStatus(publishedHousingSpaces, 'offered');

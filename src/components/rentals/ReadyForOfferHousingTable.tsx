@@ -8,7 +8,9 @@ export function ReadyForOfferHousingTable() {
   const { filterHousingByStatus } = useHousingStatus();
 
   const handleRowClick = (housingId: string) => {
-    navigate(`/rentals/housing/${housingId}`);
+    navigate(`/rentals/housing/${housingId}`, {
+      state: { fromTab: "redo-for-erbjudande" }
+    });
   };
 
 
