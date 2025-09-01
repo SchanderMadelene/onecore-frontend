@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 export function HousingSpacesTable() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [currentTab, setCurrentTab] = useState("behovAvPublicering");
+  const [currentTab, setCurrentTab] = useState("publicerade");
 
   // Handle navigation from offer creation
   useEffect(() => {
