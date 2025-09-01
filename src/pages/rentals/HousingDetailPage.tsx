@@ -21,7 +21,9 @@ const HousingDetailPage = () => {
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
   const handleBack = () => {
-    navigate(-1);
+    // Försök att gå tillbaka till rätt flik baserat på state eller default till publicerade
+    const fromTab = location.state?.fromTab || "publicerade";
+    navigate(`/rentals?tab=${fromTab}`);
   };
 
   const handleCreateOffer = () => {
