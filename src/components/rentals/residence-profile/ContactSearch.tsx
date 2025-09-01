@@ -104,38 +104,33 @@ export function ContactSearch({ selectedContact, onSelectContact }: ContactSearc
           />
         </div>
 
-        {(() => {
-          console.log("Render check - showResults:", showResults, "searchResults.length:", searchResults.length);
-          return showResults && searchResults.length > 0;
-        })() && (
-          <Card 
-            className="absolute top-full left-0 right-0 mt-1 border shadow-lg bg-background"
+        {showResults && searchResults.length > 0 && (
+          <div 
+            className="w-full mt-2 border rounded-md shadow-lg"
             style={{ 
-              zIndex: 9999,
-              position: 'absolute',
-              backgroundColor: 'white',
-              border: '1px solid #ccc'
+              backgroundColor: '#ffffff',
+              border: '2px solid #000000',
+              zIndex: 10000,
+              position: 'relative'
             }}
           >
-            <CardContent className="p-2 max-h-48 overflow-y-auto">
+            <div className="p-2 bg-white">
+              <div className="text-sm font-medium text-gray-900 mb-2">Sökresultat:</div>
               {searchResults.map((contact) => (
-                <Button
+                <div
                   key={contact.contactCode}
-                  variant="ghost"
-                  className="w-full justify-start p-3 h-auto"
+                  className="p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
                   onClick={() => handleSelectContact(contact)}
+                  style={{ backgroundColor: '#f9f9f9', margin: '2px 0' }}
                 >
-                  <User className="h-4 w-4 mr-3 text-muted-foreground" />
-                  <div className="text-left">
-                    <div className="font-medium">{contact.fullName}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {contact.contactCode} • {contact.nationalRegistrationNumber}
-                    </div>
+                  <div className="font-medium text-gray-900">{contact.fullName}</div>
+                  <div className="text-sm text-gray-600">
+                    {contact.contactCode} • {contact.nationalRegistrationNumber}
                   </div>
-                </Button>
+                </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
       </div>
 
