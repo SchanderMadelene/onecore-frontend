@@ -63,14 +63,12 @@ export default function CreateHousingAdPage() {
   };
 
   const onSubmit = (data: EditHousingFormData) => {
-    console.log('Creating new housing ad:', data);
     toast.success("Ny bostadsannons har skapats");
     handleBack();
   };
 
   const handlePublish = () => {
     form.handleSubmit((data) => {
-      console.log('Creating and publishing housing ad:', data);
       toast.success("Bostadsannons har skapats och publicerats");
       handleBack();
     })();

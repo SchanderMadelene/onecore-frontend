@@ -15,11 +15,8 @@ interface ResidenceInfoProps {
 export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps) => {
   const isMobile = useIsMobile();
 
-  console.log("ResidenceInfo rendering with rooms:", rooms);
-
   // Mock data för underhållsenheter i köket
   const getMaintenanceUnitsForRoom = (roomId: string) => {
-    console.log("Getting maintenance units for room:", roomId);
     
     if (roomId === "2") { // Kök (RUM-102)
       const units = [
@@ -46,15 +43,12 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
           }
         }
       ];
-      console.log("Returning units for kitchen:", units);
       return units;
     }
-    console.log("No units for room:", roomId);
     return [];
   };
 
   if (!rooms || rooms.length === 0) {
-    console.log("No rooms data available");
     return (
       <TabLayout 
         title="Rumsinformation" 

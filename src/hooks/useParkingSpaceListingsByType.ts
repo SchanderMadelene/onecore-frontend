@@ -34,7 +34,6 @@ export const useParkingSpaceListingsByType = (type: ListingType) => {
         const data = await response.json();
         return data.content || [];
       } catch (error) {
-        console.error(`Error fetching ${type} listings:`, error);
         // Fallback till mock data för utveckling
         return getMockDataByType(type);
       }

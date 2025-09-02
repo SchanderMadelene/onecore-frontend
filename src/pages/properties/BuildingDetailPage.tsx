@@ -28,7 +28,6 @@ const BuildingDetailPage = () => {
 
   useEffect(() => {
     if (buildingError) {
-      console.error("Error loading building:", buildingError);
       toast({
         title: "Fel vid laddning",
         description: "Kunde inte ladda byggnadsdata. Kontrollera URL:en.",

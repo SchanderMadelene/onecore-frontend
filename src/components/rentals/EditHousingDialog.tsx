@@ -66,13 +66,11 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
   });
 
   const onSubmit = (data: EditHousingFormData) => {
-    console.log('Saving housing space:', data);
     toast.success("Bostadsannonsen har sparats");
     setOpen(false);
   };
 
   const handlePublish = () => {
-    console.log('Publishing housing space:', housingSpace.id);
     toast.success("Bostadsannonsen har publicerats");
     setOpen(false);
   };

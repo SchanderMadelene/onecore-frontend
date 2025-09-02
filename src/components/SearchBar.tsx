@@ -43,7 +43,6 @@ export function SearchBar() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Searching for:", searchQuery);
     // Implementera ytterligare sökning här
   };
 

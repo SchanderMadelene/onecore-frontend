@@ -13,8 +13,6 @@ export function usePropertyDetail(propertyId: string | undefined) {
           if (propertyId && mockPropertyDetails[propertyId]) {
             resolve(mockPropertyDetails[propertyId]);
           } else {
-            console.error('Property not found:', propertyId);
-            console.log('Available properties:', Object.keys(mockPropertyDetails));
             reject(new Error('Fastighet hittades inte'));
           }
         }, 500);

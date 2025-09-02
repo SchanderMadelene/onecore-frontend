@@ -29,11 +29,6 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
   }, [location.pathname, setIsSidebarOpen, isMobile]);
 
   const handleSidebarToggle = () => {
-    console.log('Sidebar toggle called!', { 
-      currentState: isSidebarOpen, 
-      newState: !isSidebarOpen,
-      timestamp: new Date().toISOString() 
-    });
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -49,7 +44,6 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
           <div 
             className="fixed inset-0 bg-black/20 z-[45] lg:hidden backdrop-blur-sm"
             onClick={() => {
-              console.log('Backdrop clicked, closing sidebar');
               setIsSidebarOpen(false);
             }}
             style={{ top: '3.5rem' }}
@@ -79,7 +73,6 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
           >
             <TreeView 
               onNavigate={() => {
-                console.log('Navigation item clicked, closing mobile sidebar');
                 if (isMobile) setIsSidebarOpen(false);
               }}
               showRentals={features.showRentals}

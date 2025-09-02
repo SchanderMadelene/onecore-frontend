@@ -28,7 +28,6 @@ export function OrdersTable({ orders }: OrdersTableProps) {
   };
 
   const handleOpenOrder = (orderId: string) => {
-    console.log("Öppnar ärende:", orderId);
     // Här kan du lägga till navigering eller modal för att visa ärendedetaljer
   };
 

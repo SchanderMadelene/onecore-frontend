@@ -18,19 +18,16 @@ export function ApplicantProfileModal() {
   const [selectedContact, setSelectedContact] = useState<ContactSearchData | null>(null);
 
   const handleContactSelect = (contact: ContactSearchData | null) => {
-    console.log("Contact selected in modal:", contact);
     setSelectedContact(contact);
   };
 
   const handleClose = () => {
-    console.log("Modal closing, resetting selected contact");
     setOpen(false);
     setSelectedContact(null);
   };
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => {
-      console.log("Dialog state changing:", isOpen);
       if (!isOpen) {
         handleClose();
       } else {

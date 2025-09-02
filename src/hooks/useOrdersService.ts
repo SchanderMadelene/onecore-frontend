@@ -321,16 +321,12 @@ export function useOrdersService() {
       status: orderData.status || "pending",
     };
 
-    console.log("Creating new order:", newOrder);
-    
     setActiveOrders([newOrder, ...activeOrders]);
     return newOrder;
   };
 
   // Get orders for a specific residence ID
   const getOrdersByResidence = (residenceId?: string) => {
-    console.log("Filtering orders for residenceId:", residenceId);
-    
     if (!residenceId) {
       return { activeOrders, historicalOrders };
     }
@@ -339,7 +335,6 @@ export function useOrdersService() {
     const filteredActive = activeOrders.filter(order => {
       const matches = order.residenceId === residenceId && 
         (order.status === "active" || order.status === "pending");
-      console.log(`Order ${order.id} (${order.residenceId}) matches ${residenceId}:`, matches);
       return matches;
     });
     
@@ -348,9 +343,6 @@ export function useOrdersService() {
       order.residenceId === residenceId && 
       order.status === "resolved"
     );
-    
-    console.log("Filtered active orders:", filteredActive.length);
-    console.log("Filtered historical orders:", filteredHistorical.length);
     
     return { 
       activeOrders: filteredActive, 

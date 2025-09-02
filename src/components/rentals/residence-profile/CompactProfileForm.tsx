@@ -37,7 +37,6 @@ export function CompactProfileForm({ applicantId }: CompactProfileFormProps) {
   });
 
   const onSubmit = (data: ProfileFormData) => {
-    console.log("Compact profile form data:", data);
     toast.success("Profil uppdaterad");
   };
 

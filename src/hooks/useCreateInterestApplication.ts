@@ -13,8 +13,6 @@ export const useCreateInterestApplication = () => {
 
   return useMutation({
     mutationFn: async (params: CreateInterestApplicationParams) => {
-      console.log("Creating interest application:", params);
-      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       

@@ -40,29 +40,19 @@ export const useBuildingDetail = (
       
       if (!propertyKey || !buildingId) return null;
       
-      console.log("Looking for property:", propertyKey, "building:", buildingId);
-      
       const property = mockPropertyDetails[propertyKey];
       
       if (!property) {
-        console.warn(`Property not found: ${propertyKey}`);
         return null;
       }
       
       const actualBuildingId = buildingIdMappings[buildingId];
       
       if (!actualBuildingId) {
-        console.warn(`No building mapping found for: ${buildingId}`);
-        console.log("Available mappings:", Object.keys(buildingIdMappings));
         return null;
       }
       
       const building = property.buildings.find(b => b.id === actualBuildingId);
-      
-      if (!building) {
-        console.warn(`Building not found with ID: ${actualBuildingId} in property: ${propertyKey}`);
-        console.log("Available buildings:", property.buildings.map(b => b.id));
-      }
       
       return building || null;
     },

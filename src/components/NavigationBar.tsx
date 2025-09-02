@@ -15,28 +15,24 @@ export function NavigationBar({
   const handleMenuClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Hamburger menu clicked!', { timestamp: new Date().toISOString() });
     onMenuClick();
   };
 
   const handleMenuTouch = (e: React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Hamburger menu touched!', { timestamp: new Date().toISOString() });
     onMenuClick();
   };
 
   const handleSearchToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Search toggle clicked!', { timestamp: new Date().toISOString() });
     setShowMobileSearch(!showMobileSearch);
   };
 
   const handleSearchTouch = (e: React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Search toggle touched!', { timestamp: new Date().toISOString() });
     setShowMobileSearch(!showMobileSearch);
   };
   

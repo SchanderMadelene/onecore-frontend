@@ -71,28 +71,28 @@ const getQuickActions = (result: SearchResult) => {
   switch (result.type) {
     case "customer":
       return [
-        { label: "Skicka notis", action: () => console.log("Send notification", result.id) },
-        { label: "Visa kontrakt", action: () => console.log("View contracts", result.id) }
+        { label: "Skicka notis", action: () => {} },
+        { label: "Visa kontrakt", action: () => {} }
       ];
     case "residence":
       return [
-        { label: "Schemalägg besök", action: () => console.log("Schedule visit", result.id) },
-        { label: "Kontakta hyresgäst", action: () => console.log("Contact tenant", result.id) }
+        { label: "Schemalägg besök", action: () => {} },
+        { label: "Kontakta hyresgäst", action: () => {} }
       ];
     case "case":
       return [
-        { label: "Markera som klart", action: () => console.log("Mark complete", result.id) },
-        { label: "Tilldela", action: () => console.log("Assign", result.id) }
+        { label: "Markera som klart", action: () => {} },
+        { label: "Tilldela", action: () => {} }
       ];
     case "invoice":
       return [
-        { label: "Skicka påminnelse", action: () => console.log("Send reminder", result.id) },
-        { label: "Markera betald", action: () => console.log("Mark paid", result.id) }
+        { label: "Skicka påminnelse", action: () => {} },
+        { label: "Markera betald", action: () => {} }
       ];
     case "key":
       return [
-        { label: "Visa historik", action: () => console.log("View history", result.id) },
-        { label: "Boka utlämning", action: () => console.log("Book handover", result.id) }
+        { label: "Visa historik", action: () => {} },
+        { label: "Boka utlämning", action: () => {} }
       ];
     default:
       return [];

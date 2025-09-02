@@ -10,6 +10,3 @@ export const mockPropertyDetails: Record<string, PropertyDetail> = {
   "lindaren-2": property2,
   "bjornen-4": property3
 };
-
-// Debug information for available property keys
-console.log("Available property keys:", Object.keys(mockPropertyDetails));

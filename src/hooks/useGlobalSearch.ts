@@ -73,7 +73,6 @@ export function useGlobalSearch() {
         history: globalSearchService.getSearchHistory()
       }));
     } catch (error) {
-      console.error("Search failed:", error);
       setSearchState(prev => ({ ...prev, isLoading: false }));
     }
   }, [searchState.filters]);
