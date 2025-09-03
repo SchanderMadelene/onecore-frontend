@@ -28,8 +28,8 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
   }
 
   return (
-    <Tabs defaultValue="entrances" className="w-full">
-      <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg justify-start">
+    <Tabs defaultValue="orders" className="space-y-6">
+      <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
         <TabsTrigger value="entrances">
           Uppgångar
         </TabsTrigger>
@@ -63,20 +63,16 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="entrances" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        {features.showBuildingEntrances ? (
+      <TabsContent value="entrances">
+        <FeatureGatedContent
+          isEnabled={features.showBuildingEntrances}
+          fallbackMessage="Uppgångsfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
+        >
           <BuildingEntrances building={building} basePath={basePath} />
-        ) : (
-          <FeatureGatedContent
-            isEnabled={false}
-            fallbackMessage="Uppgångsfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
-          >
-            <div />
-          </FeatureGatedContent>
-        )}
+        </FeatureGatedContent>
       </TabsContent>
 
-      <TabsContent value="parts" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      <TabsContent value="parts">
         <FeatureGatedContent
           isEnabled={features.showBuildingParts}
           fallbackMessage="Byggnadsdelarfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
@@ -85,7 +81,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
         </FeatureGatedContent>
       </TabsContent>
 
-      <TabsContent value="spaces" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      <TabsContent value="spaces">
         <FeatureGatedContent
           isEnabled={features.showBuildingSpaces}
           fallbackMessage="Utrymmenfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
@@ -94,7 +90,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
         </FeatureGatedContent>
       </TabsContent>
 
-      <TabsContent value="installations" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      <TabsContent value="installations">
         <FeatureGatedContent
           isEnabled={features.showBuildingInstallations}
           fallbackMessage="Installationerfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
@@ -103,7 +99,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
         </FeatureGatedContent>
       </TabsContent>
 
-      <TabsContent value="parking" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      <TabsContent value="parking">
         <FeatureGatedContent
           isEnabled={features.showBuildingParking}
           fallbackMessage="Parkeringfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
@@ -112,7 +108,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
         </FeatureGatedContent>
       </TabsContent>
 
-      <TabsContent value="documents" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+      <TabsContent value="documents">
         <FeatureGatedContent
           isEnabled={features.showBuildingDocuments}
           fallbackMessage="Dokumentfunktionen är inte aktiverad. Aktivera den i betainställningarna för att se innehållet."
@@ -121,18 +117,28 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
         </FeatureGatedContent>
       </TabsContent>
 
-      <TabsContent value="orders" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        <BuildingOrdersTab building={building} />
+      <TabsContent value="orders">
+        <FeatureGatedContent
+          isEnabled={true}
+          fallbackMessage="Ärendefunktionen är inte aktiverad."
+        >
+          <BuildingOrdersTab building={building} />
+        </FeatureGatedContent>
       </TabsContent>
 
-      <TabsContent value="notes" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        <Notes
-          entityType="building"
-          entityId={building.id}
-          title="Noteringar för byggnad"
-          placeholder="Skriv din notering här..."
-          emptyMessage="Inga noteringar har lagts till för denna byggnad ännu."
-        />
+      <TabsContent value="notes">
+        <FeatureGatedContent
+          isEnabled={true}
+          fallbackMessage="Noteringsfunktionen är inte aktiverad."
+        >
+          <Notes
+            entityType="building"
+            entityId={building.id}
+            title="Noteringar för byggnad"
+            placeholder="Skriv din notering här..."
+            emptyMessage="Inga noteringar har lagts till för denna byggnad ännu."
+          />
+        </FeatureGatedContent>
       </TabsContent>
     </Tabs>
   );
