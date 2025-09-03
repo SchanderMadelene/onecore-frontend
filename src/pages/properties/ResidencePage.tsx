@@ -7,6 +7,8 @@ import { LoadingState } from "@/components/residence/LoadingState";
 import { ErrorState } from "@/components/residence/ErrorState";
 import { useResidenceData } from "@/hooks/useResidenceData";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useBuildingDetail } from "@/hooks/useBuildingDetail";
+import { usePropertyFromBuilding } from "@/hooks/usePropertyFromBuilding";
 
 export const ResidencePage = () => {
   const { property, building, id } = useParams();
@@ -23,6 +25,10 @@ export const ResidencePage = () => {
   const residenceId = id || building;
   
   const { residenceData, roomsData, isLoading, error } = useResidenceData(residenceId);
+  
+  // Fetch building and property data for additional info
+  const { data: buildingDetail } = useBuildingDetail(property, building);
+  const { data: propertyDetail } = usePropertyFromBuilding(property);
 
   useEffect(() => {
     console.log("Current route params:", { property, building, id });
@@ -54,6 +60,8 @@ export const ResidencePage = () => {
             roomsData={roomsData}
             property={property}
             district={undefined}
+            buildingDetail={buildingDetail}
+            propertyDetail={propertyDetail}
           />
         </div>
       );
