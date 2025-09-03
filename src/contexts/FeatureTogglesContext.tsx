@@ -29,6 +29,16 @@ interface FeatureToggles {
   showRentalsHousing: boolean;
   showRentalsParking: boolean;
   showRentalsStorage: boolean;
+  // Property detail page tabs
+  showPropertyInfo: boolean;
+  showPropertyStatistics: boolean;
+  showPropertyDocuments: boolean;
+  showPropertyPlanning: boolean;
+  showPropertyBuildings: boolean;
+  showPropertyMaintenance: boolean;
+  showPropertyOrders: boolean;
+  showPropertyAccess: boolean;
+  showPropertyMap: boolean;
   // Building detail page tabs
   showBuildingEntrances: boolean;
   showBuildingParts: boolean;
@@ -74,6 +84,16 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showRentalsHousing: false,
   showRentalsParking: false,
   showRentalsStorage: false,
+  // Property detail page tabs
+  showPropertyInfo: true,
+  showPropertyStatistics: false,
+  showPropertyDocuments: true,
+  showPropertyPlanning: false,
+  showPropertyBuildings: true,
+  showPropertyMaintenance: false,
+  showPropertyOrders: false,
+  showPropertyAccess: false,
+  showPropertyMap: false,
   // Building detail page tabs
   showBuildingEntrances: false,
   showBuildingParts: false,
