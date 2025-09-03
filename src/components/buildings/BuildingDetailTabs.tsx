@@ -6,7 +6,7 @@ import { BuildingSpacesTab } from "./tabs/BuildingSpacesTab";
 import { BuildingInstallationsTab } from "./tabs/BuildingInstallationsTab";
 import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
 import { BuildingDocumentsTab } from "./tabs/BuildingDocumentsTab";
-import { OrdersManagement } from "@/components/residence/OrdersManagement";
+import { BuildingOrdersTab } from "./tabs/BuildingOrdersTab";
 import { Notes } from "@/components/shared/Notes";
 import { FeatureGatedContent } from "@/components/residence/tabs/FeatureGatedContent";
 
@@ -102,10 +102,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
       id: "orders",
       title: "Ärenden",
       content: (
-        <OrdersManagement 
-          contextType="building" 
-          residenceId={building.id}
-        />
+        <BuildingOrdersTab building={building} />
       )
     },
     {
@@ -241,10 +238,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
       </TabsContent>
 
       <TabsContent value="orders" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        <OrdersManagement 
-          contextType="building" 
-          residenceId={building.id}
-        />
+        <BuildingOrdersTab building={building} />
       </TabsContent>
 
       <TabsContent value="notes" className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
