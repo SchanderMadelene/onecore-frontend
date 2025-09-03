@@ -18,7 +18,7 @@ import { MaintenanceUnit } from "@/types/api";
 type CreateOrderDialogProps = {
   buttonSize?: "default" | "sm" | "lg" | "icon";
   buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
-  contextType?: "tenant" | "residence";
+  contextType?: "tenant" | "residence" | "building";
   onOrderCreated?: () => void;
   tenant?: any; // Optional tenant prop
   residenceId?: string; // Added residenceId prop

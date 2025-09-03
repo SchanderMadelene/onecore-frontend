@@ -21,7 +21,7 @@ export const PropertyApartmentsTab = ({ buildings }: PropertyApartmentsTabProps)
               <div className="flex justify-between items-center">
                 <CardTitle className="text-lg">{apartment.code}</CardTitle>
                 <span className="bg-muted text-muted-foreground text-xs font-medium px-2 py-1 rounded-full">
-                  {apartment.area} m² • {apartment.rooms} rum
+                  {apartment.size} m² • {apartment.rooms} rum
                 </span>
               </div>
               <p className="text-sm text-muted-foreground">{building.name}</p>
