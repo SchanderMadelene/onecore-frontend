@@ -56,13 +56,13 @@ interface FeatureTogglesContextType {
 }
 
 const DEFAULT_FEATURES: FeatureToggles = {
-  showNavigation: false,
+  showNavigation: true,
   showRentals: false,
   showDesignSystem: false,
-  showProperties: false,
+  showProperties: true,
   showTenants: false,
-  showBuildings: false,
-  showApartments: false,
+  showBuildings: true,
+  showApartments: true,
   showRoomInformation: false,
   showInspections: false,
   showApartmentIssues: false,
