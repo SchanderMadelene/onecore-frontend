@@ -28,7 +28,6 @@ const PropertyDetailPage = () => {
 
   useEffect(() => {
     if (error) {
-      console.error("Error loading property:", error);
       toast({
         title: "Fel vid laddning",
         description: "Kunde inte ladda fastighetsdata. Kontrollera URL:en.",

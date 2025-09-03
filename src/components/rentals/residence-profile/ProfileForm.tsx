@@ -36,7 +36,6 @@ export function ProfileForm({ contact }: ProfileFormProps) {
   });
 
   const onSubmit = (data: ProfileFormData) => {
-    console.log('Profile form data:', data);
     toast.success("Boendeprofilen har sparats");
   };
 

@@ -14,8 +14,6 @@ export const PropertyOrdersTab = ({ propertyDetail }: PropertyOrdersTabProps) =>
   // Use property directly as the property ID
   const propertyId = property || propertyDetail.id || "property-default";
   
-  console.log("PropertyOrdersTab - Using propertyId:", propertyId);
-  
   return (
     <TabLayout 
       title="Ärenden för fastighet" 

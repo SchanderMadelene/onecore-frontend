@@ -38,7 +38,6 @@ export const useCloseParkingSpaceListing = () => {
         description: "Kunde inte stänga listningen. Försök igen senare.",
         variant: "destructive",
       });
-      console.error('Error closing listing:', error);
     }
   });
 };
@@ -77,7 +76,6 @@ export const useDeleteParkingSpaceListing = () => {
         description: "Kunde inte ta bort annonsen. Det finns troligtvis aktiva intresseanmälningar.",
         variant: "destructive",
       });
-      console.error('Error deleting listing:', error);
     }
   });
 };
@@ -116,7 +114,6 @@ export const useSyncInternalParkingSpaces = () => {
         description: "Kunde inte synkronisera interna bilplatser",
         variant: "destructive",
       });
-      console.error('Error syncing parking spaces:', error);
     }
   });
 };

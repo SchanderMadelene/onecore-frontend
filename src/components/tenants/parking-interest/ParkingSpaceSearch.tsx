@@ -41,20 +41,14 @@ export const ParkingSpaceSearch = ({
   // Get unique areas for filter
   const areas = [...new Set(parkingSpaces.map(space => space.area))];
 
-  const handleSpaceToggle = (space: ParkingSpaceForPublishing) => {
-    console.log("Toggle called for space:", space.id);
-    console.log("Current selected spaces:", selectedParkingSpaces.map(s => s.id));
-    
+  const handleSpaceToggle = (space: ParkingSpaceForPublishing) => {    
     const isSelected = selectedParkingSpaces.some(s => s.id === space.id);
-    console.log("Is selected:", isSelected);
     
     if (isSelected) {
       const newSpaces = selectedParkingSpaces.filter(s => s.id !== space.id);
-      console.log("Removing space, new array:", newSpaces.map(s => s.id));
       onParkingSpaceSelect(newSpaces);
     } else {
       const newSpaces = [...selectedParkingSpaces, space];
-      console.log("Adding space, new array:", newSpaces.map(s => s.id));
       onParkingSpaceSelect(newSpaces);
     }
   };

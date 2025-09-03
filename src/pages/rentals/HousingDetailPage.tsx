@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useHousingListing } from "@/hooks/useHousingListing";
 import { toast } from "@/hooks/use-toast";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
+import { useHousingStatus } from "@/hooks/useHousingStatus";
 import { useState } from "react";
 import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
 import { HousingHeader } from "./components/HousingHeader";
@@ -17,6 +18,7 @@ const HousingDetailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { createOffer, isListingOffered, getOfferForListing } = useHousingOffers();
+  const { getHousingStatus } = useHousingStatus();
   
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
@@ -103,17 +105,16 @@ const HousingDetailPage = () => {
     );
   }
 
-  const offerStatus = listing.offers.length > 0 ? "Erbjudandeomgång pågår" : "Publicerad";
+  const status = getHousingStatus(listing);
+  const offerStatus = status === 'published' ? "Publicerad" : 
+                    status === 'ready_for_offer' ? "Klara för erbjudande" : 
+                    status === 'offered' ? "Erbjudna" : "Publicerad";
   
   // Get active offer for this listing
   const activeOffer = getOfferForListing(housingId);
   
-  // Filter applicants based on whether there's an active offer
-  const displayedApplicants = activeOffer 
-    ? listing.applicants.filter(applicant => 
-        activeOffer.selectedApplicants.includes(applicant.id)
-      )
-    : listing.applicants;
+  // Show all applicants with offer information
+  const displayedApplicants = listing.applicants;
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -132,15 +133,8 @@ const HousingDetailPage = () => {
         <div className="space-y-8">
           <section>
             <h2 className="text-xl font-semibold mb-4">
-              {activeOffer ? "Erbjudna sökande" : "Intresseanmälningar"}
+              Intresseanmälningar
             </h2>
-            {activeOffer && (
-              <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                <p className="text-sm text-amber-800">
-                  <strong>Erbjudande skickat:</strong> {new Date(activeOffer.sentAt).toLocaleDateString('sv-SE')} till {activeOffer.selectedApplicants.length} sökande
-                </p>
-              </div>
-            )}
             <HousingApplicantsTable 
               applicants={displayedApplicants}
               housingAddress={listing.address}
@@ -148,6 +142,7 @@ const HousingDetailPage = () => {
               showOfferColumns={false}
               showSelectionColumn={!activeOffer}
               onSelectionChange={setSelectedApplicants}
+              offeredApplicantIds={activeOffer?.selectedApplicants || []}
             />
           </section>
 

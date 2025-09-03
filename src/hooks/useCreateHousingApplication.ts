@@ -11,8 +11,6 @@ export const useCreateHousingApplication = () => {
 
   return useMutation({
     mutationFn: async (params: CreateHousingApplicationParams) => {
-      console.log("Creating housing application:", params);
-      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       

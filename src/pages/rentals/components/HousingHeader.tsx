@@ -43,7 +43,7 @@ export function HousingHeader({
             </Badge>
           </div>
           <div className="flex items-center gap-2">
-            {housing && <HousingApplicationDialog housingSpace={housing} />}
+            {housing && offerStatus === "Publicerad" && <HousingApplicationDialog housingSpace={housing} />}
             {!hasOffers && (
               <Button 
                 onClick={onCreateOffer}

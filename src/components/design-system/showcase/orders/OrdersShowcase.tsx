@@ -70,7 +70,6 @@ export const OrdersShowcase = () => {
   const sampleRooms = mockRoomsData.content;
 
   const handleSubmitInspection = (inspectorName: string, rooms: any) => {
-    console.log("Inspection submitted:", { inspectorName, rooms });
     setIsCreateInspectionOpen(false);
   };
 

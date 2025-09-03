@@ -60,8 +60,6 @@ export const PublishParkingSpacesDialog = () => {
       // Simulera API-anrop
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      console.log("Publicerar bilplatser:", selectedSpaces);
-      
       toast({
         title: "Bilplatser publicerade",
         description: `${selectedSpaces.length} bilplatser har publicerats framgångsrikt`,
