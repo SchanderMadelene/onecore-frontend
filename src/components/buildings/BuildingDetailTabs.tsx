@@ -123,7 +123,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
   if (isMobile) {
     return (
       <div className="w-full">
-        <Accordion type="multiple" defaultValue={["entrances"]} className="space-y-2">
+        <Accordion type="multiple" defaultValue={["orders"]} className="space-y-2">
           {accordionItems.map(item => (
             <AccordionItem key={item.id} value={item.id} className="rounded-lg border border-slate-200">
               <AccordionTrigger className="px-2 py-2">
