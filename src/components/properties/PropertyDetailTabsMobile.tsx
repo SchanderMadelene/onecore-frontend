@@ -80,7 +80,7 @@ export const PropertyDetailTabsMobile = ({ propertyDetail }: PropertyDetailTabsM
   return (
     <MobileAccordion 
       items={accordionItems} 
-      defaultOpen={["orders"]} 
+      defaultOpen={["info"]} 
       className="space-y-3" 
     />
   );
