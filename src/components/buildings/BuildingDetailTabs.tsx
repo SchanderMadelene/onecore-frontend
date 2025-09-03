@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabLayout } from "@/components/ui/tab-layout";
 import { BuildingEntrances } from "./BuildingEntrances";
 import { BuildingPartsTab } from "./tabs/BuildingPartsTab";
 import { BuildingSpacesTab } from "./tabs/BuildingSpacesTab";
@@ -9,6 +10,7 @@ import { BuildingOrdersTab } from "./tabs/BuildingOrdersTab";
 import { BuildingDetailTabsMobile } from "./BuildingDetailTabsMobile";
 import { Notes } from "@/components/shared/Notes";
 import { FeatureGatedContent } from "@/components/residence/tabs/FeatureGatedContent";
+import { MessageSquare } from "lucide-react";
 
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -131,13 +133,18 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
           isEnabled={true}
           fallbackMessage="Noteringsfunktionen är inte aktiverad."
         >
-          <Notes
-            entityType="building"
-            entityId={building.id}
-            title="Noteringar för byggnad"
-            placeholder="Skriv din notering här..."
-            emptyMessage="Inga noteringar har lagts till för denna byggnad ännu."
-          />
+          <TabLayout 
+            title="Noteringar för byggnad" 
+            icon={MessageSquare}
+            showCard={true}
+          >
+            <Notes
+              entityType="building"
+              entityId={building.id}
+              placeholder="Skriv din notering här..."
+              emptyMessage="Inga noteringar har lagts till för denna byggnad ännu."
+            />
+          </TabLayout>
         </FeatureGatedContent>
       </TabsContent>
     </Tabs>
