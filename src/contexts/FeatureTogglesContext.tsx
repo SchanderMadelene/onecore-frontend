@@ -86,14 +86,14 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showRentalsStorage: false,
   // Property detail page tabs
   showPropertyInfo: true,
-  showPropertyStatistics: false,
+  showPropertyStatistics: true,
   showPropertyDocuments: true,
   showPropertyPlanning: false,
   showPropertyBuildings: true,
-  showPropertyMaintenance: false,
-  showPropertyOrders: false,
+  showPropertyMaintenance: true,
+  showPropertyOrders: true,
   showPropertyAccess: false,
-  showPropertyMap: false,
+  showPropertyMap: true,
   // Building detail page tabs
   showBuildingEntrances: false,
   showBuildingParts: false,
