@@ -109,8 +109,16 @@ const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefine
 
 export function FeatureTogglesProvider({ children }: { children: React.ReactNode }) {
   const [features, setFeatures] = useState<FeatureToggles>(() => {
-    // Force reset to new defaults for property tabs
-    localStorage.removeItem('featureToggles');
+    try {
+      const savedFeatures = localStorage.getItem('featureToggles');
+      if (savedFeatures) {
+        const parsedFeatures = JSON.parse(savedFeatures);
+        // Merge with defaults to handle any new features added
+        return { ...DEFAULT_FEATURES, ...parsedFeatures };
+      }
+    } catch (error) {
+      console.error('Error loading feature toggles from localStorage:', error);
+    }
     return DEFAULT_FEATURES;
   });
 
