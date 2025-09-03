@@ -52,7 +52,7 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
       title="Underhållsenheter" 
       icon={Settings}
       count={maintenanceUnits.length}
-      showCard={false}
+      showCard={true}
     >
       <Accordion type="single" collapsible className="space-y-2">
         {maintenanceUnits.map(unit => (

@@ -13,7 +13,7 @@ export const PropertyInfoTab = ({ property }: PropertyInfoTabProps) => {
     <TabLayout 
       title="Fastighetsinfo" 
       icon={Info}
-      showCard={false}
+      showCard={true}
     >
       <PropertyBasicInfo propertyDetail={property} showBasicInfoOnly={false} showDetailedInfo={true} />
     </TabLayout>

@@ -12,7 +12,7 @@ export const BuildingOrdersTab = ({ building }: BuildingOrdersTabProps) => {
     <TabLayout 
       title="Ärenden för byggnad" 
       icon={MessageSquare}
-      showCard={false}
+      showCard={true}
     >
       <OrdersManagement 
         contextType="building" 

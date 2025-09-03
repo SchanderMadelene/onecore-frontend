@@ -18,7 +18,7 @@ export const PropertyOrdersTab = ({ propertyDetail }: PropertyOrdersTabProps) =>
     <TabLayout 
       title="Ärenden för fastighet" 
       icon={MessageSquare}
-      showCard={false}
+      showCard={true}
     >
       <OrdersManagement 
         contextType="residence" 

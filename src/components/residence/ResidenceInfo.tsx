@@ -69,7 +69,7 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
       title="Rumsinformation" 
       icon={Info}
       count={rooms.length}
-      showCard={false}
+      showCard={true}
     >
       <Accordion type="single" collapsible className="space-y-2">
         {rooms.map(room => (

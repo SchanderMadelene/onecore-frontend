@@ -47,7 +47,7 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
       title="Parkering" 
       icon={Car}
       count={totalSpaces}
-      showCard={false}
+      showCard={true}
     >
       {/* Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
