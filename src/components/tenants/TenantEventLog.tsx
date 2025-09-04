@@ -80,10 +80,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
       {/* Filtersektion */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            Händelselogg
-          </CardTitle>
+          <CardTitle>Händelselogg</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">
