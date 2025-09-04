@@ -115,7 +115,6 @@ export const BuildingDetailTabsMobile = ({ building, basePath }: BuildingDetailT
         <Notes
           entityType="building"
           entityId={building.id}
-          title="Noteringar för byggnad"
           placeholder="Skriv din notering här..."
           emptyMessage="Inga noteringar har lagts till för denna byggnad ännu."
         />

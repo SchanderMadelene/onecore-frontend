@@ -134,7 +134,7 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
           fallbackMessage="Noteringsfunktionen är inte aktiverad."
         >
           <TabLayout 
-            title="Noteringar för byggnad" 
+            title="Noteringar" 
             icon={MessageSquare}
             showCard={true}
           >
