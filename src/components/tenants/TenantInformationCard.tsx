@@ -178,12 +178,10 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
           <div className="px-4 pb-4">
             <Tabs defaultValue="info" className="space-y-6">
               <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
-                <TabsTrigger value="info" className="flex items-center gap-1.5">
-                  <FileText className="h-4 w-4" />
+                <TabsTrigger value="info">
                   Information
                 </TabsTrigger>
-                <TabsTrigger value="notes" className="flex items-center gap-1.5">
-                  <StickyNote className="h-4 w-4" />
+                <TabsTrigger value="notes">
                   Noteringar
                 </TabsTrigger>
               </TabsList>
