@@ -22,8 +22,8 @@ export const RoomView = ({
   onSave 
 }: RoomViewProps) => {
   return (
-    <Tabs defaultValue="inspection" className="w-full">
-      <TabsList className="w-full justify-start">
+    <Tabs defaultValue="inspection" className="space-y-6">
+      <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
         <TabsTrigger value="inspection">Besiktning</TabsTrigger>
         <TabsTrigger value="photos">Foton</TabsTrigger>
         <TabsTrigger value="notes">Anteckningar</TabsTrigger>

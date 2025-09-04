@@ -47,8 +47,8 @@ export function OrdersManagement({ contextType = "residence", residenceId, tenan
           />
         </div>
         
-        <Tabs defaultValue="active" className="w-full" key={refreshKey}>
-          <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+        <Tabs defaultValue="active" className="space-y-6" key={refreshKey}>
+          <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
             <TabsTrigger value="active">Aktiva ärenden</TabsTrigger>
             <TabsTrigger value="history">Ärendehistorik</TabsTrigger>
           </TabsList>

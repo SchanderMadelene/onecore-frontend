@@ -176,8 +176,8 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
         
         <AccordionContent>
           <div className="px-4 pb-4">
-            <Tabs defaultValue="info" className="w-full">
-              <TabsList className="mb-4 grid grid-cols-2">
+            <Tabs defaultValue="info" className="space-y-6">
+              <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
                 <TabsTrigger value="info" className="flex items-center gap-1.5">
                   <FileText className="h-4 w-4" />
                   Information
