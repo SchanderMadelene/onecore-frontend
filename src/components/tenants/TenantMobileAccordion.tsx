@@ -81,7 +81,9 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
       icon: StickyNote,
       title: "Noteringar",
       content: features.showTenantNotes ? (
-        <TenantNotes />
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+          <TenantNotes />
+        </div>
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <p className="text-slate-500">
