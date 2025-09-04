@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TenantNotesTab } from "./TenantNotesTab";
+import { TenantNotes } from "./TenantNotes";
 
 interface TenantInformationCardProps {
   tenant: {
@@ -201,7 +201,7 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
               </TabsContent>
               
               <TabsContent value="notes">
-                <TenantNotesTab tenantId={tenants[0].personalNumber || `${tenants[0].firstName}-${tenants[0].lastName}`} />
+                <TenantNotes />
               </TabsContent>
             </Tabs>
           </div>

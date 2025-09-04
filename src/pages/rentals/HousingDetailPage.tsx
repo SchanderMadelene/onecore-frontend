@@ -6,7 +6,7 @@ import { toast } from "@/hooks/use-toast";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { useHousingStatus } from "@/hooks/useHousingStatus";
 import { useState } from "react";
-import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
+import { Notes } from "@/components/shared/Notes";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
@@ -152,7 +152,7 @@ const HousingDetailPage = () => {
           />
 
           <section>
-            <NotesSimple
+            <Notes
               entityType="housing"
               entityId={housingId}
               title="Noteringar för bostad"

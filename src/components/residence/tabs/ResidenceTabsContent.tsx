@@ -7,7 +7,7 @@ import { ResidenceDocuments } from "@/components/residence/ResidenceDocuments";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
 import { ResidenceAccessControl } from "@/components/residence/ResidenceAccessControl";
-import { NotesSimple } from "@/components/shared/Notes";
+import { Notes } from "@/components/shared/Notes";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { StickyNote } from "lucide-react";
 import { FeatureGatedContent } from "./FeatureGatedContent";
@@ -98,7 +98,7 @@ export const ResidenceTabsContent = ({
             icon={StickyNote}
             showCard={true}
           >
-            <NotesSimple 
+            <Notes 
               entityType="residence"
               entityId={residenceId || ""}
               placeholder="Skriv en notering om lägenheten..."

@@ -7,7 +7,7 @@ import { useParkingSpaceListing } from "@/hooks/useParkingSpaceListing";
 import { useCreateOffer } from "@/hooks/useOfferActions";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
+import { Notes } from "@/components/shared/Notes";
 import { ParkingSpaceHeader } from "./components/ParkingSpaceHeader";
 import { ApplicantsTable } from "./components/ApplicantsTable";
 import { ParkingSpaceInfo } from "./components/ParkingSpaceInfo";
@@ -170,7 +170,7 @@ const ParkingSpaceDetailPage = () => {
           />
 
           <section>
-            <NotesSimple
+            <Notes
               entityType="parkingSpace"
               entityId={parkingSpaceId}
               title="Noteringar för bilplats"

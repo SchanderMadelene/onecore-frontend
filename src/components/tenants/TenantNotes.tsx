@@ -1,9 +1,9 @@
 
-import { NotesSimple } from "@/components/shared/Notes/NotesSimple";
+import { Notes } from "@/components/shared/Notes";
 
 export function TenantNotes() {
   return (
-    <NotesSimple
+    <Notes
       entityType="tenant"
       entityId="current-tenant" // This would be dynamic based on the tenant being viewed
       title="Noteringar"
