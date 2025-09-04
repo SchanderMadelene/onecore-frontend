@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import type { Room } from "@/types/api";
 import type { Inspection } from "./inspection/types";
 import { InspectionsList } from "./inspection/InspectionsList";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { ClipboardList } from "lucide-react";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
@@ -29,12 +31,17 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   };
 
   return (
-    <div className="w-full">
+    <TabLayout 
+      title="Besiktningar" 
+      icon={ClipboardList}
+      count={inspections.length}
+      showCard={true}
+    >
       <InspectionsList
         rooms={rooms}
         inspections={inspections}
         onInspectionCreated={handleInspectionCreated}
       />
-    </div>
+    </TabLayout>
   );
 };
