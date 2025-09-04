@@ -83,17 +83,7 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNum
           isEnabled={features.showTenantNotes}
           fallbackMessage="För att se noteringar, aktivera funktionen i inställningarna."
         >
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
-            <div className="p-6 pb-0">
-              <div className="flex items-center gap-2 mb-6">
-                <StickyNote className="h-5 w-5" />
-                <h3 className="text-lg font-semibold">Noteringar</h3>
-              </div>
-            </div>
-            <div className="px-6 pb-6">
-              <TenantNotes />
-            </div>
-          </div>
+          <TenantNotes />
         </FeatureGatedTabContent>
       </TabsContent>
 
