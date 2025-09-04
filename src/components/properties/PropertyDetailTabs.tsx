@@ -32,55 +32,47 @@ export const PropertyDetailTabs = ({ propertyDetail }: PropertyDetailTabsProps) 
       <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
         {features.showPropertyInfo && (
           <TabsTrigger value="info">
-            <span className="hidden sm:inline">Fastighet</span>
-            <span className="sm:hidden">Info</span>
+            Fastighet
           </TabsTrigger>
         )}
         {features.showPropertyStatistics && (
           <TabsTrigger value="statistics">
-            <span className="hidden sm:inline">Fastighetssammanställning</span>
-            <span className="sm:hidden">Sammanst.</span>
+            Fastighetssammanställning
           </TabsTrigger>
         )}
         {features.showPropertyDocuments && (
           <TabsTrigger value="documents">
-            <span className="hidden sm:inline">Dokument</span>
-            <span className="sm:hidden">Dok</span>
+            Dokument
           </TabsTrigger>
         )}
         {features.showPropertyPlanning && (
           <TabsTrigger value="planning">
-            <span className="hidden sm:inline">Planerat underhåll</span>
-            <span className="sm:hidden">Plan</span>
+            Planerat underhåll
           </TabsTrigger>
         )}
         {features.showPropertyBuildings && (
           <TabsTrigger value="buildings">
-            <span className="hidden sm:inline">Byggnader</span>
-            <span className="sm:hidden">Bygg</span>
+            Byggnader
           </TabsTrigger>
         )}
         {features.showPropertyMaintenance && (
           <TabsTrigger value="maintenance">
-            <span className="hidden sm:inline">Underhållsenheter</span>
-            <span className="sm:hidden">Underhåll</span>
+            Underhållsenheter
           </TabsTrigger>
         )}
         {features.showPropertyOrders && (
           <TabsTrigger value="orders">
-            <span className="hidden sm:inline">Ärenden</span>
-            <span className="sm:hidden">Ärende</span>
+            Ärenden
           </TabsTrigger>
         )}
         {features.showPropertyAccess && (
           <TabsTrigger value="access">
-            <span className="hidden sm:inline">Lås & passage</span>
-            <span className="sm:hidden">Lås</span>
+            Lås & passage
           </TabsTrigger>
         )}
         {features.showPropertyMap && (
           <TabsTrigger value="map">
-            <span>Ritningar</span>
+            Ritningar
           </TabsTrigger>
         )}
       </TabsList>
