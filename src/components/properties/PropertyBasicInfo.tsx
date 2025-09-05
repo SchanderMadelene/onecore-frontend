@@ -23,12 +23,32 @@ export const PropertyBasicInfo = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div>
             <p className="text-sm text-muted-foreground">Fastighetsbeteckning</p>
-            <p className="font-medium">Älgen 1</p>
+            <p className="font-medium">{propertyDetail.designation}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Fastighetsnummer</p>
+            <p className="font-medium">{propertyDetail.propertyNumber}</p>
           </div>
           
           <div>
             <p className="text-sm text-muted-foreground">Kommun</p>
             <p className="font-medium">{propertyDetail.municipality}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Distrikt</p>
+            <p className="font-medium">{propertyDetail.district || "-"}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Församling</p>
+            <p className="font-medium">{propertyDetail.parish}</p>
+          </div>
+          
+          <div>
+            <p className="text-sm text-muted-foreground">Stadsdel/Marknadsområde</p>
+            <p className="font-medium">{propertyDetail.marketArea || "-"}</p>
           </div>
           
           <div>
@@ -44,22 +64,6 @@ export const PropertyBasicInfo = ({
           <div>
             <p className="text-sm text-muted-foreground">Antal byggnader</p>
             <p className="font-medium">{propertyDetail.buildings.length}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Byggnadsår</p>
-            <p className="font-medium">
-              {propertyDetail.buildings.length > 0 ? propertyDetail.buildings[0].constructionYear : "-"}
-            </p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
-            <p className="font-medium">
-              {propertyDetail.buildings.length > 0 && propertyDetail.buildings[0].renovationYear 
-                ? propertyDetail.buildings[0].renovationYear 
-                : "-"}
-            </p>
           </div>
         </div>
       </CardContent>
