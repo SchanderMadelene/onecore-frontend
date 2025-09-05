@@ -197,6 +197,7 @@ export interface PropertyDetail extends Property {
   direction: string;
   address?: string;
   marketArea?: string; // Stadsdel/Marknadsområde
+  propertyManager?: string; // Förvaltare/kvartersvärd
   propertyMap?: PropertyMap;
   buildings: Building[];
   maintenanceUnits?: MaintenanceUnit[];

@@ -52,6 +52,11 @@ export const PropertyBasicInfo = ({
           </div>
           
           <div>
+            <p className="text-sm text-muted-foreground">Förvaltare/kvartersvärd</p>
+            <p className="font-medium">{propertyDetail.propertyManager || "-"}</p>
+          </div>
+          
+          <div>
             <p className="text-sm text-muted-foreground">Adress</p>
             <p className="font-medium">{propertyDetail.address || "-"}</p>
           </div>
