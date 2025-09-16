@@ -7,6 +7,8 @@ import { HistoricalTenants } from "./tenant/HistoricalTenants";
 import { getHistoricalTenantsForResidence } from "@/data/contracts";
 import { useParams } from "react-router-dom";
 import type { Tenant } from "./tenant/types";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { User } from "lucide-react";
 
 interface TenantInformationProps {
   tenant: Tenant | Tenant[];
@@ -31,9 +33,14 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
   const historicalTenants = getHistoricalTenantsForResidence(id || "");
 
   return (
-    <div className="space-y-6">
-      <Tabs defaultValue="active" className="w-full">
-        <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+    <TabLayout 
+      title="Hyresgäst" 
+      icon={User}
+      count={tenants.length}
+      showCard={true}
+    >
+      <Tabs defaultValue="active" className="space-y-6">
+        <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
           <TabsTrigger value="active">
             Nuvarande hyresgäst
           </TabsTrigger>
@@ -89,6 +96,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
           <HistoricalTenants tenants={historicalTenants} />
         </TabsContent>
       </Tabs>
-    </div>
+    </TabLayout>
   );
 }

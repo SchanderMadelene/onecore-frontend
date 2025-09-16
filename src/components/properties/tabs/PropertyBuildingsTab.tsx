@@ -14,7 +14,7 @@ export const PropertyBuildingsTab = ({ buildings }: PropertyBuildingsTabProps) =
       title="Byggnader" 
       icon={Building2}
       count={buildings?.length || 0}
-      showCard={false}
+      showCard={true}
     >
       <PropertyBuildingsList buildings={buildings} />
     </TabLayout>

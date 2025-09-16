@@ -6,6 +6,7 @@ import { TenantOrders } from "@/components/tenants/TenantOrders";
 import { TenantEventLog } from "@/components/tenants/TenantEventLog";
 import { TenantDocuments } from "@/components/tenants/TenantDocuments";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+import { StickyNote } from "lucide-react";
 
 interface TenantDetailTabsContentProps {
   contracts: any[];

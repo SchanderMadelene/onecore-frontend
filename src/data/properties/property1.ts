@@ -11,6 +11,8 @@ export const property1: PropertyDetail = {
   propertyNumber: "2:145",
   direction: "S",
   address: "Lundbyvägen 14, 722 31 Västerås",
+  marketArea: "Centrum",
+  propertyManager: "Anna Persson",
   purpose: "Bostad",
   buildingType: "Flerbostadshus",
   district: "Västerås Centrum",

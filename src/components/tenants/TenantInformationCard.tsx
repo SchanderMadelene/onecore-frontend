@@ -6,7 +6,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TenantNotesTab } from "./TenantNotesTab";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { Notes } from "@/components/shared/Notes";
 
 interface TenantInformationCardProps {
   tenant: {
@@ -175,33 +176,48 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
         
         <AccordionContent>
           <div className="px-4 pb-4">
-            <Tabs defaultValue="info" className="w-full">
-              <TabsList className="mb-4 grid grid-cols-2">
-                <TabsTrigger value="info" className="flex items-center gap-1.5">
-                  <FileText className="h-4 w-4" />
+            <Tabs defaultValue="info" className="space-y-6">
+              <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
+                <TabsTrigger value="info">
                   Information
                 </TabsTrigger>
-                <TabsTrigger value="notes" className="flex items-center gap-1.5">
-                  <StickyNote className="h-4 w-4" />
+                <TabsTrigger value="notes">
                   Noteringar
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="info">
-                <div className="space-y-6">
-                  {tenantsToShow.map((tenantData, index) => (
-                    <div key={index}>
-                      {renderTenantInfo(tenantData, index)}
-                      {index < tenantsToShow.length - 1 && (
-                        <Separator className="my-6" />
-                      )}
-                    </div>
-                  ))}
-                </div>
+                <TabLayout 
+                  title="Information" 
+                  icon={FileText}
+                  showCard={true}
+                >
+                  <div className="space-y-6">
+                    {tenantsToShow.map((tenantData, index) => (
+                      <div key={index}>
+                        {renderTenantInfo(tenantData, index)}
+                        {index < tenantsToShow.length - 1 && (
+                          <Separator className="my-6" />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </TabLayout>
               </TabsContent>
               
               <TabsContent value="notes">
-                <TenantNotesTab tenantId={tenants[0].personalNumber || `${tenants[0].firstName}-${tenants[0].lastName}`} />
+                <TabLayout 
+                  title="Noteringar" 
+                  icon={StickyNote}
+                  showCard={true}
+                >
+                  <Notes
+                    entityType="tenant"
+                    entityId="current-tenant"
+                    placeholder="Skriv din notering här..."
+                    emptyMessage="Inga noteringar har lagts till för denna hyresgäst ännu."
+                  />
+                </TabLayout>
               </TabsContent>
             </Tabs>
           </div>

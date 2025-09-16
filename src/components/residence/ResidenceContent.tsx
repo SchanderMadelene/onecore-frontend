@@ -4,7 +4,7 @@ import { ResidenceTabsList } from "@/components/residence/tabs/ResidenceTabsList
 import { ResidenceTabsContent } from "@/components/residence/tabs/ResidenceTabsContent";
 import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
 import { getOrientationText } from "./RoomOrientation";
-import type { Residence, Room } from "@/types/api";
+import type { Residence, Room, Building, PropertyDetail } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAccordion } from "./MobileAccordion";
@@ -15,13 +15,17 @@ interface ResidenceContentProps {
   roomsData: Room[];
   property?: string;
   district?: string;
+  buildingDetail?: Building;
+  propertyDetail?: PropertyDetail;
 }
 
 export const ResidenceContent = ({ 
   residenceData, 
   roomsData, 
   property, 
-  district 
+  district,
+  buildingDetail,
+  propertyDetail
 }: ResidenceContentProps) => {
   const isMobile = useIsMobile();
   const { id } = useParams<{ id: string }>();
@@ -47,6 +51,8 @@ export const ResidenceContent = ({
         residence={residenceData}
         property={property}
         district={district}
+        buildingDetail={buildingDetail}
+        propertyDetail={propertyDetail}
       />
 
       {isMobile ? (

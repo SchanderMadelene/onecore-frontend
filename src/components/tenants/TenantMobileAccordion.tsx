@@ -84,11 +84,9 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
         <TenantNotes />
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <p className="text-slate-500">
-            För att se noteringar, aktivera funktionen i inställningarna.
-          </p>
+          <p className="text-slate-500">För att se noteringar, aktivera funktionen i inställningarna.</p>
         </div>
-      )
+      ),
     },
     {
       id: "keys",

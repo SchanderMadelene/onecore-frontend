@@ -45,7 +45,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
       title="Utrymmen" 
       icon={Box}
       count={spaces.length}
-      showCard={false}
+      showCard={true}
     >
       <Accordion type="single" collapsible className="space-y-2">
         {spaces.map(space => (

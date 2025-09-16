@@ -29,6 +29,16 @@ interface FeatureToggles {
   showRentalsHousing: boolean;
   showRentalsParking: boolean;
   showRentalsStorage: boolean;
+  // Property detail page tabs
+  showPropertyInfo: boolean;
+  showPropertyStatistics: boolean;
+  showPropertyDocuments: boolean;
+  showPropertyPlanning: boolean;
+  showPropertyBuildings: boolean;
+  showPropertyMaintenance: boolean;
+  showPropertyOrders: boolean;
+  showPropertyAccess: boolean;
+  showPropertyMap: boolean;
   // Building detail page tabs
   showBuildingEntrances: boolean;
   showBuildingParts: boolean;
@@ -46,13 +56,13 @@ interface FeatureTogglesContextType {
 }
 
 const DEFAULT_FEATURES: FeatureToggles = {
-  showNavigation: false,
+  showNavigation: true,
   showRentals: false,
   showDesignSystem: false,
-  showProperties: false,
+  showProperties: true,
   showTenants: false,
-  showBuildings: false,
-  showApartments: false,
+  showBuildings: true,
+  showApartments: true,
   showRoomInformation: false,
   showInspections: false,
   showApartmentIssues: false,
@@ -74,6 +84,16 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showRentalsHousing: false,
   showRentalsParking: false,
   showRentalsStorage: false,
+  // Property detail page tabs
+  showPropertyInfo: true,
+  showPropertyStatistics: true,
+  showPropertyDocuments: true,
+  showPropertyPlanning: false,
+  showPropertyBuildings: true,
+  showPropertyMaintenance: true,
+  showPropertyOrders: true,
+  showPropertyAccess: false,
+  showPropertyMap: true,
   // Building detail page tabs
   showBuildingEntrances: false,
   showBuildingParts: false,
@@ -89,13 +109,15 @@ const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefine
 
 export function FeatureTogglesProvider({ children }: { children: React.ReactNode }) {
   const [features, setFeatures] = useState<FeatureToggles>(() => {
-    const savedFeatures = localStorage.getItem('featureToggles');
-    if (savedFeatures) {
-      const parsedFeatures = JSON.parse(savedFeatures);
-      return {
-        ...DEFAULT_FEATURES,
-        ...parsedFeatures,
-      };
+    try {
+      const savedFeatures = localStorage.getItem('featureToggles');
+      if (savedFeatures) {
+        const parsedFeatures = JSON.parse(savedFeatures);
+        // Merge with defaults to handle any new features added
+        return { ...DEFAULT_FEATURES, ...parsedFeatures };
+      }
+    } catch (error) {
+      console.error('Error loading feature toggles from localStorage:', error);
     }
     return DEFAULT_FEATURES;
   });

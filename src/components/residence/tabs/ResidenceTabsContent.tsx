@@ -8,6 +8,8 @@ import { TenantInformation } from "@/components/residence/inspection/form/Tenant
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
 import { ResidenceAccessControl } from "@/components/residence/ResidenceAccessControl";
 import { Notes } from "@/components/shared/Notes";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { StickyNote } from "lucide-react";
 import { FeatureGatedContent } from "./FeatureGatedContent";
 import type { Room } from "@/types/api";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
@@ -91,13 +93,18 @@ export const ResidenceTabsContent = ({
           isEnabled={features.showResidenceNotes}
           fallbackMessage="För att se noteringar, aktivera funktionen i inställningarna."
         >
-          <Notes 
-            entityType="residence"
-            entityId={residenceId || ""}
-            title="Noteringar för lägenheten"
-            placeholder="Skriv en notering om lägenheten..."
-            emptyMessage="Inga noteringar har lagts till för denna lägenhet ännu."
-          />
+          <TabLayout 
+            title="Noteringar" 
+            icon={StickyNote}
+            showCard={true}
+          >
+            <Notes 
+              entityType="residence"
+              entityId={residenceId || ""}
+              placeholder="Skriv en notering om lägenheten..."
+              emptyMessage="Inga noteringar har lagts till för denna lägenhet ännu."
+            />
+          </TabLayout>
         </FeatureGatedContent>
       </TabsContent>
 

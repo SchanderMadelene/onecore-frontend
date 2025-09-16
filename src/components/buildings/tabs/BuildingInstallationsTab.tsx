@@ -35,7 +35,7 @@ export const BuildingInstallationsTab = ({ building }: BuildingInstallationsTabP
       title="Installationer" 
       icon={Settings}
       count={installations.length}
-      showCard={false}
+      showCard={true}
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {installations.map(installation => (

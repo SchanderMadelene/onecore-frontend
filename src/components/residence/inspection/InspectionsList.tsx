@@ -85,8 +85,8 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
         <Plus className="h-4 w-4" /> Skapa ny
       </Button>
       
-      <Tabs defaultValue="active" className="w-full">
-        <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+      <Tabs defaultValue="active" className="space-y-6">
+        <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
           <TabsTrigger value="active">Pågående</TabsTrigger>
           <TabsTrigger value="history">Historik</TabsTrigger>
         </TabsList>

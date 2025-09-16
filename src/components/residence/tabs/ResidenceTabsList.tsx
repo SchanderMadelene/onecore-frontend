@@ -9,8 +9,8 @@ interface ResidenceTabsListProps {
 
 export const ResidenceTabsList = ({ defaultValue, children }: ResidenceTabsListProps) => {
   return (
-    <Tabs defaultValue={defaultValue} className="w-full">
-      <TabsList className="mb-4 bg-slate-100/70 p-1 rounded-lg">
+    <Tabs defaultValue={defaultValue} className="space-y-6">
+      <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
         <TabsTrigger value="info">
           Rumsinformation
         </TabsTrigger>

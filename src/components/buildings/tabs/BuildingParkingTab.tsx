@@ -47,28 +47,22 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
       title="Parkering" 
       icon={Car}
       count={totalSpaces}
-      showCard={false}
+      showCard={true}
     >
       {/* Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <Card>
-          <CardContent className="pt-4">
-            <div className="text-2xl font-bold">{totalSpaces}</div>
-            <p className="text-xs text-muted-foreground">Totalt antal platser</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4">
-            <div className="text-2xl font-bold text-green-600">{totalAvailable}</div>
-            <p className="text-xs text-muted-foreground">Lediga platser</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4">
-            <div className="text-2xl font-bold text-red-600">{totalSpaces - totalAvailable}</div>
-            <p className="text-xs text-muted-foreground">Upptagna platser</p>
-          </CardContent>
-        </Card>
+        <div className="border rounded-lg p-4">
+          <div className="text-2xl font-bold">{totalSpaces}</div>
+          <p className="text-xs text-muted-foreground">Totalt antal platser</p>
+        </div>
+        <div className="border rounded-lg p-4">
+          <div className="text-2xl font-bold text-green-600">{totalAvailable}</div>
+          <p className="text-xs text-muted-foreground">Lediga platser</p>
+        </div>
+        <div className="border rounded-lg p-4">
+          <div className="text-2xl font-bold text-red-600">{totalSpaces - totalAvailable}</div>
+          <p className="text-xs text-muted-foreground">Upptagna platser</p>
+        </div>
       </div>
 
       {/* Parking areas */}

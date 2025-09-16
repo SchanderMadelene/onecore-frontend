@@ -1,5 +1,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
+import { TabLayout } from "@/components/ui/tab-layout";
+import { EmptyState } from "@/components/ui/empty-state";
+import { DoorOpen } from "lucide-react";
 import type { Building } from "@/types/api";
 
 interface PropertyResidenceTabProps {
@@ -11,8 +14,29 @@ export const PropertyResidenceTab = ({ buildings }: PropertyResidenceTabProps) =
   const totalEntrances = buildings.reduce((total, building) => 
     total + (building.entrances?.length || 0), 0);
 
+  if (totalEntrances === 0) {
+    return (
+      <TabLayout 
+        title="Portar" 
+        icon={DoorOpen}
+        count={0}
+      >
+        <EmptyState
+          icon={DoorOpen}
+          title="Inga portar"
+          description="Det finns inga portar registrerade för denna fastighet ännu."
+        />
+      </TabLayout>
+    );
+  }
+
   return (
-    <div className="space-y-6">
+    <TabLayout 
+      title="Portar" 
+      icon={DoorOpen}
+      count={totalEntrances}
+      showCard={true}
+    >
       {buildings.map(building => (
         building.entrances && building.entrances.length > 0 && (
           <div key={building.id} className="space-y-4">
@@ -39,17 +63,6 @@ export const PropertyResidenceTab = ({ buildings }: PropertyResidenceTabProps) =
           </div>
         )
       ))}
-      
-      {totalEntrances === 0 && (
-        <Card>
-          <CardContent className="pt-6 text-center">
-            <h3 className="text-xl font-medium mb-2">Inga portar</h3>
-            <p className="text-muted-foreground">
-              Det finns inga portar registrerade för denna fastighet.
-            </p>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+    </TabLayout>
   );
 };

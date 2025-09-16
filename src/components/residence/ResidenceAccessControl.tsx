@@ -8,7 +8,7 @@ export const ResidenceAccessControl = () => {
     <TabLayout 
       title="Lås och passage" 
       icon={LockKeyhole}
-      showCard={false}
+      showCard={true}
     >
       <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">

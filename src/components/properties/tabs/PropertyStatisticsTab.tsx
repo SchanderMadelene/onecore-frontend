@@ -13,7 +13,7 @@ export const PropertyStatisticsTab = ({ property }: PropertyStatisticsTabProps) 
     <TabLayout 
       title="Fastighetssammanställning" 
       icon={BarChart3}
-      showCard={false}
+      showCard={true}
     >
       <PropertyStatisticsSummary property={property} />
     </TabLayout>

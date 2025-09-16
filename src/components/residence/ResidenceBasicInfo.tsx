@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TriangleAlert, Bug } from "lucide-react";
-import type { Residence } from "@/types/api";
+import type { Residence, Building, PropertyDetail } from "@/types/api";
 import { useParams } from "react-router-dom";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
 
@@ -9,6 +9,8 @@ interface ResidenceBasicInfoProps {
   residence: Residence;
   property?: string;
   district?: string;
+  buildingDetail?: Building;
+  propertyDetail?: PropertyDetail;
 }
 
 // Function to determine the contract status based on residence data
@@ -57,7 +59,7 @@ const checkSecondHandRental = (residenceId: string): boolean => {
   }
 };
 
-export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceBasicInfoProps) => {
+export const ResidenceBasicInfo = ({ residence, property, district, buildingDetail, propertyDetail }: ResidenceBasicInfoProps) => {
   const { id } = useParams<{ id: string }>();
   
   // Check if this is a secondary rental based on tenant data
@@ -147,6 +149,18 @@ export const ResidenceBasicInfo = ({ residence, property, district }: ResidenceB
                 {new Date(residence.validityPeriod.toDate).toLocaleDateString('sv-SE')}
               </p>
             </div>
+            {buildingDetail?.constructionYear && (
+              <div>
+                <p className="text-sm text-muted-foreground">Byggnadsår</p>
+                <p className="font-medium">{buildingDetail.constructionYear}</p>
+              </div>
+            )}
+            {buildingDetail?.renovationYear && (
+              <div>
+                <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
+                <p className="font-medium">{buildingDetail.renovationYear}</p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
