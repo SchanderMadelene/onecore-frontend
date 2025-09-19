@@ -21,6 +21,7 @@ import RentalsPage from "./pages/rentals/RentalsPage";
 import CreateHousingAdPage from "./pages/rentals/CreateHousingAdPage";
 import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
 import HousingDetailPage from "./pages/rentals/HousingDetailPage";
+import ResidenceProfilePage from "./pages/rentals/ResidenceProfilePage";
 import TurnoverPage from "./pages/turnover/TurnoverPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 
@@ -87,6 +88,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <HousingDetailPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/residence-profile" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <ResidenceProfilePage />
           </ProtectedRoute>
         } 
       />
