@@ -50,15 +50,15 @@ const BarriersPage = () => {
             <TabsTrigger value="parking">Bilplatser</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="space-y-4">
+          <TabsContent value="all" className="mt-8">
             <BarriersTable barriers={allBarriers} />
           </TabsContent>
 
-          <TabsContent value="housing" className="space-y-4">
+          <TabsContent value="housing" className="mt-8">
             <BarriersTable barriers={housingBarriers} />
           </TabsContent>
 
-          <TabsContent value="parking" className="space-y-4">
+          <TabsContent value="parking" className="mt-8">
             <BarriersTable barriers={parkingBarriers} />
           </TabsContent>
         </Tabs>
