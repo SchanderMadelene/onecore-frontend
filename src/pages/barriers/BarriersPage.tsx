@@ -8,14 +8,20 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { ShieldX, Home, Car, Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { BarriersTable } from "@/components/barriers/BarriersTable";
+import { CreateBarrierDialog } from "@/components/barriers/CreateBarrierDialog";
 import { getAllBarriers, getBarriersByType } from "@/data/barriers";
 
 const BarriersPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   
   const allBarriers = getAllBarriers();
   const housingBarriers = getBarriersByType('housing');
   const parkingBarriers = getBarriersByType('parking');
+
+  const handleBarrierCreated = () => {
+    setRefreshKey(prev => prev + 1);
+  };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -27,10 +33,7 @@ const BarriersPage = () => {
               Hantera spärrar för bostäder och bilplatser i systemet
             </p>
           </div>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Ny spärr
-          </Button>
+          <CreateBarrierDialog onBarrierCreated={handleBarrierCreated} />
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4">
