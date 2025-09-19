@@ -15,6 +15,12 @@ export const navigationNodes: TreeNode[] = [
     path: "/rentals",
   },
   {
+    id: "barriers",
+    label: "Spärrar",
+    icon: "shield-x",
+    path: "/barriers",
+  },
+  {
     id: "turnover",
     label: "In- och utflytt",
     icon: "arrow-right-left",

@@ -11,6 +11,7 @@ export function TreeView({
   showDesignSystem,
   showProperties,
   showTenants,
+  showBarriers,
   showTurnover,
   showBuildings,
   showApartments 
@@ -22,6 +23,7 @@ export function TreeView({
       if (node.id === "properties") return showProperties;
       if (node.id === "tenants") return showTenants;
       if (node.id === "rentals") return showRentals;
+      if (node.id === "barriers") return showBarriers;
       if (node.id === "turnover") return showTurnover;
       if (node.id === "design-system") return showDesignSystem;
       return true;
@@ -40,7 +42,7 @@ export function TreeView({
       }
       return node;
     });
-  }, [showRentals, showDesignSystem, showProperties, showTenants, showTurnover, showBuildings, showApartments]);
+  }, [showRentals, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showBuildings, showApartments]);
 
   return (
     <div className={`${isMobile ? 'p-2' : 'p-4'} h-full overflow-y-auto bg-white`}>

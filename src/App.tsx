@@ -23,6 +23,7 @@ import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
 import HousingDetailPage from "./pages/rentals/HousingDetailPage";
 import ResidenceProfilePage from "./pages/rentals/ResidenceProfilePage";
 import TurnoverPage from "./pages/turnover/TurnoverPage";
+import BarriersPage from "./pages/barriers/BarriersPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 
 const ProtectedRoute = ({ children, isEnabled }: { children: React.ReactNode, isEnabled: boolean }) => {
@@ -96,6 +97,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <ResidenceProfilePage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/barriers" 
+        element={
+          <ProtectedRoute isEnabled={features.showBarriers}>
+            <BarriersPage />
           </ProtectedRoute>
         } 
       />
