@@ -7,9 +7,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ShieldX, Home, Car, Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { BarriersTable } from "@/components/barriers/BarriersTable";
+import { getAllBarriers, getBarriersByType } from "@/data/barriers";
 
 const BarriersPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  const allBarriers = getAllBarriers();
+  const housingBarriers = getBarriersByType('housing');
+  const parkingBarriers = getBarriersByType('parking');
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -45,45 +51,15 @@ const BarriersPage = () => {
           </TabsList>
 
           <TabsContent value="all" className="space-y-4">
-            <EmptyState
-              icon={ShieldX}
-              title="Inga spärrar registrerade"
-              description="Det finns inga aktiva spärrar i systemet för tillfället."
-              action={
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Skapa första spärren
-                </Button>
-              }
-            />
+            <BarriersTable barriers={allBarriers} />
           </TabsContent>
 
           <TabsContent value="housing" className="space-y-4">
-            <EmptyState
-              icon={Home}
-              title="Inga bostadsspärrar"
-              description="Det finns inga aktiva spärrar för bostäder."
-              action={
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Skapa bostadsspärr
-                </Button>
-              }
-            />
+            <BarriersTable barriers={housingBarriers} />
           </TabsContent>
 
           <TabsContent value="parking" className="space-y-4">
-            <EmptyState
-              icon={Car}
-              title="Inga bilplatsspärrar"
-              description="Det finns inga aktiva spärrar för bilplatser."
-              action={
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Skapa bilplatsspärr
-                </Button>
-              }
-            />
+            <BarriersTable barriers={parkingBarriers} />
           </TabsContent>
         </Tabs>
       </div>
