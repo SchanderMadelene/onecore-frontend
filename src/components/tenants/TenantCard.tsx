@@ -246,6 +246,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
+            <div className="border-t border-border mx-6 mb-4"></div>
             <CardContent>
               {cardContent}
             </CardContent>
