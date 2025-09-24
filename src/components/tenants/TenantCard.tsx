@@ -16,6 +16,7 @@ interface TenantCardProps {
     moveOutDate?: string;
     contractNumber?: string;
     personalNumber: string;
+    address?: string;
     nationality?: string;
     language?: string;
     hasLegalGuardian?: boolean;
@@ -70,6 +71,11 @@ export function TenantCard({ tenant }: TenantCardProps) {
             <div>
               <p className="text-sm text-muted-foreground">Personnummer</p>
               <p className="font-medium">{tenant.personalNumber}</p>
+            </div>
+
+            <div>
+              <p className="text-sm text-muted-foreground">Bostadsadress</p>
+              <p className="font-medium">{tenant.address || "Ej angiven"}</p>
             </div>
             
             <div>
