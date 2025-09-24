@@ -231,9 +231,9 @@ export function TenantCard({ tenant }: TenantCardProps) {
                     <CardTitle className="text-left">
                       {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
                     </CardTitle>
-                    <div className="flex items-center gap-4 mt-2">
-                      <p className="text-sm font-medium">{tenant.firstName} {tenant.lastName}</p>
-                      <p className="text-sm text-muted-foreground">{tenant.phone}</p>
+                    <div className="space-y-1 mt-2">
+                      <p className="text-sm font-medium">{tenant.address}</p>
+                      <p className="text-sm text-muted-foreground">{formatPersonalNumber(tenant.personalNumber)} • {tenant.phone}</p>
                     </div>
                   </div>
                   {isOpen ? (
