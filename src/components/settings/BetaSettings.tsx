@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 export function BetaSettings() {
@@ -419,6 +419,17 @@ export function BetaSettings() {
                   onCheckedChange={() => handleFeatureToggle('showTenantDocuments')} 
                 />
               </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <ShieldX className="h-4 w-4" />
+                  <Label htmlFor="barriers">Spärrar</Label>
+                </div>
+                <p className="text-sm text-muted-foreground">Aktivera spärrarfunktioner för bostäder och bilplatser</p>
+              </div>
+              <Switch id="barriers" checked={features.showBarriers} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showBarriers')} />
             </div>
 
             <div className="flex items-center justify-between">

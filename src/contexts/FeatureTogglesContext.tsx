@@ -46,6 +46,8 @@ interface FeatureToggles {
   showBuildingInstallations: boolean;
   showBuildingParking: boolean;
   showBuildingDocuments: boolean;
+  // Barriers (Spärrar)
+  showBarriers: boolean;
   // Turnover (In- och utflytt)
   showTurnover: boolean;
 }
@@ -101,6 +103,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showBuildingInstallations: false,
   showBuildingParking: false,
   showBuildingDocuments: true,
+  // Barriers (Spärrar)
+  showBarriers: false,
   // Turnover (In- och utflytt)
   showTurnover: false,
 };
