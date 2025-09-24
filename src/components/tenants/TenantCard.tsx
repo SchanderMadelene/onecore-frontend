@@ -55,19 +55,14 @@ export function TenantCard({ tenant }: TenantCardProps) {
   return (
     <Card>
       <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            {tenant.customerType === "tenant" ? (
-              <User className="h-5 w-5" />
-            ) : (
-              <Users className="h-5 w-5" />
-            )}
-            {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-          </CardTitle>
-          <Badge variant={tenant.customerType === "tenant" ? "default" : "secondary"}>
-            {tenant.customerType === "tenant" ? "Aktiv hyresgäst" : "Registrerad sökande"}
-          </Badge>
-        </div>
+        <CardTitle className="flex items-center gap-2">
+          {tenant.customerType === "tenant" ? (
+            <User className="h-5 w-5" />
+          ) : (
+            <Users className="h-5 w-5" />
+          )}
+          {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
