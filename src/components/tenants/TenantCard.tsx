@@ -55,12 +55,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          {tenant.customerType === "tenant" ? (
-            <User className="h-5 w-5" />
-          ) : (
-            <Users className="h-5 w-5" />
-          )}
+        <CardTitle>
           {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
         </CardTitle>
       </CardHeader>
