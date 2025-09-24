@@ -68,6 +68,11 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
             
             <div>
+              <p className="text-sm text-muted-foreground">Personnummer</p>
+              <p className="font-medium">{tenant.personalNumber}</p>
+            </div>
+            
+            <div>
               <p className="text-sm text-muted-foreground">Kundnummer</p>
               <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
             </div>
