@@ -3,7 +3,7 @@ import { ResidenceInfo } from "./ResidenceInfo";
 import { ResidenceInspection } from "./ResidenceInspection";
 import { TenantInformation } from "./inspection/form/TenantInformation";
 import { OrdersManagement } from "./OrdersManagement";
-import { ResidenceAccessControl } from "./ResidenceAccessControl";
+
 import { Notes } from "@/components/shared/Notes";
 import type { Room } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
@@ -102,7 +102,9 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       id: "access",
       title: "Lås och passage",
       content: features.showResidenceAccess ? (
-        <ResidenceAccessControl />
+        <div className="p-4 text-center text-muted-foreground">
+          Funktionaliteten för lås och passage är inte implementerad ännu.
+        </div>
       ) : (
         <p className="text-slate-500 p-1">
           För att se lås och passage, aktivera funktionen i inställningarna.
