@@ -75,7 +75,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
 
             <div>
               <p className="text-sm text-muted-foreground">Bostadsadress</p>
-              <p className="font-medium">{tenant.address || "Ej angiven"}</p>
+              <p className="font-medium">{tenant.address}</p>
             </div>
             
             <div>
