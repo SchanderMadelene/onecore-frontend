@@ -7,7 +7,6 @@ export const PropertyPlanningTab = () => {
   return (
     <TabLayout 
       title="Planerat underhåll" 
-      icon={Calendar}
     >
       <EmptyState
         icon={Calendar}

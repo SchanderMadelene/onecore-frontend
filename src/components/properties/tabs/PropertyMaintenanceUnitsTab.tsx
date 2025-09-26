@@ -35,7 +35,6 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
     return (
       <TabLayout 
         title="Underhållsenheter" 
-        icon={Settings}
         count={0}
       >
         <EmptyState
@@ -50,7 +49,6 @@ export const PropertyMaintenanceUnitsTab = ({ maintenanceUnits }: PropertyMainte
   return (
     <TabLayout 
       title="Underhållsenheter" 
-      icon={Settings}
       count={maintenanceUnits.length}
       showCard={true}
     >

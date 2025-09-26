@@ -20,7 +20,7 @@ export const TenantDetailTabs = ({ defaultValue, children, hasActiveCases }: Ten
           {hasActiveCases ? "Ärenden (2)" : "Ärenden"}
         </TabsTrigger>
         <TabsTrigger value="ledger">
-          Kundreskontra
+          Fakturor & betalningar
         </TabsTrigger>
         <TabsTrigger value="notes">
           Noteringar

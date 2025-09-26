@@ -17,7 +17,6 @@ export const PropertyOrdersTab = ({ propertyDetail }: PropertyOrdersTabProps) =>
   return (
     <TabLayout 
       title="Ärenden för fastighet" 
-      icon={MessageSquare}
       showCard={true}
     >
       <OrdersManagement 

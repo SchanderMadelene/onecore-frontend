@@ -72,7 +72,7 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNum
           fallbackMessage="För att se kundreskontra, aktivera funktionen i inställningarna."
         >
           <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h3 className="text-lg font-medium mb-4">Kundreskontra</h3>
+            <h3 className="text-lg font-medium mb-4">Fakturor & betalningar</h3>
             <p className="text-muted-foreground">Ingen information om kundreskontra tillgänglig.</p>
           </div>
         </FeatureGatedTabContent>

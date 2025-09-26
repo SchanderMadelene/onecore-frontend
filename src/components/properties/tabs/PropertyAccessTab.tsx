@@ -7,7 +7,6 @@ export const PropertyAccessTab = () => {
   return (
     <TabLayout 
       title="Lås & passage" 
-      icon={LockKeyhole}
     >
       <EmptyState
         icon={LockKeyhole}

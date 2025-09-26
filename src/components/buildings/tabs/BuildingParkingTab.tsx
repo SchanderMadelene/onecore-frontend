@@ -19,7 +19,6 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
     return (
       <TabLayout 
         title="Parkering" 
-        icon={Car}
         count={0}
       >
         <EmptyState
@@ -45,7 +44,6 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
   return (
     <TabLayout 
       title="Parkering" 
-      icon={Car}
       count={totalSpaces}
       showCard={true}
     >

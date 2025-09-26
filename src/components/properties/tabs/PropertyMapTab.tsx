@@ -15,7 +15,6 @@ export const PropertyMapTab = ({
   return (
     <TabLayout 
       title="Ritningar" 
-      icon={Map}
       showCard={true}
     >
       {propertyDetail.propertyMap ? (

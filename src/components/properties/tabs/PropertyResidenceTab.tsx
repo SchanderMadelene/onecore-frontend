@@ -18,7 +18,6 @@ export const PropertyResidenceTab = ({ buildings }: PropertyResidenceTabProps) =
     return (
       <TabLayout 
         title="Portar" 
-        icon={DoorOpen}
         count={0}
       >
         <EmptyState
@@ -33,7 +32,6 @@ export const PropertyResidenceTab = ({ buildings }: PropertyResidenceTabProps) =
   return (
     <TabLayout 
       title="Portar" 
-      icon={DoorOpen}
       count={totalEntrances}
       showCard={true}
     >

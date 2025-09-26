@@ -12,7 +12,6 @@ export const PropertyStatisticsTab = ({ property }: PropertyStatisticsTabProps) 
   return (
     <TabLayout 
       title="Fastighetssammanställning" 
-      icon={BarChart3}
       showCard={true}
     >
       <PropertyStatisticsSummary property={property} />

@@ -1,4 +1,3 @@
-import { FileText, Wallet, Key, Bell, FileWarning, Users, StickyNote, MessageSquare, Calendar } from "lucide-react";
 import { TenantContracts } from "./TenantContracts";
 import { TenantQueueSystem } from "./TenantQueueSystem";
 import { TenantNotes } from "./TenantNotes";
@@ -19,7 +18,6 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
   const accordionItems: MobileAccordionItem[] = [
     {
       id: "contracts",
-      icon: FileText,
       title: "Hyreskontrakt",
       content: features.showTenantContracts ? (
         <TenantContracts contracts={contracts} />
@@ -33,7 +31,6 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     },
     {
       id: "queue",
-      icon: Users,
       title: "Kösystem",
       content: features.showTenantQueue ? (
         <TenantQueueSystem customerNumber={customerNumber} customerName={customerName} />
@@ -47,7 +44,6 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     },
     {
       id: "cases",
-      icon: MessageSquare,
       title: hasActiveCases ? `Ärenden (2)` : "Ärenden",
       content: features.showTenantCases ? (
         <TenantOrders />
@@ -61,7 +57,6 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     },
     {
       id: "ledger",
-      icon: Wallet,
       title: "Kundreskontra",
       content: features.showTenantLedger ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
@@ -78,7 +73,6 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     },
     {
       id: "notes",
-      icon: StickyNote,
       title: "Noteringar",
       content: features.showTenantNotes ? (
         <TenantNotes />
@@ -90,7 +84,6 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     },
     {
       id: "keys",
-      icon: Key,
       title: "Nyckelknippa",
       content: features.showTenantKeys ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
@@ -107,7 +100,6 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     },
     {
       id: "events",
-      icon: Calendar,
       title: "Händelselogg",
       content: features.showTenantEvents ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
@@ -124,7 +116,6 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     },
     {
       id: "documents",
-      icon: FileWarning,
       title: "Dokument",
       content: features.showTenantDocuments ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">

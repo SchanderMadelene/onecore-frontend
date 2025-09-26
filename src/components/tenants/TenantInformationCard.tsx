@@ -189,7 +189,6 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
               <TabsContent value="info">
                 <TabLayout 
                   title="Information" 
-                  icon={FileText}
                   showCard={true}
                 >
                   <div className="space-y-6">
@@ -208,7 +207,6 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
               <TabsContent value="notes">
                 <TabLayout 
                   title="Noteringar" 
-                  icon={StickyNote}
                   showCard={true}
                 >
                   <Notes

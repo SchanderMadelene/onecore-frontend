@@ -6,7 +6,6 @@ import { ResidenceInspection } from "@/components/residence/ResidenceInspection"
 import { ResidenceDocuments } from "@/components/residence/ResidenceDocuments";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
-import { ResidenceAccessControl } from "@/components/residence/ResidenceAccessControl";
 import { Notes } from "@/components/shared/Notes";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { StickyNote } from "lucide-react";
@@ -95,7 +94,6 @@ export const ResidenceTabsContent = ({
         >
           <TabLayout 
             title="Noteringar" 
-            icon={StickyNote}
             showCard={true}
           >
             <Notes 
@@ -113,7 +111,9 @@ export const ResidenceTabsContent = ({
           isEnabled={features.showResidenceAccess}
           fallbackMessage="För att se lås och passage, aktivera funktionen i inställningarna."
         >
-          <ResidenceAccessControl />
+          <div className="p-6 text-center text-muted-foreground">
+            Funktionaliteten för lås och passage är inte implementerad ännu.
+          </div>
         </FeatureGatedContent>
       </TabsContent>
     </>

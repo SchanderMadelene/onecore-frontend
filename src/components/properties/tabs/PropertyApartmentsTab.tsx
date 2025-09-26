@@ -19,7 +19,6 @@ export const PropertyApartmentsTab = ({ buildings }: PropertyApartmentsTabProps)
     return (
       <TabLayout 
         title="Lägenheter" 
-        icon={Home}
         count={0}
       >
         <EmptyState
@@ -34,7 +33,6 @@ export const PropertyApartmentsTab = ({ buildings }: PropertyApartmentsTabProps)
   return (
     <TabLayout 
       title="Lägenheter" 
-      icon={Home}
       count={totalApartments}
       showCard={true}
     >

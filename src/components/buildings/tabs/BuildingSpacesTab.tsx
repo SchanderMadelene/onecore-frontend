@@ -28,7 +28,6 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
     return (
       <TabLayout 
         title="Utrymmen" 
-        icon={Box}
         count={0}
       >
         <EmptyState
@@ -43,7 +42,6 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
   return (
     <TabLayout 
       title="Utrymmen" 
-      icon={Box}
       count={spaces.length}
       showCard={true}
     >

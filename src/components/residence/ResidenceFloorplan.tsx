@@ -6,8 +6,7 @@ import { FileImage } from "lucide-react";
 export const ResidenceFloorplan = () => {
   return (
     <TabLayout 
-      title="Planritning" 
-      icon={FileImage}
+      title="Planritning"
     >
       <EmptyState
         icon={FileImage}

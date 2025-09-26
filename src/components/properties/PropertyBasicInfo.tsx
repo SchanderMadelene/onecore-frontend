@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CollapsibleInfoCard } from "@/components/ui/collapsible-info-card";
 import type { PropertyDetail } from "@/types/api";
 interface PropertyBasicInfoProps {
   propertyDetail: PropertyDetail;
@@ -14,81 +15,102 @@ export const PropertyBasicInfo = ({
   const routeParts = window.location.pathname.split('/');
   const propertyKey = routeParts.slice(2).join('/');
 
-  // Basic information card that should always show at the top
-  const renderBasicInfoCard = () => <Card className="mb-6">
-      <CardHeader className="pb-4">
-        <CardTitle>Grundläggande information</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4 p-4 sm:p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          <div>
-            <p className="text-sm text-muted-foreground">Fastighetsbeteckning</p>
-            <p className="font-medium">{propertyDetail.designation}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Fastighetsnummer</p>
-            <p className="font-medium">{propertyDetail.propertyNumber}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Kommun</p>
-            <p className="font-medium">{propertyDetail.municipality}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Distrikt</p>
-            <p className="font-medium">{propertyDetail.district || "-"}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Församling</p>
-            <p className="font-medium">{propertyDetail.parish}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Stadsdel/Marknadsområde</p>
-            <p className="font-medium">{propertyDetail.marketArea || "-"}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Förvaltare/kvartersvärd</p>
-            <p className="font-medium">{propertyDetail.propertyManager || "-"}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Adress</p>
-            <p className="font-medium">{propertyDetail.address || "-"}</p>
-          </div>
+  // Preview content for mobile
+  const previewContent = (
+    <div className="space-y-2">
+      <div>
+        <span className="text-sm text-muted-foreground">Fastighetsnummer: </span>
+        <span className="font-medium">{propertyDetail.propertyNumber}</span>
+      </div>
+      <div>
+        <span className="text-sm text-muted-foreground">Adress: </span>
+        <span className="font-medium">{propertyDetail.address || "-"}</span>
+      </div>
+    </div>
+  );
 
-          <div>
-            <p className="text-sm text-muted-foreground">Fastighetsstatus</p>
-            <p className="font-medium">Aktiv</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Antal byggnader</p>
-            <p className="font-medium">{propertyDetail.buildings.length}</p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Byggnadsår</p>
-            <p className="font-medium">
-              {propertyDetail.buildings.length > 0 ? propertyDetail.buildings[0].constructionYear : "-"}
-            </p>
-          </div>
-          
-          <div>
-            <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
-            <p className="font-medium">
-              {propertyDetail.buildings.length > 0 && propertyDetail.buildings[0].renovationYear 
-                ? propertyDetail.buildings[0].renovationYear 
-                : "-"}
-            </p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>;
+  // All property information fields
+  const allInfoContent = (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div>
+        <p className="text-sm text-muted-foreground">Fastighetsbeteckning</p>
+        <p className="font-medium">{propertyDetail.designation}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Fastighetsnummer</p>
+        <p className="font-medium">{propertyDetail.propertyNumber}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Kommun</p>
+        <p className="font-medium">{propertyDetail.municipality}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Distrikt</p>
+        <p className="font-medium">{propertyDetail.district || "-"}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Församling</p>
+        <p className="font-medium">{propertyDetail.parish}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Stadsdel/Marknadsområde</p>
+        <p className="font-medium">{propertyDetail.marketArea || "-"}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Förvaltare/kvartersvärd</p>
+        <p className="font-medium">{propertyDetail.propertyManager || "-"}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Adress</p>
+        <p className="font-medium">{propertyDetail.address || "-"}</p>
+      </div>
+
+      <div>
+        <p className="text-sm text-muted-foreground">Fastighetsstatus</p>
+        <p className="font-medium">Aktiv</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Antal byggnader</p>
+        <p className="font-medium">{propertyDetail.buildings.length}</p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Byggnadsår</p>
+        <p className="font-medium">
+          {propertyDetail.buildings.length > 0 ? propertyDetail.buildings[0].constructionYear : "-"}
+        </p>
+      </div>
+      
+      <div>
+        <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
+        <p className="font-medium">
+          {propertyDetail.buildings.length > 0 && propertyDetail.buildings[0].renovationYear 
+            ? propertyDetail.buildings[0].renovationYear 
+            : "-"}
+        </p>
+      </div>
+    </div>
+  );
+
+  // Basic information card that should always show at the top
+  const renderBasicInfoCard = () => (
+    <div className="mb-6">
+      <CollapsibleInfoCard
+        title="Grundläggande information"
+        previewContent={previewContent}
+      >
+        {allInfoContent}
+      </CollapsibleInfoCard>
+    </div>
+  );
 
   // Detailed property information card that should show at the bottom
   const renderDetailedInfoCard = () => <Card className="mb-6">

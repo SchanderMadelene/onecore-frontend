@@ -34,7 +34,6 @@ export function OrdersManagement({ contextType = "residence", residenceId, tenan
   return (
     <TabLayout 
       title="Ärenden" 
-      icon={ClipboardList}
       count={activeOrders.length + historicalOrders.length}
       showCard={true}
     >

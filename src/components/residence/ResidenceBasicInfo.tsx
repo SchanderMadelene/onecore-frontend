@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CollapsibleInfoCard } from "@/components/ui/collapsible-info-card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence, Building, PropertyDetail } from "@/types/api";
@@ -103,67 +104,77 @@ export const ResidenceBasicInfo = ({ residence, property, district, buildingDeta
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl">Grundläggande information</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 p-4 sm:p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      {/* Preview content for mobile */}
+      <CollapsibleInfoCard
+        title="Grundläggande information"
+        previewContent={
+          <div className="space-y-2">
+            <div>
+              <span className="text-sm text-muted-foreground">Objektsnummer: </span>
+              <span className="font-medium">{residence.code}</span>
+            </div>
+            <div>
+              <span className="text-sm text-muted-foreground">Kontraktstatus: </span>
+              <span className="font-medium">{getContractStatus(residence)}</span>
+            </div>
+          </div>
+        }
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div>
+          <p className="text-sm text-muted-foreground">Objektsnummer/lägenhetskod</p>
+          <p className="font-medium">{residence.code}</p>
+        </div>
           <div>
-            <p className="text-sm text-muted-foreground">Objektsnummer/lägenhetskod</p>
-            <p className="font-medium">{residence.code}</p>
+            <p className="text-sm text-muted-foreground">Namn</p>
+            <p className="font-medium">{residence.name}</p>
           </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Namn</p>
-              <p className="font-medium">{residence.name}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktstatus</p>
-              <p className="font-medium">{getContractStatus(residence)}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Yta</p>
-              <p className="font-medium">{residence.size ? `${residence.size} m²` : "N/A"}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Anläggnings ID Mälarenergi</p>
-              <p className="font-medium">{residence.malarenergiFacilityId || "N/A"}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
-              <p className="font-medium">{isSecondaryRental ? "Ja" : "Nej"}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Hyra</p>
-              <p className="font-medium">{residence.rent ? `${residence.rent} kr/mån` : "N/A"}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>
-              <p className="font-medium">
-                {new Date(residence.validityPeriod.fromDate).toLocaleDateString('sv-SE')}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Befintligt kontrakt till</p>
-              <p className="font-medium">
-                {new Date(residence.validityPeriod.toDate).toLocaleDateString('sv-SE')}
-              </p>
-            </div>
-            {buildingDetail?.constructionYear && (
-              <div>
-                <p className="text-sm text-muted-foreground">Byggnadsår</p>
-                <p className="font-medium">{buildingDetail.constructionYear}</p>
-              </div>
-            )}
-            {buildingDetail?.renovationYear && (
-              <div>
-                <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
-                <p className="font-medium">{buildingDetail.renovationYear}</p>
-              </div>
-            )}
+          <div>
+            <p className="text-sm text-muted-foreground">Kontraktstatus</p>
+            <p className="font-medium">{getContractStatus(residence)}</p>
           </div>
-        </CardContent>
-      </Card>
+          <div>
+            <p className="text-sm text-muted-foreground">Yta</p>
+            <p className="font-medium">{residence.size ? `${residence.size} m²` : "N/A"}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Anläggnings ID Mälarenergi</p>
+            <p className="font-medium">{residence.malarenergiFacilityId || "N/A"}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
+            <p className="font-medium">{isSecondaryRental ? "Ja" : "Nej"}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Hyra</p>
+            <p className="font-medium">{residence.rent ? `${residence.rent} kr/mån` : "N/A"}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>
+            <p className="font-medium">
+              {new Date(residence.validityPeriod.fromDate).toLocaleDateString('sv-SE')}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Befintligt kontrakt till</p>
+            <p className="font-medium">
+              {new Date(residence.validityPeriod.toDate).toLocaleDateString('sv-SE')}
+            </p>
+          </div>
+          {buildingDetail?.constructionYear && (
+            <div>
+              <p className="text-sm text-muted-foreground">Byggnadsår</p>
+              <p className="font-medium">{buildingDetail.constructionYear}</p>
+            </div>
+          )}
+          {buildingDetail?.renovationYear && (
+            <div>
+              <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
+              <p className="font-medium">{buildingDetail.renovationYear}</p>
+            </div>
+          )}
+        </div>
+      </CollapsibleInfoCard>
     </TooltipProvider>
   );
 };

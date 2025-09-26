@@ -275,6 +275,22 @@ export function BetaSettings() {
                         onCheckedChange={() => handleFeatureToggle('showTenantInfo')} 
                       />
                     </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <Key className="h-4 w-4" />
+                          <Label htmlFor="residence-access">Lås och passage</Label>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Visa lås- och passagefunktioner på lägenhetskortet</p>
+                      </div>
+                      <Switch 
+                        id="residence-access" 
+                        checked={features.showResidenceAccess} 
+                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
+                        onCheckedChange={() => handleFeatureToggle('showResidenceAccess')} 
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,11 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ReactNode } from "react";
-import { LucideIcon } from "lucide-react";
 
 interface TabLayoutProps {
   title?: string;
-  icon?: LucideIcon;
   count?: number;
   children: ReactNode;
   className?: string;
@@ -15,7 +13,6 @@ interface TabLayoutProps {
 
 export const TabLayout = ({ 
   title, 
-  icon: Icon, 
   count, 
   children, 
   className = "",
@@ -36,8 +33,7 @@ export const TabLayout = ({
     <Card className={`w-full ${className}`}>
       {title && showHeader && !isMobile && (
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            {Icon && <Icon className="h-5 w-5" />}
+          <CardTitle>
             {title}
             {count !== undefined && ` (${count})`}
           </CardTitle>
