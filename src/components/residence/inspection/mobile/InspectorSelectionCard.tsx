@@ -73,13 +73,6 @@ export function InspectorSelectionCard({
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div>
-                <p className="text-muted-foreground text-sm">Namn</p>
-                <p className="font-medium">{tenant.name}</p>
-              </div>
-            </div>
-            
             <div className="flex items-center gap-3">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={tenant.avatar} />
@@ -88,6 +81,7 @@ export function InspectorSelectionCard({
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
+                <p className="font-medium">{tenant.name}</p>
                 <p className="text-sm text-muted-foreground">{tenant.email}</p>
               </div>
             </div>
