@@ -112,10 +112,10 @@ export function InspectorSelectionCard({
         </Card>
       )}
 
-      {/* Inspector Selection Card */}
+      {/* Inspector Selection and Settings Card */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Välj besiktningsman</CardTitle>
+          <CardTitle className="text-base">Info om besiktning</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Select value={inspectorName} onValueChange={setInspectorName}>
@@ -137,15 +137,7 @@ export function InspectorSelectionCard({
               ))}
             </SelectContent>
           </Select>
-        </CardContent>
-      </Card>
 
-      {/* Time and Master Key Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Besiktningsinställningar</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="inspection-time" className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
