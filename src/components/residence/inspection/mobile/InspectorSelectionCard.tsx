@@ -73,6 +73,17 @@ export function InspectorSelectionCard({
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={tenant.avatar} />
+                <AvatarFallback>
+                  <User className="h-6 w-6" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <p className="font-medium text-base">{tenant.name || [tenant.firstName, tenant.lastName].filter(Boolean).join(' ')}</p>
+              </div>
+            </div>
             
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
