@@ -22,10 +22,7 @@ interface ExtendedInspection extends Inspection {
 }
 
 const getAllInspections = (): ExtendedInspection[] => {
-  const saved = localStorage.getItem("inspections");
-  const baseInspections: Inspection[] = saved ? JSON.parse(saved) : [];
-  
-  // Create mock data if no real inspections exist
+  // Always return mock data for demonstration purposes
   const mockInspections: ExtendedInspection[] = [
     {
       id: "inspection-mock-1",
@@ -122,13 +119,13 @@ const getAllInspections = (): ExtendedInspection[] => {
       terminationDate: "2024-11-10",
       district: "Söder",
       inspectionNumber: "BES-2024-007",
-      priority: 'avflytt',
+      priority: 'avflytt',  
       isAssigned: true
     },
     {
       id: "inspection-mock-8",
       date: "2024-09-26",
-      inspectedBy: "Thomas Nilsson",
+      inspectedBy: "Thomas Nilsson", 
       rooms: {},
       isCompleted: false,
       contractId: "K2024008",
@@ -141,19 +138,7 @@ const getAllInspections = (): ExtendedInspection[] => {
     }
   ];
   
-  // Combine real inspections with mock data, extending real ones
-  const extendedBaseInspections = baseInspections.map((inspection, index) => ({
-    ...inspection,
-    contractId: `K${2024100 + index}`,
-    address: `Realgatan ${10 + index}, Västerås`,
-    terminationDate: new Date(Date.now() + (index * 7 * 24 * 60 * 60 * 1000)).toLocaleDateString('sv-SE'),
-    district: ['Centrum', 'Söder', 'Norr', 'Väster', 'Öster'][index % 5],
-    inspectionNumber: `BES-2024-${String(100 + index).padStart(3, '0')}`,
-    priority: (index % 2 === 0 ? 'avflytt' : 'inflytt') as 'avflytt' | 'inflytt',
-    isAssigned: index % 3 !== 0
-  }));
-  
-  return [...extendedBaseInspections, ...mockInspections];
+  return mockInspections;
 };
 
 // Mock current user - in real app this would come from auth context
@@ -161,7 +146,11 @@ const CURRENT_USER = "Anna Lindström";
 
 export default function AllInspectionsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [inspections] = useState<ExtendedInspection[]>(getAllInspections);
+  const [inspections] = useState<ExtendedInspection[]>(() => {
+    const allInspections = getAllInspections();
+    console.log("Loaded inspections:", allInspections);
+    return allInspections;
+  });
   const [selectedInspection, setSelectedInspection] = useState<ExtendedInspection | null>(null);
 
   const handleViewInspection = (inspection: ExtendedInspection) => {
@@ -201,6 +190,11 @@ export default function AllInspectionsPage() {
   const ongoingInspections = inspections.filter(inspection => !inspection.isCompleted);
   const myInspections = inspections.filter(inspection => inspection.inspectedBy === CURRENT_USER);
   const completedInspections = inspections.filter(inspection => inspection.isCompleted);
+
+  console.log("All inspections:", inspections.length);
+  console.log("Ongoing inspections:", ongoingInspections.length);
+  console.log("My inspections:", myInspections.length);
+  console.log("Completed inspections:", completedInspections.length);
 
   // Columns for ongoing inspections
   const ongoingColumns = [
