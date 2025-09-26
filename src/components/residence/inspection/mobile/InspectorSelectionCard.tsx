@@ -151,13 +151,39 @@ export function InspectorSelectionCard({
               <Clock className="h-4 w-4" />
               Klockslag för besiktning
             </Label>
-            <Input
-              id="inspection-time"
-              type="time"
-              value={inspectionTime}
-              onChange={(e) => setInspectionTime(e.target.value)}
-              className="w-full"
-            />
+            <div className="flex gap-2">
+              <Select value={inspectionTime.split(':')[0] || '09'} onValueChange={(hour) => {
+                const currentMinute = inspectionTime.split(':')[1] || '00';
+                setInspectionTime(`${hour}:${currentMinute}`);
+              }}>
+                <SelectTrigger className="flex-1">
+                  <SelectValue placeholder="Timme" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')).map((hour) => (
+                    <SelectItem key={hour} value={hour}>
+                      {hour}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <span className="flex items-center px-2 text-muted-foreground">:</span>
+              <Select value={inspectionTime.split(':')[1] || '00'} onValueChange={(minute) => {
+                const currentHour = inspectionTime.split(':')[0] || '09';
+                setInspectionTime(`${currentHour}:${minute}`);
+              }}>
+                <SelectTrigger className="flex-1">
+                  <SelectValue placeholder="Minut" />
+                </SelectTrigger>
+                <SelectContent>
+                  {['00', '15', '30', '45'].map((minute) => (
+                    <SelectItem key={minute} value={minute}>
+                      {minute}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="flex items-center space-x-2">
