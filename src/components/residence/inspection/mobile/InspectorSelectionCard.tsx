@@ -84,15 +84,6 @@ export function InspectorSelectionCard({
                 <p className="font-medium">{tenant.name}</p>
                 <p className="text-sm text-muted-foreground">{tenant.email}</p>
               </div>
-              <Badge 
-                variant={tenant.contractStatus === 'active' ? 'default' : 'outline'}
-                className={tenant.contractStatus === 'active' 
-                  ? 'bg-green-100 text-green-800 border-green-200' 
-                  : 'bg-orange-50 text-orange-700 border-orange-200'
-                }
-              >
-                {tenant.contractStatus === 'active' ? 'Aktivt kontrakt' : 'Inaktivt kontrakt'}
-              </Badge>
             </div>
             
             <div className="grid grid-cols-2 gap-4 text-sm">
@@ -106,9 +97,17 @@ export function InspectorSelectionCard({
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4" />
-              <span>Odenplan 5, lägenhet 1001</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <MapPin className="h-4 w-4" />
+                <span>Odenplan 5, lägenhet 1001</span>
+              </div>
+              <Badge 
+                variant="outline"
+                className="bg-orange-50 text-orange-700 border-orange-200"
+              >
+                Uppsagt
+              </Badge>
             </div>
           </CardContent>
         </Card>
