@@ -10,9 +10,32 @@ import { InspectionReadOnly } from "@/components/residence/inspection/Inspection
 import { PageLayout } from "@/components/layout/PageLayout";
 import type { Inspection } from "@/components/residence/inspection/types";
 
-const getAllInspections = (): Inspection[] => {
+// Extended inspection type for the overview page
+interface ExtendedInspection extends Inspection {
+  contractId?: string;
+  address?: string;
+  terminationDate?: string;
+  district?: string;
+  inspectionNumber?: string;
+  priority?: 'avflytt' | 'inflytt';
+  isAssigned?: boolean;
+}
+
+const getAllInspections = (): ExtendedInspection[] => {
   const saved = localStorage.getItem("inspections");
-  return saved ? JSON.parse(saved) : [];
+  const baseInspections: Inspection[] = saved ? JSON.parse(saved) : [];
+  
+  // Extend with mock data for the overview
+  return baseInspections.map((inspection, index) => ({
+    ...inspection,
+    contractId: `K${2024000 + index + 1}`,
+    address: `Storgatan ${12 + index}, Västerås`,
+    terminationDate: new Date(Date.now() + (index * 7 * 24 * 60 * 60 * 1000)).toLocaleDateString('sv-SE'),
+    district: index % 2 === 0 ? 'Centrum' : 'Söder',
+    inspectionNumber: `BES-${2024}-${String(index + 1).padStart(3, '0')}`,
+    priority: index % 2 === 0 ? 'avflytt' : 'inflytt',
+    isAssigned: index % 3 !== 0 // 2/3 are assigned
+  }));
 };
 
 // Mock current user - in real app this would come from auth context
@@ -20,26 +43,38 @@ const CURRENT_USER = "Anna Lindström";
 
 export default function AllInspectionsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [inspections] = useState<Inspection[]>(getAllInspections);
-  const [selectedInspection, setSelectedInspection] = useState<Inspection | null>(null);
+  const [inspections] = useState<ExtendedInspection[]>(getAllInspections);
+  const [selectedInspection, setSelectedInspection] = useState<ExtendedInspection | null>(null);
 
-  const handleViewInspection = (inspection: Inspection) => {
+  const handleViewInspection = (inspection: ExtendedInspection) => {
     setSelectedInspection(inspection);
   };
 
-  const getStatusBadge = (inspection: Inspection) => {
+  const getStatusBadge = (inspection: ExtendedInspection) => {
     if (inspection.isCompleted) {
       return <Badge variant="secondary">Slutförd</Badge>;
     }
     return <Badge variant="default">Pågående</Badge>;
   };
 
-  const getCompletedRoomsCount = (inspection: Inspection) => {
+  const getAssignmentStatusBadge = (isAssigned: boolean) => {
+    return isAssigned ? 
+      <Badge variant="default">Tilldelad</Badge> : 
+      <Badge variant="outline">Inte tilldelad</Badge>;
+  };
+
+  const getPriorityBadge = (priority: 'avflytt' | 'inflytt') => {
+    return priority === 'avflytt' ? 
+      <Badge variant="destructive">Avflytt</Badge> : 
+      <Badge variant="secondary">Inflytt</Badge>;
+  };
+
+  const getCompletedRoomsCount = (inspection: ExtendedInspection) => {
     if (!inspection.rooms) return 0;
     return Object.values(inspection.rooms).filter(room => room.isHandled).length;
   };
 
-  const getTotalRoomsCount = (inspection: Inspection) => {
+  const getTotalRoomsCount = (inspection: ExtendedInspection) => {
     if (!inspection.rooms) return 0;
     return Object.keys(inspection.rooms).length;
   };
@@ -49,45 +84,47 @@ export default function AllInspectionsPage() {
   const myInspections = inspections.filter(inspection => inspection.inspectedBy === CURRENT_USER);
   const completedInspections = inspections.filter(inspection => inspection.isCompleted);
 
-  const createColumns = (showInspector: boolean = true) => [
+  // Columns for ongoing inspections
+  const ongoingColumns = [
     {
-      key: "date",
-      label: "Datum", 
-      render: (inspection: Inspection) => inspection.date ? new Date(inspection.date).toLocaleDateString('sv-SE') : 'N/A'
+      key: "status",
+      label: "Status",
+      render: (inspection: ExtendedInspection) => getAssignmentStatusBadge(inspection.isAssigned || false)
+    },
+    {
+      key: "priority",
+      label: "Prioritet",
+      render: (inspection: ExtendedInspection) => getPriorityBadge(inspection.priority || 'inflytt')
+    },
+    {
+      key: "contractId",
+      label: "Kontrakt ID",
+      render: (inspection: ExtendedInspection) => inspection.contractId || 'N/A'
     },
     {
       key: "address",
-      label: "Lägenhet",
-      render: (inspection: Inspection) => (
-        <div>
-          <div className="font-medium">Lägenhet {inspection.id?.replace('inspection-', '') || 'N/A'}</div>
-          <div className="text-sm text-muted-foreground">ID: {inspection.id}</div>
-        </div>
-      )
-    },
-    ...(showInspector ? [{
-      key: "inspector",
-      label: "Besiktningsman",
-      render: (inspection: Inspection) => inspection.inspectedBy || 'N/A'
-    }] : []),
-    {
-      key: "status", 
-      label: "Status",
-      render: (inspection: Inspection) => getStatusBadge(inspection)
+      label: "Adress",
+      render: (inspection: ExtendedInspection) => inspection.address || 'N/A'
     },
     {
-      key: "rooms",
-      label: "Rum",
-      render: (inspection: Inspection) => {
-        const completed = getCompletedRoomsCount(inspection);
-        const total = getTotalRoomsCount(inspection);
-        return `${completed}/${total}`;
-      }
+      key: "terminationDate",
+      label: "Uppsägningsdatum",
+      render: (inspection: ExtendedInspection) => inspection.terminationDate || 'N/A'
+    },
+    {
+      key: "district",
+      label: "Distrikt",
+      render: (inspection: ExtendedInspection) => inspection.district || 'N/A'
+    },
+    {
+      key: "inspectionNumber",
+      label: "Besiktningsnummer",
+      render: (inspection: ExtendedInspection) => inspection.inspectionNumber || 'N/A'
     },
     {
       key: "actions",
       label: "Åtgärder",
-      render: (inspection: Inspection) => (
+      render: (inspection: ExtendedInspection) => (
         <Button
           variant="ghost"
           size="sm"
@@ -100,7 +137,54 @@ export default function AllInspectionsPage() {
     }
   ];
 
-  const renderInspectionTable = (data: Inspection[], title: string, showInspector: boolean = true) => (
+  // Columns for other tabs
+  const createStandardColumns = (showInspector: boolean = true) => [
+    {
+      key: "date",
+      label: "Datum", 
+      render: (inspection: ExtendedInspection) => inspection.date ? new Date(inspection.date).toLocaleDateString('sv-SE') : 'N/A'
+    },
+    {
+      key: "address",
+      label: "Adress",
+      render: (inspection: ExtendedInspection) => inspection.address || 'N/A'
+    },
+    ...(showInspector ? [{
+      key: "inspector",
+      label: "Besiktningsman",
+      render: (inspection: ExtendedInspection) => inspection.inspectedBy || 'N/A'
+    }] : []),
+    {
+      key: "status", 
+      label: "Status",
+      render: (inspection: ExtendedInspection) => getStatusBadge(inspection)
+    },
+    {
+      key: "rooms",
+      label: "Rum",
+      render: (inspection: ExtendedInspection) => {
+        const completed = getCompletedRoomsCount(inspection);
+        const total = getTotalRoomsCount(inspection);
+        return `${completed}/${total}`;
+      }
+    },
+    {
+      key: "actions",
+      label: "Åtgärder",
+      render: (inspection: ExtendedInspection) => (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleViewInspection(inspection)}
+        >
+          <Eye className="h-4 w-4 mr-1" />
+          Visa detaljer
+        </Button>
+      )
+    }
+  ];
+
+  const renderInspectionTable = (data: ExtendedInspection[], title: string, useOngoingColumns: boolean = false, showInspector: boolean = true) => (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
@@ -112,8 +196,8 @@ export default function AllInspectionsPage() {
         {data.length > 0 ? (
           <ResponsiveTable
             data={data}
-            columns={createColumns(showInspector)}
-            keyExtractor={(inspection: Inspection) => inspection.id}
+            columns={useOngoingColumns ? ongoingColumns : createStandardColumns(showInspector)}
+            keyExtractor={(inspection: ExtendedInspection) => inspection.id}
             emptyMessage="Inga besiktningar registrerade ännu"
           />
         ) : (
@@ -150,15 +234,15 @@ export default function AllInspectionsPage() {
           </TabsList>
 
           <TabsContent value="ongoing" className="space-y-4">
-            {renderInspectionTable(ongoingInspections, "Alla pågående registrerade besiktningar")}
+            {renderInspectionTable(ongoingInspections, "Alla pågående registrerade besiktningar", true)}
           </TabsContent>
 
           <TabsContent value="mine" className="space-y-4">
-            {renderInspectionTable(myInspections, "Mina besiktningar", false)}
+            {renderInspectionTable(myInspections, "Mina besiktningar", false, false)}
           </TabsContent>
 
           <TabsContent value="completed" className="space-y-4">
-            {renderInspectionTable(completedInspections, "Skickade/avslutade besiktningar")}
+            {renderInspectionTable(completedInspections, "Skickade/avslutade besiktningar", false)}
           </TabsContent>
         </Tabs>
       </div>
