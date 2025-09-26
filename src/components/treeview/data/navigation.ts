@@ -27,6 +27,12 @@ export const navigationNodes: TreeNode[] = [
     path: "/turnover",
   },
   {
+    id: "inspections",
+    label: "Besiktningar",
+    icon: "clipboard-list",
+    path: "/inspections",
+  },
+  {
     id: "design-system",
     label: "Design System",
     icon: "palette",
