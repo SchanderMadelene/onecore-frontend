@@ -23,6 +23,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
 
   const activeInspection = inspections.find(inspection => 
     !inspection.isCompleted && 
+    Object.keys(inspection.rooms).length > 0 &&
     !Object.values(inspection.rooms).every(room => room.isHandled)
   );
 
@@ -76,14 +77,28 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
 
   return (
     <div className="w-full space-y-4">
-      <Button 
-        size="sm" 
-        onClick={() => setIsDialogOpen(true)} 
-        className="flex items-center gap-1"
-        disabled={!!activeInspection}
-      >
-        <Plus className="h-4 w-4" /> Skapa ny
-      </Button>
+      <div className="flex gap-2">
+        <Button 
+          size="sm" 
+          onClick={() => setIsDialogOpen(true)} 
+          className="flex items-center gap-1"
+        >
+          <Plus className="h-4 w-4" /> Skapa ny
+        </Button>
+        {inspections.length > 0 && (
+          <Button 
+            variant="outline"
+            size="sm" 
+            onClick={() => {
+              localStorage.removeItem("inspections");
+              onInspectionCreated(); // This will refresh the inspections list
+            }} 
+            className="text-xs"
+          >
+            Rensa alla
+          </Button>
+        )}
+      </div>
       
       <Tabs defaultValue="active" className="space-y-6">
         <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
