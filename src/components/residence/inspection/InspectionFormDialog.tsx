@@ -16,6 +16,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
 import { mockTenant } from "@/data/tenants";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { MobileInspectionSheet } from "./mobile/MobileInspectionSheet";
 
 interface InspectionFormDialogProps {
   isOpen: boolean;
@@ -70,6 +71,19 @@ export function InspectionFormDialog({
   if (rooms.length > 0 && expandedRoomIds.length === 0) {
     // Initialize with the first room expanded
     handleToggleRoom(rooms[0].id);
+  }
+
+  // Use mobile sheet for mobile devices
+  if (isMobile) {
+    return (
+      <MobileInspectionSheet
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        rooms={rooms}
+        tenant={tenant}
+      />
+    );
   }
 
   return (

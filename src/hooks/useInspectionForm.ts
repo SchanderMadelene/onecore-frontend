@@ -35,16 +35,27 @@ export function useInspectionForm(rooms: Room[]) {
     field: keyof InspectionRoom["conditions"],
     value: string
   ) => {
-    setInspectionData(prev => ({
-      ...prev,
-      [roomId]: {
+    setInspectionData(prev => {
+      const updatedRoom = {
         ...prev[roomId],
         conditions: {
           ...prev[roomId].conditions,
           [field]: value
         }
-      }
-    }));
+      };
+
+      // Check if all conditions are set to determine if room is handled
+      const allConditionsSet = Object.values(updatedRoom.conditions).every(
+        condition => condition && condition.trim() !== ""
+      );
+      
+      updatedRoom.isHandled = allConditionsSet;
+
+      return {
+        ...prev,
+        [roomId]: updatedRoom
+      };
+    });
   };
 
   const handleActionUpdate = (
