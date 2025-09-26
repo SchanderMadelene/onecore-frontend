@@ -159,21 +159,17 @@ export default function AllInspectionsPage() {
 
   const getStatusBadge = (inspection: ExtendedInspection) => {
     if (inspection.isCompleted) {
-      return <Badge variant="secondary">Slutförd</Badge>;
+      return "Slutförd";
     }
-    return <Badge variant="default">Pågående</Badge>;
+    return "Pågående";
   };
 
   const getAssignmentStatusBadge = (isAssigned: boolean) => {
-    return isAssigned ? 
-      <Badge variant="default">Tilldelad</Badge> : 
-      <Badge variant="outline">Inte tilldelad</Badge>;
+    return isAssigned ? "Tilldelad" : "Inte tilldelad";
   };
 
   const getPriorityBadge = (priority: 'avflytt' | 'inflytt') => {
-    return priority === 'avflytt' ? 
-      <Badge variant="destructive">Avflytt</Badge> : 
-      <Badge variant="secondary">Inflytt</Badge>;
+    return priority === 'avflytt' ? "Avflytt" : "Inflytt";
   };
 
   const getCompletedRoomsCount = (inspection: ExtendedInspection) => {
