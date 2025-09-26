@@ -59,7 +59,7 @@ export function InspectorSelectionCard({
       {/* Tenant Info Card */}
       {tenant && (
         <Card>
-          <CardHeader className="pb-4">
+          <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">Hyresgäst</CardTitle>
               <Button 
@@ -75,20 +75,20 @@ export function InspectorSelectionCard({
           <CardContent className="space-y-4">
             {/* User info section */}
             <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
+              <Avatar className="h-12 w-12">
                 <AvatarImage src={tenant.avatar} />
                 <AvatarFallback>
-                  <User className="h-5 w-5" />
+                  <User className="h-6 w-6" />
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p className="font-medium">{tenant.name}</p>
-                <p className="text-sm text-muted-foreground">{tenant.email}</p>
+                <p className="text-sm text-muted-foreground truncate">{tenant.email}</p>
               </div>
             </div>
 
             {/* Contract status */}
-            <div className="flex justify-center">
+            <div className="flex justify-end">
               <Badge 
                 variant="outline"
                 className={tenant.contractStatus === 'active' 
@@ -100,21 +100,21 @@ export function InspectorSelectionCard({
               </Badge>
             </div>
             
-            {/* Date information */}
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-                <p className="font-medium">{tenant.moveInDate || '2023-01-01'}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-                <p className="font-medium">{tenant.moveOutDate || '2023-12-31'}</p>
-              </div>
+            {/* Move-in date */}
+            <div>
+              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
+              <p className="font-medium">{tenant.moveInDate || '2023-01-01'}</p>
+            </div>
+
+            {/* Move-out date */}
+            <div>
+              <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
+              <p className="font-medium">{tenant.moveOutDate || '2023-12-31'}</p>
             </div>
 
             {/* Address */}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground pt-3 border-t">
-              <MapPin className="h-4 w-4" />
+            <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t">
+              <MapPin className="h-4 w-4 flex-shrink-0" />
               <span>Odenplan 5, lägenhet 1001</span>
             </div>
           </CardContent>
