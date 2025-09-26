@@ -122,7 +122,7 @@ export function MobileInspectionForm({
 
       {/* Room Navigation Cards */}
       <div className="px-6 py-4">
-        <div className="flex gap-3 overflow-x-auto pb-3 px-1">
+        <div className="flex gap-3 overflow-x-auto pb-3 px-1 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
           {rooms.map((room, index) => {
             const isCompleted = inspectionData[room.id]?.isHandled;
             const isCurrent = index === currentRoomIndex;
