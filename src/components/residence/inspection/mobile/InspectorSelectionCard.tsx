@@ -178,15 +178,9 @@ export function InspectorSelectionCard({
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="master-key"
-              checked={needsMasterKey}
-              onCheckedChange={setNeedsMasterKey}
-            />
-            <Label htmlFor="master-key" className="cursor-pointer">
-              Huvudnyckel krävs
-            </Label>
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Huvudnyckel</span>
+            <span className="text-sm text-muted-foreground">Nej</span>
           </div>
         </CardContent>
       </Card>
