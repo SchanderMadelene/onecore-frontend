@@ -84,7 +84,7 @@ export function InspectorSelectionCard({
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <p className="font-medium">{tenant.name}</p>
+                <p className="font-medium text-base">{tenant.name}</p>
               </div>
             </div>
             
