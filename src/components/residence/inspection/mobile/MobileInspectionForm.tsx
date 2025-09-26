@@ -29,6 +29,10 @@ export function MobileInspectionForm({
   const {
     inspectorName,
     setInspectorName,
+    inspectionTime,
+    setInspectionTime,
+    needsMasterKey,
+    setNeedsMasterKey,
     inspectionData,
     handleConditionUpdate,
     handleActionUpdate,
@@ -56,7 +60,7 @@ export function MobileInspectionForm({
     onSave(inspectorName, inspectionData);
   };
 
-  const canComplete = inspectorName && completedRooms === rooms.length;
+  const canComplete = inspectorName && inspectionTime && completedRooms === rooms.length;
 
   if (showInspectorSelection) {
     return (
@@ -75,6 +79,10 @@ export function MobileInspectionForm({
           <InspectorSelectionCard 
             inspectorName={inspectorName}
             setInspectorName={setInspectorName}
+            inspectionTime={inspectionTime}
+            setInspectionTime={setInspectionTime}
+            needsMasterKey={needsMasterKey}
+            setNeedsMasterKey={setNeedsMasterKey}
             tenant={tenant}
           />
 

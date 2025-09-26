@@ -1,11 +1,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { User, MapPin, ExternalLink, Clock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 interface InspectorSelectionCardProps {
   inspectorName: string;
   setInspectorName: (name: string) => void;
+  inspectionTime: string;
+  setInspectionTime: (time: string) => void;
+  needsMasterKey: boolean;
+  setNeedsMasterKey: (needs: boolean) => void;
   tenant?: any;
 }
 
@@ -16,20 +27,52 @@ const inspectors = [
   "Johan Johansson"
 ];
 
+// Simulate logged in user
+const currentUser = "Anna Andersson";
+
 export function InspectorSelectionCard({ 
   inspectorName, 
-  setInspectorName, 
+  setInspectorName,
+  inspectionTime,
+  setInspectionTime,
+  needsMasterKey,
+  setNeedsMasterKey,
   tenant 
 }: InspectorSelectionCardProps) {
+  const navigate = useNavigate();
+  
+  // Set default inspector if not already set
+  useEffect(() => {
+    if (!inspectorName && currentUser) {
+      setInspectorName(currentUser);
+    }
+  }, [inspectorName, setInspectorName]);
+
+  const handleOpenTenantProfile = () => {
+    if (tenant?.id) {
+      navigate(`/tenants/${tenant.id}`);
+    }
+  };
+
   return (
     <div className="space-y-4">
       {/* Tenant Info Card */}
       {tenant && (
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Hyresgäst</CardTitle>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">Hyresgäst</CardTitle>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={handleOpenTenantProfile}
+                className="h-8 px-2"
+              >
+                <ExternalLink className="h-4 w-4" />
+              </Button>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-4">
             <div className="flex items-center gap-3">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={tenant.avatar} />
@@ -37,11 +80,32 @@ export function InspectorSelectionCard({
                   <User className="h-6 w-6" />
                 </AvatarFallback>
               </Avatar>
-              <div>
+              <div className="flex-1">
                 <p className="font-medium">{tenant.name}</p>
                 <p className="text-sm text-muted-foreground">{tenant.email}</p>
               </div>
+              <Badge 
+                variant={tenant.contractStatus === 'active' ? 'default' : 'outline'}
+                className={tenant.contractStatus === 'active' 
+                  ? 'bg-green-100 text-green-800 border-green-200' 
+                  : 'bg-orange-50 text-orange-700 border-orange-200'
+                }
+              >
+                {tenant.contractStatus === 'active' ? 'Aktivt kontrakt' : 'Inaktivt kontrakt'}
+              </Badge>
             </div>
+            
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-muted-foreground">Inflyttningsdatum</p>
+                <p className="font-medium">{tenant.moveInDate || '2023-01-15'}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Utflyttningsdatum</p>
+                <p className="font-medium">{tenant.moveOutDate || '-'}</p>
+              </div>
+            </div>
+
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
               <span>Odenplan 5, lägenhet 1001</span>
@@ -55,7 +119,7 @@ export function InspectorSelectionCard({
         <CardHeader>
           <CardTitle className="text-base">Välj besiktningsman</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <Select value={inspectorName} onValueChange={setInspectorName}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Välj vem som utför besiktningen" />
@@ -75,6 +139,39 @@ export function InspectorSelectionCard({
               ))}
             </SelectContent>
           </Select>
+        </CardContent>
+      </Card>
+
+      {/* Time and Master Key Settings */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Besiktningsinställningar</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="inspection-time" className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Klockslag för besiktning
+            </Label>
+            <Input
+              id="inspection-time"
+              type="time"
+              value={inspectionTime}
+              onChange={(e) => setInspectionTime(e.target.value)}
+              className="w-full"
+            />
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="master-key"
+              checked={needsMasterKey}
+              onCheckedChange={setNeedsMasterKey}
+            />
+            <Label htmlFor="master-key" className="cursor-pointer">
+              Huvudnyckel krävs
+            </Label>
+          </div>
         </CardContent>
       </Card>
     </div>
