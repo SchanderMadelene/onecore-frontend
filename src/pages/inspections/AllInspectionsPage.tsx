@@ -25,17 +25,135 @@ const getAllInspections = (): ExtendedInspection[] => {
   const saved = localStorage.getItem("inspections");
   const baseInspections: Inspection[] = saved ? JSON.parse(saved) : [];
   
-  // Extend with mock data for the overview
-  return baseInspections.map((inspection, index) => ({
+  // Create mock data if no real inspections exist
+  const mockInspections: ExtendedInspection[] = [
+    {
+      id: "inspection-mock-1",
+      date: "2024-09-20",
+      inspectedBy: "Anna Lindström",
+      rooms: {},
+      isCompleted: false,
+      contractId: "K2024001",
+      address: "Storgatan 12, Västerås",
+      terminationDate: "2024-10-15",
+      district: "Centrum",
+      inspectionNumber: "BES-2024-001",
+      priority: 'avflytt',
+      isAssigned: true
+    },
+    {
+      id: "inspection-mock-2", 
+      date: "2024-09-22",
+      inspectedBy: "Erik Johansson",
+      rooms: {},
+      isCompleted: false,
+      contractId: "K2024002",
+      address: "Lillgatan 8, Västerås",
+      terminationDate: "2024-10-20",
+      district: "Söder",
+      inspectionNumber: "BES-2024-002",
+      priority: 'inflytt',
+      isAssigned: false
+    },
+    {
+      id: "inspection-mock-3",
+      date: "2024-09-25",
+      inspectedBy: "Maria Andersson",
+      rooms: {},
+      isCompleted: false,
+      contractId: "K2024003",
+      address: "Vasagatan 15, Västerås",
+      terminationDate: "2024-11-01",
+      district: "Norr",
+      inspectionNumber: "BES-2024-003",
+      priority: 'avflytt',
+      isAssigned: true
+    },
+    {
+      id: "inspection-mock-4",
+      date: "2024-09-18",
+      inspectedBy: "Anna Lindström",
+      rooms: {},
+      isCompleted: true,
+      contractId: "K2024004",
+      address: "Kopparbergsvägen 22, Västerås",
+      terminationDate: "2024-09-30",
+      district: "Väster",
+      inspectionNumber: "BES-2024-004",
+      priority: 'inflytt',
+      isAssigned: true
+    },
+    {
+      id: "inspection-mock-5",
+      date: "2024-09-28",
+      inspectedBy: "Lars Petersson",
+      rooms: {},
+      isCompleted: false,
+      contractId: "K2024005",
+      address: "Björkgatan 5, Västerås",
+      terminationDate: "2024-10-25",
+      district: "Öster",
+      inspectionNumber: "BES-2024-005",
+      priority: 'avflytt',
+      isAssigned: false
+    },
+    {
+      id: "inspection-mock-6",
+      date: "2024-09-15",
+      inspectedBy: "Anna Lindström",
+      rooms: {},
+      isCompleted: true,
+      contractId: "K2024006",
+      address: "Skolgatan 18, Västerås",
+      terminationDate: "2024-09-20",
+      district: "Centrum",
+      inspectionNumber: "BES-2024-006",
+      priority: 'inflytt',
+      isAssigned: true
+    },
+    {
+      id: "inspection-mock-7",
+      date: "2024-09-30",
+      inspectedBy: "Johanna Svensson",
+      rooms: {},
+      isCompleted: false,
+      contractId: "K2024007",
+      address: "Hantverkargatan 9, Västerås",
+      terminationDate: "2024-11-10",
+      district: "Söder",
+      inspectionNumber: "BES-2024-007",
+      priority: 'avflytt',
+      isAssigned: true
+    },
+    {
+      id: "inspection-mock-8",
+      date: "2024-09-26",
+      inspectedBy: "Thomas Nilsson",
+      rooms: {},
+      isCompleted: false,
+      contractId: "K2024008",
+      address: "Klostergatan 14, Västerås",
+      terminationDate: "2024-10-30",
+      district: "Norr",
+      inspectionNumber: "BES-2024-008",
+      priority: 'inflytt',
+      isAssigned: false
+    }
+  ];
+  
+  // Combine real inspections with mock data, extending real ones
+  const extendedBaseInspections = baseInspections.map((inspection, index) => ({
     ...inspection,
-    contractId: `K${2024000 + index + 1}`,
-    address: `Storgatan ${12 + index}, Västerås`,
+    contractId: `K${2024100 + index}`,
+    address: `Realgatan ${10 + index}, Västerås`,
     terminationDate: new Date(Date.now() + (index * 7 * 24 * 60 * 60 * 1000)).toLocaleDateString('sv-SE'),
-    district: index % 2 === 0 ? 'Centrum' : 'Söder',
-    inspectionNumber: `BES-${2024}-${String(index + 1).padStart(3, '0')}`,
-    priority: index % 2 === 0 ? 'avflytt' : 'inflytt',
-    isAssigned: index % 3 !== 0 // 2/3 are assigned
+    district: ['Centrum', 'Söder', 'Norr', 'Väster', 'Öster'][index % 5],
+    inspectionNumber: `BES-2024-${String(100 + index).padStart(3, '0')}`,
+    priority: (index % 2 === 0 ? 'avflytt' : 'inflytt') as 'avflytt' | 'inflytt',
+    isAssigned: index % 3 !== 0
   }));
+  
+  return [...extendedBaseInspections, ...mockInspections];
 };
 
 // Mock current user - in real app this would come from auth context
