@@ -52,6 +52,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       content: features.showInspections ? (
         <ResidenceInspection
           rooms={rooms}
+          tenant={getTenantData()}
         />
       ) : (
         <p className="text-slate-500 p-1">

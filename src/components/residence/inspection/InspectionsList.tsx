@@ -14,9 +14,10 @@ interface InspectionsListProps {
   rooms: Room[];
   inspections: Inspection[];
   onInspectionCreated: () => void;
+  tenant?: any;
 }
 
-export function InspectionsList({ rooms, inspections, onInspectionCreated }: InspectionsListProps) {
+export function InspectionsList({ rooms, inspections, onInspectionCreated, tenant }: InspectionsListProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedInspection, setSelectedInspection] = useState<Inspection | null>(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
@@ -140,6 +141,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated }: Ins
             setIsDialogOpen(false);
           }}
           rooms={rooms}
+          tenant={tenant}
         />
       )}
 

@@ -65,7 +65,7 @@ export const ResidenceTabsContent = ({
           isEnabled={features.showInspections}
           fallbackMessage="För att se besiktningar, aktivera funktionen i inställningarna."
         >
-          <ResidenceInspection rooms={roomsData} />
+          <ResidenceInspection rooms={roomsData} tenant={getTenantData()} />
         </FeatureGatedContent>
       </TabsContent>
 
