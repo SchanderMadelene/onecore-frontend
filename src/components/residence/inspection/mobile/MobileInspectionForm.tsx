@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +26,7 @@ export function MobileInspectionForm({
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
   const [showInspectorSelection, setShowInspectorSelection] = useState(true);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   const {
     inspectorName,
@@ -62,6 +63,16 @@ export function MobileInspectionForm({
   };
 
   const canComplete = inspectorName && inspectionTime && completedRooms === rooms.length;
+
+  // Reset scroll position when room changes
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (viewport) {
+        viewport.scrollTop = 0;
+      }
+    }
+  }, [currentRoomIndex]);
 
   if (showInspectorSelection) {
     return (
@@ -174,7 +185,7 @@ export function MobileInspectionForm({
 
       {/* Current Room Inspection */}
       <div className="flex-1 min-h-0">
-        <ScrollArea className="h-full">
+        <ScrollArea ref={scrollAreaRef} className="h-full">
           <div className="px-4 pb-4">
             <RoomInspectionMobile
               room={currentRoom}
