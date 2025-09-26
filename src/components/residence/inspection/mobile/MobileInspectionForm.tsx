@@ -121,8 +121,8 @@ export function MobileInspectionForm({
       </div>
 
       {/* Room Navigation Cards */}
-      <div className="px-4 py-2">
-        <div className="flex gap-2 overflow-x-auto pb-2">
+      <div className="px-4 py-4">
+        <div className="flex gap-3 overflow-x-auto pb-3">
           {rooms.map((room, index) => {
             const isCompleted = inspectionData[room.id]?.isHandled;
             const isCurrent = index === currentRoomIndex;
@@ -130,20 +130,29 @@ export function MobileInspectionForm({
             return (
               <Card 
                 key={room.id} 
-                className={`min-w-[120px] cursor-pointer transition-all ${
-                  isCurrent ? 'ring-2 ring-primary' : ''
+                className={`min-w-[140px] cursor-pointer transition-all ${
+                  isCurrent 
+                    ? 'ring-2 ring-primary bg-primary/5' 
+                    : 'hover:bg-muted/50'
                 }`}
                 onClick={() => setCurrentRoomIndex(index)}
               >
-                <CardContent className="p-3 text-center">
-                  <div className="flex items-center justify-center gap-1 mb-1">
+                <CardContent className="p-4 text-center space-y-2">
+                  <div className="flex items-center justify-center gap-2">
                     {isCompleted && (
-                      <CheckCircle2 className="h-4 w-4 text-green-600" />
+                      <CheckCircle2 className="h-5 w-5 text-green-600" />
                     )}
-                    <span className="text-xs font-medium">{room.name}</span>
+                    <span className="text-sm font-medium leading-tight">{room.name}</span>
                   </div>
-                  <Badge variant={isCompleted ? "default" : "outline"} className="text-xs">
-                    {isCompleted ? "Klar" : "Väntar"}
+                  <Badge 
+                    variant={isCompleted ? "default" : "outline"} 
+                    className={`text-xs px-3 py-1 ${
+                      isCompleted 
+                        ? 'bg-green-100 text-green-800 border-green-200' 
+                        : 'bg-orange-50 text-orange-700 border-orange-200'
+                    }`}
+                  >
+                    {isCompleted ? "✓ Klar" : "Väntar"}
                   </Badge>
                 </CardContent>
               </Card>
