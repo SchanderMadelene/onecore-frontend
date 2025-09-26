@@ -61,10 +61,7 @@ export function InspectorSelectionCard({
         <Card>
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-base">Hyresgäst</CardTitle>
-                <p className="text-sm text-muted-foreground">{tenant.name || [tenant.firstName, tenant.lastName].filter(Boolean).join(' ')}</p>
-              </div>
+              <CardTitle className="text-base">Hyresgäst</CardTitle>
               <Button 
                 variant="ghost" 
                 size="sm"
