@@ -83,6 +83,9 @@ export function InspectorSelectionCard({
                   <User className="h-6 w-6" />
                 </AvatarFallback>
               </Avatar>
+              <div className="flex-1">
+                <p className="font-medium">{tenant.name}</p>
+              </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4 text-sm">
