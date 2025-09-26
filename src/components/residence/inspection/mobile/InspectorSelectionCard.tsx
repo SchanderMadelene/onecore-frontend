@@ -63,7 +63,7 @@ export function InspectorSelectionCard({
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-base">Hyresgäst</CardTitle>
-                <p className="text-sm text-muted-foreground">{tenant.name}</p>
+                <p className="text-sm text-muted-foreground">{tenant.name || [tenant.firstName, tenant.lastName].filter(Boolean).join(' ')}</p>
               </div>
               <Button 
                 variant="ghost" 
@@ -84,7 +84,7 @@ export function InspectorSelectionCard({
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <p className="font-medium text-base">{tenant.name}</p>
+                <p className="font-medium text-base">{tenant.name || [tenant.firstName, tenant.lastName].filter(Boolean).join(' ')}</p>
               </div>
             </div>
             
