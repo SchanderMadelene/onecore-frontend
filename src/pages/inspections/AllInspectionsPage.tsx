@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Eye } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
@@ -13,6 +14,9 @@ const getAllInspections = (): Inspection[] => {
   const saved = localStorage.getItem("inspections");
   return saved ? JSON.parse(saved) : [];
 };
+
+// Mock current user - in real app this would come from auth context
+const CURRENT_USER = "Anna Lindström";
 
 export default function AllInspectionsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -40,7 +44,12 @@ export default function AllInspectionsPage() {
     return Object.keys(inspection.rooms).length;
   };
 
-  const columns = [
+  // Filter inspections by category
+  const ongoingInspections = inspections.filter(inspection => !inspection.isCompleted);
+  const myInspections = inspections.filter(inspection => inspection.inspectedBy === CURRENT_USER);
+  const completedInspections = inspections.filter(inspection => inspection.isCompleted);
+
+  const createColumns = (showInspector: boolean = true) => [
     {
       key: "date",
       label: "Datum", 
@@ -56,11 +65,11 @@ export default function AllInspectionsPage() {
         </div>
       )
     },
-    {
+    ...(showInspector ? [{
       key: "inspector",
       label: "Besiktningsman",
       render: (inspection: Inspection) => inspection.inspectedBy || 'N/A'
-    },
+    }] : []),
     {
       key: "status", 
       label: "Status",
@@ -91,6 +100,31 @@ export default function AllInspectionsPage() {
     }
   ];
 
+  const renderInspectionTable = (data: Inspection[], title: string, showInspector: boolean = true) => (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between">
+          {title}
+          <Badge variant="outline">{data.length}</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {data.length > 0 ? (
+          <ResponsiveTable
+            data={data}
+            columns={createColumns(showInspector)}
+            keyExtractor={(inspection: Inspection) => inspection.id}
+            emptyMessage="Inga besiktningar registrerade ännu"
+          />
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">Inga besiktningar i denna kategori</p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
@@ -99,28 +133,34 @@ export default function AllInspectionsPage() {
           <p className="text-muted-foreground">Översikt över alla besiktningar i systemet</p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Besiktningsöversikt</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {inspections.length > 0 ? (
-              <ResponsiveTable
-                data={inspections}
-                columns={columns}
-                keyExtractor={(inspection: Inspection) => inspection.id}
-                emptyMessage="Inga besiktningar registrerade ännu"
-              />
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">Inga besiktningar registrerade ännu</p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Besiktningar skapas från individuella lägenheter
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="ongoing" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="ongoing" className="flex items-center gap-2">
+              Pågående
+              <Badge variant="secondary" className="ml-1">{ongoingInspections.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="mine" className="flex items-center gap-2">
+              Mina besiktningar
+              <Badge variant="secondary" className="ml-1">{myInspections.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="completed" className="flex items-center gap-2">
+              Avslutade
+              <Badge variant="secondary" className="ml-1">{completedInspections.length}</Badge>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="ongoing" className="space-y-4">
+            {renderInspectionTable(ongoingInspections, "Alla pågående registrerade besiktningar")}
+          </TabsContent>
+
+          <TabsContent value="mine" className="space-y-4">
+            {renderInspectionTable(myInspections, "Mina besiktningar", false)}
+          </TabsContent>
+
+          <TabsContent value="completed" className="space-y-4">
+            {renderInspectionTable(completedInspections, "Skickade/avslutade besiktningar")}
+          </TabsContent>
+        </Tabs>
       </div>
 
       <Dialog 
