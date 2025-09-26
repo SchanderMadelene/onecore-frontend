@@ -33,7 +33,6 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
   return (
     <TabLayout 
       title="Besiktningar" 
-      icon={ClipboardList}
       count={inspections.length}
       showCard={true}
     >

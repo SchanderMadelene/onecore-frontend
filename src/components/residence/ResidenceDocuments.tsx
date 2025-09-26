@@ -107,7 +107,6 @@ export const ResidenceDocuments = () => {
   return (
     <TabLayout 
       title="Dokument" 
-      icon={FileText}
       count={documents.length}
       showCard={true}
     >

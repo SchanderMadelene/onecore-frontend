@@ -52,7 +52,6 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
     return (
       <TabLayout 
         title="Rumsinformation" 
-        icon={Info}
         count={0}
       >
         <EmptyState
@@ -67,7 +66,6 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
   return (
     <TabLayout 
       title="Rumsinformation" 
-      icon={Info}
       count={rooms.length}
       showCard={true}
     >

@@ -94,7 +94,6 @@ export const ResidenceTabsContent = ({
         >
           <TabLayout 
             title="Noteringar" 
-            icon={StickyNote}
             showCard={true}
           >
             <Notes 

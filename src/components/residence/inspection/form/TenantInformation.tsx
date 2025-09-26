@@ -35,7 +35,6 @@ export function TenantInformation({ tenant }: TenantInformationProps) {
   return (
     <TabLayout 
       title="Hyresgäst" 
-      icon={User}
       count={tenants.length}
       showCard={true}
     >

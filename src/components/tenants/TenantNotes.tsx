@@ -7,7 +7,6 @@ export function TenantNotes() {
   return (
     <TabLayout 
       title="Noteringar" 
-      icon={StickyNote}
       showCard={true}
       showHeader={true}
     >
