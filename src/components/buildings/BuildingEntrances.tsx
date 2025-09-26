@@ -16,7 +16,6 @@ export const BuildingEntrances = ({
   return (
     <TabLayout 
       title="Uppgångar" 
-      icon={Users}
       count={building.entrances?.length || 0}
       showCard={true}
     >

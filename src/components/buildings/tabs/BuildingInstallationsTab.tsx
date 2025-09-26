@@ -18,7 +18,6 @@ export const BuildingInstallationsTab = ({ building }: BuildingInstallationsTabP
     return (
       <TabLayout 
         title="Installationer" 
-        icon={Settings}
         count={0}
       >
         <EmptyState
@@ -33,7 +32,6 @@ export const BuildingInstallationsTab = ({ building }: BuildingInstallationsTabP
   return (
     <TabLayout 
       title="Installationer" 
-      icon={Settings}
       count={installations.length}
       showCard={true}
     >

@@ -135,7 +135,6 @@ export const BuildingDetailTabs = ({ building, basePath }: BuildingDetailTabsPro
         >
           <TabLayout 
             title="Noteringar" 
-            icon={MessageSquare}
             showCard={true}
           >
             <Notes
