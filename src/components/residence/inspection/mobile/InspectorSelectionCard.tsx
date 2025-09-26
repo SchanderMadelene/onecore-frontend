@@ -59,35 +59,35 @@ export function InspectorSelectionCard({
       {/* Tenant Info Card */}
       {tenant && (
         <Card>
-          <CardHeader className="pb-3">
+          <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">Hyresgäst</CardTitle>
               <Button 
                 variant="ghost" 
                 size="sm"
                 onClick={handleOpenTenantProfile}
-                className="h-8 px-2"
+                className="h-8 w-8 p-0"
               >
                 <ExternalLink className="h-4 w-4" />
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12">
+          <CardContent className="space-y-6">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-12 w-12 mt-1">
                 <AvatarImage src={tenant.avatar} />
                 <AvatarFallback>
                   <User className="h-6 w-6" />
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1">
-                <p className="font-medium">{tenant.name}</p>
-                <p className="text-sm text-muted-foreground">{tenant.email}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-base mb-1">{tenant.name}</p>
+                <p className="text-sm text-muted-foreground break-all">{tenant.email}</p>
               </div>
               <Badge 
-                variant={tenant.contractStatus === 'active' ? 'default' : 'outline'}
+                variant="outline"
                 className={tenant.contractStatus === 'active' 
-                  ? 'bg-green-100 text-green-800 border-green-200' 
+                  ? 'bg-green-50 text-green-700 border-green-200' 
                   : 'bg-orange-50 text-orange-700 border-orange-200'
                 }
               >
@@ -95,19 +95,19 @@ export function InspectorSelectionCard({
               </Badge>
             </div>
             
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <p className="text-muted-foreground">Inflyttningsdatum</p>
-                <p className="font-medium">{tenant.moveInDate || '2023-01-15'}</p>
+                <p className="text-sm text-muted-foreground mb-1">Inflyttningsdatum</p>
+                <p className="font-medium">{tenant.moveInDate || '2023-01-01'}</p>
               </div>
               <div>
-                <p className="text-muted-foreground">Utflyttningsdatum</p>
-                <p className="font-medium">{tenant.moveOutDate || '-'}</p>
+                <p className="text-sm text-muted-foreground mb-1">Utflyttningsdatum</p>
+                <p className="font-medium">{tenant.moveOutDate || '2023-12-31'}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4" />
+            <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2 border-t">
+              <MapPin className="h-4 w-4 flex-shrink-0" />
               <span>Odenplan 5, lägenhet 1001</span>
             </div>
           </CardContent>
