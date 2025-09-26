@@ -117,7 +117,7 @@ export function InspectorSelectionCard({
         <CardHeader>
           <CardTitle className="text-base">Info om besiktning</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <Select value={inspectorName} onValueChange={setInspectorName}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Välj vem som utför besiktningen" />
@@ -138,7 +138,7 @@ export function InspectorSelectionCard({
             </SelectContent>
           </Select>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <Label htmlFor="inspection-time" className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
               Klockslag för besiktning
