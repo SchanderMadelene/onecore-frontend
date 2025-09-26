@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft, ChevronRight, CheckCircle2, User } from "lucide-react";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "../types";
@@ -64,7 +65,7 @@ export function MobileInspectionForm({
 
   if (showInspectorSelection) {
     return (
-      <div className="h-full bg-background">
+      <div className="h-full bg-background flex flex-col">
         <div className="sticky top-0 z-10 bg-background border-b px-4 py-3">
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={onCancel}>
@@ -75,28 +76,30 @@ export function MobileInspectionForm({
           </div>
         </div>
 
-        <div className="p-4 space-y-6">
-          <InspectorSelectionCard 
-            inspectorName={inspectorName}
-            setInspectorName={setInspectorName}
-            inspectionTime={inspectionTime}
-            setInspectionTime={setInspectionTime}
-            needsMasterKey={needsMasterKey}
-            setNeedsMasterKey={setNeedsMasterKey}
-            tenant={tenant}
-          />
+        <ScrollArea className="flex-1">
+          <div className="p-4 space-y-6">
+            <InspectorSelectionCard 
+              inspectorName={inspectorName}
+              setInspectorName={setInspectorName}
+              inspectionTime={inspectionTime}
+              setInspectionTime={setInspectionTime}
+              needsMasterKey={needsMasterKey}
+              setNeedsMasterKey={setNeedsMasterKey}
+              tenant={tenant}
+            />
 
-          <div className="pt-4">
-            <Button 
-              onClick={() => setShowInspectorSelection(false)}
-              disabled={!inspectorName}
-              className="w-full"
-              size="lg"
-            >
-              Börja besiktning ({rooms.length} rum)
-            </Button>
+            <div className="pt-4 pb-20">
+              <Button 
+                onClick={() => setShowInspectorSelection(false)}
+                disabled={!inspectorName}
+                className="w-full"
+                size="lg"
+              >
+                Börja besiktning ({rooms.length} rum)
+              </Button>
+            </div>
           </div>
-        </div>
+        </ScrollArea>
       </div>
     );
   }
@@ -170,20 +173,24 @@ export function MobileInspectionForm({
       </div>
 
       {/* Current Room Inspection */}
-      <div className="flex-1 px-4 pb-4">
-        <RoomInspectionMobile
-          room={currentRoom}
-          inspectionData={inspectionData[currentRoom.id]}
-          onConditionUpdate={(field, value) => 
-            handleConditionUpdate(currentRoom.id, field, value)
-          }
-          onActionUpdate={(field, action) => 
-            handleActionUpdate(currentRoom.id, field, action)
-          }
-          onComponentNoteUpdate={(field, note) => 
-            handleComponentNoteUpdate(currentRoom.id, field, note)
-          }
-        />
+      <div className="flex-1 min-h-0">
+        <ScrollArea className="h-full">
+          <div className="px-4 pb-4">
+            <RoomInspectionMobile
+              room={currentRoom}
+              inspectionData={inspectionData[currentRoom.id]}
+              onConditionUpdate={(field, value) => 
+                handleConditionUpdate(currentRoom.id, field, value)
+              }
+              onActionUpdate={(field, action) => 
+                handleActionUpdate(currentRoom.id, field, action)
+              }
+              onComponentNoteUpdate={(field, note) => 
+                handleComponentNoteUpdate(currentRoom.id, field, note)
+              }
+            />
+          </div>
+        </ScrollArea>
       </div>
 
       {/* Bottom Navigation */}
