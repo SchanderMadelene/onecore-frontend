@@ -9,7 +9,7 @@ const Index = () => {
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
         <header className="text-center space-y-3">
-          <h1 className="text-3xl font-bold text-gradient">Hej [namn] välkommen till ONECore</h1>
+          <h1 className="text-3xl font-bold">Hej [namn] välkommen till ONECore</h1>
         </header>
       </div>
     </PageLayout>
