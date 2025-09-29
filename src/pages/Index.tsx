@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building, DollarSign, FileText, Lock, MessageSquare, Eye, ExternalLink } from "lucide-react";
+import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building, DollarSign, FileText, Lock, MessageSquare, Eye, ExternalLink, TrendingUp, Database } from "lucide-react";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,7 +21,9 @@ const Index = () => {
     { id: "tenfast", title: "Hyresadministration & avtal", icon: FileText, description: "Hyreshantering och administration", path: "/", isExternal: false },
     { id: "alliera", title: "Lås & passage", icon: Lock, description: "Låssystem och passagekontroll", path: "https://alliera.se", isExternal: true },
     { id: "odoo", title: "Ärendehantering (Odoo)", icon: MessageSquare, description: "Hantera ärenden och support", path: "https://odoo.com", isExternal: true },
-    { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true }
+    { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true },
+    { id: "curves", title: "Curves", icon: TrendingUp, description: "Analys och trendrapporter", path: "https://curves.com", isExternal: true },
+    { id: "imd", title: "IMD", icon: Database, description: "Datahantering och lagring", path: "https://imd.com", isExternal: true }
   ];
 
   const handleCardClick = (config: typeof cardConfigs[0]) => {
