@@ -8,7 +8,7 @@ import { otherProperties } from "./otherProperties";
 export const propertiesNode: TreeNode = {
   id: "properties",
   label: "Fastigheter",
-  icon: "location",
+  icon: "building",
   path: "/properties",
   children: [
     algen1Property,
