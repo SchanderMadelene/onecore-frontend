@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Palette, Building, Home } from "lucide-react";
+import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building } from "lucide-react";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -109,31 +109,6 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          {/* Lägenheter */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <Home className="h-5 w-5 text-primary" />
-                Lägenheter
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Översikt och hantering av lägenheter</p>
-            </CardContent>
-          </Card>
-
-          {/* Design System */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <Palette className="h-5 w-5 text-primary" />
-                Design System
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Designsystem och komponenter</p>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </PageLayout>
