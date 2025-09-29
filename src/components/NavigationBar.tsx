@@ -51,7 +51,9 @@ export function NavigationBar({
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
-          <span className="font-semibold">OneCore</span>
+          <Link to="/" className="font-semibold hover:text-primary transition-colors cursor-pointer">
+            OneCore
+          </Link>
         </div>
         
         <div className="mx-48 flex-1 hidden sm:block">
