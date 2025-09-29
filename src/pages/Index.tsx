@@ -69,7 +69,9 @@ const Index = () => {
                 onClick={() => handleCardClick(config)}
               >
                 <CardHeader className="pb-3 relative">
-                  <CardTitle className="flex items-center gap-3 text-lg">
+                  <CardTitle className={`flex items-center gap-3 text-lg ${
+                    config.isExternal ? 'text-accent-foreground' : ''
+                  }`}>
                     <IconComponent className="h-5 w-5 text-primary" />
                     {config.title}
                   </CardTitle>
