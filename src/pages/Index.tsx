@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building } from "lucide-react";
+import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building, DollarSign, FileText, Lock, MessageSquare } from "lucide-react";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -106,6 +106,58 @@ const Index = () => {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">Genomför och hantera besiktningar</p>
+            </CardContent>
+          </Card>
+
+          {/* Ekonomisystem (Xledger) */}
+          <Card className="hover-scale animate-fade-in cursor-pointer">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-3 text-lg">
+                <DollarSign className="h-5 w-5 text-primary" />
+                Ekonomisystem (Xledger)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">Ekonomi och redovisning</p>
+            </CardContent>
+          </Card>
+
+          {/* Hyresadministration (Tenfast) */}
+          <Card className="hover-scale animate-fade-in cursor-pointer">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-3 text-lg">
+                <FileText className="h-5 w-5 text-primary" />
+                Hyresadministration (Tenfast)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">Hyreshantering och administration</p>
+            </CardContent>
+          </Card>
+
+          {/* Lås & passage (Alliera) */}
+          <Card className="hover-scale animate-fade-in cursor-pointer">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-3 text-lg">
+                <Lock className="h-5 w-5 text-primary" />
+                Lås & passage (Alliera)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">Låssystem och passagekontroll</p>
+            </CardContent>
+          </Card>
+
+          {/* Ärendehantering (Odoo) */}
+          <Card className="hover-scale animate-fade-in cursor-pointer">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-3 text-lg">
+                <MessageSquare className="h-5 w-5 text-primary" />
+                Ärendehantering (Odoo)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">Hantera ärenden och support</p>
             </CardContent>
           </Card>
 
