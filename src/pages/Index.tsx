@@ -1,11 +1,36 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building, DollarSign, FileText, Lock, MessageSquare, Eye } from "lucide-react";
+import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building, DollarSign, FileText, Lock, MessageSquare, Eye, ExternalLink } from "lucide-react";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // Define card configurations
+  const cardConfigs = [
+    { id: "properties", title: "Fastigheter", icon: Building, description: "Hantera fastighetsbestånd och byggnader", path: "/properties", isExternal: false },
+    { id: "tenants", title: "Kunder", icon: Contact, description: "Kundregister och hyresgästinformation", path: "/tenants/all", isExternal: false },
+    { id: "rentals", title: "Uthyrning", icon: Key, description: "Hantera uthyrning av lägenheter", path: "/rentals", isExternal: false },
+    { id: "barriers", title: "Spärrar", icon: ShieldX, description: "Hantera spärrar och begränsningar", path: "/barriers", isExternal: false },
+    { id: "turnover", title: "In- och utflytt", icon: ArrowRightLeft, description: "Hantera in- och utflyttningsprocesser", path: "/turnover", isExternal: false },
+    { id: "inspections", title: "Besiktningar", icon: ClipboardList, description: "Genomför och hantera besiktningar", path: "/inspections", isExternal: false },
+    { id: "xledger", title: "Ekonomisystem (Xledger)", icon: DollarSign, description: "Ekonomi och redovisning", path: "/", isExternal: false },
+    { id: "tenfast", title: "Hyresadministration (Tenfast)", icon: FileText, description: "Hyreshantering och administration", path: "/", isExternal: false },
+    { id: "alliera", title: "Lås & passage (Alliera)", icon: Lock, description: "Låssystem och passagekontroll", path: "https://alliera.se", isExternal: true },
+    { id: "odoo", title: "Ärendehantering (Odoo)", icon: MessageSquare, description: "Hantera ärenden och support", path: "https://odoo.com", isExternal: true },
+    { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true }
+  ];
+
+  const handleCardClick = (config: typeof cardConfigs[0]) => {
+    if (config.isExternal) {
+      window.open(config.path, '_blank');
+    } else {
+      navigate(config.path);
+    }
+  };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -31,149 +56,36 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {/* Fastigheter */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <Building className="h-5 w-5 text-primary" />
-                Fastigheter
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Hantera fastighetsbestånd och byggnader</p>
-            </CardContent>
-          </Card>
-
-          {/* Kunder */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <Contact className="h-5 w-5 text-primary" />
-                Kunder
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Kundregister och hyresgästinformation</p>
-            </CardContent>
-          </Card>
-
-          {/* Uthyrning */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <Key className="h-5 w-5 text-primary" />
-                Uthyrning
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Hantera uthyrning av lägenheter</p>
-            </CardContent>
-          </Card>
-
-          {/* Spärrar */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <ShieldX className="h-5 w-5 text-primary" />
-                Spärrar
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Hantera spärrar och begränsningar</p>
-            </CardContent>
-          </Card>
-
-          {/* In- och utflytt */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <ArrowRightLeft className="h-5 w-5 text-primary" />
-                In- och utflytt
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Hantera in- och utflyttningsprocesser</p>
-            </CardContent>
-          </Card>
-
-          {/* Besiktningar */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <ClipboardList className="h-5 w-5 text-primary" />
-                Besiktningar
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Genomför och hantera besiktningar</p>
-            </CardContent>
-          </Card>
-
-          {/* Ekonomisystem (Xledger) */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <DollarSign className="h-5 w-5 text-primary" />
-                Ekonomisystem (Xledger)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Ekonomi och redovisning</p>
-            </CardContent>
-          </Card>
-
-          {/* Hyresadministration (Tenfast) */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <FileText className="h-5 w-5 text-primary" />
-                Hyresadministration (Tenfast)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Hyreshantering och administration</p>
-            </CardContent>
-          </Card>
-
-          {/* Lås & passage (Alliera) */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <Lock className="h-5 w-5 text-primary" />
-                Lås & passage (Alliera)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Låssystem och passagekontroll</p>
-            </CardContent>
-          </Card>
-
-          {/* Ärendehantering (Odoo) */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <MessageSquare className="h-5 w-5 text-primary" />
-                Ärendehantering (Odoo)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Hantera ärenden och support</p>
-            </CardContent>
-          </Card>
-
-          {/* Greenview */}
-          <Card className="hover-scale animate-fade-in cursor-pointer">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <Eye className="h-5 w-5 text-primary" />
-                Greenview
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Översikt och rapportering</p>
-            </CardContent>
-          </Card>
-
+          {cardConfigs.map((config) => {
+            const IconComponent = config.icon;
+            return (
+              <Card 
+                key={config.id}
+                className={`hover-scale animate-fade-in cursor-pointer transition-all duration-200 ${
+                  config.isExternal 
+                    ? 'bg-gradient-to-br from-background to-muted/20 border-muted-foreground/20' 
+                    : ''
+                }`}
+                onClick={() => handleCardClick(config)}
+              >
+                <CardHeader className="pb-3 relative">
+                  <CardTitle className="flex items-center gap-3 text-lg">
+                    <IconComponent className="h-5 w-5 text-primary" />
+                    {config.title}
+                  </CardTitle>
+                  {config.isExternal && (
+                    <ExternalLink className="h-4 w-4 text-muted-foreground absolute top-4 right-4" />
+                  )}
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">{config.description}</p>
+                  {config.isExternal && (
+                    <p className="text-xs text-muted-foreground/70 mt-2 italic">Extern tjänst</p>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </PageLayout>
