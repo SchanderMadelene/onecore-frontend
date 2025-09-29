@@ -51,7 +51,11 @@ export function NavigationBar({
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
-          <Link to="/" className="font-semibold hover:text-primary transition-colors cursor-pointer">
+          <Link 
+            to="/" 
+            className="font-semibold hover:text-primary transition-colors cursor-pointer"
+            onClick={(e) => e.stopPropagation()}
+          >
             OneCore
           </Link>
         </div>
