@@ -22,8 +22,7 @@ const Index = () => {
     { id: "alliera", title: "Lås & passage", icon: Lock, description: "Låssystem och passagekontroll", path: "https://alliera.se", isExternal: true },
     { id: "odoo", title: "Ärendehantering (Odoo)", icon: MessageSquare, description: "Hantera ärenden och support", path: "https://odoo.com", isExternal: true },
     { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true },
-    { id: "curves", title: "Curves", icon: TrendingUp, description: "Analys och trendrapporter", path: "https://curves.com", isExternal: true },
-    { id: "imd", title: "IMD", icon: Database, description: "Datahantering och lagring", path: "https://imd.com", isExternal: true }
+    { id: "curves", title: "Curves", icon: TrendingUp, description: "Analys och trendrapporter", path: "https://curves.com", isExternal: true }
   ];
 
   const handleCardClick = (config: typeof cardConfigs[0]) => {
