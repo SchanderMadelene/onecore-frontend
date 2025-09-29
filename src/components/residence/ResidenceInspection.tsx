@@ -9,6 +9,7 @@ import { ClipboardList } from "lucide-react";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
+  tenant?: any;
 }
 
 const LOCAL_STORAGE_KEY = "inspections";
@@ -22,7 +23,7 @@ const saveInspections = (inspections: Inspection[]) => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(inspections));
 };
 
-export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
+export const ResidenceInspection = ({ rooms, tenant }: ResidenceInspectionProps) => {
   const [inspections, setInspections] = useState<Inspection[]>(loadInspections);
 
   const handleInspectionCreated = () => {
@@ -40,6 +41,7 @@ export const ResidenceInspection = ({ rooms }: ResidenceInspectionProps) => {
         rooms={rooms}
         inspections={inspections}
         onInspectionCreated={handleInspectionCreated}
+        tenant={tenant}
       />
     </TabLayout>
   );

@@ -50,6 +50,8 @@ interface FeatureToggles {
   showBarriers: boolean;
   // Turnover (In- och utflytt)
   showTurnover: boolean;
+  // Global inspections view
+  showAllInspections: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -66,7 +68,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showBuildings: true,
   showApartments: true,
   showRoomInformation: false,
-  showInspections: false,
+  showInspections: true,
   showApartmentIssues: false,
   showResidenceNotes: false,
   showTenantInfo: false,
@@ -107,6 +109,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showBarriers: false,
   // Turnover (In- och utflytt)
   showTurnover: false,
+  // Global inspections view
+  showAllInspections: true,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);

@@ -6,6 +6,13 @@ import { initializeInspectionData } from "@/components/residence/inspection/form
 
 export function useInspectionForm(rooms: Room[]) {
   const [inspectorName, setInspectorName] = useState("");
+  const [inspectionTime, setInspectionTime] = useState(() => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  });
+  const [needsMasterKey, setNeedsMasterKey] = useState(false);
   const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean }>({
     address: "Odenplan 5, lägenhet 1001",
     hasMainKey: true
@@ -35,16 +42,27 @@ export function useInspectionForm(rooms: Room[]) {
     field: keyof InspectionRoom["conditions"],
     value: string
   ) => {
-    setInspectionData(prev => ({
-      ...prev,
-      [roomId]: {
+    setInspectionData(prev => {
+      const updatedRoom = {
         ...prev[roomId],
         conditions: {
           ...prev[roomId].conditions,
           [field]: value
         }
-      }
-    }));
+      };
+
+      // Check if all conditions are set to determine if room is handled
+      const allConditionsSet = Object.values(updatedRoom.conditions).every(
+        condition => condition && condition.trim() !== ""
+      );
+      
+      updatedRoom.isHandled = allConditionsSet;
+
+      return {
+        ...prev,
+        [roomId]: updatedRoom
+      };
+    });
   };
 
   const handleActionUpdate = (
@@ -91,6 +109,10 @@ export function useInspectionForm(rooms: Room[]) {
   return {
     inspectorName,
     setInspectorName,
+    inspectionTime,
+    setInspectionTime,
+    needsMasterKey,
+    setNeedsMasterKey,
     apartmentInfo,
     setApartmentInfo,
     expandedRoomIds,
