@@ -18,7 +18,7 @@ const Index = () => {
     { id: "turnover", title: "In- och utflytt", icon: ArrowRightLeft, description: "Hantera in- och utflyttningsprocesser", path: "/turnover", isExternal: false },
     { id: "inspections", title: "Besiktningar", icon: ClipboardList, description: "Genomför och hantera besiktningar", path: "/inspections", isExternal: false },
     { id: "xledger", title: "Ekonomi", icon: DollarSign, description: "Ekonomi och redovisning", path: "/", isExternal: false },
-    { id: "tenfast", title: "Hyresadministration (Tenfast)", icon: FileText, description: "Hyreshantering och administration", path: "/", isExternal: false },
+    { id: "tenfast", title: "Hyresadministration & avtal", icon: FileText, description: "Hyreshantering och administration", path: "/", isExternal: false },
     { id: "alliera", title: "Lås & passage (Alliera)", icon: Lock, description: "Låssystem och passagekontroll", path: "https://alliera.se", isExternal: true },
     { id: "odoo", title: "Ärendehantering (Odoo)", icon: MessageSquare, description: "Hantera ärenden och support", path: "https://odoo.com", isExternal: true },
     { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true }
