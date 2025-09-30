@@ -172,7 +172,7 @@ export default function FavoritesPage() {
       <div className="w-full">
         <h1 className="text-3xl font-bold mb-2">Favoriter</h1>
         <p className="text-muted-foreground mb-6">
-          Hantera dina sparade sökningar
+          Hantera dina sparade genvägar och filter
         </p>
 
         <div className="space-y-6">
