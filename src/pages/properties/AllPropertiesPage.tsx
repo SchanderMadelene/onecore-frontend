@@ -1,10 +1,11 @@
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ChevronDown, X } from "lucide-react";
 import { PropertySearch } from "@/components/properties/PropertySearch";
 import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters";
 import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
@@ -42,6 +43,28 @@ const AllPropertiesPage = () => {
     allPropertyNumbers,
     showSearchResults
   } = usePropertyFilters();
+
+  // Count active filters
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (designationFilter !== "all") count++;
+    if (propertyManagerFilter !== "all") count++;
+    if (marketAreaFilter !== "all") count++;
+    if (propertyNumberFilter !== "all") count++;
+    if (districtFilter !== "all") count++;
+    if (areaFilter !== "all") count++;
+    return count;
+  }, [designationFilter, propertyManagerFilter, marketAreaFilter, propertyNumberFilter, districtFilter, areaFilter]);
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setDesignationFilter("all");
+    setPropertyManagerFilter("all");
+    setMarketAreaFilter("all");
+    setPropertyNumberFilter("all");
+    setDistrictFilter("all");
+    setAreaFilter("all");
+  };
   
   return <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
@@ -65,11 +88,34 @@ const AllPropertiesPage = () => {
                     variant="ghost" 
                     className="w-full justify-between px-4 py-3 hover:bg-muted/50"
                   >
-                    <span className="font-medium">Filter</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Filter</span>
+                      {activeFilterCount > 0 && (
+                        <Badge variant="secondary" className="h-5 min-w-5 px-1.5">
+                          {activeFilterCount}
+                        </Badge>
+                      )}
+                    </div>
                     <ChevronDown className={`h-4 w-4 transition-transform ${isFiltersOpen ? 'rotate-180' : ''}`} />
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="px-4 pb-4">
+                  {activeFilterCount > 0 && (
+                    <div className="flex justify-between items-center mb-4 pt-2">
+                      <span className="text-sm text-muted-foreground">
+                        {activeFilterCount} {activeFilterCount === 1 ? 'filter aktivt' : 'filter aktiva'}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={clearAllFilters}
+                        className="h-8 px-2 text-xs"
+                      >
+                        <X className="h-3 w-3 mr-1" />
+                        Rensa alla
+                      </Button>
+                    </div>
+                  )}
                   <PropertySelectionFilters 
                     districtFilter={districtFilter} 
                     setDistrictFilter={setDistrictFilter} 
@@ -98,7 +144,8 @@ const AllPropertiesPage = () => {
               showSearchResults={showSearchResults} 
               filteredSearchResults={filteredSearchResults} 
               filteredProperties={filteredProperties || []} 
-              searchTypeFilter={searchTypeFilter} 
+              searchTypeFilter={searchTypeFilter}
+              activeFilterCount={activeFilterCount}
             />
           </CardContent>
         </Card>
