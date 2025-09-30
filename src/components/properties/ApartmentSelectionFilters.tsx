@@ -61,35 +61,29 @@ export const ApartmentSelectionFilters = ({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label>Befintligt kontrakt</Label>
-        <Select value={hasContractFilter} onValueChange={setHasContractFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Välj" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Alla</SelectItem>
-            <SelectItem value="yes">Ja</SelectItem>
-            <SelectItem value="no">Nej</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <Select value={hasContractFilter} onValueChange={setHasContractFilter}>
+        <SelectTrigger>
+          <SelectValue placeholder="Befintligt kontrakt" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Alla</SelectItem>
+          <SelectItem value="yes">Ja</SelectItem>
+          <SelectItem value="no">Nej</SelectItem>
+        </SelectContent>
+      </Select>
 
-      <div className="space-y-2">
-        <Label>Status kontrakt</Label>
-        <Select value={contractStatusFilter} onValueChange={setContractStatusFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Välj" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Alla</SelectItem>
-            <SelectItem value="active">Aktivt</SelectItem>
-            <SelectItem value="expiring">Utgående</SelectItem>
-            <SelectItem value="expired">Utgånget</SelectItem>
-            <SelectItem value="vacant">Vakant</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <Select value={contractStatusFilter} onValueChange={setContractStatusFilter}>
+        <SelectTrigger>
+          <SelectValue placeholder="Status kontrakt" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Alla</SelectItem>
+          <SelectItem value="active">Aktivt</SelectItem>
+          <SelectItem value="expiring">Utgående</SelectItem>
+          <SelectItem value="expired">Utgånget</SelectItem>
+          <SelectItem value="vacant">Vakant</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 };
