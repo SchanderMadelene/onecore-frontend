@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { SearchResult } from "@/data/search";
 
 interface SearchResultsTableProps {
@@ -31,56 +31,88 @@ export const SearchResultsTable = ({ results }: SearchResultsTableProps) => {
   };
 
   return (
-    <div className="border rounded-md">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Namn</TableHead>
-            <TableHead>Typ</TableHead>
-            <TableHead>Adress</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Åtgärd</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {results.length > 0 ? results.map((result) => (
-            <TableRow key={`${result.type}-${result.id}`}>
-              <TableCell className="font-medium">
-                {result.name}
-              </TableCell>
-              <TableCell>
-                <Badge variant="outline" className={getTypeColorClass(result.type)}>
-                  {getTypeDisplay(result.type)}
+    <ResponsiveTable
+      data={results}
+      columns={[
+        {
+          key: "name",
+          label: "Namn",
+          render: (result) => <span className="font-medium">{result.name}</span>,
+        },
+        {
+          key: "type",
+          label: "Typ",
+          render: (result) => (
+            <Badge variant="outline" className={getTypeColorClass(result.type)}>
+              {getTypeDisplay(result.type)}
+            </Badge>
+          ),
+        },
+        {
+          key: "address",
+          label: "Adress",
+          render: (result) => result.address,
+          hideOnMobile: true,
+        },
+        {
+          key: "status",
+          label: "Status",
+          render: (result) => (
+            <>
+              {result.type === "apartment" && (
+                <Badge variant="outline" className={
+                  result.tenant ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                }>
+                  {result.tenant ? "Uthyrd" : "Vakant"}
                 </Badge>
-              </TableCell>
-              <TableCell>{result.address}</TableCell>
-              <TableCell>
-                {result.type === "apartment" && (
-                  <Badge variant="outline" className={
-                    result.tenant ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
-                  }>
-                    {result.tenant ? "Uthyrd" : "Vakant"}
-                  </Badge>
-                )}
-                {result.type !== "apartment" && "-"}
-              </TableCell>
-              <TableCell className="text-right">
-                <Button asChild variant="link" size="sm">
-                  <Link to={result.path}>
-                    Visa detaljer
-                  </Link>
-                </Button>
-              </TableCell>
-            </TableRow>
-          )) : (
-            <TableRow>
-              <TableCell colSpan={5} className="text-center py-8">
-                Inga resultat hittades med angivna sökkriterier
-              </TableCell>
-            </TableRow>
+              )}
+              {result.type !== "apartment" && "-"}
+            </>
+          ),
+          hideOnMobile: true,
+        },
+        {
+          key: "action",
+          label: "Åtgärd",
+          render: (result) => (
+            <Button asChild variant="link" size="sm">
+              <Link to={result.path}>
+                Visa detaljer
+              </Link>
+            </Button>
+          ),
+          className: "text-right",
+        },
+      ]}
+      keyExtractor={(result) => `${result.type}-${result.id}`}
+      emptyMessage="Inga resultat hittades med angivna sökkriterier"
+      mobileCardRenderer={(result) => (
+        <div className="space-y-2 w-full">
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="font-medium">{result.name}</div>
+              <div className="text-sm text-muted-foreground">{result.address}</div>
+            </div>
+            <Badge variant="outline" className={getTypeColorClass(result.type)}>
+              {getTypeDisplay(result.type)}
+            </Badge>
+          </div>
+          {result.type === "apartment" && (
+            <Badge variant="outline" className={
+              result.tenant ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+            }>
+              {result.tenant ? "Uthyrd" : "Vakant"}
+            </Badge>
           )}
-        </TableBody>
-      </Table>
-    </div>
+          <div className="flex justify-end">
+            <Button asChild variant="link" size="sm">
+              <Link to={result.path}>
+                Visa detaljer
+              </Link>
+            </Button>
+          </div>
+        </div>
+      )}
+    />
   );
 };

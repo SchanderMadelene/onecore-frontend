@@ -7,7 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { ChevronDown, X } from "lucide-react";
 import { TenantsHeader } from "./components/TenantsHeader";
 import { TenantSelectionFilters } from "@/components/tenants/TenantSelectionFilters";
@@ -148,51 +148,82 @@ const AllTenantsPage = () => {
               </div>
             </div>
 
-            <div className="border rounded-md">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Namn</TableHead>
-                    <TableHead>Personnummer</TableHead>
-                    <TableHead>Typ</TableHead>
-                    <TableHead>Fastighet</TableHead>
-                    <TableHead className="text-right">Åtgärd</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredCustomers.map((customer) => (
-                    <TableRow key={customer.id}>
-                      <TableCell className="font-medium">
+            <ResponsiveTable
+              data={filteredCustomers}
+              columns={[
+                {
+                  key: "name",
+                  label: "Namn",
+                  render: (customer) => (
+                    <span className="font-medium">
+                      {customer.firstName} {customer.lastName}
+                    </span>
+                  ),
+                },
+                {
+                  key: "id",
+                  label: "Personnummer",
+                  render: (customer) => customer.id,
+                  hideOnMobile: true,
+                },
+                {
+                  key: "type",
+                  label: "Typ",
+                  render: (customer) => (
+                    <Badge 
+                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
+                    >
+                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+                    </Badge>
+                  ),
+                },
+                {
+                  key: "property",
+                  label: "Fastighet",
+                  render: (customer) => customer.property,
+                  hideOnMobile: true,
+                },
+                {
+                  key: "action",
+                  label: "Åtgärd",
+                  render: (customer) => (
+                    <Button asChild variant="link" size="sm">
+                      <Link to={`/tenants/detail/${customer.id}`}>
+                        Visa detaljer
+                      </Link>
+                    </Button>
+                  ),
+                  className: "text-right",
+                },
+              ]}
+              keyExtractor={(customer) => customer.id}
+              emptyMessage="Inga kunder hittades med angivna sökkriterier"
+              mobileCardRenderer={(customer) => (
+                <div className="space-y-2 w-full">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="font-medium">
                         {customer.firstName} {customer.lastName}
-                      </TableCell>
-                      <TableCell>{customer.id}</TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant={customer.customerType === "tenant" ? "default" : "secondary"}
-                        >
-                          {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{customer.property}</TableCell>
-                      <TableCell className="text-right">
-                        <Button asChild variant="link" size="sm">
-                          <Link to={`/tenants/detail/${customer.id}`}>
-                            Visa detaljer
-                          </Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {filteredCustomers.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={5} className="text-center py-8">
-                        Inga kunder hittades med angivna sökkriterier
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
+                      </div>
+                      <div className="text-sm text-muted-foreground">{customer.id}</div>
+                    </div>
+                    <Badge 
+                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
+                    >
+                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">{customer.property}</span>
+                    <Button asChild variant="link" size="sm">
+                      <Link to={`/tenants/detail/${customer.id}`}>
+                        Visa detaljer
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              )}
+            />
           </CardContent>
         </Card>
       </div>

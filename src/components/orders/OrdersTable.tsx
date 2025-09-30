@@ -1,6 +1,6 @@
 
 import { Order } from "@/hooks/useOrdersService";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -33,40 +33,78 @@ export function OrdersTable({ orders }: OrdersTableProps) {
 
   return (
     <div className="space-y-4">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Ärendenummer</TableHead>
-            <TableHead>Ärende</TableHead>
-            <TableHead>Skapad datum</TableHead>
-            <TableHead>Förfallodatum</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Typ</TableHead>
-            <TableHead>Åtgärd</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {displayedOrders.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell className="font-medium">{order.id}</TableCell>
-              <TableCell>{order.title}</TableCell>
-              <TableCell>{order.reportedDate}</TableCell>
-              <TableCell>{order.dueDate || "-"}</TableCell>
-              <TableCell>{getStatusBadge(order.status)}</TableCell>
-              <TableCell>{order.type || "-"}</TableCell>
-              <TableCell>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => handleOpenOrder(order.id)}
-                >
-                  Öppna
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <ResponsiveTable
+        data={displayedOrders}
+        columns={[
+          {
+            key: "id",
+            label: "Ärendenummer",
+            render: (order) => <span className="font-medium">{order.id}</span>,
+          },
+          {
+            key: "title",
+            label: "Ärende",
+            render: (order) => order.title,
+          },
+          {
+            key: "reportedDate",
+            label: "Skapad datum",
+            render: (order) => order.reportedDate,
+            hideOnMobile: true,
+          },
+          {
+            key: "dueDate",
+            label: "Förfallodatum",
+            render: (order) => order.dueDate || "-",
+            hideOnMobile: true,
+          },
+          {
+            key: "status",
+            label: "Status",
+            render: (order) => getStatusBadge(order.status),
+          },
+          {
+            key: "type",
+            label: "Typ",
+            render: (order) => order.type || "-",
+            hideOnMobile: true,
+          },
+          {
+            key: "action",
+            label: "Åtgärd",
+            render: (order) => (
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => handleOpenOrder(order.id)}
+              >
+                Öppna
+              </Button>
+            ),
+          },
+        ]}
+        keyExtractor={(order) => order.id}
+        mobileCardRenderer={(order) => (
+          <div className="space-y-2 w-full">
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="font-medium">{order.id}</div>
+                <div className="text-sm">{order.title}</div>
+              </div>
+              {getStatusBadge(order.status)}
+            </div>
+            <div className="flex justify-end">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => handleOpenOrder(order.id)}
+              >
+                Öppna
+              </Button>
+            </div>
+          </div>
+        )}
+      />
       
       {hasMoreOrders && !showAll && (
         <div className="flex justify-center">
