@@ -32,6 +32,17 @@ export const BadgeShowcase = () => {
             <Badge variant="outline">Utkast</Badge>
           </div>
         </div>
+        
+        <Separator />
+        
+        <div>
+          <h3 className="text-sm font-medium mb-3">Priority Badges</h3>
+          <div className="flex flex-wrap gap-4">
+            <Badge variant="priority-low">Låg</Badge>
+            <Badge variant="priority-medium">Medium</Badge>
+            <Badge variant="priority-high">Hög</Badge>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
