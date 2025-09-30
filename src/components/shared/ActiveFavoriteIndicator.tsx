@@ -49,7 +49,7 @@ export function ActiveFavoriteIndicator() {
                   Modifierad
                 </Badge>
               ) : (
-                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+                <Badge variant="success">
                   Aktiv
                 </Badge>
               )}
