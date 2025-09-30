@@ -263,7 +263,7 @@ export default function FavoritesPage() {
                     size="sm"
                     onClick={() => setSelectedCategory(cat)}
                   >
-                    {getCategoryIcon(cat)} {getCategoryLabel(cat)}
+                    {getCategoryLabel(cat)}
                   </Button>
                 ))}
               </div>
