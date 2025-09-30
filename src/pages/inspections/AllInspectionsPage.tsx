@@ -565,18 +565,18 @@ export default function AllInspectionsPage() {
         <InspectionsHeader />
 
         <Tabs defaultValue="ongoing" className="space-y-6">
-          <TabsList>
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="ongoing" className="flex items-center gap-2">
               Pågående
-              <Badge variant="secondary">{ongoingInspections.length}</Badge>
+              <Badge variant="secondary" className="ml-1">{ongoingInspections.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="mine" className="flex items-center gap-2">
               Mina besiktningar
-              <Badge variant="secondary">{myInspections.length}</Badge>
+              <Badge variant="secondary" className="ml-1">{myInspections.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="completed" className="flex items-center gap-2">
               Avslutade
-              <Badge variant="secondary">{completedInspections.length}</Badge>
+              <Badge variant="secondary" className="ml-1">{completedInspections.length}</Badge>
             </TabsTrigger>
           </TabsList>
 
