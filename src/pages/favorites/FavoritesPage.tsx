@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFavorites } from "@/hooks/useFavorites";
-import { Favorite, FavoriteCategory } from "@/types/favorites";
+import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/types/favorites";
 import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, User, Users, Pencil } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { EditFavoriteDialog } from "@/components/favorites/EditFavoriteDialog";
+import { CreateFavoriteDialog } from "@/components/favorites/CreateFavoriteDialog";
+import { Plus } from "lucide-react";
 
 export default function FavoritesPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -22,12 +24,14 @@ export default function FavoritesPage() {
     shareFavorite,
     exportFavorites,
     importFavorites,
+    createCustomFavorite,
   } = useFavorites();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<FavoriteCategory | "all">("all");
   const [editingFavorite, setEditingFavorite] = useState<Favorite | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const formatLastUsed = (date: Date) => {
     const now = new Date();
@@ -77,6 +81,28 @@ export default function FavoritesPage() {
   const handleEditFavorite = (favorite: Favorite) => {
     setEditingFavorite(favorite);
     setIsEditDialogOpen(true);
+  };
+
+  const handleCreateFavorite = (
+    name: string,
+    description: string | undefined,
+    category: FavoriteCategory,
+    targetUrl: string,
+    parameters: FavoriteParameters,
+    pageTitle: string,
+    visibility: FavoriteVisibility,
+    icon?: string
+  ) => {
+    createCustomFavorite(
+      name,
+      description,
+      category,
+      targetUrl,
+      parameters,
+      pageTitle,
+      visibility,
+      icon
+    );
   };
 
   const handleDeleteFavorite = (id: string, name: string) => {
@@ -179,7 +205,13 @@ export default function FavoritesPage() {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
-        <h1 className="text-3xl font-bold mb-2">Favoriter</h1>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-3xl font-bold">Favoriter</h1>
+          <Button onClick={() => setIsCreateDialogOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Skapa ny
+          </Button>
+        </div>
         <p className="text-muted-foreground mb-6">
           Hantera dina sparade genvägar och filter
         </p>
@@ -473,6 +505,12 @@ export default function FavoritesPage() {
           open={isEditDialogOpen}
           onOpenChange={setIsEditDialogOpen}
           onSave={updateFavorite}
+        />
+
+        <CreateFavoriteDialog
+          open={isCreateDialogOpen}
+          onOpenChange={setIsCreateDialogOpen}
+          onCreateFavorite={handleCreateFavorite}
         />
       </div>
     </PageLayout>

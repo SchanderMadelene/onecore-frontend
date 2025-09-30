@@ -61,6 +61,32 @@ export function useFavorites() {
     return favorite;
   }, [location, reloadFavorites]);
 
+  // Create favorite with custom parameters
+  const createCustomFavorite = useCallback((
+    name: string,
+    description: string | undefined,
+    category: FavoriteCategory,
+    targetUrl: string,
+    parameters: FavoriteParameters,
+    pageTitle: string,
+    visibility: FavoriteVisibility,
+    icon?: string
+  ) => {
+    const favorite = favoritesService.createFromCurrentPage(
+      name,
+      description,
+      category,
+      targetUrl,
+      parameters,
+      pageTitle,
+      visibility,
+      icon
+    );
+
+    reloadFavorites();
+    return favorite;
+  }, [reloadFavorites]);
+
   // Navigate to favorite
   const navigateToFavorite = useCallback((favorite: Favorite) => {
     favoritesService.useFavorite(favorite.id);
@@ -129,6 +155,7 @@ export function useFavorites() {
     favorites,
     activeFavorite,
     createFavorite,
+    createCustomFavorite,
     navigateToFavorite,
     updateFavorite,
     deleteFavorite,
