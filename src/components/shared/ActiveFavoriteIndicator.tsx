@@ -27,35 +27,31 @@ export function ActiveFavoriteIndicator() {
 
   return (
     <>
-      <div className={`mb-6 p-4 rounded-lg border-2 flex items-center justify-between gap-4 ${
-        isModified 
-          ? 'bg-warning/5 border-warning shadow-sm' 
-          : 'bg-primary/5 border-primary shadow-sm'
-      }`}>
-        <div className="flex items-center gap-4 flex-1 min-w-0">
+      <div className="mb-4 p-3 rounded-lg border bg-card flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <Star className={`h-5 w-5 ${isModified ? 'text-warning fill-warning' : 'text-primary fill-primary'}`} />
+            <Star className="h-4 w-4 text-primary fill-primary" />
             {isModified && (
-              <AlertCircle className="h-5 w-5 text-warning" />
+              <AlertCircle className="h-4 w-4 text-warning" />
             )}
           </div>
           
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="font-semibold">Aktiv favorit:</span>
-              <span className="font-medium truncate">{activeFavorite.name}</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-medium text-sm">Aktiv favorit:</span>
+              <span className="text-sm truncate">{activeFavorite.name}</span>
               {isModified ? (
-                <Badge variant="outline" className="bg-warning text-warning-foreground border-warning font-medium">
+                <Badge variant="outline" className="bg-warning/10 text-warning border-warning/20">
                   Modifierad
                 </Badge>
               ) : (
-                <Badge variant="outline" className="bg-primary text-primary-foreground border-primary font-medium">
+                <Badge variant="outline" className="bg-success/10 text-success border-success/20">
                   Aktiv
                 </Badge>
               )}
             </div>
             {isModified && (
-              <p className="text-sm text-muted-foreground mt-1.5">
+              <p className="text-xs text-muted-foreground mt-1">
                 Du har ändrat filter eller parametrar från den sparade favoriten
               </p>
             )}
@@ -65,22 +61,20 @@ export function ActiveFavoriteIndicator() {
         <div className="flex items-center gap-2">
           {isModified && (
             <Button
-              size="default"
-              variant="default"
+              size="sm"
+              variant="outline"
               onClick={() => setShowUpdateDialog(true)}
-              className="font-medium"
             >
-              <Save className="h-4 w-4 mr-2" />
+              <Save className="h-3 w-3 mr-1" />
               Uppdatera
             </Button>
           )}
           <Button
-            size="icon"
+            size="sm"
             variant="ghost"
             onClick={clearActiveFavorite}
-            className="hover:bg-destructive/10"
           >
-            <X className="h-4 w-4" />
+            <X className="h-3 w-3" />
           </Button>
         </div>
       </div>
