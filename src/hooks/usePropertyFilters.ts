@@ -18,6 +18,12 @@ export const usePropertyFilters = () => {
   const [propertyNumberFilter, setPropertyNumberFilter] = useState<string>("all");
   const [searchTypeFilter, setSearchTypeFilter] = useState<SearchTypeFilter>("property");
   const [isFiltering, setIsFiltering] = useState(false);
+  
+  // Apartment filters
+  const [sizeFilter, setSizeFilter] = useState({ min: "", max: "" });
+  const [rentFilter, setRentFilter] = useState({ min: "", max: "" });
+  const [hasContractFilter, setHasContractFilter] = useState<string>("all");
+  const [contractStatusFilter, setContractStatusFilter] = useState<string>("all");
 
   // Simulate loading when filters change
   useEffect(() => {
@@ -26,7 +32,7 @@ export const usePropertyFilters = () => {
       setIsFiltering(false);
     }, 300);
     return () => clearTimeout(timer);
-  }, [searchQuery, filter, districtFilter, areaFilter, designationFilter, propertyManagerFilter, marketAreaFilter, propertyNumberFilter, searchTypeFilter]);
+  }, [searchQuery, filter, districtFilter, areaFilter, designationFilter, propertyManagerFilter, marketAreaFilter, propertyNumberFilter, searchTypeFilter, sizeFilter, rentFilter, hasContractFilter, contractStatusFilter]);
 
   // Property data for the regular property list
   const { data: properties } = useQuery<Property[]>({
@@ -43,11 +49,33 @@ export const usePropertyFilters = () => {
   // Filter the search results by type and search query
   const filteredSearchResults = searchResults.filter(item => {
     const matchesSearch = 
-      searchQuery.trim() === "" || // Visa alla resultat när söktermen är tom
+      searchQuery.trim() === "" ||
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.address.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesType = item.type === searchTypeFilter;
+    
+    // Apartment-specific filters
+    if (searchTypeFilter === "apartment") {
+      const matchesSize = 
+        (sizeFilter.min === "" || (item.size && item.size >= parseInt(sizeFilter.min))) &&
+        (sizeFilter.max === "" || (item.size && item.size <= parseInt(sizeFilter.max)));
+      
+      const matchesRent = 
+        (rentFilter.min === "" || (item.rent && item.rent >= parseInt(rentFilter.min))) &&
+        (rentFilter.max === "" || (item.rent && item.rent <= parseInt(rentFilter.max)));
+      
+      const matchesHasContract = 
+        hasContractFilter === "all" ||
+        (hasContractFilter === "yes" && item.hasContract === true) ||
+        (hasContractFilter === "no" && item.hasContract === false);
+      
+      const matchesContractStatus = 
+        contractStatusFilter === "all" ||
+        item.contractStatus === contractStatusFilter;
+      
+      return matchesSearch && matchesType && matchesSize && matchesRent && matchesHasContract && matchesContractStatus;
+    }
     
     return matchesSearch && matchesType;
   });
@@ -121,6 +149,14 @@ export const usePropertyFilters = () => {
     setPropertyNumberFilter,
     searchTypeFilter,
     setSearchTypeFilter,
+    sizeFilter,
+    setSizeFilter,
+    rentFilter,
+    setRentFilter,
+    hasContractFilter,
+    setHasContractFilter,
+    contractStatusFilter,
+    setContractStatusFilter,
     properties,
     filteredProperties,
     filteredSearchResults,
