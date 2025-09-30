@@ -18,12 +18,24 @@ const AllPropertiesPage = () => {
     setDistrictFilter,
     areaFilter,
     setAreaFilter,
+    designationFilter,
+    setDesignationFilter,
+    propertyManagerFilter,
+    setPropertyManagerFilter,
+    marketAreaFilter,
+    setMarketAreaFilter,
+    propertyNumberFilter,
+    setPropertyNumberFilter,
     searchTypeFilter,
     setSearchTypeFilter,
     filteredProperties,
     filteredSearchResults,
     allDistricts,
     allAreas,
+    allDesignations,
+    allPropertyManagers,
+    allMarketAreas,
+    allPropertyNumbers,
     showSearchResults
   } = usePropertyFilters();
   
@@ -44,7 +56,26 @@ const AllPropertiesPage = () => {
               </div>
               
               <div className="flex flex-col gap-4">
-                <PropertySelectionFilters districtFilter={districtFilter} setDistrictFilter={setDistrictFilter} areaFilter={areaFilter} setAreaFilter={setAreaFilter} allDistricts={allDistricts} allAreas={allAreas} />
+                <PropertySelectionFilters 
+                  districtFilter={districtFilter} 
+                  setDistrictFilter={setDistrictFilter} 
+                  areaFilter={areaFilter} 
+                  setAreaFilter={setAreaFilter} 
+                  designationFilter={designationFilter}
+                  setDesignationFilter={setDesignationFilter}
+                  propertyManagerFilter={propertyManagerFilter}
+                  setPropertyManagerFilter={setPropertyManagerFilter}
+                  marketAreaFilter={marketAreaFilter}
+                  setMarketAreaFilter={setMarketAreaFilter}
+                  propertyNumberFilter={propertyNumberFilter}
+                  setPropertyNumberFilter={setPropertyNumberFilter}
+                  allDistricts={allDistricts} 
+                  allAreas={allAreas} 
+                  allDesignations={allDesignations}
+                  allPropertyManagers={allPropertyManagers}
+                  allMarketAreas={allMarketAreas}
+                  allPropertyNumbers={allPropertyNumbers}
+                />
               </div>
             </div>
 

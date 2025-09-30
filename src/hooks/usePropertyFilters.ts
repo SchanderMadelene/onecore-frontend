@@ -12,6 +12,10 @@ export const usePropertyFilters = () => {
   const [filter, setFilter] = useState<"all" | "bostad" | "kontor">("all");
   const [districtFilter, setDistrictFilter] = useState<string>("all");
   const [areaFilter, setAreaFilter] = useState<string>("all");
+  const [designationFilter, setDesignationFilter] = useState<string>("all");
+  const [propertyManagerFilter, setPropertyManagerFilter] = useState<string>("all");
+  const [marketAreaFilter, setMarketAreaFilter] = useState<string>("all");
+  const [propertyNumberFilter, setPropertyNumberFilter] = useState<string>("all");
   const [searchTypeFilter, setSearchTypeFilter] = useState<SearchTypeFilter>("property");
 
   // Property data for the regular property list
@@ -58,8 +62,25 @@ export const usePropertyFilters = () => {
     const matchesArea = 
       areaFilter === "all" || 
       property.propertyManagerArea === areaFilter;
+
+    const matchesDesignation = 
+      designationFilter === "all" || 
+      property.designation === designationFilter;
+
+    const matchesPropertyManager = 
+      propertyManagerFilter === "all" || 
+      property.propertyManager === propertyManagerFilter;
+
+    const matchesMarketArea = 
+      marketAreaFilter === "all" || 
+      property.marketArea === marketAreaFilter;
+
+    const matchesPropertyNumber = 
+      propertyNumberFilter === "all" || 
+      property.propertyNumber === propertyNumberFilter;
     
-    return matchesSearch && matchesFilter && matchesDistrict && matchesArea;
+    return matchesSearch && matchesFilter && matchesDistrict && matchesArea && 
+           matchesDesignation && matchesPropertyManager && matchesMarketArea && matchesPropertyNumber;
   });
 
   // Always show search results for building and apartment types
@@ -80,6 +101,14 @@ export const usePropertyFilters = () => {
     setDistrictFilter,
     areaFilter,
     setAreaFilter,
+    designationFilter,
+    setDesignationFilter,
+    propertyManagerFilter,
+    setPropertyManagerFilter,
+    marketAreaFilter,
+    setMarketAreaFilter,
+    propertyNumberFilter,
+    setPropertyNumberFilter,
     searchTypeFilter,
     setSearchTypeFilter,
     properties,
@@ -87,6 +116,10 @@ export const usePropertyFilters = () => {
     filteredSearchResults,
     allDistricts: [...new Set(properties?.map(p => p.district) || [])],
     allAreas: [...new Set(properties?.map(p => p.propertyManagerArea) || [])],
+    allDesignations: [...new Set(properties?.map(p => p.designation) || [])],
+    allPropertyManagers: [...new Set(properties?.map(p => p.propertyManager).filter(Boolean) || [])],
+    allMarketAreas: [...new Set(properties?.map(p => p.marketArea).filter(Boolean) || [])],
+    allPropertyNumbers: [...new Set(properties?.map(p => p.propertyNumber).filter(Boolean) || [])],
     showSearchResults
   };
 };
