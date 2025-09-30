@@ -144,23 +144,21 @@ const App = () => {
   const queryClient = new QueryClient();
 
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <FeatureTogglesProvider>
-            <RoleProvider>
-              <HousingOffersProvider>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <AppRoutes />
-                </BrowserRouter>
-              </HousingOffersProvider>
-            </RoleProvider>
-          </FeatureTogglesProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <FeatureTogglesProvider>
+          <RoleProvider>
+            <HousingOffersProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+            </HousingOffersProvider>
+          </RoleProvider>
+        </FeatureTogglesProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 };
 
