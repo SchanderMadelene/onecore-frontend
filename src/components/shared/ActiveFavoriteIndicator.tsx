@@ -27,10 +27,14 @@ export function ActiveFavoriteIndicator() {
 
   return (
     <>
-      <div className="mb-4 p-3 rounded-lg border bg-card flex items-center justify-between gap-3">
+      <div className={`mb-4 p-3 rounded-lg border-2 flex items-center justify-between gap-3 ${
+        isModified 
+          ? 'bg-warning/5 border-warning/30' 
+          : 'bg-success/5 border-success/40 shadow-[0_0_12px_rgba(34,197,94,0.15)]'
+      }`}>
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 text-primary fill-primary" />
+            <Star className={`h-4 w-4 ${isModified ? 'text-primary fill-primary' : 'text-success fill-success'}`} />
             {isModified && (
               <AlertCircle className="h-4 w-4 text-warning" />
             )}
@@ -41,11 +45,11 @@ export function ActiveFavoriteIndicator() {
               <span className="font-medium text-sm">Aktiv favorit:</span>
               <span className="text-sm truncate">{activeFavorite.name}</span>
               {isModified ? (
-                <Badge variant="outline" className="bg-warning/10 text-warning border-warning/20">
+                <Badge variant="outline" className="bg-warning/15 text-warning border-warning/30 font-medium">
                   Modifierad
                 </Badge>
               ) : (
-                <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                <Badge variant="outline" className="bg-success/15 text-success border-success/40 font-medium">
                   Aktiv
                 </Badge>
               )}
