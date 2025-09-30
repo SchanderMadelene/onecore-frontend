@@ -59,17 +59,17 @@ const AllPropertiesPage = () => {
                 <PropertySearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
               </div>
               
-              <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
+              <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen} className="border rounded-lg">
                 <CollapsibleTrigger asChild>
                   <Button 
-                    variant="outline" 
-                    className="w-full justify-between"
+                    variant="ghost" 
+                    className="w-full justify-between px-4 py-3 hover:bg-muted/50"
                   >
-                    <span>Filter</span>
+                    <span className="font-medium">Filter</span>
                     <ChevronDown className={`h-4 w-4 transition-transform ${isFiltersOpen ? 'rotate-180' : ''}`} />
                   </Button>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="pt-4">
+                <CollapsibleContent className="px-4 pb-4">
                   <PropertySelectionFilters 
                     districtFilter={districtFilter} 
                     setDistrictFilter={setDistrictFilter} 
