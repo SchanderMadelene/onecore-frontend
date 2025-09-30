@@ -5,17 +5,20 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const [activeFavorite, setActiveFavoriteState] = useState<Favorite | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   // Load favorites on mount
   useEffect(() => {
     setFavorites(favoritesService.getFavorites());
+    setActiveFavoriteState(favoritesService.getActiveFavorite());
   }, []);
 
   // Reload favorites
   const reloadFavorites = useCallback(() => {
     setFavorites(favoritesService.getFavorites());
+    setActiveFavoriteState(favoritesService.getActiveFavorite());
   }, []);
 
   // Create favorite from current page
@@ -61,10 +64,30 @@ export function useFavorites() {
   // Navigate to favorite
   const navigateToFavorite = useCallback((favorite: Favorite) => {
     favoritesService.useFavorite(favorite.id);
+    favoritesService.setActiveFavorite(favorite.id);
     const url = favoritesService.buildUrlWithParameters(favorite);
     navigate(url);
     reloadFavorites();
   }, [navigate, reloadFavorites]);
+
+  // Set active favorite
+  const setActiveFavorite = useCallback((favoriteId: string) => {
+    favoritesService.setActiveFavorite(favoriteId);
+    setActiveFavoriteState(favoritesService.getActiveFavorite());
+  }, []);
+
+  // Clear active favorite
+  const clearActiveFavorite = useCallback(() => {
+    favoritesService.clearActiveFavorite();
+    setActiveFavoriteState(null);
+  }, []);
+
+  // Check current URL status
+  const getCurrentUrlStatus = useCallback(() => {
+    if (!activeFavorite) return "no_match";
+    const searchParams = new URLSearchParams(location.search);
+    return favoritesService.compareUrlWithFavorite(location.pathname, searchParams, activeFavorite);
+  }, [activeFavorite, location]);
 
   // Update favorite
   const updateFavorite = useCallback((
@@ -104,6 +127,7 @@ export function useFavorites() {
 
   return {
     favorites,
+    activeFavorite,
     createFavorite,
     navigateToFavorite,
     updateFavorite,
@@ -113,5 +137,8 @@ export function useFavorites() {
     exportFavorites,
     importFavorites,
     reloadFavorites,
+    setActiveFavorite,
+    clearActiveFavorite,
+    getCurrentUrlStatus,
   };
 }

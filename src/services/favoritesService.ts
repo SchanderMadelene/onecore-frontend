@@ -4,6 +4,7 @@ class FavoritesService {
   private static instance: FavoritesService;
   private favorites: Favorite[] = [];
   private readonly STORAGE_KEY = "mimer-favorites";
+  private readonly ACTIVE_FAVORITE_KEY = "mimer-active-favorite";
 
   static getInstance(): FavoritesService {
     if (!FavoritesService.instance) {
@@ -170,6 +171,75 @@ class FavoritesService {
     });
     
     return url.pathname + url.search;
+  }
+
+  // Active favorite management
+  setActiveFavorite(favoriteId: string): void {
+    try {
+      sessionStorage.setItem(this.ACTIVE_FAVORITE_KEY, favoriteId);
+    } catch (e) {
+      console.warn("Failed to save active favorite", e);
+    }
+  }
+
+  getActiveFavorite(): Favorite | null {
+    try {
+      const id = sessionStorage.getItem(this.ACTIVE_FAVORITE_KEY);
+      if (id) {
+        return this.favorites.find(f => f.id === id) || null;
+      }
+    } catch (e) {
+      console.warn("Failed to get active favorite", e);
+    }
+    return null;
+  }
+
+  clearActiveFavorite(): void {
+    try {
+      sessionStorage.removeItem(this.ACTIVE_FAVORITE_KEY);
+    } catch (e) {
+      console.warn("Failed to clear active favorite", e);
+    }
+  }
+
+  // Compare current URL with favorite
+  compareUrlWithFavorite(pathname: string, searchParams: URLSearchParams, favorite: Favorite): "exact_match" | "modified" | "no_match" {
+    // Check if pathname matches
+    if (pathname !== favorite.targetUrl) {
+      return "no_match";
+    }
+
+    // Convert URLSearchParams to object
+    const currentParams: Record<string, string | string[]> = {};
+    searchParams.forEach((value, key) => {
+      const existing = currentParams[key];
+      if (existing) {
+        currentParams[key] = Array.isArray(existing) ? [...existing, value] : [existing, value];
+      } else {
+        currentParams[key] = value;
+      }
+    });
+
+    // Compare parameters
+    const favoriteKeys = Object.keys(favorite.parameters);
+    const currentKeys = Object.keys(currentParams);
+
+    // Check if same number of parameters
+    if (favoriteKeys.length !== currentKeys.length) {
+      return "modified";
+    }
+
+    // Check if all keys and values match
+    for (const key of favoriteKeys) {
+      const favValue = favorite.parameters[key];
+      const currentValue = currentParams[key];
+
+      if (JSON.stringify(favValue) !== JSON.stringify(currentValue)) {
+        return "modified";
+      }
+    }
+
+    return "exact_match";
   }
 
   // LocalStorage helpers
