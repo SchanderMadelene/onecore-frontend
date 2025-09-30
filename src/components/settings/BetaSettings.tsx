@@ -550,6 +550,72 @@ export function BetaSettings() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
+                      <Building className="h-4 w-4" />
+                      <Label htmlFor="dashboard-properties">Fastigheter</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa fastighetskort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-properties" checked={features.showProperties} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showProperties')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      <Label htmlFor="dashboard-tenants">Kunder</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa kundkort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-tenants" checked={features.showTenants} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showTenants')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <Key className="h-4 w-4" />
+                      <Label htmlFor="dashboard-rentals">Uthyrning</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa uthyrningskort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-rentals" checked={features.showRentals} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showRentals')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <ShieldX className="h-4 w-4" />
+                      <Label htmlFor="dashboard-barriers">Spärrar</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa spärrkort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-barriers" checked={features.showBarriers} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showBarriers')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <Key className="h-4 w-4" />
+                      <Label htmlFor="dashboard-turnover">In- och utflytt</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa in- och utflyttskort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-turnover" checked={features.showTurnover} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showTurnover')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <ClipboardList className="h-4 w-4" />
+                      <Label htmlFor="dashboard-inspections">Besiktningar</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa besiktningskort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-inspections" checked={features.showAllInspections} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showAllInspections')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
                       <DollarSign className="h-4 w-4" />
                       <Label htmlFor="dashboard-economy">Ekonomi (XLedger)</Label>
                     </div>
