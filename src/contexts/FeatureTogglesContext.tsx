@@ -59,6 +59,8 @@ interface FeatureToggles {
   showDashboardOdoo: boolean;
   showDashboardGreenview: boolean;
   showDashboardCurves: boolean;
+  // Favorites page
+  showFavorites: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -125,6 +127,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showDashboardOdoo: false,
   showDashboardGreenview: false,
   showDashboardCurves: false,
+  // Favorites page
+  showFavorites: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);

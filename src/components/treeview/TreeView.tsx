@@ -14,6 +14,7 @@ export function TreeView({
   showBarriers,
   showTurnover,
   showAllInspections,
+  showFavorites,
   showBuildings,
   showApartments 
 }: TreeViewProps) {
@@ -27,6 +28,7 @@ export function TreeView({
       if (node.id === "barriers") return showBarriers;
       if (node.id === "turnover") return showTurnover;
       if (node.id === "inspections") return showAllInspections;
+      if (node.id === "favorites") return showFavorites;
       if (node.id === "design-system") return showDesignSystem;
       return true;
     }).map(node => {
@@ -44,7 +46,7 @@ export function TreeView({
       }
       return node;
     });
-  }, [showRentals, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showAllInspections, showBuildings, showApartments]);
+  }, [showRentals, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showAllInspections, showFavorites, showBuildings, showApartments]);
 
   return (
     <div className={`${isMobile ? 'p-2' : 'p-4'} h-full overflow-y-auto bg-white`}>
