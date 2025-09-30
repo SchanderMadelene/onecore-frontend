@@ -27,6 +27,7 @@ import TurnoverPage from "./pages/turnover/TurnoverPage";
 import BarriersPage from "./pages/barriers/BarriersPage";
 import AllInspectionsPage from "./pages/inspections/AllInspectionsPage";
 import SettingsPage from "./pages/settings/SettingsPage";
+// Import favorites page
 import FavoritesPage from "./pages/favorites/FavoritesPage";
 
 const ProtectedRoute = ({ children, isEnabled }: { children: React.ReactNode, isEnabled: boolean }) => {
