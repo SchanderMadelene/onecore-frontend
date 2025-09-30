@@ -45,7 +45,7 @@ export function NavigationBar({
             size="icon" 
             onClick={handleMenuClick}
             onTouchStart={handleMenuTouch}
-            className="min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform"
+            className="min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform lg:hidden"
             style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             <Menu className="h-5 w-5" />

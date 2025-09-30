@@ -19,12 +19,8 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
   
   useEffect(() => {
     if (!isMobile) {
-      const pathSegments = location.pathname.split('/').filter(Boolean);
-      if (pathSegments.length > 3) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
+      // On desktop, sidebar is always visible
+      setIsSidebarOpen(true);
     }
   }, [location.pathname, setIsSidebarOpen, isMobile]);
 
