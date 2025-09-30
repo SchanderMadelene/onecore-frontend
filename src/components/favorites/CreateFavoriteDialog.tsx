@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,8 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FavoriteCategory, FavoriteVisibility, FavoriteParameters } from "@/types/favorites";
-import { Plus, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { mockProperties } from "@/data/properties";
 
 interface CreateFavoriteDialogProps {
   open: boolean;
@@ -32,25 +32,72 @@ export function CreateFavoriteDialog({
 }: CreateFavoriteDialogProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState<FavoriteCategory>("general");
-  const [targetUrl, setTargetUrl] = useState("");
+  const [category, setCategory] = useState<FavoriteCategory>("properties");
   const [pageTitle, setPageTitle] = useState("");
   const [visibility, setVisibility] = useState<FavoriteVisibility>("personal");
   const [icon, setIcon] = useState("");
-  const [parameters, setParameters] = useState<Array<{ key: string; value: string }>>([]);
+  
+  // Properties filters
+  const [propertyDistrict, setPropertyDistrict] = useState<string>("all");
+  const [propertyArea, setPropertyArea] = useState<string>("all");
+  const [propertyPurpose, setPropertyPurpose] = useState<string>("all");
+  
+  // Rentals filters
+  const [rentalType, setRentalType] = useState<string>("bostad");
+  const [rentalStatus, setRentalStatus] = useState<string>("publicerade");
 
-  const handleAddParameter = () => {
-    setParameters([...parameters, { key: "", value: "" }]);
-  };
+  // Get unique districts and areas from properties
+  const allDistricts = [...new Set(mockProperties.map(p => p.district))];
+  const allAreas = [...new Set(mockProperties.map(p => p.propertyManagerArea))];
 
-  const handleRemoveParameter = (index: number) => {
-    setParameters(parameters.filter((_, i) => i !== index));
-  };
+  // Reset filters when category changes
+  useEffect(() => {
+    setPropertyDistrict("all");
+    setPropertyArea("all");
+    setPropertyPurpose("all");
+    setRentalType("bostad");
+    setRentalStatus("publicerade");
+  }, [category]);
 
-  const handleParameterChange = (index: number, field: "key" | "value", value: string) => {
-    const newParams = [...parameters];
-    newParams[index][field] = value;
-    setParameters(newParams);
+  const buildTargetUrlAndParameters = (): { url: string; params: FavoriteParameters } => {
+    let url = "";
+    const params: FavoriteParameters = {};
+
+    switch (category) {
+      case "properties":
+        url = "/properties";
+        if (propertyDistrict !== "all") params.district = propertyDistrict;
+        if (propertyArea !== "all") params.area = propertyArea;
+        if (propertyPurpose !== "all") params.purpose = propertyPurpose;
+        break;
+      
+      case "rentals":
+        url = `/rentals?tab=${rentalType}`;
+        params.tab = rentalType;
+        params.status = rentalStatus;
+        break;
+      
+      case "tenants":
+        url = "/tenants";
+        break;
+      
+      case "barriers":
+        url = "/barriers";
+        break;
+      
+      case "turnover":
+        url = "/turnover";
+        break;
+      
+      case "inspections":
+        url = "/inspections";
+        break;
+      
+      default:
+        url = "/";
+    }
+
+    return { url, params };
   };
 
   const handleSubmit = () => {
@@ -63,29 +110,14 @@ export function CreateFavoriteDialog({
       return;
     }
 
-    if (!targetUrl.trim()) {
-      toast({
-        title: "URL saknas",
-        description: "Du måste ange en målsida (URL) för favoriten.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Convert parameters array to object
-    const paramObj: FavoriteParameters = {};
-    parameters.forEach(param => {
-      if (param.key.trim()) {
-        paramObj[param.key] = param.value;
-      }
-    });
+    const { url, params } = buildTargetUrlAndParameters();
 
     onCreateFavorite(
       name.trim(),
       description.trim() || undefined,
       category,
-      targetUrl.trim(),
-      paramObj,
+      url,
+      params,
       pageTitle.trim() || name.trim(),
       visibility,
       icon.trim() || undefined
@@ -94,12 +126,15 @@ export function CreateFavoriteDialog({
     // Reset form
     setName("");
     setDescription("");
-    setCategory("general");
-    setTargetUrl("");
+    setCategory("properties");
     setPageTitle("");
     setVisibility("personal");
     setIcon("");
-    setParameters([]);
+    setPropertyDistrict("all");
+    setPropertyArea("all");
+    setPropertyPurpose("all");
+    setRentalType("bostad");
+    setRentalStatus("publicerade");
     
     onOpenChange(false);
     
@@ -173,23 +208,96 @@ export function CreateFavoriteDialog({
             </Select>
           </div>
 
-          {/* Target URL */}
-          <div className="space-y-2">
-            <Label htmlFor="targetUrl">Målsida (URL) *</Label>
-            <Input
-              id="targetUrl"
-              placeholder="/properties eller /rentals"
-              value={targetUrl}
-              onChange={(e) => setTargetUrl(e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">
-              Ange sökvägen till sidan, t.ex. /properties, /rentals, /tenants
-            </p>
-          </div>
+          {/* Category-specific filters */}
+          {category === "properties" && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="propertyDistrict">Distrikt</Label>
+                <Select value={propertyDistrict} onValueChange={setPropertyDistrict}>
+                  <SelectTrigger id="propertyDistrict">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Alla distrikt</SelectItem>
+                    {allDistricts.map(district => (
+                      <SelectItem key={district} value={district}>
+                        {district}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="propertyArea">Område</Label>
+                <Select value={propertyArea} onValueChange={setPropertyArea}>
+                  <SelectTrigger id="propertyArea">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Alla områden</SelectItem>
+                    {allAreas.map(area => (
+                      <SelectItem key={area} value={area}>
+                        {area}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="propertyPurpose">Ändamål</Label>
+                <Select value={propertyPurpose} onValueChange={setPropertyPurpose}>
+                  <SelectTrigger id="propertyPurpose">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Alla ändamål</SelectItem>
+                    <SelectItem value="Bostad">Bostad</SelectItem>
+                    <SelectItem value="Kontor">Kontor</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </>
+          )}
+
+          {category === "rentals" && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="rentalType">Typ</Label>
+                <Select value={rentalType} onValueChange={setRentalType}>
+                  <SelectTrigger id="rentalType">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="bostad">Bostad</SelectItem>
+                    <SelectItem value="bilplats">Bilplats</SelectItem>
+                    <SelectItem value="forrad">Förråd</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="rentalStatus">Status</Label>
+                <Select value={rentalStatus} onValueChange={setRentalStatus}>
+                  <SelectTrigger id="rentalStatus">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="publicerade">Publicerade</SelectItem>
+                    <SelectItem value="klaraForErbjudande">Klara för erbjudande</SelectItem>
+                    <SelectItem value="erbjudna">Erbjudna</SelectItem>
+                    <SelectItem value="historik">Historik</SelectItem>
+                    <SelectItem value="behovAvPublicering">Behov av publicering</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </>
+          )}
 
           {/* Page Title */}
           <div className="space-y-2">
-            <Label htmlFor="pageTitle">Sidtitel</Label>
+            <Label htmlFor="pageTitle">Sidtitel (valfritt)</Label>
             <Input
               id="pageTitle"
               placeholder="Valfri sidtitel (används som namn om inte angiven)"
@@ -200,7 +308,7 @@ export function CreateFavoriteDialog({
 
           {/* Icon */}
           <div className="space-y-2">
-            <Label htmlFor="icon">Ikon (emoji)</Label>
+            <Label htmlFor="icon">Ikon (valfritt)</Label>
             <Input
               id="icon"
               placeholder="🏠"
@@ -208,54 +316,6 @@ export function CreateFavoriteDialog({
               onChange={(e) => setIcon(e.target.value)}
               maxLength={2}
             />
-          </div>
-
-          {/* Parameters */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label>URL-parametrar</Label>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleAddParameter}
-              >
-                <Plus className="h-4 w-4 mr-1" />
-                Lägg till
-              </Button>
-            </div>
-            {parameters.length > 0 ? (
-              <div className="space-y-2 border rounded-md p-3">
-                {parameters.map((param, index) => (
-                  <div key={index} className="flex gap-2">
-                    <Input
-                      placeholder="Nyckel (t.ex. 'status')"
-                      value={param.key}
-                      onChange={(e) => handleParameterChange(index, "key", e.target.value)}
-                      className="flex-1"
-                    />
-                    <Input
-                      placeholder="Värde (t.ex. 'available')"
-                      value={param.value}
-                      onChange={(e) => handleParameterChange(index, "value", e.target.value)}
-                      className="flex-1"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRemoveParameter(index)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                Inga parametrar tillagda. Klicka på "Lägg till" för att lägga till filter.
-              </p>
-            )}
           </div>
 
           {/* Visibility */}
