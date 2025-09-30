@@ -194,36 +194,39 @@ const AllPropertiesPage = () => {
               </div>
               
               <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen} className="border rounded-lg">
-                <CollapsibleTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    className="w-full justify-between px-4 py-3 hover:bg-muted/50"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">Filter</span>
-                      {activeFilterCount > 0 && (
-                        <Badge variant="secondary" className="h-5 min-w-5 px-1.5">
-                          {activeFilterCount}
-                        </Badge>
-                      )}
-                    </div>
-                    <ChevronDown className={`h-4 w-4 transition-transform ${isFiltersOpen ? 'rotate-180' : ''}`} />
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="px-4 pb-4">
+                <div className="flex items-center justify-between px-4 py-3">
+                  <CollapsibleTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      className="flex-1 justify-between px-0 hover:bg-transparent"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">Filter</span>
+                        {activeFilterCount > 0 && (
+                          <Badge variant="secondary" className="h-5 min-w-5 px-1.5">
+                            {activeFilterCount}
+                          </Badge>
+                        )}
+                      </div>
+                      <ChevronDown className={`h-4 w-4 transition-transform ${isFiltersOpen ? 'rotate-180' : ''}`} />
+                    </Button>
+                  </CollapsibleTrigger>
                   {activeFilterCount > 0 && (
-                    <div className="flex justify-end items-center mb-4 pt-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={clearAllFilters}
-                        className="h-8 px-2 text-xs"
-                      >
-                        <X className="h-3 w-3 mr-1" />
-                        Rensa alla
-                      </Button>
-                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearAllFilters();
+                      }}
+                      className="h-8 px-2 text-xs ml-2"
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Rensa alla
+                    </Button>
                   )}
+                </div>
+                <CollapsibleContent className="px-4 pb-4">
                   
                   {searchTypeFilter === "apartment" ? (
                     <ApartmentSelectionFilters
