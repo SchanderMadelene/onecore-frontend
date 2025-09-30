@@ -212,10 +212,7 @@ const AllPropertiesPage = () => {
                 </CollapsibleTrigger>
                 <CollapsibleContent className="px-4 pb-4">
                   {activeFilterCount > 0 && (
-                    <div className="flex justify-between items-center mb-4 pt-2">
-                      <span className="text-sm text-muted-foreground">
-                        {activeFilterCount} {activeFilterCount === 1 ? 'filter aktivt' : 'filter aktiva'}
-                      </span>
+                    <div className="flex justify-end items-center mb-4 pt-2">
                       <Button
                         variant="ghost"
                         size="sm"
