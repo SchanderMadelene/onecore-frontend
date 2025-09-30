@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 export function BetaSettings() {
@@ -529,6 +529,90 @@ export function BetaSettings() {
                 <p className="text-sm text-muted-foreground">Visa sidan för designsystem</p>
               </div>
               <Switch id="design-system" checked={features.showDesignSystem} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDesignSystem')} />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <ClipboardList className="h-4 w-4" />
+                  <Label htmlFor="all-inspections">Besiktningar (Global vy)</Label>
+                </div>
+                <p className="text-sm text-muted-foreground">Visa global besiktningsvy</p>
+              </div>
+              <Switch id="all-inspections" checked={features.showAllInspections} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showAllInspections')} />
+            </div>
+
+            <div className="space-y-3 pt-4 border-t">
+              <h3 className="font-semibold text-sm">Dashboard-kort</h3>
+              <p className="text-xs text-muted-foreground">Välj vilka kort som ska visas på dashboarden</p>
+              
+              <div className="space-y-3 pl-4 border-l">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4" />
+                      <Label htmlFor="dashboard-economy">Ekonomi (XLedger)</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa ekonomikort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-economy" checked={features.showDashboardEconomy} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardEconomy')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      <Label htmlFor="dashboard-contracts">Hyresadministration & avtal (TenFast)</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa hyresadministrationskort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-contracts" checked={features.showDashboardContracts} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardContracts')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-4 w-4" />
+                      <Label htmlFor="dashboard-locks">Lås & passage (Alliera)</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa lås- och passagekort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-locks" checked={features.showDashboardLocks} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardLocks')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4" />
+                      <Label htmlFor="dashboard-odoo">Ärendehantering (Odoo)</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa ärendehanteringskort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-odoo" checked={features.showDashboardOdoo} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardOdoo')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4" />
+                      <Label htmlFor="dashboard-greenview">Greenview</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa Greenview-kort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-greenview" checked={features.showDashboardGreenview} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardGreenview')} />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4" />
+                      <Label htmlFor="dashboard-curves">Curves (IMD)</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Visa Curves-kort på dashboarden</p>
+                  </div>
+                  <Switch id="dashboard-curves" checked={features.showDashboardCurves} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardCurves')} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -4,26 +4,28 @@ import { useNavigate } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building, DollarSign, FileText, Lock, MessageSquare, Eye, ExternalLink, TrendingUp, Database } from "lucide-react";
+import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  const { features } = useFeatureToggles();
 
   // Define card configurations
   const cardConfigs = [
-    { id: "properties", title: "Fastigheter", icon: Building, description: "Hantera fastighetsbestånd och byggnader", path: "/properties", isExternal: false },
-    { id: "tenants", title: "Kunder", icon: Contact, description: "Kundregister och hyresgästinformation", path: "/tenants/all", isExternal: false },
-    { id: "rentals", title: "Uthyrning", icon: Key, description: "Hantera uthyrning av lägenheter", path: "/rentals", isExternal: false },
-    { id: "barriers", title: "Spärrar", icon: ShieldX, description: "Hantera spärrar och begränsningar", path: "/barriers", isExternal: false },
-    { id: "turnover", title: "In- och utflytt", icon: ArrowRightLeft, description: "Hantera in- och utflyttningsprocesser", path: "/turnover", isExternal: false },
-    { id: "inspections", title: "Besiktningar", icon: ClipboardList, description: "Genomför och hantera besiktningar", path: "/inspections", isExternal: false },
-    { id: "xledger", title: "Ekonomi", icon: DollarSign, description: "Ekonomi och redovisning", path: "/", isExternal: false },
-    { id: "tenfast", title: "Hyresadministration & avtal", icon: FileText, description: "Hyreshantering och administration", path: "/", isExternal: false },
-    { id: "alliera", title: "Lås & passage", icon: Lock, description: "Låssystem och passagekontroll", path: "https://alliera.se", isExternal: true },
-    { id: "odoo", title: "Ärendehantering (Odoo)", icon: MessageSquare, description: "Hantera ärenden och support", path: "https://odoo.com", isExternal: true },
-    { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true },
-    { id: "curves", title: "Curves", icon: TrendingUp, description: "IMD", path: "https://curves.com", isExternal: true }
-  ];
+    { id: "properties", title: "Fastigheter", icon: Building, description: "Hantera fastighetsbestånd och byggnader", path: "/properties", isExternal: false, enabled: features.showProperties },
+    { id: "tenants", title: "Kunder", icon: Contact, description: "Kundregister och hyresgästinformation", path: "/tenants/all", isExternal: false, enabled: features.showTenants },
+    { id: "rentals", title: "Uthyrning", icon: Key, description: "Hantera uthyrning av lägenheter", path: "/rentals", isExternal: false, enabled: features.showRentals },
+    { id: "barriers", title: "Spärrar", icon: ShieldX, description: "Hantera spärrar och begränsningar", path: "/barriers", isExternal: false, enabled: features.showBarriers },
+    { id: "turnover", title: "In- och utflytt", icon: ArrowRightLeft, description: "Hantera in- och utflyttningsprocesser", path: "/turnover", isExternal: false, enabled: features.showTurnover },
+    { id: "inspections", title: "Besiktningar", icon: ClipboardList, description: "Genomför och hantera besiktningar", path: "/inspections", isExternal: false, enabled: features.showAllInspections },
+    { id: "xledger", title: "Ekonomi", icon: DollarSign, description: "Ekonomi och redovisning", path: "/", isExternal: false, enabled: features.showDashboardEconomy },
+    { id: "tenfast", title: "Hyresadministration & avtal", icon: FileText, description: "Hyreshantering och administration", path: "/", isExternal: false, enabled: features.showDashboardContracts },
+    { id: "alliera", title: "Lås & passage", icon: Lock, description: "Låssystem och passagekontroll", path: "https://alliera.se", isExternal: true, enabled: features.showDashboardLocks },
+    { id: "odoo", title: "Ärendehantering (Odoo)", icon: MessageSquare, description: "Hantera ärenden och support", path: "https://odoo.com", isExternal: true, enabled: features.showDashboardOdoo },
+    { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true, enabled: features.showDashboardGreenview },
+    { id: "curves", title: "Curves", icon: TrendingUp, description: "IMD", path: "https://curves.com", isExternal: true, enabled: features.showDashboardCurves }
+  ].filter(config => config.enabled);
 
   const handleCardClick = (config: typeof cardConfigs[0]) => {
     if (config.isExternal) {

@@ -52,6 +52,13 @@ interface FeatureToggles {
   showTurnover: boolean;
   // Global inspections view
   showAllInspections: boolean;
+  // Dashboard cards
+  showDashboardEconomy: boolean;
+  showDashboardContracts: boolean;
+  showDashboardLocks: boolean;
+  showDashboardOdoo: boolean;
+  showDashboardGreenview: boolean;
+  showDashboardCurves: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -111,6 +118,13 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTurnover: false,
   // Global inspections view
   showAllInspections: true,
+  // Dashboard cards
+  showDashboardEconomy: false,
+  showDashboardContracts: false,
+  showDashboardLocks: false,
+  showDashboardOdoo: false,
+  showDashboardGreenview: false,
+  showDashboardCurves: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
