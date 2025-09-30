@@ -41,7 +41,8 @@ const AllPropertiesPage = () => {
     allPropertyManagers,
     allMarketAreas,
     allPropertyNumbers,
-    showSearchResults
+    showSearchResults,
+    isFiltering
   } = usePropertyFilters();
 
   // Count active filters
@@ -65,6 +66,54 @@ const AllPropertiesPage = () => {
     setDistrictFilter("all");
     setAreaFilter("all");
   };
+
+  // Build filter chips
+  const filterChips = useMemo(() => {
+    const chips = [];
+    if (designationFilter !== "all") {
+      chips.push({
+        label: "Beteckning",
+        value: designationFilter,
+        onRemove: () => setDesignationFilter("all")
+      });
+    }
+    if (propertyManagerFilter !== "all") {
+      chips.push({
+        label: "Kvartersvärd",
+        value: propertyManagerFilter,
+        onRemove: () => setPropertyManagerFilter("all")
+      });
+    }
+    if (marketAreaFilter !== "all") {
+      chips.push({
+        label: "Marknadsområde",
+        value: marketAreaFilter,
+        onRemove: () => setMarketAreaFilter("all")
+      });
+    }
+    if (propertyNumberFilter !== "all") {
+      chips.push({
+        label: "Fastighetsnummer",
+        value: propertyNumberFilter,
+        onRemove: () => setPropertyNumberFilter("all")
+      });
+    }
+    if (districtFilter !== "all") {
+      chips.push({
+        label: "Distrikt",
+        value: districtFilter,
+        onRemove: () => setDistrictFilter("all")
+      });
+    }
+    if (areaFilter !== "all") {
+      chips.push({
+        label: "Kvartersvärdsområde",
+        value: areaFilter,
+        onRemove: () => setAreaFilter("all")
+      });
+    }
+    return chips;
+  }, [designationFilter, propertyManagerFilter, marketAreaFilter, propertyNumberFilter, districtFilter, areaFilter]);
   
   return <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
@@ -146,6 +195,8 @@ const AllPropertiesPage = () => {
               filteredProperties={filteredProperties || []} 
               searchTypeFilter={searchTypeFilter}
               activeFilterCount={activeFilterCount}
+              isFiltering={isFiltering}
+              filterChips={filterChips}
             />
           </CardContent>
         </Card>

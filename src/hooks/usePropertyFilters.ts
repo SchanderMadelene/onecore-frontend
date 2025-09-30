@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { mockProperties } from "@/data/properties";
 import { mockSearchResults, SearchResult } from "@/data/search";
@@ -17,6 +17,16 @@ export const usePropertyFilters = () => {
   const [marketAreaFilter, setMarketAreaFilter] = useState<string>("all");
   const [propertyNumberFilter, setPropertyNumberFilter] = useState<string>("all");
   const [searchTypeFilter, setSearchTypeFilter] = useState<SearchTypeFilter>("property");
+  const [isFiltering, setIsFiltering] = useState(false);
+
+  // Simulate loading when filters change
+  useEffect(() => {
+    setIsFiltering(true);
+    const timer = setTimeout(() => {
+      setIsFiltering(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery, filter, districtFilter, areaFilter, designationFilter, propertyManagerFilter, marketAreaFilter, propertyNumberFilter, searchTypeFilter]);
 
   // Property data for the regular property list
   const { data: properties } = useQuery<Property[]>({
@@ -120,6 +130,7 @@ export const usePropertyFilters = () => {
     allPropertyManagers: [...new Set(properties?.map(p => p.propertyManager).filter(Boolean) || [])],
     allMarketAreas: [...new Set(properties?.map(p => p.marketArea).filter(Boolean) || [])],
     allPropertyNumbers: [...new Set(properties?.map(p => p.propertyNumber).filter(Boolean) || [])],
-    showSearchResults
+    showSearchResults,
+    isFiltering
   };
 };
