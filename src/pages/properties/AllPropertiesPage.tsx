@@ -193,12 +193,12 @@ const AllPropertiesPage = () => {
                 <PropertySearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
               </div>
               
-              <div className="flex items-start gap-2">
-                <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen} className="flex-1 border rounded-lg">
+              <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen} className="border rounded-lg">
+                <div className="flex items-center justify-between px-4 py-3">
                   <CollapsibleTrigger asChild>
                     <Button 
                       variant="ghost" 
-                      className="w-full justify-between px-4 py-3 hover:bg-muted/50"
+                      className="flex-1 justify-between px-0 hover:bg-transparent"
                     >
                       <div className="flex items-center gap-2">
                         <span className="font-medium">Filter</span>
@@ -211,7 +211,22 @@ const AllPropertiesPage = () => {
                       <ChevronDown className={`h-4 w-4 transition-transform ${isFiltersOpen ? 'rotate-180' : ''}`} />
                     </Button>
                   </CollapsibleTrigger>
-                  <CollapsibleContent className="px-4 pb-4">
+                  {activeFilterCount > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearAllFilters();
+                      }}
+                      className="h-8 px-2 text-xs ml-2"
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Rensa alla
+                    </Button>
+                  )}
+                </div>
+                <CollapsibleContent className="px-4 pb-4">
                   
                   {searchTypeFilter === "apartment" ? (
                     <ApartmentSelectionFilters
@@ -246,20 +261,8 @@ const AllPropertiesPage = () => {
                       allPropertyNumbers={allPropertyNumbers}
                     />
                   )}
-                 </CollapsibleContent>
+                </CollapsibleContent>
               </Collapsible>
-              {activeFilterCount > 0 && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={clearAllFilters}
-                  className="h-10 px-3 shrink-0"
-                >
-                  <X className="h-4 w-4 mr-1" />
-                  Rensa alla
-                </Button>
-              )}
-            </div>
             </div>
 
             <PropertyFilteredResults 
