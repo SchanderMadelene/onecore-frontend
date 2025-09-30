@@ -213,7 +213,7 @@ const AllPropertiesPage = () => {
                   </CollapsibleTrigger>
                   {activeFilterCount > 0 && (
                     <Button
-                      variant="ghost"
+                      variant="secondary"
                       size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
