@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { FeatureTogglesProvider } from "@/contexts/FeatureTogglesContext";
 import { HousingOffersProvider } from "@/contexts/HousingOffersContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+import { RoleProvider } from "@/contexts/RoleContext";
 import Index from "./pages/Index";
 import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
 import BuildingDetailPage from "./pages/properties/BuildingDetailPage";
@@ -147,13 +148,15 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <FeatureTogglesProvider>
-            <HousingOffersProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <AppRoutes />
-              </BrowserRouter>
-            </HousingOffersProvider>
+            <RoleProvider>
+              <HousingOffersProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <AppRoutes />
+                </BrowserRouter>
+              </HousingOffersProvider>
+            </RoleProvider>
           </FeatureTogglesProvider>
         </TooltipProvider>
       </QueryClientProvider>
