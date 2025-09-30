@@ -14,7 +14,12 @@ import {
   Monitor,
   Mail,
   Package,
-  Wrench
+  Wrench,
+  Contact,
+  Key,
+  ShieldX,
+  ArrowRightLeft,
+  ClipboardList
 } from "lucide-react";
 
 export const getNodeIcon = (iconName?: string): ReactNode => {
@@ -36,7 +41,15 @@ export const getNodeIcon = (iconName?: string): ReactNode => {
     case "users":
       return <Users className="h-4 w-4 text-muted-foreground" />;
     case "contact":
-      return <FileText className="h-4 w-4 text-primary" />;
+      return <Contact className="h-4 w-4 text-muted-foreground" />;
+    case "key":
+      return <Key className="h-4 w-4 text-muted-foreground" />;
+    case "shield-x":
+      return <ShieldX className="h-4 w-4 text-muted-foreground" />;
+    case "arrow-right-left":
+      return <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />;
+    case "clipboard-list":
+      return <ClipboardList className="h-4 w-4 text-muted-foreground" />;
     case "monitor":
       return <Monitor className="h-4 w-4 text-blue-600" />;
     case "mail":

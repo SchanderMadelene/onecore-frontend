@@ -45,13 +45,19 @@ export function NavigationBar({
             size="icon" 
             onClick={handleMenuClick}
             onTouchStart={handleMenuTouch}
-            className="min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform"
+            className="min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform lg:hidden"
             style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
-          <span className="font-semibold">OneCore</span>
+          <Link 
+            to="/" 
+            className="font-semibold hover:text-primary transition-colors cursor-pointer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            OneCore
+          </Link>
         </div>
         
         <div className="mx-48 flex-1 hidden sm:block">

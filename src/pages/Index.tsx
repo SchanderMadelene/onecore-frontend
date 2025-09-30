@@ -1,118 +1,96 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Building2, Users, Home } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import type { Property, Company } from "@/types/api";
-import { mockProperties } from "@/data/properties";
-import { mockCompanies } from "@/data/companies";
-import { mockOccupancyData } from "@/data/occupancy";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building, DollarSign, FileText, Lock, MessageSquare, Eye, ExternalLink, TrendingUp, Database } from "lucide-react";
+import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+  const { features } = useFeatureToggles();
 
-  const { data: properties } = useQuery({
-    queryKey: ['properties'],
-    queryFn: () => Promise.resolve(mockProperties)
-  });
+  // Define card configurations
+  const cardConfigs = [
+    { id: "properties", title: "Fastigheter", icon: Building, description: "Hantera fastighetsbestånd och byggnader", path: "/properties", isExternal: false, enabled: features.showProperties },
+    { id: "tenants", title: "Kunder", icon: Contact, description: "Kundregister och hyresgästinformation", path: "/tenants/all", isExternal: false, enabled: features.showTenants },
+    { id: "rentals", title: "Uthyrning", icon: Key, description: "Hantera uthyrning av lägenheter", path: "/rentals", isExternal: false, enabled: features.showRentals },
+    { id: "barriers", title: "Spärrar", icon: ShieldX, description: "Hantera spärrar och begränsningar", path: "/barriers", isExternal: false, enabled: features.showBarriers },
+    { id: "turnover", title: "In- och utflytt", icon: ArrowRightLeft, description: "Hantera in- och utflyttningsprocesser", path: "/turnover", isExternal: false, enabled: features.showTurnover },
+    { id: "inspections", title: "Besiktningar", icon: ClipboardList, description: "Genomför och hantera besiktningar", path: "/inspections", isExternal: false, enabled: features.showAllInspections },
+    { id: "xledger", title: "Ekonomi", icon: DollarSign, description: "Ekonomi och redovisning", path: "/", isExternal: false, enabled: features.showDashboardEconomy },
+    { id: "tenfast", title: "Hyresadministration & avtal", icon: FileText, description: "Hyreshantering och administration", path: "/", isExternal: false, enabled: features.showDashboardContracts },
+    { id: "alliera", title: "Lås & passage", icon: Lock, description: "Låssystem och passagekontroll", path: "https://alliera.se", isExternal: true, enabled: features.showDashboardLocks },
+    { id: "odoo", title: "Ärendehantering (Odoo)", icon: MessageSquare, description: "Hantera ärenden och support", path: "https://odoo.com", isExternal: true, enabled: features.showDashboardOdoo },
+    { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true, enabled: features.showDashboardGreenview },
+    { id: "curves", title: "Curves", icon: TrendingUp, description: "IMD", path: "https://curves.com", isExternal: true, enabled: features.showDashboardCurves }
+  ].filter(config => config.enabled);
 
-  const { data: companies } = useQuery({
-    queryKey: ['companies'],
-    queryFn: () => Promise.resolve(mockCompanies)
-  });
-
-  const occupancyRate = (mockOccupancyData.occupied / mockOccupancyData.total) * 100;
+  const handleCardClick = (config: typeof cardConfigs[0]) => {
+    if (config.isExternal) {
+      window.open(config.path, '_blank');
+    } else {
+      navigate(config.path);
+    }
+  };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
         <header className="text-center space-y-3">
-          <h1 className="text-3xl font-bold text-gradient">Översikt Fastighetsförvaltning</h1>
-          <p className="text-muted-foreground">Aktuell status och statistik</p>
+          <h1 className="text-3xl font-bold">Hej [namn] välkommen till ONECore</h1>
         </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Fastigheter */}
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="space-y-1">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-2xl">Fastigheter</CardTitle>
-                <Building2 className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <CardDescription>Översikt av fastighetsbestånd</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="text-3xl font-bold">{properties?.length || 0}</div>
-                <div className="space-y-2">
-                  {properties?.map(property => (
-                    <div key={property.id} className="text-sm">
-                      <div className="font-medium">{property.designation}</div>
-                      <div className="text-muted-foreground">{property.municipality}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        
+        <div className="max-w-2xl mx-auto">
+          <Card className="animate-fade-in hover-scale">
+            <CardContent className="p-8 text-center space-y-4">
+              <p className="text-lg leading-relaxed text-muted-foreground">
+                Vi är glada att ha dig här! ONECore är din digitala arbetsplats där allt du behöver för att 
+                göra ditt bästa arbete finns samlat på ett ställe. Ta det i din egen takt och utforska 
+                systemet - du kommer att märka hur enkelt det är att navigera mellan olika funktioner.
+              </p>
+              <p className="text-base text-muted-foreground">
+                Har du frågor eller behöver hjälp? Tveka inte att höra av dig till <span className="font-semibold text-primary">David</span> eller <span className="font-semibold text-primary">Lina</span> - 
+                vi finns här för att stötta dig!
+              </p>
             </CardContent>
           </Card>
+        </div>
 
-          {/* Företag */}
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="space-y-1">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-2xl">Företag</CardTitle>
-              </div>
-              <CardDescription>Aktiva företag</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="text-3xl font-bold">{companies?.length || 0}</div>
-                <div className="space-y-2">
-                  {companies?.map(company => (
-                    <div key={company.id} className="text-sm">
-                      <div className="font-medium">{company.name}</div>
-                      <div className="text-muted-foreground">{company.organizationNumber || 'Ingen org.nr'}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Beläggning */}
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="space-y-1">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-2xl">Beläggning</CardTitle>
-                <Home className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <CardDescription>Aktuell beläggningsnivå</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="text-3xl font-bold">{occupancyRate.toFixed(1)}%</div>
-                <div className="space-y-2">
-                  <div className="w-full bg-secondary rounded-full h-2.5">
-                    <div
-                      className="bg-primary h-2.5 rounded-full transition-all"
-                      style={{ width: `${occupancyRate}%` }}
-                    ></div>
-                  </div>
-                  <div className="grid grid-cols-2 text-sm">
-                    <div>
-                      <div className="font-medium">Uthyrda</div>
-                      <div className="text-muted-foreground">{mockOccupancyData.occupied} st</div>
-                    </div>
-                    <div>
-                      <div className="font-medium">Lediga</div>
-                      <div className="text-muted-foreground">{mockOccupancyData.available} st</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {cardConfigs.map((config) => {
+            const IconComponent = config.icon;
+            return (
+              <Card 
+                key={config.id}
+                className={`hover-scale animate-fade-in cursor-pointer transition-all duration-200 ${
+                  config.isExternal 
+                    ? 'bg-gradient-to-br from-background to-muted/20 border-muted-foreground/20' 
+                    : ''
+                }`}
+                onClick={() => handleCardClick(config)}
+              >
+                <CardHeader className="pb-3 relative">
+                  <CardTitle className={`flex items-center gap-3 text-lg ${
+                    config.isExternal ? 'text-accent-foreground' : ''
+                  }`}>
+                    <IconComponent className="h-5 w-5 text-primary" />
+                    {config.title}
+                  </CardTitle>
+                  {config.isExternal && (
+                    <ExternalLink className="h-4 w-4 text-muted-foreground absolute top-4 right-4" />
+                  )}
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">{config.description}</p>
+                  {config.isExternal && (
+                    <p className="text-xs text-muted-foreground/70 mt-2 italic">Extern tjänst</p>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </PageLayout>
