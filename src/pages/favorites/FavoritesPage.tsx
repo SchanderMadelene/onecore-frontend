@@ -6,9 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFavorites } from "@/hooks/useFavorites";
 import { Favorite, FavoriteCategory } from "@/types/favorites";
-import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, User, Users } from "lucide-react";
+import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, User, Users, Pencil } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { EditFavoriteDialog } from "@/components/favorites/EditFavoriteDialog";
 
 export default function FavoritesPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -17,6 +18,7 @@ export default function FavoritesPage() {
     favorites,
     navigateToFavorite,
     deleteFavorite,
+    updateFavorite,
     shareFavorite,
     exportFavorites,
     importFavorites,
@@ -24,6 +26,8 @@ export default function FavoritesPage() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<FavoriteCategory | "all">("all");
+  const [editingFavorite, setEditingFavorite] = useState<Favorite | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const formatLastUsed = (date: Date) => {
     const now = new Date();
@@ -68,6 +72,11 @@ export default function FavoritesPage() {
       title: "Navigerar till favorit",
       description: `Öppnar "${favorite.name}".`
     });
+  };
+
+  const handleEditFavorite = (favorite: Favorite) => {
+    setEditingFavorite(favorite);
+    setIsEditDialogOpen(true);
   };
 
   const handleDeleteFavorite = (id: string, name: string) => {
@@ -295,6 +304,13 @@ export default function FavoritesPage() {
                           <Button
                             variant="ghost"
                             size="sm"
+                            onClick={() => handleEditFavorite(favorite)}
+                          >
+                            <Pencil className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => handleShareFavorite(favorite.id, favorite.name)}
                           >
                             <Share2 className="h-4 w-4 text-muted-foreground" />
@@ -367,6 +383,13 @@ export default function FavoritesPage() {
                           </CardDescription>
                         </div>
                         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditFavorite(favorite)}
+                          >
+                            <Pencil className="h-4 w-4 text-muted-foreground" />
+                          </Button>
                           <Button
                             variant="ghost"
                             size="sm"
@@ -444,6 +467,13 @@ export default function FavoritesPage() {
           </Card>
         )}
         </div>
+
+        <EditFavoriteDialog
+          favorite={editingFavorite}
+          open={isEditDialogOpen}
+          onOpenChange={setIsEditDialogOpen}
+          onSave={updateFavorite}
+        />
       </div>
     </PageLayout>
   );
