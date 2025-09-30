@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { FeatureTogglesProvider } from "@/contexts/FeatureTogglesContext";
 import { HousingOffersProvider } from "@/contexts/HousingOffersContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+import { RoleProvider } from "@/contexts/RoleContext";
 import Index from "./pages/Index";
 import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
 import BuildingDetailPage from "./pages/properties/BuildingDetailPage";
@@ -143,10 +144,10 @@ const App = () => {
   const queryClient = new QueryClient();
 
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <FeatureTogglesProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <FeatureTogglesProvider>
+          <RoleProvider>
             <HousingOffersProvider>
               <Toaster />
               <Sonner />
@@ -154,10 +155,10 @@ const App = () => {
                 <AppRoutes />
               </BrowserRouter>
             </HousingOffersProvider>
-          </FeatureTogglesProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </React.StrictMode>
+          </RoleProvider>
+        </FeatureTogglesProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 };
 

@@ -1,14 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp, Code } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+import { useRole } from "@/contexts/RoleContext";
 
 export function BetaSettings() {
   const {
     features,
     handleFeatureToggle
   } = useFeatureToggles();
+  
+  const { devModeEnabled, setDevModeEnabled } = useRole();
   
   return (
     <Card>
@@ -20,6 +23,21 @@ export function BetaSettings() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <Code className="h-4 w-4" />
+                <Label htmlFor="dev-mode">Utvecklingsläge</Label>
+              </div>
+              <p className="text-sm text-muted-foreground">Aktivera rollbaserad dashboard-testning</p>
+            </div>
+            <Switch 
+              id="dev-mode" 
+              checked={devModeEnabled} 
+              onCheckedChange={setDevModeEnabled} 
+            />
+          </div>
+
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label htmlFor="navigation">Navigation</Label>

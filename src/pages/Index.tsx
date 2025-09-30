@@ -5,11 +5,15 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Contact, Key, ShieldX, ArrowRightLeft, ClipboardList, Building, DollarSign, FileText, Lock, MessageSquare, Eye, ExternalLink, TrendingUp, Database } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+import { useRole, roleLabels, UserRole } from "@/contexts/RoleContext";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { features } = useFeatureToggles();
+  const { currentRole, setCurrentRole, devModeEnabled, isCardVisibleForRole } = useRole();
 
   // Define card configurations
   const cardConfigs = [
@@ -25,7 +29,7 @@ const Index = () => {
     { id: "odoo", title: "Ärendehantering (Odoo)", icon: MessageSquare, description: "Hantera ärenden och support", path: "https://odoo.com", isExternal: true, enabled: features.showDashboardOdoo },
     { id: "greenview", title: "Greenview", icon: Eye, description: "Översikt och rapportering", path: "https://greenview.se", isExternal: true, enabled: features.showDashboardGreenview },
     { id: "curves", title: "Curves", icon: TrendingUp, description: "IMD", path: "https://curves.com", isExternal: true, enabled: features.showDashboardCurves }
-  ].filter(config => config.enabled);
+  ].filter(config => config.enabled && isCardVisibleForRole(config.id));
 
   const handleCardClick = (config: typeof cardConfigs[0]) => {
     if (config.isExternal) {
@@ -39,7 +43,32 @@ const Index = () => {
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
         <header className="text-center space-y-3">
-          <h1 className="text-3xl font-bold">Hej [namn] välkommen till ONECore</h1>
+          <div className="flex items-center justify-center gap-3">
+            <h1 className="text-3xl font-bold">Hej [namn] välkommen till ONECore</h1>
+            {devModeEnabled && (
+              <Badge variant="outline" className="text-xs">
+                Dev Mode
+              </Badge>
+            )}
+          </div>
+          {devModeEnabled && (
+            <div className="flex justify-center">
+              <div className="w-full max-w-xs">
+                <Select value={currentRole} onValueChange={(value) => setCurrentRole(value as UserRole)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Välj roll" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(roleLabels).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
         </header>
         
         <div className="max-w-2xl mx-auto">
