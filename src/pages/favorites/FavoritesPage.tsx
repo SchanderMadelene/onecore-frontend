@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGlobalSearch } from "@/hooks/useGlobalSearch";
-import { SavedSearch, SearchResultType } from "@/types/search";
-import { Star, Search, Trash2, Clock, Filter, TrendingUp } from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
+import { Favorite, FavoriteCategory } from "@/types/favorites";
+import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, FileText } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -15,13 +15,15 @@ export default function FavoritesPage() {
   const isMobile = useIsMobile();
   const {
     favorites,
-    useSavedSearch,
-    deleteSavedSearch,
-    openSearch
-  } = useGlobalSearch();
+    navigateToFavorite,
+    deleteFavorite,
+    shareFavorite,
+    exportFavorites,
+    importFavorites,
+  } = useFavorites();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedType, setSelectedType] = useState<SearchResultType | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<FavoriteCategory | "all">("all");
 
   const formatLastUsed = (date: Date) => {
     const now = new Date();
@@ -34,56 +36,131 @@ export default function FavoritesPage() {
     return `${Math.floor(diffDays / 30)} månader sedan`;
   };
 
-  const getTypeLabel = (type: SearchResultType): string => {
-    const labels: Record<SearchResultType, string> = {
-      customer: "Kunder",
-      residence: "Lägenheter",
-      case: "Ärenden",
-      invoice: "Fakturor",
-      key: "Nycklar",
-      document: "Dokument"
+  const getCategoryLabel = (category: FavoriteCategory): string => {
+    const labels: Record<FavoriteCategory, string> = {
+      rentals: "Uthyrning",
+      properties: "Fastigheter",
+      tenants: "Kunder",
+      barriers: "Spärrar",
+      turnover: "In- och utflytt",
+      inspections: "Besiktningar",
+      general: "Allmänt"
     };
-    return labels[type];
+    return labels[category];
   };
 
-  const handleUseFavorite = (favorite: SavedSearch) => {
-    useSavedSearch(favorite);
-    openSearch();
+  const getCategoryIcon = (category: FavoriteCategory): string => {
+    const icons: Record<FavoriteCategory, string> = {
+      rentals: "🔑",
+      properties: "🏢",
+      tenants: "👤",
+      barriers: "🚫",
+      turnover: "🔄",
+      inspections: "📋",
+      general: "⭐"
+    };
+    return icons[category];
+  };
+
+  const handleUseFavorite = (favorite: Favorite) => {
+    navigateToFavorite(favorite);
     toast({
-      title: "Sökning aktiverad",
-      description: `"${favorite.name}" har laddats.`
+      title: "Navigerar till favorit",
+      description: `Öppnar "${favorite.name}".`
     });
   };
 
   const handleDeleteFavorite = (id: string, name: string) => {
-    deleteSavedSearch(id);
+    deleteFavorite(id);
     toast({
       title: "Favorit borttagen",
       description: `"${name}" har tagits bort.`
     });
   };
 
-  // Filter favorites based on search query and type
-  const filteredFavorites = favorites.filter(fav => {
-    const matchesSearch = fav.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         fav.query.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = selectedType === "all" || fav.filters.includes(selectedType);
-    return matchesSearch && matchesType;
-  });
-
-  // Group favorites by filter type
-  const groupedByType = filteredFavorites.reduce((acc, fav) => {
-    if (fav.filters.length === 0) {
-      if (!acc["all"]) acc["all"] = [];
-      acc["all"].push(fav);
-    } else {
-      fav.filters.forEach(type => {
-        if (!acc[type]) acc[type] = [];
-        acc[type].push(fav);
+  const handleShareFavorite = async (id: string, name: string) => {
+    try {
+      const shareUrl = shareFavorite(id);
+      await navigator.clipboard.writeText(shareUrl);
+      toast({
+        title: "Länk kopierad",
+        description: `Delningslänk för "${name}" har kopierats till urklipp.`
+      });
+    } catch (error) {
+      toast({
+        title: "Kunde inte dela",
+        description: "Försök igen senare.",
+        variant: "destructive"
       });
     }
+  };
+
+  const handleExport = () => {
+    try {
+      const json = exportFavorites();
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `mimer-favoriter-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "Export lyckades",
+        description: "Dina favoriter har exporterats."
+      });
+    } catch (error) {
+      toast({
+        title: "Export misslyckades",
+        description: "Kunde inte exportera favoriter.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleImport = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        try {
+          const text = await file.text();
+          const count = importFavorites(text);
+          toast({
+            title: "Import lyckades",
+            description: `${count} favoriter har importerats.`
+          });
+        } catch (error) {
+          toast({
+            title: "Import misslyckades",
+            description: "Ogiltig fil eller format.",
+            variant: "destructive"
+          });
+        }
+      }
+    };
+    input.click();
+  };
+
+  // Filter favorites based on search query and category
+  const filteredFavorites = favorites.filter(fav => {
+    const matchesSearch = fav.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         (fav.description?.toLowerCase().includes(searchQuery.toLowerCase()) || false);
+    const matchesCategory = selectedCategory === "all" || fav.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  // Group favorites by category
+  const groupedByCategory = filteredFavorites.reduce((acc, fav) => {
+    if (!acc[fav.category]) acc[fav.category] = [];
+    acc[fav.category].push(fav);
     return acc;
-  }, {} as Record<string, SavedSearch[]>);
+  }, {} as Record<FavoriteCategory, Favorite[]>);
 
   // Calculate statistics
   const totalFavorites = favorites.length;
@@ -99,8 +176,8 @@ export default function FavoritesPage() {
         </p>
 
         <div className="space-y-6">
-        {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Statistics and Actions Bar */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium">Totalt antal</CardTitle>
@@ -142,6 +219,20 @@ export default function FavoritesPage() {
               )}
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Hantera</CardTitle>
+            </CardHeader>
+            <CardContent className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={handleExport} disabled={favorites.length === 0}>
+                <Download className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleImport}>
+                <Upload className="h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Search and Filter Bar */}
@@ -159,20 +250,20 @@ export default function FavoritesPage() {
               </div>
               <div className="flex gap-2 flex-wrap">
                 <Button
-                  variant={selectedType === "all" ? "default" : "outline"}
+                  variant={selectedCategory === "all" ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setSelectedType("all")}
+                  onClick={() => setSelectedCategory("all")}
                 >
                   Alla
                 </Button>
-                {(["customer", "residence", "case", "invoice", "key", "document"] as SearchResultType[]).map(type => (
+                {(["rentals", "properties", "tenants", "barriers", "turnover", "inspections", "general"] as FavoriteCategory[]).map(cat => (
                   <Button
-                    key={type}
-                    variant={selectedType === type ? "default" : "outline"}
+                    key={cat}
+                    variant={selectedCategory === cat ? "default" : "outline"}
                     size="sm"
-                    onClick={() => setSelectedType(type)}
+                    onClick={() => setSelectedCategory(cat)}
                   >
-                    {getTypeLabel(type)}
+                    {getCategoryIcon(cat)} {getCategoryLabel(cat)}
                   </Button>
                 ))}
               </div>
@@ -191,17 +282,31 @@ export default function FavoritesPage() {
                     <div className="space-y-3">
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-medium truncate">{favorite.name}</h3>
-                          <p className="text-sm text-muted-foreground mt-1">{favorite.query}</p>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-lg">{getCategoryIcon(favorite.category)}</span>
+                            <h3 className="font-medium truncate">{favorite.name}</h3>
+                          </div>
+                          {favorite.description && (
+                            <p className="text-sm text-muted-foreground mt-1">{favorite.description}</p>
+                          )}
+                          <p className="text-xs text-muted-foreground mt-1">{favorite.metadata.pageTitle}</p>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteFavorite(favorite.id, favorite.name)}
-                          className="ml-2"
-                        >
-                          <Trash2 className="h-4 w-4 text-muted-foreground" />
-                        </Button>
+                        <div className="flex gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleShareFavorite(favorite.id, favorite.name)}
+                          >
+                            <Share2 className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteFavorite(favorite.id, favorite.name)}
+                          >
+                            <Trash2 className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap gap-2">
@@ -212,12 +317,9 @@ export default function FavoritesPage() {
                         <Badge variant="secondary" className="text-xs">
                           {favorite.useCount} gånger
                         </Badge>
-                        {favorite.filters.length > 0 && (
-                          <Badge variant="outline" className="text-xs">
-                            <Filter className="h-3 w-3 mr-1" />
-                            {favorite.filters.length} filter
-                          </Badge>
-                        )}
+                        <Badge variant="outline" className="text-xs">
+                          {getCategoryLabel(favorite.category)}
+                        </Badge>
                       </div>
 
                       <Button
@@ -225,8 +327,8 @@ export default function FavoritesPage() {
                         className="w-full"
                         size="sm"
                       >
-                        <Search className="h-4 w-4 mr-2" />
-                        Använd sökning
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Öppna favorit
                       </Button>
                     </div>
                   </CardContent>
@@ -240,17 +342,33 @@ export default function FavoritesPage() {
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
-                          <CardTitle className="text-base truncate">{favorite.name}</CardTitle>
-                          <CardDescription className="mt-1">{favorite.query}</CardDescription>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xl">{getCategoryIcon(favorite.category)}</span>
+                            <CardTitle className="text-base truncate">{favorite.name}</CardTitle>
+                          </div>
+                          {favorite.description && (
+                            <CardDescription className="mt-1">{favorite.description}</CardDescription>
+                          )}
+                          <CardDescription className="text-xs mt-1">
+                            {favorite.metadata.pageTitle}
+                          </CardDescription>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteFavorite(favorite.id, favorite.name)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <Trash2 className="h-4 w-4 text-muted-foreground" />
-                        </Button>
+                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleShareFavorite(favorite.id, favorite.name)}
+                          >
+                            <Share2 className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteFavorite(favorite.id, favorite.name)}
+                          >
+                            <Trash2 className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                        </div>
                       </div>
                     </CardHeader>
                     <CardContent>
@@ -262,20 +380,17 @@ export default function FavoritesPage() {
                         <Badge variant="secondary" className="text-xs">
                           {favorite.useCount} gånger
                         </Badge>
-                        {favorite.filters.length > 0 && (
-                          <Badge variant="outline" className="text-xs">
-                            <Filter className="h-3 w-3 mr-1" />
-                            {favorite.filters.map(f => getTypeLabel(f)).join(", ")}
-                          </Badge>
-                        )}
+                        <Badge variant="outline" className="text-xs">
+                          {getCategoryLabel(favorite.category)}
+                        </Badge>
                       </div>
                       <Button
                         onClick={() => handleUseFavorite(favorite)}
                         className="w-full"
                         size="sm"
                       >
-                        <Search className="h-4 w-4 mr-2" />
-                        Använd sökning
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Öppna favorit
                       </Button>
                     </CardContent>
                   </Card>
@@ -289,19 +404,15 @@ export default function FavoritesPage() {
               <div className="text-center">
                 <Star className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-medium mb-2">
-                  {searchQuery || selectedType !== "all" 
+                  {searchQuery || selectedCategory !== "all" 
                     ? "Inga favoriter hittades" 
                     : "Inga sparade favoriter än"}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  {searchQuery || selectedType !== "all"
-                    ? "Försök med andra sökkriterier eller filter"
-                    : "Använd globalsökningen och spara dina mest använda sökningar"}
+                  {searchQuery || selectedCategory !== "all"
+                    ? "Försök med andra sökkriterier eller kategorier"
+                    : "Använd 'Spara som favorit'-knappen på olika listsidor för att skapa genvägar"}
                 </p>
-                <Button onClick={openSearch}>
-                  <Search className="h-4 w-4 mr-2" />
-                  Öppna sökning
-                </Button>
               </div>
             </CardContent>
           </Card>

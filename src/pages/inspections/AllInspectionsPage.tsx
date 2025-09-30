@@ -15,6 +15,7 @@ import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import type { Inspection } from "@/components/residence/inspection/types";
+import { InspectionsHeader } from "./components/InspectionsHeader";
 
 // Extended inspection type for the overview page
 interface ExtendedInspection extends Inspection {
@@ -561,10 +562,7 @@ export default function AllInspectionsPage() {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Alla besiktningar</h1>
-          <p className="text-muted-foreground">Översikt över alla besiktningar i systemet</p>
-        </div>
+        <InspectionsHeader />
 
         <Tabs defaultValue="ongoing" className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">

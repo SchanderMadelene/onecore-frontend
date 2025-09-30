@@ -7,6 +7,7 @@ import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters
 import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
 import { PropertyFilteredResults } from "@/components/properties/PropertyFilteredResults";
 import { usePropertyFilters } from "@/hooks/usePropertyFilters";
+import { PropertiesHeader } from "./components/PropertiesHeader";
 
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,10 +29,7 @@ const AllPropertiesPage = () => {
   
   return <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
-        <h1 className="text-3xl font-bold mb-2">Fastigheter</h1>
-        <p className="text-muted-foreground mb-6">
-          Översikt över alla fastigheter i systemet
-        </p>
+        <PropertiesHeader />
 
         <Card>
           <CardHeader>
