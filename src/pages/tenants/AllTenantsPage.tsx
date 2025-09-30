@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ChevronDown, X } from "lucide-react";
 import { TenantsHeader } from "./components/TenantsHeader";
+import { TenantSelectionFilters } from "@/components/tenants/TenantSelectionFilters";
 import { getAllCustomers } from "@/data/tenants";
 
 // Get all customers (tenants and applicants) and create display data
@@ -35,24 +36,47 @@ const AllTenantsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [contractStatusFilter, setContractStatusFilter] = useState("all");
+  const [contractTypeFilter, setContractTypeFilter] = useState("all");
+  const [customerTypeFilter, setCustomerTypeFilter] = useState("all");
 
-  // Placeholder for future filters - will be implemented in next step
-  const activeFilterCount = 0;
+  // Count active filters
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (contractStatusFilter !== "all") count++;
+    if (contractTypeFilter !== "all") count++;
+    if (customerTypeFilter !== "all") count++;
+    return count;
+  }, [contractStatusFilter, contractTypeFilter, customerTypeFilter]);
   
   const clearAllFilters = () => {
-    // Will be implemented when filters are added
+    setContractStatusFilter("all");
+    setContractTypeFilter("all");
+    setCustomerTypeFilter("all");
   };
 
   const filteredCustomers = useMemo(() => {
     return customers.filter(customer => {
-      return (
+      // Search filter
+      const matchesSearch = (
         customer.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         customer.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         customer.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         customer.property.toLowerCase().includes(searchQuery.toLowerCase())
       );
+
+      // Customer type filter
+      const matchesCustomerType = customerTypeFilter === "all" || customer.customerType === customerTypeFilter;
+
+      // Contract status filter (mock data - in real app would come from contract data)
+      const matchesContractStatus = contractStatusFilter === "all" || true; // Placeholder for real implementation
+
+      // Contract type filter (mock data - in real app would come from contract data)
+      const matchesContractType = contractTypeFilter === "all" || true; // Placeholder for real implementation
+
+      return matchesSearch && matchesCustomerType && matchesContractStatus && matchesContractType;
     });
-  }, [searchQuery]);
+  }, [searchQuery, customerTypeFilter, contractStatusFilter, contractTypeFilter]);
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -111,9 +135,14 @@ const AllTenantsPage = () => {
                     )}
                   </div>
                   <CollapsibleContent className="px-4 pb-4">
-                    <div className="text-sm text-muted-foreground">
-                      Filteralternativ kommer att implementeras i nästa steg
-                    </div>
+                    <TenantSelectionFilters
+                      contractStatusFilter={contractStatusFilter}
+                      setContractStatusFilter={setContractStatusFilter}
+                      contractTypeFilter={contractTypeFilter}
+                      setContractTypeFilter={setContractTypeFilter}
+                      customerTypeFilter={customerTypeFilter}
+                      setCustomerTypeFilter={setCustomerTypeFilter}
+                    />
                   </CollapsibleContent>
                 </Collapsible>
               </div>
