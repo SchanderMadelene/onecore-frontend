@@ -7,6 +7,8 @@ export type FavoriteCategory =
   | "inspections"
   | "general";
 
+export type FavoriteVisibility = "personal" | "team";
+
 export interface FavoriteParameters {
   [key: string]: string | string[] | number | boolean | undefined;
 }
@@ -23,11 +25,12 @@ export interface Favorite {
     icon?: string;
     estimatedResults?: number;
   };
+  visibility: FavoriteVisibility;
   createdAt: Date;
   lastUsed: Date;
   useCount: number;
   createdBy?: string;
-  isShared?: boolean;
+  sharedWith?: string[];
 }
 
 export interface FavoriteGroup {

@@ -1,4 +1,4 @@
-import { Favorite, FavoriteCategory, FavoriteParameters } from "@/types/favorites";
+import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/types/favorites";
 
 class FavoritesService {
   private static instance: FavoritesService;
@@ -36,6 +36,7 @@ class FavoritesService {
     targetUrl: string,
     parameters: FavoriteParameters,
     pageTitle: string,
+    visibility: FavoriteVisibility,
     icon?: string
   ): Favorite {
     const favorite: Favorite = {
@@ -49,6 +50,7 @@ class FavoritesService {
         pageTitle,
         icon,
       },
+      visibility,
       createdAt: new Date(),
       lastUsed: new Date(),
       useCount: 1,
@@ -115,6 +117,7 @@ class FavoritesService {
         data.targetUrl,
         data.parameters,
         data.metadata.pageTitle,
+        "personal", // Default to personal when importing
         data.metadata.icon
       );
     } catch (error) {

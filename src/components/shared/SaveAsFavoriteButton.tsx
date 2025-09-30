@@ -4,9 +4,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Star } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Star, Users, User } from "lucide-react";
 import { useFavorites } from "@/hooks/useFavorites";
-import { FavoriteCategory } from "@/types/favorites";
+import { FavoriteCategory, FavoriteVisibility } from "@/types/favorites";
 import { toast } from "@/hooks/use-toast";
 
 interface SaveAsFavoriteButtonProps {
@@ -31,6 +32,7 @@ export function SaveAsFavoriteButton({
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState(defaultName || "");
   const [description, setDescription] = useState("");
+  const [visibility, setVisibility] = useState<FavoriteVisibility>("personal");
   const { createFavorite } = useFavorites();
 
   const handleSave = () => {
@@ -48,17 +50,20 @@ export function SaveAsFavoriteButton({
       description.trim() || undefined,
       category,
       pageTitle,
+      visibility,
       icon
     );
 
+    const visibilityText = visibility === "team" ? "och delad med ditt team" : "som personlig favorit";
     toast({
       title: "Favorit sparad",
-      description: `"${name}" har lagts till i dina favoriter.`,
+      description: `"${name}" har lagts till ${visibilityText}.`,
     });
 
     // Reset and close
     setName(defaultName || "");
     setDescription("");
+    setVisibility("personal");
     setIsOpen(false);
   };
 
@@ -103,6 +108,36 @@ export function SaveAsFavoriteButton({
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
               />
+            </div>
+
+            <div className="space-y-3">
+              <Label>Synlighet</Label>
+              <RadioGroup value={visibility} onValueChange={(value) => setVisibility(value as FavoriteVisibility)}>
+                <div className="flex items-center space-x-2 rounded-lg border p-4 cursor-pointer hover:bg-accent" onClick={() => setVisibility("personal")}>
+                  <RadioGroupItem value="personal" id="personal" />
+                  <div className="flex items-center gap-2 flex-1">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <Label htmlFor="personal" className="cursor-pointer font-medium">
+                        Personlig favorit
+                      </Label>
+                      <p className="text-sm text-muted-foreground">Endast synlig för dig</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 rounded-lg border p-4 cursor-pointer hover:bg-accent" onClick={() => setVisibility("team")}>
+                  <RadioGroupItem value="team" id="team" />
+                  <div className="flex items-center gap-2 flex-1">
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <Label htmlFor="team" className="cursor-pointer font-medium">
+                        Dela med mitt team
+                      </Label>
+                      <p className="text-sm text-muted-foreground">Synlig för alla i ditt team</p>
+                    </div>
+                  </div>
+                </div>
+              </RadioGroup>
             </div>
 
             <div className="text-sm text-muted-foreground">

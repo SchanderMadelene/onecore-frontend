@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFavorites } from "@/hooks/useFavorites";
 import { Favorite, FavoriteCategory } from "@/types/favorites";
-import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, FileText } from "lucide-react";
+import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, User, Users } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -318,6 +318,19 @@ export default function FavoritesPage() {
                           {favorite.useCount} gånger
                         </Badge>
                         <Badge variant="outline" className="text-xs">
+                          {favorite.visibility === "team" ? (
+                            <>
+                              <Users className="h-3 w-3 mr-1" />
+                              Team
+                            </>
+                          ) : (
+                            <>
+                              <User className="h-3 w-3 mr-1" />
+                              Personlig
+                            </>
+                          )}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
                           {getCategoryLabel(favorite.category)}
                         </Badge>
                       </div>
@@ -379,6 +392,19 @@ export default function FavoritesPage() {
                         </Badge>
                         <Badge variant="secondary" className="text-xs">
                           {favorite.useCount} gånger
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {favorite.visibility === "team" ? (
+                            <>
+                              <Users className="h-3 w-3 mr-1" />
+                              Team
+                            </>
+                          ) : (
+                            <>
+                              <User className="h-3 w-3 mr-1" />
+                              Personlig
+                            </>
+                          )}
                         </Badge>
                         <Badge variant="outline" className="text-xs">
                           {getCategoryLabel(favorite.category)}

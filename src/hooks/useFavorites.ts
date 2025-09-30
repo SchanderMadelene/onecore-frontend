@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Favorite, FavoriteCategory, FavoriteParameters } from "@/types/favorites";
+import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/types/favorites";
 import { favoritesService } from "@/services/favoritesService";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -24,6 +24,7 @@ export function useFavorites() {
     description: string | undefined,
     category: FavoriteCategory,
     pageTitle: string,
+    visibility: FavoriteVisibility,
     icon?: string
   ) => {
     // Parse current URL parameters
@@ -49,6 +50,7 @@ export function useFavorites() {
       location.pathname,
       parameters,
       pageTitle,
+      visibility,
       icon
     );
 
