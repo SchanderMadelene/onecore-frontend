@@ -27,14 +27,14 @@ export function ActiveFavoriteIndicator() {
 
   return (
     <>
-      <div className={`mb-4 p-3 rounded-lg border-2 flex items-center justify-between gap-3 ${
+      <div className={`mb-4 p-4 rounded-lg border-l-4 bg-card/50 backdrop-blur-sm flex items-center justify-between gap-3 ${
         isModified 
-          ? 'bg-warning/5 border-warning/30' 
-          : 'bg-success/5 border-success/40 shadow-[0_0_12px_rgba(34,197,94,0.15)]'
+          ? 'border-l-warning bg-warning/5 border border-warning/20' 
+          : 'border-l-primary bg-primary/5 border border-primary/20'
       }`}>
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <Star className={`h-4 w-4 ${isModified ? 'text-primary fill-primary' : 'text-success fill-success'}`} />
+            <Star className={`h-5 w-5 ${isModified ? 'text-warning fill-warning' : 'text-primary fill-primary'}`} />
             {isModified && (
               <AlertCircle className="h-4 w-4 text-warning" />
             )}
@@ -42,14 +42,14 @@ export function ActiveFavoriteIndicator() {
           
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-medium text-sm">Aktiv favorit:</span>
-              <span className="text-sm truncate">{activeFavorite.name}</span>
+              <span className="font-semibold text-sm">Aktiv favorit:</span>
+              <span className="text-sm font-medium truncate">{activeFavorite.name}</span>
               {isModified ? (
-                <Badge variant="outline" className="bg-warning/15 text-warning border-warning/30 font-medium">
+                <Badge variant="outline" className="bg-warning/10 text-warning border-warning/30">
                   Modifierad
                 </Badge>
               ) : (
-                <Badge variant="outline" className="bg-success/15 text-success border-success/40 font-medium">
+                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
                   Aktiv
                 </Badge>
               )}
