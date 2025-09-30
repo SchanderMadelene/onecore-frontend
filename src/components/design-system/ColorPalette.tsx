@@ -39,6 +39,18 @@ export const ColorPalette = () => {
       value: "hsl(var(--destructive))",
       className: "bg-destructive text-destructive-foreground",
     },
+    {
+      name: "Success",
+      description: "Success and positive states",
+      value: "hsl(var(--success))",
+      className: "bg-success text-success-foreground",
+    },
+    {
+      name: "Warning",
+      description: "Warning and attention states",
+      value: "hsl(var(--warning))",
+      className: "bg-warning text-warning-foreground",
+    },
   ];
 
   return (
@@ -77,6 +89,7 @@ export const ColorPalette = () => {
                 <button className="px-3 py-2 bg-secondary text-secondary-foreground border rounded text-sm">Secondary</button>
                 <button className="px-3 py-2 bg-accent text-accent-foreground rounded text-sm">Accent</button>
                 <button className="px-3 py-2 bg-destructive text-destructive-foreground rounded text-sm">Destructive</button>
+                <button className="px-3 py-2 bg-success text-success-foreground rounded text-sm">Success</button>
               </div>
             </div>
             
@@ -87,6 +100,7 @@ export const ColorPalette = () => {
                 <p className="text-muted-foreground">Muted text</p>
                 <p className="text-accent">Accent text</p>
                 <p className="text-destructive">Destructive text</p>
+                <p className="text-success">Success text</p>
               </div>
             </div>
           </div>

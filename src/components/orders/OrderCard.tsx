@@ -8,14 +8,17 @@ type OrderCardProps = {
 };
 
 export function OrderCard({ orderItem }: OrderCardProps) {
-  const priorityColors = {
-    low: "bg-blue-100 text-blue-800",
-    medium: "bg-yellow-100 text-yellow-800",
-    high: "bg-red-100 text-red-800",
-  };
-
-  const getPriorityColor = (priority: string) => {
-    return priorityColors[priority as keyof typeof priorityColors] || "bg-gray-100 text-gray-800";
+  const getPriorityVariant = (priority: string): "priority-low" | "priority-medium" | "priority-high" => {
+    switch (priority) {
+      case "low":
+        return "priority-low";
+      case "medium":
+        return "priority-medium";
+      case "high":
+        return "priority-high";
+      default:
+        return "priority-medium";
+    }
   };
 
   return (
@@ -26,7 +29,7 @@ export function OrderCard({ orderItem }: OrderCardProps) {
             <CardTitle className="text-base font-medium">{orderItem.title}</CardTitle>
             <span className="text-sm text-muted-foreground">ID: {orderItem.id}</span>
           </div>
-          <Badge className={getPriorityColor(orderItem.priority)}>
+          <Badge variant={getPriorityVariant(orderItem.priority)}>
             {orderItem.priority === "low" ? "Låg" : 
             orderItem.priority === "medium" ? "Medium" : "Hög"}
           </Badge>

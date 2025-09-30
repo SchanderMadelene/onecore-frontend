@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { mockProperties } from "@/data/properties";
 import { mockSearchResults, SearchResult } from "@/data/search";
@@ -12,7 +12,27 @@ export const usePropertyFilters = () => {
   const [filter, setFilter] = useState<"all" | "bostad" | "kontor">("all");
   const [districtFilter, setDistrictFilter] = useState<string>("all");
   const [areaFilter, setAreaFilter] = useState<string>("all");
+  const [designationFilter, setDesignationFilter] = useState<string>("all");
+  const [propertyManagerFilter, setPropertyManagerFilter] = useState<string>("all");
+  const [marketAreaFilter, setMarketAreaFilter] = useState<string>("all");
+  const [propertyNumberFilter, setPropertyNumberFilter] = useState<string>("all");
   const [searchTypeFilter, setSearchTypeFilter] = useState<SearchTypeFilter>("property");
+  const [isFiltering, setIsFiltering] = useState(false);
+  
+  // Apartment filters
+  const [sizeFilter, setSizeFilter] = useState({ min: "", max: "" });
+  const [rentFilter, setRentFilter] = useState({ min: "", max: "" });
+  const [hasContractFilter, setHasContractFilter] = useState<string>("all");
+  const [contractStatusFilter, setContractStatusFilter] = useState<string>("all");
+
+  // Simulate loading when filters change
+  useEffect(() => {
+    setIsFiltering(true);
+    const timer = setTimeout(() => {
+      setIsFiltering(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery, filter, districtFilter, areaFilter, designationFilter, propertyManagerFilter, marketAreaFilter, propertyNumberFilter, searchTypeFilter, sizeFilter, rentFilter, hasContractFilter, contractStatusFilter]);
 
   // Property data for the regular property list
   const { data: properties } = useQuery<Property[]>({
@@ -29,11 +49,33 @@ export const usePropertyFilters = () => {
   // Filter the search results by type and search query
   const filteredSearchResults = searchResults.filter(item => {
     const matchesSearch = 
-      searchQuery.trim() === "" || // Visa alla resultat när söktermen är tom
+      searchQuery.trim() === "" ||
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.address.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesType = item.type === searchTypeFilter;
+    
+    // Apartment-specific filters
+    if (searchTypeFilter === "apartment") {
+      const matchesSize = 
+        (sizeFilter.min === "" || (item.size && item.size >= parseInt(sizeFilter.min))) &&
+        (sizeFilter.max === "" || (item.size && item.size <= parseInt(sizeFilter.max)));
+      
+      const matchesRent = 
+        (rentFilter.min === "" || (item.rent && item.rent >= parseInt(rentFilter.min))) &&
+        (rentFilter.max === "" || (item.rent && item.rent <= parseInt(rentFilter.max)));
+      
+      const matchesHasContract = 
+        hasContractFilter === "all" ||
+        (hasContractFilter === "yes" && item.hasContract === true) ||
+        (hasContractFilter === "no" && item.hasContract === false);
+      
+      const matchesContractStatus = 
+        contractStatusFilter === "all" ||
+        item.contractStatus === contractStatusFilter;
+      
+      return matchesSearch && matchesType && matchesSize && matchesRent && matchesHasContract && matchesContractStatus;
+    }
     
     return matchesSearch && matchesType;
   });
@@ -58,8 +100,25 @@ export const usePropertyFilters = () => {
     const matchesArea = 
       areaFilter === "all" || 
       property.propertyManagerArea === areaFilter;
+
+    const matchesDesignation = 
+      designationFilter === "all" || 
+      property.designation === designationFilter;
+
+    const matchesPropertyManager = 
+      propertyManagerFilter === "all" || 
+      property.propertyManager === propertyManagerFilter;
+
+    const matchesMarketArea = 
+      marketAreaFilter === "all" || 
+      property.marketArea === marketAreaFilter;
+
+    const matchesPropertyNumber = 
+      propertyNumberFilter === "all" || 
+      property.propertyNumber === propertyNumberFilter;
     
-    return matchesSearch && matchesFilter && matchesDistrict && matchesArea;
+    return matchesSearch && matchesFilter && matchesDistrict && matchesArea && 
+           matchesDesignation && matchesPropertyManager && matchesMarketArea && matchesPropertyNumber;
   });
 
   // Always show search results for building and apartment types
@@ -80,13 +139,34 @@ export const usePropertyFilters = () => {
     setDistrictFilter,
     areaFilter,
     setAreaFilter,
+    designationFilter,
+    setDesignationFilter,
+    propertyManagerFilter,
+    setPropertyManagerFilter,
+    marketAreaFilter,
+    setMarketAreaFilter,
+    propertyNumberFilter,
+    setPropertyNumberFilter,
     searchTypeFilter,
     setSearchTypeFilter,
+    sizeFilter,
+    setSizeFilter,
+    rentFilter,
+    setRentFilter,
+    hasContractFilter,
+    setHasContractFilter,
+    contractStatusFilter,
+    setContractStatusFilter,
     properties,
     filteredProperties,
     filteredSearchResults,
     allDistricts: [...new Set(properties?.map(p => p.district) || [])],
     allAreas: [...new Set(properties?.map(p => p.propertyManagerArea) || [])],
-    showSearchResults
+    allDesignations: [...new Set(properties?.map(p => p.designation) || [])],
+    allPropertyManagers: [...new Set(properties?.map(p => p.propertyManager).filter(Boolean) || [])],
+    allMarketAreas: [...new Set(properties?.map(p => p.marketArea).filter(Boolean) || [])],
+    allPropertyNumbers: [...new Set(properties?.map(p => p.propertyNumber).filter(Boolean) || [])],
+    showSearchResults,
+    isFiltering
   };
 };

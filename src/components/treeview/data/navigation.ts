@@ -33,6 +33,12 @@ export const navigationNodes: TreeNode[] = [
     path: "/inspections",
   },
   {
+    id: "favorites",
+    label: "Favoriter",
+    icon: "star",
+    path: "/favorites",
+  },
+  {
     id: "design-system",
     label: "Design System",
     icon: "palette",

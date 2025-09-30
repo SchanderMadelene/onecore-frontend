@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp, Code } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp, Code, Star } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole } from "@/contexts/RoleContext";
 
@@ -558,6 +558,17 @@ export function BetaSettings() {
                 <p className="text-sm text-muted-foreground">Visa global besiktningsvy</p>
               </div>
               <Switch id="all-inspections" checked={features.showAllInspections} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showAllInspections')} />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <Star className="h-4 w-4" />
+                  <Label htmlFor="favorites">Favoriter</Label>
+                </div>
+                <p className="text-sm text-muted-foreground">Visa sidan för sparade sökningar</p>
+              </div>
+              <Switch id="favorites" checked={features.showFavorites} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showFavorites')} />
             </div>
 
             <div className="space-y-3 pt-4 border-t">

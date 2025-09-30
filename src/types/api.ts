@@ -102,12 +102,15 @@ export interface Property {
   propertyObjectId: string;
   code: string;
   designation: string;
+  propertyNumber?: string;
   municipality: string;
   purpose: string | null;
   buildingType: string | null;
   buildingCount?: number;
   district: string;
   propertyManagerArea: string;
+  propertyManager?: string;
+  marketArea?: string;
 }
 
 export interface Company {

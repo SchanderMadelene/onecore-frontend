@@ -2,6 +2,7 @@
 import { FormControlsShowcase } from "./showcase/forms/FormControlsShowcase";
 import { StandardizedFormShowcase } from "./showcase/forms/StandardizedFormShowcase";
 import { ButtonShowcase } from "./showcase/buttons/ButtonShowcase";
+import { BadgeShowcase } from "./showcase/badges/BadgeShowcase";
 import { CardsShowcase } from "./showcase/cards/CardsShowcase";
 import { OrdersShowcase } from "./showcase/orders/OrdersShowcase";
 import { MaintenanceShowcase } from "./showcase/maintenance/MaintenanceShowcase";
@@ -13,6 +14,7 @@ export const ComponentShowcase = () => {
       <StandardizedFormShowcase />
       <FormControlsShowcase />
       <ButtonShowcase />
+      <BadgeShowcase />
       <CardsShowcase />
       <AccordionShowcase />
       <MaintenanceShowcase />

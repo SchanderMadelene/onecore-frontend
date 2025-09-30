@@ -78,6 +78,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
               showBarriers={features.showBarriers}
               showTurnover={features.showTurnover}
               showAllInspections={features.showAllInspections}
+              showFavorites={features.showFavorites}
               showBuildings={features.showBuildings}
               showApartments={features.showApartments}
             />

@@ -8,6 +8,7 @@ import { Car, Home, Archive, Key } from "lucide-react";
 import { ParkingSpacesTable } from "@/components/rentals/ParkingSpacesTable";
 import { HousingSpacesTable } from "@/components/rentals/HousingSpacesTable";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+import { RentalsHeader } from "./components/RentalsHeader";
 
 const RentalsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -31,7 +32,7 @@ const RentalsPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
-        <h1 className="text-3xl font-bold mb-6">Uthyrning</h1>
+        <RentalsHeader />
         
         <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="grid grid-cols-3 mb-6">
