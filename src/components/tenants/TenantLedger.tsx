@@ -1,12 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CustomerLedger } from "@/types/ledger";
+import type { Invoice } from "@/types/invoice";
 import { Badge } from "@/components/ui/badge";
+import { InvoicesTable } from "./InvoicesTable";
 
 interface TenantLedgerProps {
   ledger: CustomerLedger;
+  invoices: Invoice[];
 }
 
-export const TenantLedger = ({ ledger }: TenantLedgerProps) => {
+export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
   const formatCurrency = (amount: number) => {
     return amount.toFixed(2).replace('.', ',');
   };
@@ -114,6 +117,15 @@ export const TenantLedger = ({ ledger }: TenantLedgerProps) => {
               </p>
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Fakturor</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <InvoicesTable invoices={invoices} />
         </CardContent>
       </Card>
     </div>
