@@ -14,7 +14,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
   const isMobile = useIsMobile();
 
   const formatCurrency = (amount: number) => {
-    return amount.toFixed(2).replace('.', ',');
+    return amount.toFixed(2).replace('.', ',') + ' SEK';
   };
 
   const getStatusVariant = (status: Invoice['paymentStatus']) => {
@@ -59,7 +59,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Belopp:</span>
-                    <span className="font-medium">{formatCurrency(invoice.amount)} kr</span>
+                    <span className="font-medium">{formatCurrency(invoice.amount)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Förfallodatum:</span>
@@ -90,7 +90,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                         )}
                         <div className="flex justify-between mt-2">
                           <span className="text-muted-foreground">Belopp:</span>
-                          <span>{formatCurrency(item.amount)} kr</span>
+                          <span>{formatCurrency(item.amount)}</span>
                         </div>
                         {item.printGroup && (
                           <div className="flex justify-between">

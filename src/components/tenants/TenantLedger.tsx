@@ -11,7 +11,7 @@ interface TenantLedgerProps {
 
 export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
   const formatCurrency = (amount: number) => {
-    return amount.toFixed(2).replace('.', ',');
+    return amount.toFixed(2).replace('.', ',') + ' SEK';
   };
 
   const getInvoiceMethod = () => {
@@ -108,7 +108,7 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
           {ledger.balances.credit > 0 && (
             <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
               <p className="text-sm text-green-800">
-                Kunden har ett tillgodohavande på {formatCurrency(ledger.balances.credit)} kr.
+                Kunden har ett tillgodohavande på {formatCurrency(ledger.balances.credit)}.
               </p>
             </div>
           )}
