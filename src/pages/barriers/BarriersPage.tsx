@@ -106,9 +106,9 @@ const BarriersPage = () => {
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[250px] p-0" align="start">
+              <PopoverContent className="w-[300px] p-0 bg-background z-50" align="start">
                 <Command>
-                  <CommandInput placeholder="Sök objekt..." />
+                  <CommandInput placeholder="Sök på objektsnummer, lägenhet, bilplats..." />
                   <CommandList>
                     <CommandEmpty>Inget objekt hittades.</CommandEmpty>
                     <CommandGroup>
@@ -116,8 +116,9 @@ const BarriersPage = () => {
                         <CommandItem
                           key={object}
                           value={object}
-                          onSelect={(currentValue) => {
-                            setSelectedObject(currentValue === selectedObject ? '' : object);
+                          keywords={[object.toLowerCase()]}
+                          onSelect={() => {
+                            setSelectedObject(selectedObject === object ? '' : object);
                             setOpenObjectDropdown(false);
                           }}
                         >
@@ -149,7 +150,7 @@ const BarriersPage = () => {
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[250px] p-0" align="start">
+              <PopoverContent className="w-[300px] p-0 bg-background z-50" align="start">
                 <Command>
                   <CommandInput placeholder="Sök adress..." />
                   <CommandList>
@@ -159,8 +160,8 @@ const BarriersPage = () => {
                         <CommandItem
                           key={address}
                           value={address}
-                          onSelect={(currentValue) => {
-                            setSelectedAddress(currentValue === selectedAddress ? '' : address);
+                          onSelect={() => {
+                            setSelectedAddress(selectedAddress === address ? '' : address);
                             setOpenAddressDropdown(false);
                           }}
                         >
@@ -192,7 +193,7 @@ const BarriersPage = () => {
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[250px] p-0" align="start">
+              <PopoverContent className="w-[300px] p-0 bg-background z-50" align="start">
                 <Command>
                   <CommandInput placeholder="Sök fastighet..." />
                   <CommandList>
@@ -202,8 +203,8 @@ const BarriersPage = () => {
                         <CommandItem
                           key={property}
                           value={property}
-                          onSelect={(currentValue) => {
-                            setSelectedProperty(currentValue === selectedProperty ? '' : property);
+                          onSelect={() => {
+                            setSelectedProperty(selectedProperty === property ? '' : property);
                             setOpenPropertyDropdown(false);
                           }}
                         >
