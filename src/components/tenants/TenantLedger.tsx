@@ -14,6 +14,13 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
     return amount.toFixed(2).replace('.', ',');
   };
 
+  const getInvoiceMethod = () => {
+    if (ledger.invoiceSettings.eInvoice) return "E-faktura";
+    if (ledger.invoiceSettings.smsInvoice) return "SMS-faktura";
+    if (ledger.invoiceSettings.emailInvoice) return "E-postfaktura";
+    return "Pappersfaktura";
+  };
+
   const InfoRow = ({ label, value, highlight = false }: { label: string; value: string | number; highlight?: boolean }) => (
     <div className="flex justify-between py-2 border-b border-border last:border-0">
       <span className="text-sm text-muted-foreground">{label}:</span>
@@ -35,16 +42,8 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
               value={ledger.autogiro.status}
             />
             <InfoRow 
-              label="E-faktura" 
-              value={ledger.invoiceSettings.eInvoice ? "Ja" : "Nej"}
-            />
-            <InfoRow 
-              label="SMS-faktura" 
-              value={ledger.invoiceSettings.smsInvoice ? "Ja" : "Nej"}
-            />
-            <InfoRow 
-              label="E-postfaktura" 
-              value={ledger.invoiceSettings.emailInvoice ? "Ja" : "Nej"}
+              label="Alternativ för avisering" 
+              value={getInvoiceMethod()}
             />
           </div>
 
