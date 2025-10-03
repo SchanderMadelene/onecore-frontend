@@ -17,7 +17,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'H001',
     type: 'housing',
-    object: 'Algen 1, Lgh 1201',
+    object: 'Algen 1, Lgh 1201 (123-456-01-1201)',
     address: 'Algengatan 12, 1tr',
     reason: 'Vattenskada - renovering pågår',
     startDate: '2024-01-15',
@@ -30,7 +30,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'H002',
     type: 'housing',
-    object: 'Lindaren 2, Lgh 0304',
+    object: 'Lindaren 2, Lgh 0304 (234-567-02-0304)',
     address: 'Lindarens väg 8, 3tr',
     reason: 'Brandskada',
     startDate: '2024-02-10',
@@ -41,7 +41,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'H003',
     type: 'housing',
-    object: 'Björnen 4, Lgh 0801',
+    object: 'Björnen 4, Lgh 0801 (345-678-03-0801)',
     address: 'Björkgatan 15, 8tr',
     reason: 'Asbetsanering',
     startDate: '2023-12-01',
@@ -53,7 +53,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'H004',
     type: 'housing',
-    object: 'Algen 1, Lgh 0502',
+    object: 'Algen 1, Lgh 0502 (123-456-01-0502)',
     address: 'Algengatan 12, 5tr',
     reason: 'Fuktsanering',
     startDate: '2024-03-01',
@@ -66,7 +66,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'P001',
     type: 'parking',
-    object: 'Bilplats 45A',
+    object: 'Bilplats 45A (FAST-001-P045A)',
     address: 'Algengatan 12, garage',
     reason: 'Markarbeten - schakt för fiber',
     startDate: '2024-02-20',
@@ -78,7 +78,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'P002',
     type: 'parking',
-    object: 'Bilplats 67B',
+    object: 'Bilplats 67B (FAST-002-P067B)',
     address: 'Lindarens väg 8, utomhus',
     reason: 'Asfaltskador',
     startDate: '2024-01-30',
@@ -90,7 +90,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'P003',
     type: 'parking',
-    object: 'Bilplats 23C',
+    object: 'Bilplats 23C (FAST-003-P023C)',
     address: 'Björkgatan 15, garage',
     reason: 'Takläckage - reparation',
     startDate: '2024-03-10',
@@ -102,7 +102,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'P004',
     type: 'parking',
-    object: 'Bilplats 89A',
+    object: 'Bilplats 89A (FAST-001-P089A)',
     address: 'Algengatan 12, utomhus',
     reason: 'Elkabel - underhåll',
     startDate: '2024-02-15',
@@ -114,7 +114,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'P005',
     type: 'parking',
-    object: 'Bilplats 12D',
+    object: 'Bilplats 12D (FAST-002-P012D)',
     address: 'Lindarens väg 8, garage',
     reason: 'Ventilation - service',
     startDate: '2024-03-05',
@@ -127,7 +127,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'S001',
     type: 'storage',
-    object: 'Förråd 15A',
+    object: 'Förråd 15A (FAST-001-F015A)',
     address: 'Algengatan 12, källare',
     reason: 'Fuktskada - sanering',
     startDate: '2024-02-01',
@@ -139,7 +139,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'S002',
     type: 'storage',
-    object: 'Förråd 27B',
+    object: 'Förråd 27B (FAST-002-F027B)',
     address: 'Lindarens väg 8, källare',
     reason: 'Dörr behöver bytas',
     startDate: '2024-01-10',
@@ -151,7 +151,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'S003',
     type: 'storage',
-    object: 'Förråd 8C',
+    object: 'Förråd 8C (FAST-003-F008C)',
     address: 'Björkgatan 15, vind',
     reason: 'Elinstallation',
     startDate: '2024-03-15',
@@ -164,7 +164,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'C001',
     type: 'commercial',
-    object: 'Lokal 1',
+    object: 'Lokal 1 (FAST-001-L001)',
     address: 'Algengatan 12, bottenvåning',
     reason: 'Ombyggnad - nya hyresgästen',
     startDate: '2024-01-20',
@@ -176,7 +176,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'C002',
     type: 'commercial',
-    object: 'Lokal 3',
+    object: 'Lokal 3 (FAST-002-L003)',
     address: 'Lindarens väg 8, bottenvåning',
     reason: 'Ventilationsarbeten',
     startDate: '2023-11-15',
@@ -188,7 +188,7 @@ export const mockBarriers: Barrier[] = [
   {
     id: 'C003',
     type: 'commercial',
-    object: 'Lokal 5',
+    object: 'Lokal 5 (FAST-003-L005)',
     address: 'Björkgatan 15, bottenvåning',
     reason: 'Brandskyddskontroll',
     startDate: '2024-03-01',
