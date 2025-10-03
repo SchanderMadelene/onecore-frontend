@@ -7,17 +7,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ShieldX, Home, Car, Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { BarriersTable } from "@/components/barriers/BarriersTable";
-import { getAllBarriers, getBarriersByType } from "@/data/barriers";
+import { getAllBarriers, getBarriersByType, Barrier } from "@/data/barriers";
 import { BarriersHeader } from "./components/BarriersHeader";
 
 const BarriersPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [showHistorical, setShowHistorical] = useState(false);
   
-  const allBarriers = getAllBarriers();
-  const housingBarriers = getBarriersByType('housing');
-  const parkingBarriers = getBarriersByType('parking');
+  const filterBarriers = (barriers: Barrier[]) => {
+    const active = barriers.filter(b => b.status === 'active' || b.status === 'inactive');
+    const historical = barriers.filter(b => b.status === 'expired');
+    
+    if (showHistorical) {
+      return [...active, ...historical];
+    }
+    return active;
+  };
+
+  const allBarriers = filterBarriers(getAllBarriers());
+  const housingBarriers = filterBarriers(getBarriersByType('housing'));
+  const parkingBarriers = filterBarriers(getBarriersByType('parking'));
 
   const handleBarrierCreated = () => {
     setRefreshKey(prev => prev + 1);
@@ -28,13 +41,23 @@ const BarriersPage = () => {
       <div className="space-y-6">
         <BarriersHeader onBarrierCreated={handleBarrierCreated} />
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
               placeholder="Sök efter spärrar..." 
               className="pl-10" 
             />
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch 
+              id="show-historical" 
+              checked={showHistorical}
+              onCheckedChange={setShowHistorical}
+            />
+            <Label htmlFor="show-historical" className="cursor-pointer">
+              Visa historiska spärrar
+            </Label>
           </div>
         </div>
 
