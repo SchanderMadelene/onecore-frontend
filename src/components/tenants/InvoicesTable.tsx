@@ -65,6 +65,18 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <span className="text-muted-foreground">Förfallodatum:</span>
                     <span>{invoice.dueDate}</span>
                   </div>
+                  {invoice.paymentDate && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Betaldatum:</span>
+                      <span>{invoice.paymentDate}</span>
+                    </div>
+                  )}
+                  {invoice.paidAmount !== undefined && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Inbetalat:</span>
+                      <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                    </div>
+                  )}
                 </div>
                 <div className="mt-2 flex items-center text-sm text-muted-foreground">
                   {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -137,6 +149,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
             <th className="text-right p-3 text-sm font-medium">Belopp</th>
             <th className="text-left p-3 text-sm font-medium">Referens</th>
             <th className="text-left p-3 text-sm font-medium">Fakturatyp</th>
+            <th className="text-left p-3 text-sm font-medium">Betaldatum</th>
+            <th className="text-right p-3 text-sm font-medium">Inbetalat belopp</th>
             <th className="text-left p-3 text-sm font-medium">Betalstatus</th>
             <th className="w-10"></th>
           </tr>
@@ -157,6 +171,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm text-right">{formatCurrency(invoice.amount)}</td>
                   <td className="p-3 text-sm">{invoice.reference}</td>
                   <td className="p-3 text-sm">{invoice.invoiceType}</td>
+                  <td className="p-3 text-sm">{invoice.paymentDate || '-'}</td>
+                  <td className="p-3 text-sm text-right">
+                    {invoice.paidAmount !== undefined ? formatCurrency(invoice.paidAmount) : '-'}
+                  </td>
                   <td className="p-3 text-sm">
                     <Badge variant={getStatusVariant(invoice.paymentStatus)}>
                       {invoice.paymentStatus}
@@ -172,7 +190,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 </tr>
                 {isExpanded && invoice.lineItems.length > 0 && (
                   <tr>
-                    <td colSpan={8} className="bg-muted/30 p-4">
+                    <td colSpan={10} className="bg-muted/30 p-4">
                       {invoice.text && (
                         <div className="mb-3 text-sm">
                           <span className="font-medium">Text:</span> {invoice.text}
