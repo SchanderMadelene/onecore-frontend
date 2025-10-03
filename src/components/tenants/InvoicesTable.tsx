@@ -20,15 +20,15 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
   const getStatusVariant = (status: Invoice['paymentStatus']) => {
     switch (status) {
       case 'Betald':
-        return 'default';
+        return 'default'; // success green
       case 'Obetald':
-        return 'destructive';
+        return 'secondary'; // neutral
       case 'Delvis betald':
         return 'secondary';
       case 'Förfallen':
-        return 'destructive';
+        return 'destructive'; // warning/error red
       default:
-        return 'default';
+        return 'secondary';
     }
   };
 
