@@ -8,6 +8,7 @@ export interface Barrier {
   endDate?: string;
   status: 'active' | 'inactive' | 'expired';
   createdBy: string;
+  createdDate: string;
   notes?: string;
 }
 
@@ -23,6 +24,7 @@ export const mockBarriers: Barrier[] = [
     endDate: '2024-03-30',
     status: 'active',
     createdBy: 'Anna Svensson',
+    createdDate: '2024-01-10',
     notes: 'Omfattande renovering efter rörbrott'
   },
   {
@@ -33,7 +35,8 @@ export const mockBarriers: Barrier[] = [
     reason: 'Brandskada',
     startDate: '2024-02-10',
     status: 'active',
-    createdBy: 'Per Eriksson'
+    createdBy: 'Per Eriksson',
+    createdDate: '2024-02-08'
   },
   {
     id: 'H003',
@@ -44,7 +47,8 @@ export const mockBarriers: Barrier[] = [
     startDate: '2023-12-01',
     endDate: '2024-01-31',
     status: 'expired',
-    createdBy: 'Maria Johansson'
+    createdBy: 'Maria Johansson',
+    createdDate: '2023-11-20'
   },
   {
     id: 'H004',
@@ -54,7 +58,8 @@ export const mockBarriers: Barrier[] = [
     reason: 'Fuktsanering',
     startDate: '2024-03-01',
     status: 'active',
-    createdBy: 'Lars Nilsson'
+    createdBy: 'Lars Nilsson',
+    createdDate: '2024-02-25'
   },
 
   // Parking barriers
@@ -67,7 +72,8 @@ export const mockBarriers: Barrier[] = [
     startDate: '2024-02-20',
     endDate: '2024-04-15',
     status: 'active',
-    createdBy: 'Anna Svensson'
+    createdBy: 'Anna Svensson',
+    createdDate: '2024-02-15'
   },
   {
     id: 'P002',
@@ -78,7 +84,8 @@ export const mockBarriers: Barrier[] = [
     startDate: '2024-01-30',
     endDate: '2024-03-01',
     status: 'expired',
-    createdBy: 'Per Eriksson'
+    createdBy: 'Per Eriksson',
+    createdDate: '2024-01-28'
   },
   {
     id: 'P003',
@@ -89,6 +96,7 @@ export const mockBarriers: Barrier[] = [
     startDate: '2024-03-10',
     status: 'active',
     createdBy: 'Maria Johansson',
+    createdDate: '2024-03-08',
     notes: 'Väntar på entreprenör'
   },
   {
@@ -100,7 +108,8 @@ export const mockBarriers: Barrier[] = [
     startDate: '2024-02-15',
     endDate: '2024-02-28',
     status: 'expired',
-    createdBy: 'Lars Nilsson'
+    createdBy: 'Lars Nilsson',
+    createdDate: '2024-02-10'
   },
   {
     id: 'P005',
@@ -110,7 +119,8 @@ export const mockBarriers: Barrier[] = [
     reason: 'Ventilation - service',
     startDate: '2024-03-05',
     status: 'active',
-    createdBy: 'Anna Svensson'
+    createdBy: 'Anna Svensson',
+    createdDate: '2024-03-01'
   },
   
   // Storage barriers
@@ -123,7 +133,8 @@ export const mockBarriers: Barrier[] = [
     startDate: '2024-02-01',
     endDate: '2024-04-01',
     status: 'active',
-    createdBy: 'Per Eriksson'
+    createdBy: 'Per Eriksson',
+    createdDate: '2024-01-25'
   },
   {
     id: 'S002',
@@ -134,7 +145,8 @@ export const mockBarriers: Barrier[] = [
     startDate: '2024-01-10',
     endDate: '2024-02-28',
     status: 'expired',
-    createdBy: 'Maria Johansson'
+    createdBy: 'Maria Johansson',
+    createdDate: '2024-01-05'
   },
   {
     id: 'S003',
@@ -144,7 +156,8 @@ export const mockBarriers: Barrier[] = [
     reason: 'Elinstallation',
     startDate: '2024-03-15',
     status: 'active',
-    createdBy: 'Lars Nilsson'
+    createdBy: 'Lars Nilsson',
+    createdDate: '2024-03-12'
   },
   
   // Commercial barriers
@@ -157,7 +170,8 @@ export const mockBarriers: Barrier[] = [
     startDate: '2024-01-20',
     endDate: '2024-05-01',
     status: 'active',
-    createdBy: 'Anna Svensson'
+    createdBy: 'Anna Svensson',
+    createdDate: '2024-01-10'
   },
   {
     id: 'C002',
@@ -168,7 +182,8 @@ export const mockBarriers: Barrier[] = [
     startDate: '2023-11-15',
     endDate: '2024-01-15',
     status: 'expired',
-    createdBy: 'Per Eriksson'
+    createdBy: 'Per Eriksson',
+    createdDate: '2023-11-01'
   },
   {
     id: 'C003',
@@ -178,7 +193,8 @@ export const mockBarriers: Barrier[] = [
     reason: 'Brandskyddskontroll',
     startDate: '2024-03-01',
     status: 'active',
-    createdBy: 'Maria Johansson'
+    createdBy: 'Maria Johansson',
+    createdDate: '2024-02-20'
   }
 ];
 
@@ -301,11 +317,12 @@ export const getAvailableCommercial = (): AvailableCommercial[] => {
 };
 
 // Create new barrier
-export const createBarrier = (barrierData: Omit<Barrier, 'id' | 'createdBy'>) => {
+export const createBarrier = (barrierData: Omit<Barrier, 'id' | 'createdBy' | 'createdDate'>) => {
   const newBarrier: Barrier = {
     ...barrierData,
     id: `${barrierData.type.toUpperCase().charAt(0)}${String(Date.now()).slice(-3)}`,
-    createdBy: 'Nuvarande användare' // In real app, this would be the current user
+    createdBy: 'Nuvarande användare', // In real app, this would be the current user
+    createdDate: new Date().toISOString().split('T')[0] // Current date
   };
   
   mockBarriers.unshift(newBarrier);
