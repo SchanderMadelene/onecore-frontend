@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Barrier } from "@/data/barriers";
@@ -27,60 +27,99 @@ const formatDate = (dateString: string) => {
 };
 
 export function BarriersTable({ barriers }: BarriersTableProps) {
-  if (barriers.length === 0) {
-    return (
-      <div className="text-center py-8 text-muted-foreground">
-        Inga spärrar hittades
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-4">
-      <div className="rounded-lg border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Objekt</TableHead>
-              <TableHead>Adress</TableHead>
-              <TableHead>Orsak</TableHead>
-              <TableHead>Startdatum</TableHead>
-              <TableHead>Slutdatum</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Skapad av</TableHead>
-              <TableHead className="w-24">Åtgärder</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {barriers.map((barrier) => (
-              <TableRow key={barrier.id}>
-                <TableCell className="font-medium">{barrier.object}</TableCell>
-                <TableCell>{barrier.address}</TableCell>
-                <TableCell>{barrier.reason}</TableCell>
-                <TableCell>{formatDate(barrier.startDate)}</TableCell>
-                <TableCell>
-                  {barrier.endDate ? formatDate(barrier.endDate) : '-'}
-                </TableCell>
-                <TableCell>{getStatusBadge(barrier.status)}</TableCell>
-                <TableCell>{barrier.createdBy}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0" disabled={barrier.status === 'active'}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+    <ResponsiveTable
+      data={barriers}
+      columns={[
+        {
+          key: "object",
+          label: "Objekt",
+          render: (barrier) => <span className="font-medium">{barrier.object}</span>,
+        },
+        {
+          key: "address",
+          label: "Adress",
+          render: (barrier) => barrier.address,
+          hideOnMobile: true,
+        },
+        {
+          key: "reason",
+          label: "Orsak",
+          render: (barrier) => barrier.reason,
+        },
+        {
+          key: "startDate",
+          label: "Startdatum",
+          render: (barrier) => formatDate(barrier.startDate),
+          hideOnMobile: true,
+        },
+        {
+          key: "endDate",
+          label: "Slutdatum",
+          render: (barrier) => barrier.endDate ? formatDate(barrier.endDate) : '-',
+          hideOnMobile: true,
+        },
+        {
+          key: "status",
+          label: "Status",
+          render: (barrier) => getStatusBadge(barrier.status),
+        },
+        {
+          key: "createdBy",
+          label: "Skapad av",
+          render: (barrier) => barrier.createdBy,
+          hideOnMobile: true,
+        },
+        {
+          key: "actions",
+          label: "Åtgärder",
+          render: (barrier) => (
+            <div className="flex items-center gap-1">
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Eye className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0" disabled={barrier.status === 'active'}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ),
+          className: "w-24",
+        },
+      ]}
+      keyExtractor={(barrier) => barrier.id}
+      emptyMessage="Inga spärrar hittades"
+      mobileCardRenderer={(barrier) => (
+        <div className="space-y-3 w-full">
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="font-medium">{barrier.object}</div>
+              <div className="text-sm text-muted-foreground">{barrier.address}</div>
+            </div>
+            {getStatusBadge(barrier.status)}
+          </div>
+          <div className="text-sm">
+            <div className="font-medium text-muted-foreground mb-1">Orsak</div>
+            <div>{barrier.reason}</div>
+          </div>
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground">Skapad av: {barrier.createdBy}</span>
+            <div className="flex items-center gap-1">
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Eye className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0" disabled={barrier.status === 'active'}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    />
   );
 }
