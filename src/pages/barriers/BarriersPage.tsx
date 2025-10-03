@@ -17,15 +17,25 @@ const BarriersPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [showHistorical, setShowHistorical] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const filterBarriers = (barriers: Barrier[]) => {
     const active = barriers.filter(b => b.status === 'active' || b.status === 'inactive');
     const historical = barriers.filter(b => b.status === 'expired');
     
-    if (showHistorical) {
-      return [...active, ...historical];
+    let filtered = showHistorical ? [...active, ...historical] : active;
+    
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(b => 
+        b.object.toLowerCase().includes(query) ||
+        b.address.toLowerCase().includes(query) ||
+        b.reason.toLowerCase().includes(query)
+      );
     }
-    return active;
+    
+    return filtered;
   };
 
   const allBarriers = filterBarriers(getAllBarriers());
@@ -47,8 +57,10 @@ const BarriersPage = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
-              placeholder="Sök efter spärrar..." 
-              className="pl-10" 
+              placeholder="Sök på objekt, adress eller orsak..." 
+              className="pl-10"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="flex items-center gap-2">
