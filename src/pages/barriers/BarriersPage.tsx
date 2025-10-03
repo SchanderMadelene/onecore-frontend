@@ -31,6 +31,8 @@ const BarriersPage = () => {
   const allBarriers = filterBarriers(getAllBarriers());
   const housingBarriers = filterBarriers(getBarriersByType('housing'));
   const parkingBarriers = filterBarriers(getBarriersByType('parking'));
+  const storageBarriers = filterBarriers(getBarriersByType('storage'));
+  const commercialBarriers = filterBarriers(getBarriersByType('commercial'));
 
   const handleBarrierCreated = () => {
     setRefreshKey(prev => prev + 1);
@@ -62,10 +64,12 @@ const BarriersPage = () => {
         </div>
 
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="all">Alla spärrar</TabsTrigger>
             <TabsTrigger value="housing">Bostäder</TabsTrigger>
             <TabsTrigger value="parking">Bilplatser</TabsTrigger>
+            <TabsTrigger value="storage">Förråd</TabsTrigger>
+            <TabsTrigger value="commercial">Lokaler</TabsTrigger>
           </TabsList>
 
           <TabsContent value="all" className="mt-8">
@@ -78,6 +82,14 @@ const BarriersPage = () => {
 
           <TabsContent value="parking" className="mt-8">
             <BarriersTable barriers={parkingBarriers} />
+          </TabsContent>
+
+          <TabsContent value="storage" className="mt-8">
+            <BarriersTable barriers={storageBarriers} />
+          </TabsContent>
+
+          <TabsContent value="commercial" className="mt-8">
+            <BarriersTable barriers={commercialBarriers} />
           </TabsContent>
         </Tabs>
       </div>

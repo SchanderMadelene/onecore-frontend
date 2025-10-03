@@ -1,6 +1,6 @@
 export interface Barrier {
   id: string;
-  type: 'housing' | 'parking';
+  type: 'housing' | 'parking' | 'storage' | 'commercial';
   object: string;
   address: string;
   reason: string;
@@ -111,10 +111,78 @@ export const mockBarriers: Barrier[] = [
     startDate: '2024-03-05',
     status: 'active',
     createdBy: 'Anna Svensson'
+  },
+  
+  // Storage barriers
+  {
+    id: 'S001',
+    type: 'storage',
+    object: 'Förråd 15A',
+    address: 'Algengatan 12, källare',
+    reason: 'Fuktskada - sanering',
+    startDate: '2024-02-01',
+    endDate: '2024-04-01',
+    status: 'active',
+    createdBy: 'Per Eriksson'
+  },
+  {
+    id: 'S002',
+    type: 'storage',
+    object: 'Förråd 27B',
+    address: 'Lindarens väg 8, källare',
+    reason: 'Dörr behöver bytas',
+    startDate: '2024-01-10',
+    endDate: '2024-02-28',
+    status: 'expired',
+    createdBy: 'Maria Johansson'
+  },
+  {
+    id: 'S003',
+    type: 'storage',
+    object: 'Förråd 8C',
+    address: 'Björkgatan 15, vind',
+    reason: 'Elinstallation',
+    startDate: '2024-03-15',
+    status: 'active',
+    createdBy: 'Lars Nilsson'
+  },
+  
+  // Commercial barriers
+  {
+    id: 'C001',
+    type: 'commercial',
+    object: 'Lokal 1',
+    address: 'Algengatan 12, bottenvåning',
+    reason: 'Ombyggnad - nya hyresgästen',
+    startDate: '2024-01-20',
+    endDate: '2024-05-01',
+    status: 'active',
+    createdBy: 'Anna Svensson'
+  },
+  {
+    id: 'C002',
+    type: 'commercial',
+    object: 'Lokal 3',
+    address: 'Lindarens väg 8, bottenvåning',
+    reason: 'Ventilationsarbeten',
+    startDate: '2023-11-15',
+    endDate: '2024-01-15',
+    status: 'expired',
+    createdBy: 'Per Eriksson'
+  },
+  {
+    id: 'C003',
+    type: 'commercial',
+    object: 'Lokal 5',
+    address: 'Björkgatan 15, bottenvåning',
+    reason: 'Brandskyddskontroll',
+    startDate: '2024-03-01',
+    status: 'active',
+    createdBy: 'Maria Johansson'
   }
 ];
 
-export const getBarriersByType = (type: 'housing' | 'parking') => {
+export const getBarriersByType = (type: 'housing' | 'parking' | 'storage' | 'commercial') => {
   return mockBarriers.filter(barrier => barrier.type === type);
 };
 
@@ -143,6 +211,24 @@ export interface AvailableParkingSpace {
   rent: number;
   type: 'garage' | 'utomhus' | 'carport';
   area: string;
+}
+
+export interface AvailableStorage {
+  id: string;
+  name: string;
+  address: string;
+  rent: number;
+  size: number;
+  location: 'källare' | 'vind' | 'utomhus';
+}
+
+export interface AvailableCommercial {
+  id: string;
+  name: string;
+  address: string;
+  rent: number;
+  size: number;
+  type: 'kontor' | 'butik' | 'lager';
 }
 
 // Mock available housing (residences not currently blocked)
@@ -179,6 +265,39 @@ export const getAvailableParkingSpaces = (): AvailableParkingSpace[] => {
     { id: 'p-007', name: 'Bilplats 7A', address: 'Björkgatan 15, carport', rent: 750, type: 'carport' as const, area: 'Nord' },
     { id: 'p-008', name: 'Bilplats 8B', address: 'Björkgatan 15, utomhus', rent: 600, type: 'utomhus' as const, area: 'Nord' }
   ].filter(parking => !blockedParkingIds.includes(parking.name));
+};
+
+// Mock available storage spaces (not currently blocked)
+export const getAvailableStorage = (): AvailableStorage[] => {
+  const blockedStorageIds = mockBarriers
+    .filter(barrier => barrier.type === 'storage' && barrier.status === 'active')
+    .map(barrier => barrier.object);
+
+  return [
+    { id: 'st-001', name: 'Förråd 1A', address: 'Algengatan 12, källare', rent: 350, size: 5, location: 'källare' as const },
+    { id: 'st-002', name: 'Förråd 2B', address: 'Algengatan 12, källare', rent: 450, size: 8, location: 'källare' as const },
+    { id: 'st-003', name: 'Förråd 3C', address: 'Algengatan 12, vind', rent: 300, size: 4, location: 'vind' as const },
+    { id: 'st-004', name: 'Förråd 4A', address: 'Lindarens väg 8, källare', rent: 400, size: 6, location: 'källare' as const },
+    { id: 'st-005', name: 'Förråd 5B', address: 'Lindarens väg 8, vind', rent: 350, size: 5, location: 'vind' as const },
+    { id: 'st-006', name: 'Förråd 6C', address: 'Björkgatan 15, källare', rent: 500, size: 10, location: 'källare' as const },
+    { id: 'st-007', name: 'Förråd 7A', address: 'Björkgatan 15, vind', rent: 300, size: 4, location: 'vind' as const },
+    { id: 'st-008', name: 'Förråd 8B', address: 'Björkgatan 15, utomhus', rent: 250, size: 3, location: 'utomhus' as const }
+  ].filter(storage => !blockedStorageIds.includes(storage.name));
+};
+
+// Mock available commercial spaces (not currently blocked)
+export const getAvailableCommercial = (): AvailableCommercial[] => {
+  const blockedCommercialIds = mockBarriers
+    .filter(barrier => barrier.type === 'commercial' && barrier.status === 'active')
+    .map(barrier => barrier.object);
+
+  return [
+    { id: 'com-001', name: 'Lokal 2', address: 'Algengatan 12, bottenvåning', rent: 15000, size: 85, type: 'butik' as const },
+    { id: 'com-002', name: 'Lokal 4', address: 'Lindarens väg 8, bottenvåning', rent: 12000, size: 65, type: 'kontor' as const },
+    { id: 'com-003', name: 'Lokal 6', address: 'Björkgatan 15, bottenvåning', rent: 18000, size: 120, type: 'butik' as const },
+    { id: 'com-004', name: 'Lokal 7', address: 'Algengatan 12, källare', rent: 8000, size: 45, type: 'lager' as const },
+    { id: 'com-005', name: 'Lokal 8', address: 'Lindarens väg 8, plan 2', rent: 10000, size: 55, type: 'kontor' as const }
+  ].filter(commercial => !blockedCommercialIds.includes(commercial.name));
 };
 
 // Create new barrier
