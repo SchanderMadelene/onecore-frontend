@@ -22,6 +22,8 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       invoiceType: "Avi",
       paymentStatus: "Obetald",
       text: "",
+      paymentDate: undefined,
+      paidAmount: undefined,
       lineItems: [
         {
           amount: 0,

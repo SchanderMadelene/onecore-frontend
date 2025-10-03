@@ -79,6 +79,22 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       <span className="font-medium">Text:</span> {invoice.text}
                     </div>
                   )}
+                  {(invoice.paymentDate || invoice.paidAmount !== undefined) && (
+                    <div className="mb-3 grid grid-cols-2 gap-4 text-sm bg-background rounded-lg p-3">
+                      {invoice.paymentDate && (
+                        <div>
+                          <span className="text-muted-foreground">Betaldatum:</span>{' '}
+                          <span className="font-medium">{invoice.paymentDate}</span>
+                        </div>
+                      )}
+                      {invoice.paidAmount !== undefined && (
+                        <div>
+                          <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
+                          <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                   <div className="space-y-2">
                     {invoice.lineItems.map((item, idx) => (
                       <div key={idx} className="bg-background rounded-lg p-3 text-sm">
@@ -160,6 +176,22 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       {invoice.text && (
                         <div className="mb-3 text-sm">
                           <span className="font-medium">Text:</span> {invoice.text}
+                        </div>
+                      )}
+                      {(invoice.paymentDate || invoice.paidAmount !== undefined) && (
+                        <div className="mb-3 grid grid-cols-2 gap-4 text-sm bg-background rounded-lg p-3">
+                          {invoice.paymentDate && (
+                            <div>
+                              <span className="text-muted-foreground">Betaldatum:</span>{' '}
+                              <span className="font-medium">{invoice.paymentDate}</span>
+                            </div>
+                          )}
+                          {invoice.paidAmount !== undefined && (
+                            <div>
+                              <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
+                              <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                            </div>
+                          )}
                         </div>
                       )}
                       <table className="w-full bg-background rounded-lg overflow-hidden">
