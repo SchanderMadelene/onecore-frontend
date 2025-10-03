@@ -20,7 +20,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
   const getStatusVariant = (status: Invoice['paymentStatus']) => {
     switch (status) {
       case 'Betald':
-        return 'default'; // success green
+        return 'success'; // green success badge
       case 'Obetald':
         return 'secondary'; // neutral
       case 'Delvis betald':
