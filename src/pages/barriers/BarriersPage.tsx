@@ -1,23 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/ui/empty-state";
-import { ShieldX, Home, Car, Plus, Search } from "lucide-react";
+import { ShieldX, Home, Car, Plus, Search, X, Check, ChevronsUpDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { BarriersTable } from "@/components/barriers/BarriersTable";
 import { getAllBarriers, getBarriersByType, Barrier } from "@/data/barriers";
 import { BarriersHeader } from "./components/BarriersHeader";
+import { cn } from "@/lib/utils";
 
 const BarriersPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [showHistorical, setShowHistorical] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedObject, setSelectedObject] = useState<string>('');
+  const [selectedAddress, setSelectedAddress] = useState<string>('');
+  const [selectedProperty, setSelectedProperty] = useState<string>('');
+  const [openObjectDropdown, setOpenObjectDropdown] = useState(false);
+  const [openAddressDropdown, setOpenAddressDropdown] = useState(false);
+  const [openPropertyDropdown, setOpenPropertyDropdown] = useState(false);
+
+  const allBarriersData = getAllBarriers();
+
+  // Extract unique values for dropdowns
+  const uniqueObjects = useMemo(() => {
+    const objects = new Set(allBarriersData.map(b => b.object));
+    return Array.from(objects).sort();
+  }, [allBarriersData]);
+
+  const uniqueAddresses = useMemo(() => {
+    const addresses = new Set(allBarriersData.map(b => b.address));
+    return Array.from(addresses).sort();
+  }, [allBarriersData]);
+
+  const uniqueProperties = useMemo(() => {
+    const properties = new Set(allBarriersData.map(b => {
+      // Extract property name from address (before comma)
+      return b.address.split(',')[0].trim();
+    }));
+    return Array.from(properties).sort();
+  }, [allBarriersData]);
   
   const filterBarriers = (barriers: Barrier[]) => {
     const active = barriers.filter(b => b.status === 'active' || b.status === 'inactive');
@@ -25,14 +54,15 @@ const BarriersPage = () => {
     
     let filtered = showHistorical ? [...active, ...historical] : active;
     
-    // Apply search filter
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(b => 
-        b.object.toLowerCase().includes(query) ||
-        b.address.toLowerCase().includes(query) ||
-        b.reason.toLowerCase().includes(query)
-      );
+    // Apply filters
+    if (selectedObject) {
+      filtered = filtered.filter(b => b.object === selectedObject);
+    }
+    if (selectedAddress) {
+      filtered = filtered.filter(b => b.address === selectedAddress);
+    }
+    if (selectedProperty) {
+      filtered = filtered.filter(b => b.address.startsWith(selectedProperty));
     }
     
     return filtered;
@@ -48,21 +78,158 @@ const BarriersPage = () => {
     setRefreshKey(prev => prev + 1);
   };
 
+  const clearFilters = () => {
+    setSelectedObject('');
+    setSelectedAddress('');
+    setSelectedProperty('');
+  };
+
+  const hasActiveFilters = selectedObject || selectedAddress || selectedProperty;
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
         <BarriersHeader onBarrierCreated={handleBarrierCreated} />
 
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder="Sök på objekt, adress eller orsak..." 
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Object Filter */}
+            <Popover open={openObjectDropdown} onOpenChange={setOpenObjectDropdown}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openObjectDropdown}
+                  className="w-full sm:w-[250px] justify-between"
+                >
+                  {selectedObject ? selectedObject : "Välj objekt..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[250px] p-0" align="start">
+                <Command>
+                  <CommandInput placeholder="Sök objekt..." />
+                  <CommandList>
+                    <CommandEmpty>Inget objekt hittades.</CommandEmpty>
+                    <CommandGroup>
+                      {uniqueObjects.map((object) => (
+                        <CommandItem
+                          key={object}
+                          value={object}
+                          onSelect={(currentValue) => {
+                            setSelectedObject(currentValue === selectedObject ? '' : object);
+                            setOpenObjectDropdown(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedObject === object ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {object}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {/* Address Filter */}
+            <Popover open={openAddressDropdown} onOpenChange={setOpenAddressDropdown}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openAddressDropdown}
+                  className="w-full sm:w-[250px] justify-between"
+                >
+                  {selectedAddress ? selectedAddress : "Välj adress..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[250px] p-0" align="start">
+                <Command>
+                  <CommandInput placeholder="Sök adress..." />
+                  <CommandList>
+                    <CommandEmpty>Ingen adress hittades.</CommandEmpty>
+                    <CommandGroup>
+                      {uniqueAddresses.map((address) => (
+                        <CommandItem
+                          key={address}
+                          value={address}
+                          onSelect={(currentValue) => {
+                            setSelectedAddress(currentValue === selectedAddress ? '' : address);
+                            setOpenAddressDropdown(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedAddress === address ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {address}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {/* Property/Area Filter */}
+            <Popover open={openPropertyDropdown} onOpenChange={setOpenPropertyDropdown}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openPropertyDropdown}
+                  className="w-full sm:w-[250px] justify-between"
+                >
+                  {selectedProperty ? selectedProperty : "Välj fastighet..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[250px] p-0" align="start">
+                <Command>
+                  <CommandInput placeholder="Sök fastighet..." />
+                  <CommandList>
+                    <CommandEmpty>Ingen fastighet hittades.</CommandEmpty>
+                    <CommandGroup>
+                      {uniqueProperties.map((property) => (
+                        <CommandItem
+                          key={property}
+                          value={property}
+                          onSelect={(currentValue) => {
+                            setSelectedProperty(currentValue === selectedProperty ? '' : property);
+                            setOpenPropertyDropdown(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedProperty === property ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {property}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" onClick={clearFilters}>
+                <X className="h-4 w-4 mr-2" />
+                Rensa filter
+              </Button>
+            )}
           </div>
+
           <div className="flex items-center gap-2">
             <Switch 
               id="show-historical" 
