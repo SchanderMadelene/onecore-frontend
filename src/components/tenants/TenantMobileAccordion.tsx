@@ -2,8 +2,10 @@ import { TenantContracts } from "./TenantContracts";
 import { TenantQueueSystem } from "./TenantQueueSystem";
 import { TenantNotes } from "./TenantNotes";
 import { TenantOrders } from "./TenantOrders";
+import { TenantLedger } from "./TenantLedger";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
+import { getMockLedgerForCustomer } from "@/data/ledger";
 
 interface TenantMobileAccordionProps {
   contracts: any[];
@@ -59,10 +61,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
       id: "ledger",
       title: "Kundreskontra",
       content: features.showTenantLedger ? (
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <h3 className="text-lg font-medium mb-4">Kundreskontra</h3>
-          <p className="text-muted-foreground">Ingen information om kundreskontra tillgänglig.</p>
-        </div>
+        <TenantLedger ledger={getMockLedgerForCustomer(customerNumber)} />
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <p className="text-slate-500">

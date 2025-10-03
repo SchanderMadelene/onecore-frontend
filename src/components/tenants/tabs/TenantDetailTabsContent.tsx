@@ -5,8 +5,10 @@ import { TenantNotes } from "@/components/tenants/TenantNotes";
 import { TenantOrders } from "@/components/tenants/TenantOrders";
 import { TenantEventLog } from "@/components/tenants/TenantEventLog";
 import { TenantDocuments } from "@/components/tenants/TenantDocuments";
+import { TenantLedger } from "@/components/tenants/TenantLedger";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { StickyNote } from "lucide-react";
+import { getMockLedgerForCustomer } from "@/data/ledger";
 
 interface TenantDetailTabsContentProps {
   contracts: any[];
@@ -71,10 +73,7 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNum
           isEnabled={features.showTenantLedger}
           fallbackMessage="För att se kundreskontra, aktivera funktionen i inställningarna."
         >
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h3 className="text-lg font-medium mb-4">Fakturor & betalningar</h3>
-            <p className="text-muted-foreground">Ingen information om kundreskontra tillgänglig.</p>
-          </div>
+          <TenantLedger ledger={getMockLedgerForCustomer(personalNumber || customerNumber)} />
         </FeatureGatedTabContent>
       </TabsContent>
 
