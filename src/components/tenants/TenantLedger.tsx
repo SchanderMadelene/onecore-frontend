@@ -44,53 +44,57 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
           </div>
 
           {/* Balans och saldon */}
-          <div className="space-y-1 pt-4">
-            <InfoRow 
-              label="Förfallet" 
-              value={formatCurrency(ledger.balances.overdue)}
-              highlight={ledger.balances.overdue > 0}
-            />
-            <InfoRow 
-              label="Inkasso" 
-              value={formatCurrency(ledger.balances.collections)}
-              highlight={ledger.balances.collections > 0}
-            />
-            <InfoRow 
-              label="Överlämnade inkassoärenden" 
-              value={ledger.balances.submittedToCollections}
-              highlight={ledger.balances.submittedToCollections > 0}
-            />
-            <InfoRow 
-              label="Återkallade inkassoärenden" 
-              value={ledger.balances.recalledFromCollections}
-            />
-            <InfoRow 
-              label="Prel. bokad återbetalning" 
-              value={formatCurrency(ledger.balances.preliminaryRefund)}
-            />
-            <InfoRow 
-              label="Antal krav senaste året" 
-              value={ledger.statistics.demandsLastYear}
-              highlight={ledger.statistics.demandsLastYear > 0}
-            />
-            <InfoRow 
-              label="Medelvärde antal dagar för sent betalt" 
-              value={formatCurrency(ledger.statistics.averageDaysLate)}
-              highlight={ledger.statistics.averageDaysLate > 0}
-            />
-            <InfoRow 
-              label="Deposition" 
-              value={formatCurrency(ledger.balances.deposit)}
-            />
-            <InfoRow 
-              label="Tillgodo" 
-              value={formatCurrency(ledger.balances.credit)}
-            />
-            <InfoRow 
-              label="Felaktig inbetalning" 
-              value={formatCurrency(ledger.balances.incorrectPayment)}
-              highlight={ledger.balances.incorrectPayment > 0}
-            />
+          <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8">
+            <div className="space-y-1">
+              <InfoRow 
+                label="Förfallet" 
+                value={formatCurrency(ledger.balances.overdue)}
+                highlight={ledger.balances.overdue > 0}
+              />
+              <InfoRow 
+                label="Inkasso" 
+                value={formatCurrency(ledger.balances.collections)}
+                highlight={ledger.balances.collections > 0}
+              />
+              <InfoRow 
+                label="Överlämnade inkassoärenden" 
+                value={ledger.balances.submittedToCollections}
+                highlight={ledger.balances.submittedToCollections > 0}
+              />
+              <InfoRow 
+                label="Återkallade inkassoärenden" 
+                value={ledger.balances.recalledFromCollections}
+              />
+              <InfoRow 
+                label="Prel. bokad återbetalning" 
+                value={formatCurrency(ledger.balances.preliminaryRefund)}
+              />
+            </div>
+            <div className="space-y-1">
+              <InfoRow 
+                label="Antal krav senaste året" 
+                value={ledger.statistics.demandsLastYear}
+                highlight={ledger.statistics.demandsLastYear > 0}
+              />
+              <InfoRow 
+                label="Medelvärde antal dagar för sent betalt" 
+                value={formatCurrency(ledger.statistics.averageDaysLate)}
+                highlight={ledger.statistics.averageDaysLate > 0}
+              />
+              <InfoRow 
+                label="Deposition" 
+                value={formatCurrency(ledger.balances.deposit)}
+              />
+              <InfoRow 
+                label="Tillgodo" 
+                value={formatCurrency(ledger.balances.credit)}
+              />
+              <InfoRow 
+                label="Felaktig inbetalning" 
+                value={formatCurrency(ledger.balances.incorrectPayment)}
+                highlight={ledger.balances.incorrectPayment > 0}
+              />
+            </div>
           </div>
 
           {/* Varningsmeddelande om det finns problem */}
