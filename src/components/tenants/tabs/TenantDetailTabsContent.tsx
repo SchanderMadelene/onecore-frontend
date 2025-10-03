@@ -9,6 +9,7 @@ import { TenantLedger } from "@/components/tenants/TenantLedger";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { StickyNote } from "lucide-react";
 import { getMockLedgerForCustomer } from "@/data/ledger";
+import { getMockInvoicesForCustomer } from "@/data/invoices";
 
 interface TenantDetailTabsContentProps {
   contracts: any[];
@@ -73,7 +74,10 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNum
           isEnabled={features.showTenantLedger}
           fallbackMessage="För att se kundreskontra, aktivera funktionen i inställningarna."
         >
-          <TenantLedger ledger={getMockLedgerForCustomer(personalNumber || customerNumber)} />
+          <TenantLedger 
+            ledger={getMockLedgerForCustomer(personalNumber || customerNumber)} 
+            invoices={getMockInvoicesForCustomer(personalNumber || customerNumber)}
+          />
         </FeatureGatedTabContent>
       </TabsContent>
 
