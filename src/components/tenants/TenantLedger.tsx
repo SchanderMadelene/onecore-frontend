@@ -15,8 +15,8 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
   };
 
   const getInvoiceMethod = () => {
+    if (ledger.autogiro.active) return "Autogiro";
     if (ledger.invoiceSettings.eInvoice) return "E-faktura";
-    if (ledger.invoiceSettings.smsInvoice) return "SMS-faktura";
     if (ledger.invoiceSettings.emailInvoice) return "E-postfaktura";
     return "Pappersfaktura";
   };
