@@ -35,12 +35,8 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
           <CardTitle className="text-lg">Kundreskontra</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Autogiro och faktureringsinställningar */}
+          {/* Faktureringsinställningar */}
           <div className="space-y-1">
-            <InfoRow 
-              label="Autogiro" 
-              value={ledger.autogiro.status}
-            />
             <InfoRow 
               label="Alternativ för avisering" 
               value={getInvoiceMethod()}
