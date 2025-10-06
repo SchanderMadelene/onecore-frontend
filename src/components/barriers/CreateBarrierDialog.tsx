@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,6 +42,17 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { toast } = useToast();
+
+  // Reset form when dialog closes
+  useEffect(() => {
+    if (!open) {
+      // Delay reset to allow dialog animation to complete
+      const timer = setTimeout(() => {
+        resetForm();
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
 
   // Get available objects
   const availableHousing = getAvailableHousing();
@@ -250,10 +261,7 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
   };
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => {
-      setOpen(isOpen);
-      if (!isOpen) resetForm();
-    }}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
