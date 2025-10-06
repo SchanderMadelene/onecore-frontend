@@ -253,23 +253,38 @@ const BarriersPage = () => {
           </TabsList>
 
           <TabsContent value="all" className="mt-8">
-            <BarriersTable barriers={allBarriers} />
+            <BarriersTable 
+              barriers={allBarriers} 
+              onBarrierUpdated={handleBarrierCreated}
+            />
           </TabsContent>
 
           <TabsContent value="housing" className="mt-8">
-            <BarriersTable barriers={housingBarriers} />
+            <BarriersTable 
+              barriers={housingBarriers} 
+              onBarrierUpdated={handleBarrierCreated}
+            />
           </TabsContent>
 
           <TabsContent value="parking" className="mt-8">
-            <BarriersTable barriers={parkingBarriers} />
+            <BarriersTable 
+              barriers={parkingBarriers} 
+              onBarrierUpdated={handleBarrierCreated}
+            />
           </TabsContent>
 
           <TabsContent value="storage" className="mt-8">
-            <BarriersTable barriers={storageBarriers} />
+            <BarriersTable 
+              barriers={storageBarriers} 
+              onBarrierUpdated={handleBarrierCreated}
+            />
           </TabsContent>
 
           <TabsContent value="commercial" className="mt-8">
-            <BarriersTable barriers={commercialBarriers} />
+            <BarriersTable 
+              barriers={commercialBarriers} 
+              onBarrierUpdated={handleBarrierCreated}
+            />
           </TabsContent>
         </Tabs>
       </div>
