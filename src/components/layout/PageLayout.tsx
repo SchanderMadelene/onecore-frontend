@@ -22,7 +22,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
       // On desktop, sidebar is always visible
       setIsSidebarOpen(true);
     }
-  }, [location.pathname, setIsSidebarOpen, isMobile]);
+  }, [location.pathname, isMobile]); // Removed setIsSidebarOpen from deps to prevent infinite loop
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
