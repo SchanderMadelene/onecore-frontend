@@ -48,6 +48,12 @@ export function BarriersTable({ barriers }: BarriersTableProps) {
           render: (barrier) => barrier.reason,
         },
         {
+          key: "createdDate",
+          label: "Skapad",
+          render: (barrier) => formatDate(barrier.createdDate),
+          hideOnMobile: true,
+        },
+        {
           key: "startDate",
           label: "Startdatum",
           render: (barrier) => formatDate(barrier.startDate),

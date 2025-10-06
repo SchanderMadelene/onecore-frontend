@@ -15,8 +15,8 @@ import { Plus, Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { createBarrier, getAvailableHousing, getAvailableParkingSpaces } from "@/data/barriers";
-import type { AvailableHousing, AvailableParkingSpace } from "@/data/barriers";
+import { createBarrier, getAvailableHousing, getAvailableParkingSpaces, getAvailableStorage, getAvailableCommercial } from "@/data/barriers";
+import type { AvailableHousing, AvailableParkingSpace, AvailableStorage, AvailableCommercial } from "@/data/barriers";
 
 interface CreateBarrierDialogProps {
   onBarrierCreated?: () => void;
@@ -25,12 +25,14 @@ interface CreateBarrierDialogProps {
 export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogProps) => {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<'single' | 'bulk'>('single');
-  const [type, setType] = useState<'housing' | 'parking'>('housing');
+  const [type, setType] = useState<'housing' | 'parking' | 'storage' | 'commercial'>('housing');
   const [searchQuery, setSearchQuery] = useState('');
   
   // Selected objects
   const [selectedHousing, setSelectedHousing] = useState<AvailableHousing[]>([]);
   const [selectedParkingSpaces, setSelectedParkingSpaces] = useState<AvailableParkingSpace[]>([]);
+  const [selectedStorage, setSelectedStorage] = useState<AvailableStorage[]>([]);
+  const [selectedCommercial, setSelectedCommercial] = useState<AvailableCommercial[]>([]);
   
   // Form data
   const [reason, setReason] = useState('');
@@ -44,6 +46,8 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
   // Get available objects
   const availableHousing = getAvailableHousing();
   const availableParkingSpaces = getAvailableParkingSpaces();
+  const availableStorage = getAvailableStorage();
+  const availableCommercial = getAvailableCommercial();
 
   // Filter objects based on search
   const filteredHousing = availableHousing.filter(housing =>
@@ -56,6 +60,18 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
     parking.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     parking.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
     parking.area.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredStorage = availableStorage.filter(storage =>
+    storage.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    storage.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    storage.location.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredCommercial = availableCommercial.filter(commercial =>
+    commercial.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    commercial.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    commercial.type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const commonReasons = {
@@ -76,10 +92,28 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
       'Ventilation - service',
       'Snöröjning',
       'Övrigt'
+    ],
+    storage: [
+      'Fuktskada - sanering',
+      'Dörr behöver bytas',
+      'Lås behöver bytas',
+      'Elinstallation',
+      'Renovering',
+      'Sanering',
+      'Övrigt'
+    ],
+    commercial: [
+      'Ombyggnad - nya hyresgästen',
+      'Ventilationsarbeten',
+      'Brandskyddskontroll',
+      'Renovering',
+      'Elinstallation',
+      'VVS-arbeten',
+      'Övrigt'
     ]
   };
 
-  const handleObjectToggle = (object: AvailableHousing | AvailableParkingSpace) => {
+  const handleObjectToggle = (object: AvailableHousing | AvailableParkingSpace | AvailableStorage | AvailableCommercial) => {
     if (type === 'housing') {
       const housing = object as AvailableHousing;
       setSelectedHousing(prev => 
@@ -87,12 +121,26 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
           ? prev.filter(h => h.id !== housing.id)
           : [...prev, housing]
       );
-    } else {
+    } else if (type === 'parking') {
       const parking = object as AvailableParkingSpace;
       setSelectedParkingSpaces(prev =>
         prev.find(p => p.id === parking.id)
           ? prev.filter(p => p.id !== parking.id)
           : [...prev, parking]
+      );
+    } else if (type === 'storage') {
+      const storage = object as AvailableStorage;
+      setSelectedStorage(prev =>
+        prev.find(s => s.id === storage.id)
+          ? prev.filter(s => s.id !== storage.id)
+          : [...prev, storage]
+      );
+    } else {
+      const commercial = object as AvailableCommercial;
+      setSelectedCommercial(prev =>
+        prev.find(c => c.id === commercial.id)
+          ? prev.filter(c => c.id !== commercial.id)
+          : [...prev, commercial]
       );
     }
   };
@@ -100,13 +148,20 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
   const handleSelectAll = () => {
     if (type === 'housing') {
       setSelectedHousing(selectedHousing.length === filteredHousing.length ? [] : filteredHousing);
-    } else {
+    } else if (type === 'parking') {
       setSelectedParkingSpaces(selectedParkingSpaces.length === filteredParkingSpaces.length ? [] : filteredParkingSpaces);
+    } else if (type === 'storage') {
+      setSelectedStorage(selectedStorage.length === filteredStorage.length ? [] : filteredStorage);
+    } else {
+      setSelectedCommercial(selectedCommercial.length === filteredCommercial.length ? [] : filteredCommercial);
     }
   };
 
   const getSelectedCount = () => {
-    return type === 'housing' ? selectedHousing.length : selectedParkingSpaces.length;
+    if (type === 'housing') return selectedHousing.length;
+    if (type === 'parking') return selectedParkingSpaces.length;
+    if (type === 'storage') return selectedStorage.length;
+    return selectedCommercial.length;
   };
 
   const resetForm = () => {
@@ -115,6 +170,8 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
     setSearchQuery('');
     setSelectedHousing([]);
     setSelectedParkingSpaces([]);
+    setSelectedStorage([]);
+    setSelectedCommercial([]);
     setReason('');
     setStartDate(new Date());
     setEndDate(undefined);
@@ -133,7 +190,11 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
       return;
     }
 
-    const selectedObjects = type === 'housing' ? selectedHousing : selectedParkingSpaces;
+    let selectedObjects: any[];
+    if (type === 'housing') selectedObjects = selectedHousing;
+    else if (type === 'parking') selectedObjects = selectedParkingSpaces;
+    else if (type === 'storage') selectedObjects = selectedStorage;
+    else selectedObjects = selectedCommercial;
     
     if (selectedObjects.length === 0) {
       toast({
@@ -165,9 +226,13 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
         });
       });
 
+      const typeLabel = type === 'housing' ? 'bostäder' : 
+                        type === 'parking' ? 'bilplatser' :
+                        type === 'storage' ? 'förråd' : 'lokaler';
+
       toast({
         title: "Spärrar skapade",
-        description: `${selectedObjects.length} ${type === 'housing' ? 'bostäder' : 'bilplatser'} har spärrats`
+        description: `${selectedObjects.length} ${typeLabel} har spärrats`
       });
 
       onBarrierCreated?.();
@@ -216,10 +281,12 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
           {/* Object Type Selection */}
           <div className="space-y-2">
             <Label>Objekttyp</Label>
-            <Select value={type} onValueChange={(value: 'housing' | 'parking') => {
+            <Select value={type} onValueChange={(value: 'housing' | 'parking' | 'storage' | 'commercial') => {
               setType(value);
               setSelectedHousing([]);
               setSelectedParkingSpaces([]);
+              setSelectedStorage([]);
+              setSelectedCommercial([]);
             }}>
               <SelectTrigger>
                 <SelectValue />
@@ -227,6 +294,8 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
               <SelectContent>
                 <SelectItem value="housing">Bostäder</SelectItem>
                 <SelectItem value="parking">Bilplatser</SelectItem>
+                <SelectItem value="storage">Förråd</SelectItem>
+                <SelectItem value="commercial">Lokaler</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -235,7 +304,7 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <Label className="text-base font-medium">
-                Sök {type === 'housing' ? 'bostäder' : 'bilplatser'}
+                Sök {type === 'housing' ? 'bostäder' : type === 'parking' ? 'bilplatser' : type === 'storage' ? 'förråd' : 'lokaler'}
               </Label>
               {mode === 'bulk' && (
                 <Button 
@@ -250,7 +319,12 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
             </div>
             
             <Input
-              placeholder={`Sök ${type === 'housing' ? 'lägenhet, adress eller kod' : 'bilplats, adress eller område'}...`}
+              placeholder={`Sök ${
+                type === 'housing' ? 'lägenhet, adress eller kod' : 
+                type === 'parking' ? 'bilplats, adress eller område' :
+                type === 'storage' ? 'förråd, adress eller plats' :
+                'lokal, adress eller typ'
+              }...`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -284,7 +358,7 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
                     </CardContent>
                   </Card>
                 ))
-              ) : (
+              ) : type === 'parking' ? (
                 filteredParkingSpaces.map((parking) => (
                   <Card 
                     key={parking.id}
@@ -311,12 +385,70 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
                     </CardContent>
                   </Card>
                 ))
+              ) : type === 'storage' ? (
+                filteredStorage.map((storage) => (
+                  <Card 
+                    key={storage.id}
+                    className={cn(
+                      "cursor-pointer transition-colors",
+                      selectedStorage.find(s => s.id === storage.id) && "border-primary bg-primary/5"
+                    )}
+                    onClick={() => handleObjectToggle(storage)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          checked={selectedStorage.find(s => s.id === storage.id) !== undefined}
+                          onChange={() => {}}
+                        />
+                        <div className="flex-1">
+                          <div className="font-medium">{storage.name}</div>
+                          <div className="text-sm text-muted-foreground">{storage.address}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {storage.size} m² • {storage.location} • {storage.rent} kr/mån
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                filteredCommercial.map((commercial) => (
+                  <Card 
+                    key={commercial.id}
+                    className={cn(
+                      "cursor-pointer transition-colors",
+                      selectedCommercial.find(c => c.id === commercial.id) && "border-primary bg-primary/5"
+                    )}
+                    onClick={() => handleObjectToggle(commercial)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          checked={selectedCommercial.find(c => c.id === commercial.id) !== undefined}
+                          onChange={() => {}}
+                        />
+                        <div className="flex-1">
+                          <div className="font-medium">{commercial.name}</div>
+                          <div className="text-sm text-muted-foreground">{commercial.address}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {commercial.size} m² • {commercial.type} • {commercial.rent} kr/mån
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
               )}
             </div>
 
             {getSelectedCount() > 0 && (
               <div className="text-sm text-muted-foreground">
-                {getSelectedCount()} {type === 'housing' ? 'bostäder' : 'bilplatser'} valda
+                {getSelectedCount()} {
+                  type === 'housing' ? 'bostäder' : 
+                  type === 'parking' ? 'bilplatser' :
+                  type === 'storage' ? 'förråd' : 'lokaler'
+                } valda
               </div>
             )}
           </div>
