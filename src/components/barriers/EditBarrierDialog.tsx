@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,14 +40,14 @@ export function EditBarrierDialog({
   const [notes, setNotes] = useState(barrier?.notes || '');
 
   // Reset form when barrier changes
-  useState(() => {
+  useEffect(() => {
     if (barrier) {
       setReason(barrier.reason);
       setStartDate(barrier.startDate ? new Date(barrier.startDate) : undefined);
       setEndDate(barrier.endDate ? new Date(barrier.endDate) : undefined);
       setNotes(barrier.notes || '');
     }
-  });
+  }, [barrier]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
