@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 
 interface KeyData {
   id: string;
@@ -73,23 +72,6 @@ const mockKeys: KeyData[] = [
   },
 ];
 
-const getKeyTypeBadgeVariant = (keyType: string) => {
-  switch (keyType) {
-    case "Bostad":
-      return "default";
-    case "Drop/tagg":
-      return "secondary";
-    case "Postbox":
-      return "outline";
-    case "Garage":
-      return "secondary";
-    case "Förråd":
-      return "outline";
-    default:
-      return "default";
-  }
-};
-
 export const TenantKeys = () => {
   return (
     <Card>
@@ -114,9 +96,7 @@ export const TenantKeys = () => {
               {mockKeys.map((key) => (
                 <TableRow key={key.id}>
                   <TableCell>
-                    <Badge variant={getKeyTypeBadgeVariant(key.keyType)}>
-                      {key.keyType}
-                    </Badge>
+                    {key.keyType}
                   </TableCell>
                   <TableCell className="font-medium">{key.keyName}</TableCell>
                   <TableCell>{key.flexNumber}</TableCell>
