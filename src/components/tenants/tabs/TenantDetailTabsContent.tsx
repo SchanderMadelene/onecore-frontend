@@ -6,6 +6,7 @@ import { TenantOrders } from "@/components/tenants/TenantOrders";
 import { TenantEventLog } from "@/components/tenants/TenantEventLog";
 import { TenantDocuments } from "@/components/tenants/TenantDocuments";
 import { TenantLedger } from "@/components/tenants/TenantLedger";
+import { TenantKeys } from "@/components/tenants/TenantKeys";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { StickyNote } from "lucide-react";
 import { getMockLedgerForCustomer } from "@/data/ledger";
@@ -95,10 +96,7 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNum
           isEnabled={features.showTenantKeys}
           fallbackMessage="För att se nycklar, aktivera funktionen i inställningarna."
         >
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-            <h3 className="text-lg font-medium mb-4">Nycklar</h3>
-            <p className="text-muted-foreground">Inga nycklar registrerade för denna kund.</p>
-          </div>
+          <TenantKeys />
         </FeatureGatedTabContent>
       </TabsContent>
 

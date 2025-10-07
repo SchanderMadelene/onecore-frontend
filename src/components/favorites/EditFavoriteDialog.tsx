@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -36,14 +36,14 @@ export function EditFavoriteDialog({
   const [parameters, setParameters] = useState(favorite?.parameters || {});
 
   // Update state when favorite changes
-  useState(() => {
+  useEffect(() => {
     if (favorite) {
       setName(favorite.name);
       setDescription(favorite.description || "");
       setVisibility(favorite.visibility);
       setParameters(favorite.parameters);
     }
-  });
+  }, [favorite]);
 
   const handleSave = () => {
     if (!favorite) return;

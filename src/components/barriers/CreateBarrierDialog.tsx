@@ -1,11 +1,9 @@
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useState, useEffect, useRef } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { FormWrapper } from "@/components/ui/form-wrapper";
@@ -15,8 +13,8 @@ import { Plus, Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { createBarrier, getAvailableHousing, getAvailableParkingSpaces, getAvailableStorage, getAvailableCommercial } from "@/data/barriers";
-import type { AvailableHousing, AvailableParkingSpace, AvailableStorage, AvailableCommercial } from "@/data/barriers";
+import { createBarrier, getAvailableHousing } from "@/data/barriers";
+import type { AvailableHousing } from "@/data/barriers";
 
 interface CreateBarrierDialogProps {
   onBarrierCreated?: () => void;
@@ -24,15 +22,8 @@ interface CreateBarrierDialogProps {
 
 export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogProps) => {
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<'single' | 'bulk'>('single');
-  const [type, setType] = useState<'housing' | 'parking' | 'storage' | 'commercial'>('housing');
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Selected objects
   const [selectedHousing, setSelectedHousing] = useState<AvailableHousing[]>([]);
-  const [selectedParkingSpaces, setSelectedParkingSpaces] = useState<AvailableParkingSpace[]>([]);
-  const [selectedStorage, setSelectedStorage] = useState<AvailableStorage[]>([]);
-  const [selectedCommercial, setSelectedCommercial] = useState<AvailableCommercial[]>([]);
   
   // Form data
   const [reason, setReason] = useState('');
@@ -43,11 +34,20 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
 
   const { toast } = useToast();
 
+  // Reset form when dialog closes (only when transitioning from open -> closed)
+  const wasOpen = useRef(false);
+  useEffect(() => {
+    if (wasOpen.current && !open) {
+      const timer = setTimeout(() => {
+        resetForm();
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+    wasOpen.current = open;
+  }, [open]);
+
   // Get available objects
   const availableHousing = getAvailableHousing();
-  const availableParkingSpaces = getAvailableParkingSpaces();
-  const availableStorage = getAvailableStorage();
-  const availableCommercial = getAvailableCommercial();
 
   // Filter objects based on search
   const filteredHousing = availableHousing.filter(housing =>
@@ -56,122 +56,17 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
     housing.code.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredParkingSpaces = availableParkingSpaces.filter(parking =>
-    parking.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    parking.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    parking.area.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const filteredStorage = availableStorage.filter(storage =>
-    storage.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    storage.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    storage.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const filteredCommercial = availableCommercial.filter(commercial =>
-    commercial.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    commercial.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    commercial.type.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const commonReasons = {
-    housing: [
-      'Vattenskada - renovering pågår',
-      'Brandskada',
-      'Asbetsanering',
-      'Fuktsanering',
-      'Renovering',
-      'Teknisk undersökning',
-      'Övrigt'
-    ],
-    parking: [
-      'Markarbeten - schakt för fiber',
-      'Asfaltskador',
-      'Takläckage - reparation',
-      'Elkabel - underhåll',
-      'Ventilation - service',
-      'Snöröjning',
-      'Övrigt'
-    ],
-    storage: [
-      'Fuktskada - sanering',
-      'Dörr behöver bytas',
-      'Lås behöver bytas',
-      'Elinstallation',
-      'Renovering',
-      'Sanering',
-      'Övrigt'
-    ],
-    commercial: [
-      'Ombyggnad - nya hyresgästen',
-      'Ventilationsarbeten',
-      'Brandskyddskontroll',
-      'Renovering',
-      'Elinstallation',
-      'VVS-arbeten',
-      'Övrigt'
-    ]
-  };
-
-  const handleObjectToggle = (object: AvailableHousing | AvailableParkingSpace | AvailableStorage | AvailableCommercial) => {
-    if (type === 'housing') {
-      const housing = object as AvailableHousing;
-      setSelectedHousing(prev => 
-        prev.find(h => h.id === housing.id)
-          ? prev.filter(h => h.id !== housing.id)
-          : [...prev, housing]
-      );
-    } else if (type === 'parking') {
-      const parking = object as AvailableParkingSpace;
-      setSelectedParkingSpaces(prev =>
-        prev.find(p => p.id === parking.id)
-          ? prev.filter(p => p.id !== parking.id)
-          : [...prev, parking]
-      );
-    } else if (type === 'storage') {
-      const storage = object as AvailableStorage;
-      setSelectedStorage(prev =>
-        prev.find(s => s.id === storage.id)
-          ? prev.filter(s => s.id !== storage.id)
-          : [...prev, storage]
-      );
-    } else {
-      const commercial = object as AvailableCommercial;
-      setSelectedCommercial(prev =>
-        prev.find(c => c.id === commercial.id)
-          ? prev.filter(c => c.id !== commercial.id)
-          : [...prev, commercial]
-      );
-    }
-  };
-
-  const handleSelectAll = () => {
-    if (type === 'housing') {
-      setSelectedHousing(selectedHousing.length === filteredHousing.length ? [] : filteredHousing);
-    } else if (type === 'parking') {
-      setSelectedParkingSpaces(selectedParkingSpaces.length === filteredParkingSpaces.length ? [] : filteredParkingSpaces);
-    } else if (type === 'storage') {
-      setSelectedStorage(selectedStorage.length === filteredStorage.length ? [] : filteredStorage);
-    } else {
-      setSelectedCommercial(selectedCommercial.length === filteredCommercial.length ? [] : filteredCommercial);
-    }
-  };
-
-  const getSelectedCount = () => {
-    if (type === 'housing') return selectedHousing.length;
-    if (type === 'parking') return selectedParkingSpaces.length;
-    if (type === 'storage') return selectedStorage.length;
-    return selectedCommercial.length;
+  const handleObjectToggle = (housing: AvailableHousing) => {
+    setSelectedHousing(prev => 
+      prev.find(h => h.id === housing.id)
+        ? prev.filter(h => h.id !== housing.id)
+        : [...prev, housing]
+    );
   };
 
   const resetForm = () => {
-    setMode('single');
-    setType('housing');
     setSearchQuery('');
     setSelectedHousing([]);
-    setSelectedParkingSpaces([]);
-    setSelectedStorage([]);
-    setSelectedCommercial([]);
     setReason('');
     setStartDate(new Date());
     setEndDate(undefined);
@@ -189,17 +84,11 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
       });
       return;
     }
-
-    let selectedObjects: any[];
-    if (type === 'housing') selectedObjects = selectedHousing;
-    else if (type === 'parking') selectedObjects = selectedParkingSpaces;
-    else if (type === 'storage') selectedObjects = selectedStorage;
-    else selectedObjects = selectedCommercial;
     
-    if (selectedObjects.length === 0) {
+    if (selectedHousing.length === 0) {
       toast({
         title: "Fel",
-        description: "Minst ett objekt måste väljas",
+        description: "Minst en bostad måste väljas",
         variant: "destructive"
       });
       return;
@@ -208,16 +97,14 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
     setIsSubmitting(true);
 
     try {
-      // Create barriers for all selected objects
-      selectedObjects.forEach(obj => {
-        const objectName = type === 'housing' 
-          ? `${obj.address.split(',')[0]}, ${obj.name}`
-          : obj.name;
+      // Create barriers for all selected housing
+      selectedHousing.forEach(housing => {
+        const objectName = `${housing.address.split(',')[0]}, ${housing.name}`;
 
         createBarrier({
-          type,
+          type: 'housing',
           object: objectName,
-          address: obj.address,
+          address: housing.address,
           reason,
           startDate: format(startDate, 'yyyy-MM-dd'),
           endDate: endDate ? format(endDate, 'yyyy-MM-dd') : undefined,
@@ -226,13 +113,9 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
         });
       });
 
-      const typeLabel = type === 'housing' ? 'bostäder' : 
-                        type === 'parking' ? 'bilplatser' :
-                        type === 'storage' ? 'förråd' : 'lokaler';
-
       toast({
         title: "Spärrar skapade",
-        description: `${selectedObjects.length} ${typeLabel} har spärrats`
+        description: `${selectedHousing.length} bostäder har spärrats`
       });
 
       onBarrierCreated?.();
@@ -250,10 +133,7 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
   };
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => {
-      setOpen(isOpen);
-      if (!isOpen) resetForm();
-    }}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
@@ -264,191 +144,54 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
       <DialogContent className="max-w-4xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle>Skapa ny spärr</DialogTitle>
+          <DialogDescription>Välj bostäder, ange detaljer och spara spärren.</DialogDescription>
         </DialogHeader>
 
         <FormWrapper onSubmit={handleSubmit} maxHeight="75vh">
-          {/* Mode Selection */}
+          {/* Search Housing */}
           <div className="space-y-4">
-            <Label className="text-base font-medium">Typ av spärr</Label>
-            <Tabs value={mode} onValueChange={(value) => setMode(value as 'single' | 'bulk')}>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="single">Enkel spärr</TabsTrigger>
-                <TabsTrigger value="bulk">Flera spärrar</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-
-          {/* Object Type Selection */}
-          <div className="space-y-2">
-            <Label>Objekttyp</Label>
-            <Select value={type} onValueChange={(value: 'housing' | 'parking' | 'storage' | 'commercial') => {
-              setType(value);
-              setSelectedHousing([]);
-              setSelectedParkingSpaces([]);
-              setSelectedStorage([]);
-              setSelectedCommercial([]);
-            }}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="housing">Bostäder</SelectItem>
-                <SelectItem value="parking">Bilplatser</SelectItem>
-                <SelectItem value="storage">Förråd</SelectItem>
-                <SelectItem value="commercial">Lokaler</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Search Objects */}
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <Label className="text-base font-medium">
-                Sök {type === 'housing' ? 'bostäder' : type === 'parking' ? 'bilplatser' : type === 'storage' ? 'förråd' : 'lokaler'}
-              </Label>
-              {mode === 'bulk' && (
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="sm"
-                  onClick={handleSelectAll}
-                >
-                  {getSelectedCount() > 0 ? 'Avmarkera alla' : 'Markera alla'}
-                </Button>
-              )}
-            </div>
+            <Label className="text-base font-medium">Välj bostäder</Label>
             
             <Input
-              placeholder={`Sök ${
-                type === 'housing' ? 'lägenhet, adress eller kod' : 
-                type === 'parking' ? 'bilplats, adress eller område' :
-                type === 'storage' ? 'förråd, adress eller plats' :
-                'lokal, adress eller typ'
-              }...`}
+              placeholder="Sök lägenhet, adress eller kod..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
 
-            {/* Object List */}
+            {/* Housing List */}
             <div className="max-h-60 overflow-y-auto space-y-2">
-              {type === 'housing' ? (
-                filteredHousing.map((housing) => (
-                  <Card 
-                    key={housing.id} 
-                    className={cn(
-                      "cursor-pointer transition-colors",
-                      selectedHousing.find(h => h.id === housing.id) && "border-primary bg-primary/5"
-                    )}
-                    onClick={() => handleObjectToggle(housing)}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          checked={selectedHousing.find(h => h.id === housing.id) !== undefined}
-                          onChange={() => {}}
-                        />
-                        <div className="flex-1">
-                          <div className="font-medium">{housing.name}</div>
-                          <div className="text-sm text-muted-foreground">{housing.address}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {housing.size && `${housing.size} m² • `}{housing.rent} kr/mån • {housing.code}
-                          </div>
+              {filteredHousing.map((housing) => (
+                <Card 
+                  key={housing.id} 
+                  className={cn(
+                    "cursor-pointer transition-colors",
+                    selectedHousing.find(h => h.id === housing.id) && "border-primary bg-primary/5"
+                  )}
+                  onClick={() => handleObjectToggle(housing)}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={selectedHousing.find(h => h.id === housing.id) !== undefined}
+                        onCheckedChange={() => handleObjectToggle(housing)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      <div className="flex-1">
+                        <div className="font-medium">{housing.name}</div>
+                        <div className="text-sm text-muted-foreground">{housing.address}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {housing.size && `${housing.size} m² • `}{housing.rent} kr/mån • {housing.code}
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))
-              ) : type === 'parking' ? (
-                filteredParkingSpaces.map((parking) => (
-                  <Card 
-                    key={parking.id}
-                    className={cn(
-                      "cursor-pointer transition-colors",
-                      selectedParkingSpaces.find(p => p.id === parking.id) && "border-primary bg-primary/5"
-                    )}
-                    onClick={() => handleObjectToggle(parking)}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          checked={selectedParkingSpaces.find(p => p.id === parking.id) !== undefined}
-                          onChange={() => {}}
-                        />
-                        <div className="flex-1">
-                          <div className="font-medium">{parking.name}</div>
-                          <div className="text-sm text-muted-foreground">{parking.address}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {parking.area} • {parking.type} • {parking.rent} kr/mån
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              ) : type === 'storage' ? (
-                filteredStorage.map((storage) => (
-                  <Card 
-                    key={storage.id}
-                    className={cn(
-                      "cursor-pointer transition-colors",
-                      selectedStorage.find(s => s.id === storage.id) && "border-primary bg-primary/5"
-                    )}
-                    onClick={() => handleObjectToggle(storage)}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          checked={selectedStorage.find(s => s.id === storage.id) !== undefined}
-                          onChange={() => {}}
-                        />
-                        <div className="flex-1">
-                          <div className="font-medium">{storage.name}</div>
-                          <div className="text-sm text-muted-foreground">{storage.address}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {storage.size} m² • {storage.location} • {storage.rent} kr/mån
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              ) : (
-                filteredCommercial.map((commercial) => (
-                  <Card 
-                    key={commercial.id}
-                    className={cn(
-                      "cursor-pointer transition-colors",
-                      selectedCommercial.find(c => c.id === commercial.id) && "border-primary bg-primary/5"
-                    )}
-                    onClick={() => handleObjectToggle(commercial)}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          checked={selectedCommercial.find(c => c.id === commercial.id) !== undefined}
-                          onChange={() => {}}
-                        />
-                        <div className="flex-1">
-                          <div className="font-medium">{commercial.name}</div>
-                          <div className="text-sm text-muted-foreground">{commercial.address}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {commercial.size} m² • {commercial.type} • {commercial.rent} kr/mån
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
 
-            {getSelectedCount() > 0 && (
+            {selectedHousing.length > 0 && (
               <div className="text-sm text-muted-foreground">
-                {getSelectedCount()} {
-                  type === 'housing' ? 'bostäder' : 
-                  type === 'parking' ? 'bilplatser' :
-                  type === 'storage' ? 'förråd' : 'lokaler'
-                } valda
+                {selectedHousing.length} bostäder valda
               </div>
             )}
           </div>
@@ -459,18 +202,11 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
             
             <div className="space-y-2">
               <Label>Anledning</Label>
-              <Select value={reason} onValueChange={setReason}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Välj anledning" />
-                </SelectTrigger>
-                <SelectContent>
-                  {commonReasons[type].map((reasonOption) => (
-                    <SelectItem key={reasonOption} value={reasonOption}>
-                      {reasonOption}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                placeholder="Ange anledning för spärren..."
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -554,10 +290,10 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
             </Button>
             <Button 
               type="submit" 
-              disabled={getSelectedCount() === 0 || !reason || !startDate || isSubmitting}
+              disabled={selectedHousing.length === 0 || !reason || !startDate || isSubmitting}
               className="flex-1"
             >
-              {isSubmitting ? "Skapar..." : `Skapa ${getSelectedCount() > 1 ? `${getSelectedCount()} spärrar` : 'spärr'}`}
+              {isSubmitting ? "Skapar..." : `Skapa ${selectedHousing.length > 1 ? `${selectedHousing.length} spärrar` : 'spärr'}`}
             </Button>
           </div>
         </FormWrapper>

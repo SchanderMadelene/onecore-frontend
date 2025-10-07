@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Eye, ChevronUp, ChevronDown, Calendar as CalendarIcon } from "lucide-react";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Eye, ChevronUp, ChevronDown, Calendar as CalendarIcon, ChevronsUpDown, Check, X } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -192,6 +193,72 @@ export default function AllInspectionsPage() {
   const [selectedInspection, setSelectedInspection] = useState<ExtendedInspection | null>(null);
   const [sortField, setSortField] = useState<SortField>('terminationDate');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  
+  // Filter states
+  const [selectedInspector, setSelectedInspector] = useState<string>('');
+  const [selectedAddress, setSelectedAddress] = useState<string>('');
+  const [selectedDistrict, setSelectedDistrict] = useState<string>('');
+  const [selectedPriority, setSelectedPriority] = useState<string>('');
+  const [openInspectorDropdown, setOpenInspectorDropdown] = useState(false);
+  const [openAddressDropdown, setOpenAddressDropdown] = useState(false);
+  const [openDistrictDropdown, setOpenDistrictDropdown] = useState(false);
+  const [openPriorityDropdown, setOpenPriorityDropdown] = useState(false);
+  
+  // Extract unique values for dropdowns
+  const uniqueInspectors = useMemo(() => {
+    const inspectors = new Set<string>();
+    inspections.forEach(i => {
+      if (i.inspectedBy) inspectors.add(i.inspectedBy);
+      if (i.assignedInspector) inspectors.add(i.assignedInspector);
+    });
+    return Array.from(inspectors).sort();
+  }, [inspections]);
+
+  const uniqueAddresses = useMemo(() => {
+    const addresses = new Set(inspections.map(i => i.address || '').filter(Boolean));
+    return Array.from(addresses).sort();
+  }, [inspections]);
+
+  const uniqueDistricts = useMemo(() => {
+    const districts = new Set(inspections.map(i => i.district || '').filter(Boolean));
+    return Array.from(districts).sort();
+  }, [inspections]);
+
+  const priorityOptions = [
+    { value: 'avflytt', label: 'Avflytt' },
+    { value: 'inflytt', label: 'Inflytt' }
+  ];
+  
+  // Filter function
+  const filterInspections = (inspectionsList: ExtendedInspection[]) => {
+    let filtered = [...inspectionsList];
+    
+    if (selectedInspector) {
+      filtered = filtered.filter(i => 
+        i.inspectedBy === selectedInspector || i.assignedInspector === selectedInspector
+      );
+    }
+    if (selectedAddress) {
+      filtered = filtered.filter(i => i.address === selectedAddress);
+    }
+    if (selectedDistrict) {
+      filtered = filtered.filter(i => i.district === selectedDistrict);
+    }
+    if (selectedPriority) {
+      filtered = filtered.filter(i => i.priority === selectedPriority);
+    }
+    
+    return filtered;
+  };
+
+  const clearFilters = () => {
+    setSelectedInspector('');
+    setSelectedAddress('');
+    setSelectedDistrict('');
+    setSelectedPriority('');
+  };
+
+  const hasActiveFilters = selectedInspector || selectedAddress || selectedDistrict || selectedPriority;
 
   const handleViewInspection = (inspection: ExtendedInspection) => {
     setSelectedInspection(inspection);
@@ -366,10 +433,10 @@ export default function AllInspectionsPage() {
     return Object.keys(inspection.rooms).length;
   };
 
-  // Filter inspections by category
-  const ongoingInspections = sortInspections(inspections.filter(inspection => !inspection.isCompleted));
-  const myInspections = inspections.filter(inspection => inspection.inspectedBy === CURRENT_USER);
-  const completedInspections = inspections.filter(inspection => inspection.isCompleted);
+  // Filter inspections by category and apply filters
+  const ongoingInspections = sortInspections(filterInspections(inspections.filter(inspection => !inspection.isCompleted)));
+  const myInspections = filterInspections(inspections.filter(inspection => inspection.inspectedBy === CURRENT_USER));
+  const completedInspections = filterInspections(inspections.filter(inspection => inspection.isCompleted));
 
   console.log("All inspections:", inspections.length);
   console.log("Ongoing inspections:", ongoingInspections.length);
@@ -563,6 +630,190 @@ export default function AllInspectionsPage() {
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
         <InspectionsHeader />
+
+        {/* Filters */}
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Inspector Filter */}
+            <Popover open={openInspectorDropdown} onOpenChange={setOpenInspectorDropdown}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openInspectorDropdown}
+                  className="w-full sm:w-[250px] justify-between"
+                >
+                  {selectedInspector ? selectedInspector : "Välj besiktningsman..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-0 bg-background z-50" align="start">
+                <Command>
+                  <CommandInput placeholder="Sök besiktningsman..." />
+                  <CommandList>
+                    <CommandEmpty>Ingen besiktningsman hittades.</CommandEmpty>
+                    <CommandGroup>
+                      {uniqueInspectors.map((inspector) => (
+                        <CommandItem
+                          key={inspector}
+                          value={inspector}
+                          onSelect={() => {
+                            setSelectedInspector(selectedInspector === inspector ? '' : inspector);
+                            setOpenInspectorDropdown(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedInspector === inspector ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {inspector}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {/* Address Filter */}
+            <Popover open={openAddressDropdown} onOpenChange={setOpenAddressDropdown}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openAddressDropdown}
+                  className="w-full sm:w-[250px] justify-between"
+                >
+                  {selectedAddress ? selectedAddress : "Välj adress..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-0 bg-background z-50" align="start">
+                <Command>
+                  <CommandInput placeholder="Sök adress..." />
+                  <CommandList>
+                    <CommandEmpty>Ingen adress hittades.</CommandEmpty>
+                    <CommandGroup>
+                      {uniqueAddresses.map((address) => (
+                        <CommandItem
+                          key={address}
+                          value={address}
+                          onSelect={() => {
+                            setSelectedAddress(selectedAddress === address ? '' : address);
+                            setOpenAddressDropdown(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedAddress === address ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {address}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {/* District Filter */}
+            <Popover open={openDistrictDropdown} onOpenChange={setOpenDistrictDropdown}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openDistrictDropdown}
+                  className="w-full sm:w-[250px] justify-between"
+                >
+                  {selectedDistrict ? selectedDistrict : "Välj distrikt..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-0 bg-background z-50" align="start">
+                <Command>
+                  <CommandInput placeholder="Sök distrikt..." />
+                  <CommandList>
+                    <CommandEmpty>Inget distrikt hittades.</CommandEmpty>
+                    <CommandGroup>
+                      {uniqueDistricts.map((district) => (
+                        <CommandItem
+                          key={district}
+                          value={district}
+                          onSelect={() => {
+                            setSelectedDistrict(selectedDistrict === district ? '' : district);
+                            setOpenDistrictDropdown(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedDistrict === district ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {district}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {/* Priority Filter */}
+            <Popover open={openPriorityDropdown} onOpenChange={setOpenPriorityDropdown}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openPriorityDropdown}
+                  className="w-full sm:w-[250px] justify-between"
+                >
+                  {selectedPriority ? priorityOptions.find(p => p.value === selectedPriority)?.label : "Välj prioritet..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-0 bg-background z-50" align="start">
+                <Command>
+                  <CommandInput placeholder="Sök prioritet..." />
+                  <CommandList>
+                    <CommandEmpty>Ingen prioritet hittades.</CommandEmpty>
+                    <CommandGroup>
+                      {priorityOptions.map((option) => (
+                        <CommandItem
+                          key={option.value}
+                          value={option.value}
+                          onSelect={() => {
+                            setSelectedPriority(selectedPriority === option.value ? '' : option.value);
+                            setOpenPriorityDropdown(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              selectedPriority === option.value ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {option.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" onClick={clearFilters}>
+                <X className="h-4 w-4 mr-2" />
+                Rensa filter
+              </Button>
+            )}
+          </div>
+        </div>
 
         <Tabs defaultValue="ongoing" className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
