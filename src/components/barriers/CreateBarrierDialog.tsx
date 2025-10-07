@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,15 +34,16 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
 
   const { toast } = useToast();
 
-  // Reset form when dialog closes
+  // Reset form when dialog closes (only when transitioning from open -> closed)
+  const wasOpen = useRef(false);
   useEffect(() => {
-    if (!open) {
-      // Delay reset to allow dialog animation to complete
+    if (wasOpen.current && !open) {
       const timer = setTimeout(() => {
         resetForm();
       }, 150);
       return () => clearTimeout(timer);
     }
+    wasOpen.current = open;
   }, [open]);
 
   // Get available objects
@@ -143,6 +144,7 @@ export const CreateBarrierDialog = ({ onBarrierCreated }: CreateBarrierDialogPro
       <DialogContent className="max-w-4xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle>Skapa ny spärr</DialogTitle>
+          <DialogDescription>Välj bostäder, ange detaljer och spara spärren.</DialogDescription>
         </DialogHeader>
 
         <FormWrapper onSubmit={handleSubmit} maxHeight="75vh">
