@@ -56,7 +56,7 @@ const activeOrdersMock: Order[] = [
     residenceId: "lgh-001",
     type: "Odoo"
   },
-  // Building-level orders for Bellmansgatan 1a-2c
+  // Building-level orders for Bellmansgatan 1a-2c (Building ID: B1)
   {
     id: "bd-001",
     title: "Trapphus - Belysning",
@@ -66,7 +66,7 @@ const activeOrdersMock: Order[] = [
     description: "Flera lampor i trapphuset är trasiga, mörkt på kvällarna",
     assignedTo: "Erik Svensson",
     category: "Belysning",
-    residenceId: "bellmansgatan-1a-2c",
+    residenceId: "B1",
     type: "Odoo"
   },
   {
@@ -78,7 +78,7 @@ const activeOrdersMock: Order[] = [
     description: "Porttelefonen på entré A är ur funktion",
     assignedTo: "Anna Petersson",
     category: "El",
-    residenceId: "bellmansgatan-1a-2c",
+    residenceId: "B1",
     type: "Xpand"
   },
   {
@@ -90,10 +90,10 @@ const activeOrdersMock: Order[] = [
     description: "Vattenläckage i källarförråd efter kraftigt regn",
     assignedTo: "Magnus Lindberg",
     category: "VVS",
-    residenceId: "bellmansgatan-1a-2c",
+    residenceId: "B1",
     type: "Odoo"
   },
-  // Property-level orders for Älgen 1
+  // Property-level orders for Älgen 1 (Property ID: 1)
   {
     id: "pr-001",
     title: "Gårdsmiljö - Sophantering",
@@ -103,7 +103,7 @@ const activeOrdersMock: Order[] = [
     description: "Sopkärl behöver bytas ut, trasiga lock",
     assignedTo: "Johan Andersson",
     category: "Utemiljö",
-    residenceId: "algen-1",
+    residenceId: "1",
     type: "Odoo"
   },
   {
@@ -115,7 +115,7 @@ const activeOrdersMock: Order[] = [
     description: "Mindre sprickor i fasaden behöver lagas",
     assignedTo: "Erik Svensson",
     category: "Fasad",
-    residenceId: "algen-1",
+    residenceId: "1",
     type: "Xpand"
   },
   {
@@ -127,7 +127,7 @@ const activeOrdersMock: Order[] = [
     description: "Flera cykelställ är rostiga och instabila",
     assignedTo: "Anna Petersson",
     category: "Utemiljö",
-    residenceId: "algen-1",
+    residenceId: "1",
     type: "Odoo"
   },
   {
@@ -208,7 +208,7 @@ const historicalOrdersMock: Order[] = [
     residenceId: "lgh-001",
     type: "Xpand"
   },
-  // Historical orders for building Bellmansgatan 1a-2c
+  // Historical orders for building Bellmansgatan 1a-2c (Building ID: B1)
   {
     id: "C006",
     title: "Byte av ytterdörr",
@@ -219,7 +219,7 @@ const historicalOrdersMock: Order[] = [
     resolvedDate: "2025-02-15",
     assignedTo: "Erik Svensson",
     dueDate: "2025-02-20",
-    residenceId: "bellmansgatan-1a-2c",
+    residenceId: "B1",
     type: "Odoo"
   },
   {
@@ -232,10 +232,10 @@ const historicalOrdersMock: Order[] = [
     resolvedDate: "2025-01-25",
     assignedTo: "Johan Andersson",
     dueDate: "2025-01-30",
-    residenceId: "bellmansgatan-1a-2c",
+    residenceId: "B1",
     type: "Xpand"
   },
-  // Historical orders for property Älgen 1
+  // Historical orders for property Älgen 1 (Property ID: 1)
   {
     id: "C008",
     title: "Gräsklippning av innergård",
@@ -246,7 +246,7 @@ const historicalOrdersMock: Order[] = [
     resolvedDate: "2025-04-18",
     assignedTo: "Magnus Lindberg",
     dueDate: "2025-04-20",
-    residenceId: "algen-1",
+    residenceId: "1",
     type: "Odoo"
   },
   {
@@ -259,7 +259,7 @@ const historicalOrdersMock: Order[] = [
     resolvedDate: "2025-03-10",
     assignedTo: "Erik Svensson",
     dueDate: "2025-03-15",
-    residenceId: "algen-1",
+    residenceId: "1",
     type: "Xpand"
   },
   {
