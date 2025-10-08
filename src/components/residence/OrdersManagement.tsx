@@ -1,6 +1,6 @@
 import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
 import { useOrdersService } from "@/hooks/useOrdersService";
-import { OrderCard } from "@/components/orders/OrderCard";
+import { OrdersTable } from "@/components/orders/OrdersTable";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { TabLayout } from "@/components/ui/tab-layout";
@@ -47,11 +47,7 @@ export function OrdersManagement({ contextType = "residence", residenceId, tenan
         
         <div key={refreshKey}>
           {allOrders.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
-              {allOrders.map((orderItem) => (
-                <OrderCard key={orderItem.id} orderItem={orderItem} />
-              ))}
-            </div>
+            <OrdersTable orders={allOrders} />
           ) : (
             <p className="text-slate-500 p-2">Inga ärenden.</p>
           )}
