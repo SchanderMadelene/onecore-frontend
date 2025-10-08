@@ -56,6 +56,80 @@ const activeOrdersMock: Order[] = [
     residenceId: "lgh-001",
     type: "Odoo"
   },
+  // Building-level orders for Bellmansgatan 1a-2c
+  {
+    id: "bd-001",
+    title: "Trapphus - Belysning",
+    reportedDate: "2025-05-19",
+    status: "active",
+    priority: "high",
+    description: "Flera lampor i trapphuset är trasiga, mörkt på kvällarna",
+    assignedTo: "Erik Svensson",
+    category: "Belysning",
+    residenceId: "bellmansgatan-1a-2c",
+    type: "Odoo"
+  },
+  {
+    id: "bd-002",
+    title: "Porttelefon fungerar inte",
+    reportedDate: "2025-05-15",
+    status: "pending",
+    priority: "medium",
+    description: "Porttelefonen på entré A är ur funktion",
+    assignedTo: "Anna Petersson",
+    category: "El",
+    residenceId: "bellmansgatan-1a-2c",
+    type: "Xpand"
+  },
+  {
+    id: "bd-003",
+    title: "Läckage i källare",
+    reportedDate: "2025-05-12",
+    status: "active",
+    priority: "high",
+    description: "Vattenläckage i källarförråd efter kraftigt regn",
+    assignedTo: "Magnus Lindberg",
+    category: "VVS",
+    residenceId: "bellmansgatan-1a-2c",
+    type: "Odoo"
+  },
+  // Property-level orders for Älgen 1
+  {
+    id: "pr-001",
+    title: "Gårdsmiljö - Sophantering",
+    reportedDate: "2025-05-20",
+    status: "active",
+    priority: "medium",
+    description: "Sopkärl behöver bytas ut, trasiga lock",
+    assignedTo: "Johan Andersson",
+    category: "Utemiljö",
+    residenceId: "algen-1",
+    type: "Odoo"
+  },
+  {
+    id: "pr-002",
+    title: "Fasadrenovering - Sprickor",
+    reportedDate: "2025-05-18",
+    status: "pending",
+    priority: "low",
+    description: "Mindre sprickor i fasaden behöver lagas",
+    assignedTo: "Erik Svensson",
+    category: "Fasad",
+    residenceId: "algen-1",
+    type: "Xpand"
+  },
+  {
+    id: "pr-003",
+    title: "Cykelställ behöver underhåll",
+    reportedDate: "2025-05-10",
+    status: "pending",
+    priority: "low",
+    description: "Flera cykelställ är rostiga och instabila",
+    assignedTo: "Anna Petersson",
+    category: "Utemiljö",
+    residenceId: "algen-1",
+    type: "Odoo"
+  },
   {
     id: "od-211",
     title: "WEBB: Felanmäld Lägenhet - Tvättmaskin",
@@ -132,6 +206,60 @@ const historicalOrdersMock: Order[] = [
     assignedTo: "Magnus Lindberg",
     dueDate: "2025-03-25",
     residenceId: "lgh-001",
+    type: "Xpand"
+  },
+  // Historical orders for building Bellmansgatan 1a-2c
+  {
+    id: "C006",
+    title: "Byte av ytterdörr",
+    reportedDate: "2025-02-10",
+    status: "resolved",
+    priority: "medium",
+    description: "Huvudentré behövde nytt lås och gångjärn",
+    resolvedDate: "2025-02-15",
+    assignedTo: "Erik Svensson",
+    dueDate: "2025-02-20",
+    residenceId: "bellmansgatan-1a-2c",
+    type: "Odoo"
+  },
+  {
+    id: "C007",
+    title: "Rengöring av takrännor",
+    reportedDate: "2025-01-20",
+    status: "resolved",
+    priority: "low",
+    description: "Takrännor var igensatta med löv",
+    resolvedDate: "2025-01-25",
+    assignedTo: "Johan Andersson",
+    dueDate: "2025-01-30",
+    residenceId: "bellmansgatan-1a-2c",
+    type: "Xpand"
+  },
+  // Historical orders for property Älgen 1
+  {
+    id: "C008",
+    title: "Gräsklippning av innergård",
+    reportedDate: "2025-04-15",
+    status: "resolved",
+    priority: "low",
+    description: "Säsongens första gräsklippning av gård",
+    resolvedDate: "2025-04-18",
+    assignedTo: "Magnus Lindberg",
+    dueDate: "2025-04-20",
+    residenceId: "algen-1",
+    type: "Odoo"
+  },
+  {
+    id: "C009",
+    title: "Lagning av stenmur",
+    reportedDate: "2025-03-01",
+    status: "resolved",
+    priority: "medium",
+    description: "Stenmur vid ingång hade rasat delvis",
+    resolvedDate: "2025-03-10",
+    assignedTo: "Erik Svensson",
+    dueDate: "2025-03-15",
+    residenceId: "algen-1",
     type: "Xpand"
   },
   {
