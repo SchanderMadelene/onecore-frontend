@@ -21,6 +21,42 @@ export interface Order {
 // Mock order data
 const activeOrdersMock: Order[] = [
   {
+    id: "od-215",
+    title: "Läcka i kök",
+    reportedDate: "2025-05-20",
+    status: "active",
+    priority: "high",
+    description: "Läckage under diskbänken, vattenskada på golvlist.",
+    assignedTo: "Erik Svensson",
+    category: "VVS",
+    residenceId: "lgh-001",
+    type: "Odoo"
+  },
+  {
+    id: "od-214",
+    title: "Byte av strömbrytare",
+    reportedDate: "2025-05-18",
+    status: "pending",
+    priority: "low",
+    description: "Strömbrytare i hall fungerar inte",
+    assignedTo: "Anna Petersson",
+    category: "El",
+    residenceId: "lgh-001",
+    type: "Xpand"
+  },
+  {
+    id: "od-213",
+    title: "Fönster går inte att öppna",
+    reportedDate: "2025-05-10",
+    status: "pending",
+    priority: "medium",
+    description: "Fönsterhandtag i sovrum trasigt",
+    assignedTo: "Magnus Lindberg",
+    category: "Fönster",
+    residenceId: "lgh-001",
+    type: "Odoo"
+  },
+  {
     id: "od-211",
     title: "WEBB: Felanmäld Lägenhet - Tvättmaskin",
     reportedDate: "2025-04-28",
@@ -72,6 +108,32 @@ const activeOrdersMock: Order[] = [
 ];
 
 const historicalOrdersMock: Order[] = [
+  {
+    id: "C005",
+    title: "Byte av lampor i vardagsrum",
+    reportedDate: "2025-04-01",
+    status: "resolved",
+    priority: "low",
+    description: "Taklampor i vardagsrum behöver bytas",
+    resolvedDate: "2025-04-03",
+    assignedTo: "Anna Petersson",
+    dueDate: "2025-04-05",
+    residenceId: "lgh-001",
+    type: "Odoo"
+  },
+  {
+    id: "C004",
+    title: "Målning av köksväggar",
+    reportedDate: "2025-03-15",
+    status: "resolved",
+    priority: "low",
+    description: "Fläckar på köksväggar efter tidigare läckage",
+    resolvedDate: "2025-03-20",
+    assignedTo: "Magnus Lindberg",
+    dueDate: "2025-03-25",
+    residenceId: "lgh-001",
+    type: "Xpand"
+  },
   {
     id: "C000",
     title: "Stopp i avlopp",
