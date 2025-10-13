@@ -7,6 +7,7 @@ import { CardsShowcase } from "./showcase/cards/CardsShowcase";
 import { OrdersShowcase } from "./showcase/orders/OrdersShowcase";
 import { MaintenanceShowcase } from "./showcase/maintenance/MaintenanceShowcase";
 import { AccordionShowcase } from "./showcase/accordions/AccordionShowcase";
+import { UpdateComponentModalShowcase } from "./showcase/components/UpdateComponentModalShowcase";
 
 export const ComponentShowcase = () => {
   return (
@@ -19,6 +20,7 @@ export const ComponentShowcase = () => {
       <AccordionShowcase />
       <MaintenanceShowcase />
       <OrdersShowcase />
+      <UpdateComponentModalShowcase />
     </div>
   );
 };
