@@ -116,49 +116,7 @@ export const UpdateComponentModal = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Sektion A: Ärendeinformation */}
-          <Card className="bg-muted/30">
-            <CardContent className="pt-6">
-              <h3 className="text-lg font-semibold mb-4">Ärendeinformation</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-muted-foreground">Ärendenummer</Label>
-                  <p className="font-medium">ORD-2025-0445</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Status</Label>
-                  <div className="mt-1">
-                    <Badge className="bg-green-100 text-green-800">
-                      Utförd
-                    </Badge>
-                  </div>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Utförd av</Label>
-                  <p className="font-medium">Erik Svensson</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Datum</Label>
-                  <p className="font-medium">2025-10-08</p>
-                </div>
-                <div className="md:col-span-2">
-                  <Label className="text-muted-foreground">Titel</Label>
-                  <p className="font-medium">Byte av diskmaskin</p>
-                </div>
-                <div className="md:col-span-2">
-                  <Label className="text-muted-foreground">Beskrivning</Label>
-                  <p className="text-sm">
-                    Gammal diskmaskin läckte vatten och hade dålig
-                    diskprestanda. Byte var nödvändigt.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Separator />
-
-          {/* Sektion B: Komponentinformation (före) */}
+          {/* Sektion A: Komponentinformation (före) */}
           <Card className="bg-muted/30">
             <CardContent className="pt-6">
               <h3 className="text-lg font-semibold mb-4">
