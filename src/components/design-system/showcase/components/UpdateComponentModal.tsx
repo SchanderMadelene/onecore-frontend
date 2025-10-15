@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { format } from "date-fns";
-import { CalendarIcon, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,41 +10,20 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
 const updateComponentSchema = z.object({
-  status: z.enum(["active", "maintenance", "out_of_service"], {
-    required_error: "Status måste väljas",
-  }),
-  action: z.enum(["repaired", "replaced", "adjusted", "other"], {
-    required_error: "Åtgärd måste väljas",
-  }),
-  installationDate: z.date({
-    required_error: "Installationsdatum måste väljas",
-  }),
-  make: z.string().optional(),
-  model: z.string().optional(),
-  energyClass: z.string().optional(),
+  ekonomiskLivslangd: z.string().optional(),
+  tekniskLivslangd: z.string().optional(),
+  startar: z.string().optional(),
+  mangd: z.string().optional(),
+  marke: z.string().optional(),
+  modell: z.string().optional(),
   comment: z.string().optional(),
 });
 
@@ -62,17 +39,16 @@ export const UpdateComponentModal = ({
   onOpenChange,
 }: UpdateComponentModalProps) => {
   const { toast } = useToast();
-  const [selectedDate, setSelectedDate] = useState<Date>();
 
   const form = useForm<UpdateComponentFormData>({
     resolver: zodResolver(updateComponentSchema),
     defaultValues: {
-      status: undefined,
-      action: undefined,
-      installationDate: new Date(),
-      make: "",
-      model: "",
-      energyClass: "",
+      ekonomiskLivslangd: "",
+      tekniskLivslangd: "",
+      startar: "",
+      mangd: "",
+      marke: "",
+      modell: "",
       comment: "",
     },
   });
@@ -81,26 +57,10 @@ export const UpdateComponentModal = ({
     console.log("Component update data:", data);
     toast({
       title: "Komponent uppdaterad",
-      description: "Diskmaskinen har uppdaterats och kopplats till ärendet.",
+      description: "Diskmaskinen har uppdaterats.",
     });
     onOpenChange(false);
     form.reset();
-  };
-
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      active: { label: "Aktiv", className: "bg-green-100 text-green-800" },
-      maintenance: {
-        label: "Under underhåll",
-        className: "bg-yellow-100 text-yellow-800",
-      },
-      out_of_service: {
-        label: "Ur funktion",
-        className: "bg-red-100 text-red-800",
-      },
-    };
-    const config = statusConfig[status as keyof typeof statusConfig];
-    return <Badge className={config.className}>{config.label}</Badge>;
   };
 
   return (
@@ -124,36 +84,28 @@ export const UpdateComponentModal = ({
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-muted-foreground">Rum</Label>
-                  <p className="font-medium">Kök</p>
+                  <Label className="text-muted-foreground">Ekonomisk livslängd</Label>
+                  <p className="font-medium">12 år</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Typ</Label>
-                  <p className="font-medium">Vitvaror - Diskmaskin</p>
+                  <Label className="text-muted-foreground">Teknisk livslängd</Label>
+                  <p className="font-medium">15 år</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Status</Label>
-                  <div className="mt-1">
-                    {getStatusBadge("maintenance")}
-                  </div>
+                  <Label className="text-muted-foreground">Startår</Label>
+                  <p className="font-medium">2019</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">
-                    Installationsdatum
-                  </Label>
-                  <p className="font-medium">2017-05-20</p>
+                  <Label className="text-muted-foreground">Mängd</Label>
+                  <p className="font-medium">1 st</p>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Märke</Label>
-                  <p className="font-medium">Bosch</p>
+                  <p className="font-medium">Electrolux</p>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Modell</Label>
-                  <p className="font-medium">SMV46KX00E</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Energiklass</Label>
-                  <p className="font-medium">A++</p>
+                  <p className="font-medium">ESF5555LOX</p>
                 </div>
               </div>
             </CardContent>
@@ -166,149 +118,63 @@ export const UpdateComponentModal = ({
             <h3 className="text-lg font-semibold mb-4">Uppdatera komponent</h3>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Status */}
+                {/* Ekonomisk livslängd */}
                 <div className="space-y-2">
-                  <Label htmlFor="status">
-                    Status <span className="text-destructive">*</span>
-                  </Label>
-                  <Select
-                    onValueChange={(value) =>
-                      form.setValue("status", value as any)
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Välj status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Aktiv</SelectItem>
-                      <SelectItem value="maintenance">
-                        Under underhåll
-                      </SelectItem>
-                      <SelectItem value="out_of_service">
-                        Ur funktion
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {form.formState.errors.status && (
-                    <p className="text-sm text-destructive">
-                      {form.formState.errors.status.message}
-                    </p>
-                  )}
+                  <Label htmlFor="ekonomiskLivslangd">Ekonomisk livslängd</Label>
+                  <Input
+                    id="ekonomiskLivslangd"
+                    placeholder="t.ex. 12 år"
+                    {...form.register("ekonomiskLivslangd")}
+                  />
                 </div>
 
-                {/* Åtgärd */}
+                {/* Teknisk livslängd */}
                 <div className="space-y-2">
-                  <Label htmlFor="action">
-                    Åtgärd <span className="text-destructive">*</span>
-                  </Label>
-                  <Select
-                    onValueChange={(value) =>
-                      form.setValue("action", value as any)
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Välj åtgärd" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="repaired">Reparerad</SelectItem>
-                      <SelectItem value="replaced">Utbytt</SelectItem>
-                      <SelectItem value="adjusted">
-                        Justerad/Service
-                      </SelectItem>
-                      <SelectItem value="other">Övrigt</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {form.formState.errors.action && (
-                    <p className="text-sm text-destructive">
-                      {form.formState.errors.action.message}
-                    </p>
-                  )}
+                  <Label htmlFor="tekniskLivslangd">Teknisk livslängd</Label>
+                  <Input
+                    id="tekniskLivslangd"
+                    placeholder="t.ex. 15 år"
+                    {...form.register("tekniskLivslangd")}
+                  />
                 </div>
 
-                {/* Installationsdatum */}
+                {/* Startår */}
                 <div className="space-y-2">
-                  <Label>
-                    Installationsdatum <span className="text-destructive">*</span>
-                  </Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !selectedDate && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {selectedDate ? (
-                          format(selectedDate, "PPP")
-                        ) : (
-                          <span>Välj datum</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={selectedDate}
-                        onSelect={(date) => {
-                          setSelectedDate(date);
-                          if (date) {
-                            form.setValue("installationDate", date);
-                          }
-                        }}
-                        initialFocus
-                        className="pointer-events-auto"
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  {form.formState.errors.installationDate && (
-                    <p className="text-sm text-destructive">
-                      {form.formState.errors.installationDate.message}
-                    </p>
-                  )}
+                  <Label htmlFor="startar">Startår</Label>
+                  <Input
+                    id="startar"
+                    placeholder="t.ex. 2019"
+                    {...form.register("startar")}
+                  />
                 </div>
 
-                {/* Energiklass */}
+                {/* Mängd */}
                 <div className="space-y-2">
-                  <Label htmlFor="energyClass">Energiklass</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      form.setValue("energyClass", value)
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Välj energiklass" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="A+++">A+++</SelectItem>
-                      <SelectItem value="A++">A++</SelectItem>
-                      <SelectItem value="A+">A+</SelectItem>
-                      <SelectItem value="A">A</SelectItem>
-                      <SelectItem value="B">B</SelectItem>
-                      <SelectItem value="C">C</SelectItem>
-                      <SelectItem value="D">D</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="mangd">Mängd</Label>
+                  <Input
+                    id="mangd"
+                    placeholder="t.ex. 1 st"
+                    {...form.register("mangd")}
+                  />
                 </div>
 
                 {/* Märke */}
                 <div className="space-y-2">
-                  <Label htmlFor="make">Märke</Label>
+                  <Label htmlFor="marke">Märke</Label>
                   <Input
-                    id="make"
-                    placeholder="t.ex. Siemens"
-                    {...form.register("make")}
+                    id="marke"
+                    placeholder="t.ex. Electrolux"
+                    {...form.register("marke")}
                   />
                 </div>
 
                 {/* Modell */}
                 <div className="space-y-2">
-                  <Label htmlFor="model">Modell</Label>
+                  <Label htmlFor="modell">Modell</Label>
                   <Input
-                    id="model"
-                    placeholder="t.ex. SN63HX60CE"
-                    {...form.register("model")}
+                    id="modell"
+                    placeholder="t.ex. ESF5555LOX"
+                    {...form.register("modell")}
                   />
                 </div>
               </div>
