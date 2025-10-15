@@ -13,8 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
 const updateComponentSchema = z.object({
@@ -43,12 +41,12 @@ export const UpdateComponentModal = ({
   const form = useForm<UpdateComponentFormData>({
     resolver: zodResolver(updateComponentSchema),
     defaultValues: {
-      ekonomiskLivslangd: "",
-      tekniskLivslangd: "",
-      startar: "",
-      mangd: "",
-      marke: "",
-      modell: "",
+      ekonomiskLivslangd: "12 år",
+      tekniskLivslangd: "15 år",
+      startar: "2019",
+      mangd: "1 st",
+      marke: "Electrolux",
+      modell: "ESF5555LOX",
       comment: "",
     },
   });
@@ -76,44 +74,7 @@ export const UpdateComponentModal = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Sektion A: Komponentinformation (före) */}
-          <Card className="bg-muted/30">
-            <CardContent className="pt-6">
-              <h3 className="text-lg font-semibold mb-4">
-                Komponentinformation (före uppdatering)
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-muted-foreground">Ekonomisk livslängd</Label>
-                  <p className="font-medium">12 år</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Teknisk livslängd</Label>
-                  <p className="font-medium">15 år</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Startår</Label>
-                  <p className="font-medium">2019</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Mängd</Label>
-                  <p className="font-medium">1 st</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Märke</Label>
-                  <p className="font-medium">Electrolux</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Modell</Label>
-                  <p className="font-medium">ESF5555LOX</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Separator />
-
-          {/* Sektion C: Uppdatera komponent */}
+          {/* Uppdatera komponent */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Uppdatera komponent</h3>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -121,9 +82,9 @@ export const UpdateComponentModal = ({
                 {/* Ekonomisk livslängd */}
                 <div className="space-y-2">
                   <Label htmlFor="ekonomiskLivslangd">Ekonomisk livslängd</Label>
+                  <p className="text-sm text-muted-foreground italic">Tidigare: 12 år</p>
                   <Input
                     id="ekonomiskLivslangd"
-                    placeholder="t.ex. 12 år"
                     {...form.register("ekonomiskLivslangd")}
                   />
                 </div>
@@ -131,9 +92,9 @@ export const UpdateComponentModal = ({
                 {/* Teknisk livslängd */}
                 <div className="space-y-2">
                   <Label htmlFor="tekniskLivslangd">Teknisk livslängd</Label>
+                  <p className="text-sm text-muted-foreground italic">Tidigare: 15 år</p>
                   <Input
                     id="tekniskLivslangd"
-                    placeholder="t.ex. 15 år"
                     {...form.register("tekniskLivslangd")}
                   />
                 </div>
@@ -141,9 +102,9 @@ export const UpdateComponentModal = ({
                 {/* Startår */}
                 <div className="space-y-2">
                   <Label htmlFor="startar">Startår</Label>
+                  <p className="text-sm text-muted-foreground italic">Tidigare: 2019</p>
                   <Input
                     id="startar"
-                    placeholder="t.ex. 2019"
                     {...form.register("startar")}
                   />
                 </div>
@@ -151,9 +112,9 @@ export const UpdateComponentModal = ({
                 {/* Mängd */}
                 <div className="space-y-2">
                   <Label htmlFor="mangd">Mängd</Label>
+                  <p className="text-sm text-muted-foreground italic">Tidigare: 1 st</p>
                   <Input
                     id="mangd"
-                    placeholder="t.ex. 1 st"
                     {...form.register("mangd")}
                   />
                 </div>
@@ -161,9 +122,9 @@ export const UpdateComponentModal = ({
                 {/* Märke */}
                 <div className="space-y-2">
                   <Label htmlFor="marke">Märke</Label>
+                  <p className="text-sm text-muted-foreground italic">Tidigare: Electrolux</p>
                   <Input
                     id="marke"
-                    placeholder="t.ex. Electrolux"
                     {...form.register("marke")}
                   />
                 </div>
@@ -171,9 +132,9 @@ export const UpdateComponentModal = ({
                 {/* Modell */}
                 <div className="space-y-2">
                   <Label htmlFor="modell">Modell</Label>
+                  <p className="text-sm text-muted-foreground italic">Tidigare: ESF5555LOX</p>
                   <Input
                     id="modell"
-                    placeholder="t.ex. ESF5555LOX"
                     {...form.register("modell")}
                   />
                 </div>
