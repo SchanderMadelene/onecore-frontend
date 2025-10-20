@@ -55,6 +55,19 @@ export interface Entrance {
   components?: EntranceComponent[]; // Components at entrance level
 }
 
+export interface RoomComponent {
+  id: string;
+  name: string;
+  type: string;
+  brand?: string;
+  model?: string;
+  installationYear?: number;
+  economicLifespan?: number;
+  technicalLifespan?: number;
+  quantity?: number;
+  status?: "Aktiv" | "Under underhåll" | "Ur funktion";
+}
+
 export interface Room {
   id: string;
   code: string;
@@ -91,6 +104,7 @@ export interface Room {
     allowSmallRoomsInValuation: number;
     timestamp: string;
   } | null;
+  components?: RoomComponent[];
 }
 
 export interface APIResponse<T> {
@@ -204,4 +218,39 @@ export interface PropertyDetail extends Property {
   propertyMap?: PropertyMap;
   buildings: Building[];
   maintenanceUnits?: MaintenanceUnit[];
+}
+
+export type ComponentLevel = 
+  | "room"           // Komponent i rum (t.ex. diskmaskin i kök)
+  | "entrance"       // Komponent på uppgång (t.ex. postbox)
+  | "building-space" // Komponent i byggnadsutrymme (t.ex. trappor i trapphus)
+  | "building"       // Komponent på byggnad (t.ex. värmepanna)
+  | "property";      // Komponent på fastighet (ovanligt men möjligt)
+
+export interface ComponentLocation {
+  level: ComponentLevel;
+  propertyName: string;
+  propertyId: string;
+  buildingName?: string;
+  buildingId?: string;
+  
+  // För room-nivå
+  entranceName?: string;
+  entranceId?: string;
+  residenceName?: string;
+  residenceId?: string;
+  currentRoom?: { id: string; name: string };
+  availableRooms?: Array<{ id: string; name: string }>;
+  
+  // För entrance-nivå
+  currentEntrance?: { id: string; name: string };
+  availableEntrances?: Array<{ id: string; name: string }>;
+  
+  // För building-space-nivå
+  currentSpace?: { id: string; name: string; type: SpaceType };
+  availableSpaces?: Array<{ id: string; name: string; type: SpaceType }>;
+  
+  // För building-nivå
+  currentBuilding?: { id: string; name: string };
+  availableBuildings?: Array<{ id: string; name: string }>;
 }
