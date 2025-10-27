@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
 import { RoomInspectionMobile } from "../mobile/RoomInspectionMobile";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
@@ -161,8 +160,8 @@ export function DesktopInspectionForm({
       </div>
 
       {/* Room accordion */}
-      <ScrollArea className="max-h-[calc(95vh-28rem)]">
-        <Accordion type="multiple" className="space-y-2 pr-4">
+      <div className="overflow-y-auto max-h-[50vh] pr-2">
+        <Accordion type="multiple" className="space-y-2">
           {rooms.map(room => {
             const roomData = inspectionData[room.id];
             const isCompleted = roomData?.isHandled;
@@ -206,7 +205,7 @@ export function DesktopInspectionForm({
             );
           })}
         </Accordion>
-      </ScrollArea>
+      </div>
 
       {/* Footer buttons */}
       <div className="flex gap-3 justify-end pt-4 border-t">
