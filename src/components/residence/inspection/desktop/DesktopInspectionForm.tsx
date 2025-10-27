@@ -160,7 +160,7 @@ export function DesktopInspectionForm({
       </div>
 
       {/* Room accordion */}
-      <div className="space-y-2">
+      <div className="max-h-[60vh] overflow-y-auto pr-2 pb-24 min-w-0">
         <Accordion type="multiple" className="space-y-2">
           {rooms.map(room => {
             const roomData = inspectionData[room.id];
@@ -172,7 +172,7 @@ export function DesktopInspectionForm({
                 value={room.id}
                 className="border rounded-lg"
               >
-                <AccordionTrigger className="hover:no-underline">
+                <AccordionTrigger className="hover:no-underline sticky top-0 bg-background z-10">
                   <div className="flex items-center justify-between w-full pr-4">
                     <div className="flex items-center gap-3">
                       <span className="font-medium">{room.name}</span>
