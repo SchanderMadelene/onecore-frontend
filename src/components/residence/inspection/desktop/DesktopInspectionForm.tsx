@@ -8,8 +8,10 @@ import type { InspectionRoom as InspectionRoomType } from "../types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Clock } from "lucide-react";
+import { Clock, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 import { useEffect } from "react";
 
 interface DesktopInspectionFormProps {
@@ -158,26 +160,52 @@ export function DesktopInspectionForm({
         </span>
       </div>
 
-      {/* Room grid - 2 columns */}
+      {/* Room accordion */}
       <ScrollArea className="max-h-[calc(95vh-28rem)]">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 pr-4">
-          {rooms.map(room => (
-            <RoomInspectionMobile
-              key={room.id}
-              room={room}
-              inspectionData={inspectionData[room.id]}
-              onConditionUpdate={(field, value) => 
-                handleConditionUpdate(room.id, field, value)
-              }
-              onActionUpdate={(field, action) => 
-                handleActionUpdate(room.id, field, action)
-              }
-              onComponentNoteUpdate={(field, note) => 
-                handleComponentNoteUpdate(room.id, field, note)
-              }
-            />
-          ))}
-        </div>
+        <Accordion type="multiple" className="space-y-2 pr-4">
+          {rooms.map(room => {
+            const roomData = inspectionData[room.id];
+            const isCompleted = roomData?.isHandled;
+            
+            return (
+              <AccordionItem 
+                key={room.id} 
+                value={room.id}
+                className="border rounded-lg"
+              >
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="flex items-center justify-between w-full pr-4">
+                    <div className="flex items-center gap-3">
+                      <span className="font-medium">{room.name}</span>
+                      <span className="text-sm text-muted-foreground">{room.size}</span>
+                    </div>
+                    {isCompleted && (
+                      <Badge variant="default" className="gap-1">
+                        <CheckCircle2 className="h-3 w-3" />
+                        Klar
+                      </Badge>
+                    )}
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <RoomInspectionMobile
+                    room={room}
+                    inspectionData={roomData}
+                    onConditionUpdate={(field, value) => 
+                      handleConditionUpdate(room.id, field, value)
+                    }
+                    onActionUpdate={(field, action) => 
+                      handleActionUpdate(room.id, field, action)
+                    }
+                    onComponentNoteUpdate={(field, note) => 
+                      handleComponentNoteUpdate(room.id, field, note)
+                    }
+                  />
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
       </ScrollArea>
 
       {/* Footer buttons */}
