@@ -53,7 +53,7 @@ export function InspectionFormDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[95vw] xl:max-w-7xl p-4 sm:p-6 max-h-[95vh]">
+      <DialogContent className="max-w-[95vw] xl:max-w-7xl p-4 sm:p-6 max-h-[95vh] overflow-hidden">
         <DialogHeader className="space-y-1">
           <DialogTitle>Genomför besiktning</DialogTitle>
           <DialogDescription>

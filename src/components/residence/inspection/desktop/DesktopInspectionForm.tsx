@@ -68,7 +68,7 @@ export function DesktopInspectionForm({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 min-w-0">
       {/* Inspector selection + Tenant info */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Inspector Selection Card */}
@@ -186,7 +186,7 @@ export function DesktopInspectionForm({
                     )}
                   </div>
                 </AccordionTrigger>
-              <AccordionContent className="max-h-[60vh] overflow-y-auto pr-4">
+              <AccordionContent className="max-h-[60vh] overflow-y-auto pr-4 min-w-0 overscroll-contain">
                 <RoomInspectionMobile
                     room={room}
                     inspectionData={roomData}
