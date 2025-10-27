@@ -1,3 +1,5 @@
+// @deprecated - Replaced by DesktopInspectionForm + RoomInspectionMobile
+// This component is kept for reference but should not be used in new code
 
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "./types";

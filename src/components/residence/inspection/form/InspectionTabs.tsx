@@ -1,3 +1,5 @@
+// @deprecated - Replaced by DesktopInspectionForm
+// This component is kept for reference but should not be used in new code
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BasicInformation } from "./BasicInformation";
