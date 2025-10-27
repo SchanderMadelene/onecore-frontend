@@ -21,6 +21,116 @@ export interface Order {
 // Mock order data
 const activeOrdersMock: Order[] = [
   {
+    id: "od-215",
+    title: "Läcka i kök",
+    reportedDate: "2025-05-20",
+    status: "active",
+    priority: "high",
+    description: "Läckage under diskbänken, vattenskada på golvlist.",
+    assignedTo: "Erik Svensson",
+    category: "VVS",
+    residenceId: "lgh-001",
+    type: "Odoo"
+  },
+  {
+    id: "od-214",
+    title: "Byte av strömbrytare",
+    reportedDate: "2025-05-18",
+    status: "pending",
+    priority: "low",
+    description: "Strömbrytare i hall fungerar inte",
+    assignedTo: "Anna Petersson",
+    category: "El",
+    residenceId: "lgh-001",
+    type: "Xpand"
+  },
+  {
+    id: "od-213",
+    title: "Fönster går inte att öppna",
+    reportedDate: "2025-05-10",
+    status: "pending",
+    priority: "medium",
+    description: "Fönsterhandtag i sovrum trasigt",
+    assignedTo: "Magnus Lindberg",
+    category: "Fönster",
+    residenceId: "lgh-001",
+    type: "Odoo"
+  },
+  // Building-level orders for Bellmansgatan 1a-2c (Building ID: B1)
+  {
+    id: "bd-001",
+    title: "Trapphus - Belysning",
+    reportedDate: "2025-05-19",
+    status: "active",
+    priority: "high",
+    description: "Flera lampor i trapphuset är trasiga, mörkt på kvällarna",
+    assignedTo: "Erik Svensson",
+    category: "Belysning",
+    residenceId: "B1",
+    type: "Odoo"
+  },
+  {
+    id: "bd-002",
+    title: "Porttelefon fungerar inte",
+    reportedDate: "2025-05-15",
+    status: "pending",
+    priority: "medium",
+    description: "Porttelefonen på entré A är ur funktion",
+    assignedTo: "Anna Petersson",
+    category: "El",
+    residenceId: "B1",
+    type: "Xpand"
+  },
+  {
+    id: "bd-003",
+    title: "Läckage i källare",
+    reportedDate: "2025-05-12",
+    status: "active",
+    priority: "high",
+    description: "Vattenläckage i källarförråd efter kraftigt regn",
+    assignedTo: "Magnus Lindberg",
+    category: "VVS",
+    residenceId: "B1",
+    type: "Odoo"
+  },
+  // Property-level orders for Älgen 1 (Property ID: 1)
+  {
+    id: "pr-001",
+    title: "Gårdsmiljö - Sophantering",
+    reportedDate: "2025-05-20",
+    status: "active",
+    priority: "medium",
+    description: "Sopkärl behöver bytas ut, trasiga lock",
+    assignedTo: "Johan Andersson",
+    category: "Utemiljö",
+    residenceId: "1",
+    type: "Odoo"
+  },
+  {
+    id: "pr-002",
+    title: "Fasadrenovering - Sprickor",
+    reportedDate: "2025-05-18",
+    status: "pending",
+    priority: "low",
+    description: "Mindre sprickor i fasaden behöver lagas",
+    assignedTo: "Erik Svensson",
+    category: "Fasad",
+    residenceId: "1",
+    type: "Xpand"
+  },
+  {
+    id: "pr-003",
+    title: "Cykelställ behöver underhåll",
+    reportedDate: "2025-05-10",
+    status: "pending",
+    priority: "low",
+    description: "Flera cykelställ är rostiga och instabila",
+    assignedTo: "Anna Petersson",
+    category: "Utemiljö",
+    residenceId: "1",
+    type: "Odoo"
+  },
+  {
     id: "od-211",
     title: "WEBB: Felanmäld Lägenhet - Tvättmaskin",
     reportedDate: "2025-04-28",
@@ -72,6 +182,86 @@ const activeOrdersMock: Order[] = [
 ];
 
 const historicalOrdersMock: Order[] = [
+  {
+    id: "C005",
+    title: "Byte av lampor i vardagsrum",
+    reportedDate: "2025-04-01",
+    status: "resolved",
+    priority: "low",
+    description: "Taklampor i vardagsrum behöver bytas",
+    resolvedDate: "2025-04-03",
+    assignedTo: "Anna Petersson",
+    dueDate: "2025-04-05",
+    residenceId: "lgh-001",
+    type: "Odoo"
+  },
+  {
+    id: "C004",
+    title: "Målning av köksväggar",
+    reportedDate: "2025-03-15",
+    status: "resolved",
+    priority: "low",
+    description: "Fläckar på köksväggar efter tidigare läckage",
+    resolvedDate: "2025-03-20",
+    assignedTo: "Magnus Lindberg",
+    dueDate: "2025-03-25",
+    residenceId: "lgh-001",
+    type: "Xpand"
+  },
+  // Historical orders for building Bellmansgatan 1a-2c (Building ID: B1)
+  {
+    id: "C006",
+    title: "Byte av ytterdörr",
+    reportedDate: "2025-02-10",
+    status: "resolved",
+    priority: "medium",
+    description: "Huvudentré behövde nytt lås och gångjärn",
+    resolvedDate: "2025-02-15",
+    assignedTo: "Erik Svensson",
+    dueDate: "2025-02-20",
+    residenceId: "B1",
+    type: "Odoo"
+  },
+  {
+    id: "C007",
+    title: "Rengöring av takrännor",
+    reportedDate: "2025-01-20",
+    status: "resolved",
+    priority: "low",
+    description: "Takrännor var igensatta med löv",
+    resolvedDate: "2025-01-25",
+    assignedTo: "Johan Andersson",
+    dueDate: "2025-01-30",
+    residenceId: "B1",
+    type: "Xpand"
+  },
+  // Historical orders for property Älgen 1 (Property ID: 1)
+  {
+    id: "C008",
+    title: "Gräsklippning av innergård",
+    reportedDate: "2025-04-15",
+    status: "resolved",
+    priority: "low",
+    description: "Säsongens första gräsklippning av gård",
+    resolvedDate: "2025-04-18",
+    assignedTo: "Magnus Lindberg",
+    dueDate: "2025-04-20",
+    residenceId: "1",
+    type: "Odoo"
+  },
+  {
+    id: "C009",
+    title: "Lagning av stenmur",
+    reportedDate: "2025-03-01",
+    status: "resolved",
+    priority: "medium",
+    description: "Stenmur vid ingång hade rasat delvis",
+    resolvedDate: "2025-03-10",
+    assignedTo: "Erik Svensson",
+    dueDate: "2025-03-15",
+    residenceId: "1",
+    type: "Xpand"
+  },
   {
     id: "C000",
     title: "Stopp i avlopp",

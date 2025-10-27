@@ -9,10 +9,8 @@ interface PropertyOrdersTabProps {
 }
 
 export const PropertyOrdersTab = ({ propertyDetail }: PropertyOrdersTabProps) => {
-  const { property } = useParams<{ property: string }>();
-  
-  // Use property directly as the property ID
-  const propertyId = property || propertyDetail.id || "property-default";
+  // Use the actual property ID from the propertyDetail object
+  const propertyId = propertyDetail?.id || "1";
   
   return (
     <TabLayout 
