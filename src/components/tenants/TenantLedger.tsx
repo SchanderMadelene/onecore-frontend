@@ -32,7 +32,7 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Kundreskontra</CardTitle>
+          <CardTitle className="text-lg">Betalningsinformation</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Faktureringsinställningar */}
