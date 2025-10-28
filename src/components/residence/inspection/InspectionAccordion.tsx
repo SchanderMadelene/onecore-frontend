@@ -1,3 +1,5 @@
+// @deprecated - Replaced by RoomInspectionMobile
+// This component is kept for reference but should not be used in new code
 
 import { ConditionSelect } from "./ConditionSelect";
 import type { InspectionRoom as InspectionRoomType } from "./types";
