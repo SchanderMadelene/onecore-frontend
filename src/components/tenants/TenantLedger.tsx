@@ -78,7 +78,7 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
               />
               <InfoRow 
                 label="Medelvärde antal dagar för sent betalt" 
-                value={formatCurrency(ledger.statistics.averageDaysLate)}
+                value={`${ledger.statistics.averageDaysLate} dagar`}
                 highlight={ledger.statistics.averageDaysLate > 0}
               />
               <InfoRow 
