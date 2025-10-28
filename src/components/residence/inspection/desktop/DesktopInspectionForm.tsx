@@ -160,7 +160,7 @@ export function DesktopInspectionForm({
       </div>
 
       {/* Room accordion */}
-      <div className="max-h-[60vh] overflow-y-auto pr-2 pb-24 min-w-0">
+      <div className="max-h-[70vh] overflow-y-auto pr-2 pb-24 min-w-0">
         <Accordion type="multiple" className="space-y-2">
           {rooms.map(room => {
             const roomData = inspectionData[room.id];
@@ -186,7 +186,7 @@ export function DesktopInspectionForm({
                     )}
                   </div>
                 </AccordionTrigger>
-              <AccordionContent className="max-h-[60vh] overflow-y-auto pr-4 min-w-0 overscroll-contain">
+              <AccordionContent className="pr-4 min-w-0">
                 <RoomInspectionMobile
                     room={room}
                     inspectionData={roomData}
