@@ -8,7 +8,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       dueDate: "2025-10-29",
       amount: 1000,
       balance: 1000,
-      invoiceType: "Strófaktura",
+      invoiceType: "Strömfaktura",
       paymentStatus: "Obetald",
       text: "",
       inCollection: false,
