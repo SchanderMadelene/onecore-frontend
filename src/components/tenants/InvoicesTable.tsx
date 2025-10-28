@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronRight, FileText } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { differenceInDays, parseISO } from "date-fns";
@@ -49,6 +50,11 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
       return `Förfallen (${days} dagar)`;
     }
     return invoice.paymentStatus;
+  };
+
+  const handleOpenPDF = (invoiceNumber: string) => {
+    // TODO: Implement PDF opening logic
+    console.log('Opening PDF for invoice:', invoiceNumber);
   };
 
   if (isMobile) {
@@ -100,7 +106,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   )}
                   {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
                     <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
-                      <div className="grid grid-cols-3 gap-4 text-sm">
+                      <div className="grid grid-cols-3 gap-4 text-sm mb-3">
                         <div>
                           <span className="text-muted-foreground block mb-1">Betaldatum:</span>
                           <span className="font-semibold">{invoice.paymentDate}</span>
@@ -114,6 +120,18 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                         </div>
                       </div>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenPDF(invoice.invoiceNumber);
+                        }}
+                        className="w-full sm:w-auto"
+                      >
+                        <FileText className="h-4 w-4 mr-2" />
+                        Öppna PDF
+                      </Button>
                     </div>
                   )}
                   <div className="space-y-2">
@@ -206,7 +224,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       )}
                       {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
                         <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
-                          <div className="grid grid-cols-3 gap-4 text-sm">
+                          <div className="grid grid-cols-3 gap-4 text-sm mb-3">
                             <div>
                               <span className="text-muted-foreground block mb-1">Betaldatum:</span>
                               <span className="font-semibold">{invoice.paymentDate}</span>
@@ -220,6 +238,18 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                             </div>
                           </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenPDF(invoice.invoiceNumber);
+                            }}
+                            className="w-full sm:w-auto"
+                          >
+                            <FileText className="h-4 w-4 mr-2" />
+                            Öppna PDF
+                          </Button>
                         </div>
                       )}
                       <div className="bg-background rounded-lg p-3 shadow-sm">
