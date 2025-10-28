@@ -17,6 +17,6 @@ export interface Invoice {
   paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen';
   text?: string;
   inCollection: boolean;
-  paidAmount?: number;
+  source: 'Xpand' | 'Xledger';
   lineItems: InvoiceLineItem[];
 }

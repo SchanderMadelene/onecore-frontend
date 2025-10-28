@@ -12,7 +12,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Obetald",
       text: "",
       inCollection: false,
-      paidAmount: undefined,
+      source: "Xpand",
       lineItems: []
     },
     {
@@ -25,7 +25,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Obetald",
       text: "",
       inCollection: false,
-      paidAmount: undefined,
+      source: "Xledger",
       lineItems: [
         {
           amount: 0,
@@ -79,7 +79,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Förfallen",
       text: "Fakturan är skickad till inkasso",
       inCollection: true,
-      paidAmount: undefined,
+      source: "Xledger",
       lineItems: [
         {
           amount: 0,
@@ -117,7 +117,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Betald",
       text: "",
       inCollection: false,
-      paidAmount: 7689.47,
+      source: "Xpand",
       lineItems: [
         {
           amount: 0,
@@ -147,7 +147,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Betald",
       text: "",
       inCollection: false,
-      paidAmount: 7689.47,
+      source: "Xpand",
       lineItems: [
         {
           amount: 0,

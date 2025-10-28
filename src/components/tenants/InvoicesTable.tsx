@@ -62,19 +62,13 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <span className="font-medium">{formatCurrency(invoice.amount)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Förfallodatum:</span>
-                    <span>{invoice.dueDate}</span>
-                  </div>
-                  <div className="flex justify-between">
                     <span className="text-muted-foreground">Inkasso:</span>
                     <span>{invoice.inCollection ? 'Ja' : 'Nej'}</span>
                   </div>
-                  {invoice.paidAmount !== undefined && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Inbetalat:</span>
-                      <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
-                    </div>
-                  )}
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Källa:</span>
+                    <span>{invoice.source}</span>
+                  </div>
                 </div>
                 <div className="mt-2 flex items-center text-sm text-muted-foreground">
                   {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -87,12 +81,6 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   {invoice.text && (
                     <div className="mb-3 text-sm">
                       <span className="font-medium">Text:</span> {invoice.text}
-                    </div>
-                  )}
-                  {invoice.paidAmount !== undefined && (
-                    <div className="mb-3 text-sm bg-background rounded-lg p-3">
-                      <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
-                      <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
                     </div>
                   )}
                   <div className="space-y-2">
@@ -138,7 +126,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
             <th className="text-right p-3 text-sm font-medium">Saldo</th>
             <th className="text-left p-3 text-sm font-medium">Fakturatyp</th>
             <th className="text-left p-3 text-sm font-medium">Inkasso</th>
-            <th className="text-right p-3 text-sm font-medium">Inbetalat belopp</th>
+            <th className="text-left p-3 text-sm font-medium">Källa</th>
             <th className="text-left p-3 text-sm font-medium">Betalstatus</th>
             <th className="w-10"></th>
           </tr>
@@ -160,9 +148,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm text-right">{formatCurrency(invoice.balance)}</td>
                   <td className="p-3 text-sm">{invoice.invoiceType}</td>
                   <td className="p-3 text-sm">{invoice.inCollection ? 'Ja' : 'Nej'}</td>
-                  <td className="p-3 text-sm text-right">
-                    {invoice.paidAmount !== undefined ? formatCurrency(invoice.paidAmount) : '-'}
-                  </td>
+                  <td className="p-3 text-sm">{invoice.source}</td>
                   <td className="p-3 text-sm">
                     <Badge variant={getStatusVariant(invoice.paymentStatus)}>
                       {invoice.paymentStatus}
@@ -182,12 +168,6 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       {invoice.text && (
                         <div className="mb-3 text-sm">
                           <span className="font-medium">Text:</span> {invoice.text}
-                        </div>
-                      )}
-                      {invoice.paidAmount !== undefined && (
-                        <div className="mb-3 text-sm bg-background rounded-lg p-3">
-                          <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
-                          <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
                         </div>
                       )}
                       <table className="w-full bg-background rounded-lg overflow-hidden">
