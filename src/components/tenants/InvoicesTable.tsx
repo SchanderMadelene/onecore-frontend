@@ -99,19 +99,19 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     </div>
                   )}
                   {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
-                    <div className="mb-3 bg-background rounded-lg p-3 border border-success/20">
+                    <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <span className="text-muted-foreground">Betaldatum:</span>{' '}
-                          <span className="font-medium">{invoice.paymentDate}</span>
+                          <span className="text-muted-foreground block mb-1">Betaldatum:</span>
+                          <span className="font-semibold">{invoice.paymentDate}</span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground">Källa:</span>{' '}
-                          <span className="font-medium">{invoice.paymentSource || 'OCR'}</span>
+                          <span className="text-muted-foreground block mb-1">Källa:</span>
+                          <span className="font-semibold">{invoice.paymentSource || 'OCR'}</span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
-                          <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                          <span className="text-muted-foreground block mb-1">Inbetalat belopp:</span>
+                          <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                         </div>
                       </div>
                     </div>
@@ -197,31 +197,34 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 </tr>
                 {isExpanded && invoice.lineItems.length > 0 && (
                 <tr>
-                  <td colSpan={10} className="bg-muted/30 p-4">
-                    {invoice.text && (
-                      <div className="mb-3 text-sm">
-                        <span className="font-medium">Text:</span> {invoice.text}
-                      </div>
-                    )}
-                    {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
-                      <div className="mb-3 bg-background rounded-lg p-3 border border-success/20">
-                        <div className="grid grid-cols-3 gap-4 text-sm">
-                          <div>
-                            <span className="text-muted-foreground">Betaldatum:</span>{' '}
-                            <span className="font-medium">{invoice.paymentDate}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Källa:</span>{' '}
-                            <span className="font-medium">{invoice.paymentSource || 'OCR'}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
-                            <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                  <td colSpan={10} className="p-0">
+                    <div className="bg-muted/50 border-l-4 border-primary/30 p-4 ml-4">
+                      {invoice.text && (
+                        <div className="mb-3 text-sm bg-background/50 rounded p-2">
+                          <span className="font-medium">Text:</span> {invoice.text}
+                        </div>
+                      )}
+                      {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
+                        <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Betaldatum:</span>
+                              <span className="font-semibold">{invoice.paymentDate}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Källa:</span>
+                              <span className="font-semibold">{invoice.paymentSource || 'OCR'}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Inbetalat belopp:</span>
+                              <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                    <table className="w-full bg-background rounded-lg overflow-hidden">
+                      )}
+                      <div className="bg-background rounded-lg p-3 shadow-sm">
+                        <div className="font-medium text-sm mb-3 text-muted-foreground">Fakturarader</div>
+                        <table className="w-full">
                         <thead>
                           <tr className="border-b bg-muted/50">
                             <th className="text-left p-2 text-xs font-medium">Belopp</th>
@@ -245,8 +248,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           ))}
                         </tbody>
                       </table>
-                    </td>
-                  </tr>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
                 )}
               </>
             );
