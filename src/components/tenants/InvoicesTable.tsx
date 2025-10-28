@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { differenceInDays, parseISO } from "date-fns";
 
 interface InvoicesTableProps {
   invoices: Invoice[];
@@ -36,6 +37,20 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
     setExpandedInvoice(expandedInvoice === invoiceNumber ? null : invoiceNumber);
   };
 
+  const getOverdueDays = (dueDate: string): number => {
+    const today = new Date();
+    const due = parseISO(dueDate);
+    return differenceInDays(today, due);
+  };
+
+  const getStatusText = (invoice: Invoice): string => {
+    if (invoice.paymentStatus === 'Förfallen') {
+      const days = getOverdueDays(invoice.dueDate);
+      return `Förfallen (${days} dagar)`;
+    }
+    return invoice.paymentStatus;
+  };
+
   if (isMobile) {
     return (
       <div className="space-y-3">
@@ -53,7 +68,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <div className="text-sm text-muted-foreground">{invoice.invoiceType}</div>
                   </div>
                   <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                    {invoice.paymentStatus}
+                    {getStatusText(invoice)}
                   </Badge>
                 </div>
                 <div className="space-y-1 text-sm">
@@ -151,7 +166,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm">{invoice.source}</td>
                   <td className="p-3 text-sm">
                     <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                      {invoice.paymentStatus}
+                      {getStatusText(invoice)}
                     </Badge>
                   </td>
                   <td className="p-3">
