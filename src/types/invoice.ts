@@ -18,5 +18,8 @@ export interface Invoice {
   text?: string;
   inCollection: boolean;
   source: 'Xpand' | 'Xledger';
+  paymentDate?: string;
+  paidAmount?: number;
+  paymentSource?: string;
   lineItems: InvoiceLineItem[];
 }

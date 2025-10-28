@@ -118,6 +118,9 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       text: "",
       inCollection: false,
       source: "Xpand",
+      paymentDate: "2025-07-28",
+      paidAmount: 7689.47,
+      paymentSource: "OCR",
       lineItems: [
         {
           amount: 0,
@@ -148,6 +151,9 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       text: "",
       inCollection: false,
       source: "Xpand",
+      paymentDate: "2025-06-25",
+      paidAmount: 7689.47,
+      paymentSource: "OCR",
       lineItems: [
         {
           amount: 0,

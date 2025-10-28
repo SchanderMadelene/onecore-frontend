@@ -98,6 +98,24 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       <span className="font-medium">Text:</span> {invoice.text}
                     </div>
                   )}
+                  {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
+                    <div className="mb-3 bg-background rounded-lg p-3 border border-success/20">
+                      <div className="grid grid-cols-3 gap-4 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Betaldatum:</span>{' '}
+                          <span className="font-medium">{invoice.paymentDate}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Källa:</span>{' '}
+                          <span className="font-medium">{invoice.paymentSource || 'OCR'}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
+                          <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <div className="space-y-2">
                     {invoice.lineItems.map((item, idx) => (
                       <div key={idx} className="bg-background rounded-lg p-3 text-sm">
@@ -178,14 +196,32 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   </td>
                 </tr>
                 {isExpanded && invoice.lineItems.length > 0 && (
-                  <tr>
-                    <td colSpan={10} className="bg-muted/30 p-4">
-                      {invoice.text && (
-                        <div className="mb-3 text-sm">
-                          <span className="font-medium">Text:</span> {invoice.text}
+                <tr>
+                  <td colSpan={10} className="bg-muted/30 p-4">
+                    {invoice.text && (
+                      <div className="mb-3 text-sm">
+                        <span className="font-medium">Text:</span> {invoice.text}
+                      </div>
+                    )}
+                    {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
+                      <div className="mb-3 bg-background rounded-lg p-3 border border-success/20">
+                        <div className="grid grid-cols-3 gap-4 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Betaldatum:</span>{' '}
+                            <span className="font-medium">{invoice.paymentDate}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Källa:</span>{' '}
+                            <span className="font-medium">{invoice.paymentSource || 'OCR'}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
+                            <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                          </div>
                         </div>
-                      )}
-                      <table className="w-full bg-background rounded-lg overflow-hidden">
+                      </div>
+                    )}
+                    <table className="w-full bg-background rounded-lg overflow-hidden">
                         <thead>
                           <tr className="border-b bg-muted/50">
                             <th className="text-left p-2 text-xs font-medium">Belopp</th>
