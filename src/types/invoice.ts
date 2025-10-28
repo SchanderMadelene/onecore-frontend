@@ -16,7 +16,7 @@ export interface Invoice {
   invoiceType: string;
   paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen';
   text?: string;
-  paymentDate?: string;
+  inCollection: boolean;
   paidAmount?: number;
   lineItems: InvoiceLineItem[];
 }

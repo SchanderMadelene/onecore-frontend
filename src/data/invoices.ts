@@ -11,7 +11,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       invoiceType: "Strófaktura",
       paymentStatus: "Obetald",
       text: "",
-      paymentDate: undefined,
+      inCollection: false,
       paidAmount: undefined,
       lineItems: []
     },
@@ -24,7 +24,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       invoiceType: "Avi",
       paymentStatus: "Obetald",
       text: "",
-      paymentDate: undefined,
+      inCollection: false,
       paidAmount: undefined,
       lineItems: [
         {
@@ -78,7 +78,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       invoiceType: "Avi",
       paymentStatus: "Förfallen",
       text: "Fakturan är skickad till inkasso",
-      paymentDate: undefined,
+      inCollection: true,
       paidAmount: undefined,
       lineItems: [
         {
@@ -116,7 +116,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       invoiceType: "Avi",
       paymentStatus: "Betald",
       text: "",
-      paymentDate: "2025-07-28",
+      inCollection: false,
       paidAmount: 7689.47,
       lineItems: [
         {
@@ -146,7 +146,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       invoiceType: "Avi",
       paymentStatus: "Betald",
       text: "",
-      paymentDate: "2025-06-25",
+      inCollection: false,
       paidAmount: 7689.47,
       lineItems: [
         {
