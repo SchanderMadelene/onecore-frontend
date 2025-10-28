@@ -147,7 +147,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
             <th className="text-left p-3 text-sm font-medium">Fakturadatum</th>
             <th className="text-left p-3 text-sm font-medium">Förfallodatum</th>
             <th className="text-right p-3 text-sm font-medium">Belopp</th>
-            <th className="text-left p-3 text-sm font-medium">Referens</th>
+            <th className="text-right p-3 text-sm font-medium">Saldo</th>
             <th className="text-left p-3 text-sm font-medium">Fakturatyp</th>
             <th className="text-left p-3 text-sm font-medium">Betaldatum</th>
             <th className="text-right p-3 text-sm font-medium">Inbetalat belopp</th>
@@ -169,7 +169,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm">{invoice.invoiceDate}</td>
                   <td className="p-3 text-sm">{invoice.dueDate}</td>
                   <td className="p-3 text-sm text-right">{formatCurrency(invoice.amount)}</td>
-                  <td className="p-3 text-sm">{invoice.reference}</td>
+                  <td className="p-3 text-sm text-right">{formatCurrency(invoice.balance)}</td>
                   <td className="p-3 text-sm">{invoice.invoiceType}</td>
                   <td className="p-3 text-sm">{invoice.paymentDate || '-'}</td>
                   <td className="p-3 text-sm text-right">

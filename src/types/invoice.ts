@@ -12,7 +12,7 @@ export interface Invoice {
   invoiceDate: string;
   dueDate: string;
   amount: number;
-  reference: string;
+  balance: number;
   invoiceType: string;
   paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen';
   text?: string;
