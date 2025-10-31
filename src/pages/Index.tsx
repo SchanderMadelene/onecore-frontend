@@ -45,12 +45,12 @@ const Index = () => {
       <div className="space-y-6">
         <header className="text-center space-y-3">
           <div className="flex items-center justify-center gap-3 flex-wrap">
-            <h1 className="text-3xl font-bold flex items-center gap-2 flex-wrap justify-center">
-              Hej [namn] välkommen till 
+            <h1 className="text-3xl font-bold">
+              <div>Hej [namn] välkommen till</div>
               <img 
                 src={onecoreLogo} 
                 alt="OneCore" 
-                className="h-8 md:h-10 inline-block"
+                className="h-10 md:h-12 mt-2"
               />
             </h1>
             {devModeEnabled && (
