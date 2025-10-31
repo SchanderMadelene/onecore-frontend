@@ -57,7 +57,7 @@ export function NavigationBar({
             className="hover:opacity-80 transition-opacity cursor-pointer"
             onClick={(e) => e.stopPropagation()}
           >
-            <img src={onecoreLogo} alt="OneCore" className="h-8" />
+            <img src={onecoreLogo} alt="OneCore" className="h-6" />
           </Link>
         </div>
         
