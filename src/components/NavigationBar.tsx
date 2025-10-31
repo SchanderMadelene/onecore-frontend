@@ -4,6 +4,7 @@ import { useState } from "react";
 import { GlobalSearchBar } from "./search/GlobalSearchBar";
 import { Link } from "react-router-dom";
 import { Settings, Menu, Search } from "lucide-react";
+import onecoreLogo from "@/assets/onecore_logo.svg";
 
 export function NavigationBar({
   onMenuClick
@@ -53,10 +54,10 @@ export function NavigationBar({
           </Button>
           <Link 
             to="/" 
-            className="font-semibold hover:text-primary transition-colors cursor-pointer"
+            className="hover:opacity-80 transition-opacity cursor-pointer"
             onClick={(e) => e.stopPropagation()}
           >
-            OneCore
+            <img src={onecoreLogo} alt="OneCore" className="h-8" />
           </Link>
         </div>
         
