@@ -8,6 +8,7 @@ import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole, roleLabels, UserRole } from "@/contexts/RoleContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import onecoreLogo from "@/assets/onecore_logo.svg";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -42,7 +43,14 @@ const Index = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
-        <header className="text-center space-y-3">
+        <header className="text-center space-y-6">
+          <div className="flex justify-center">
+            <img 
+              src={onecoreLogo} 
+              alt="OneCore" 
+              className="h-16 md:h-20 opacity-90"
+            />
+          </div>
           <div className="flex items-center justify-center gap-3">
             <h1 className="text-3xl font-bold">Hej [namn] välkommen till ONECore</h1>
             {devModeEnabled && (
