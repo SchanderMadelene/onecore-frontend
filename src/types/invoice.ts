@@ -12,11 +12,14 @@ export interface Invoice {
   invoiceDate: string;
   dueDate: string;
   amount: number;
-  reference: string;
+  balance: number;
   invoiceType: string;
   paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen';
   text?: string;
+  inCollection: boolean;
+  source: 'Xpand' | 'Xledger';
   paymentDate?: string;
   paidAmount?: number;
+  paymentSource?: string;
   lineItems: InvoiceLineItem[];
 }

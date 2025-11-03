@@ -8,6 +8,7 @@ import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole, roleLabels, UserRole } from "@/contexts/RoleContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import onecoreLogo from "@/assets/logos/full/onecore_logo_black.svg";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -43,8 +44,15 @@ const Index = () => {
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
         <header className="text-center space-y-3">
-          <div className="flex items-center justify-center gap-3">
-            <h1 className="text-3xl font-bold">Hej [namn] välkommen till ONECore</h1>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <h1 className="text-3xl font-bold text-center">
+              <div className="text-center">Hej [namn] välkommen till</div>
+              <img 
+                src={onecoreLogo} 
+                alt="OneCore" 
+                className="h-10 md:h-12 mt-2 mx-auto"
+              />
+            </h1>
             {devModeEnabled && (
               <Badge variant="outline" className="text-xs">
                 Dev Mode
@@ -71,18 +79,33 @@ const Index = () => {
           )}
         </header>
         
-        <div className="max-w-2xl mx-auto">
-          <Card className="animate-fade-in hover-scale">
-            <CardContent className="p-8 text-center space-y-4">
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                Vi är glada att ha dig här! ONECore är din digitala arbetsplats där allt du behöver för att 
-                göra ditt bästa arbete finns samlat på ett ställe. Ta det i din egen takt och utforska 
-                systemet - du kommer att märka hur enkelt det är att navigera mellan olika funktioner.
-              </p>
-              <p className="text-base text-muted-foreground">
-                Har du frågor eller behöver hjälp? Tveka inte att höra av dig till <span className="font-semibold text-primary">David</span> eller <span className="font-semibold text-primary">Lina</span> - 
-                vi finns här för att stötta dig!
-              </p>
+        <div className="max-w-3xl mx-auto">
+          <Card className="animate-fade-in hover-scale border-2">
+            <CardContent className="p-8 md:p-10 text-center space-y-6">
+              <div className="space-y-4">
+                <p className="text-xl md:text-2xl font-medium leading-relaxed">
+                  Vi är glada att ha dig här!
+                </p>
+                <p className="text-base md:text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto">
+                  ONECore är din digitala arbetsplats där allt du behöver för att 
+                  göra ditt bästa arbete finns samlat på ett ställe. Ta det i din egen takt och utforska 
+                  systemet - du kommer att märka hur enkelt det är att navigera mellan olika funktioner.
+                </p>
+              </div>
+              
+              <div className="pt-4 border-t">
+                <p className="text-sm md:text-base text-muted-foreground">
+                  Har du frågor eller behöver hjälp? Tveka inte att höra av dig till
+                </p>
+                <div className="flex items-center justify-center gap-2 mt-2 text-base md:text-lg font-semibold">
+                  <span className="text-primary">David</span>
+                  <span className="text-muted-foreground">eller</span>
+                  <span className="text-primary">Lina</span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Vi finns här för att stötta dig!
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>

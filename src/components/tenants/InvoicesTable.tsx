@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronRight, FileText } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { differenceInDays, parseISO } from "date-fns";
 
 interface InvoicesTableProps {
   invoices: Invoice[];
@@ -36,6 +38,25 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
     setExpandedInvoice(expandedInvoice === invoiceNumber ? null : invoiceNumber);
   };
 
+  const getOverdueDays = (dueDate: string): number => {
+    const today = new Date();
+    const due = parseISO(dueDate);
+    return differenceInDays(today, due);
+  };
+
+  const getStatusText = (invoice: Invoice): string => {
+    if (invoice.paymentStatus === 'Förfallen') {
+      const days = getOverdueDays(invoice.dueDate);
+      return `Förfallen (${days} dagar)`;
+    }
+    return invoice.paymentStatus;
+  };
+
+  const handleOpenPDF = (invoiceNumber: string) => {
+    // TODO: Implement PDF opening logic
+    console.log('Opening PDF for invoice:', invoiceNumber);
+  };
+
   if (isMobile) {
     return (
       <div className="space-y-3">
@@ -53,7 +74,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <div className="text-sm text-muted-foreground">{invoice.invoiceType}</div>
                   </div>
                   <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                    {invoice.paymentStatus}
+                    {getStatusText(invoice)}
                   </Badge>
                 </div>
                 <div className="space-y-1 text-sm">
@@ -62,21 +83,13 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <span className="font-medium">{formatCurrency(invoice.amount)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Förfallodatum:</span>
-                    <span>{invoice.dueDate}</span>
+                    <span className="text-muted-foreground">Inkasso:</span>
+                    <span>{invoice.inCollection ? 'Ja' : 'Nej'}</span>
                   </div>
-                  {invoice.paymentDate && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Betaldatum:</span>
-                      <span>{invoice.paymentDate}</span>
-                    </div>
-                  )}
-                  {invoice.paidAmount !== undefined && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Inbetalat:</span>
-                      <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
-                    </div>
-                  )}
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Källa:</span>
+                    <span>{invoice.source}</span>
+                  </div>
                 </div>
                 <div className="mt-2 flex items-center text-sm text-muted-foreground">
                   {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -91,20 +104,34 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       <span className="font-medium">Text:</span> {invoice.text}
                     </div>
                   )}
-                  {(invoice.paymentDate || invoice.paidAmount !== undefined) && (
-                    <div className="mb-3 grid grid-cols-2 gap-4 text-sm bg-background rounded-lg p-3">
-                      {invoice.paymentDate && (
+                  {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
+                    <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
+                      <div className="grid grid-cols-3 gap-4 text-sm mb-3">
                         <div>
-                          <span className="text-muted-foreground">Betaldatum:</span>{' '}
-                          <span className="font-medium">{invoice.paymentDate}</span>
+                          <span className="text-muted-foreground block mb-1">Betaldatum:</span>
+                          <span className="font-semibold">{invoice.paymentDate}</span>
                         </div>
-                      )}
-                      {invoice.paidAmount !== undefined && (
                         <div>
-                          <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
-                          <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                          <span className="text-muted-foreground block mb-1">Källa:</span>
+                          <span className="font-semibold">{invoice.paymentSource || 'OCR'}</span>
                         </div>
-                      )}
+                        <div>
+                          <span className="text-muted-foreground block mb-1">Inbetalat belopp:</span>
+                          <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
+                        </div>
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenPDF(invoice.invoiceNumber);
+                        }}
+                        className="w-full sm:w-auto"
+                      >
+                        <FileText className="h-4 w-4 mr-2" />
+                        Öppna PDF
+                      </Button>
                     </div>
                   )}
                   <div className="space-y-2">
@@ -147,10 +174,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
             <th className="text-left p-3 text-sm font-medium">Fakturadatum</th>
             <th className="text-left p-3 text-sm font-medium">Förfallodatum</th>
             <th className="text-right p-3 text-sm font-medium">Belopp</th>
-            <th className="text-left p-3 text-sm font-medium">Referens</th>
+            <th className="text-right p-3 text-sm font-medium">Saldo</th>
             <th className="text-left p-3 text-sm font-medium">Fakturatyp</th>
-            <th className="text-left p-3 text-sm font-medium">Betaldatum</th>
-            <th className="text-right p-3 text-sm font-medium">Inbetalat belopp</th>
+            <th className="text-left p-3 text-sm font-medium">Inkasso</th>
+            <th className="text-left p-3 text-sm font-medium">Källa</th>
             <th className="text-left p-3 text-sm font-medium">Betalstatus</th>
             <th className="w-10"></th>
           </tr>
@@ -169,15 +196,13 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm">{invoice.invoiceDate}</td>
                   <td className="p-3 text-sm">{invoice.dueDate}</td>
                   <td className="p-3 text-sm text-right">{formatCurrency(invoice.amount)}</td>
-                  <td className="p-3 text-sm">{invoice.reference}</td>
+                  <td className="p-3 text-sm text-right">{formatCurrency(invoice.balance)}</td>
                   <td className="p-3 text-sm">{invoice.invoiceType}</td>
-                  <td className="p-3 text-sm">{invoice.paymentDate || '-'}</td>
-                  <td className="p-3 text-sm text-right">
-                    {invoice.paidAmount !== undefined ? formatCurrency(invoice.paidAmount) : '-'}
-                  </td>
+                  <td className="p-3 text-sm">{invoice.inCollection ? 'Ja' : 'Nej'}</td>
+                  <td className="p-3 text-sm">{invoice.source}</td>
                   <td className="p-3 text-sm">
                     <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                      {invoice.paymentStatus}
+                      {getStatusText(invoice)}
                     </Badge>
                   </td>
                   <td className="p-3">
@@ -189,30 +214,47 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   </td>
                 </tr>
                 {isExpanded && invoice.lineItems.length > 0 && (
-                  <tr>
-                    <td colSpan={10} className="bg-muted/30 p-4">
+                <tr>
+                  <td colSpan={10} className="p-0">
+                    <div className="bg-muted/50 border-l-4 border-primary/30 p-4 ml-4">
                       {invoice.text && (
-                        <div className="mb-3 text-sm">
+                        <div className="mb-3 text-sm bg-background/50 rounded p-2">
                           <span className="font-medium">Text:</span> {invoice.text}
                         </div>
                       )}
-                      {(invoice.paymentDate || invoice.paidAmount !== undefined) && (
-                        <div className="mb-3 grid grid-cols-2 gap-4 text-sm bg-background rounded-lg p-3">
-                          {invoice.paymentDate && (
+                      {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
+                        <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
+                          <div className="grid grid-cols-3 gap-4 text-sm mb-3">
                             <div>
-                              <span className="text-muted-foreground">Betaldatum:</span>{' '}
-                              <span className="font-medium">{invoice.paymentDate}</span>
+                              <span className="text-muted-foreground block mb-1">Betaldatum:</span>
+                              <span className="font-semibold">{invoice.paymentDate}</span>
                             </div>
-                          )}
-                          {invoice.paidAmount !== undefined && (
                             <div>
-                              <span className="text-muted-foreground">Inbetalat belopp:</span>{' '}
-                              <span className="font-medium">{formatCurrency(invoice.paidAmount)}</span>
+                              <span className="text-muted-foreground block mb-1">Källa:</span>
+                              <span className="font-semibold">{invoice.paymentSource || 'OCR'}</span>
                             </div>
-                          )}
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Inbetalat belopp:</span>
+                              <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenPDF(invoice.invoiceNumber);
+                            }}
+                            className="w-full sm:w-auto"
+                          >
+                            <FileText className="h-4 w-4 mr-2" />
+                            Öppna PDF
+                          </Button>
                         </div>
                       )}
-                      <table className="w-full bg-background rounded-lg overflow-hidden">
+                      <div className="bg-background rounded-lg p-3 shadow-sm">
+                        <div className="font-medium text-sm mb-3 text-muted-foreground">Fakturarader</div>
+                        <table className="w-full">
                         <thead>
                           <tr className="border-b bg-muted/50">
                             <th className="text-left p-2 text-xs font-medium">Belopp</th>
@@ -236,8 +278,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           ))}
                         </tbody>
                       </table>
-                    </td>
-                  </tr>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
                 )}
               </>
             );
