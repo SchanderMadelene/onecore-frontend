@@ -108,38 +108,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
       </div>
       
       <div className="space-y-4">
-        {tenant.customerType === "tenant" ? (
-          <>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
-              <p className="font-medium">
-                {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontrakttyp</p>
-              <p className="font-medium">{tenant.housingContractType || "Ej angivet"}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-              <p className="font-medium">{tenant.contractNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{tenant.moveInDate ? new Date(tenant.moveInDate).toLocaleDateString('sv-SE') : "Ej angivet"}</p>
-              </div>
-            </div>
-            {tenant.moveOutDate && (
-              <div>
-                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
-                </div>
-              </div>
-            )}
-          </>
-        ) : (
+        {tenant.customerType === "applicant" && (
           <>
             <div>
               <p className="text-sm text-muted-foreground">Registreringsdatum</p>
