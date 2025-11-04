@@ -60,7 +60,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
   };
 
   const cardContent = (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="space-y-4">
         <div>
           <p className="text-sm text-muted-foreground">Namn</p>
@@ -106,11 +106,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </Button>
           </div>
         </div>
-
-        <div>
-          <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
-          <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
-        </div>
       </div>
       
       <div className="space-y-4">
@@ -143,6 +138,14 @@ export function TenantCard({ tenant }: TenantCardProps) {
             )}
           </>
         )}
+
+        <div>
+          <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
+          <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
+        </div>
+      </div>
+      
+      <div className="space-y-4">
 
         <div>
           <p className="text-sm text-muted-foreground">Mina Sidor</p>
