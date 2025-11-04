@@ -60,7 +60,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
   };
 
   const cardContent = (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="space-y-4">
         <div>
           <p className="text-sm text-muted-foreground">Namn</p>
@@ -96,6 +96,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
           </div>
         </div>
+        
         <div>
           <p className="text-sm text-muted-foreground">E-post</p>
           <div className="flex items-center gap-2">
@@ -104,6 +105,11 @@ export function TenantCard({ tenant }: TenantCardProps) {
               <Mail className="h-4 w-4" />
             </Button>
           </div>
+        </div>
+
+        <div>
+          <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
+          <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
         </div>
       </div>
       
@@ -137,15 +143,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
             )}
           </>
         )}
-        <div>
-          <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="space-y-4">
+
         <div>
           <p className="text-sm text-muted-foreground">Mina Sidor</p>
           <div className="border rounded-md p-3 bg-muted/20 space-y-2 mt-1">
@@ -162,27 +160,25 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
           </div>
         </div>
+        
         <div>
           <p className="text-sm text-muted-foreground">Antal inloggningar</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{tenant.loginCount || 0}</p>
-          </div>
+          <p className="font-medium">{tenant.loginCount || 0}</p>
         </div>
+        
         <div>
           <p className="text-sm text-muted-foreground">Senaste inloggning</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">
-              {tenant.lastLogin 
-                ? new Date(tenant.lastLogin).toLocaleDateString('sv-SE', {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })
-                : "Aldrig"}
-            </p>
-          </div>
+          <p className="font-medium">
+            {tenant.lastLogin 
+              ? new Date(tenant.lastLogin).toLocaleDateString('sv-SE', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })
+              : "Aldrig"}
+          </p>
         </div>
       </div>
     </div>
