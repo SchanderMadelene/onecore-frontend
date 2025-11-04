@@ -90,6 +90,7 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
               <TableHead>Kontraktsnummer</TableHead>
               <TableHead>Objekt</TableHead>
               <TableHead>Startdatum</TableHead>
+              <TableHead>Slutdatum</TableHead>
               <TableHead>Månadshyra</TableHead>
               <TableHead>Kontrakttyp</TableHead>
               <TableHead>Status</TableHead>
@@ -110,6 +111,9 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
                   <div>
                     {formatDate(contract.startDate)}
                   </div>
+                </TableCell>
+                <TableCell>
+                  {contract.endDate ? formatDate(contract.endDate) : ""}
                 </TableCell>
                 <TableCell>{formatCurrency(contract.rent)}</TableCell>
                 <TableCell>{getContractCategory(contract.type)}</TableCell>
