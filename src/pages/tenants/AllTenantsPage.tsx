@@ -170,11 +170,9 @@ const AllTenantsPage = () => {
                   key: "type",
                   label: "Typ",
                   render: (customer) => (
-                    <Badge 
-                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
-                    >
-                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                    </Badge>
+                    <span>
+                      {customer.customerRole || (customer.customerType === "tenant" ? "Hyresgäst" : "Sökande")}
+                    </span>
                   ),
                 },
                 {
@@ -207,11 +205,9 @@ const AllTenantsPage = () => {
                       </div>
                       <div className="text-sm text-muted-foreground">{customer.id}</div>
                     </div>
-                    <Badge 
-                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
-                    >
-                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                    </Badge>
+                    <span className="text-sm">
+                      {customer.customerRole || (customer.customerType === "tenant" ? "Hyresgäst" : "Sökande")}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{customer.property}</span>
