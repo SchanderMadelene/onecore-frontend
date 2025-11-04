@@ -17,7 +17,8 @@ import { getAllCustomers } from "@/data/tenants";
 const customers = getAllCustomers().map(customer => ({
   ...customer,
   id: customer.personalNumber,
-  property: customer.customerType === "tenant" ? getPropertyForTenant(customer.personalNumber) : "Ingen bostad"
+  property: customer.customerType === "tenant" ? getPropertyForTenant(customer.personalNumber) : "Ingen bostad",
+  customerRole: (customer as any).customerRole || (customer.customerType === "tenant" ? "Hyresgäst" : "Sökande")
 }));
 
 function getPropertyForTenant(personalNumber: string) {
@@ -66,7 +67,7 @@ const AllTenantsPage = () => {
       );
 
       // Customer type filter
-      const matchesCustomerType = customerTypeFilter === "all" || customer.customerType === customerTypeFilter;
+      const matchesCustomerType = customerTypeFilter === "all" || customer.customerRole === customerTypeFilter;
 
       // Contract status filter (mock data - in real app would come from contract data)
       const matchesContractStatus = contractStatusFilter === "all" || true; // Placeholder for real implementation

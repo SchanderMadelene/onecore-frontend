@@ -34,8 +34,10 @@ export function TenantSelectionFilters({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Alla typer</SelectItem>
-            <SelectItem value="tenant">Hyresgäst</SelectItem>
-            <SelectItem value="applicant">Sökande</SelectItem>
+            <SelectItem value="Hyresgäst">Hyresgäst</SelectItem>
+            <SelectItem value="Sökande">Sökande</SelectItem>
+            <SelectItem value="God man">God man</SelectItem>
+            <SelectItem value="Nyttjare">Nyttjare</SelectItem>
           </SelectContent>
         </Select>
       </div>
