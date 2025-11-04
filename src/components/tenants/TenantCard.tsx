@@ -81,7 +81,9 @@ export function TenantCard({ tenant }: TenantCardProps) {
           <p className="text-sm text-muted-foreground">Kundnummer</p>
           <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
         </div>
-        
+      </div>
+      
+      <div className="space-y-4">
         <div>
           <p className="text-sm text-muted-foreground">Telefon</p>
           <div className="flex items-center gap-2">
@@ -96,6 +98,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
           </div>
         </div>
+        
         <div>
           <p className="text-sm text-muted-foreground">E-post</p>
           <div className="flex items-center gap-2">
@@ -105,41 +108,13 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </Button>
           </div>
         </div>
-      </div>
-      
-      <div className="space-y-4">
-        {tenant.customerType === "tenant" ? (
-          <>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsstatus</p>
-              <p className="font-medium">
-                {tenant.contractStatus === "permanent" ? "Tillsvidare" : "Uppsagt"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontrakttyp</p>
-              <p className="font-medium">{tenant.housingContractType || "Ej angivet"}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Kontraktsnummer</p>
-              <p className="font-medium">{tenant.contractNumber}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">{tenant.moveInDate ? new Date(tenant.moveInDate).toLocaleDateString('sv-SE') : "Ej angivet"}</p>
-              </div>
-            </div>
-            {tenant.moveOutDate && (
-              <div>
-                <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium">{new Date(tenant.moveOutDate).toLocaleDateString('sv-SE')}</p>
-                </div>
-              </div>
-            )}
-          </>
-        ) : (
+
+        <div>
+          <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
+          <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
+        </div>
+
+        {tenant.customerType === "applicant" && (
           <>
             <div>
               <p className="text-sm text-muted-foreground">Registreringsdatum</p>
@@ -168,15 +143,10 @@ export function TenantCard({ tenant }: TenantCardProps) {
             )}
           </>
         )}
-        <div>
-          <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
-          </div>
-        </div>
       </div>
       
       <div className="space-y-4">
+
         <div>
           <p className="text-sm text-muted-foreground">Mina Sidor</p>
           <div className="border rounded-md p-3 bg-muted/20 space-y-2 mt-1">
@@ -193,27 +163,25 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </div>
           </div>
         </div>
+        
         <div>
           <p className="text-sm text-muted-foreground">Antal inloggningar</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{tenant.loginCount || 0}</p>
-          </div>
+          <p className="font-medium">{tenant.loginCount || 0}</p>
         </div>
+        
         <div>
           <p className="text-sm text-muted-foreground">Senaste inloggning</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">
-              {tenant.lastLogin 
-                ? new Date(tenant.lastLogin).toLocaleDateString('sv-SE', {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })
-                : "Aldrig"}
-            </p>
-          </div>
+          <p className="font-medium">
+            {tenant.lastLogin 
+              ? new Date(tenant.lastLogin).toLocaleDateString('sv-SE', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })
+              : "Aldrig"}
+          </p>
         </div>
       </div>
     </div>
