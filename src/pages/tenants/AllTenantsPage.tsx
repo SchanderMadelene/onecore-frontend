@@ -17,7 +17,9 @@ import { getAllCustomers } from "@/data/tenants";
 const customers = getAllCustomers().map(customer => ({
   ...customer,
   id: customer.personalNumber,
-  property: customer.customerType === "tenant" ? getPropertyForTenant(customer.personalNumber) : "Ingen bostad"
+  property: customer.customerType === "tenant" ? getPropertyForTenant(customer.personalNumber) : "Ingen bostad",
+  customerRoles: (customer as any).customerRoles || [customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"],
+  displayRoles: (customer as any).customerRoles?.join(", ") || (customer.customerType === "tenant" ? "Hyresgäst" : "Sökande")
 }));
 
 function getPropertyForTenant(personalNumber: string) {
@@ -66,7 +68,8 @@ const AllTenantsPage = () => {
       );
 
       // Customer type filter
-      const matchesCustomerType = customerTypeFilter === "all" || customer.customerType === customerTypeFilter;
+      const matchesCustomerType = customerTypeFilter === "all" || 
+        (customer.customerRoles && customer.customerRoles.includes(customerTypeFilter));
 
       // Contract status filter (mock data - in real app would come from contract data)
       const matchesContractStatus = contractStatusFilter === "all" || true; // Placeholder for real implementation
@@ -170,11 +173,9 @@ const AllTenantsPage = () => {
                   key: "type",
                   label: "Typ",
                   render: (customer) => (
-                    <Badge 
-                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
-                    >
-                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                    </Badge>
+                    <span>
+                      {customer.displayRoles}
+                    </span>
                   ),
                 },
                 {
@@ -207,11 +208,9 @@ const AllTenantsPage = () => {
                       </div>
                       <div className="text-sm text-muted-foreground">{customer.id}</div>
                     </div>
-                    <Badge 
-                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
-                    >
-                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                    </Badge>
+                    <span className="text-sm">
+                      {customer.displayRoles}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{customer.property}</span>

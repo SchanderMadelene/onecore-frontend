@@ -14,6 +14,7 @@ interface TenantCardProps {
     phone: string;
     email: string;
     customerType: "tenant" | "applicant";
+    customerRoles?: string[];
     contractStatus?: "permanent" | "terminated";
     moveInDate?: string;
     moveOutDate?: string;
@@ -80,6 +81,15 @@ export function TenantCard({ tenant }: TenantCardProps) {
         <div>
           <p className="text-sm text-muted-foreground">Kundnummer</p>
           <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
+        </div>
+
+        <div>
+          <p className="text-sm text-muted-foreground">Typ/roll</p>
+          <p className="font-medium">
+            {tenant.customerRoles && tenant.customerRoles.length > 0 
+              ? tenant.customerRoles.join(", ") 
+              : (tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande")}
+          </p>
         </div>
       </div>
       

@@ -6,6 +6,7 @@ export const mockTenant = {
   email: "anna.andersson@example.com",
   contractStatus: "terminated" as const,
   customerType: "tenant" as const,
+  customerRoles: ["Hyresgäst", "Sökande"],
   moveInDate: "2023-01-01",
   moveOutDate: "2023-12-31",
   contractNumber: "KT2023-001",
@@ -21,7 +22,8 @@ export const mockTenant = {
   },
   loginCount: 12,
   lastLogin: "2023-11-15T14:30:00",
-  isPrimaryTenant: true
+  isPrimaryTenant: true,
+  housingInterests: ["3 rum och kök", "4 rum och kök"]
 };
 
 // Erik Karlsson - Privat kund
@@ -32,6 +34,7 @@ export const mockErikKarlsson = {
   email: "erik.karlsson@example.com",
   contractStatus: "permanent" as const,
   customerType: "tenant" as const,
+  customerRoles: ["Nyttjare"],
   moveInDate: "2020-03-15",
   contractNumber: "KT2020-015",
   personalNumber: "19760315-5678",
@@ -57,6 +60,7 @@ export const mockMariaLindberg = {
   email: "maria.lindberg@example.com",
   contractStatus: "permanent" as const,
   customerType: "tenant" as const,
+  customerRoles: ["Hyresgäst", "Sökande"],
   moveInDate: "2021-11-22",
   contractNumber: "KT2021-122",
   personalNumber: "19911122-9012",
@@ -71,7 +75,8 @@ export const mockMariaLindberg = {
   },
   loginCount: 28,
   lastLogin: "2024-06-09T16:45:00",
-  isPrimaryTenant: true
+  isPrimaryTenant: true,
+  housingInterests: ["2 rum och kök"]
 };
 
 // Johan Svensson - Privat kund
@@ -82,6 +87,7 @@ export const mockJohanSvensson = {
   email: "johan.svensson@example.com",
   contractStatus: "permanent" as const,
   customerType: "tenant" as const,
+  customerRoles: ["God man"],
   moveInDate: "2019-08-12",
   contractNumber: "KT2019-087",
   personalNumber: "19820812-3456",
@@ -106,6 +112,7 @@ export const mockLisaNilsson = {
   email: "lisa.nilsson@example.com",
   contractStatus: "permanent" as const,
   customerType: "tenant" as const,
+  customerRoles: ["Hyresgäst"],
   moveInDate: "2022-02-28",
   contractNumber: "KT2022-028",
   personalNumber: "19900228-7890",
@@ -130,6 +137,7 @@ export const mockParGustafsson = {
   email: "par.gustafsson@example.com",
   contractStatus: "terminated" as const,
   customerType: "tenant" as const,
+  customerRoles: ["Nyttjare"],
   moveInDate: "2021-05-15",
   moveOutDate: "2024-05-15",
   contractNumber: "KT2021-055",
@@ -155,6 +163,7 @@ export const mockSeekers = [
     phone: "073-111 22 33",
     email: "sarah.blomberg@example.com",
     customerType: "applicant" as const,
+    customerRoles: ["Sökande"],
     registrationDate: "2024-05-20",
     personalNumber: "19950425-1122",
     nationality: "Svensk",
@@ -175,6 +184,7 @@ export const mockSeekers = [
     phone: "070-444 55 66",
     email: "marcus.hedstrom@example.com",
     customerType: "applicant" as const,
+    customerRoles: ["Sökande"],
     registrationDate: "2024-03-12",
     personalNumber: "19881203-4455",
     nationality: "Svensk",
@@ -195,6 +205,7 @@ export const mockSeekers = [
     phone: "073-777 88 99",
     email: "emma.ostberg@example.com",
     customerType: "applicant" as const,
+    customerRoles: ["Sökande"],
     registrationDate: "2024-01-08",
     personalNumber: "19921015-7788",
     nationality: "Svensk",
