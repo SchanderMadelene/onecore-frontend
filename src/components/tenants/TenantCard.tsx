@@ -81,7 +81,9 @@ export function TenantCard({ tenant }: TenantCardProps) {
           <p className="text-sm text-muted-foreground">Kundnummer</p>
           <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
         </div>
-        
+      </div>
+      
+      <div className="space-y-4">
         <div>
           <p className="text-sm text-muted-foreground">Telefon</p>
           <div className="flex items-center gap-2">
@@ -106,9 +108,12 @@ export function TenantCard({ tenant }: TenantCardProps) {
             </Button>
           </div>
         </div>
-      </div>
-      
-      <div className="space-y-4">
+
+        <div>
+          <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
+          <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
+        </div>
+
         {tenant.customerType === "applicant" && (
           <>
             <div>
@@ -138,11 +143,6 @@ export function TenantCard({ tenant }: TenantCardProps) {
             )}
           </>
         )}
-
-        <div>
-          <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
-          <p className="font-medium">{tenant.hasLegalGuardian ? "Ja" : "Nej"}</p>
-        </div>
       </div>
       
       <div className="space-y-4">
