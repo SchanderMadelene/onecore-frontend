@@ -25,15 +25,6 @@ export const getMockContractsForTenant = (tenantId: string): Contract[] => {
     case "19850101-1234":
       return [
         {
-          id: "KT2023-001",
-          type: "housing",
-          objectName: "Lägenhet 1001",
-          objectId: "lgh-101",
-          startDate: "2023-01-01",
-          rent: 8500,
-          status: "active"
-        },
-        {
           id: "KT2021-034",
           type: "housing",
           objectName: "Lägenhet 502",
