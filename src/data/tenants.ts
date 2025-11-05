@@ -3,6 +3,7 @@ export const mockTenant = {
   firstName: "Anna",
   lastName: "Andersson",
   phone: "070-123 45 67",
+  additionalPhones: ["021-12 34 56"],
   email: "anna.andersson@example.com",
   contractStatus: "terminated" as const,
   customerType: "tenant" as const,
