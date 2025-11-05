@@ -147,7 +147,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
   return (
     <GenericMobileAccordion 
       items={accordionItems}
-      defaultOpen={["queue"]}
+      defaultOpen={isApplicantOnly ? ["queue"] : ["contracts"]}
       className="space-y-3"
     />
   );

@@ -57,7 +57,11 @@ const TenantDetailPage = () => {
             customerRoles={tenant.customerRoles}
           />
         ) : (
-          <TenantDetailTabs defaultValue="queue" hasActiveCases={hasActiveCases} customerRoles={tenant.customerRoles}>
+          <TenantDetailTabs 
+            defaultValue={tenant.customerRoles?.length === 1 && tenant.customerRoles.includes("Sökande") ? "queue" : "contracts"} 
+            hasActiveCases={hasActiveCases} 
+            customerRoles={tenant.customerRoles}
+          >
             <TenantDetailTabsContent 
               contracts={contracts} 
               personalNumber={tenant.personalNumber}
