@@ -13,15 +13,20 @@ interface TenantMobileAccordionProps {
   hasActiveCases?: boolean;
   customerNumber: string;
   customerName: string;
+  customerRoles?: string[];
 }
 
-export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumber, customerName }: TenantMobileAccordionProps) {
+export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumber, customerName, customerRoles = [] }: TenantMobileAccordionProps) {
   const { features } = useFeatureToggles();
+  
+  // Kund är bara sökande om de bara har rollen "Sökande" och inga andra roller
+  const isApplicantOnly = customerRoles.length === 1 && customerRoles.includes("Sökande");
   
   const accordionItems: MobileAccordionItem[] = [
     {
       id: "contracts",
       title: "Hyreskontrakt",
+      disabled: isApplicantOnly,
       content: features.showTenantContracts ? (
         <TenantContracts contracts={contracts} />
       ) : (
@@ -48,6 +53,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     {
       id: "cases",
       title: hasActiveCases ? `Ärenden (2)` : "Ärenden",
+      disabled: isApplicantOnly,
       content: features.showTenantCases ? (
         <TenantOrders />
       ) : (
@@ -61,6 +67,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     {
       id: "ledger",
       title: "Fakturor & betalningar",
+      disabled: isApplicantOnly,
       content: features.showTenantLedger ? (
         <TenantLedger 
           ledger={getMockLedgerForCustomer(customerNumber)} 
@@ -77,6 +84,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     {
       id: "notes",
       title: "Noteringar",
+      disabled: isApplicantOnly,
       content: features.showTenantNotes ? (
         <TenantNotes />
       ) : (
@@ -88,6 +96,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     {
       id: "keys",
       title: "Nyckelknippa",
+      disabled: isApplicantOnly,
       content: features.showTenantKeys ? (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-medium mb-4">Nycklar</h3>
@@ -138,7 +147,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
   return (
     <GenericMobileAccordion 
       items={accordionItems}
-      defaultOpen={["contracts"]}
+      defaultOpen={["queue"]}
       className="space-y-3"
     />
   );
