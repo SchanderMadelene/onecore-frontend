@@ -39,7 +39,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
     },
     {
       id: "queue",
-      title: "Kösystem",
+      title: "Uthyrning",
       content: features.showTenantQueue ? (
         <TenantQueueSystem customerNumber={customerNumber} customerName={customerName} />
       ) : (
