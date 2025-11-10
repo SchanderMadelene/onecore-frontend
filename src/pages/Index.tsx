@@ -8,7 +8,7 @@ import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole, roleLabels, UserRole } from "@/contexts/RoleContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import onecoreLogo from "@/assets/logos/full/onecore_logo_black.svg";
+import onecoreLogo from "@/assets/logos/stacked/onecore_logo_stacked_color.png";
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -50,7 +50,7 @@ const Index = () => {
               <img 
                 src={onecoreLogo} 
                 alt="OneCore" 
-                className="h-10 md:h-12 mt-2 mx-auto"
+                className="h-16 md:h-20 mt-2 mx-auto"
               />
             </h1>
             {devModeEnabled && (
