@@ -6,6 +6,9 @@ import logoFullWhite from "@/assets/logos/full/onecore_logo_white.svg";
 import logoSimpleBlack from "@/assets/logos/simple/onecore_simple_black.svg";
 import logoSimpleColor from "@/assets/logos/simple/onecore_simple_color.svg";
 import logoSimpleWhite from "@/assets/logos/simple/onecore_simple_white.svg";
+import logoStackedBlack from "@/assets/logos/stacked/onecore_logo_stacked_black.svg";
+import logoStackedWhite from "@/assets/logos/stacked/onecore_logo_stacked_white.svg";
+import logoStackedColor from "@/assets/logos/stacked/onecore_logo_stacked_color.png";
 
 interface LogoVariant {
   name: string;
@@ -54,6 +57,27 @@ export const LogosShowcase = () => {
       src: logoSimpleWhite,
       bgClass: "bg-slate-800",
       useCases: ["Dark mode navigation", "Kompakt dark mode"]
+    }
+  ];
+
+  const stackedLogos: LogoVariant[] = [
+    {
+      name: "Svart",
+      src: logoStackedBlack,
+      bgClass: "bg-white",
+      useCases: ["Sociala medier", "Kvadratiska ytor", "Profilbilder"]
+    },
+    {
+      name: "Färg (Blå)",
+      src: logoStackedColor,
+      bgClass: "bg-white",
+      useCases: ["Instagram posts", "Square avatars", "App tiles"]
+    },
+    {
+      name: "Vit",
+      src: logoStackedWhite,
+      bgClass: "bg-slate-800",
+      useCases: ["Dark mode squares", "Vertikala layouter"]
     }
   ];
 
@@ -163,6 +187,45 @@ export const LogosShowcase = () => {
                     src={logo.src} 
                     alt={`OneCore symbol ${logo.name}`} 
                     className="h-10"
+                  />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold mb-2">Användningsområden:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {logo.useCases.map((useCase) => (
+                      <Badge key={useCase} variant="secondary" className="text-xs">
+                        {useCase}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Staplade logotyper */}
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-xl font-semibold mb-1">Staplade logotyper</h3>
+          <p className="text-sm text-muted-foreground">
+            Symbol + text staplade vertikalt. Perfekt för kvadratiska ytor och sociala medier.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-6">
+          {stackedLogos.map((logo) => (
+            <Card key={`stacked-${logo.name}`}>
+              <CardHeader>
+                <CardTitle className="text-base">{logo.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className={`${logo.bgClass} rounded-lg p-8 flex items-center justify-center min-h-[120px] border`}>
+                  <img 
+                    src={logo.src} 
+                    alt={`OneCore stacked logo ${logo.name}`} 
+                    className="h-16"
                   />
                 </div>
                 <div>
