@@ -18,14 +18,20 @@ const queueData = {
       type: "housing",
       address: "Storgatan 45, 2tr",
       dateRegistered: "2023-09-12",
-      status: "waiting"
+      status: "waiting",
+      publishedUntil: "2024-12-31",
+      availableFrom: "2024-02-01",
+      applicationStatus: "Väntar"
     },
     {
       id: "int-002",
       type: "parking",
       address: "P-plats Norra garaget",
       dateRegistered: "2023-11-05",
-      status: "offered"
+      status: "offered",
+      publishedUntil: "2024-11-30",
+      availableFrom: "2024-01-15",
+      applicationStatus: "Erbjuden"
     }
   ],
   housingReferences: {
@@ -223,7 +229,7 @@ export function TenantQueueSystem({ customerNumber, customerName, personalNumber
             <div className="space-y-4">
               {activeInterests.map((interest) => (
                 <div key={interest.id} className="border rounded-md p-4">
-                  <div className="flex justify-between items-start mb-2">
+                  <div className="flex justify-between items-start mb-3">
                     <div>
                       <span className="font-medium">
                         {interest.address}
@@ -233,12 +239,27 @@ export function TenantQueueSystem({ customerNumber, customerName, personalNumber
                       variant={interest.status === "offered" ? "default" : "outline"}
                       className={interest.status === "offered" ? "bg-amber-500" : ""}
                     >
-                      {interest.status === "waiting" ? "Väntar" : "Erbjuden"}
+                      {interest.applicationStatus || (interest.status === "waiting" ? "Väntar" : "Erbjuden")}
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Anmäld: {new Date(interest.dateRegistered).toLocaleDateString('sv-SE')}
-                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Anmäld: </span>
+                      <span>{new Date(interest.dateRegistered).toLocaleDateString('sv-SE')}</span>
+                    </div>
+                    {interest.publishedUntil && (
+                      <div>
+                        <span className="text-muted-foreground">Publicerad tom: </span>
+                        <span>{new Date(interest.publishedUntil).toLocaleDateString('sv-SE')}</span>
+                      </div>
+                    )}
+                    {interest.availableFrom && (
+                      <div>
+                        <span className="text-muted-foreground">Ledigt från: </span>
+                        <span>{new Date(interest.availableFrom).toLocaleDateString('sv-SE')}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
