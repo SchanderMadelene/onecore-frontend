@@ -3,13 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { InfoIcon, Home, Car, User, UserCheck, Users, Plus } from "lucide-react";
+import { InfoIcon, Home, Car, User, UserCheck, Users, Plus, Warehouse } from "lucide-react";
 import { CreateParkingInterestDialog } from "./CreateParkingInterestDialog";
 
 // Mock data for the queue system
 const queueData = {
   housingPoints: 1245,
   parkingPoints: 386,
+  storagePoints: 892,
   activeInterests: [
     {
       id: "int-001",
@@ -80,7 +81,7 @@ export function TenantQueueSystem({ customerNumber, customerName }: TenantQueueS
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
@@ -125,6 +126,30 @@ export function TenantQueueSystem({ customerNumber, customerName }: TenantQueueS
                 customerNumber={customerNumber}
                 customerName={customerName}
               />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Warehouse className="h-5 w-5 text-muted-foreground" />
+              Förråd
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Köpoäng</p>
+                <p className="text-2xl font-bold">{queueData.storagePoints}</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Motsvarar ca {Math.floor(queueData.storagePoints / 365)} år och {queueData.storagePoints % 365} dagar
+                </p>
+              </div>
+              <Button variant="outline" className="w-full">
+                <Plus className="h-4 w-4 mr-2" />
+                Ny intresseanmälan förråd
+              </Button>
             </div>
           </CardContent>
         </Card>
