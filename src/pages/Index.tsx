@@ -132,7 +132,7 @@ const Index = () => {
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <h1 className="text-3xl font-bold text-center py-0 my-0">
               <div className="text-center my-[8px]">Hej [namn] välkommen till</div>
-              <img src={onecoreLogo} alt="OneCore" className="h-20 md:h-24 mt-3 mx-auto" />
+              <img src={onecoreLogo} alt="OneCore" className="h-20 md:h-24 mt-6 mx-auto" />
             </h1>
             {devModeEnabled && <Badge variant="outline" className="text-xs">
                 Dev Mode
