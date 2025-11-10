@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { InfoIcon, Home, Car, User, UserCheck, Users, Plus, Warehouse } from "lucide-react";
+import { InfoIcon, Home, Car, User, UserCheck, Users, Plus, Warehouse, ExternalLink } from "lucide-react";
 import { CreateParkingInterestDialog } from "./CreateParkingInterestDialog";
+import { ApplicantProfileModal } from "../rentals/ApplicantProfileModal";
 
 // Mock data for the queue system
 const queueData = {
@@ -200,6 +201,9 @@ export function TenantQueueSystem({ customerNumber, customerName }: TenantQueueS
               >
                 {queueData.housingReferences.referenceStatus}
               </Badge>
+            </div>
+            <div className="pt-4 border-t">
+              <ApplicantProfileModal />
             </div>
           </div>
         </CardContent>
