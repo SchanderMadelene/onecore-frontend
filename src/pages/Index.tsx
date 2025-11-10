@@ -7,7 +7,7 @@ import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole, roleLabels, UserRole } from "@/contexts/RoleContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import onecoreLogo from "@/assets/logos/stacked/onecore_logo_stacked_color.png";
+import onecoreLogo from "@/assets/logos/stacked/onecore_logo_stacked_black.svg";
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
