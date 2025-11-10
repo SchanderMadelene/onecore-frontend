@@ -42,15 +42,15 @@ const Index = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
-        <header className="text-center space-y-3">
+      <div className="space-y-10">
+        <header className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <h1 className="text-3xl font-bold text-center">
               <div className="text-center">Hej [namn] välkommen till</div>
               <img 
                 src={onecoreLogo} 
                 alt="OneCore" 
-                className="h-16 md:h-20 mt-2 mx-auto"
+                className="h-20 md:h-24 mt-3 mx-auto"
               />
             </h1>
             {devModeEnabled && (
