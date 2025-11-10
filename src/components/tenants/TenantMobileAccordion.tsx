@@ -14,9 +14,10 @@ interface TenantMobileAccordionProps {
   customerNumber: string;
   customerName: string;
   customerRoles?: string[];
+  personalNumber?: string;
 }
 
-export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumber, customerName, customerRoles = [] }: TenantMobileAccordionProps) {
+export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumber, customerName, customerRoles = [], personalNumber }: TenantMobileAccordionProps) {
   const { features } = useFeatureToggles();
   
   // Kund är bara sökande om de bara har rollen "Sökande" och inga andra roller
@@ -41,7 +42,11 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
       id: "queue",
       title: "Uthyrning",
       content: features.showTenantQueue ? (
-        <TenantQueueSystem customerNumber={customerNumber} customerName={customerName} />
+        <TenantQueueSystem 
+          customerNumber={customerNumber} 
+          customerName={customerName}
+          personalNumber={personalNumber}
+        />
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <p className="text-slate-500">

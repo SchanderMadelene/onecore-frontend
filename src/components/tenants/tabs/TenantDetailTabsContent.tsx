@@ -57,7 +57,11 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNum
           isEnabled={features.showTenantQueue}
           fallbackMessage="För att se kösystem, aktivera funktionen i inställningarna."
         >
-          <TenantQueueSystem customerNumber={customerNumber} customerName={customerName} />
+          <TenantQueueSystem 
+            customerNumber={customerNumber} 
+            customerName={customerName}
+            personalNumber={personalNumber}
+          />
         </FeatureGatedTabContent>
       </TabsContent>
 

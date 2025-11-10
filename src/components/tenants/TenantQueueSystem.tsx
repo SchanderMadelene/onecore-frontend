@@ -56,9 +56,10 @@ const getReferenceStatusColor = (status: string) => {
 interface TenantQueueSystemProps {
   customerNumber: string;
   customerName: string;
+  personalNumber?: string;
 }
 
-export function TenantQueueSystem({ customerNumber, customerName }: TenantQueueSystemProps) {
+export function TenantQueueSystem({ customerNumber, customerName, personalNumber }: TenantQueueSystemProps) {
   const [activeInterests, setActiveInterests] = useState(queueData.activeInterests);
 
   // Listen for new parking interest applications
@@ -203,7 +204,11 @@ export function TenantQueueSystem({ customerNumber, customerName }: TenantQueueS
               </Badge>
             </div>
             <div className="pt-4 border-t">
-              <ApplicantProfileModal />
+              <ApplicantProfileModal 
+                customerNumber={customerNumber}
+                customerName={customerName}
+                personalNumber={personalNumber}
+              />
             </div>
           </div>
         </CardContent>
