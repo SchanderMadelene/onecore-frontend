@@ -126,6 +126,10 @@ export const ResidenceBasicInfo = ({ residence, property, district, buildingDeta
           <p className="font-medium">{residence.code}</p>
         </div>
           <div>
+            <p className="text-sm text-muted-foreground">Skatteverkets lägenhetsnummer</p>
+            <p className="font-medium">123-456-789</p>
+          </div>
+          <div>
             <p className="text-sm text-muted-foreground">Namn</p>
             <p className="font-medium">{residence.name}</p>
           </div>
