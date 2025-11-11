@@ -18,7 +18,7 @@ export const TenantDetailTabs = ({ defaultValue, children, hasActiveCases, custo
           Hyreskontrakt
         </TabsTrigger>
         <TabsTrigger value="queue">
-          Kösystem
+          Uthyrning
         </TabsTrigger>
         <TabsTrigger value="cases" disabled={isApplicantOnly}>
           {hasActiveCases ? "Ärenden (2)" : "Ärenden"}

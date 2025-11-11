@@ -55,6 +55,7 @@ const TenantDetailPage = () => {
             customerNumber={tenant.personalNumber}
             customerName={`${tenant.firstName} ${tenant.lastName}`}
             customerRoles={tenant.customerRoles}
+            personalNumber={tenant.personalNumber}
           />
         ) : (
           <TenantDetailTabs 
