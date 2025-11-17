@@ -1,136 +1,296 @@
-// import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard"; // TODO: Replace with new unified component
 import { TabLayout } from "@/components/ui/tab-layout";
-import { Building2 } from "lucide-react";
+import { ComponentCard } from "@/components/shared/ComponentCard";
 import type { Building } from "@/types/api";
+import type { Component } from "@/data/components";
 
 interface BuildingPartsTabProps {
   building: Building;
 }
 
 export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
-  const buildingParts = [
+  const buildingParts: Component[] = [
     {
-      subComponents: [
+      id: "tak-category",
+      name: "Tak",
+      type: "category",
+      location: building.name || "Byggnad",
+      componentCount: 4,
+      specifications: [
+        { label: "Total area", value: "1450 m²" },
+        { label: "Budget", value: "1 250 000 kr" },
+        { label: "Status", value: "Planerat underhåll 2025" },
+      ],
+      components: [
         {
-          name: "Tak",
-          specs: {
-            ekonomiskLivslangd: "30 år",
-            tekniskLivslangd: "50 år", 
-            year: "1973",
-            quantity: "1450 m²",
-            brand: "Skanditegel AB",
-            model: "Betongpannor standard"
-          }
+          id: "tak-1",
+          name: "Betongpannor",
+          type: "component",
+          location: "Tak",
+          specifications: [
+            { label: "Fabrikat", value: "Skanditegel AB" },
+            { label: "Modell", value: "Betongpannor standard" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "1973-05-15" },
+            { label: "A-pris", value: "580 000 kr" },
+            { label: "Teknisk livslängd", value: "50 år" },
+            { label: "Ekonomisk livslängd", value: "30 år" },
+            { label: "Garantitid", value: "25 år" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "2022-08-10" },
+            { label: "Nästa planerade service", value: "2027-08-10" },
+            { label: "Status", value: "Behöver renovering 2025" },
+            { label: "Ansvarig", value: "Teknisk förvaltning" },
+            { label: "Placering", value: "Huvudtak" },
+            { label: "Byggår", value: "1973" },
+            { label: "Dokumentation", value: "Ritningar, protokoll" },
+          ],
         },
         {
+          id: "tak-2",
           name: "Tegelpannor",
-          specs: {
-            ekonomiskLivslangd: "30 år",
-            tekniskLivslangd: "50 år",
-            year: "1973",
-            quantity: "1200 m²",
-            brand: "Benders AB",
-            model: "Gamla Uppsala röd"
-          }
+          type: "component",
+          location: "Tak",
+          specifications: [
+            { label: "Fabrikat", value: "Benders AB" },
+            { label: "Modell", value: "Gamla Uppsala röd" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "1973-05-15" },
+            { label: "A-pris", value: "420 000 kr" },
+            { label: "Teknisk livslängd", value: "50 år" },
+            { label: "Ekonomisk livslängd", value: "30 år" },
+            { label: "Garantitid", value: "30 år" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "2023-09-20" },
+            { label: "Nästa planerade service", value: "2028-09-20" },
+            { label: "Status", value: "Gott skick" },
+            { label: "Ansvarig", value: "Teknisk förvaltning" },
+            { label: "Placering", value: "Taknock, 1200 m²" },
+            { label: "Byggår", value: "1973" },
+            { label: "Dokumentation", value: "Installationsprotokoll" },
+          ],
         },
         {
-          name: "Rökucka",
-          specs: {
-            ekonomiskLivslangd: "25 år",
-            tekniskLivslangd: "40 år",
-            year: "1973",
-            quantity: "8 st",
-            brand: "Schiedel AB",
-            model: "Rondo Plus"
-          }
+          id: "tak-3",
+          name: "Röklucka",
+          type: "component",
+          location: "Tak",
+          specifications: [
+            { label: "Fabrikat", value: "Schiedel AB" },
+            { label: "Modell", value: "Rondo Plus" },
+            { label: "Serienummer", value: "RL-1973-0089" },
+            { label: "Installationsdatum", value: "1973-06-20" },
+            { label: "A-pris", value: "128 000 kr" },
+            { label: "Teknisk livslängd", value: "40 år" },
+            { label: "Ekonomisk livslängd", value: "25 år" },
+            { label: "Garantitid", value: "5 år" },
+            { label: "Serviceavtal", value: "Ja" },
+            { label: "Senaste service", value: "2024-04-15" },
+            { label: "Nästa planerade service", value: "2025-04-15" },
+            { label: "Status", value: "Fungerande" },
+            { label: "Ansvarig", value: "Fastighetsskötsel" },
+            { label: "Placering", value: "Trapphus A-D, 8 st" },
+            { label: "Byggår", value: "1973" },
+            { label: "Dokumentation", value: "Serviceavtal, manual" },
+          ],
         },
         {
+          id: "tak-4",
           name: "Täckplåt",
-          specs: {
-            ekonomiskLivslangd: "20 år",
-            tekniskLivslangd: "35 år",
-            year: "1990",
-            quantity: "150 m²",
-            brand: "Plannja AB",
-            model: "Takplåt standard"
-          }
-        }
-      ]
+          type: "component",
+          location: "Tak",
+          specifications: [
+            { label: "Fabrikat", value: "Plannja AB" },
+            { label: "Modell", value: "Takplåt standard" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "1990-08-12" },
+            { label: "A-pris", value: "75 000 kr" },
+            { label: "Teknisk livslängd", value: "35 år" },
+            { label: "Ekonomisk livslängd", value: "20 år" },
+            { label: "Garantitid", value: "15 år" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "-" },
+            { label: "Nästa planerade service", value: "2028-08-12" },
+            { label: "Status", value: "Gott skick" },
+            { label: "Ansvarig", value: "Teknisk förvaltning" },
+            { label: "Placering", value: "Skorsten, 150 m²" },
+            { label: "Byggår", value: "1990" },
+            { label: "Dokumentation", value: "Ritningar" },
+          ],
+        },
+      ],
     },
     {
-      subComponents: [
+      id: "fasad-category",
+      name: "Fasad",
+      type: "category",
+      location: building.name || "Byggnad",
+      componentCount: 3,
+      specifications: [
+        { label: "Total area", value: "2800 m²" },
+        { label: "Budget", value: "875 000 kr" },
+        { label: "Status", value: "Renoverad 2020" },
+      ],
+      components: [
         {
-          name: "Fasad",
-          specs: {
-            ekonomiskLivslangd: "25 år",
-            tekniskLivslangd: "40 år",
-            year: "1973", 
-            quantity: "2800 m²",
-            brand: "Ytong AB",
-            model: "Gasbetong puts"
-          }
+          id: "fasad-1",
+          name: "Gasbetong puts",
+          type: "component",
+          location: "Fasad",
+          specifications: [
+            { label: "Fabrikat", value: "Ytong AB" },
+            { label: "Modell", value: "Gasbetong puts" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "1973-08-01" },
+            { label: "A-pris", value: "560 000 kr" },
+            { label: "Teknisk livslängd", value: "40 år" },
+            { label: "Ekonomisk livslängd", value: "25 år" },
+            { label: "Garantitid", value: "-" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "2020-06-15" },
+            { label: "Nästa planerade service", value: "2030-06-15" },
+            { label: "Status", value: "Renoverad" },
+            { label: "Ansvarig", value: "Teknisk förvaltning" },
+            { label: "Placering", value: "Alla fasader, 2800 m²" },
+            { label: "Byggår", value: "1973" },
+            { label: "Dokumentation", value: "Renoveringsprotokoll" },
+          ],
         },
         {
-          name: "Panel",
-          specs: {
-            ekonomiskLivslangd: "15 år",
-            tekniskLivslangd: "25 år",
-            year: "2010",
-            quantity: "450 m²",
-            brand: "Svensk Trä AB",
-            model: "Stående träpanel"
-          }
+          id: "fasad-2",
+          name: "Träpanel",
+          type: "component",
+          location: "Fasad",
+          specifications: [
+            { label: "Fabrikat", value: "Svensk Trä AB" },
+            { label: "Modell", value: "Stående träpanel" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "2010-07-10" },
+            { label: "A-pris", value: "225 000 kr" },
+            { label: "Teknisk livslängd", value: "25 år" },
+            { label: "Ekonomisk livslängd", value: "15 år" },
+            { label: "Garantitid", value: "10 år" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "2023-05-20" },
+            { label: "Nästa planerade service", value: "2028-05-20" },
+            { label: "Status", value: "Gott skick" },
+            { label: "Ansvarig", value: "Fastighetsskötsel" },
+            { label: "Placering", value: "Entréer, 450 m²" },
+            { label: "Byggår", value: "2010" },
+            { label: "Dokumentation", value: "Skötselanvisning" },
+          ],
         },
         {
-          name: "Väggfärg",
-          specs: {
-            ekonomiskLivslangd: "8 år",
-            tekniskLivslangd: "12 år",
-            year: "2020",
-            quantity: "2800 m²",
-            brand: "Beckers AB",
-            model: "Fasadfärg akryl"
-          }
-        }
-      ]
+          id: "fasad-3",
+          name: "Fasadfärg",
+          type: "component",
+          location: "Fasad",
+          specifications: [
+            { label: "Fabrikat", value: "Beckers AB" },
+            { label: "Modell", value: "Fasadfärg akryl" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "2020-06-15" },
+            { label: "A-pris", value: "168 000 kr" },
+            { label: "Teknisk livslängd", value: "12 år" },
+            { label: "Ekonomisk livslängd", value: "8 år" },
+            { label: "Garantitid", value: "5 år" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "-" },
+            { label: "Nästa planerade service", value: "2028-06-15" },
+            { label: "Status", value: "Nyligen målad" },
+            { label: "Ansvarig", value: "Teknisk förvaltning" },
+            { label: "Placering", value: "Alla fasader, 2800 m²" },
+            { label: "Byggår", value: "2020" },
+            { label: "Dokumentation", value: "Färgkod, specifikation" },
+          ],
+        },
+      ],
     },
     {
-      subComponents: [
+      id: "fonster-category",
+      name: "Fönster",
+      type: "category",
+      location: building.name || "Byggnad",
+      componentCount: 3,
+      specifications: [
+        { label: "Totalt antal", value: "96 st" },
+        { label: "Total area", value: "240 m²" },
+        { label: "Status", value: "Renoverade 1995" },
+      ],
+      components: [
         {
-          name: "Fönster",
-          specs: {
-            ekonomiskLivslangd: "20 år",
-            tekniskLivslangd: "30 år",
-            year: "1995",
-            quantity: "96 st",
-            brand: "Elitfönster AB", 
-            model: "Trä/aluminium 3-glas"
-          }
+          id: "fonster-1",
+          name: "Fönster trä/alu",
+          type: "component",
+          location: "Fönster",
+          specifications: [
+            { label: "Fabrikat", value: "Elitfönster AB" },
+            { label: "Modell", value: "Trä/aluminium 3-glas" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "1995-09-20" },
+            { label: "A-pris", value: "960 000 kr" },
+            { label: "Teknisk livslängd", value: "30 år" },
+            { label: "Ekonomisk livslängd", value: "20 år" },
+            { label: "Garantitid", value: "10 år" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "2023-03-15" },
+            { label: "Nästa planerade service", value: "2028-03-15" },
+            { label: "Status", value: "Gott skick" },
+            { label: "Ansvarig", value: "Teknisk förvaltning" },
+            { label: "Placering", value: "Hela byggnaden, 96 st" },
+            { label: "Byggår", value: "1995" },
+            { label: "Dokumentation", value: "U-värde certifikat" },
+          ],
         },
         {
-          name: "Glas",
-          specs: {
-            ekonomiskLivslangd: "25 år",
-            tekniskLivslangd: "40 år",
-            year: "1995",
-            quantity: "240 m²",
-            brand: "Pilkington AB",
-            model: "3-glas energi"
-          }
+          id: "fonster-2",
+          name: "Energiglas 3-glas",
+          type: "component",
+          location: "Fönster",
+          specifications: [
+            { label: "Fabrikat", value: "Pilkington AB" },
+            { label: "Modell", value: "3-glas energi" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "1995-09-20" },
+            { label: "A-pris", value: "384 000 kr" },
+            { label: "Teknisk livslängd", value: "40 år" },
+            { label: "Ekonomisk livslängd", value: "25 år" },
+            { label: "Garantitid", value: "15 år" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "-" },
+            { label: "Nästa planerade service", value: "-" },
+            { label: "Status", value: "Utmärkt skick" },
+            { label: "Ansvarig", value: "Teknisk förvaltning" },
+            { label: "Placering", value: "Alla fönster, 240 m²" },
+            { label: "Byggår", value: "1995" },
+            { label: "Dokumentation", value: "CE-märkning" },
+          ],
         },
         {
+          id: "fonster-3",
           name: "Fönsterkarmar",
-          specs: {
-            ekonomiskLivslangd: "20 år",
-            tekniskLivslangd: "30 år",
-            year: "1995",
-            quantity: "96 st",
-            brand: "Elitfönster AB",
-            model: "Trä/aluminium ram"
-          }
-        }
-      ]
-    }
+          type: "component",
+          location: "Fönster",
+          specifications: [
+            { label: "Fabrikat", value: "Elitfönster AB" },
+            { label: "Modell", value: "Trä/aluminium ram" },
+            { label: "Serienummer", value: "-" },
+            { label: "Installationsdatum", value: "1995-09-20" },
+            { label: "A-pris", value: "288 000 kr" },
+            { label: "Teknisk livslängd", value: "30 år" },
+            { label: "Ekonomisk livslängd", value: "20 år" },
+            { label: "Garantitid", value: "10 år" },
+            { label: "Serviceavtal", value: "Nej" },
+            { label: "Senaste service", value: "2023-03-15" },
+            { label: "Nästa planerade service", value: "2028-03-15" },
+            { label: "Status", value: "Behandlade 2023" },
+            { label: "Ansvarig", value: "Fastighetsskötsel" },
+            { label: "Placering", value: "Alla fönster, 96 st" },
+            { label: "Byggår", value: "1995" },
+            { label: "Dokumentation", value: "Ritningar" },
+          ],
+        },
+      ],
+    },
   ];
 
   return (
@@ -138,11 +298,9 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
       title="Byggnadsdelar" 
       showCard={true}
     >
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-        {buildingParts.map((part, index) => (
-          <div key={index} className="p-4 border rounded-lg bg-muted/30">
-            <p className="text-sm text-muted-foreground">Underhållskort kommer snart</p>
-          </div>
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
+        {buildingParts.map((part) => (
+          <ComponentCard key={part.id} component={part} />
         ))}
       </div>
     </TabLayout>
