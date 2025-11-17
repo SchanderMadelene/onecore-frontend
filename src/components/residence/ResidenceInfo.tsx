@@ -1,5 +1,4 @@
-
-import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
+// import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard"; // TODO: Replace with new unified component
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -89,10 +88,9 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
                 {getMaintenanceUnitsForRoom(room.id).length > 0 ? (
                   <div className="grid gap-3">
                     {getMaintenanceUnitsForRoom(room.id).map((unit, index) => (
-                      <MaintenanceUnitCard 
-                        key={index} 
-                        subComponents={[unit]} 
-                      />
+                      <div key={index} className="p-4 border rounded-lg bg-muted/30">
+                        <p className="text-sm text-muted-foreground">Underhållskort kommer snart</p>
+                      </div>
                     ))}
                   </div>
                 ) : (

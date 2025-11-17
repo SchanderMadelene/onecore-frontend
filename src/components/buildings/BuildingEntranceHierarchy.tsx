@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ChevronRight, Home, Monitor, Mail, Package, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
+// import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard"; // TODO: Replace with new unified component
 
 interface BuildingEntranceHierarchyProps {
   building: Building;
@@ -136,16 +136,9 @@ export const BuildingEntranceHierarchy = ({
                     <h5 className="text-sm font-semibold text-foreground">Komponenter</h5>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {entrance.components.map(component => (
-                        <ComponentCard
-                          key={component.id}
-                          title={component.name}
-                          description={component.description}
-                          type={component.type}
-                          location={entrance.name}
-                          specs={[
-                            { label: "Status", value: component.status || "Aktiv" }
-                          ]}
-                        />
+                        <div key={component.id} className="p-4 border rounded-lg bg-muted/30">
+                          <p className="text-sm text-muted-foreground">Komponentkort kommer snart</p>
+                        </div>
                       ))}
                     </div>
                   </div>

@@ -1,5 +1,4 @@
-
-import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard";
+// import { MaintenanceUnitCard } from "@/components/design-system/showcase/maintenance/MaintenanceUnitCard"; // TODO: Replace with new unified component
 import { TabLayout } from "@/components/ui/tab-layout";
 import { Building2 } from "lucide-react";
 import type { Building } from "@/types/api";
@@ -141,10 +140,9 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
     >
       <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {buildingParts.map((part, index) => (
-          <MaintenanceUnitCard
-            key={index}
-            subComponents={part.subComponents}
-          />
+          <div key={index} className="p-4 border rounded-lg bg-muted/30">
+            <p className="text-sm text-muted-foreground">Underhållskort kommer snart</p>
+          </div>
         ))}
       </div>
     </TabLayout>
