@@ -36,7 +36,7 @@ export const mockComponents: Component[] = [
       { label: "Placering", value: "Under bänk" },
       { label: "Byggår", value: "2019" },
       { label: "Dokumentation", value: "Manual tillgänglig" },
-      { label: "Statusbesiktning", value: "Godkänd" },
+      { label: "Statusbesiktning", value: "4" },
     ],
   },
   {
@@ -61,7 +61,7 @@ export const mockComponents: Component[] = [
       { label: "Placering", value: "Vägg vänster" },
       { label: "Byggår", value: "2020" },
       { label: "Dokumentation", value: "Digital manual" },
-      { label: "Statusbesiktning", value: "Godkänd" },
+      { label: "Statusbesiktning", value: "5" },
     ],
   },
   {
@@ -86,7 +86,7 @@ export const mockComponents: Component[] = [
       { label: "Placering", value: "Hela rummet" },
       { label: "Byggår", value: "2018" },
       { label: "Dokumentation", value: "Skötselinstruktioner" },
-      { label: "Statusbesiktning", value: "Godkänd" },
+      { label: "Statusbesiktning", value: "3" },
     ],
   },
   {
@@ -123,7 +123,7 @@ export const mockComponents: Component[] = [
           { label: "Placering", value: "Huvudtak" },
           { label: "Byggår", value: "2010" },
           { label: "Dokumentation", value: "Installationsprotokoll" },
-          { label: "Statusbesiktning", value: "Godkänd" },
+          { label: "Statusbesiktning", value: "4" },
         ],
       },
       {
@@ -148,7 +148,7 @@ export const mockComponents: Component[] = [
           { label: "Placering", value: "Trapphus A-D" },
           { label: "Byggår", value: "2015" },
           { label: "Dokumentation", value: "CE-märkning, manual" },
-          { label: "Statusbesiktning", value: "Godkänd" },
+          { label: "Statusbesiktning", value: "5" },
         ],
       },
     ],
@@ -175,7 +175,7 @@ export const mockComponents: Component[] = [
       { label: "Placering", value: "Söderfasad" },
       { label: "Byggår", value: "2017" },
       { label: "Dokumentation", value: "U-värde certifikat" },
-      { label: "Statusbesiktning", value: "Godkänd" },
+      { label: "Statusbesiktning", value: "4" },
     ],
   },
 ];

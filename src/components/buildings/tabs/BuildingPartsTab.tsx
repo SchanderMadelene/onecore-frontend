@@ -43,7 +43,7 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
             { label: "Placering", value: "Huvudtak" },
             { label: "Byggår", value: "1973" },
             { label: "Dokumentation", value: "Ritningar, protokoll" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+            { label: "Statusbesiktning", value: "4" },
           ],
         },
         {
@@ -67,8 +67,8 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
             { label: "Ansvarig", value: "Teknisk förvaltning" },
             { label: "Placering", value: "Taknock, 1200 m²" },
             { label: "Byggår", value: "1973" },
-            { label: "Dokumentation", value: "Installationsprotokoll" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+          { label: "Dokumentation", value: "Installationsprotokoll" },
+          { label: "Statusbesiktning", value: "4" },
           ],
         },
         {
@@ -157,7 +157,7 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
             { label: "Placering", value: "Alla fasader, 2800 m²" },
             { label: "Byggår", value: "1973" },
             { label: "Dokumentation", value: "Renoveringsprotokoll" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+            { label: "Statusbesiktning", value: "4" },
           ],
         },
         {
@@ -182,7 +182,7 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
             { label: "Placering", value: "Entréer, 450 m²" },
             { label: "Byggår", value: "2010" },
             { label: "Dokumentation", value: "Skötselanvisning" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+            { label: "Statusbesiktning", value: "3" },
           ],
         },
         {
@@ -207,7 +207,7 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
             { label: "Placering", value: "Alla fasader, 2800 m²" },
             { label: "Byggår", value: "2020" },
             { label: "Dokumentation", value: "Färgkod, specifikation" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+            { label: "Statusbesiktning", value: "5" },
           ],
         },
       ],
@@ -245,8 +245,8 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
             { label: "Ansvarig", value: "Teknisk förvaltning" },
             { label: "Placering", value: "Hela byggnaden, 96 st" },
             { label: "Byggår", value: "1995" },
-            { label: "Dokumentation", value: "U-värde certifikat" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+          { label: "Dokumentation", value: "U-värde certifikat" },
+          { label: "Statusbesiktning", value: "3" },
           ],
         },
         {

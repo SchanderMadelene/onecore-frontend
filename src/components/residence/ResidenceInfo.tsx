@@ -40,7 +40,7 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
             { label: "Placering", value: "Under bänk" },
             { label: "Byggår", value: "2019" },
             { label: "Dokumentation", value: "Manual tillgänglig" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+            { label: "Statusbesiktning", value: "4" },
           ],
         },
         {
@@ -65,7 +65,7 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
             { label: "Placering", value: "Inbyggd" },
             { label: "Byggår", value: "2018" },
             { label: "Dokumentation", value: "Manual, garantibevis" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+            { label: "Statusbesiktning", value: "5" },
           ],
         },
         {
@@ -90,7 +90,7 @@ export const ResidenceInfo = ({ rooms, getOrientationText }: ResidenceInfoProps)
             { label: "Placering", value: "Vägg nord, 3 m" },
             { label: "Byggår", value: "2018" },
             { label: "Dokumentation", value: "Skötselanvisning" },
-            { label: "Statusbesiktning", value: "Godkänd" },
+            { label: "Statusbesiktning", value: "3" },
           ],
         },
         {
