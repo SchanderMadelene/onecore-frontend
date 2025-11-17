@@ -5,7 +5,7 @@ import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Box } from "lucide-react";
 import type { Building } from "@/types/api";
-import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
+// import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard"; // TODO: Replace with new unified component
 
 interface BuildingSpacesTabProps {
   building: Building;
@@ -69,20 +69,9 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
                   <div className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {space.components.map(component => (
-                        <ComponentCard
-                          key={component.id}
-                          title={component.name}
-                          description={component.description}
-                          type={space.name}
-                          specs={[
-                            { label: "Status", value: component.status || "Aktiv" },
-                            ...(component.area ? [{ label: "Yta", value: `${component.area} m²` }] : []),
-                            ...(component.specs ? Object.entries(component.specs).map(([key, value]) => ({
-                              label: key,
-                              value: String(value)
-                            })) : [])
-                          ]}
-                        />
+                        <div key={component.id} className="p-4 border rounded-lg bg-muted/30">
+                          <p className="text-sm text-muted-foreground">Komponentkort kommer snart</p>
+                        </div>
                       ))}
                     </div>
                   </div>

@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
+// import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard"; // TODO: Replace with new unified component
 import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Car } from "lucide-react";
@@ -66,18 +66,9 @@ export const BuildingParkingTab = ({ building }: BuildingParkingTabProps) => {
       {/* Parking areas */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {parking.map(area => (
-          <ComponentCard
-            key={area.id}
-            title={area.name}
-            description={area.description}
-            type={area.specs?.["Typ"]}
-            specs={area.specs ? Object.entries(area.specs)
-              .filter(([key]) => key !== "Typ")
-              .map(([key, value]) => ({
-                label: key,
-                value: String(value)
-              })) : []}
-          />
+          <div key={area.id} className="p-4 border rounded-lg bg-muted/30">
+            <p className="text-sm text-muted-foreground">Komponentkort kommer snart</p>
+          </div>
         ))}
       </div>
     </TabLayout>
