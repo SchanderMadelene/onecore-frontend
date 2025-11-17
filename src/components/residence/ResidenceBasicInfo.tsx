@@ -121,39 +121,32 @@ export const ResidenceBasicInfo = ({ residence, property, district, buildingDeta
         }
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-        <div>
-          <p className="text-sm text-muted-foreground">Objektsnummer/lägenhetskod</p>
-          <p className="font-medium">{residence.code}</p>
-        </div>
+          {/* Kolumn 1: Identifiering & Status */}
           <div>
-            <p className="text-sm text-muted-foreground">Namn</p>
-            <p className="font-medium">{residence.name}</p>
+            <p className="text-sm text-muted-foreground">Objektsnummer/lägenhetskod</p>
+            <p className="font-medium">{residence.code}</p>
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Kontraktstatus</p>
-            <p className="font-medium">{getContractStatus(residence)}</p>
-          </div>
+          {/* Kolumn 2: Lägenhetsinformation & Ekonomi */}
           <div>
             <p className="text-sm text-muted-foreground">Yta</p>
             <p className="font-medium">{residence.size ? `${residence.size} m²` : "N/A"}</p>
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Anläggnings ID Mälarenergi</p>
-            <p className="font-medium">{residence.malarenergiFacilityId || "N/A"}</p>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
-            <p className="font-medium">{isSecondaryRental ? "Ja" : "Nej"}</p>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground">Hyra</p>
-            <p className="font-medium">{residence.rent ? `${residence.rent} kr/mån` : "N/A"}</p>
-          </div>
+          {/* Kolumn 3: Kontrakt & Teknisk information */}
           <div>
             <p className="text-sm text-muted-foreground">Befintligt kontrakt från</p>
             <p className="font-medium">
               {new Date(residence.validityPeriod.fromDate).toLocaleDateString('sv-SE')}
             </p>
+          </div>
+
+          {/* Rad 2 */}
+          <div>
+            <p className="text-sm text-muted-foreground">Skatteverkets lägenhetsnummer</p>
+            <p className="font-medium">123-456-789</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Byggnadsår</p>
+            <p className="font-medium">{buildingDetail?.constructionYear || "N/A"}</p>
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Befintligt kontrakt till</p>
@@ -161,18 +154,34 @@ export const ResidenceBasicInfo = ({ residence, property, district, buildingDeta
               {new Date(residence.validityPeriod.toDate).toLocaleDateString('sv-SE')}
             </p>
           </div>
-          {buildingDetail?.constructionYear && (
-            <div>
-              <p className="text-sm text-muted-foreground">Byggnadsår</p>
-              <p className="font-medium">{buildingDetail.constructionYear}</p>
-            </div>
-          )}
-          {buildingDetail?.renovationYear && (
-            <div>
-              <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
-              <p className="font-medium">{buildingDetail.renovationYear}</p>
-            </div>
-          )}
+
+          {/* Rad 3 */}
+          <div>
+            <p className="text-sm text-muted-foreground">Namn</p>
+            <p className="font-medium">{residence.name}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Ombyggnadsår</p>
+            <p className="font-medium">{buildingDetail?.renovationYear || "N/A"}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Andrahandsuthyrning</p>
+            <p className="font-medium">{isSecondaryRental ? "Ja" : "Nej"}</p>
+          </div>
+
+          {/* Rad 4 */}
+          <div>
+            <p className="text-sm text-muted-foreground">Kontraktstatus</p>
+            <p className="font-medium">{getContractStatus(residence)}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Hyra</p>
+            <p className="font-medium">{residence.rent ? `${residence.rent} kr/mån` : "N/A"}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Anläggnings ID Mälarenergi</p>
+            <p className="font-medium">{residence.malarenergiFacilityId || "N/A"}</p>
+          </div>
         </div>
       </CollapsibleInfoCard>
     </TooltipProvider>
