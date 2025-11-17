@@ -32,9 +32,9 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
           location: "Tvättstuga",
           componentCount: 3,
           specifications: [
-            { label: "Antal", value: "3 st" },
-            { label: "Budget", value: "135 000 kr" },
-            { label: "Status", value: "I drift" },
+            { label: "Rubrik", value: "Specifikation" },
+            { label: "Rubrik", value: "Specifikation" },
+            { label: "Rubrik", value: "Specifikation" },
           ],
           components: [
             {
@@ -118,9 +118,9 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
           location: "Tvättstuga",
           componentCount: 2,
           specifications: [
-            { label: "Antal", value: "2 st" },
-            { label: "Budget", value: "76 000 kr" },
-            { label: "Status", value: "I drift" },
+            { label: "Rubrik", value: "Specifikation" },
+            { label: "Rubrik", value: "Specifikation" },
+            { label: "Rubrik", value: "Specifikation" },
           ],
           components: [
             {
