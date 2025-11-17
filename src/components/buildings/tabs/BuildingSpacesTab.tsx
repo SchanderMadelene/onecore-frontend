@@ -119,6 +119,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
           componentCount: 2,
           specifications: [
             { label: "Antal", value: "2 st" },
+            { label: "Budget", value: "76 000 kr" },
             { label: "Status", value: "I drift" },
           ],
           components: [
