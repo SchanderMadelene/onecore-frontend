@@ -1,9 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, MoreVertical, FileText, Camera, Edit, History } from "lucide-react";
 import { useState } from "react";
 import { Component } from "@/data/components";
+import { useToast } from "@/hooks/use-toast";
 
 interface ComponentCardProps {
   component: Component;
@@ -12,6 +20,80 @@ interface ComponentCardProps {
 export const ComponentCard = ({ component }: ComponentCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const isCategory = component.type === "category";
+  const { toast } = useToast();
+
+  const handleCreateOrder = () => {
+    toast({
+      title: "Skapa ärende",
+      description: `Skapar ärende för ${component.name}`,
+    });
+  };
+
+  const handlePhotoTypeplate = () => {
+    toast({
+      title: "Fota typskylt",
+      description: `Öppnar kamera för ${component.name}`,
+    });
+  };
+
+  const handleUpdate = () => {
+    toast({
+      title: "Uppdatera",
+      description: `Öppnar redigeringsläge för ${component.name}`,
+    });
+  };
+
+  const handleShowHistory = () => {
+    toast({
+      title: "Visa historik",
+      description: `Visar historik för ${component.name}`,
+    });
+  };
+
+  const ComponentActions = () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <MoreVertical className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48 bg-background z-50">
+        <DropdownMenuItem onClick={(e) => {
+          e.stopPropagation();
+          handleCreateOrder();
+        }}>
+          <FileText className="mr-2 h-4 w-4" />
+          Skapa ärende
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={(e) => {
+          e.stopPropagation();
+          handlePhotoTypeplate();
+        }}>
+          <Camera className="mr-2 h-4 w-4" />
+          Fota typskylt
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={(e) => {
+          e.stopPropagation();
+          handleUpdate();
+        }}>
+          <Edit className="mr-2 h-4 w-4" />
+          Uppdatera
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={(e) => {
+          e.stopPropagation();
+          handleShowHistory();
+        }}>
+          <History className="mr-2 h-4 w-4" />
+          Visa historik
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   if (isCategory && component.components) {
     return (
@@ -26,9 +108,12 @@ export const ComponentCard = ({ component }: ComponentCardProps) => {
                     {component.componentCount} st
                   </Badge>
                 </div>
-                <ChevronDown 
-                  className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
-                />
+                <div className="flex items-center gap-1">
+                  <ComponentActions />
+                  <ChevronDown 
+                    className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
+                  />
+                </div>
               </div>
               <p className="text-sm text-muted-foreground">{component.location}</p>
             </CardHeader>
@@ -76,8 +161,13 @@ export const ComponentCard = ({ component }: ComponentCardProps) => {
   return (
     <Card className="w-full">
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">{component.name}</CardTitle>
-        <p className="text-sm text-muted-foreground">{component.location}</p>
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex-1">
+            <CardTitle className="text-base">{component.name}</CardTitle>
+            <p className="text-sm text-muted-foreground">{component.location}</p>
+          </div>
+          <ComponentActions />
+        </div>
       </CardHeader>
       <CardContent className="pt-0">
         <div className="space-y-1">
