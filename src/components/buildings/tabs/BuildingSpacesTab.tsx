@@ -59,6 +59,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
                 { label: "Placering", value: "Position 1" },
                 { label: "Byggår", value: "2020" },
                 { label: "Dokumentation", value: "Serviceavtal, manual" },
+                { label: "Statusbesiktning", value: "Godkänd" },
               ],
             },
             {
@@ -83,6 +84,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
                 { label: "Placering", value: "Position 2" },
                 { label: "Byggår", value: "2020" },
                 { label: "Dokumentation", value: "Serviceavtal, manual" },
+                { label: "Statusbesiktning", value: "Godkänd" },
               ],
             },
             {
@@ -107,6 +109,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
                 { label: "Placering", value: "Position 3" },
                 { label: "Byggår", value: "2020" },
                 { label: "Dokumentation", value: "Serviceavtal, manual" },
+                { label: "Statusbesiktning", value: "Godkänd" },
               ],
             },
           ],
@@ -145,6 +148,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
                 { label: "Placering", value: "Position 1" },
                 { label: "Byggår", value: "2020" },
                 { label: "Dokumentation", value: "Serviceavtal, manual" },
+                { label: "Statusbesiktning", value: "Godkänd" },
               ],
             },
             {
@@ -169,6 +173,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
                 { label: "Placering", value: "Position 2" },
                 { label: "Byggår", value: "2020" },
                 { label: "Dokumentation", value: "Serviceavtal, manual" },
+                { label: "Statusbesiktning", value: "Godkänd" },
               ],
             },
           ],
@@ -202,6 +207,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Hela rummet, 60 platser" },
             { label: "Byggår", value: "2015" },
             { label: "Dokumentation", value: "Monteringsanvisning" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
         {
@@ -226,6 +232,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Tak, 12 armaturer" },
             { label: "Byggår", value: "2022" },
             { label: "Dokumentation", value: "Elschema" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
       ],
@@ -257,6 +264,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Källare, 30 boxar" },
             { label: "Byggår", value: "1973" },
             { label: "Dokumentation", value: "Ritningar" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
         {
@@ -281,6 +289,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Tak, centralt" },
             { label: "Byggår", value: "2018" },
             { label: "Dokumentation", value: "Serviceavtal, elschema" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
       ],
@@ -312,6 +321,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Centralt på vinden" },
             { label: "Byggår", value: "2019" },
             { label: "Dokumentation", value: "Serviceavtal, manual" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
         {
@@ -336,6 +346,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "4 st, jämnt fördelade" },
             { label: "Byggår", value: "2018" },
             { label: "Dokumentation", value: "Manual, garanti" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
       ],
@@ -367,6 +378,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Alla våningsplan, 20 st" },
             { label: "Byggår", value: "2021" },
             { label: "Dokumentation", value: "Elschema" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
         {
@@ -391,6 +403,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Varje våningsplan, 20 st" },
             { label: "Byggår", value: "2022" },
             { label: "Dokumentation", value: "Manual, test-protokoll" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
       ],
@@ -422,6 +435,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Pannrum" },
             { label: "Byggår", value: "2017" },
             { label: "Dokumentation", value: "Serviceavtal, manual, elschema" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
         {
@@ -446,6 +460,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Elrum" },
             { label: "Byggår", value: "2016" },
             { label: "Dokumentation", value: "Serviceavtal, elschema" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
       ],
@@ -477,6 +492,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Ingång skyddsrum" },
             { label: "Byggår", value: "1995" },
             { label: "Dokumentation", value: "Serviceavtal, besiktningsprotokoll" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
         {
@@ -501,6 +517,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Vägg, centralt" },
             { label: "Byggår", value: "1995" },
             { label: "Dokumentation", value: "Serviceavtal, manual" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
         {
@@ -525,6 +542,7 @@ export const BuildingSpacesTab = ({ building }: BuildingSpacesTabProps) => {
             { label: "Placering", value: "Ventilationssystem" },
             { label: "Byggår", value: "2010" },
             { label: "Dokumentation", value: "Serviceavtal, besiktningsprotokoll" },
+            { label: "Statusbesiktning", value: "Godkänd" },
           ],
         },
       ],
