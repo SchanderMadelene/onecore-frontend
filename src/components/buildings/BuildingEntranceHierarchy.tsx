@@ -1,38 +1,15 @@
 
-import { Building, Entrance, EntranceAddress, EntranceComponent, ComponentType, ApartmentType } from "@/types/api";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Building, ApartmentType } from "@/types/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ChevronRight, Home, Monitor, Mail, Package, Wrench } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-// import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard"; // TODO: Replace with new unified component
 
 interface BuildingEntranceHierarchyProps {
   building: Building;
   basePath: string;
 }
-
-// Helper function to get icon for component type
-const getComponentIcon = (type: ComponentType) => {
-  switch (type) {
-    case "Digital bokningstavla":
-      return <Monitor className="h-4 w-4 text-blue-600" />;
-    case "Postboxar":
-    case "Brevlådor":
-      return <Mail className="h-4 w-4 text-green-600" />;
-    case "Cykelrum":
-    case "Barnvagnsförvaring":
-    case "Soprum":
-      return <Package className="h-4 w-4 text-gray-600" />;
-    case "El-mätare":
-    case "Värme-mätare":
-    case "Ventilation":
-      return <Wrench className="h-4 w-4 text-orange-600" />;
-    default:
-      return <Package className="h-4 w-4 text-gray-600" />;
-  }
-};
 
 // Helper function to get status badge color
 const getStatusBadge = (status?: string) => {
@@ -104,7 +81,6 @@ export const BuildingEntranceHierarchy = ({
                       return apartment ? (
                         <div key={aptId} className={`flex justify-between items-center p-2 rounded-md hover:bg-muted/50 transition-colors ${getApartmentTypeStyle(apartment.apartmentType)}`}>
                           <div className="flex items-center gap-2">
-                            <Home className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium text-foreground">{apartment.code}</span>
                             {apartment.apartmentType && apartment.apartmentType !== "Standard" && (
                               <Badge variant="outline" className="text-xs">
@@ -129,20 +105,6 @@ export const BuildingEntranceHierarchy = ({
                     })}
                   </div>
                 </div>
-
-                {/* Components */}
-                {entrance.components && entrance.components.length > 0 && (
-                  <div className="space-y-3">
-                    <h5 className="text-sm font-semibold text-foreground">Komponenter</h5>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {entrance.components.map(component => (
-                        <div key={component.id} className="p-4 border rounded-lg bg-muted/30">
-                          <p className="text-sm text-muted-foreground">Komponentkort kommer snart</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             </AccordionContent>
           </AccordionItem>
