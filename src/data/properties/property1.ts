@@ -529,6 +529,59 @@ export const property1: PropertyDetail = {
               }
             }
           ]
+        },
+        {
+          id: "14",
+          type: "Teknikutrymmen",
+          name: "Installationer",
+          totalArea: 0,
+          components: [
+            {
+              id: "14a",
+              name: "Brand",
+              description: "Brandskydd och brandlarm",
+              status: "Aktiv",
+              specs: {
+                "Rubrik": "Specifikation",
+              }
+            },
+            {
+              id: "14b",
+              name: "Lås & passage",
+              description: "Lås och passagesystem",
+              status: "Aktiv",
+              specs: {
+                "Rubrik": "Specifikation",
+              }
+            },
+            {
+              id: "14c",
+              name: "Hissar",
+              description: "Hiss och lyftsystem",
+              status: "Aktiv",
+              specs: {
+                "Rubrik": "Specifikation",
+              }
+            },
+            {
+              id: "14d",
+              name: "VVS",
+              description: "Värme, vatten och sanitet",
+              status: "Aktiv",
+              specs: {
+                "Rubrik": "Specifikation",
+              }
+            },
+            {
+              id: "14e",
+              name: "IMD",
+              description: "Installation, mark och drift",
+              status: "Aktiv",
+              specs: {
+                "Rubrik": "Specifikation",
+              }
+            }
+          ]
         }
       ]
     },
