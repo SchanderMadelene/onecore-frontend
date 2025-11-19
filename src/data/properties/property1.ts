@@ -178,65 +178,17 @@ export const property1: PropertyDetail = {
         {
           id: "E1",
           name: "Bellmansgatan 1A",
-          apartments: ["A1", "A2", "A3"],
-          components: [
-            {
-              id: "C1",
-              name: "Postboxar",
-              type: "Postboxar",
-              description: "Säkra postlådor för hyresgäster",
-              status: "Aktiv"
-            },
-            {
-              id: "C2", 
-              name: "Digital bokningstavla",
-              type: "Digital bokningstavla",
-              description: "Interaktiv displayenhet för bokningar",
-              status: "Aktiv"
-            }
-          ]
+          apartments: ["A1", "A2", "A3"]
         },
         {
           id: "E2", 
           name: "Bellmansgatan 1B",
-          apartments: ["A4", "A5", "A6"],
-          components: [
-            {
-              id: "C3",
-              name: "Postboxar",
-              type: "Postboxar",
-              description: "Säkra postlådor för hyresgäster",
-              status: "Aktiv"
-            },
-            {
-              id: "C4", 
-              name: "Digital bokningstavla",
-              type: "Digital bokningstavla",
-              description: "Interaktiv displayenhet för bokningar",
-              status: "Aktiv"
-            }
-          ]
+          apartments: ["A4", "A5", "A6"]
         },
         {
           id: "E3",
           name: "Bellmansgatan 1C", 
-          apartments: ["A7", "A8", "A9"],
-          components: [
-            {
-              id: "C5",
-              name: "Postboxar",
-              type: "Postboxar",
-              description: "Säkra postlådor för hyresgäster",
-              status: "Aktiv"
-            },
-            {
-              id: "C6", 
-              name: "Digital bokningstavla",
-              type: "Digital bokningstavla",
-              description: "Interaktiv displayenhet för bokningar",
-              status: "Aktiv"
-            }
-          ]
+          apartments: ["A7", "A8", "A9"]
         }
       ],
       spaces: [
