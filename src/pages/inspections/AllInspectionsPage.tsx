@@ -544,7 +544,7 @@ export default function AllInspectionsPage() {
     },
     {
       key: "masterKey",
-      label: "Huvudnyckel?",
+      label: "Huvudnyckel",
       render: (inspection: ExtendedInspection) => inspection.masterKey ? 'Ja' : 'Nej'
     },
     {
