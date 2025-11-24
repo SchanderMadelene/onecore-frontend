@@ -353,16 +353,18 @@ export default function AllInspectionsPage() {
         <Button
           variant="outline"
           className={cn(
-            "w-48 justify-start text-left font-normal",
+            "w-44 justify-start text-left font-normal overflow-hidden",
             !inspection.scheduledDate && "text-muted-foreground"
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {inspection.scheduledDate ? (
-            format(inspection.scheduledDate, "PPP HH:mm", { locale: sv })
-          ) : (
-            <span>Välj datum och tid</span>
-          )}
+          <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+          <span className="truncate">
+            {inspection.scheduledDate ? (
+              format(inspection.scheduledDate, "PPP HH:mm", { locale: sv })
+            ) : (
+              "Välj datum och tid"
+            )}
+          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
