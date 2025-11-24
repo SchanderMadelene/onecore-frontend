@@ -29,6 +29,7 @@ interface ExtendedInspection extends Inspection {
   isAssigned?: boolean;
   scheduledDate?: Date;
   assignedInspector?: string;
+  tenantPhone?: string;
 }
 
 // Available inspectors for assignment
@@ -61,7 +62,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       priority: 'avflytt',
       isAssigned: true,
       scheduledDate: new Date("2024-10-16T10:00:00"),
-      assignedInspector: "Anna Lindström"
+      assignedInspector: "Anna Lindström",
+      tenantPhone: "070-123 45 67"
     },
     {
       id: "inspection-mock-2", 
@@ -77,7 +79,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       priority: 'inflytt',
       isAssigned: false,
       scheduledDate: undefined,
-      assignedInspector: undefined
+      assignedInspector: undefined,
+      tenantPhone: "070-234 56 78"
     },
     {
       id: "inspection-mock-3",
@@ -93,7 +96,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       priority: 'avflytt',
       isAssigned: true,
       scheduledDate: new Date("2024-11-02T14:30:00"),
-      assignedInspector: "Maria Andersson"
+      assignedInspector: "Maria Andersson",
+      tenantPhone: "070-345 67 89"
     },
     {
       id: "inspection-mock-4",
@@ -109,7 +113,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       priority: 'inflytt',
       isAssigned: true,
       scheduledDate: new Date("2024-10-01T09:00:00"),
-      assignedInspector: "Anna Lindström"
+      assignedInspector: "Anna Lindström",
+      tenantPhone: "070-456 78 90"
     },
     {
       id: "inspection-mock-5",
@@ -125,7 +130,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       priority: 'avflytt',
       isAssigned: false,
       scheduledDate: undefined,
-      assignedInspector: undefined
+      assignedInspector: undefined,
+      tenantPhone: "070-567 89 01"
     },
     {
       id: "inspection-mock-6",
@@ -141,7 +147,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       priority: 'inflytt',
       isAssigned: true,
       scheduledDate: new Date("2024-09-21T11:00:00"),
-      assignedInspector: "Anna Lindström"
+      assignedInspector: "Anna Lindström",
+      tenantPhone: "070-678 90 12"
     },
     {
       id: "inspection-mock-7",
@@ -157,7 +164,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       priority: 'avflytt',  
       isAssigned: true,
       scheduledDate: new Date("2024-11-11T13:00:00"),
-      assignedInspector: "Johanna Svensson"
+      assignedInspector: "Johanna Svensson",
+      tenantPhone: "070-789 01 23"
     },
     {
       id: "inspection-mock-8",
@@ -173,7 +181,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       priority: 'inflytt',
       isAssigned: false,
       scheduledDate: undefined,
-      assignedInspector: undefined
+      assignedInspector: undefined,
+      tenantPhone: "070-890 12 34"
     }
   ];
   
@@ -496,6 +505,11 @@ export default function AllInspectionsPage() {
       key: "address",
       label: "Adress",
       render: (inspection: ExtendedInspection) => inspection.address || 'N/A'
+    },
+    {
+      key: "tenantPhone",
+      label: "Telefonnummer",
+      render: (inspection: ExtendedInspection) => inspection.tenantPhone || 'N/A'
     },
     {
       key: "terminationDate",
