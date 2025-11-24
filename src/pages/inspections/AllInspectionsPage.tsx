@@ -387,7 +387,7 @@ export default function AllInspectionsPage() {
           <Button
             variant="outline"
             className={cn(
-              "w-56 justify-start text-left font-normal",
+              "w-52 justify-start text-left font-normal",
               !inspection.scheduledDate && "text-muted-foreground"
             )}
           >
