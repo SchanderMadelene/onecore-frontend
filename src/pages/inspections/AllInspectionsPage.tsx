@@ -323,40 +323,21 @@ export default function AllInspectionsPage() {
   };
 
   // Editable components
-  const StatusCell = ({ inspection }: { inspection: ExtendedInspection }) => (
-    <Select
-      value={inspection.isAssigned ? 'assigned' : 'unassigned'}
-      onValueChange={(value) => {
-        updateInspection(inspection.id, { 
-          isAssigned: value === 'assigned',
-          assignedInspector: value === 'unassigned' ? undefined : inspection.assignedInspector
-        });
-      }}
-    >
-      <SelectTrigger className="w-32">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="assigned">Tilldelad</SelectItem>
-        <SelectItem value="unassigned">Inte tilldelad</SelectItem>
-      </SelectContent>
-    </Select>
-  );
-
   const InspectorCell = ({ inspection }: { inspection: ExtendedInspection }) => (
     <Select
-      value={inspection.assignedInspector || ''}
+      value={inspection.assignedInspector || 'none'}
       onValueChange={(value) => {
         updateInspection(inspection.id, { 
-          assignedInspector: value,
-          isAssigned: !!value
+          assignedInspector: value === 'none' ? undefined : value,
+          isAssigned: value !== 'none'
         });
       }}
     >
       <SelectTrigger className="w-40">
-        <SelectValue placeholder="Välj besiktningsman" />
+        <SelectValue />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value="none">Ej tilldelad</SelectItem>
         {AVAILABLE_INSPECTORS.map(inspector => (
           <SelectItem key={inspector} value={inspector}>
             {inspector}
@@ -424,9 +405,6 @@ export default function AllInspectionsPage() {
     return "Pågående";
   };
 
-  const getAssignmentStatusBadge = (isAssigned: boolean) => {
-    return isAssigned ? "Tilldelad" : "Inte tilldelad";
-  };
 
   const getPriorityBadge = (priority: 'avflytt' | 'inflytt') => {
     return priority === 'avflytt' ? "Avflytt" : "Inflytt";
@@ -454,11 +432,6 @@ export default function AllInspectionsPage() {
 
   // Columns for ongoing inspections with editing capabilities
   const ongoingColumns = [
-    {
-      key: "status",
-      label: "Status",
-      render: (inspection: ExtendedInspection) => <StatusCell inspection={inspection} />
-    },
     {
       key: "priority",
       label: "Prioritet",
@@ -534,7 +507,7 @@ export default function AllInspectionsPage() {
     },
     {
       key: "inspector",
-      label: "Besiktningsman/Resurs",
+      label: "Tilldelad",
       render: (inspection: ExtendedInspection) => <InspectorCell inspection={inspection} />
     },
     {
