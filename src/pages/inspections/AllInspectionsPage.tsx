@@ -440,6 +440,7 @@ export default function AllInspectionsPage() {
     {
       key: "priority",
       label: "Prioritet",
+      hideOnMobile: true,
       render: (inspection: ExtendedInspection) => (
         <div className="flex items-center gap-2">
           <span>{getPriorityBadge(inspection.priority || 'inflytt')}</span>
@@ -461,6 +462,7 @@ export default function AllInspectionsPage() {
     {
       key: "contractId",
       label: "Kontrakt ID",
+      hideOnMobile: true,
       render: (inspection: ExtendedInspection) => (
         <div className="flex items-center gap-2">
           <span>{inspection.contractId || 'N/A'}</span>
@@ -487,11 +489,13 @@ export default function AllInspectionsPage() {
     {
       key: "tenantPhone",
       label: "Telefonnummer",
+      hideOnMobile: true,
       render: (inspection: ExtendedInspection) => inspection.tenantPhone || 'N/A'
     },
     {
       key: "terminationDate",
       label: "Uppsägningsdatum",
+      hideOnMobile: true,
       render: (inspection: ExtendedInspection) => (
         <div className="flex items-center gap-2">
           <span>{inspection.terminationDate || 'N/A'}</span>
@@ -518,11 +522,13 @@ export default function AllInspectionsPage() {
     {
       key: "district",
       label: "Distrikt",
+      hideOnMobile: true,
       render: (inspection: ExtendedInspection) => inspection.district || 'N/A'
     },
     {
       key: "inspectionNumber",
       label: "Besiktningsnummer",
+      hideOnMobile: true,
       render: (inspection: ExtendedInspection) => inspection.inspectionNumber || 'N/A'
     },
     {
