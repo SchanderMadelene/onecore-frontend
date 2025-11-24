@@ -433,6 +433,11 @@ export default function AllInspectionsPage() {
   // Columns for ongoing inspections with editing capabilities
   const ongoingColumns = [
     {
+      key: "inspector",
+      label: "Tilldelad",
+      render: (inspection: ExtendedInspection) => <InspectorCell inspection={inspection} />
+    },
+    {
       key: "priority",
       label: "Prioritet",
       render: (inspection: ExtendedInspection) => (
@@ -504,11 +509,6 @@ export default function AllInspectionsPage() {
           </Button>
         </div>
       )
-    },
-    {
-      key: "inspector",
-      label: "Tilldelad",
-      render: (inspection: ExtendedInspection) => <InspectorCell inspection={inspection} />
     },
     {
       key: "scheduledDate",
