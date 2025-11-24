@@ -360,7 +360,7 @@ export default function AllInspectionsPage() {
           <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
           <span className="truncate">
             {inspection.scheduledDate ? (
-              format(inspection.scheduledDate, "PPP HH:mm", { locale: sv })
+              format(inspection.scheduledDate, "dd-MM-yyyy HH:mm")
             ) : (
               "Välj datum och tid"
             )}
