@@ -1,5 +1,4 @@
-
-import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard";
+// import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard"; // TODO: Replace with new unified component
 import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Settings } from "lucide-react";
@@ -37,18 +36,9 @@ export const BuildingInstallationsTab = ({ building }: BuildingInstallationsTabP
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {installations.map(installation => (
-          <ComponentCard
-            key={installation.id}
-            title={installation.name}
-            description={installation.description}
-            type={installation.specs?.["Typ"]}
-            specs={installation.specs ? Object.entries(installation.specs)
-              .filter(([key]) => key !== "Typ")
-              .map(([key, value]) => ({
-                label: key,
-                value: String(value)
-              })) : []}
-          />
+          <div key={installation.id} className="p-4 border rounded-lg bg-muted/30">
+            <p className="text-sm text-muted-foreground">Komponentkort kommer snart</p>
+          </div>
         ))}
       </div>
     </TabLayout>
