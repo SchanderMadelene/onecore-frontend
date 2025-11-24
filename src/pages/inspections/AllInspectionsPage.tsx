@@ -12,6 +12,7 @@ import { Eye, ChevronUp, ChevronDown, Calendar as CalendarIcon, ChevronsUpDown, 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { Input } from "@/components/ui/input";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -347,43 +348,80 @@ export default function AllInspectionsPage() {
     </Select>
   );
 
-  const DateCell = ({ inspection }: { inspection: ExtendedInspection }) => (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className={cn(
-            "w-44 justify-start text-left font-normal overflow-hidden",
-            !inspection.scheduledDate && "text-muted-foreground"
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
-          <span className="truncate">
-            {inspection.scheduledDate ? (
-              format(inspection.scheduledDate, "dd-MM-yyyy HH:mm")
-            ) : (
-              "Välj datum och tid"
+  const DateCell = ({ inspection }: { inspection: ExtendedInspection }) => {
+    const [timeValue, setTimeValue] = useState(() => {
+      if (inspection.scheduledDate) {
+        const hours = inspection.scheduledDate.getHours().toString().padStart(2, '0');
+        const minutes = inspection.scheduledDate.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+      }
+      return "09:00";
+    });
+
+    const handleDateSelect = (date: Date | undefined) => {
+      if (date) {
+        const [hours, minutes] = timeValue.split(':').map(Number);
+        const newDate = new Date(date);
+        newDate.setHours(hours, minutes, 0, 0);
+        updateInspection(inspection.id, { scheduledDate: newDate });
+      }
+    };
+
+    const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newTime = e.target.value;
+      setTimeValue(newTime);
+      
+      if (inspection.scheduledDate && /^\d{2}:\d{2}$/.test(newTime)) {
+        const [hours, minutes] = newTime.split(':').map(Number);
+        if (hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60) {
+          const newDate = new Date(inspection.scheduledDate);
+          newDate.setHours(hours, minutes, 0, 0);
+          updateInspection(inspection.id, { scheduledDate: newDate });
+        }
+      }
+    };
+
+    return (
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn(
+              "w-44 justify-start text-left font-normal overflow-hidden",
+              !inspection.scheduledDate && "text-muted-foreground"
             )}
-          </span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="single"
-          selected={inspection.scheduledDate}
-          onSelect={(date) => {
-            if (date) {
-              const newDate = new Date(date);
-              newDate.setHours(9, 0, 0, 0); // Default to 09:00
-              updateInspection(inspection.id, { scheduledDate: newDate });
-            }
-          }}
-          initialFocus
-          className="p-3 pointer-events-auto"
-        />
-      </PopoverContent>
-    </Popover>
-  );
+          >
+            <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+            <span className="truncate">
+              {inspection.scheduledDate ? (
+                format(inspection.scheduledDate, "dd-MM-yyyy HH:mm")
+              ) : (
+                "Välj datum och tid"
+              )}
+            </span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={inspection.scheduledDate}
+            onSelect={handleDateSelect}
+            initialFocus
+            className="p-3 pointer-events-auto"
+          />
+          <div className="p-3 border-t">
+            <label className="text-sm font-medium mb-2 block">Klockslag</label>
+            <Input
+              type="time"
+              value={timeValue}
+              onChange={handleTimeChange}
+              className="w-full"
+            />
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  };
 
   const SortableHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
     <Button
