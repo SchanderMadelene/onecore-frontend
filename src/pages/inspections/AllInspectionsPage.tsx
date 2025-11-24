@@ -13,6 +13,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -31,6 +32,7 @@ interface ExtendedInspection extends Inspection {
   scheduledDate?: Date;
   assignedInspector?: string;
   tenantPhone?: string;
+  masterKey?: boolean;
 }
 
 // Available inspectors for assignment
@@ -64,7 +66,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       isAssigned: true,
       scheduledDate: new Date("2024-10-16T10:00:00"),
       assignedInspector: "Anna Lindström",
-      tenantPhone: "070-123 45 67"
+      tenantPhone: "070-123 45 67",
+      masterKey: true
     },
     {
       id: "inspection-mock-2", 
@@ -81,7 +84,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       isAssigned: false,
       scheduledDate: undefined,
       assignedInspector: undefined,
-      tenantPhone: "070-234 56 78"
+      tenantPhone: "070-234 56 78",
+      masterKey: false
     },
     {
       id: "inspection-mock-3",
@@ -98,7 +102,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       isAssigned: true,
       scheduledDate: new Date("2024-11-02T14:30:00"),
       assignedInspector: "Maria Andersson",
-      tenantPhone: "070-345 67 89"
+      tenantPhone: "070-345 67 89",
+      masterKey: true
     },
     {
       id: "inspection-mock-4",
@@ -115,7 +120,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       isAssigned: true,
       scheduledDate: new Date("2024-10-01T09:00:00"),
       assignedInspector: "Anna Lindström",
-      tenantPhone: "070-456 78 90"
+      tenantPhone: "070-456 78 90",
+      masterKey: false
     },
     {
       id: "inspection-mock-5",
@@ -132,7 +138,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       isAssigned: false,
       scheduledDate: undefined,
       assignedInspector: undefined,
-      tenantPhone: "070-567 89 01"
+      tenantPhone: "070-567 89 01",
+      masterKey: true
     },
     {
       id: "inspection-mock-6",
@@ -149,7 +156,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       isAssigned: true,
       scheduledDate: new Date("2024-09-21T11:00:00"),
       assignedInspector: "Anna Lindström",
-      tenantPhone: "070-678 90 12"
+      tenantPhone: "070-678 90 12",
+      masterKey: false
     },
     {
       id: "inspection-mock-7",
@@ -166,7 +174,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       isAssigned: true,
       scheduledDate: new Date("2024-11-11T13:00:00"),
       assignedInspector: "Johanna Svensson",
-      tenantPhone: "070-789 01 23"
+      tenantPhone: "070-789 01 23",
+      masterKey: true
     },
     {
       id: "inspection-mock-8",
@@ -183,7 +192,8 @@ const getAllInspections = (): ExtendedInspection[] => {
       isAssigned: false,
       scheduledDate: undefined,
       assignedInspector: undefined,
-      tenantPhone: "070-890 12 34"
+      tenantPhone: "070-890 12 34",
+      masterKey: false
     }
   ];
   
@@ -531,6 +541,21 @@ export default function AllInspectionsPage() {
       label: "Telefonnummer",
       hideOnMobile: true,
       render: (inspection: ExtendedInspection) => inspection.tenantPhone || 'N/A'
+    },
+    {
+      key: "masterKey",
+      label: "Huvudnyckel?",
+      render: (inspection: ExtendedInspection) => (
+        <div className="flex items-center gap-2">
+          <span className="text-sm">{inspection.masterKey ? 'Ja' : 'Nej'}</span>
+          <Switch
+            checked={inspection.masterKey || false}
+            onCheckedChange={(checked) => {
+              updateInspection(inspection.id, { masterKey: checked });
+            }}
+          />
+        </div>
+      )
     },
     {
       key: "terminationDate",
