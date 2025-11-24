@@ -545,17 +545,7 @@ export default function AllInspectionsPage() {
     {
       key: "masterKey",
       label: "Huvudnyckel?",
-      render: (inspection: ExtendedInspection) => (
-        <div className="flex items-center gap-2">
-          <span className="text-sm">{inspection.masterKey ? 'Ja' : 'Nej'}</span>
-          <Switch
-            checked={inspection.masterKey || false}
-            onCheckedChange={(checked) => {
-              updateInspection(inspection.id, { masterKey: checked });
-            }}
-          />
-        </div>
-      )
+      render: (inspection: ExtendedInspection) => inspection.masterKey ? 'Ja' : 'Nej'
     },
     {
       key: "terminationDate",
