@@ -549,7 +549,7 @@ export default function AllInspectionsPage() {
     },
     {
       key: "terminationDate",
-      label: "Uppsägningsdatum",
+      label: "Uppsägning",
       hideOnMobile: true,
       render: (inspection: ExtendedInspection) => (
         <div className="flex items-center gap-2">
