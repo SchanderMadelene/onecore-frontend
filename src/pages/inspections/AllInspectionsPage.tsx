@@ -553,7 +553,7 @@ export default function AllInspectionsPage() {
       hideOnMobile: true,
       render: (inspection: ExtendedInspection) => (
         <div className="flex items-center gap-2">
-          <span>{inspection.terminationDate || 'N/A'}</span>
+          <span className="whitespace-nowrap">{inspection.terminationDate || 'N/A'}</span>
           <Button
             variant="ghost"
             size="sm"
