@@ -336,11 +336,20 @@ export default function AllInspectionsPage() {
   };
 
   // Editable components
-  const InspectorCell = ({ inspection }: { inspection: ExtendedInspection }) => {
+  const InspectorCell = ({ inspection, readOnly = false }: { inspection: ExtendedInspection; readOnly?: boolean }) => {
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [pendingInspector, setPendingInspector] = useState<string | undefined>();
     const [changeReason, setChangeReason] = useState<string>('');
     const [changeComment, setChangeComment] = useState<string>('');
+
+    // Om readOnly, visa bara resursens namn
+    if (readOnly) {
+      return (
+        <span className="text-sm">
+          {inspection.assignedInspector || 'Ej tilldelad'}
+        </span>
+      );
+    }
 
     const handleValueChange = (value: string) => {
       const newInspector = value === 'none' ? undefined : value;
@@ -689,30 +698,42 @@ export default function AllInspectionsPage() {
     }
   ];
 
-  const renderInspectionTable = (data: ExtendedInspection[], title: string) => (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          {title}
-          <Badge variant="outline">{data.length}</Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        {data.length > 0 ? (
-          <ResponsiveTable
-            data={data}
-            columns={ongoingColumns}
-            keyExtractor={(inspection: ExtendedInspection) => inspection.id}
-            emptyMessage="Inga besiktningar registrerade ännu"
-          />
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-muted-foreground">Inga besiktningar i denna kategori</p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
+  const renderInspectionTable = (data: ExtendedInspection[], title: string, isCompleted: boolean = false) => {
+    // Skapa kolumner dynamiskt baserat på om det är avslutade besiktningar
+    const columns = [
+      {
+        key: "inspector",
+        label: "Tilldelad",
+        render: (inspection: ExtendedInspection) => <InspectorCell inspection={inspection} readOnly={isCompleted} />
+      },
+      ...ongoingColumns.slice(1) // Resten av kolumnerna
+    ];
+
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            {title}
+            <Badge variant="outline">{data.length}</Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {data.length > 0 ? (
+            <ResponsiveTable
+              data={data}
+              columns={columns}
+              keyExtractor={(inspection: ExtendedInspection) => inspection.id}
+              emptyMessage="Inga besiktningar registrerade ännu"
+            />
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">Inga besiktningar i denna kategori</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -925,7 +946,7 @@ export default function AllInspectionsPage() {
           </TabsContent>
 
           <TabsContent value="completed" className="space-y-4">
-            {renderInspectionTable(completedInspections, "Skickade/avslutade besiktningar")}
+            {renderInspectionTable(completedInspections, "Skickade/avslutade besiktningar", true)}
           </TabsContent>
         </Tabs>
       </div>
