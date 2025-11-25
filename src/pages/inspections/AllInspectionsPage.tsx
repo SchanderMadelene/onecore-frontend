@@ -675,11 +675,11 @@ export default function AllInspectionsPage() {
           <span className="whitespace-nowrap">{inspection.terminationDate || 'N/A'}</span>
         )
       },
-      {
-        key: "scheduledDate",
-        label: "Planerat datum/tid",
-        render: (inspection: ExtendedInspection) => <DateCell inspection={inspection} readOnly={isCompleted} />
-      },
+        {
+          key: "scheduledDate",
+          label: isCompleted ? "Utfört" : "Planerat datum/tid",
+          render: (inspection: ExtendedInspection) => <DateCell inspection={inspection} readOnly={isCompleted} />
+        },
       {
         key: "district",
         label: "Distrikt",
