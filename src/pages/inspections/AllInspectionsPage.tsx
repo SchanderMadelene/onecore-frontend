@@ -10,6 +10,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Eye, ChevronUp, ChevronDown, Calendar as CalendarIcon, ChevronsUpDown, Check, X } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Input } from "@/components/ui/input";
@@ -334,29 +336,128 @@ export default function AllInspectionsPage() {
   };
 
   // Editable components
-  const InspectorCell = ({ inspection }: { inspection: ExtendedInspection }) => (
-    <Select
-      value={inspection.assignedInspector || 'none'}
-      onValueChange={(value) => {
+  const InspectorCell = ({ inspection }: { inspection: ExtendedInspection }) => {
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [pendingInspector, setPendingInspector] = useState<string | undefined>();
+    const [changeReason, setChangeReason] = useState<string>('');
+    const [changeComment, setChangeComment] = useState<string>('');
+
+    const handleValueChange = (value: string) => {
+      const newInspector = value === 'none' ? undefined : value;
+      
+      // Om besiktningen redan är tilldelad och man väljer en ny resurs
+      if (inspection.assignedInspector && inspection.assignedInspector !== newInspector) {
+        setPendingInspector(newInspector);
+        setShowConfirmDialog(true);
+      } else {
+        // Direkt uppdatering om ingen är tilldelad eller om man tar bort tilldelningen
         updateInspection(inspection.id, { 
-          assignedInspector: value === 'none' ? undefined : value,
+          assignedInspector: newInspector,
           isAssigned: value !== 'none'
         });
-      }}
-    >
-      <SelectTrigger className="w-40">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="none">Ej tilldelad</SelectItem>
-        {AVAILABLE_INSPECTORS.map(inspector => (
-          <SelectItem key={inspector} value={inspector}>
-            {inspector}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
+      }
+    };
+
+    const handleConfirmChange = () => {
+      console.log({
+        inspectionId: inspection.id,
+        previousInspector: inspection.assignedInspector,
+        newInspector: pendingInspector,
+        reason: changeReason,
+        comment: changeComment,
+        timestamp: new Date().toISOString()
+      });
+
+      updateInspection(inspection.id, { 
+        assignedInspector: pendingInspector,
+        isAssigned: pendingInspector !== undefined
+      });
+
+      // Rensa state
+      setShowConfirmDialog(false);
+      setPendingInspector(undefined);
+      setChangeReason('');
+      setChangeComment('');
+    };
+
+    const handleCancelChange = () => {
+      setShowConfirmDialog(false);
+      setPendingInspector(undefined);
+      setChangeReason('');
+      setChangeComment('');
+    };
+
+    return (
+      <>
+        <Select
+          value={inspection.assignedInspector || 'none'}
+          onValueChange={handleValueChange}
+        >
+          <SelectTrigger className="w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">Ej tilldelad</SelectItem>
+            {AVAILABLE_INSPECTORS.map(inspector => (
+              <SelectItem key={inspector} value={inspector}>
+                {inspector}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Bekräfta byte av resurs</AlertDialogTitle>
+              <AlertDialogDescription>
+                Du håller på att byta resurs från <strong>{inspection.assignedInspector}</strong> till{' '}
+                <strong>{pendingInspector || 'Ej tilldelad'}</strong>. Vänligen ange anledning till bytet.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Anledning *</label>
+                <Select value={changeReason} onValueChange={setChangeReason}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Välj anledning" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sjukdom">Sjukdom</SelectItem>
+                    <SelectItem value="semester">Semester</SelectItem>
+                    <SelectItem value="schema-konflikt">Schema-konflikt</SelectItem>
+                    <SelectItem value="resursbrist">Resursbrist</SelectItem>
+                    <SelectItem value="annat">Annat</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Kommentar (valfritt)</label>
+                <Textarea
+                  placeholder="Ange ytterligare information om bytet..."
+                  value={changeComment}
+                  onChange={(e) => setChangeComment(e.target.value)}
+                  rows={3}
+                />
+              </div>
+            </div>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={handleCancelChange}>Avbryt</AlertDialogCancel>
+              <AlertDialogAction 
+                onClick={handleConfirmChange}
+                disabled={!changeReason}
+              >
+                Bekräfta byte
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </>
+    );
+  };
 
   const DateCell = ({ inspection }: { inspection: ExtendedInspection }) => {
     const [timeValue, setTimeValue] = useState(() => {
