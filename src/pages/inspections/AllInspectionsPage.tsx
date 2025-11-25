@@ -552,21 +552,7 @@ export default function AllInspectionsPage() {
       label: "Uppsägning",
       hideOnMobile: true,
       render: (inspection: ExtendedInspection) => (
-        <div className="flex items-center gap-2">
-          <span className="whitespace-nowrap">{inspection.terminationDate || 'N/A'}</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-6 w-6 p-0"
-            onClick={() => handleSort('terminationDate')}
-          >
-            {sortField === 'terminationDate' && (
-              sortDirection === 'asc' ? 
-                <ChevronUp className="h-3 w-3" /> : 
-                <ChevronDown className="h-3 w-3" />
-            )}
-          </Button>
-        </div>
+        <span className="whitespace-nowrap">{inspection.terminationDate || 'N/A'}</span>
       )
     },
     {
