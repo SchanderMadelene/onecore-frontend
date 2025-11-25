@@ -468,7 +468,7 @@ export default function AllInspectionsPage() {
     );
   };
 
-  const DateCell = ({ inspection }: { inspection: ExtendedInspection }) => {
+  const DateCell = ({ inspection, readOnly = false }: { inspection: ExtendedInspection; readOnly?: boolean }) => {
     const [timeValue, setTimeValue] = useState(() => {
       if (inspection.scheduledDate) {
         const hours = inspection.scheduledDate.getHours().toString().padStart(2, '0');
@@ -477,6 +477,15 @@ export default function AllInspectionsPage() {
       }
       return "09:00";
     });
+
+    // Om readOnly, visa bara datumet som text
+    if (readOnly) {
+      return (
+        <span className="text-sm whitespace-nowrap">
+          {inspection.scheduledDate ? format(inspection.scheduledDate, "dd-MM-yyyy HH:mm") : 'Ej planerat'}
+        </span>
+      );
+    }
 
     const handleDateSelect = (date: Date | undefined) => {
       if (date) {
@@ -590,114 +599,6 @@ export default function AllInspectionsPage() {
   console.log("My inspections:", myInspections.length);
   console.log("Completed inspections:", completedInspections.length);
 
-  // Columns for ongoing inspections with editing capabilities
-  const ongoingColumns = [
-    {
-      key: "inspector",
-      label: "Tilldelad",
-      render: (inspection: ExtendedInspection) => <InspectorCell inspection={inspection} />
-    },
-    {
-      key: "priority",
-      label: "Prioritet",
-      hideOnMobile: true,
-      render: (inspection: ExtendedInspection) => (
-        <div className="flex items-center gap-2">
-          <span>{getPriorityBadge(inspection.priority || 'inflytt')}</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-6 w-6 p-0"
-            onClick={() => handleSort('priority')}
-          >
-            {sortField === 'priority' && (
-              sortDirection === 'asc' ? 
-                <ChevronUp className="h-3 w-3" /> : 
-                <ChevronDown className="h-3 w-3" />
-            )}
-          </Button>
-        </div>
-      )
-    },
-    {
-      key: "contractId",
-      label: "Kontrakt ID",
-      hideOnMobile: true,
-      render: (inspection: ExtendedInspection) => (
-        <div className="flex items-center gap-2">
-          <span>{inspection.contractId || 'N/A'}</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-6 w-6 p-0"
-            onClick={() => handleSort('contractId')}
-          >
-            {sortField === 'contractId' && (
-              sortDirection === 'asc' ? 
-                <ChevronUp className="h-3 w-3" /> : 
-                <ChevronDown className="h-3 w-3" />
-            )}
-          </Button>
-        </div>
-      )
-    },
-    {
-      key: "address",
-      label: "Adress",
-      render: (inspection: ExtendedInspection) => inspection.address || 'N/A'
-    },
-    {
-      key: "tenantPhone",
-      label: "Telefonnummer",
-      hideOnMobile: true,
-      render: (inspection: ExtendedInspection) => inspection.tenantPhone || 'N/A'
-    },
-    {
-      key: "masterKey",
-      label: "Huvudnyckel",
-      render: (inspection: ExtendedInspection) => inspection.masterKey ? 'Ja' : 'Nej'
-    },
-    {
-      key: "terminationDate",
-      label: "Uppsägning",
-      hideOnMobile: true,
-      render: (inspection: ExtendedInspection) => (
-        <span className="whitespace-nowrap">{inspection.terminationDate || 'N/A'}</span>
-      )
-    },
-    {
-      key: "scheduledDate",
-      label: "Planerat datum/tid",
-      render: (inspection: ExtendedInspection) => <DateCell inspection={inspection} />
-    },
-    {
-      key: "district",
-      label: "Distrikt",
-      hideOnMobile: true,
-      render: (inspection: ExtendedInspection) => inspection.district || 'N/A'
-    },
-    {
-      key: "inspectionNumber",
-      label: "Besiktningsnummer",
-      hideOnMobile: true,
-      render: (inspection: ExtendedInspection) => inspection.inspectionNumber || 'N/A'
-    },
-    {
-      key: "actions",
-      label: "Åtgärder",
-      render: (inspection: ExtendedInspection) => (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => handleViewInspection(inspection)}
-        >
-          <Eye className="h-4 w-4 mr-1" />
-          Visa detaljer
-        </Button>
-      )
-    }
-  ];
-
   const renderInspectionTable = (data: ExtendedInspection[], title: string, isCompleted: boolean = false) => {
     // Skapa kolumner dynamiskt baserat på om det är avslutade besiktningar
     const columns = [
@@ -706,7 +607,105 @@ export default function AllInspectionsPage() {
         label: "Tilldelad",
         render: (inspection: ExtendedInspection) => <InspectorCell inspection={inspection} readOnly={isCompleted} />
       },
-      ...ongoingColumns.slice(1) // Resten av kolumnerna
+      {
+        key: "priority",
+        label: "Prioritet",
+        hideOnMobile: true,
+        render: (inspection: ExtendedInspection) => (
+          <div className="flex items-center gap-2">
+            <span>{getPriorityBadge(inspection.priority || 'inflytt')}</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0"
+              onClick={() => handleSort('priority')}
+            >
+              {sortField === 'priority' && (
+                sortDirection === 'asc' ? 
+                  <ChevronUp className="h-3 w-3" /> : 
+                  <ChevronDown className="h-3 w-3" />
+              )}
+            </Button>
+          </div>
+        )
+      },
+      {
+        key: "contractId",
+        label: "Kontrakt ID",
+        hideOnMobile: true,
+        render: (inspection: ExtendedInspection) => (
+          <div className="flex items-center gap-2">
+            <span>{inspection.contractId || 'N/A'}</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0"
+              onClick={() => handleSort('contractId')}
+            >
+              {sortField === 'contractId' && (
+                sortDirection === 'asc' ? 
+                  <ChevronUp className="h-3 w-3" /> : 
+                  <ChevronDown className="h-3 w-3" />
+              )}
+            </Button>
+          </div>
+        )
+      },
+      {
+        key: "address",
+        label: "Adress",
+        render: (inspection: ExtendedInspection) => inspection.address || 'N/A'
+      },
+      {
+        key: "tenantPhone",
+        label: "Telefonnummer",
+        hideOnMobile: true,
+        render: (inspection: ExtendedInspection) => inspection.tenantPhone || 'N/A'
+      },
+      {
+        key: "masterKey",
+        label: "Huvudnyckel",
+        render: (inspection: ExtendedInspection) => inspection.masterKey ? 'Ja' : 'Nej'
+      },
+      {
+        key: "terminationDate",
+        label: "Uppsägning",
+        hideOnMobile: true,
+        render: (inspection: ExtendedInspection) => (
+          <span className="whitespace-nowrap">{inspection.terminationDate || 'N/A'}</span>
+        )
+      },
+      {
+        key: "scheduledDate",
+        label: "Planerat datum/tid",
+        render: (inspection: ExtendedInspection) => <DateCell inspection={inspection} readOnly={isCompleted} />
+      },
+      {
+        key: "district",
+        label: "Distrikt",
+        hideOnMobile: true,
+        render: (inspection: ExtendedInspection) => inspection.district || 'N/A'
+      },
+      {
+        key: "inspectionNumber",
+        label: "Besiktningsnummer",
+        hideOnMobile: true,
+        render: (inspection: ExtendedInspection) => inspection.inspectionNumber || 'N/A'
+      },
+      {
+        key: "actions",
+        label: "Åtgärder",
+        render: (inspection: ExtendedInspection) => (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleViewInspection(inspection)}
+          >
+            <Eye className="h-4 w-4 mr-1" />
+            Visa detaljer
+          </Button>
+        )
+      }
     ];
 
     return (
