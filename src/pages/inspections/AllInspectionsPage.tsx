@@ -588,54 +588,7 @@ export default function AllInspectionsPage() {
     }
   ];
 
-  // Columns for other tabs
-  const createStandardColumns = (showInspector: boolean = true) => [
-    {
-      key: "date",
-      label: "Datum", 
-      render: (inspection: ExtendedInspection) => inspection.date ? new Date(inspection.date).toLocaleDateString('sv-SE') : 'N/A'
-    },
-    {
-      key: "address",
-      label: "Adress",
-      render: (inspection: ExtendedInspection) => inspection.address || 'N/A'
-    },
-    ...(showInspector ? [{
-      key: "inspector",
-      label: "Besiktningsman",
-      render: (inspection: ExtendedInspection) => inspection.inspectedBy || 'N/A'
-    }] : []),
-    {
-      key: "status", 
-      label: "Status",
-      render: (inspection: ExtendedInspection) => getStatusBadge(inspection)
-    },
-    {
-      key: "rooms",
-      label: "Rum",
-      render: (inspection: ExtendedInspection) => {
-        const completed = getCompletedRoomsCount(inspection);
-        const total = getTotalRoomsCount(inspection);
-        return `${completed}/${total}`;
-      }
-    },
-    {
-      key: "actions",
-      label: "Åtgärder",
-      render: (inspection: ExtendedInspection) => (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => handleViewInspection(inspection)}
-        >
-          <Eye className="h-4 w-4 mr-1" />
-          Visa detaljer
-        </Button>
-      )
-    }
-  ];
-
-  const renderInspectionTable = (data: ExtendedInspection[], title: string, useOngoingColumns: boolean = false, showInspector: boolean = true) => (
+  const renderInspectionTable = (data: ExtendedInspection[], title: string) => (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
@@ -647,7 +600,7 @@ export default function AllInspectionsPage() {
         {data.length > 0 ? (
           <ResponsiveTable
             data={data}
-            columns={useOngoingColumns ? ongoingColumns : createStandardColumns(showInspector)}
+            columns={ongoingColumns}
             keyExtractor={(inspection: ExtendedInspection) => inspection.id}
             emptyMessage="Inga besiktningar registrerade ännu"
           />
@@ -863,15 +816,15 @@ export default function AllInspectionsPage() {
           </TabsList>
 
           <TabsContent value="ongoing" className="space-y-4">
-            {renderInspectionTable(ongoingInspections, "Alla pågående registrerade besiktningar", true)}
+            {renderInspectionTable(ongoingInspections, "Alla pågående registrerade besiktningar")}
           </TabsContent>
 
           <TabsContent value="mine" className="space-y-4">
-            {renderInspectionTable(myInspections, "Mina besiktningar", false, false)}
+            {renderInspectionTable(myInspections, "Mina besiktningar")}
           </TabsContent>
 
           <TabsContent value="completed" className="space-y-4">
-            {renderInspectionTable(completedInspections, "Skickade/avslutade besiktningar", false)}
+            {renderInspectionTable(completedInspections, "Skickade/avslutade besiktningar")}
           </TabsContent>
         </Tabs>
       </div>
