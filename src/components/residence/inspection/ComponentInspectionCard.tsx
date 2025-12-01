@@ -55,15 +55,15 @@ export function ComponentInspectionCard({
   const hasLongNote = note.length > 50;
 
   return (
-    <Card className="p-4 space-y-3">
+    <Card className="p-3 space-y-2.5">
       {/* Header with indicators */}
-      <div className="flex items-center justify-between pr-1">
-        <h4 className="font-medium">{label}</h4>
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between">
+        <h4 className="text-sm font-medium">{label}</h4>
+        <div className="flex items-center gap-1.5">
           {photoCount > 0 && (
             <button
               onClick={onOpenDetail}
-              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground transition-colors p-1"
             >
               <Camera className="h-3 w-3" />
               <span>{photoCount}</span>
@@ -72,7 +72,7 @@ export function ComponentInspectionCard({
           {actions.length > 0 && (
             <button
               onClick={onOpenDetail}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors p-1"
             >
               <Wrench className="h-3 w-3" />
             </button>
@@ -80,14 +80,14 @@ export function ComponentInspectionCard({
           {hasLongNote && (
             <button
               onClick={onOpenDetail}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors p-1"
             >
               <MessageSquare className="h-3 w-3" />
             </button>
           )}
           <button
             onClick={onOpenDetail}
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors p-1"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -95,32 +95,32 @@ export function ComponentInspectionCard({
       </div>
 
       {/* Condition buttons */}
-      <div className="grid grid-cols-3 gap-2 px-0.5">
+      <div className="grid grid-cols-3 gap-1.5">
         {CONDITION_OPTIONS.map((option) => (
           <Button
             key={option.value}
             type="button"
             variant={condition === option.value ? "default" : "outline"}
             size="sm"
-            className={condition === option.value ? option.className : ""}
+            className={`h-8 text-xs ${condition === option.value ? option.className : ""}`}
             onClick={() => onConditionChange(option.value)}
           >
-            <span className="mr-1">{option.icon}</span>
+            <span className="mr-1 text-sm">{option.icon}</span>
             {option.label}
           </Button>
         ))}
       </div>
 
       {/* Note field and photo button */}
-      <div className="flex gap-2 px-0.5">
+      <div className="flex gap-1.5">
         <Textarea
           value={note}
           onChange={(e) => onNoteChange(e.target.value)}
           onFocus={() => setIsNoteFocused(true)}
           onBlur={() => setIsNoteFocused(false)}
           placeholder="Anteckning..."
-          className={`flex-1 min-h-[38px] resize-none transition-all ${
-            isNoteFocused ? 'h-[76px]' : 'h-[38px]'
+          className={`flex-1 min-h-[32px] text-sm resize-none transition-all ${
+            isNoteFocused ? 'h-[64px]' : 'h-[32px]'
           }`}
           rows={isNoteFocused ? 3 : 1}
         />
