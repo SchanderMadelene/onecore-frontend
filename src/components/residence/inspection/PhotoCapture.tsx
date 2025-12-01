@@ -43,7 +43,7 @@ export function PhotoCapture({ onPhotoCapture, photoCount, disabled }: PhotoCapt
   };
 
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block shrink-0">
       <input
         ref={fileInputRef}
         type="file"
@@ -59,9 +59,9 @@ export function PhotoCapture({ onPhotoCapture, photoCount, disabled }: PhotoCapt
         size="sm"
         onClick={() => fileInputRef.current?.click()}
         disabled={disabled}
-        className="h-8 w-8 p-0"
+        className="h-8 w-8 p-0 shrink-0"
       >
-        <Camera className="h-4 w-4" />
+        <Camera className="h-3.5 w-3.5" />
       </Button>
     </div>
   );
