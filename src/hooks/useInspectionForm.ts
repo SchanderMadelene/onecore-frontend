@@ -106,6 +106,40 @@ export function useInspectionForm(rooms: Room[]) {
     }));
   };
 
+  const handleComponentPhotoAdd = useCallback((
+    roomId: string,
+    field: keyof InspectionRoom["componentPhotos"],
+    photoDataUrl: string
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        componentPhotos: {
+          ...prev[roomId].componentPhotos,
+          [field]: [...prev[roomId].componentPhotos[field], photoDataUrl]
+        }
+      }
+    }));
+  }, []);
+
+  const handleComponentPhotoRemove = useCallback((
+    roomId: string,
+    field: keyof InspectionRoom["componentPhotos"],
+    photoIndex: number
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        componentPhotos: {
+          ...prev[roomId].componentPhotos,
+          [field]: prev[roomId].componentPhotos[field].filter((_, i) => i !== photoIndex)
+        }
+      }
+    }));
+  }, []);
+
   return {
     inspectorName,
     setInspectorName,
@@ -121,6 +155,8 @@ export function useInspectionForm(rooms: Room[]) {
     handleToggleRoom,
     handleConditionUpdate,
     handleActionUpdate,
-    handleComponentNoteUpdate
+    handleComponentNoteUpdate,
+    handleComponentPhotoAdd,
+    handleComponentPhotoRemove
   };
 }

@@ -45,7 +45,9 @@ export function DesktopInspectionForm({
     inspectionData,
     handleConditionUpdate,
     handleActionUpdate,
-    handleComponentNoteUpdate
+    handleComponentNoteUpdate,
+    handleComponentPhotoAdd,
+    handleComponentPhotoRemove
   } = useInspectionForm(rooms);
 
   // Set default inspector if not already set
@@ -204,6 +206,12 @@ export function DesktopInspectionForm({
                     }
                     onComponentNoteUpdate={(field, note) => 
                       handleComponentNoteUpdate(room.id, field, note)
+                    }
+                    onComponentPhotoAdd={(field, photoDataUrl) => 
+                      handleComponentPhotoAdd(room.id, field, photoDataUrl)
+                    }
+                    onComponentPhotoRemove={(field, index) => 
+                      handleComponentPhotoRemove(room.id, field, index)
                     }
                   />
                 </AccordionContent>

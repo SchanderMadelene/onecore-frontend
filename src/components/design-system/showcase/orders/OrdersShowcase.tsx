@@ -46,6 +46,15 @@ const exampleInspection: Inspection = {
         ceiling: "",
         details: "Window in north wall doesn't seal properly"
       },
+      componentPhotos: {
+        wall1: [],
+        wall2: [],
+        wall3: [],
+        wall4: [],
+        floor: [],
+        ceiling: [],
+        details: []
+      },
       photos: [],
       isApproved: false,
       isHandled: false
