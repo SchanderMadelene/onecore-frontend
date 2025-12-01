@@ -59,14 +59,9 @@ export function PhotoCapture({ onPhotoCapture, photoCount, disabled }: PhotoCapt
         size="sm"
         onClick={() => fileInputRef.current?.click()}
         disabled={disabled}
-        className="relative"
+        className="h-8 w-8 p-0"
       >
-        <Camera className="h-4 w-4 mr-1" />
-        {photoCount > 0 && (
-          <Badge variant="secondary" className="ml-1 h-5 min-w-5 px-1 text-xs">
-            {photoCount}
-          </Badge>
-        )}
+        <Camera className="h-4 w-4" />
       </Button>
     </div>
   );
