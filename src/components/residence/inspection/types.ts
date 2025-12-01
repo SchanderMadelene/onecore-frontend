@@ -33,10 +33,13 @@ export interface InspectionRoom {
   isHandled: boolean;
 }
 
+export type InspectionStatus = 'draft' | 'in_progress' | 'completed';
+
 export interface Inspection {
   id: string;
   date: string;
   inspectedBy: string;
   rooms: Record<string, InspectionRoom>;
-  isCompleted?: boolean; // Add this property
+  status: InspectionStatus;
+  isCompleted?: boolean; // Deprecated, use status instead
 }

@@ -13,7 +13,7 @@ import { InspectorSelectionCard } from "./InspectorSelectionCard";
 
 interface MobileInspectionFormProps {
   rooms: Room[];
-  onSave: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
+  onSave: (inspectorName: string, rooms: Record<string, InspectionRoomType>, status: 'draft' | 'completed') => void;
   onCancel: () => void;
   tenant?: any;
 }
@@ -59,7 +59,15 @@ export function MobileInspectionForm({
   };
 
   const handleSubmit = () => {
-    onSave(inspectorName, inspectionData);
+    if (canComplete) {
+      onSave(inspectorName, inspectionData, 'completed');
+    }
+  };
+
+  const handleSaveDraft = () => {
+    if (inspectorName.trim()) {
+      onSave(inspectorName, inspectionData, 'draft');
+    }
   };
 
   const canComplete = inspectorName && inspectionTime && completedRooms === rooms.length;
@@ -206,34 +214,44 @@ export function MobileInspectionForm({
 
       {/* Bottom Navigation */}
       <div className="sticky bottom-0 bg-background border-t p-4">
-        <div className="flex gap-3">
-          <Button 
-            variant="outline" 
-            onClick={handlePrevious}
-            disabled={currentRoomIndex === 0}
-            className="flex-1"
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              onClick={handlePrevious}
+              disabled={currentRoomIndex === 0}
+              className="flex-1"
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Föregående
+            </Button>
+            
+            {currentRoomIndex === rooms.length - 1 ? (
+              <Button 
+                onClick={handleSubmit}
+                disabled={!canComplete}
+                className="flex-1"
+              >
+                Slutför
+              </Button>
+            ) : (
+              <Button 
+                onClick={handleNext}
+                className="flex-1"
+              >
+                Nästa
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            )}
+          </div>
+          <Button
+            variant="secondary"
+            onClick={handleSaveDraft}
+            disabled={!inspectorName.trim()}
+            className="w-full"
           >
-            <ChevronLeft className="h-4 w-4 mr-1" />
-            Föregående
+            Spara utkast
           </Button>
-          
-          {currentRoomIndex === rooms.length - 1 ? (
-            <Button 
-              onClick={handleSubmit}
-              disabled={!canComplete}
-              className="flex-1"
-            >
-              Slutför besiktning
-            </Button>
-          ) : (
-            <Button 
-              onClick={handleNext}
-              className="flex-1"
-            >
-              Nästa
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Button>
-          )}
         </div>
       </div>
     </div>

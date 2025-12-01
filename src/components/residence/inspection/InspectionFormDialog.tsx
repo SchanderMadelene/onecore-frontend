@@ -16,7 +16,7 @@ import { DesktopInspectionForm } from "./desktop/DesktopInspectionForm";
 interface InspectionFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
+  onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>, status: 'draft' | 'completed') => void;
   rooms: Room[];
   buttonSize?: string;
   tenant?: any; // Optional tenant prop if we want to pass different tenant data
