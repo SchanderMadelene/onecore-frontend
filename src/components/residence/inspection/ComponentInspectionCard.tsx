@@ -55,17 +55,17 @@ export function ComponentInspectionCard({
   const hasLongNote = note.length > 50;
 
   return (
-    <div className="border-b border-border last:border-0 py-2.5">
+    <div className="border-b border-border last:border-0 py-4">
       {/* Header with indicators */}
-      <div className="flex items-center justify-between mb-2">
-        <h4 className="text-sm font-medium">{label}</h4>
-        <div className="flex items-center gap-1">
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="text-base font-medium">{label}</h4>
+        <div className="flex items-center gap-2">
           {photoCount > 0 && (
             <button
               onClick={onOpenDetail}
-              className="flex items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-1.5 py-0.5 rounded"
+              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded"
             >
-              <Camera className="h-3 w-3" />
+              <Camera className="h-4 w-4" />
               <span>{photoCount}</span>
             </button>
           )}
@@ -74,7 +74,7 @@ export function ComponentInspectionCard({
               onClick={onOpenDetail}
               className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded"
             >
-              <Wrench className="h-3 w-3" />
+              <Wrench className="h-4 w-4" />
             </button>
           )}
           {hasLongNote && (
@@ -82,45 +82,45 @@ export function ComponentInspectionCard({
               onClick={onOpenDetail}
               className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded"
             >
-              <MessageSquare className="h-3 w-3" />
+              <MessageSquare className="h-4 w-4" />
             </button>
           )}
           <button
             onClick={onOpenDetail}
             className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded"
           >
-            <ChevronRight className="h-3.5 w-3.5" />
+            <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </div>
 
       {/* Condition buttons */}
-      <div className="grid grid-cols-3 gap-1.5 mb-2">
+      <div className="grid grid-cols-3 gap-2 mb-3">
         {CONDITION_OPTIONS.map((option) => (
           <Button
             key={option.value}
             type="button"
             variant={condition === option.value ? "default" : "outline"}
-            size="sm"
-            className={`h-7 text-xs px-2 ${condition === option.value ? option.className : ""}`}
+            size="default"
+            className={`h-10 text-sm ${condition === option.value ? option.className : ""}`}
             onClick={() => onConditionChange(option.value)}
           >
-            <span className="text-sm">{option.icon}</span>
-            <span className="ml-1.5">{option.label}</span>
+            <span className="text-base mr-2">{option.icon}</span>
+            <span>{option.label}</span>
           </Button>
         ))}
       </div>
 
       {/* Note field and photo button */}
-      <div className="flex gap-1.5 items-start">
+      <div className="flex gap-2 items-start">
         <Textarea
           value={note}
           onChange={(e) => onNoteChange(e.target.value)}
           onFocus={() => setIsNoteFocused(true)}
           onBlur={() => setIsNoteFocused(false)}
           placeholder="Anteckning..."
-          className={`flex-1 text-sm resize-none transition-all py-1.5 ${
-            isNoteFocused ? 'min-h-[60px]' : 'min-h-[32px] h-[32px]'
+          className={`flex-1 text-sm resize-none transition-all ${
+            isNoteFocused ? 'min-h-[80px]' : 'min-h-[40px] h-[40px]'
           }`}
         />
         <PhotoCapture

@@ -56,12 +56,12 @@ export function PhotoCapture({ onPhotoCapture, photoCount, disabled }: PhotoCapt
       <Button
         type="button"
         variant="outline"
-        size="sm"
+        size="icon"
         onClick={() => fileInputRef.current?.click()}
         disabled={disabled}
-        className="h-8 w-8 p-0 shrink-0"
+        className="h-10 w-10 shrink-0"
       >
-        <Camera className="h-3.5 w-3.5" />
+        <Camera className="h-4 w-4" />
       </Button>
     </div>
   );
