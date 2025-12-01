@@ -28,6 +28,15 @@ export interface InspectionRoom {
     ceiling: string;
     details: string;
   };
+  componentPhotos: {
+    wall1: string[];
+    wall2: string[];
+    wall3: string[];
+    wall4: string[];
+    floor: string[];
+    ceiling: string[];
+    details: string[];
+  };
   photos: string[];
   isApproved: boolean;
   isHandled: boolean;

@@ -38,7 +38,9 @@ export function MobileInspectionForm({
     inspectionData,
     handleConditionUpdate,
     handleActionUpdate,
-    handleComponentNoteUpdate
+    handleComponentNoteUpdate,
+    handleComponentPhotoAdd,
+    handleComponentPhotoRemove
   } = useInspectionForm(rooms);
 
   const currentRoom = rooms[currentRoomIndex];
@@ -206,6 +208,12 @@ export function MobileInspectionForm({
               }
               onComponentNoteUpdate={(field, note) => 
                 handleComponentNoteUpdate(currentRoom.id, field, note)
+              }
+              onComponentPhotoAdd={(field, photoDataUrl) => 
+                handleComponentPhotoAdd(currentRoom.id, field, photoDataUrl)
+              }
+              onComponentPhotoRemove={(field, index) => 
+                handleComponentPhotoRemove(currentRoom.id, field, index)
               }
             />
           </div>

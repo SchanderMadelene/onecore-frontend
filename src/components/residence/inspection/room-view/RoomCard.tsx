@@ -61,6 +61,15 @@ export const RoomCard = ({
       ceiling: "",
       details: ""
     },
+    componentPhotos: {
+      wall1: [],
+      wall2: [],
+      wall3: [],
+      wall4: [],
+      floor: [],
+      ceiling: [],
+      details: []
+    },
     photos: [],
     isApproved: false,
     isHandled: false
