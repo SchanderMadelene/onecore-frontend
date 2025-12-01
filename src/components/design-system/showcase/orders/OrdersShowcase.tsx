@@ -15,6 +15,7 @@ const exampleInspection: Inspection = {
   id: "i1",
   date: new Date().toISOString(),
   inspectedBy: "Anna Johansson",
+  status: 'completed',
   rooms: {
     "Room1": {
       roomId: "Room1",
@@ -69,7 +70,7 @@ export const OrdersShowcase = () => {
   // Use proper Room data from our mock data
   const sampleRooms = mockRoomsData.content;
 
-  const handleSubmitInspection = (inspectorName: string, rooms: any) => {
+  const handleSubmitInspection = (inspectorName: string, rooms: any, status: 'draft' | 'completed' = 'completed') => {
     setIsCreateInspectionOpen(false);
   };
 
