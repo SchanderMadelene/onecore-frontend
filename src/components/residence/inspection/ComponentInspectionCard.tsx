@@ -23,19 +23,16 @@ const CONDITION_OPTIONS = [
   { 
     value: "God", 
     label: "God",
-    icon: "✓",
     className: "bg-green-500 hover:bg-green-600 text-white border-green-600"
   },
   { 
     value: "Acceptabel", 
     label: "Acceptabel",
-    icon: "!",
     className: "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600"
   },
   { 
     value: "Skadad", 
     label: "Skadad",
-    icon: "✗",
     className: "bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive"
   }
 ];
@@ -102,11 +99,10 @@ export function ComponentInspectionCard({
             type="button"
             variant={condition === option.value ? "default" : "outline"}
             size="default"
-            className={`h-10 text-sm ${condition === option.value ? option.className : ""}`}
+            className={`h-10 text-sm font-medium ${condition === option.value ? option.className : ""}`}
             onClick={() => onConditionChange(option.value)}
           >
-            <span className="text-base mr-2">{option.icon}</span>
-            <span>{option.label}</span>
+            {option.label}
           </Button>
         ))}
       </div>
