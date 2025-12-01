@@ -42,7 +42,7 @@ export function RoomInspectionMobile({
 
   return (
     <Card>
-      <CardContent className="p-4">
+      <CardContent className="p-3">
         <div className="mb-3">
           <h3 className="font-semibold text-lg">{room.name}</h3>
           <p className="text-sm text-muted-foreground">{room.size} m²</p>
