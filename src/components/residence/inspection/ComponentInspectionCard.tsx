@@ -55,9 +55,9 @@ export function ComponentInspectionCard({
   const hasLongNote = note.length > 50;
 
   return (
-    <Card className="p-3 space-y-3">
+    <Card className="p-4 space-y-3">
       {/* Header with indicators */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pr-1">
         <h4 className="font-medium">{label}</h4>
         <div className="flex items-center gap-2">
           {photoCount > 0 && (
@@ -95,7 +95,7 @@ export function ComponentInspectionCard({
       </div>
 
       {/* Condition buttons */}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2 px-0.5">
         {CONDITION_OPTIONS.map((option) => (
           <Button
             key={option.value}
@@ -112,7 +112,7 @@ export function ComponentInspectionCard({
       </div>
 
       {/* Note field and photo button */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 px-0.5">
         <Textarea
           value={note}
           onChange={(e) => onNoteChange(e.target.value)}
