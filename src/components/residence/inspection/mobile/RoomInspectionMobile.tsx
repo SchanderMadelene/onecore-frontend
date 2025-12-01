@@ -42,10 +42,10 @@ export function RoomInspectionMobile({
 
   return (
     <Card>
-      <CardContent className="p-3">
-        <div className="mb-3 pb-2 border-b border-border">
-          <h3 className="font-semibold text-base">{room.name}</h3>
-          <p className="text-xs text-muted-foreground">{room.size} m²</p>
+      <CardContent className="p-4">
+        <div className="mb-4 pb-3 border-b border-border">
+          <h3 className="font-semibold text-lg">{room.name}</h3>
+          <p className="text-sm text-muted-foreground">{room.size} m²</p>
         </div>
 
         <div>
