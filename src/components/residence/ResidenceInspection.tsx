@@ -1,15 +1,15 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import type { Room } from "@/types/api";
+import type { Room, Residence } from "@/types/api";
 import type { Inspection } from "./inspection/types";
 import { InspectionsList } from "./inspection/InspectionsList";
 import { TabLayout } from "@/components/ui/tab-layout";
-import { ClipboardList } from "lucide-react";
 
 interface ResidenceInspectionProps {
   rooms: Room[];
   tenant?: any;
+  residence?: Residence;
 }
 
 const LOCAL_STORAGE_KEY = "inspections";
@@ -19,11 +19,7 @@ const loadInspections = (): Inspection[] => {
   return saved ? JSON.parse(saved) : [];
 };
 
-const saveInspections = (inspections: Inspection[]) => {
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(inspections));
-};
-
-export const ResidenceInspection = ({ rooms, tenant }: ResidenceInspectionProps) => {
+export const ResidenceInspection = ({ rooms, tenant, residence }: ResidenceInspectionProps) => {
   const [inspections, setInspections] = useState<Inspection[]>(loadInspections);
 
   const handleInspectionCreated = () => {
@@ -42,6 +38,7 @@ export const ResidenceInspection = ({ rooms, tenant }: ResidenceInspectionProps)
         inspections={inspections}
         onInspectionCreated={handleInspectionCreated}
         tenant={tenant}
+        residence={residence}
       />
     </TabLayout>
   );

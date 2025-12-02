@@ -1,12 +1,17 @@
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { MobileInspectionForm } from "./MobileInspectionForm";
 import type { Room } from "@/types/api";
-import type { InspectionRoom as InspectionRoomType } from "../types";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "../types";
 
 interface MobileInspectionSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>, status: 'draft' | 'completed') => void;
+  onSubmit: (
+    inspectorName: string, 
+    rooms: Record<string, InspectionRoomType>, 
+    status: 'draft' | 'completed',
+    additionalData: InspectionSubmitData
+  ) => void;
   rooms: Room[];
   tenant?: any;
 }

@@ -1,15 +1,15 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, ClipboardList } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InspectionFormDialog } from "./InspectionFormDialog";
 import { InspectionReadOnly } from "./InspectionReadOnly";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import type { Room } from "@/types/api";
-import type { Inspection, InspectionRoom as InspectionRoomType } from "./types";
+import type { Room, Residence } from "@/types/api";
+import type { Inspection, InspectionRoom as InspectionRoomType, InspectionSubmitData, ResidenceInfo, TenantSnapshot } from "./types";
 import { toast } from "@/hooks/use-toast";
 
 interface InspectionsListProps {
@@ -17,9 +17,37 @@ interface InspectionsListProps {
   inspections: Inspection[];
   onInspectionCreated: () => void;
   tenant?: any;
+  residence?: Residence;
 }
 
-export function InspectionsList({ rooms, inspections, onInspectionCreated, tenant }: InspectionsListProps) {
+// Generera besiktningsnummer
+const generateInspectionNumber = (): string => {
+  const year = new Date().getFullYear();
+  const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+  return `B-${year}-${randomNum}`;
+};
+
+// Skapa ResidenceInfo från Residence
+const createResidenceInfo = (residence?: Residence): ResidenceInfo => {
+  if (!residence) {
+    return {
+      id: '',
+      objectNumber: '',
+      address: 'Okänd adress',
+      apartmentType: undefined,
+      size: undefined
+    };
+  }
+  return {
+    id: residence.id,
+    objectNumber: residence.code,
+    address: residence.name,
+    apartmentType: residence.apartmentType,
+    size: residence.size
+  };
+};
+
+export function InspectionsList({ rooms, inspections, onInspectionCreated, tenant, residence }: InspectionsListProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedInspection, setSelectedInspection] = useState<Inspection | null>(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
@@ -39,11 +67,53 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
     setIsViewDialogOpen(true);
   };
 
+  const handleSubmit = (
+    inspectorName: string, 
+    roomsData: Record<string, InspectionRoomType>, 
+    status: 'draft' | 'completed',
+    additionalData: InspectionSubmitData
+  ) => {
+    const newInspection: Inspection = {
+      id: `inspection-${Date.now()}`,
+      inspectionNumber: generateInspectionNumber(),
+      date: new Date().toISOString(),
+      inspectedBy: inspectorName,
+      rooms: roomsData,
+      status: status,
+      isCompleted: status === 'completed',
+      
+      // Auto-hämtad residence-info
+      residence: createResidenceInfo(residence),
+      
+      // Data från formuläret
+      needsMasterKey: additionalData.needsMasterKey,
+      tenant: additionalData.tenant
+    };
+
+    // Spara till localStorage
+    const existingInspections = JSON.parse(localStorage.getItem("inspections") || "[]");
+    localStorage.setItem("inspections", JSON.stringify([...existingInspections, newInspection]));
+
+    const toastTitle = status === 'draft' ? "Utkast sparat" : "Besiktning sparad";
+    const toastDescription = status === 'draft' 
+      ? `Utkastet av ${inspectorName} har sparats. Du kan återuppta besiktningen senare.`
+      : `Besiktningen genomförd av ${inspectorName} har sparats.`;
+    
+    toast({
+      title: toastTitle,
+      description: toastDescription,
+    });
+    
+    onInspectionCreated();
+    setIsDialogOpen(false);
+  };
+
   const renderInspectionsTable = (inspectionsData: Inspection[]) => (
     <div className="rounded-lg border border-slate-200 bg-white overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
+            <TableHead>Nr</TableHead>
             <TableHead>Datum</TableHead>
             <TableHead>Besiktningsman</TableHead>
             <TableHead>Status</TableHead>
@@ -54,6 +124,9 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
         <TableBody>
           {inspectionsData.map((inspection) => (
             <TableRow key={inspection.id} className="group">
+              <TableCell className="font-mono text-sm">
+                {inspection.inspectionNumber || '-'}
+              </TableCell>
               <TableCell>{format(new Date(inspection.date), "yyyy-MM-dd")}</TableCell>
               <TableCell>
                 <div className="flex flex-col gap-1">
@@ -101,7 +174,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
             size="sm" 
             onClick={() => {
               localStorage.removeItem("inspections");
-              onInspectionCreated(); // This will refresh the inspections list
+              onInspectionCreated();
             }} 
             className="text-xs"
           >
@@ -137,29 +210,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
         <InspectionFormDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          onSubmit={(inspectorName, roomsData, status = 'completed') => {
-            const newInspection: Inspection = {
-              id: `inspection-${Date.now()}`,
-              date: new Date().toISOString(),
-              inspectedBy: inspectorName,
-              rooms: roomsData,
-              status: status,
-              isCompleted: status === 'completed'
-            };
-
-            const toastTitle = status === 'draft' ? "Utkast sparat" : "Besiktning sparad";
-            const toastDescription = status === 'draft' 
-              ? `Utkastet av ${inspectorName} har sparats. Du kan återuppta besiktningen senare.`
-              : `Besiktningen genomförd av ${inspectorName} har sparats.`;
-            
-            toast({
-              title: toastTitle,
-              description: toastDescription,
-            });
-            
-            onInspectionCreated();
-            setIsDialogOpen(false);
-          }}
+          onSubmit={handleSubmit}
           rooms={rooms}
           tenant={tenant}
         />
@@ -175,4 +226,3 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
     </div>
   );
 }
-
