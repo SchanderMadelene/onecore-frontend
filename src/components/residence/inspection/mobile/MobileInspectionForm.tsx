@@ -165,7 +165,7 @@ export function MobileInspectionForm({
                 className={`min-w-[140px] cursor-pointer transition-all ${
                   isCurrent 
                     ? 'ring-2 ring-inset ring-primary bg-primary/5' 
-                    : 'hover:bg-muted/50'
+                    : 'hover:ring-1 hover:ring-border'
                 }`}
                 onClick={() => setCurrentRoomIndex(index)}
               >
