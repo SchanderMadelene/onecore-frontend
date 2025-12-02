@@ -172,7 +172,7 @@ export function MobileInspectionForm({
                 <CardContent className="p-4 text-center space-y-2">
                   <span className="text-sm font-medium leading-tight">{room.name}</span>
                   <Badge 
-                    variant={isCompleted ? "default" : "outline"} 
+                    variant="outline"
                     className={`text-xs px-3 py-1 ${
                       isCompleted 
                         ? 'bg-green-100 text-green-800 border-green-200' 
