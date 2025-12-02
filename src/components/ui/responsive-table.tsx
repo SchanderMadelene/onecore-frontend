@@ -62,11 +62,11 @@ export function ResponsiveTable({
           <Card key={keyExtractor(item)} className="overflow-hidden">
             <CardContent className="p-4 space-y-3 min-h-[44px]">
               {visibleColumns.map((column) => (
-                <div key={column.key} className="flex justify-between items-center min-h-[44px]">
-                  <span className="text-sm font-medium text-muted-foreground min-w-0 flex-1">
-                    {column.label}:
+                <div key={column.key} className="flex flex-col gap-1 min-h-[44px]">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {column.label}
                   </span>
-                  <div className="text-sm text-right ml-2 flex items-center min-h-[44px]">
+                  <div className="text-sm">
                     {column.render(item)}
                   </div>
                 </div>

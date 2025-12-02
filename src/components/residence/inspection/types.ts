@@ -28,15 +28,27 @@ export interface InspectionRoom {
     ceiling: string;
     details: string;
   };
+  componentPhotos: {
+    wall1: string[];
+    wall2: string[];
+    wall3: string[];
+    wall4: string[];
+    floor: string[];
+    ceiling: string[];
+    details: string[];
+  };
   photos: string[];
   isApproved: boolean;
   isHandled: boolean;
 }
+
+export type InspectionStatus = 'draft' | 'in_progress' | 'completed';
 
 export interface Inspection {
   id: string;
   date: string;
   inspectedBy: string;
   rooms: Record<string, InspectionRoom>;
-  isCompleted?: boolean; // Add this property
+  status: InspectionStatus;
+  isCompleted?: boolean; // Deprecated, use status instead
 }

@@ -6,7 +6,7 @@ import type { InspectionRoom as InspectionRoomType } from "../types";
 interface MobileInspectionSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
+  onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>, status: 'draft' | 'completed') => void;
   rooms: Room[];
   tenant?: any;
 }

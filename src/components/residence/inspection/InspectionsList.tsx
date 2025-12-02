@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { InspectionFormDialog } from "./InspectionFormDialog";
 import { InspectionReadOnly } from "./InspectionReadOnly";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import type { Room } from "@/types/api";
-import type { Inspection } from "./types";
+import type { Inspection, InspectionRoom as InspectionRoomType } from "./types";
+import { toast } from "@/hooks/use-toast";
 
 interface InspectionsListProps {
   rooms: Room[];
@@ -53,11 +55,18 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
           {inspectionsData.map((inspection) => (
             <TableRow key={inspection.id} className="group">
               <TableCell>{format(new Date(inspection.date), "yyyy-MM-dd")}</TableCell>
-              <TableCell>{inspection.inspectedBy}</TableCell>
               <TableCell>
-                {inspection.isCompleted || Object.values(inspection.rooms).every(room => room.isHandled)
+                <div className="flex flex-col gap-1">
+                  <span>{inspection.inspectedBy}</span>
+                  {inspection.status === 'draft' && (
+                    <Badge variant="secondary" className="w-fit">Utkast</Badge>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                {inspection.status === 'completed' || inspection.isCompleted || Object.values(inspection.rooms).every(room => room.isHandled)
                   ? "Slutförd"
-                  : "Pågående"}
+                  : inspection.status === 'draft' ? "Utkast" : "Pågående"}
               </TableCell>
               <TableCell>{Object.keys(inspection.rooms).length}</TableCell>
               <TableCell className="text-right">
@@ -128,14 +137,25 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
         <InspectionFormDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          onSubmit={(inspectorName, roomsData) => {
+          onSubmit={(inspectorName, roomsData, status = 'completed') => {
             const newInspection: Inspection = {
               id: `inspection-${Date.now()}`,
               date: new Date().toISOString(),
               inspectedBy: inspectorName,
               rooms: roomsData,
-              isCompleted: false
+              status: status,
+              isCompleted: status === 'completed'
             };
+
+            const toastTitle = status === 'draft' ? "Utkast sparat" : "Besiktning sparad";
+            const toastDescription = status === 'draft' 
+              ? `Utkastet av ${inspectorName} har sparats. Du kan återuppta besiktningen senare.`
+              : `Besiktningen genomförd av ${inspectorName} har sparats.`;
+            
+            toast({
+              title: toastTitle,
+              description: toastDescription,
+            });
             
             onInspectionCreated();
             setIsDialogOpen(false);

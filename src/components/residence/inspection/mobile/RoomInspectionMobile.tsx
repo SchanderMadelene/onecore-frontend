@@ -1,10 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, AlertCircle, XCircle } from "lucide-react";
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import type { Room } from "@/types/api";
 import type { InspectionRoom } from "../types";
+import { ComponentInspectionCard } from "../ComponentInspectionCard";
+import { ComponentDetailSheet } from "../ComponentDetailSheet";
 
 interface RoomInspectionMobileProps {
   room: Room;
@@ -12,105 +11,81 @@ interface RoomInspectionMobileProps {
   onConditionUpdate: (field: keyof InspectionRoom["conditions"], value: string) => void;
   onActionUpdate: (field: keyof InspectionRoom["actions"], action: string) => void;
   onComponentNoteUpdate: (field: keyof InspectionRoom["componentNotes"], note: string) => void;
+  onComponentPhotoAdd: (field: keyof InspectionRoom["componentPhotos"], photoDataUrl: string) => void;
+  onComponentPhotoRemove: (field: keyof InspectionRoom["componentPhotos"], index: number) => void;
 }
 
-const CONDITION_OPTIONS = [
-  { value: "god", label: "God", color: "bg-green-100 text-green-800 border-green-200", icon: CheckCircle2 },
-  { value: "acceptabel", label: "Acceptabel", color: "bg-yellow-100 text-yellow-800 border-yellow-200", icon: AlertCircle },
-  { value: "skadad", label: "Skadad", color: "bg-red-100 text-red-800 border-red-200", icon: XCircle }
+const COMPONENTS: Array<{
+  key: keyof InspectionRoom["conditions"];
+  label: string;
+  type: "walls" | "floor" | "ceiling" | "details";
+}> = [
+  { key: "wall1", label: "Vägg 1", type: "walls" },
+  { key: "wall2", label: "Vägg 2", type: "walls" },
+  { key: "wall3", label: "Vägg 3", type: "walls" },
+  { key: "wall4", label: "Vägg 4", type: "walls" },
+  { key: "floor", label: "Golv", type: "floor" },
+  { key: "ceiling", label: "Tak", type: "ceiling" },
+  { key: "details", label: "Detaljer", type: "details" }
 ];
 
-const COMPONENTS = [
-  { key: "wall1", label: "Vägg 1" },
-  { key: "wall2", label: "Vägg 2" },
-  { key: "wall3", label: "Vägg 3" },
-  { key: "wall4", label: "Vägg 4" },
-  { key: "floor", label: "Golv" },
-  { key: "ceiling", label: "Tak" },
-  { key: "details", label: "Detaljer" }
-] as const;
-
-export function RoomInspectionMobile({ 
-  room, 
-  inspectionData, 
+export function RoomInspectionMobile({
+  room,
+  inspectionData,
   onConditionUpdate,
   onActionUpdate,
-  onComponentNoteUpdate 
+  onComponentNoteUpdate,
+  onComponentPhotoAdd,
+  onComponentPhotoRemove
 }: RoomInspectionMobileProps) {
-  const getConditionIcon = (condition: string) => {
-    const option = CONDITION_OPTIONS.find(opt => opt.value === condition);
-    const Icon = option?.icon || CheckCircle2;
-    return <Icon className="h-4 w-4" />;
-  };
-
-  const getConditionColor = (condition: string) => {
-    const option = CONDITION_OPTIONS.find(opt => opt.value === condition);
-    return option?.color || "bg-gray-100 text-gray-800 border-gray-200";
-  };
+  const [openDetailComponent, setOpenDetailComponent] = useState<keyof InspectionRoom["conditions"] | null>(null);
 
   return (
-    <div className="space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            {room.name}
-            <Badge variant="outline" className="ml-auto">
-              {room.size} m²
-            </Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {COMPONENTS.map((component) => {
-            const condition = inspectionData?.conditions[component.key] || "";
-            const notes = inspectionData?.componentNotes[component.key] || "";
-            
-            return (
-              <div key={component.key} className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-medium">{component.label}</h4>
-                  {condition && (
-                    <Badge className={`${getConditionColor(condition)} flex items-center gap-1`}>
-                      {getConditionIcon(condition)}
-                      {CONDITION_OPTIONS.find(opt => opt.value === condition)?.label}
-                    </Badge>
-                  )}
-                </div>
+    <Card>
+      <CardContent className="p-4">
+        <div className="mb-4 pb-3 border-b border-border">
+          <h3 className="font-semibold text-lg">{room.name}</h3>
+          <p className="text-sm text-muted-foreground">{room.size} m²</p>
+        </div>
 
-                {/* Condition Selection Buttons */}
-                <div className="grid grid-cols-3 gap-2">
-                  {CONDITION_OPTIONS.map((option) => {
-                    const isSelected = condition === option.value;
-                    const Icon = option.icon;
-                    
-                    return (
-                      <Button
-                        key={option.value}
-                        variant={isSelected ? "default" : "outline"}
-                        size="sm"
-                        className={`h-auto py-3 flex flex-col items-center gap-1 ${
-                          isSelected ? '' : 'hover:bg-gray-50'
-                        }`}
-                        onClick={() => onConditionUpdate(component.key, option.value)}
-                      >
-                        <Icon className="h-4 w-4" />
-                        <span className="text-xs">{option.label}</span>
-                      </Button>
-                    );
-                  })}
-                </div>
+        <div>
+          {COMPONENTS.map((component) => (
+            <ComponentInspectionCard
+              key={component.key}
+              componentKey={component.key}
+              label={component.label}
+              condition={inspectionData.conditions[component.key]}
+              note={inspectionData.componentNotes[component.key]}
+              photoCount={inspectionData.componentPhotos[component.key].length}
+              actions={inspectionData.actions[component.key]}
+              onConditionChange={(value) => onConditionUpdate(component.key, value)}
+              onNoteChange={(note) => onComponentNoteUpdate(component.key, note)}
+              onPhotoCapture={(photoDataUrl) => onComponentPhotoAdd(component.key, photoDataUrl)}
+              onOpenDetail={() => setOpenDetailComponent(component.key)}
+            />
+          ))}
+        </div>
 
-                {/* Notes */}
-                <Textarea
-                  placeholder={`Anteckningar för ${component.label.toLowerCase()}...`}
-                  value={notes}
-                  onChange={(e) => onComponentNoteUpdate(component.key, e.target.value)}
-                  className="min-h-[60px] text-sm"
-                />
-              </div>
-            );
-          })}
-        </CardContent>
-      </Card>
-    </div>
+        {/* Detail sheets for each component */}
+        {COMPONENTS.map((component) => (
+          <ComponentDetailSheet
+            key={`detail-${component.key}`}
+            isOpen={openDetailComponent === component.key}
+            onClose={() => setOpenDetailComponent(null)}
+            componentKey={component.key}
+            label={component.label}
+            condition={inspectionData.conditions[component.key]}
+            note={inspectionData.componentNotes[component.key]}
+            photos={inspectionData.componentPhotos[component.key]}
+            actions={inspectionData.actions[component.key]}
+            componentType={component.type}
+            onNoteChange={(note) => onComponentNoteUpdate(component.key, note)}
+            onPhotoAdd={(photoDataUrl) => onComponentPhotoAdd(component.key, photoDataUrl)}
+            onPhotoRemove={(index) => onComponentPhotoRemove(component.key, index)}
+            onActionToggle={(action) => onActionUpdate(component.key, action)}
+          />
+        ))}
+      </CardContent>
+    </Card>
   );
 }

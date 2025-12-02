@@ -15,7 +15,7 @@ import { useEffect } from "react";
 
 interface DesktopInspectionFormProps {
   rooms: Room[];
-  onSave: (inspectorName: string, rooms: Record<string, InspectionRoomType>) => void;
+  onSave: (inspectorName: string, rooms: Record<string, InspectionRoomType>, status: 'draft' | 'completed') => void;
   onCancel: () => void;
   tenant?: any;
 }
@@ -45,7 +45,9 @@ export function DesktopInspectionForm({
     inspectionData,
     handleConditionUpdate,
     handleActionUpdate,
-    handleComponentNoteUpdate
+    handleComponentNoteUpdate,
+    handleComponentPhotoAdd,
+    handleComponentPhotoRemove
   } = useInspectionForm(rooms);
 
   // Set default inspector if not already set
@@ -63,7 +65,13 @@ export function DesktopInspectionForm({
 
   const handleSubmit = () => {
     if (canComplete) {
-      onSave(inspectorName, inspectionData);
+      onSave(inspectorName, inspectionData, 'completed');
+    }
+  };
+
+  const handleSaveDraft = () => {
+    if (inspectorName.trim()) {
+      onSave(inspectorName, inspectionData, 'draft');
     }
   };
 
@@ -199,6 +207,12 @@ export function DesktopInspectionForm({
                     onComponentNoteUpdate={(field, note) => 
                       handleComponentNoteUpdate(room.id, field, note)
                     }
+                    onComponentPhotoAdd={(field, photoDataUrl) => 
+                      handleComponentPhotoAdd(room.id, field, photoDataUrl)
+                    }
+                    onComponentPhotoRemove={(field, index) => 
+                      handleComponentPhotoRemove(room.id, field, index)
+                    }
                   />
                 </AccordionContent>
               </AccordionItem>
@@ -212,8 +226,15 @@ export function DesktopInspectionForm({
         <Button variant="outline" onClick={onCancel}>
           Avbryt
         </Button>
+        <Button 
+          variant="secondary"
+          onClick={handleSaveDraft}
+          disabled={!inspectorName.trim()}
+        >
+          Spara utkast
+        </Button>
         <Button onClick={handleSubmit} disabled={!canComplete}>
-          Spara besiktning
+          Slutför besiktning
         </Button>
       </div>
     </div>
