@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { User, MapPin, ExternalLink, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface InspectorSelectionCardProps {
   inspectorName: string;
@@ -16,6 +17,7 @@ interface InspectorSelectionCardProps {
   needsMasterKey: boolean;
   setNeedsMasterKey: (needs: boolean) => void;
   tenant?: any;
+  layout?: 'vertical' | 'horizontal';
 }
 
 const inspectors = [
@@ -35,7 +37,8 @@ export function InspectorSelectionCard({
   setInspectionTime,
   needsMasterKey,
   setNeedsMasterKey,
-  tenant 
+  tenant,
+  layout = 'vertical'
 }: InspectorSelectionCardProps) {
   const navigate = useNavigate();
   
@@ -52,8 +55,14 @@ export function InspectorSelectionCard({
     }
   };
 
+  const isHorizontal = layout === 'horizontal';
+
   return (
-    <div className="space-y-4">
+    <div className={cn(
+      isHorizontal 
+        ? "grid grid-cols-1 lg:grid-cols-2 gap-4" 
+        : "space-y-4"
+    )}>
       {/* Tenant Info Card */}
       {tenant && (
         <Card>
