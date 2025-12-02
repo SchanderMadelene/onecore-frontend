@@ -116,7 +116,7 @@ export function MobileInspectionForm({
       </div>
 
       {/* Room Navigation Cards */}
-      <div className="px-[16px] py-[8px]">
+      <div className="px-[16px] py-[8px] shadow-md">
         <div className="flex gap-3 overflow-x-auto pb-3 px-1 scrollbar-hide" style={{
         WebkitOverflowScrolling: 'touch'
       }}>
