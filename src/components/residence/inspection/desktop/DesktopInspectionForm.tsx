@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
 import { RoomInspectionMobile } from "../mobile/RoomInspectionMobile";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
 import type { Room } from "@/types/api";
@@ -8,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Clock, CheckCircle2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { useEffect } from "react";
@@ -98,86 +96,109 @@ export function DesktopInspectionForm({
 
   return (
     <div className="space-y-6 min-w-0">
-      {/* Inspector selection + Tenant info */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Inspector Selection Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Info om besiktning</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label>Besiktigare</Label>
-              <Select value={inspectorName} onValueChange={setInspectorName}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Välj vem som utför besiktningen" />
-                </SelectTrigger>
-                <SelectContent>
-                  {inspectors.map((inspector) => (
-                    <SelectItem key={inspector} value={inspector}>
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
-                          <AvatarFallback className="text-xs">
-                            {inspector.split(' ').map(n => n[0]).join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        {inspector}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+      {/* Inspector selection + Tenant info - single row */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 items-start">
+        {/* Inspector Selection */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Besiktigare</Label>
+            <Select value={inspectorName} onValueChange={setInspectorName}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Välj besiktigare">
+                  {inspectorName && (
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-5 w-5">
+                        <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
+                          {inspectorName.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span>{inspectorName}</span>
+                    </div>
+                  )}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {inspectors.map((inspector) => (
+                  <SelectItem key={inspector} value={inspector}>
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-5 w-5">
+                        <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
+                          {inspector.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      {inspector}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-            <div className="space-y-3">
-              <Label htmlFor="inspection-time" className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                Klockslag för besiktning
-              </Label>
-              <div className="flex gap-2">
-                <Select value={inspectionTime.split(':')[0] || '09'} onValueChange={(hour) => {
-                  const currentMinute = inspectionTime.split(':')[1] || '00';
-                  setInspectionTime(`${hour}:${currentMinute}`);
-                }}>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="Timme" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')).map((hour) => (
-                      <SelectItem key={hour} value={hour}>
-                        {hour}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium flex items-center gap-2">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              Klockslag
+            </Label>
+            <Select 
+              value={inspectionTime || '09:00'} 
+              onValueChange={setInspectionTime}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Välj tid" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from({ length: 24 }, (_, hour) => 
+                  ['00', '15', '30', '45'].map(minute => {
+                    const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+                    return (
+                      <SelectItem key={time} value={time}>
+                        {time}
                       </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <span className="flex items-center px-2 text-muted-foreground">:</span>
-                <Select value={inspectionTime.split(':')[1] || '00'} onValueChange={(minute) => {
-                  const currentHour = inspectionTime.split(':')[0] || '09';
-                  setInspectionTime(`${currentHour}:${minute}`);
-                }}>
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder="Minut" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, '0')).map((minute) => (
-                      <SelectItem key={minute} value={minute}>
-                        {minute}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    );
+                  })
+                ).flat()}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="hidden lg:block w-px bg-border self-stretch" />
+
+        {/* Tenant info - compact */}
+        {tenant ? (
+          <div className="space-y-3">
+            <Label className="text-sm font-medium">Hyresgäst</Label>
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+              <Avatar className="h-10 w-10">
+                <AvatarFallback className="bg-primary/10 text-primary text-sm">
+                  {(tenant.name || `${tenant.firstName || ''} ${tenant.lastName || ''}`).split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate">
+                  {tenant.name || `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim()}
+                </p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {tenant.personalNumber || 'Personnummer saknas'}
+                </p>
               </div>
+              <Badge variant="outline" className="shrink-0 text-xs bg-orange-50 text-orange-700 border-orange-200">
+                Uppsagt
+              </Badge>
             </div>
-
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Huvudnyckel</span>
-              <span className="text-sm text-muted-foreground">Nej</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Tenant info */}
-        {tenant && <TenantInformationCard tenant={tenant} />}
+            {tenant.moveOutDate && (
+              <p className="text-xs text-muted-foreground">
+                Utflyttning: {tenant.moveOutDate}
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <Label className="text-sm font-medium text-muted-foreground">Hyresgäst</Label>
+            <p className="text-sm text-muted-foreground">Ingen hyresgäst kopplad</p>
+          </div>
+        )}
       </div>
 
       {/* Progress counter */}
