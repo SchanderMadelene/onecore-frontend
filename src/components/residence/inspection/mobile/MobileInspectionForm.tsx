@@ -99,7 +99,7 @@ export function MobileInspectionForm({
   }
   return <div className="h-full bg-background flex flex-col">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-10 bg-background border-b">
+      <div className="sticky top-0 z-10 bg-background border-b shadow-sm">
         <InspectionProgressIndicator current={completedRooms} total={rooms.length} currentRoomName={currentRoom.name} />
         
         <div className="flex items-center justify-between px-4 py-[7px]">
@@ -116,7 +116,7 @@ export function MobileInspectionForm({
       </div>
 
       {/* Room Navigation Cards */}
-      <div className="px-[16px] py-[8px] shadow-md">
+      <div className="px-[16px] py-[8px]">
         <div className="flex gap-3 overflow-x-auto pb-3 px-1 scrollbar-hide" style={{
         WebkitOverflowScrolling: 'touch'
       }}>
