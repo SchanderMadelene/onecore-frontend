@@ -14,7 +14,7 @@ export function InspectionProgressIndicator({
   const progress = (current / total) * 100;
 
   return (
-    <div className="px-4 py-3 space-y-2">
+    <div className="px-4 py-4 space-y-3">
       <div className="flex items-center justify-between text-sm">
         <span className="font-medium">{currentRoomName}</span>
         <span className="text-muted-foreground">{current}/{total} rum</span>
