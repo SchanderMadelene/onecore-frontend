@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChevronLeft, ChevronRight, CheckCircle2, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, User } from "lucide-react";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "../types";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
@@ -170,12 +170,7 @@ export function MobileInspectionForm({
                 onClick={() => setCurrentRoomIndex(index)}
               >
                 <CardContent className="p-4 text-center space-y-2">
-                  <div className="flex items-center justify-center gap-2">
-                    {isCompleted && (
-                      <CheckCircle2 className="h-5 w-5 text-green-600" />
-                    )}
-                    <span className="text-sm font-medium leading-tight">{room.name}</span>
-                  </div>
+                  <span className="text-sm font-medium leading-tight">{room.name}</span>
                   <Badge 
                     variant={isCompleted ? "default" : "outline"} 
                     className={`text-xs px-3 py-1 ${
