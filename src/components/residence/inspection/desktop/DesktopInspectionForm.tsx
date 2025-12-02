@@ -3,7 +3,7 @@ import { TenantInformationCard } from "@/components/tenants/TenantInformationCar
 import { RoomInspectionMobile } from "../mobile/RoomInspectionMobile";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
 import type { Room } from "@/types/api";
-import type { InspectionRoom as InspectionRoomType } from "../types";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot } from "../types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -15,7 +15,12 @@ import { useEffect } from "react";
 
 interface DesktopInspectionFormProps {
   rooms: Room[];
-  onSave: (inspectorName: string, rooms: Record<string, InspectionRoomType>, status: 'draft' | 'completed') => void;
+  onSave: (
+    inspectorName: string, 
+    rooms: Record<string, InspectionRoomType>, 
+    status: 'draft' | 'completed',
+    additionalData: InspectionSubmitData
+  ) => void;
   onCancel: () => void;
   tenant?: any;
 }
@@ -50,7 +55,6 @@ export function DesktopInspectionForm({
     handleComponentPhotoRemove
   } = useInspectionForm(rooms);
 
-  // Set default inspector if not already set
   useEffect(() => {
     if (!inspectorName && currentUser) {
       setInspectorName(currentUser);
@@ -63,15 +67,32 @@ export function DesktopInspectionForm({
 
   const canComplete = inspectorName && completedRooms === rooms.length;
 
+  // Create tenant snapshot for saving
+  const createTenantSnapshot = (): TenantSnapshot | undefined => {
+    if (!tenant) return undefined;
+    return {
+      name: `${tenant.firstName || ''} ${tenant.lastName || ''}`.trim() || tenant.name || '',
+      personalNumber: tenant.personalNumber || '',
+      phone: tenant.phone,
+      email: tenant.email
+    };
+  };
+
   const handleSubmit = () => {
     if (canComplete) {
-      onSave(inspectorName, inspectionData, 'completed');
+      onSave(inspectorName, inspectionData, 'completed', {
+        needsMasterKey,
+        tenant: createTenantSnapshot()
+      });
     }
   };
 
   const handleSaveDraft = () => {
     if (inspectorName.trim()) {
-      onSave(inspectorName, inspectionData, 'draft');
+      onSave(inspectorName, inspectionData, 'draft', {
+        needsMasterKey,
+        tenant: createTenantSnapshot()
+      });
     }
   };
 

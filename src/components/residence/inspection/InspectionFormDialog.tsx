@@ -7,7 +7,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import type { Room } from "@/types/api";
-import type { InspectionRoom as InspectionRoomType } from "./types";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "./types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { mockTenant } from "@/data/tenants";
 import { MobileInspectionSheet } from "./mobile/MobileInspectionSheet";
@@ -16,10 +16,15 @@ import { DesktopInspectionForm } from "./desktop/DesktopInspectionForm";
 interface InspectionFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (inspectorName: string, rooms: Record<string, InspectionRoomType>, status: 'draft' | 'completed') => void;
+  onSubmit: (
+    inspectorName: string, 
+    rooms: Record<string, InspectionRoomType>, 
+    status: 'draft' | 'completed',
+    additionalData: InspectionSubmitData
+  ) => void;
   rooms: Room[];
   buttonSize?: string;
-  tenant?: any; // Optional tenant prop if we want to pass different tenant data
+  tenant?: any;
 }
 
 export function InspectionFormDialog({ 
@@ -28,7 +33,7 @@ export function InspectionFormDialog({
   onSubmit, 
   rooms, 
   buttonSize,
-  tenant = mockTenant // Default to mock tenant if not provided
+  tenant = mockTenant
 }: InspectionFormDialogProps) {
   const isMobile = useIsMobile();
 
@@ -38,7 +43,6 @@ export function InspectionFormDialog({
     }
   };
 
-  // Use mobile sheet for mobile devices
   if (isMobile) {
     return (
       <MobileInspectionSheet
