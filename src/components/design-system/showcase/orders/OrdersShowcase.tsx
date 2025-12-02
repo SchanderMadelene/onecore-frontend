@@ -5,7 +5,7 @@ import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
 import { Button } from "@/components/ui/button";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { useState } from "react";
-import type { Inspection } from "@/components/residence/inspection/types";
+import type { Inspection, InspectionSubmitData } from "@/components/residence/inspection/types";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
 import { mockRoomsData } from "@/data/rooms";
 import { mockTenant } from "@/data/tenants";
@@ -13,9 +13,24 @@ import { mockTenant } from "@/data/tenants";
 // Example inspection data
 const exampleInspection: Inspection = {
   id: "i1",
+  inspectionNumber: "B-2024-001",
   date: new Date().toISOString(),
   inspectedBy: "Anna Johansson",
   status: 'completed',
+  residence: {
+    id: "res-example",
+    objectNumber: "LGH-001",
+    address: "Exempelgatan 1",
+    apartmentType: "Standard",
+    size: 72
+  },
+  needsMasterKey: false,
+  tenant: {
+    name: "Erik Svensson",
+    personalNumber: "19850101-1234",
+    phone: "070-123 45 67",
+    email: "erik.svensson@example.com"
+  },
   rooms: {
     "Room1": {
       roomId: "Room1",
@@ -79,7 +94,12 @@ export const OrdersShowcase = () => {
   // Use proper Room data from our mock data
   const sampleRooms = mockRoomsData.content;
 
-  const handleSubmitInspection = (inspectorName: string, rooms: any, status: 'draft' | 'completed' = 'completed') => {
+  const handleSubmitInspection = (
+    inspectorName: string, 
+    rooms: any, 
+    status: 'draft' | 'completed',
+    additionalData: InspectionSubmitData
+  ) => {
     setIsCreateInspectionOpen(false);
   };
 
