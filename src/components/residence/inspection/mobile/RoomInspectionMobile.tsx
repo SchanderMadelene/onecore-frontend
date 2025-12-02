@@ -40,19 +40,14 @@ export function RoomInspectionMobile({
 }: RoomInspectionMobileProps) {
   const [openDetailComponent, setOpenDetailComponent] = useState<keyof InspectionRoom["conditions"] | null>(null);
 
-  if (!inspectionData) {
-    return (
-      <Card>
-        <CardContent className="p-4">
-          <p className="text-muted-foreground">Laddar...</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <Card>
       <CardContent className="p-4">
+        <div className="mb-4 pb-3 border-b border-border">
+          <h3 className="font-semibold text-lg">{room.name}</h3>
+          <p className="text-sm text-muted-foreground">{room.size} m²</p>
+        </div>
+
         <div>
           {COMPONENTS.map((component) => (
             <ComponentInspectionCard
