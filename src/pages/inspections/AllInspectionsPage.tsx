@@ -10,7 +10,6 @@ import { Eye, ChevronUp, ChevronDown, ChevronsUpDown, Check, X, Play, PlayCircle
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
-import { InspectionCaseInfo } from "@/components/residence/inspection/InspectionCaseInfo";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { cn } from "@/lib/utils";
 import { InspectionsHeader } from "./components/InspectionsHeader";
@@ -30,7 +29,6 @@ export default function AllInspectionsPage() {
   // State for different modal types
   const [selectedInspection, setSelectedInspection] = useState<ExtendedInspection | null>(null);
   const [formDialogInspection, setFormDialogInspection] = useState<ExtendedInspection | null>(null);
-  const [caseInfoInspection, setCaseInfoInspection] = useState<ExtendedInspection | null>(null);
   
   // Use custom hooks
   const {
@@ -86,20 +84,9 @@ export default function AllInspectionsPage() {
     if (inspection.isCompleted) {
       // Completed: show read-only protocol
       setSelectedInspection(inspection);
-    } else if (hasRoomData(inspection)) {
-      // Has room data: open form with existing data
-      setFormDialogInspection(inspection);
     } else {
-      // Not started: show case info
-      setCaseInfoInspection(inspection);
-    }
-  };
-
-  // Handle starting inspection from case info
-  const handleStartInspection = () => {
-    if (caseInfoInspection) {
-      setFormDialogInspection(caseInfoInspection);
-      setCaseInfoInspection(null);
+      // Not started or in progress: open form (with or without existing data)
+      setFormDialogInspection(inspection);
     }
   };
 
@@ -547,25 +534,6 @@ export default function AllInspectionsPage() {
           </DialogHeader>
           {selectedInspection && (
             <InspectionReadOnly inspection={selectedInspection} />
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Case info dialog for not started inspections */}
-      <Dialog open={!!caseInfoInspection} onOpenChange={() => setCaseInfoInspection(null)}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Besiktningsärende</DialogTitle>
-            <DialogDescription>
-              {caseInfoInspection?.address} - Ej påbörjad
-            </DialogDescription>
-          </DialogHeader>
-          {caseInfoInspection && (
-            <InspectionCaseInfo
-              inspection={caseInfoInspection}
-              onStartInspection={handleStartInspection}
-              onClose={() => setCaseInfoInspection(null)}
-            />
           )}
         </DialogContent>
       </Dialog>
