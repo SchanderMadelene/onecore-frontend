@@ -36,15 +36,78 @@ const createMockResidence = (address: string, id: string): ResidenceInfo => ({
   size: 65
 });
 
+// Helper to create empty room inspection data
+const createEmptyRoomData = (roomId: string) => ({
+  roomId,
+  conditions: {
+    wall1: "",
+    wall2: "",
+    wall3: "",
+    wall4: "",
+    floor: "",
+    ceiling: "",
+    details: ""
+  },
+  actions: {
+    wall1: [],
+    wall2: [],
+    wall3: [],
+    wall4: [],
+    floor: [],
+    ceiling: [],
+    details: []
+  },
+  componentNotes: {
+    wall1: "",
+    wall2: "",
+    wall3: "",
+    wall4: "",
+    floor: "",
+    ceiling: "",
+    details: ""
+  },
+  componentPhotos: {
+    wall1: [],
+    wall2: [],
+    wall3: [],
+    wall4: [],
+    floor: [],
+    ceiling: [],
+    details: []
+  },
+  photos: [],
+  isApproved: false,
+  isHandled: false
+});
+
+// Helper to create partial room inspection data (for drafts)
+const createPartialRoomData = (roomId: string, conditions: Partial<Record<string, string>>) => ({
+  ...createEmptyRoomData(roomId),
+  conditions: {
+    wall1: conditions.wall1 || "",
+    wall2: conditions.wall2 || "",
+    wall3: conditions.wall3 || "",
+    wall4: conditions.wall4 || "",
+    floor: conditions.floor || "",
+    ceiling: conditions.ceiling || "",
+    details: conditions.details || ""
+  },
+  isHandled: Object.values(conditions).filter(v => v && v.trim() !== "").length >= 7
+});
+
 export const getAllInspections = (): ExtendedInspection[] => {
   // Always return mock data for demonstration purposes
   const mockInspections: ExtendedInspection[] = [
+    // In progress with some room data
     {
       id: "inspection-mock-1",
       inspectionNumber: "BES-2024-001",
       date: "2024-09-20",
       inspectedBy: "Anna Lindström",
-      rooms: {},
+      rooms: {
+        "room-hall": createPartialRoomData("room-hall", { wall1: "God", wall2: "God", floor: "Acceptabel", ceiling: "God" }),
+        "room-kok": createPartialRoomData("room-kok", { wall1: "Skadad", floor: "Acceptabel" }),
+      },
       status: 'in_progress',
       isCompleted: false,
       residence: createMockResidence("Storgatan 12", "res-001"),
@@ -60,11 +123,12 @@ export const getAllInspections = (): ExtendedInspection[] => {
       tenantPhone: "070-123 45 67",
       masterKey: true
     },
+    // Not started - no room data
     {
       id: "inspection-mock-2", 
       inspectionNumber: "BES-2024-002",
       date: "2024-09-22",
-      inspectedBy: "Erik Johansson",
+      inspectedBy: "",
       rooms: {},
       status: 'draft',
       isCompleted: false,
@@ -81,13 +145,20 @@ export const getAllInspections = (): ExtendedInspection[] => {
       tenantPhone: "070-234 56 78",
       masterKey: false
     },
+    // Draft with some room data
     {
       id: "inspection-mock-3",
       inspectionNumber: "BES-2024-003",
       date: "2024-09-25",
       inspectedBy: "Maria Andersson",
-      rooms: {},
-      status: 'in_progress',
+      rooms: {
+        "room-hall": createPartialRoomData("room-hall", { 
+          wall1: "God", wall2: "God", wall3: "God", wall4: "God", 
+          floor: "God", ceiling: "God", details: "God" 
+        }),
+        "room-vardagsrum": createPartialRoomData("room-vardagsrum", { wall1: "Acceptabel" }),
+      },
+      status: 'draft',
       isCompleted: false,
       residence: createMockResidence("Vasagatan 15", "res-003"),
       needsMasterKey: true,
@@ -102,12 +173,22 @@ export const getAllInspections = (): ExtendedInspection[] => {
       tenantPhone: "070-345 67 89",
       masterKey: true
     },
+    // Completed
     {
       id: "inspection-mock-4",
       inspectionNumber: "BES-2024-004",
       date: "2024-09-18",
       inspectedBy: "Anna Lindström",
-      rooms: {},
+      rooms: {
+        "room-hall": createPartialRoomData("room-hall", { 
+          wall1: "God", wall2: "God", wall3: "God", wall4: "God", 
+          floor: "God", ceiling: "God", details: "God" 
+        }),
+        "room-kok": createPartialRoomData("room-kok", { 
+          wall1: "Acceptabel", wall2: "Acceptabel", wall3: "God", wall4: "God", 
+          floor: "Acceptabel", ceiling: "God", details: "God" 
+        }),
+      },
       status: 'completed',
       isCompleted: true,
       residence: createMockResidence("Kopparbergsvägen 22", "res-004"),
@@ -123,13 +204,14 @@ export const getAllInspections = (): ExtendedInspection[] => {
       tenantPhone: "070-456 78 90",
       masterKey: false
     },
+    // Not started
     {
       id: "inspection-mock-5",
       inspectionNumber: "BES-2024-005",
       date: "2024-09-28",
-      inspectedBy: "Lars Petersson",
+      inspectedBy: "",
       rooms: {},
-      status: 'in_progress',
+      status: 'draft',
       isCompleted: false,
       residence: createMockResidence("Björkgatan 5", "res-005"),
       needsMasterKey: true,
@@ -144,12 +226,18 @@ export const getAllInspections = (): ExtendedInspection[] => {
       tenantPhone: "070-567 89 01",
       masterKey: true
     },
+    // Completed
     {
       id: "inspection-mock-6",
       inspectionNumber: "BES-2024-006",
       date: "2024-09-15",
       inspectedBy: "Anna Lindström",
-      rooms: {},
+      rooms: {
+        "room-hall": createPartialRoomData("room-hall", { 
+          wall1: "God", wall2: "God", wall3: "God", wall4: "God", 
+          floor: "God", ceiling: "God", details: "God" 
+        }),
+      },
       status: 'completed',
       isCompleted: true,
       residence: createMockResidence("Skolgatan 18", "res-006"),
@@ -165,12 +253,15 @@ export const getAllInspections = (): ExtendedInspection[] => {
       tenantPhone: "070-678 90 12",
       masterKey: false
     },
+    // In progress
     {
       id: "inspection-mock-7",
       inspectionNumber: "BES-2024-007",
       date: "2024-09-30",
       inspectedBy: "Johanna Svensson",
-      rooms: {},
+      rooms: {
+        "room-badrum": createPartialRoomData("room-badrum", { wall1: "Skadad", floor: "Skadad" }),
+      },
       status: 'in_progress',
       isCompleted: false,
       residence: createMockResidence("Hantverkargatan 9", "res-007"),
@@ -186,11 +277,12 @@ export const getAllInspections = (): ExtendedInspection[] => {
       tenantPhone: "070-789 01 23",
       masterKey: true
     },
+    // Not started
     {
       id: "inspection-mock-8",
       inspectionNumber: "BES-2024-008",
       date: "2024-09-26",
-      inspectedBy: "Thomas Nilsson", 
+      inspectedBy: "", 
       rooms: {},
       status: 'draft',
       isCompleted: false,

@@ -7,7 +7,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import type { Room } from "@/types/api";
-import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "./types";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, Inspection } from "./types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { mockTenant } from "@/data/tenants";
 import { MobileInspectionSheet } from "./mobile/MobileInspectionSheet";
@@ -25,6 +25,7 @@ interface InspectionFormDialogProps {
   rooms: Room[];
   buttonSize?: string;
   tenant?: any;
+  existingInspection?: Inspection;
 }
 
 export function InspectionFormDialog({ 
@@ -33,7 +34,8 @@ export function InspectionFormDialog({
   onSubmit, 
   rooms, 
   buttonSize,
-  tenant = mockTenant
+  tenant = mockTenant,
+  existingInspection
 }: InspectionFormDialogProps) {
   const isMobile = useIsMobile();
 
@@ -51,6 +53,7 @@ export function InspectionFormDialog({
         onSubmit={onSubmit}
         rooms={rooms}
         tenant={tenant}
+        existingInspection={existingInspection}
       />
     );
   }
@@ -59,7 +62,7 @@ export function InspectionFormDialog({
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-[95vw] xl:max-w-7xl p-4 sm:p-6 max-h-[95vh] overflow-hidden">
         <DialogHeader className="space-y-1">
-          <DialogTitle>Genomför besiktning</DialogTitle>
+          <DialogTitle>{existingInspection ? "Fortsätt besiktning" : "Genomför besiktning"}</DialogTitle>
           <DialogDescription>
             Gå igenom och bedöm skicket på alla rum
           </DialogDescription>
@@ -70,6 +73,7 @@ export function InspectionFormDialog({
           onSave={onSubmit}
           onCancel={onClose}
           tenant={tenant}
+          existingInspection={existingInspection}
         />
       </DialogContent>
     </Dialog>
