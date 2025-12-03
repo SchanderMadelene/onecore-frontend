@@ -86,7 +86,7 @@ export function InspectionFormDialog({
               <PlayCircle className="h-5 w-5 mr-3" />
               <div className="text-left">
                 <div className="font-medium">Fortsätt där du slutade</div>
-                <div className="text-sm text-muted-foreground font-normal">
+                <div className="text-sm text-primary-foreground/70 font-normal">
                   Ladda sparad data och fortsätt besiktningen
                 </div>
               </div>
