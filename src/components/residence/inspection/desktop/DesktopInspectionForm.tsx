@@ -3,7 +3,7 @@ import { RoomInspectionMobile } from "../mobile/RoomInspectionMobile";
 import { InspectorSelectionCard } from "../mobile/InspectorSelectionCard";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
 import type { Room } from "@/types/api";
-import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot } from "../types";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot, Inspection } from "../types";
 import { CheckCircle2 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,7 @@ interface DesktopInspectionFormProps {
   ) => void;
   onCancel: () => void;
   tenant?: any;
+  existingInspection?: Inspection;
 }
 
 const currentUser = "Anna Andersson";
@@ -27,7 +28,8 @@ export function DesktopInspectionForm({
   rooms, 
   onSave, 
   onCancel, 
-  tenant 
+  tenant,
+  existingInspection
 }: DesktopInspectionFormProps) {
   const {
     inspectorName,
@@ -42,13 +44,13 @@ export function DesktopInspectionForm({
     handleComponentNoteUpdate,
     handleComponentPhotoAdd,
     handleComponentPhotoRemove
-  } = useInspectionForm(rooms);
+  } = useInspectionForm(rooms, existingInspection);
 
   useEffect(() => {
-    if (!inspectorName && currentUser) {
+    if (!inspectorName && currentUser && !existingInspection) {
       setInspectorName(currentUser);
     }
-  }, [inspectorName, setInspectorName]);
+  }, [inspectorName, setInspectorName, existingInspection]);
 
   const completedRooms = Object.values(inspectionData).filter(
     room => room.isHandled

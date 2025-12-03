@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Eye, ChevronUp, ChevronDown, ChevronsUpDown, Check, X } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Eye, ChevronUp, ChevronDown, ChevronsUpDown, Check, X, Play, PlayCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
+import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
+import { InspectionCaseInfo } from "@/components/residence/inspection/InspectionCaseInfo";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { cn } from "@/lib/utils";
 import { InspectionsHeader } from "./components/InspectionsHeader";
@@ -18,11 +20,17 @@ import { SortableHeader } from "./components/SortableHeader";
 import { useInspectionFilters } from "./hooks/useInspectionFilters";
 import { useInspectionSorting } from "./hooks/useInspectionSorting";
 import { getAllInspections, CURRENT_USER, type ExtendedInspection } from "./data/mockInspections";
+import { getMockRooms } from "./data/mockRooms";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "@/components/residence/inspection/types";
 
 export default function AllInspectionsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [inspections, setInspections] = useState<ExtendedInspection[]>(getAllInspections);
+  
+  // State for different modal types
   const [selectedInspection, setSelectedInspection] = useState<ExtendedInspection | null>(null);
+  const [formDialogInspection, setFormDialogInspection] = useState<ExtendedInspection | null>(null);
+  const [caseInfoInspection, setCaseInfoInspection] = useState<ExtendedInspection | null>(null);
   
   // Use custom hooks
   const {
@@ -58,8 +66,68 @@ export default function AllInspectionsPage() {
     sortInspections
   } = useInspectionSorting();
 
+  // Determine button text based on inspection status
+  const getActionButtonText = (inspection: ExtendedInspection) => {
+    if (inspection.isCompleted) return "Visa protokoll";
+    // Check if inspection has started (has room data)
+    const hasRoomData = inspection.rooms && Object.keys(inspection.rooms).length > 0 &&
+      Object.values(inspection.rooms).some(room => 
+        Object.values(room.conditions).some(c => c && c.trim() !== "")
+      );
+    if (hasRoomData || inspection.status === 'draft' || inspection.status === 'in_progress') {
+      return "Fortsätt besiktning";
+    }
+    return "Starta besiktning";
+  };
+
+  // Handle view/action based on status
   const handleViewInspection = (inspection: ExtendedInspection) => {
-    setSelectedInspection(inspection);
+    if (inspection.isCompleted) {
+      // Completed: show read-only protocol
+      setSelectedInspection(inspection);
+    } else {
+      // Check if it has real room data
+      const hasRoomData = inspection.rooms && Object.keys(inspection.rooms).length > 0 &&
+        Object.values(inspection.rooms).some(room => 
+          Object.values(room.conditions).some(c => c && c.trim() !== "")
+        );
+      
+      if (hasRoomData || inspection.status === 'draft' || inspection.status === 'in_progress') {
+        // Draft/In progress with data: open form with existing data
+        setFormDialogInspection(inspection);
+      } else {
+        // Not started: show case info
+        setCaseInfoInspection(inspection);
+      }
+    }
+  };
+
+  // Handle starting inspection from case info
+  const handleStartInspection = () => {
+    if (caseInfoInspection) {
+      setFormDialogInspection(caseInfoInspection);
+      setCaseInfoInspection(null);
+    }
+  };
+
+  // Handle form submission
+  const handleFormSubmit = (
+    inspectorName: string,
+    rooms: Record<string, InspectionRoomType>,
+    status: 'draft' | 'completed',
+    additionalData: InspectionSubmitData
+  ) => {
+    if (formDialogInspection) {
+      updateInspection(formDialogInspection.id, {
+        inspectedBy: inspectorName,
+        rooms,
+        status,
+        isCompleted: status === 'completed',
+        needsMasterKey: additionalData.needsMasterKey,
+        tenant: additionalData.tenant
+      });
+    }
+    setFormDialogInspection(null);
   };
 
   // Update inspection data
@@ -73,14 +141,12 @@ export default function AllInspectionsPage() {
     );
   };
 
-
   const getStatusBadge = (inspection: ExtendedInspection) => {
     if (inspection.isCompleted) {
       return "Slutförd";
     }
     return "Pågående";
   };
-
 
   const getPriorityBadge = (priority: 'avflytt' | 'inflytt') => {
     return priority === 'avflytt' ? "Avflytt" : "Inflytt";
@@ -104,7 +170,6 @@ export default function AllInspectionsPage() {
   const completedInspections = filterInspections(inspections.filter(inspection => inspection.isCompleted));
 
   const renderInspectionTable = (data: ExtendedInspection[], title: string, isCompleted: boolean = false) => {
-    // Skapa kolumner dynamiskt baserat på om det är avslutade besiktningar
     const columns = [
       {
         key: "inspector",
@@ -211,16 +276,28 @@ export default function AllInspectionsPage() {
       {
         key: "actions",
         label: "Åtgärder",
-        render: (inspection: ExtendedInspection) => (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => handleViewInspection(inspection)}
-          >
-            <Eye className="h-4 w-4 mr-1" />
-            Visa detaljer
-          </Button>
-        )
+        render: (inspection: ExtendedInspection) => {
+          const buttonText = getActionButtonText(inspection);
+          const isStart = buttonText === "Starta besiktning";
+          const isContinue = buttonText === "Fortsätt besiktning";
+          
+          return (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleViewInspection(inspection)}
+            >
+              {isStart ? (
+                <Play className="h-4 w-4 mr-1" />
+              ) : isContinue ? (
+                <PlayCircle className="h-4 w-4 mr-1" />
+              ) : (
+                <Eye className="h-4 w-4 mr-1" />
+              )}
+              {buttonText}
+            </Button>
+          );
+        }
       }
     ];
 
@@ -461,24 +538,55 @@ export default function AllInspectionsPage() {
           </TabsContent>
 
           <TabsContent value="completed" className="space-y-4">
-            {renderInspectionTable(completedInspections, "Skickade/avslutade besiktningar", true)}
+            {renderInspectionTable(completedInspections, "Avslutade besiktningar", true)}
           </TabsContent>
         </Tabs>
       </div>
 
-      <Dialog 
-        open={selectedInspection !== null} 
-        onOpenChange={(open) => !open && setSelectedInspection(null)}
-      >
+      {/* Read-only dialog for completed inspections */}
+      <Dialog open={!!selectedInspection} onOpenChange={() => setSelectedInspection(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Besiktningsprotokoll</DialogTitle>
+            <DialogDescription>
+              {selectedInspection?.address} - {selectedInspection?.inspectionNumber}
+            </DialogDescription>
+          </DialogHeader>
           {selectedInspection && (
-            <InspectionReadOnly 
-              inspection={selectedInspection}
-              onClose={() => setSelectedInspection(null)}
+            <InspectionReadOnly inspection={selectedInspection} />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Case info dialog for not started inspections */}
+      <Dialog open={!!caseInfoInspection} onOpenChange={() => setCaseInfoInspection(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Besiktningsärende</DialogTitle>
+            <DialogDescription>
+              {caseInfoInspection?.address} - Ej påbörjad
+            </DialogDescription>
+          </DialogHeader>
+          {caseInfoInspection && (
+            <InspectionCaseInfo
+              inspection={caseInfoInspection}
+              onStartInspection={handleStartInspection}
+              onClose={() => setCaseInfoInspection(null)}
             />
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Form dialog for draft/in_progress inspections */}
+      {formDialogInspection && (
+        <InspectionFormDialog
+          isOpen={!!formDialogInspection}
+          onClose={() => setFormDialogInspection(null)}
+          onSubmit={handleFormSubmit}
+          rooms={getMockRooms()}
+          existingInspection={formDialogInspection}
+        />
+      )}
     </PageLayout>
   );
 }
