@@ -66,17 +66,18 @@ export default function AllInspectionsPage() {
     sortInspections
   } = useInspectionSorting();
 
-  // Determine button text based on inspection status
-  const getActionButtonText = (inspection: ExtendedInspection) => {
-    if (inspection.isCompleted) return "Visa protokoll";
-    // Check if inspection has started (has room data)
-    const hasRoomData = inspection.rooms && Object.keys(inspection.rooms).length > 0 &&
+  // Check if inspection has actual room data (conditions filled in)
+  const hasRoomData = (inspection: ExtendedInspection) => {
+    return inspection.rooms && Object.keys(inspection.rooms).length > 0 &&
       Object.values(inspection.rooms).some(room => 
         Object.values(room.conditions).some(c => c && c.trim() !== "")
       );
-    if (hasRoomData || inspection.status === 'draft' || inspection.status === 'in_progress') {
-      return "Fortsätt besiktning";
-    }
+  };
+
+  // Determine button text based on inspection status
+  const getActionButtonText = (inspection: ExtendedInspection) => {
+    if (inspection.isCompleted) return "Visa protokoll";
+    if (hasRoomData(inspection)) return "Fortsätt besiktning";
     return "Starta besiktning";
   };
 
@@ -85,20 +86,12 @@ export default function AllInspectionsPage() {
     if (inspection.isCompleted) {
       // Completed: show read-only protocol
       setSelectedInspection(inspection);
+    } else if (hasRoomData(inspection)) {
+      // Has room data: open form with existing data
+      setFormDialogInspection(inspection);
     } else {
-      // Check if it has real room data
-      const hasRoomData = inspection.rooms && Object.keys(inspection.rooms).length > 0 &&
-        Object.values(inspection.rooms).some(room => 
-          Object.values(room.conditions).some(c => c && c.trim() !== "")
-        );
-      
-      if (hasRoomData || inspection.status === 'draft' || inspection.status === 'in_progress') {
-        // Draft/In progress with data: open form with existing data
-        setFormDialogInspection(inspection);
-      } else {
-        // Not started: show case info
-        setCaseInfoInspection(inspection);
-      }
+      // Not started: show case info
+      setCaseInfoInspection(inspection);
     }
   };
 
