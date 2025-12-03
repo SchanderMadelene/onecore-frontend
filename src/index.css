@@ -51,51 +51,6 @@
     /* Övrigt */
     --radius: 0.75rem;
   }
-
-  .dark {
-    /* Basfärger - mörk bakgrund, ljus text */
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    
-    /* Kortfärger */
-    --card: 222.2 84% 6%;
-    --card-foreground: 210 40% 98%;
-    
-    /* Popover-färger */
-    --popover: 222.2 84% 6%;
-    --popover-foreground: 210 40% 98%;
-    
-    /* Primärfärger */
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47% 11%;
-    
-    /* Sekundärfärger */
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    
-    /* Accentfärger */
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
-    
-    /* Dämpade färger */
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    
-    /* Statusfärger (anpassade för mörkt tema) */
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 210 40% 98%;
-    
-    --success: 142 76% 40%;
-    --success-foreground: 0 0% 100%;
-    
-    --warning: 38 92% 55%;
-    --warning-foreground: 0 0% 0%;
-    
-    /* Gränssnittsfärger */
-    --border: 217 33% 20%;
-    --input: 217 33% 20%;
-    --ring: 212.7 26.8% 83.9%;
-  }
 }
 
 @layer base {
@@ -106,7 +61,7 @@
     @apply bg-background text-foreground antialiased;
   }
   .glass-card {
-    @apply bg-white dark:bg-gray-800 bg-opacity-50 dark:bg-opacity-50 backdrop-blur-lg border border-white dark:border-gray-700 border-opacity-20 shadow-lg;
+    @apply bg-white bg-opacity-50 backdrop-blur-lg border border-white border-opacity-20 shadow-lg;
   }
   .hover-transform {
     @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-xl;
@@ -121,7 +76,7 @@
 }
 
 .glassmorphism {
-  @apply bg-white/30 dark:bg-gray-800/30 backdrop-blur-md border border-white/20 dark:border-gray-700/20 shadow-xl;
+  @apply bg-white/30 backdrop-blur-md border border-white/20 shadow-xl;
 }
 
 /* Remove secondary tabs custom styling to use shadcn default */

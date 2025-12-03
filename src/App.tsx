@@ -1,10 +1,10 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider } from "next-themes";
 import { FeatureTogglesProvider } from "@/contexts/FeatureTogglesContext";
 import { HousingOffersProvider } from "@/contexts/HousingOffersContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
@@ -155,21 +155,19 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <TooltipProvider>
-          <FeatureTogglesProvider>
-            <RoleProvider>
-              <HousingOffersProvider>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <AppRoutes />
-                </BrowserRouter>
-              </HousingOffersProvider>
-            </RoleProvider>
-          </FeatureTogglesProvider>
-        </TooltipProvider>
-      </ThemeProvider>
+      <TooltipProvider>
+        <FeatureTogglesProvider>
+          <RoleProvider>
+            <HousingOffersProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+            </HousingOffersProvider>
+          </RoleProvider>
+        </FeatureTogglesProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };
