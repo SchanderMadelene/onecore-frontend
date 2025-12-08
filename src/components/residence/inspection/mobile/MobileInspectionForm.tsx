@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft, ChevronRight, User } from "lucide-react";
 import type { Room } from "@/types/api";
-import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot } from "../types";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot, Inspection } from "../types";
 import { useInspectionForm } from "@/hooks/useInspectionForm";
 import { InspectionProgressIndicator } from "./InspectionProgressIndicator";
 import { RoomInspectionMobile } from "./RoomInspectionMobile";
@@ -21,16 +21,19 @@ interface MobileInspectionFormProps {
   ) => void;
   onCancel: () => void;
   tenant?: any;
+  existingInspection?: Inspection;
 }
 
 export function MobileInspectionForm({
   rooms,
   onSave,
   onCancel,
-  tenant
+  tenant,
+  existingInspection
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
-  const [showInspectorSelection, setShowInspectorSelection] = useState(true);
+  // If we have existing inspection data, skip inspector selection
+  const [showInspectorSelection, setShowInspectorSelection] = useState(!existingInspection);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const {
     inspectorName,
@@ -45,7 +48,7 @@ export function MobileInspectionForm({
     handleComponentNoteUpdate,
     handleComponentPhotoAdd,
     handleComponentPhotoRemove
-  } = useInspectionForm(rooms);
+  } = useInspectionForm(rooms, existingInspection);
 
   const currentRoom = rooms[currentRoomIndex];
   const completedRooms = rooms.filter(room => inspectionData[room.id]?.isHandled).length;

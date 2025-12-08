@@ -5,29 +5,50 @@
 
 @layer base {
   :root {
+    /* Basfärger */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
+    
+    /* Kortfärger */
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
+    
+    /* Popover-färger */
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
+    
+    /* Primärfärger - Huvudsaklig varumärkesfärg */
+    --primary: 222 47% 11%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    /* Sekundärfärger - Sekundära bakgrunder */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    
+    /* Accentfärger - Framhävningar */
     --accent: 215 30% 60%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
+    
+    /* Dämpade färger - Subtila bakgrunder och text */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    
+    /* Statusfärger */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
+    
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
+    
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    
+    /* Gränssnittsfärger */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 84% 4.9%;
+    
+    /* Övrigt */
     --radius: 0.75rem;
   }
 }
