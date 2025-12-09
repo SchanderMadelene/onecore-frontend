@@ -3,6 +3,45 @@ import type { Invoice } from "@/types/invoice";
 export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
   return [
     {
+      invoiceNumber: "10004",
+      invoiceDate: "2025-10-01",
+      dueDate: "2025-10-31",
+      amount: 8000,
+      balance: 2800,
+      invoiceType: "Avi",
+      paymentStatus: "Delvis betald",
+      text: "Delbetalning mottagen",
+      inCollection: false,
+      paymentDate: "2025-10-15",
+      paidAmount: 5200,
+      lineItems: [
+        {
+          amount: 0,
+          vat: 0,
+          total: 0,
+          rentalArticle: "",
+          description: "211-002-02-0101/04, STÅNGJÄRNSGATAN 24",
+          printGroup: ""
+        },
+        {
+          amount: 7689.47,
+          vat: 0,
+          total: 7689.47,
+          rentalArticle: "HYRAB_",
+          description: "Hyra bostad",
+          printGroup: "A"
+        },
+        {
+          amount: 310.53,
+          vat: 0,
+          total: 310.53,
+          rentalArticle: "HYRTIL",
+          description: "Tillägg",
+          printGroup: "A"
+        }
+      ]
+    },
+    {
       invoiceNumber: "10003",
       invoiceDate: "2025-09-29",
       dueDate: "2025-10-29",

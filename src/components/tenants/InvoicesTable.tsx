@@ -22,13 +22,13 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
   const getStatusVariant = (status: Invoice['paymentStatus']) => {
     switch (status) {
       case 'Betald':
-        return 'success'; // green success badge
+        return 'success';
       case 'Obetald':
-        return 'secondary'; // neutral
-      case 'Delvis betald':
         return 'secondary';
+      case 'Delvis betald':
+        return 'priority-medium'; // gul badge för delvis betalda
       case 'Förfallen':
-        return 'destructive'; // warning/error red
+        return 'destructive';
       default:
         return 'secondary';
     }
@@ -116,6 +116,24 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                         <div className="flex justify-between items-center text-sm mt-1">
                           <span className="text-muted-foreground">Planerat datum:</span>
                           <span className="font-medium">{invoice.preliminaryRefundDate}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
+                    <div className="mb-3 bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Inbetalt:</span>
+                        <span className="font-semibold">{formatCurrency(invoice.paidAmount)}</span>
+                      </div>
+                      <div className="flex justify-between items-center text-sm mt-1">
+                        <span className="text-muted-foreground">Kvar att betala:</span>
+                        <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
+                      </div>
+                      {invoice.paymentDate && (
+                        <div className="flex justify-between items-center text-sm mt-1">
+                          <span className="text-muted-foreground">Senaste inbetalning:</span>
+                          <span className="font-medium">{invoice.paymentDate}</span>
                         </div>
                       )}
                     </div>
@@ -250,6 +268,26 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-medium">{invoice.preliminaryRefundDate}</span>
                             </div>
                           )}
+                        </div>
+                      )}
+                      {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
+                        <div className="mb-3 bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Inbetalt:</span>
+                              <span className="font-semibold">{formatCurrency(invoice.paidAmount)}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Kvar att betala:</span>
+                              <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
+                            </div>
+                            {invoice.paymentDate && (
+                              <div>
+                                <span className="text-muted-foreground block mb-1">Senaste inbetalning:</span>
+                                <span className="font-semibold">{invoice.paymentDate}</span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       )}
                       {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
