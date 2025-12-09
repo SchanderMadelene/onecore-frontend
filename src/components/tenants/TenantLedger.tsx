@@ -46,9 +46,9 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
           {/* Balans och saldon */}
           <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8">
             <div className="space-y-1">
-              <InfoRow 
-                label="Förfallet" 
-                value={formatCurrency(ledger.balances.overdue)}
+            <InfoRow 
+              label="Totalsumma förfallet" 
+              value={formatCurrency(ledger.balances.overdue)}
                 highlight={ledger.balances.overdue > 0}
               />
               <InfoRow 
