@@ -17,7 +17,7 @@ export interface Invoice {
   paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen' | 'Krediterad';
   text?: string;
   inCollection: boolean;
-  source: 'Xpand' | 'Xledger';
+  deferralDate?: string; // Anståndsdatum - endast om fakturan fått anstånd
   paymentDate?: string;
   paidAmount?: number;
   paymentSource?: string;

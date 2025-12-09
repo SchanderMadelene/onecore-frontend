@@ -12,7 +12,6 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Obetald",
       text: "",
       inCollection: false,
-      source: "Xpand",
       lineItems: []
     },
     {
@@ -25,7 +24,6 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Krediterad",
       text: "Kreditering av felaktig debitering",
       inCollection: false,
-      source: "Xledger",
       preliminaryRefund: 3500,
       preliminaryRefundDate: "2025-10-15",
       lineItems: [
@@ -55,9 +53,9 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       balance: 7967,
       invoiceType: "Avi",
       paymentStatus: "Obetald",
-      text: "",
+      text: "Anstånd beviljat efter kundens begäran",
       inCollection: false,
-      source: "Xledger",
+      deferralDate: "2025-10-15",
       lineItems: [
         {
           amount: 0,
@@ -111,7 +109,6 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Förfallen",
       text: "Fakturan är skickad till inkasso",
       inCollection: true,
-      source: "Xledger",
       lineItems: [
         {
           amount: 0,
@@ -149,7 +146,6 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Betald",
       text: "Överbetalning registrerad",
       inCollection: false,
-      source: "Xpand",
       paymentDate: "2025-07-28",
       paidAmount: 8189.47,
       paymentSource: "OCR",
@@ -184,7 +180,6 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Betald",
       text: "",
       inCollection: false,
-      source: "Xpand",
       paymentDate: "2025-06-25",
       paidAmount: 7689.47,
       paymentSource: "OCR",
