@@ -72,6 +72,16 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
                 value={`${ledger.statistics.averageDaysLate} dagar`}
                 highlight={ledger.statistics.averageDaysLate > 0}
               />
+              <InfoRow 
+                label="Antal skickade fakturor till inkasso" 
+                value={ledger.statistics.invoicesSentToCollections}
+                highlight={ledger.statistics.invoicesSentToCollections > 0}
+              />
+              <InfoRow 
+                label="Antal anstånd senaste 12 månaderna" 
+                value={ledger.statistics.defermentLast12Months}
+                highlight={ledger.statistics.defermentLast12Months > 0}
+              />
             </div>
           </div>
 
