@@ -18,7 +18,7 @@ export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => 
       collections: 0.00,
       submittedToCollections: 0,
       recalledFromCollections: 0,
-      preliminaryRefund: 0.00,
+      preliminaryRefund: 4000.00,
       deposit: 0.00,
       credit: 0.00,
       incorrectPayment: 0.00
