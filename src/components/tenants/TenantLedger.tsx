@@ -61,10 +61,6 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
                 value={ledger.balances.submittedToCollections}
                 highlight={ledger.balances.submittedToCollections > 0}
               />
-              <InfoRow 
-                label="Prel. bokad återbetalning" 
-                value={formatCurrency(ledger.balances.preliminaryRefund)}
-              />
             </div>
             <div className="space-y-1">
               <InfoRow 
