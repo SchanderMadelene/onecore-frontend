@@ -62,28 +62,15 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
                 highlight={ledger.balances.submittedToCollections > 0}
               />
               <InfoRow 
-                label="Återkallade inkassoärenden" 
-                value={ledger.balances.recalledFromCollections}
-              />
-              <InfoRow 
                 label="Prel. bokad återbetalning" 
                 value={formatCurrency(ledger.balances.preliminaryRefund)}
               />
             </div>
             <div className="space-y-1">
               <InfoRow 
-                label="Antal krav senaste året" 
-                value={ledger.statistics.demandsLastYear}
-                highlight={ledger.statistics.demandsLastYear > 0}
-              />
-              <InfoRow 
                 label="Medelvärde antal dagar för sent betalt" 
                 value={`${ledger.statistics.averageDaysLate} dagar`}
                 highlight={ledger.statistics.averageDaysLate > 0}
-              />
-              <InfoRow 
-                label="Deposition" 
-                value={formatCurrency(ledger.balances.deposit)}
               />
               <InfoRow 
                 label="Tillgodo" 
