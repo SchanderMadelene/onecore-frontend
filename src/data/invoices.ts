@@ -16,6 +16,37 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       lineItems: []
     },
     {
+      invoiceNumber: "552510354931058",
+      invoiceDate: "2025-09-20",
+      dueDate: "2025-10-05",
+      amount: -3500,
+      balance: 0,
+      invoiceType: "Kreditfaktura",
+      paymentStatus: "Krediterad",
+      text: "Kreditering av felaktig debitering",
+      inCollection: false,
+      source: "Xledger",
+      preliminaryRefund: 3500,
+      lineItems: [
+        {
+          amount: 0,
+          vat: 0,
+          total: 0,
+          rentalArticle: "",
+          description: "211-002-02-0101/04, STÅNGJÄRNSGATAN 24",
+          printGroup: ""
+        },
+        {
+          amount: -3500,
+          vat: 0,
+          total: -3500,
+          rentalArticle: "KREDIT",
+          description: "Kreditering av dubbeldebitering",
+          printGroup: "A"
+        }
+      ]
+    },
+    {
       invoiceNumber: "552510354931057",
       invoiceDate: "2025-09-15",
       dueDate: "2025-09-30",
@@ -112,15 +143,16 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       invoiceDate: "2025-07-15",
       dueDate: "2025-07-30",
       amount: 7689.47,
-      balance: 0,
+      balance: -500,
       invoiceType: "Avi",
       paymentStatus: "Betald",
-      text: "",
+      text: "Överbetalning registrerad",
       inCollection: false,
       source: "Xpand",
       paymentDate: "2025-07-28",
-      paidAmount: 7689.47,
+      paidAmount: 8189.47,
       paymentSource: "OCR",
+      preliminaryRefund: 500,
       lineItems: [
         {
           amount: 0,
