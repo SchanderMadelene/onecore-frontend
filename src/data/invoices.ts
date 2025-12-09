@@ -47,11 +47,20 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       dueDate: "2025-10-29",
       amount: 1000,
       balance: 1000,
-      invoiceType: "Strömfaktura",
+      invoiceType: "Ströfaktura",
       paymentStatus: "Obetald",
       text: "",
       inCollection: false,
-      lineItems: []
+      lineItems: [
+        {
+          amount: 1000,
+          vat: 0,
+          total: 1000,
+          rentalArticle: "STRÖM",
+          description: "Elförbrukning september 2025",
+          printGroup: "A"
+        }
+      ]
     },
     {
       invoiceNumber: "552510354931058",

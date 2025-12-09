@@ -162,7 +162,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                         </div>
                       </div>
-                      {invoice.invoiceType === 'Strömfaktura' && (
+                      {invoice.invoiceType === 'Ströfaktura' && (
                         <Button 
                           variant="outline" 
                           size="sm" 
@@ -324,7 +324,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                             </div>
                           </div>
-                          {invoice.invoiceType === 'Strömfaktura' && (
+                          {invoice.invoiceType === 'Ströfaktura' && (
                             <Button 
                               variant="outline" 
                               size="sm" 
