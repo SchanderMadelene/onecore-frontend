@@ -2,17 +2,9 @@ import type { CustomerLedger } from "@/types/ledger";
 
 // Mock data för kundreskontra
 export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => {
-  // Default data (baserat på bilden)
+  // Default data
   const defaultLedger: CustomerLedger = {
-    autogiro: {
-      active: false,
-      status: "Avslutad autogiro"
-    },
-    invoiceSettings: {
-      eInvoice: false,
-      smsInvoice: false,
-      emailInvoice: false
-    },
+    invoiceMethod: 'pappersfaktura-kivra',
     balances: {
       overdue: 0.00,
       collections: 0.00,
@@ -34,15 +26,8 @@ export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => 
   // Variation för vissa kunder
   const variations: Record<string, Partial<CustomerLedger>> = {
     "1": {
-      autogiro: {
-        active: true,
-        status: "Aktiv autogiro"
-      },
-      invoiceSettings: {
-        eInvoice: true,
-        smsInvoice: false,
-        emailInvoice: false
-      },
+      invoiceMethod: 'autogiro',
+      autogiroDate: '27:e varje månad',
       statistics: {
         demandsLastYear: 0,
         averageDaysLate: 0,
@@ -51,6 +36,7 @@ export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => 
       }
     },
     "2": {
+      invoiceMethod: 'e-faktura',
       balances: {
         ...defaultLedger.balances,
         overdue: 1250.00,
@@ -64,11 +50,7 @@ export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => 
       }
     },
     "3": {
-      invoiceSettings: {
-        eInvoice: false,
-        smsInvoice: true,
-        emailInvoice: true
-      },
+      invoiceMethod: 'e-faktura',
       balances: {
         ...defaultLedger.balances,
         credit: 850.00

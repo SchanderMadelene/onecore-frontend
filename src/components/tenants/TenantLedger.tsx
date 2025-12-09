@@ -14,11 +14,13 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
     return amount.toFixed(2).replace('.', ',') + ' SEK';
   };
 
-  const getInvoiceMethod = () => {
-    if (ledger.autogiro.active) return "Autogiro";
-    if (ledger.invoiceSettings.eInvoice) return "E-faktura";
-    if (ledger.invoiceSettings.emailInvoice) return "E-postfaktura";
-    return "Pappersfaktura";
+  const getInvoiceMethodLabel = () => {
+    switch (ledger.invoiceMethod) {
+      case 'e-faktura': return 'E-faktura';
+      case 'pappersfaktura-kivra': return 'Pappersfaktura/Kivra';
+      case 'autogiro': return 'Autogiro';
+      default: return 'Pappersfaktura/Kivra';
+    }
   };
 
   const InfoRow = ({ label, value, highlight = false }: { label: string; value: string | number; highlight?: boolean }) => (
@@ -39,8 +41,14 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
           <div className="space-y-1">
             <InfoRow 
               label="Alternativ för avisering" 
-              value={getInvoiceMethod()}
+              value={getInvoiceMethodLabel()}
             />
+            {ledger.invoiceMethod === 'autogiro' && ledger.autogiroDate && (
+              <InfoRow 
+                label="Autogiro-dragning" 
+                value={ledger.autogiroDate}
+              />
+            )}
           </div>
 
           {/* Balans och saldon */}
