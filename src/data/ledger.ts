@@ -25,7 +25,9 @@ export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => 
     },
     statistics: {
       demandsLastYear: 0,
-      averageDaysLate: 11.00
+      averageDaysLate: 11.00,
+      invoicesSentToCollections: 0,
+      defermentLast12Months: 0
     }
   };
 
@@ -43,7 +45,9 @@ export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => 
       },
       statistics: {
         demandsLastYear: 0,
-        averageDaysLate: 0
+        averageDaysLate: 0,
+        invoicesSentToCollections: 0,
+        defermentLast12Months: 1
       }
     },
     "2": {
@@ -54,7 +58,9 @@ export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => 
       },
       statistics: {
         demandsLastYear: 2,
-        averageDaysLate: 15.50
+        averageDaysLate: 15.50,
+        invoicesSentToCollections: 3,
+        defermentLast12Months: 2
       }
     },
     "3": {

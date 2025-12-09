@@ -21,5 +21,7 @@ export interface CustomerLedger {
   statistics: {
     demandsLastYear: number;
     averageDaysLate: number;
+    invoicesSentToCollections: number;
+    defermentLast12Months: number;
   };
 }
