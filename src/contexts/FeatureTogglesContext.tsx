@@ -132,7 +132,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   // Favorites page
   showFavorites: false,
   // Lease contracts page
-  showLeaseContracts: false,
+  showLeaseContracts: true,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
