@@ -27,6 +27,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       inCollection: false,
       source: "Xledger",
       preliminaryRefund: 3500,
+      preliminaryRefundDate: "2025-10-15",
       lineItems: [
         {
           amount: 0,
@@ -153,6 +154,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paidAmount: 8189.47,
       paymentSource: "OCR",
       preliminaryRefund: 500,
+      preliminaryRefundDate: "2025-08-10",
       lineItems: [
         {
           amount: 0,
