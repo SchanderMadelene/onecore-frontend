@@ -22,13 +22,13 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
   const getStatusVariant = (status: Invoice['paymentStatus']) => {
     switch (status) {
       case 'Betald':
-        return 'success'; // green success badge
+        return 'success';
       case 'Obetald':
-        return 'secondary'; // neutral
-      case 'Delvis betald':
         return 'secondary';
+      case 'Delvis betald':
+        return 'priority-medium'; // gul badge för delvis betalda
       case 'Förfallen':
-        return 'destructive'; // warning/error red
+        return 'destructive';
       default:
         return 'secondary';
     }
@@ -86,10 +86,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <span className="text-muted-foreground">Inkasso:</span>
                     <span>{invoice.inCollection ? 'Ja' : 'Nej'}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Källa:</span>
-                    <span>{invoice.source}</span>
-                  </div>
+                  {invoice.deferralDate && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Anståndsdatum:</span>
+                      <span>{invoice.deferralDate}</span>
+                    </div>
+                  )}
                 </div>
                 <div className="mt-2 flex items-center text-sm text-muted-foreground">
                   {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -102,6 +104,46 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   {invoice.text && (
                     <div className="mb-3 text-sm">
                       <span className="font-medium">Text:</span> {invoice.text}
+                    </div>
+                  )}
+                  {invoice.inCollection && invoice.inCollectionDate && (
+                    <div className="mb-3 bg-destructive/10 rounded-lg p-3 border-l-4 border-destructive">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Skickad till inkasso:</span>
+                        <span className="font-semibold text-destructive">{invoice.inCollectionDate}</span>
+                      </div>
+                    </div>
+                  )}
+                  {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && (
+                    <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
+                        <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
+                      </div>
+                      {invoice.preliminaryRefundDate && (
+                        <div className="flex justify-between items-center text-sm mt-1">
+                          <span className="text-muted-foreground">Planerat datum:</span>
+                          <span className="font-medium">{invoice.preliminaryRefundDate}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
+                    <div className="mb-3 bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Inbetalt:</span>
+                        <span className="font-semibold">{formatCurrency(invoice.paidAmount)}</span>
+                      </div>
+                      <div className="flex justify-between items-center text-sm mt-1">
+                        <span className="text-muted-foreground">Kvar att betala:</span>
+                        <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
+                      </div>
+                      {invoice.paymentDate && (
+                        <div className="flex justify-between items-center text-sm mt-1">
+                          <span className="text-muted-foreground">Senaste inbetalning:</span>
+                          <span className="font-medium">{invoice.paymentDate}</span>
+                        </div>
+                      )}
                     </div>
                   )}
                   {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
@@ -120,18 +162,20 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                         </div>
                       </div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleOpenPDF(invoice.invoiceNumber);
-                        }}
-                        className="w-full sm:w-auto"
-                      >
-                        <FileText className="h-4 w-4 mr-2" />
-                        Öppna PDF
-                      </Button>
+                      {invoice.invoiceType === 'Ströfaktura' && (
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenPDF(invoice.invoiceNumber);
+                          }}
+                          className="w-full sm:w-auto"
+                        >
+                          <FileText className="h-4 w-4 mr-2" />
+                          Öppna PDF
+                        </Button>
+                      )}
                     </div>
                   )}
                   <div className="space-y-2">
@@ -177,7 +221,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
             <th className="text-right p-3 text-sm font-medium">Saldo</th>
             <th className="text-left p-3 text-sm font-medium">Fakturatyp</th>
             <th className="text-left p-3 text-sm font-medium">Inkasso</th>
-            <th className="text-left p-3 text-sm font-medium">Källa</th>
+            <th className="text-left p-3 text-sm font-medium">Anståndsdatum</th>
             <th className="text-left p-3 text-sm font-medium">Betalstatus</th>
             <th className="w-10"></th>
           </tr>
@@ -199,7 +243,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm text-right">{formatCurrency(invoice.balance)}</td>
                   <td className="p-3 text-sm">{invoice.invoiceType}</td>
                   <td className="p-3 text-sm">{invoice.inCollection ? 'Ja' : 'Nej'}</td>
-                  <td className="p-3 text-sm">{invoice.source}</td>
+                  <td className="p-3 text-sm">{invoice.deferralDate || '–'}</td>
                   <td className="p-3 text-sm">
                     <Badge variant={getStatusVariant(invoice.paymentStatus)}>
                       {getStatusText(invoice)}
@@ -222,6 +266,48 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           <span className="font-medium">Text:</span> {invoice.text}
                         </div>
                       )}
+                      {invoice.inCollection && invoice.inCollectionDate && (
+                        <div className="mb-3 bg-destructive/10 rounded-lg p-3 border-l-4 border-destructive">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">Skickad till inkasso:</span>
+                            <span className="font-semibold text-destructive">{invoice.inCollectionDate}</span>
+                          </div>
+                        </div>
+                      )}
+                      {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && (
+                        <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
+                            <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
+                          </div>
+                          {invoice.preliminaryRefundDate && (
+                            <div className="flex justify-between items-center text-sm mt-1">
+                              <span className="text-muted-foreground">Planerat datum:</span>
+                              <span className="font-medium">{invoice.preliminaryRefundDate}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
+                        <div className="mb-3 bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Inbetalt:</span>
+                              <span className="font-semibold">{formatCurrency(invoice.paidAmount)}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Kvar att betala:</span>
+                              <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
+                            </div>
+                            {invoice.paymentDate && (
+                              <div>
+                                <span className="text-muted-foreground block mb-1">Senaste inbetalning:</span>
+                                <span className="font-semibold">{invoice.paymentDate}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
                       {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
                         <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
                           <div className="grid grid-cols-3 gap-4 text-sm mb-3">
@@ -238,18 +324,20 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                             </div>
                           </div>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleOpenPDF(invoice.invoiceNumber);
-                            }}
-                            className="w-full sm:w-auto"
-                          >
-                            <FileText className="h-4 w-4 mr-2" />
-                            Öppna PDF
-                          </Button>
+                          {invoice.invoiceType === 'Ströfaktura' && (
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenPDF(invoice.invoiceNumber);
+                              }}
+                              className="w-full sm:w-auto"
+                            >
+                              <FileText className="h-4 w-4 mr-2" />
+                              Öppna PDF
+                            </Button>
+                          )}
                         </div>
                       )}
                       <div className="bg-background rounded-lg p-3 shadow-sm">

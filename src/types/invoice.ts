@@ -14,12 +14,15 @@ export interface Invoice {
   amount: number;
   balance: number;
   invoiceType: string;
-  paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen';
+  paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen' | 'Krediterad';
   text?: string;
   inCollection: boolean;
-  source: 'Xpand' | 'Xledger';
+  inCollectionDate?: string; // Datum när fakturan skickades till inkasso
+  deferralDate?: string; // Anståndsdatum - endast om fakturan fått anstånd
   paymentDate?: string;
   paidAmount?: number;
   paymentSource?: string;
+  preliminaryRefund?: number;
+  preliminaryRefundDate?: string;
   lineItems: InvoiceLineItem[];
 }
