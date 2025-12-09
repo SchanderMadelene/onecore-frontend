@@ -72,15 +72,6 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
                 value={`${ledger.statistics.averageDaysLate} dagar`}
                 highlight={ledger.statistics.averageDaysLate > 0}
               />
-              <InfoRow 
-                label="Tillgodo" 
-                value={formatCurrency(ledger.balances.credit)}
-              />
-              <InfoRow 
-                label="Felaktig inbetalning" 
-                value={formatCurrency(ledger.balances.incorrectPayment)}
-                highlight={ledger.balances.incorrectPayment > 0}
-              />
             </div>
           </div>
 
@@ -95,14 +86,6 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
             </div>
           )}
 
-          {/* Positiv balans */}
-          {ledger.balances.credit > 0 && (
-            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-sm text-green-800">
-                Kunden har ett tillgodohavande på {formatCurrency(ledger.balances.credit)}.
-              </p>
-            </div>
-          )}
         </CardContent>
       </Card>
 
