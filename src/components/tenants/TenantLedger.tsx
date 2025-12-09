@@ -51,9 +51,9 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
               value={formatCurrency(ledger.balances.overdue)}
                 highlight={ledger.balances.overdue > 0}
               />
-              <InfoRow 
-                label="Inkasso" 
-                value={formatCurrency(ledger.balances.collections)}
+            <InfoRow 
+              label="Totalsumma inkasso" 
+              value={formatCurrency(ledger.balances.collections)}
                 highlight={ledger.balances.collections > 0}
               />
               <InfoRow 
