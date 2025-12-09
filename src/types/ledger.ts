@@ -1,13 +1,8 @@
+export type InvoiceMethod = 'e-faktura' | 'pappersfaktura-kivra' | 'autogiro';
+
 export interface CustomerLedger {
-  autogiro: {
-    active: boolean;
-    status: string;
-  };
-  invoiceSettings: {
-    eInvoice: boolean;
-    smsInvoice: boolean;
-    emailInvoice: boolean;
-  };
+  invoiceMethod: InvoiceMethod;
+  autogiroDate?: string; // Datum för autogiro-transaktion, endast relevant om invoiceMethod är 'autogiro'
   balances: {
     overdue: number;
     collections: number;
