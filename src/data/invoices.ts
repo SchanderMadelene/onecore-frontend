@@ -148,6 +148,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Förfallen",
       text: "Fakturan är skickad till inkasso",
       inCollection: true,
+      inCollectionDate: "2025-09-10",
       lineItems: [
         {
           amount: 0,

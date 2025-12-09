@@ -106,6 +106,14 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       <span className="font-medium">Text:</span> {invoice.text}
                     </div>
                   )}
+                  {invoice.inCollection && invoice.inCollectionDate && (
+                    <div className="mb-3 bg-destructive/10 rounded-lg p-3 border-l-4 border-destructive">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Skickad till inkasso:</span>
+                        <span className="font-semibold text-destructive">{invoice.inCollectionDate}</span>
+                      </div>
+                    </div>
+                  )}
                   {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && (
                     <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                       <div className="flex justify-between items-center text-sm">
@@ -254,6 +262,14 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       {invoice.text && (
                         <div className="mb-3 text-sm bg-background/50 rounded p-2">
                           <span className="font-medium">Text:</span> {invoice.text}
+                        </div>
+                      )}
+                      {invoice.inCollection && invoice.inCollectionDate && (
+                        <div className="mb-3 bg-destructive/10 rounded-lg p-3 border-l-4 border-destructive">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">Skickad till inkasso:</span>
+                            <span className="font-semibold text-destructive">{invoice.inCollectionDate}</span>
+                          </div>
                         </div>
                       )}
                       {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && (
