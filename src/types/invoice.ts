@@ -17,6 +17,7 @@ export interface Invoice {
   paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen' | 'Krediterad';
   text?: string;
   inCollection: boolean;
+  inCollectionDate?: string; // Datum när fakturan skickades till inkasso
   deferralDate?: string; // Anståndsdatum - endast om fakturan fått anstånd
   paymentDate?: string;
   paidAmount?: number;
