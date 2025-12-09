@@ -61,6 +61,8 @@ interface FeatureToggles {
   showDashboardCurves: boolean;
   // Favorites page
   showFavorites: boolean;
+  // Lease contracts page
+  showLeaseContracts: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -129,6 +131,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showDashboardCurves: false,
   // Favorites page
   showFavorites: false,
+  // Lease contracts page
+  showLeaseContracts: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
