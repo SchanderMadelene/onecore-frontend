@@ -110,6 +110,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                         <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
                         <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
                       </div>
+                      {invoice.preliminaryRefundDate && (
+                        <div className="flex justify-between items-center text-sm mt-1">
+                          <span className="text-muted-foreground">Planerat datum:</span>
+                          <span className="font-medium">{invoice.preliminaryRefundDate}</span>
+                        </div>
+                      )}
                     </div>
                   )}
                   {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
@@ -236,6 +242,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
                             <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
                           </div>
+                          {invoice.preliminaryRefundDate && (
+                            <div className="flex justify-between items-center text-sm mt-1">
+                              <span className="text-muted-foreground">Planerat datum:</span>
+                              <span className="font-medium">{invoice.preliminaryRefundDate}</span>
+                            </div>
+                          )}
                         </div>
                       )}
                       {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (

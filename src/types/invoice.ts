@@ -22,5 +22,6 @@ export interface Invoice {
   paidAmount?: number;
   paymentSource?: string;
   preliminaryRefund?: number;
+  preliminaryRefundDate?: string;
   lineItems: InvoiceLineItem[];
 }
