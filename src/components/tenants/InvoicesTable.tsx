@@ -104,6 +104,14 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       <span className="font-medium">Text:</span> {invoice.text}
                     </div>
                   )}
+                  {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && (
+                    <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
+                        <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
+                      </div>
+                    </div>
+                  )}
                   {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
                     <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
                       <div className="grid grid-cols-3 gap-4 text-sm mb-3">
@@ -220,6 +228,14 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       {invoice.text && (
                         <div className="mb-3 text-sm bg-background/50 rounded p-2">
                           <span className="font-medium">Text:</span> {invoice.text}
+                        </div>
+                      )}
+                      {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && (
+                        <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
+                            <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
+                          </div>
                         </div>
                       )}
                       {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
