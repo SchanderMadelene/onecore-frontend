@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp, Code, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp, Code, Star, RotateCcw } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole } from "@/contexts/RoleContext";
+import { toast } from "sonner";
 
 export function BetaSettings() {
   const {
@@ -13,12 +15,26 @@ export function BetaSettings() {
   
   const { devModeEnabled, setDevModeEnabled } = useRole();
   
+  const handleResetToDefaults = () => {
+    localStorage.removeItem('featureToggles');
+    toast.success("Feature toggles återställda! Laddar om sidan...");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+  
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Beaker className="h-5 w-5" />
-          <CardTitle>Betafunktioner</CardTitle>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Beaker className="h-5 w-5" />
+            <CardTitle>Betafunktioner</CardTitle>
+          </div>
+          <Button variant="outline" size="sm" onClick={handleResetToDefaults} className="gap-2">
+            <RotateCcw className="h-4 w-4" />
+            Återställ till standard
+          </Button>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
