@@ -162,18 +162,20 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                         </div>
                       </div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleOpenPDF(invoice.invoiceNumber);
-                        }}
-                        className="w-full sm:w-auto"
-                      >
-                        <FileText className="h-4 w-4 mr-2" />
-                        Öppna PDF
-                      </Button>
+                      {invoice.invoiceType === 'Strömfaktura' && (
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenPDF(invoice.invoiceNumber);
+                          }}
+                          className="w-full sm:w-auto"
+                        >
+                          <FileText className="h-4 w-4 mr-2" />
+                          Öppna PDF
+                        </Button>
+                      )}
                     </div>
                   )}
                   <div className="space-y-2">
@@ -322,18 +324,20 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                             </div>
                           </div>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleOpenPDF(invoice.invoiceNumber);
-                            }}
-                            className="w-full sm:w-auto"
-                          >
-                            <FileText className="h-4 w-4 mr-2" />
-                            Öppna PDF
-                          </Button>
+                          {invoice.invoiceType === 'Strömfaktura' && (
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenPDF(invoice.invoiceNumber);
+                              }}
+                              className="w-full sm:w-auto"
+                            >
+                              <FileText className="h-4 w-4 mr-2" />
+                              Öppna PDF
+                            </Button>
+                          )}
                         </div>
                       )}
                       <div className="bg-background rounded-lg p-3 shadow-sm">
