@@ -8,6 +8,7 @@ import { sv } from "date-fns/locale";
 import { LeaseContractsHeader } from "./components/LeaseContractsHeader";
 import { LeaseContractsFilters } from "./components/LeaseContractsFilters";
 import { LeaseContractActions } from "./components/LeaseContractActions";
+import { LeaseContractsPagination } from "./components/LeaseContractsPagination";
 import { useLeaseContractFilters } from "./hooks/useLeaseContractFilters";
 import { mockLeaseContracts } from "./data/mockLeaseContracts";
 import { 
@@ -23,6 +24,8 @@ export default function LeaseContractsPage() {
 
   const filterHook = useLeaseContractFilters(contracts);
   const filteredContracts = filterHook.filterContracts(contracts);
+  const paginatedContracts = filterHook.getPaginatedContracts(filteredContracts);
+  const totalPages = filterHook.totalPages(filteredContracts.length);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";
@@ -110,14 +113,26 @@ export default function LeaseContractsPage() {
               <Badge variant="outline">{filteredContracts.length}</Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            {filteredContracts.length > 0 ? (
-              <ResponsiveTable
-                data={filteredContracts}
-                columns={columns}
-                keyExtractor={(contract: LeaseContract) => contract.leaseId}
-                emptyMessage="Inga hyreskontrakt hittades"
-              />
+          <CardContent className="space-y-4">
+            {paginatedContracts.length > 0 ? (
+              <>
+                <ResponsiveTable
+                  data={paginatedContracts}
+                  columns={columns}
+                  keyExtractor={(contract: LeaseContract) => contract.leaseId}
+                  emptyMessage="Inga hyreskontrakt hittades"
+                />
+                
+                {totalPages > 1 && (
+                  <LeaseContractsPagination
+                    currentPage={filterHook.page}
+                    totalPages={totalPages}
+                    totalItems={filteredContracts.length}
+                    itemsPerPage={filterHook.limit}
+                    onPageChange={filterHook.setPage}
+                  />
+                )}
+              </>
             ) : (
               <div className="text-center py-8">
                 <p className="text-muted-foreground">Inga kontrakt matchar dina filter</p>
