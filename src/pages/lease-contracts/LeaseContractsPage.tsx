@@ -38,7 +38,7 @@ export default function LeaseContractsPage() {
       key: "leaseId",
       label: "Kontrakt ID",
       render: (contract: LeaseContract) => (
-        <span className="font-mono text-sm">{contract.leaseId}</span>
+        <span className="text-sm">{contract.leaseId}</span>
       )
     },
     {
