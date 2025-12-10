@@ -37,31 +37,27 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
           <CardTitle className="text-lg">Betalningsinformation</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Faktureringsinställningar */}
-          <div className="space-y-1">
-            <InfoRow 
-              label="Alternativ för avisering" 
-              value={getInvoiceMethodLabel()}
-            />
-            {ledger.invoiceMethod === 'autogiro' && ledger.autogiroDate && (
-              <InfoRow 
-                label="Autogiro-dragning" 
-                value={ledger.autogiroDate}
-              />
-            )}
-          </div>
-
           {/* Balans och saldon */}
-          <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
             <div className="space-y-1">
-            <InfoRow 
-              label="Totalsumma förfallet" 
-              value={formatCurrency(ledger.balances.overdue)}
+              <InfoRow 
+                label="Alternativ för avisering" 
+                value={getInvoiceMethodLabel()}
+              />
+              {ledger.invoiceMethod === 'autogiro' && ledger.autogiroDate && (
+                <InfoRow 
+                  label="Autogiro-dragning" 
+                  value={ledger.autogiroDate}
+                />
+              )}
+              <InfoRow 
+                label="Totalsumma förfallet" 
+                value={formatCurrency(ledger.balances.overdue)}
                 highlight={ledger.balances.overdue > 0}
               />
-            <InfoRow 
-              label="Totalsumma inkasso" 
-              value={formatCurrency(ledger.balances.collections)}
+              <InfoRow 
+                label="Totalsumma inkasso" 
+                value={formatCurrency(ledger.balances.collections)}
                 highlight={ledger.balances.collections > 0}
               />
             </div>
