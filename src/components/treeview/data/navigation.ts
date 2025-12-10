@@ -9,6 +9,12 @@ export const navigationNodes: TreeNode[] = [
     path: "/tenants/all",
   },
   {
+    id: "lease-contracts",
+    label: "Hyreskontrakt",
+    icon: "file-text",
+    path: "/lease-contracts",
+  },
+  {
     id: "rentals",
     label: "Uthyrning",
     icon: "key",

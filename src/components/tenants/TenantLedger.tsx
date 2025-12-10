@@ -37,37 +37,28 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
           <CardTitle className="text-lg">Betalningsinformation</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Faktureringsinställningar */}
-          <div className="space-y-1">
-            <InfoRow 
-              label="Alternativ för avisering" 
-              value={getInvoiceMethodLabel()}
-            />
-            {ledger.invoiceMethod === 'autogiro' && ledger.autogiroDate && (
-              <InfoRow 
-                label="Autogiro-dragning" 
-                value={ledger.autogiroDate}
-              />
-            )}
-          </div>
-
           {/* Balans och saldon */}
-          <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
             <div className="space-y-1">
-            <InfoRow 
-              label="Totalsumma förfallet" 
-              value={formatCurrency(ledger.balances.overdue)}
+              <InfoRow 
+                label="Alternativ för avisering" 
+                value={getInvoiceMethodLabel()}
+              />
+              {ledger.invoiceMethod === 'autogiro' && ledger.autogiroDate && (
+                <InfoRow 
+                  label="Autogiro-dragning" 
+                  value={ledger.autogiroDate}
+                />
+              )}
+              <InfoRow 
+                label="Totalsumma förfallet" 
+                value={formatCurrency(ledger.balances.overdue)}
                 highlight={ledger.balances.overdue > 0}
               />
-            <InfoRow 
-              label="Totalsumma inkasso" 
-              value={formatCurrency(ledger.balances.collections)}
-                highlight={ledger.balances.collections > 0}
-              />
               <InfoRow 
-                label="Överlämnade inkassoärenden" 
-                value={ledger.balances.submittedToCollections}
-                highlight={ledger.balances.submittedToCollections > 0}
+                label="Totalsumma inkasso" 
+                value={formatCurrency(ledger.balances.collections)}
+                highlight={ledger.balances.collections > 0}
               />
             </div>
             <div className="space-y-1">
@@ -91,8 +82,7 @@ export const TenantLedger = ({ ledger, invoices }: TenantLedgerProps) => {
 
           {/* Varningsmeddelande om det finns problem */}
           {(ledger.balances.overdue > 0 || 
-            ledger.balances.collections > 0 || 
-            ledger.balances.submittedToCollections > 0) && (
+            ledger.balances.collections > 0) && (
             <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
               <p className="text-sm text-amber-800">
                 <strong>OBS:</strong> Kunden har utestående betalningar eller inkassoärenden.

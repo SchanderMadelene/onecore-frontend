@@ -29,6 +29,8 @@ import AllInspectionsPage from "./pages/inspections/AllInspectionsPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 // Import favorites page
 import FavoritesPage from "./pages/favorites/FavoritesPage";
+// Import lease contracts page
+import LeaseContractsPage from "./pages/lease-contracts/LeaseContractsPage";
 
 const ProtectedRoute = ({ children, isEnabled }: { children: React.ReactNode, isEnabled: boolean }) => {
   if (!isEnabled) {
@@ -141,6 +143,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute isEnabled={features.showFavorites}>
             <FavoritesPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/lease-contracts" 
+        element={
+          <ProtectedRoute isEnabled={features.showLeaseContracts}>
+            <LeaseContractsPage />
           </ProtectedRoute>
         } 
       />
