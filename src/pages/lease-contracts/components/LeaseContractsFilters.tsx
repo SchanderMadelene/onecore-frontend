@@ -6,6 +6,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { ChevronsUpDown, Check, X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LeaseContractType, LeaseContractStatus, LEASE_STATUS_LABELS, LEASE_TYPE_LABELS } from "@/types/leaseContract";
+import { DateRangeFilter } from "./DateRangeFilter";
 
 interface LeaseContractsFiltersProps {
   selectedType: LeaseContractType | '';
@@ -14,10 +15,18 @@ interface LeaseContractsFiltersProps {
   setSelectedStatus: (status: LeaseContractStatus | '') => void;
   selectedDistrict: string;
   setSelectedDistrict: (district: string) => void;
-  showOnlyTerminated: boolean;
-  setShowOnlyTerminated: (show: boolean) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  fromDateStart: Date | undefined;
+  setFromDateStart: (date: Date | undefined) => void;
+  fromDateEnd: Date | undefined;
+  setFromDateEnd: (date: Date | undefined) => void;
+  lastDebitDateStart: Date | undefined;
+  setLastDebitDateStart: (date: Date | undefined) => void;
+  lastDebitDateEnd: Date | undefined;
+  setLastDebitDateEnd: (date: Date | undefined) => void;
+  includeContacts: boolean;
+  setIncludeContacts: (include: boolean) => void;
   openTypeDropdown: boolean;
   setOpenTypeDropdown: (open: boolean) => void;
   openStatusDropdown: boolean;
@@ -38,10 +47,18 @@ export function LeaseContractsFilters({
   setSelectedStatus,
   selectedDistrict,
   setSelectedDistrict,
-  showOnlyTerminated,
-  setShowOnlyTerminated,
   searchQuery,
   setSearchQuery,
+  fromDateStart,
+  setFromDateStart,
+  fromDateEnd,
+  setFromDateEnd,
+  lastDebitDateStart,
+  setLastDebitDateStart,
+  lastDebitDateEnd,
+  setLastDebitDateEnd,
+  includeContacts,
+  setIncludeContacts,
   openTypeDropdown,
   setOpenTypeDropdown,
   openStatusDropdown,
@@ -196,18 +213,36 @@ export function LeaseContractsFilters({
           </PopoverContent>
         </Popover>
 
-        {/* Terminated checkbox */}
+        {/* Date Range Filter - Lease Start Date */}
+        <DateRangeFilter
+          label="Startdatum"
+          fromDate={fromDateStart}
+          toDate={fromDateEnd}
+          onFromDateChange={setFromDateStart}
+          onToDateChange={setFromDateEnd}
+        />
+
+        {/* Date Range Filter - Last Debit Date */}
+        <DateRangeFilter
+          label="Senaste debitering"
+          fromDate={lastDebitDateStart}
+          toDate={lastDebitDateEnd}
+          onFromDateChange={setLastDebitDateStart}
+          onToDateChange={setLastDebitDateEnd}
+        />
+
+        {/* Include contacts checkbox */}
         <div className="flex items-center space-x-2">
           <Checkbox
-            id="terminated"
-            checked={showOnlyTerminated}
-            onCheckedChange={(checked) => setShowOnlyTerminated(checked === true)}
+            id="includeContacts"
+            checked={includeContacts}
+            onCheckedChange={(checked) => setIncludeContacts(checked === true)}
           />
           <label
-            htmlFor="terminated"
+            htmlFor="includeContacts"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            Visa endast uppsagda
+            Inkludera kontaktuppgifter
           </label>
         </div>
 
