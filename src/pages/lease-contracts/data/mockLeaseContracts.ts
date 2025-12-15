@@ -9,6 +9,10 @@ export const mockLeaseContracts: LeaseContract[] = [
     leaseStartDate: "2020-03-01T00:00:00.000Z",
     leaseEndDate: null,
     status: 1,
+    propertyId: "PROP-001",
+    propertyName: "Kvarngärdet 1",
+    buildingId: "BUILD-001A",
+    buildingName: "Storgatan 12",
     tenants: [
       {
         contactCode: "P123456",
@@ -53,6 +57,10 @@ export const mockLeaseContracts: LeaseContract[] = [
     leaseStartDate: "2021-06-01T00:00:00.000Z",
     leaseEndDate: null,
     status: 2,
+    propertyId: "PROP-001",
+    propertyName: "Kvarngärdet 1",
+    buildingId: "BUILD-001B",
+    buildingName: "Kungsgatan 5",
     tenants: [
       {
         contactCode: "P234567",
@@ -97,6 +105,10 @@ export const mockLeaseContracts: LeaseContract[] = [
     leaseStartDate: "2022-01-01T00:00:00.000Z",
     leaseEndDate: null,
     status: 1,
+    propertyId: "PROP-002",
+    propertyName: "Björklunden 3",
+    buildingId: "BUILD-002A",
+    buildingName: "Vasagatan 22",
     tenants: [
       {
         contactCode: "P345678",
@@ -141,6 +153,10 @@ export const mockLeaseContracts: LeaseContract[] = [
     leaseStartDate: "2023-02-01T00:00:00.000Z",
     leaseEndDate: "2023-11-30T00:00:00.000Z",
     status: 3,
+    propertyId: "PROP-002",
+    propertyName: "Björklunden 3",
+    buildingId: "BUILD-002B",
+    buildingName: "Drottninggatan 8",
     tenants: [
       {
         contactCode: "P456789",
@@ -185,6 +201,10 @@ export const mockLeaseContracts: LeaseContract[] = [
     leaseStartDate: "2024-03-01T00:00:00.000Z",
     leaseEndDate: null,
     status: 0,
+    propertyId: "PROP-003",
+    propertyName: "Ekudden 5",
+    buildingId: "BUILD-003A",
+    buildingName: "Eriksbergsgatan 3",
     tenants: [
       {
         contactCode: "P567890",
@@ -229,6 +249,10 @@ export const mockLeaseContracts: LeaseContract[] = [
     leaseStartDate: "2019-09-01T00:00:00.000Z",
     leaseEndDate: null,
     status: 4,
+    propertyId: "PROP-003",
+    propertyName: "Ekudden 5",
+    buildingId: "BUILD-003B",
+    buildingName: "Ringvägen 15",
     tenants: [
       {
         contactCode: "P678901",
@@ -273,6 +297,10 @@ export const mockLeaseContracts: LeaseContract[] = [
     leaseStartDate: "2022-05-01T00:00:00.000Z",
     leaseEndDate: null,
     status: 1,
+    propertyId: "PROP-001",
+    propertyName: "Kvarngärdet 1",
+    buildingId: "BUILD-001A",
+    buildingName: "Storgatan 12",
     tenants: [
       {
         contactCode: "P789012",

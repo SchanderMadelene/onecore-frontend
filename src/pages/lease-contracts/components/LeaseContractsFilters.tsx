@@ -8,6 +8,17 @@ import { cn } from "@/lib/utils";
 import { LeaseContractType, LeaseContractStatus, LEASE_STATUS_LABELS, LEASE_TYPE_LABELS } from "@/types/leaseContract";
 import { DateRangeFilter } from "./DateRangeFilter";
 
+interface PropertyOption {
+  id: string;
+  name: string;
+}
+
+interface BuildingOption {
+  id: string;
+  name: string;
+  propertyId: string;
+}
+
 interface LeaseContractsFiltersProps {
   selectedType: LeaseContractType | '';
   setSelectedType: (type: LeaseContractType | '') => void;
@@ -15,6 +26,10 @@ interface LeaseContractsFiltersProps {
   setSelectedStatus: (status: LeaseContractStatus | '') => void;
   selectedDistrict: string;
   setSelectedDistrict: (district: string) => void;
+  selectedProperty: string;
+  setSelectedProperty: (property: string) => void;
+  selectedBuilding: string;
+  setSelectedBuilding: (building: string) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   fromDateStart: Date | undefined;
@@ -33,9 +48,15 @@ interface LeaseContractsFiltersProps {
   setOpenStatusDropdown: (open: boolean) => void;
   openDistrictDropdown: boolean;
   setOpenDistrictDropdown: (open: boolean) => void;
+  openPropertyDropdown: boolean;
+  setOpenPropertyDropdown: (open: boolean) => void;
+  openBuildingDropdown: boolean;
+  setOpenBuildingDropdown: (open: boolean) => void;
   contractTypes: LeaseContractType[];
   statusOptions: LeaseContractStatus[];
   uniqueDistricts: string[];
+  uniqueProperties: PropertyOption[];
+  availableBuildings: BuildingOption[];
   clearFilters: () => void;
   hasActiveFilters: boolean;
 }
@@ -47,6 +68,10 @@ export function LeaseContractsFilters({
   setSelectedStatus,
   selectedDistrict,
   setSelectedDistrict,
+  selectedProperty,
+  setSelectedProperty,
+  selectedBuilding,
+  setSelectedBuilding,
   searchQuery,
   setSearchQuery,
   fromDateStart,
@@ -65,9 +90,15 @@ export function LeaseContractsFilters({
   setOpenStatusDropdown,
   openDistrictDropdown,
   setOpenDistrictDropdown,
+  openPropertyDropdown,
+  setOpenPropertyDropdown,
+  openBuildingDropdown,
+  setOpenBuildingDropdown,
   contractTypes,
   statusOptions,
   uniqueDistricts,
+  uniqueProperties,
+  availableBuildings,
   clearFilters,
   hasActiveFilters
 }: LeaseContractsFiltersProps) {
@@ -162,6 +193,96 @@ export function LeaseContractsFilters({
                         )}
                       />
                       {LEASE_STATUS_LABELS[status]}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+
+        {/* Property Filter */}
+        <Popover open={openPropertyDropdown} onOpenChange={setOpenPropertyDropdown}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={openPropertyDropdown}
+              className="w-full sm:w-[200px] justify-between"
+            >
+              {selectedProperty 
+                ? uniqueProperties.find(p => p.id === selectedProperty)?.name || "Fastighet..."
+                : "Fastighet..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-background z-50" align="start">
+            <Command>
+              <CommandInput placeholder="Sök fastighet..." />
+              <CommandList>
+                <CommandEmpty>Ingen fastighet hittades.</CommandEmpty>
+                <CommandGroup>
+                  {uniqueProperties.map((property) => (
+                    <CommandItem
+                      key={property.id}
+                      value={property.name}
+                      onSelect={() => {
+                        setSelectedProperty(selectedProperty === property.id ? '' : property.id);
+                        setOpenPropertyDropdown(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          selectedProperty === property.id ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {property.name}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+
+        {/* Building Filter */}
+        <Popover open={openBuildingDropdown} onOpenChange={setOpenBuildingDropdown}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={openBuildingDropdown}
+              className="w-full sm:w-[200px] justify-between"
+            >
+              {selectedBuilding 
+                ? availableBuildings.find(b => b.id === selectedBuilding)?.name || "Byggnad..."
+                : "Byggnad..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-background z-50" align="start">
+            <Command>
+              <CommandInput placeholder="Sök byggnad..." />
+              <CommandList>
+                <CommandEmpty>Ingen byggnad hittades.</CommandEmpty>
+                <CommandGroup>
+                  {availableBuildings.map((building) => (
+                    <CommandItem
+                      key={building.id}
+                      value={building.name}
+                      onSelect={() => {
+                        setSelectedBuilding(selectedBuilding === building.id ? '' : building.id);
+                        setOpenBuildingDropdown(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          selectedBuilding === building.id ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {building.name}
                     </CommandItem>
                   ))}
                 </CommandGroup>
