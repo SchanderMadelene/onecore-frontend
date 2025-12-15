@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ChevronsUpDown, Check, X, Search } from "lucide-react";
@@ -40,8 +39,6 @@ interface LeaseContractsFiltersProps {
   setLastDebitDateStart: (date: Date | undefined) => void;
   lastDebitDateEnd: Date | undefined;
   setLastDebitDateEnd: (date: Date | undefined) => void;
-  includeContacts: boolean;
-  setIncludeContacts: (include: boolean) => void;
   openTypeDropdown: boolean;
   setOpenTypeDropdown: (open: boolean) => void;
   openStatusDropdown: boolean;
@@ -82,8 +79,6 @@ export function LeaseContractsFilters({
   setLastDebitDateStart,
   lastDebitDateEnd,
   setLastDebitDateEnd,
-  includeContacts,
-  setIncludeContacts,
   openTypeDropdown,
   setOpenTypeDropdown,
   openStatusDropdown,
@@ -352,20 +347,6 @@ export function LeaseContractsFilters({
           onToDateChange={setLastDebitDateEnd}
         />
 
-        {/* Include contacts checkbox */}
-        <div className="flex items-center space-x-2">
-          <Checkbox
-            id="includeContacts"
-            checked={includeContacts}
-            onCheckedChange={(checked) => setIncludeContacts(checked === true)}
-          />
-          <label
-            htmlFor="includeContacts"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Inkludera kontaktuppgifter
-          </label>
-        </div>
 
         {/* Clear filters */}
         {hasActiveFilters && (
