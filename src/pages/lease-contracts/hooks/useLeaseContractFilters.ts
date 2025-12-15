@@ -1,10 +1,23 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { LeaseContract, LeaseContractType, LeaseContractStatus } from '@/types/leaseContract';
+
+interface PropertyOption {
+  id: string;
+  name: string;
+}
+
+interface BuildingOption {
+  id: string;
+  name: string;
+  propertyId: string;
+}
 
 export function useLeaseContractFilters(contracts: LeaseContract[]) {
   const [selectedType, setSelectedType] = useState<LeaseContractType | ''>('');
   const [selectedStatus, setSelectedStatus] = useState<LeaseContractStatus | ''>('');
   const [selectedDistrict, setSelectedDistrict] = useState<string>('');
+  const [selectedProperty, setSelectedProperty] = useState<string>('');
+  const [selectedBuilding, setSelectedBuilding] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   
   // Date range filters
@@ -12,9 +25,6 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
   const [fromDateEnd, setFromDateEnd] = useState<Date | undefined>(undefined);
   const [lastDebitDateStart, setLastDebitDateStart] = useState<Date | undefined>(undefined);
   const [lastDebitDateEnd, setLastDebitDateEnd] = useState<Date | undefined>(undefined);
-  
-  // Include contacts option
-  const [includeContacts, setIncludeContacts] = useState(true);
   
   // Pagination
   const [page, setPage] = useState(1);
@@ -24,9 +34,60 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
   const [openTypeDropdown, setOpenTypeDropdown] = useState(false);
   const [openStatusDropdown, setOpenStatusDropdown] = useState(false);
   const [openDistrictDropdown, setOpenDistrictDropdown] = useState(false);
+  const [openPropertyDropdown, setOpenPropertyDropdown] = useState(false);
+  const [openBuildingDropdown, setOpenBuildingDropdown] = useState(false);
 
   const contractTypes: LeaseContractType[] = ['Bostadskontrakt', 'Bilplatskontrakt', 'Förrådkontrakt'];
   const statusOptions: LeaseContractStatus[] = [0, 1, 2, 3, 4, 5];
+
+  // Extract unique properties from contracts
+  const uniqueProperties = useMemo((): PropertyOption[] => {
+    const propertyMap = new Map<string, string>();
+    contracts.forEach(c => {
+      if (c.propertyId && c.propertyName) {
+        propertyMap.set(c.propertyId, c.propertyName);
+      }
+    });
+    return Array.from(propertyMap.entries())
+      .map(([id, name]) => ({ id, name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [contracts]);
+
+  // Extract unique buildings from contracts - filtered by selected property if one is selected
+  const uniqueBuildings = useMemo((): BuildingOption[] => {
+    const buildingMap = new Map<string, BuildingOption>();
+    contracts.forEach(c => {
+      if (c.buildingId && c.buildingName && c.propertyId) {
+        buildingMap.set(c.buildingId, {
+          id: c.buildingId,
+          name: c.buildingName,
+          propertyId: c.propertyId
+        });
+      }
+    });
+    return Array.from(buildingMap.values())
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [contracts]);
+
+  // Get available buildings based on selected property
+  const availableBuildings = useMemo((): BuildingOption[] => {
+    if (!selectedProperty) {
+      return uniqueBuildings;
+    }
+    return uniqueBuildings.filter(b => b.propertyId === selectedProperty);
+  }, [uniqueBuildings, selectedProperty]);
+
+  // Cascading reset: clear building selection when property changes if building doesn't belong to new property
+  useEffect(() => {
+    if (selectedProperty && selectedBuilding) {
+      const buildingBelongsToProperty = uniqueBuildings.some(
+        b => b.id === selectedBuilding && b.propertyId === selectedProperty
+      );
+      if (!buildingBelongsToProperty) {
+        setSelectedBuilding('');
+      }
+    }
+  }, [selectedProperty, selectedBuilding, uniqueBuildings]);
 
   const uniqueDistricts = useMemo(() => {
     const districts = contracts
@@ -45,6 +106,12 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
       
       // District filter
       if (selectedDistrict && contract.district !== selectedDistrict) return false;
+      
+      // Property filter
+      if (selectedProperty && contract.propertyId !== selectedProperty) return false;
+      
+      // Building filter
+      if (selectedBuilding && contract.buildingId !== selectedBuilding) return false;
       
       // Date range filter for lease start date
       if (fromDateStart || fromDateEnd) {
@@ -82,6 +149,8 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     setSelectedType('');
     setSelectedStatus('');
     setSelectedDistrict('');
+    setSelectedProperty('');
+    setSelectedBuilding('');
     setSearchQuery('');
     setFromDateStart(undefined);
     setFromDateEnd(undefined);
@@ -94,6 +163,8 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     selectedType || 
     selectedStatus !== '' || 
     selectedDistrict || 
+    selectedProperty ||
+    selectedBuilding ||
     searchQuery ||
     fromDateStart ||
     fromDateEnd ||
@@ -117,6 +188,10 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     setSelectedStatus,
     selectedDistrict,
     setSelectedDistrict,
+    selectedProperty,
+    setSelectedProperty,
+    selectedBuilding,
+    setSelectedBuilding,
     searchQuery,
     setSearchQuery,
     fromDateStart,
@@ -127,8 +202,6 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     setLastDebitDateStart,
     lastDebitDateEnd,
     setLastDebitDateEnd,
-    includeContacts,
-    setIncludeContacts,
     page,
     setPage,
     limit,
@@ -138,9 +211,15 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     setOpenStatusDropdown,
     openDistrictDropdown,
     setOpenDistrictDropdown,
+    openPropertyDropdown,
+    setOpenPropertyDropdown,
+    openBuildingDropdown,
+    setOpenBuildingDropdown,
     contractTypes,
     statusOptions,
     uniqueDistricts,
+    uniqueProperties,
+    availableBuildings,
     filterContracts,
     getPaginatedContracts,
     totalPages,

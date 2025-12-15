@@ -67,4 +67,8 @@ export interface LeaseContract {
   lastDebitDate: string | null;
   approvalDate: string | null;
   district?: string;
+  propertyId?: string;
+  propertyName?: string;
+  buildingId?: string;
+  buildingName?: string;
 }
