@@ -1,15 +1,20 @@
-import { FileText } from "lucide-react";
+import { SaveAsFavoriteButton } from "@/components/shared/SaveAsFavoriteButton";
 
 export function LeaseContractsHeader() {
   return (
-    <div className="flex items-center gap-3">
-      <div className="p-2 rounded-lg bg-primary/10">
-        <FileText className="h-6 w-6 text-primary" />
-      </div>
+    <div className="flex items-center justify-between mb-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Hyreskontrakt</h1>
-        <p className="text-muted-foreground">Hantera och sök bland alla hyreskontrakt</p>
+        <h1 className="text-3xl font-bold">Hyreskontrakt</h1>
+        <p className="text-muted-foreground">
+          Hantera och sök bland alla hyreskontrakt
+        </p>
       </div>
+      <SaveAsFavoriteButton
+        category="rentals"
+        pageTitle="Hyreskontrakt"
+        defaultName="Min hyreskontraktsvy"
+        icon="📄"
+      />
     </div>
   );
 }
