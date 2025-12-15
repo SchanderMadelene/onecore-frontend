@@ -10,7 +10,7 @@ import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/t
 const getResidenceBarrier = (residenceId: string): { hasBarrier: boolean; reason: string } | null => {
   // For demo purposes, mark lgh-001 as having a barrier
   if (residenceId === "lgh-001") {
-    return { hasBarrier: true, reason: "Skadedjur" };
+    return { hasBarrier: true, reason: "[anledning]" };
   }
   return null;
 };
