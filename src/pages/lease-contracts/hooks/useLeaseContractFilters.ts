@@ -26,9 +26,6 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
   const [lastDebitDateStart, setLastDebitDateStart] = useState<Date | undefined>(undefined);
   const [lastDebitDateEnd, setLastDebitDateEnd] = useState<Date | undefined>(undefined);
   
-  // Include contacts option
-  const [includeContacts, setIncludeContacts] = useState(true);
-  
   // Pagination
   const [page, setPage] = useState(1);
   const [limit] = useState(25);
@@ -205,8 +202,6 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     setLastDebitDateStart,
     lastDebitDateEnd,
     setLastDebitDateEnd,
-    includeContacts,
-    setIncludeContacts,
     page,
     setPage,
     limit,
