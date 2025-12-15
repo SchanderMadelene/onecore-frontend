@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Upload } from "lucide-react";
+import { Upload, Sparkles, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -21,8 +21,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import type { ComponentLocation } from "@/types/api";
+import type { AIAnalysisResult } from "@/components/shared/PhotoAnalyzeModal";
 
 const updateComponentSchema = z.object({
   ekonomiskLivslangd: z.string().optional(),
@@ -31,6 +38,8 @@ const updateComponentSchema = z.object({
   mangd: z.string().optional(),
   marke: z.string().optional(),
   modell: z.string().optional(),
+  serienummer: z.string().optional(),
+  tekniskaSpec: z.string().optional(),
   comment: z.string().optional(),
 });
 
@@ -46,6 +55,8 @@ interface UpdateComponentModalProps {
     type: string;
   };
   orderId?: string;
+  aiSuggestedValues?: AIAnalysisResult;
+  attachedImage?: string;
 }
 
 const generateBreadcrumb = (location: ComponentLocation): string => {
@@ -68,14 +79,51 @@ const generateBreadcrumb = (location: ComponentLocation): string => {
   return parts.join(" > ");
 };
 
+const getConfidenceColor = (confidence?: "high" | "medium" | "low") => {
+  switch (confidence) {
+    case "high":
+      return "text-green-500";
+    case "medium":
+      return "text-yellow-500";
+    case "low":
+      return "text-orange-500";
+    default:
+      return "text-muted-foreground";
+  }
+};
+
+interface AIIndicatorProps {
+  confidence?: "high" | "medium" | "low";
+}
+
+const AIIndicator = ({ confidence }: AIIndicatorProps) => {
+  if (!confidence) return null;
+  
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Sparkles className={`h-3.5 w-3.5 ${getConfidenceColor(confidence)} cursor-help`} />
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="text-xs">Föreslaget av AI - granska värdet</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
+
 export const UpdateComponentModal = ({
   open,
   onOpenChange,
   location,
   component,
   orderId,
+  aiSuggestedValues,
+  attachedImage,
 }: UpdateComponentModalProps) => {
   const { toast } = useToast();
+  const [currentImage, setCurrentImage] = useState<string | undefined>(attachedImage);
   
   const [selectedLocationId, setSelectedLocationId] = useState<string | undefined>(
     location.currentRoom?.id || 
@@ -83,6 +131,9 @@ export const UpdateComponentModal = ({
     location.currentSpace?.id || 
     location.currentBuilding?.id
   );
+
+  // Track which fields have AI values
+  const [aiFields, setAiFields] = useState<Record<string, "high" | "medium" | "low">>({});
 
   const form = useForm<UpdateComponentFormData>({
     resolver: zodResolver(updateComponentSchema),
@@ -93,9 +144,46 @@ export const UpdateComponentModal = ({
       mangd: "1 st",
       marke: "Electrolux",
       modell: "ESF5555LOX",
+      serienummer: "",
+      tekniskaSpec: "",
       comment: "",
     },
   });
+
+  // Apply AI suggested values when they change
+  useEffect(() => {
+    if (aiSuggestedValues) {
+      const newAiFields: Record<string, "high" | "medium" | "low"> = {};
+      
+      if (aiSuggestedValues.fabrikat) {
+        form.setValue("marke", aiSuggestedValues.fabrikat.value);
+        newAiFields.marke = aiSuggestedValues.fabrikat.confidence;
+      }
+      if (aiSuggestedValues.modell) {
+        form.setValue("modell", aiSuggestedValues.modell.value);
+        newAiFields.modell = aiSuggestedValues.modell.confidence;
+      }
+      if (aiSuggestedValues.serienummer) {
+        form.setValue("serienummer", aiSuggestedValues.serienummer.value);
+        newAiFields.serienummer = aiSuggestedValues.serienummer.confidence;
+      }
+      if (aiSuggestedValues.tillverkningsar) {
+        form.setValue("startar", aiSuggestedValues.tillverkningsar.value);
+        newAiFields.startar = aiSuggestedValues.tillverkningsar.confidence;
+      }
+      if (aiSuggestedValues.tekniska_specifikationer) {
+        form.setValue("tekniskaSpec", aiSuggestedValues.tekniska_specifikationer.value);
+        newAiFields.tekniskaSpec = aiSuggestedValues.tekniska_specifikationer.confidence;
+      }
+      
+      setAiFields(newAiFields);
+    }
+  }, [aiSuggestedValues, form]);
+
+  // Update current image when attachedImage prop changes
+  useEffect(() => {
+    setCurrentImage(attachedImage);
+  }, [attachedImage]);
 
   const onSubmit = (data: UpdateComponentFormData) => {
     console.log("Component update data:", data);
@@ -281,7 +369,10 @@ export const UpdateComponentModal = ({
 
                 {/* Märke */}
                 <div className="space-y-2">
-                  <Label htmlFor="marke">Märke</Label>
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="marke">Märke</Label>
+                    <AIIndicator confidence={aiFields.marke} />
+                  </div>
                   <p className="text-sm text-muted-foreground italic">Tidigare: Electrolux</p>
                   <Input
                     id="marke"
@@ -291,11 +382,40 @@ export const UpdateComponentModal = ({
 
                 {/* Modell */}
                 <div className="space-y-2">
-                  <Label htmlFor="modell">Modell</Label>
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="modell">Modell</Label>
+                    <AIIndicator confidence={aiFields.modell} />
+                  </div>
                   <p className="text-sm text-muted-foreground italic">Tidigare: ESF5555LOX</p>
                   <Input
                     id="modell"
                     {...form.register("modell")}
+                  />
+                </div>
+
+                {/* Serienummer */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="serienummer">Serienummer</Label>
+                    <AIIndicator confidence={aiFields.serienummer} />
+                  </div>
+                  <p className="text-sm text-muted-foreground italic">Tidigare: -</p>
+                  <Input
+                    id="serienummer"
+                    {...form.register("serienummer")}
+                  />
+                </div>
+
+                {/* Tekniska specifikationer */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="tekniskaSpec">Tekniska spec.</Label>
+                    <AIIndicator confidence={aiFields.tekniskaSpec} />
+                  </div>
+                  <p className="text-sm text-muted-foreground italic">Tidigare: -</p>
+                  <Input
+                    id="tekniskaSpec"
+                    {...form.register("tekniskaSpec")}
                   />
                 </div>
               </div>
@@ -314,15 +434,39 @@ export const UpdateComponentModal = ({
               {/* Bilder */}
               <div className="space-y-2">
                 <Label>Bilder</Label>
-                <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
-                  <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Klicka för att ladda upp bilder av den nya komponenten
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Max 5 bilder, 10MB per bild
-                  </p>
-                </div>
+                {currentImage ? (
+                  <div className="relative">
+                    <div className="rounded-lg overflow-hidden bg-muted">
+                      <img
+                        src={currentImage}
+                        alt="Bifogad bild"
+                        className="w-full h-48 object-contain"
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      className="absolute top-2 right-2 h-8 w-8"
+                      onClick={() => setCurrentImage(undefined)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Bild bifogad från "Fota & analysera"
+                    </p>
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
+                    <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Klicka för att ladda upp bilder av den nya komponenten
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Max 5 bilder, 10MB per bild
+                    </p>
+                  </div>
+                )}
               </div>
             </form>
           </div>
