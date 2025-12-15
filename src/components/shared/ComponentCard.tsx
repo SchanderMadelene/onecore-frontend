@@ -8,10 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, MoreVertical, FileText, Camera, Edit, History } from "lucide-react";
+import { ChevronDown, MoreVertical, FileText, Sparkles, Edit, History } from "lucide-react";
 import { useState } from "react";
 import { Component } from "@/data/components";
 import { useToast } from "@/hooks/use-toast";
+import { PhotoAnalyzeModal, AIAnalysisResult } from "./PhotoAnalyzeModal";
+import { UpdateComponentModal } from "@/components/design-system/showcase/components/UpdateComponentModal";
+import type { ComponentLocation } from "@/types/api";
 
 interface ComponentCardProps {
   component: Component;
@@ -19,8 +22,19 @@ interface ComponentCardProps {
 
 export const ComponentCard = ({ component }: ComponentCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [photoAnalyzeOpen, setPhotoAnalyzeOpen] = useState(false);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [aiSuggestedValues, setAiSuggestedValues] = useState<AIAnalysisResult | null>(null);
+  const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const isCategory = component.type === "category";
   const { toast } = useToast();
+
+  // Mock location for UpdateComponentModal
+  const mockLocation: ComponentLocation = {
+    propertyId: "prop-1",
+    propertyName: "Testfastighet",
+    level: "building",
+  };
 
   const handleCreateOrder = () => {
     toast({
@@ -29,18 +43,20 @@ export const ComponentCard = ({ component }: ComponentCardProps) => {
     });
   };
 
-  const handlePhotoTypeplate = () => {
-    toast({
-      title: "Fota typskylt",
-      description: `Öppnar kamera för ${component.name}`,
-    });
+  const handlePhotoAnalyze = () => {
+    setPhotoAnalyzeOpen(true);
+  };
+
+  const handleAnalysisComplete = (result: AIAnalysisResult, imageDataUrl: string) => {
+    setAiSuggestedValues(result);
+    setAttachedImage(imageDataUrl);
+    setUpdateModalOpen(true);
   };
 
   const handleUpdate = () => {
-    toast({
-      title: "Uppdatera",
-      description: `Öppnar redigeringsläge för ${component.name}`,
-    });
+    setAiSuggestedValues(null);
+    setAttachedImage(null);
+    setUpdateModalOpen(true);
   };
 
   const handleShowHistory = () => {
@@ -72,10 +88,10 @@ export const ComponentCard = ({ component }: ComponentCardProps) => {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={(e) => {
           e.stopPropagation();
-          handlePhotoTypeplate();
+          handlePhotoAnalyze();
         }}>
-          <Camera className="mr-2 h-4 w-4" />
-          Fota typskylt
+          <Sparkles className="mr-2 h-4 w-4" />
+          Fota & analysera
         </DropdownMenuItem>
         <DropdownMenuItem onClick={(e) => {
           e.stopPropagation();
@@ -159,26 +175,48 @@ export const ComponentCard = ({ component }: ComponentCardProps) => {
 
   // Standalone component
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1">
-            <CardTitle className="text-base">{component.name}</CardTitle>
-            <p className="text-sm text-muted-foreground">{component.location}</p>
-          </div>
-          <ComponentActions />
-        </div>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <div className="space-y-1">
-          {component.specifications.map((spec, idx) => (
-            <div key={idx} className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{spec.label}:</span>
-              <span className="font-medium">{spec.value}</span>
+    <>
+      <Card className="w-full">
+        <CardHeader className="pb-3">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1">
+              <CardTitle className="text-base">{component.name}</CardTitle>
+              <p className="text-sm text-muted-foreground">{component.location}</p>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            <ComponentActions />
+          </div>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="space-y-1">
+            {component.specifications.map((spec, idx) => (
+              <div key={idx} className="flex justify-between text-sm">
+                <span className="text-muted-foreground">{spec.label}:</span>
+                <span className="font-medium">{spec.value}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <PhotoAnalyzeModal
+        open={photoAnalyzeOpen}
+        onOpenChange={setPhotoAnalyzeOpen}
+        componentName={component.name}
+        onAnalysisComplete={handleAnalysisComplete}
+      />
+
+      <UpdateComponentModal
+        open={updateModalOpen}
+        onOpenChange={setUpdateModalOpen}
+        location={mockLocation}
+        component={{
+          id: component.id,
+          name: component.name,
+          type: component.type,
+        }}
+        aiSuggestedValues={aiSuggestedValues || undefined}
+        attachedImage={attachedImage || undefined}
+      />
+    </>
   );
 };
