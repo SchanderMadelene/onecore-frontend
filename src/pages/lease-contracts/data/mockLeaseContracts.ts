@@ -37,6 +37,30 @@ export const mockLeaseContracts: LeaseContract[] = [
         ],
         emailAddress: "anna.andersson@email.se",
         isTenant: true
+      },
+      {
+        contactCode: "P123457",
+        contactKey: "_ABC124",
+        firstName: "Mikael",
+        lastName: "Andersson",
+        fullName: "Andersson Mikael",
+        nationalRegistrationNumber: "198307221234",
+        birthDate: "1983-07-22T00:00:00.000Z",
+        address: {
+          street: "Storgatan 12",
+          number: "A",
+          postalCode: "72215",
+          city: "VÄSTERÅS"
+        },
+        phoneNumbers: [
+          {
+            phoneNumber: "0702345678",
+            type: "mobil",
+            isMainNumber: 1
+          }
+        ],
+        emailAddress: "mikael.andersson@email.se",
+        isTenant: true
       }
     ],
     noticeGivenBy: null,
@@ -84,6 +108,30 @@ export const mockLeaseContracts: LeaseContract[] = [
           }
         ],
         emailAddress: "erik.eriksson@email.se",
+        isTenant: true
+      },
+      {
+        contactCode: "P234568",
+        contactKey: "_DEF457",
+        firstName: "Sofia",
+        lastName: "Eriksson",
+        fullName: "Eriksson Sofia",
+        nationalRegistrationNumber: "199204087654",
+        birthDate: "1992-04-08T00:00:00.000Z",
+        address: {
+          street: "Kungsgatan 5",
+          number: "",
+          postalCode: "72214",
+          city: "VÄSTERÅS"
+        },
+        phoneNumbers: [
+          {
+            phoneNumber: "0708765432",
+            type: "mobil",
+            isMainNumber: 1
+          }
+        ],
+        emailAddress: "sofia.eriksson@email.se",
         isTenant: true
       }
     ],
