@@ -57,12 +57,44 @@ export default function LeaseContractsPage() {
       key: "tenant",
       label: "Hyresgäst",
       render: (contract: LeaseContract) => (
-        <span>{contract.tenants[0]?.fullName || "-"}</span>
+        <div className="space-y-2">
+          {contract.tenants.slice(0, 2).map((tenant, index) => (
+            <div key={tenant.contactCode || index}>
+              <span className="font-medium">{tenant.fullName}</span>
+              <div className="text-sm text-muted-foreground">
+                {tenant.contactCode}
+              </div>
+            </div>
+          ))}
+        </div>
       )
+    },
+    {
+      key: "contactInfo",
+      label: "Kontaktuppgifter",
+      hideOnMobile: true,
+      render: (contract: LeaseContract) => {
+        const tenant = contract.tenants[0];
+        if (!tenant) return "-";
+        
+        const mainPhone = tenant.phoneNumbers?.find(p => p.isMainNumber === 1);
+        
+        return (
+          <div className="space-y-1">
+            {tenant.emailAddress && (
+              <div className="text-sm">{tenant.emailAddress}</div>
+            )}
+            {mainPhone?.phoneNumber && (
+              <div className="text-sm text-muted-foreground">{mainPhone.phoneNumber}</div>
+            )}
+          </div>
+        );
+      }
     },
     {
       key: "address",
       label: "Adress",
+      hideOnMobile: true,
       render: (contract: LeaseContract) => {
         const address = contract.tenants[0]?.address;
         if (!address) return "-";
