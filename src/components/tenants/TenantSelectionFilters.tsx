@@ -6,6 +6,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { mockProperties } from "@/data/properties";
+import { useMemo } from "react";
 
 interface TenantSelectionFiltersProps {
   contractStatusFilter: string;
@@ -14,6 +16,10 @@ interface TenantSelectionFiltersProps {
   setContractTypeFilter: (value: string) => void;
   customerTypeFilter: string;
   setCustomerTypeFilter: (value: string) => void;
+  propertyFilter?: string;
+  setPropertyFilter?: (value: string) => void;
+  districtFilter?: string;
+  setDistrictFilter?: (value: string) => void;
 }
 
 export function TenantSelectionFilters({
@@ -23,7 +29,17 @@ export function TenantSelectionFilters({
   setContractTypeFilter,
   customerTypeFilter,
   setCustomerTypeFilter,
+  propertyFilter = "all",
+  setPropertyFilter,
+  districtFilter = "all",
+  setDistrictFilter,
 }: TenantSelectionFiltersProps) {
+  // Get unique districts from properties
+  const districts = useMemo(() => {
+    const uniqueDistricts = [...new Set(mockProperties.map(p => p.district))];
+    return uniqueDistricts.sort();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <div className="space-y-2">
@@ -41,6 +57,44 @@ export function TenantSelectionFilters({
           </SelectContent>
         </Select>
       </div>
+
+      {setPropertyFilter && (
+        <div className="space-y-2">
+          <Label htmlFor="property">Fastighet</Label>
+          <Select value={propertyFilter} onValueChange={setPropertyFilter}>
+            <SelectTrigger id="property">
+              <SelectValue placeholder="Alla fastigheter" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alla fastigheter</SelectItem>
+              {mockProperties.map(property => (
+                <SelectItem key={property.id} value={property.designation}>
+                  {property.designation}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {setDistrictFilter && (
+        <div className="space-y-2">
+          <Label htmlFor="district">Distrikt</Label>
+          <Select value={districtFilter} onValueChange={setDistrictFilter}>
+            <SelectTrigger id="district">
+              <SelectValue placeholder="Alla distrikt" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alla distrikt</SelectItem>
+              {districts.map(district => (
+                <SelectItem key={district} value={district}>
+                  {district}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label htmlFor="contractStatus">Kontraktstatus</Label>
