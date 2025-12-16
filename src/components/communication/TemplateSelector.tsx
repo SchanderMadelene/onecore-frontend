@@ -30,11 +30,13 @@ export function TemplateSelector({ templates, onSelect, type }: TemplateSelector
           <SelectValue placeholder="Välj mall..." />
         </div>
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="bg-popover">
         {templates.map((template) => (
           <SelectItem key={template.id} value={template.id}>
-            <span className="text-muted-foreground text-xs mr-2">{template.category}:</span>
-            {template.name}
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground text-xs">[{template.category}]</span>
+              <span>{template.name}</span>
+            </div>
           </SelectItem>
         ))}
       </SelectContent>
