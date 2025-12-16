@@ -8,39 +8,60 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
+import { BulkActionBar } from "@/components/ui/bulk-action-bar";
+import { BulkSmsModal } from "@/components/communication/BulkSmsModal";
+import { BulkEmailModal } from "@/components/communication/BulkEmailModal";
 import { ChevronDown, X, Search } from "lucide-react";
 import { TenantsHeader } from "./components/TenantsHeader";
 import { TenantSelectionFilters } from "@/components/tenants/TenantSelectionFilters";
 import { getAllCustomers } from "@/data/tenants";
+import { mockProperties } from "@/data/properties";
+import { useToast } from "@/hooks/use-toast";
 
-// Get all customers (tenants and applicants) and create display data
-const customers = getAllCustomers().map(customer => ({
-  ...customer,
-  id: customer.personalNumber,
-  property: customer.customerType === "tenant" ? getPropertyForTenant(customer.personalNumber) : "Ingen bostad",
-  customerRoles: (customer as any).customerRoles || [customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"],
-  displayRoles: (customer as any).customerRoles?.join(", ") || (customer.customerType === "tenant" ? "Hyresgäst" : "Sökande")
-}));
-
-function getPropertyForTenant(personalNumber: string) {
-  switch(personalNumber) {
-    case "19850101-1234": return "Älgen 1";
-    case "19760315-5678": return "Björnen 4";
-    case "19911122-9012": return "Lindaren 2";
-    case "19820812-3456": return "Ekoxen 3";
-    case "19900228-7890": return "Granen 5";
-    case "19750515-2345": return "Vildsvinet 7";
-    default: return "Okänd fastighet";
-  }
+// Get property info for tenant
+function getPropertyForTenant(personalNumber: string): { name: string; district: string } {
+  const propertyMap: Record<string, { name: string; district: string }> = {
+    "19850101-1234": { name: "Älgen 1", district: "Västerås Centrum" },
+    "19760315-5678": { name: "Björnen 4", district: "Västerås Nord" },
+    "19911122-9012": { name: "Lindaren 2", district: "Västerås Centrum" },
+    "19820812-3456": { name: "Pipan 1", district: "Västerås Nord" },
+    "19900228-7890": { name: "Oskaria 1", district: "Västerås Syd" },
+    "19750515-2345": { name: "Styrhylsan 9", district: "Västerås Syd" },
+  };
+  return propertyMap[personalNumber] || { name: "Okänd fastighet", district: "Okänt distrikt" };
 }
 
+// Get all customers with property info
+const customers = getAllCustomers().map(customer => {
+  const propertyInfo = customer.customerType === "tenant" 
+    ? getPropertyForTenant(customer.personalNumber) 
+    : { name: "Ingen bostad", district: "" };
+  return {
+    ...customer,
+    id: customer.personalNumber,
+    property: propertyInfo.name,
+    district: propertyInfo.district,
+    customerRoles: (customer as any).customerRoles || [customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"],
+    displayRoles: (customer as any).customerRoles?.join(", ") || (customer.customerType === "tenant" ? "Hyresgäst" : "Sökande")
+  };
+});
+
 const AllTenantsPage = () => {
+  const { toast } = useToast();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [contractStatusFilter, setContractStatusFilter] = useState("all");
   const [contractTypeFilter, setContractTypeFilter] = useState("all");
   const [customerTypeFilter, setCustomerTypeFilter] = useState("all");
+  const [propertyFilter, setPropertyFilter] = useState("all");
+  const [buildingFilter, setBuildingFilter] = useState("all");
+  const [districtFilter, setDistrictFilter] = useState("all");
+  
+  // Selection state
+  const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>([]);
+  const [showSmsModal, setShowSmsModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
   // Count active filters
   const activeFilterCount = useMemo(() => {
@@ -48,13 +69,19 @@ const AllTenantsPage = () => {
     if (contractStatusFilter !== "all") count++;
     if (contractTypeFilter !== "all") count++;
     if (customerTypeFilter !== "all") count++;
+    if (propertyFilter !== "all") count++;
+    if (buildingFilter !== "all") count++;
+    if (districtFilter !== "all") count++;
     return count;
-  }, [contractStatusFilter, contractTypeFilter, customerTypeFilter]);
+  }, [contractStatusFilter, contractTypeFilter, customerTypeFilter, propertyFilter, buildingFilter, districtFilter]);
   
   const clearAllFilters = () => {
     setContractStatusFilter("all");
     setContractTypeFilter("all");
     setCustomerTypeFilter("all");
+    setPropertyFilter("all");
+    setBuildingFilter("all");
+    setDistrictFilter("all");
   };
 
   const filteredCustomers = useMemo(() => {
@@ -71,19 +98,57 @@ const AllTenantsPage = () => {
       const matchesCustomerType = customerTypeFilter === "all" || 
         (customer.customerRoles && customer.customerRoles.includes(customerTypeFilter));
 
-      // Contract status filter (mock data - in real app would come from contract data)
-      const matchesContractStatus = contractStatusFilter === "all" || true; // Placeholder for real implementation
+      // Property filter
+      const matchesProperty = propertyFilter === "all" || customer.property === propertyFilter;
 
-      // Contract type filter (mock data - in real app would come from contract data)
-      const matchesContractType = contractTypeFilter === "all" || true; // Placeholder for real implementation
+      // District filter
+      const matchesDistrict = districtFilter === "all" || customer.district === districtFilter;
 
-      return matchesSearch && matchesCustomerType && matchesContractStatus && matchesContractType;
+      // Contract status filter (placeholder)
+      const matchesContractStatus = contractStatusFilter === "all" || true;
+
+      // Contract type filter (placeholder)
+      const matchesContractType = contractTypeFilter === "all" || true;
+
+      return matchesSearch && matchesCustomerType && matchesProperty && matchesDistrict && matchesContractStatus && matchesContractType;
     });
-  }, [searchQuery, customerTypeFilter, contractStatusFilter, contractTypeFilter]);
+  }, [searchQuery, customerTypeFilter, contractStatusFilter, contractTypeFilter, propertyFilter, districtFilter]);
+
+  // Get selected customers for modals
+  const selectedCustomers = useMemo(() => {
+    return customers.filter(c => selectedCustomerIds.includes(c.id));
+  }, [selectedCustomerIds]);
+
+  const recipients = useMemo(() => {
+    return selectedCustomers.map(c => ({
+      id: c.id,
+      name: `${c.firstName} ${c.lastName}`,
+      phone: c.phone,
+      email: c.email
+    }));
+  }, [selectedCustomers]);
+
+  const handleSendSms = (message: string, recipients: any[]) => {
+    console.log("Sending SMS:", { message, recipients });
+    toast({
+      title: "SMS skickat",
+      description: `SMS skickat till ${recipients.length} mottagare`,
+    });
+    setSelectedCustomerIds([]);
+  };
+
+  const handleSendEmail = (subject: string, message: string, recipients: any[]) => {
+    console.log("Sending Email:", { subject, message, recipients });
+    toast({
+      title: "Mejl skickat",
+      description: `Mejl skickat till ${recipients.length} mottagare`,
+    });
+    setSelectedCustomerIds([]);
+  };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="w-full">
+      <div className="w-full pb-20">
         <TenantsHeader />
 
         <Card>
@@ -146,6 +211,12 @@ const AllTenantsPage = () => {
                       setContractTypeFilter={setContractTypeFilter}
                       customerTypeFilter={customerTypeFilter}
                       setCustomerTypeFilter={setCustomerTypeFilter}
+                      propertyFilter={propertyFilter}
+                      setPropertyFilter={setPropertyFilter}
+                      buildingFilter={buildingFilter}
+                      setBuildingFilter={setBuildingFilter}
+                      districtFilter={districtFilter}
+                      setDistrictFilter={setDistrictFilter}
                     />
                   </CollapsibleContent>
                 </Collapsible>
@@ -200,6 +271,9 @@ const AllTenantsPage = () => {
               ]}
               keyExtractor={(customer) => customer.id}
               emptyMessage="Inga kunder hittades med angivna sökkriterier"
+              selectable
+              selectedKeys={selectedCustomerIds}
+              onSelectionChange={setSelectedCustomerIds}
               mobileCardRenderer={(customer) => (
                 <div className="space-y-2 w-full">
                   <div className="flex justify-between items-start">
@@ -226,6 +300,27 @@ const AllTenantsPage = () => {
             />
           </CardContent>
         </Card>
+
+        <BulkActionBar
+          selectedCount={selectedCustomerIds.length}
+          onSendSms={() => setShowSmsModal(true)}
+          onSendEmail={() => setShowEmailModal(true)}
+          onClear={() => setSelectedCustomerIds([])}
+        />
+
+        <BulkSmsModal
+          open={showSmsModal}
+          onOpenChange={setShowSmsModal}
+          recipients={recipients}
+          onSend={handleSendSms}
+        />
+
+        <BulkEmailModal
+          open={showEmailModal}
+          onOpenChange={setShowEmailModal}
+          recipients={recipients}
+          onSend={handleSendEmail}
+        />
       </div>
     </PageLayout>
   );
