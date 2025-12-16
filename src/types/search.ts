@@ -1,3 +1,5 @@
+import { IdentifierType, IdentifierMatch } from "@/utils/searchIdentifiers";
+
 export type SearchResultType = 
   | "customer" 
   | "residence" 
@@ -16,6 +18,16 @@ export interface SearchResult {
   metadata?: Record<string, any>;
   score?: number;
   highlightedText?: string;
+  // New fields for identifier matching
+  identifiers?: {
+    personnummer?: string;
+    telefonnummer?: string;
+    fakturanummer?: string;
+    kontraktsnummer?: string;
+    objektsnummer?: string;
+    arendenummer?: string;
+    nyckelnummer?: string;
+  };
 }
 
 export interface SearchFilter {
@@ -44,4 +56,9 @@ export interface SearchState {
   isOpen: boolean;
   favorites: SavedSearch[];
   history: string[];
+  // New fields for identifier detection
+  identifierMatch: IdentifierMatch | null;
+  exactMatch: SearchResult | null;
 }
+
+export type { IdentifierType, IdentifierMatch };
