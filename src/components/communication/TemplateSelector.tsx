@@ -41,18 +41,12 @@ export function TemplateSelector({ templates, onSelect }: TemplateSelectorProps)
         </span>
       </SelectTrigger>
 
-      <SelectContent className="bg-background">
+      <SelectContent>
         {grouped.map(([category, items]) => (
           <SelectGroup key={category}>
-            <SelectLabel className="text-xs text-muted-foreground">
-              {category}
-            </SelectLabel>
+            <SelectLabel>{category}</SelectLabel>
             {items.map((template) => (
-              <SelectItem
-                key={template.id}
-                value={template.id}
-                className="focus:bg-muted focus:text-foreground"
-              >
+              <SelectItem key={template.id} value={template.id}>
                 {template.name}
               </SelectItem>
             ))}
