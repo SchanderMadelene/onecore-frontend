@@ -14,6 +14,9 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, Mail, User } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { TemplateSelector } from "./TemplateSelector";
+import { messageTemplates } from "@/data/messageTemplates";
+import { MessageTemplate } from "@/types/messageTemplates";
 
 interface Recipient {
   id: string;
@@ -40,6 +43,11 @@ export function BulkEmailModal({
 
   const recipientsWithEmail = recipients.filter(r => r.email);
   const recipientsWithoutEmail = recipients.filter(r => !r.email);
+
+  const handleTemplateSelect = (template: MessageTemplate) => {
+    setSubject(template.emailSubject);
+    setMessage(template.emailContent);
+  };
 
   const handleSend = async () => {
     if (!subject.trim() || !message.trim() || recipientsWithEmail.length === 0) return;
@@ -96,6 +104,15 @@ export function BulkEmailModal({
                 ))}
               </div>
             </ScrollArea>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Mall</Label>
+            <TemplateSelector
+              templates={messageTemplates}
+              onSelect={handleTemplateSelect}
+              type="email"
+            />
           </div>
 
           <div className="space-y-2">
