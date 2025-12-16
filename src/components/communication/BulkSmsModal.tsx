@@ -13,6 +13,9 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, MessageSquare, User } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { TemplateSelector } from "./TemplateSelector";
+import { messageTemplates } from "@/data/messageTemplates";
+import { MessageTemplate } from "@/types/messageTemplates";
 
 interface Recipient {
   id: string;
@@ -41,6 +44,10 @@ export function BulkSmsModal({
   const recipientsWithPhone = recipients.filter(r => r.phone);
   const recipientsWithoutPhone = recipients.filter(r => !r.phone);
   const charactersLeft = MAX_SMS_LENGTH - message.length;
+
+  const handleTemplateSelect = (template: MessageTemplate) => {
+    setMessage(template.smsContent.slice(0, MAX_SMS_LENGTH));
+  };
 
   const handleSend = async () => {
     if (!message.trim() || recipientsWithPhone.length === 0) return;
@@ -96,6 +103,15 @@ export function BulkSmsModal({
                 ))}
               </div>
             </ScrollArea>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Mall</Label>
+            <TemplateSelector
+              templates={messageTemplates}
+              onSelect={handleTemplateSelect}
+              type="sms"
+            />
           </div>
 
           <div className="space-y-2">
