@@ -1,7 +1,9 @@
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -14,32 +16,51 @@ interface TemplateSelectorProps {
   type: "sms" | "email";
 }
 
-export function TemplateSelector({ templates, onSelect, type }: TemplateSelectorProps) {
+function groupByCategory(templates: MessageTemplate[]) {
+  const map = new Map<string, MessageTemplate[]>();
+  for (const t of templates) {
+    map.set(t.category, [...(map.get(t.category) ?? []), t]);
+  }
+  return Array.from(map.entries());
+}
+
+export function TemplateSelector({ templates, onSelect }: TemplateSelectorProps) {
   const handleValueChange = (templateId: string) => {
-    const template = templates.find(t => t.id === templateId);
-    if (template) {
-      onSelect(template);
-    }
+    const template = templates.find((t) => t.id === templateId);
+    if (template) onSelect(template);
   };
+
+  const grouped = groupByCategory(templates);
 
   return (
     <Select onValueChange={handleValueChange}>
       <SelectTrigger className="w-full">
-        <div className="flex items-center gap-2">
+        <span className="flex items-center gap-2">
           <FileText className="h-4 w-4 text-muted-foreground" />
           <SelectValue placeholder="Välj mall..." />
-        </div>
+        </span>
       </SelectTrigger>
-      <SelectContent className="bg-popover">
-        {templates.map((template) => (
-          <SelectItem key={template.id} value={template.id}>
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground text-xs">[{template.category}]</span>
-              <span>{template.name}</span>
-            </div>
-          </SelectItem>
+
+      <SelectContent>
+        {grouped.map(([category, items]) => (
+          <SelectGroup key={category}>
+            <SelectLabel className="text-xs text-muted-foreground">
+              {category}
+            </SelectLabel>
+            {items.map((template) => (
+              <SelectItem
+                key={template.id}
+                value={template.id}
+                className="focus:bg-muted focus:text-foreground"
+              >
+                {template.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         ))}
       </SelectContent>
     </Select>
   );
 }
+
+
