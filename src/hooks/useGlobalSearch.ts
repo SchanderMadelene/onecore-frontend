@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { SearchResult, SearchResultType, SearchState, SavedSearch } from "@/types/search";
+import { SearchResult, SearchResultType, SearchState, SavedSearch, IdentifierMatch } from "@/types/search";
 import { globalSearchService } from "@/services/globalSearchService";
 import { useDebounce } from "./useDebounce";
+import { detectIdentifierType } from "@/utils/searchIdentifiers";
 
 const SEARCH_FILTERS = [
   { type: "customer" as const, label: "Kunder", icon: "", active: false },
@@ -20,7 +21,9 @@ export function useGlobalSearch() {
     isLoading: false,
     isOpen: false,
     favorites: [],
-    history: []
+    history: [],
+    identifierMatch: null,
+    exactMatch: null
   });
 
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -35,24 +38,35 @@ export function useGlobalSearch() {
     }));
   }, []);
 
+  // Detect identifier type immediately when query changes (no debounce)
+  useEffect(() => {
+    const identifierMatch = detectIdentifierType(searchState.query);
+    setSearchState(prev => ({ ...prev, identifierMatch }));
+  }, [searchState.query]);
+
   // Perform search when debounced query changes
   useEffect(() => {
     if (debouncedQuery.trim()) {
       performSearch(debouncedQuery);
     } else {
-      setSearchState(prev => ({ ...prev, results: [], isLoading: false }));
+      setSearchState(prev => ({ 
+        ...prev, 
+        results: [], 
+        isLoading: false,
+        exactMatch: null 
+      }));
     }
   }, [debouncedQuery]);
 
   // Get suggestions as user types
   useEffect(() => {
-    if (searchState.query.length >= 2) {
+    if (searchState.query.length >= 2 && !searchState.identifierMatch) {
       const newSuggestions = globalSearchService.getSuggestions(searchState.query);
       setSuggestions(newSuggestions);
     } else {
       setSuggestions([]);
     }
-  }, [searchState.query]);
+  }, [searchState.query, searchState.identifierMatch]);
 
   const performSearch = useCallback(async (query: string) => {
     if (!query.trim()) return;
@@ -64,11 +78,13 @@ export function useGlobalSearch() {
         .filter(f => f.active)
         .map(f => f.type);
       
-      const results = await globalSearchService.search(query, activeFilters);
+      const response = await globalSearchService.searchWithExactMatch(query, activeFilters);
       
       setSearchState(prev => ({ 
         ...prev, 
-        results, 
+        results: response.relatedResults,
+        exactMatch: response.exactMatch,
+        identifierMatch: response.identifierMatch,
         isLoading: false,
         history: globalSearchService.getSearchHistory()
       }));
@@ -121,7 +137,9 @@ export function useGlobalSearch() {
       ...prev, 
       query: "", 
       results: [], 
-      isLoading: false 
+      isLoading: false,
+      exactMatch: null,
+      identifierMatch: null
     }));
     setSuggestions([]);
   }, []);
@@ -204,12 +222,16 @@ export function useGlobalSearch() {
       .filter(group => group.count > 0);
   }, [searchState.results]);
 
+  // Check if in "quick search" mode (identifier detected)
+  const isQuickSearchMode = searchState.identifierMatch !== null;
+
   return {
     // State
     ...searchState,
     suggestions,
     groupedResults,
     hasActiveFilters: searchState.filters.some(f => f.active),
+    isQuickSearchMode,
     
     // Actions
     setQuery,

@@ -1,5 +1,12 @@
 import { SearchResult, SearchResultType, SavedSearch } from "@/types/search";
 import { mockGlobalSearchResults, mockSavedSearches, mockSearchHistory } from "@/data/searchData";
+import { detectIdentifierType, IdentifierMatch, getEntityTypeForIdentifier } from "@/utils/searchIdentifiers";
+
+export interface SearchResponse {
+  exactMatch: SearchResult | null;
+  relatedResults: SearchResult[];
+  identifierMatch: IdentifierMatch | null;
+}
 
 class GlobalSearchService {
   private static instance: GlobalSearchService;
@@ -13,37 +20,93 @@ class GlobalSearchService {
     return GlobalSearchService.instance;
   }
 
-  // Search functionality with fuzzy matching and scoring
-  async search(query: string, filters: SearchResultType[] = []): Promise<SearchResult[]> {
-    if (!query.trim()) return [];
+  // Enhanced search with exact match detection
+  async searchWithExactMatch(query: string, filters: SearchResultType[] = []): Promise<SearchResponse> {
+    if (!query.trim()) {
+      return { exactMatch: null, relatedResults: [], identifierMatch: null };
+    }
 
     const normalizedQuery = query.toLowerCase().trim();
+    const identifierMatch = detectIdentifierType(query);
     
-    let results = mockGlobalSearchResults
+    let exactMatch: SearchResult | null = null;
+    let relatedResults: SearchResult[] = [];
+
+    // If we detected an identifier, search for exact match first
+    if (identifierMatch) {
+      exactMatch = this.findExactMatch(identifierMatch);
+    }
+
+    // Then perform fuzzy search for related results
+    relatedResults = mockGlobalSearchResults
       .map(result => ({
         ...result,
-        score: this.calculateRelevanceScore(result, normalizedQuery)
+        score: this.calculateRelevanceScore(result, normalizedQuery, identifierMatch)
       }))
       .filter(result => {
+        // Exclude the exact match from related results
+        if (exactMatch && result.id === exactMatch.id) return false;
         // Apply type filters if any
-        if (filters.length > 0 && !filters.includes(result.type)) {
-          return false;
-        }
+        if (filters.length > 0 && !filters.includes(result.type)) return false;
         // Only include results with a score above threshold
         return result.score > 0;
       })
-      .sort((a, b) => (b.score || 0) - (a.score || 0));
+      .sort((a, b) => (b.score || 0) - (a.score || 0))
+      .slice(0, 15);
 
     // Add search to history
     this.addToHistory(query);
 
-    return results.slice(0, 20); // Limit to 20 results
+    return { exactMatch, relatedResults, identifierMatch };
   }
 
-  // Calculate relevance score for search results
-  private calculateRelevanceScore(result: SearchResult, query: string): number {
+  // Find exact match based on identifier
+  private findExactMatch(identifierMatch: IdentifierMatch): SearchResult | null {
+    const { type, normalizedValue } = identifierMatch;
+    
+    for (const result of mockGlobalSearchResults) {
+      if (!result.identifiers) continue;
+
+      const identifierValue = result.identifiers[type];
+      if (!identifierValue) continue;
+
+      // Normalize both values for comparison
+      const normalizedIdentifier = identifierValue.replace(/[-\s]/g, '').toUpperCase();
+      const normalizedSearch = normalizedValue.replace(/[-\s]/g, '').toUpperCase();
+
+      if (normalizedIdentifier === normalizedSearch) {
+        return result;
+      }
+    }
+
+    return null;
+  }
+
+  // Legacy search method (keep for backwards compatibility)
+  async search(query: string, filters: SearchResultType[] = []): Promise<SearchResult[]> {
+    const response = await this.searchWithExactMatch(query, filters);
+    const results = response.exactMatch 
+      ? [response.exactMatch, ...response.relatedResults]
+      : response.relatedResults;
+    return results;
+  }
+
+  // Enhanced relevance scoring
+  private calculateRelevanceScore(
+    result: SearchResult, 
+    query: string, 
+    identifierMatch: IdentifierMatch | null
+  ): number {
     let score = 0;
     const queryWords = query.split(' ');
+
+    // If identifier detected, boost results of matching entity type
+    if (identifierMatch) {
+      const expectedEntityType = getEntityTypeForIdentifier(identifierMatch.type);
+      if (result.type === expectedEntityType) {
+        score += 50;
+      }
+    }
 
     // Title match (highest weight)
     if (result.title.toLowerCase().includes(query)) {
@@ -57,9 +120,9 @@ class GlobalSearchService {
       }
     });
 
-    // Subtitle match
+    // Subtitle match (includes identifiers like personnummer)
     if (result.subtitle.toLowerCase().includes(query)) {
-      score += 75;
+      score += 90;
     }
 
     // Description match
@@ -76,10 +139,23 @@ class GlobalSearchService {
       });
     }
 
+    // Identifier field matches
+    if (result.identifiers) {
+      Object.values(result.identifiers).forEach(value => {
+        if (typeof value === 'string') {
+          const normalizedValue = value.replace(/[-\s]/g, '').toLowerCase();
+          const normalizedQuery = query.replace(/[-\s]/g, '').toLowerCase();
+          if (normalizedValue.includes(normalizedQuery)) {
+            score += 80;
+          }
+        }
+      });
+    }
+
     // Boost certain types
     switch (result.type) {
       case 'customer':
-        score += 10; // Customers are often searched for
+        score += 10;
         break;
       case 'residence':
         score += 8;
@@ -145,7 +221,7 @@ class GlobalSearchService {
   }
 
   getSearchHistory(): string[] {
-    return this.searchHistory.slice(0, 10); // Return last 10
+    return this.searchHistory.slice(0, 10);
   }
 
   clearHistory(): void {
