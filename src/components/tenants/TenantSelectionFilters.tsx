@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { mockProperties } from "@/data/properties";
+import { mockBuildings } from "@/data/buildings";
 import { useMemo } from "react";
 
 interface TenantSelectionFiltersProps {
@@ -18,6 +19,8 @@ interface TenantSelectionFiltersProps {
   setCustomerTypeFilter: (value: string) => void;
   propertyFilter?: string;
   setPropertyFilter?: (value: string) => void;
+  buildingFilter?: string;
+  setBuildingFilter?: (value: string) => void;
   districtFilter?: string;
   setDistrictFilter?: (value: string) => void;
 }
@@ -31,6 +34,8 @@ export function TenantSelectionFilters({
   setCustomerTypeFilter,
   propertyFilter = "all",
   setPropertyFilter,
+  buildingFilter = "all",
+  setBuildingFilter,
   districtFilter = "all",
   setDistrictFilter,
 }: TenantSelectionFiltersProps) {
@@ -39,6 +44,16 @@ export function TenantSelectionFilters({
     const uniqueDistricts = [...new Set(mockProperties.map(p => p.district))];
     return uniqueDistricts.sort();
   }, []);
+
+  // Get buildings filtered by selected property
+  const filteredBuildings = useMemo(() => {
+    if (propertyFilter === "all") {
+      return mockBuildings;
+    }
+    const selectedProperty = mockProperties.find(p => p.designation === propertyFilter);
+    if (!selectedProperty) return mockBuildings;
+    return mockBuildings.filter(b => b.propertyId === selectedProperty.id);
+  }, [propertyFilter]);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -61,7 +76,13 @@ export function TenantSelectionFilters({
       {setPropertyFilter && (
         <div className="space-y-2">
           <Label htmlFor="property">Fastighet</Label>
-          <Select value={propertyFilter} onValueChange={setPropertyFilter}>
+          <Select value={propertyFilter} onValueChange={(value) => {
+            setPropertyFilter(value);
+            // Clear building filter when property changes
+            if (setBuildingFilter) {
+              setBuildingFilter("all");
+            }
+          }}>
             <SelectTrigger id="property">
               <SelectValue placeholder="Alla fastigheter" />
             </SelectTrigger>
@@ -70,6 +91,25 @@ export function TenantSelectionFilters({
               {mockProperties.map(property => (
                 <SelectItem key={property.id} value={property.designation}>
                   {property.designation}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {setBuildingFilter && (
+        <div className="space-y-2">
+          <Label htmlFor="building">Byggnad</Label>
+          <Select value={buildingFilter} onValueChange={setBuildingFilter}>
+            <SelectTrigger id="building">
+              <SelectValue placeholder="Alla byggnader" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alla byggnader</SelectItem>
+              {filteredBuildings.map(building => (
+                <SelectItem key={building.id} value={building.id}>
+                  {building.name}
                 </SelectItem>
               ))}
             </SelectContent>

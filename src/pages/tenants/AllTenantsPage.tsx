@@ -55,6 +55,7 @@ const AllTenantsPage = () => {
   const [contractTypeFilter, setContractTypeFilter] = useState("all");
   const [customerTypeFilter, setCustomerTypeFilter] = useState("all");
   const [propertyFilter, setPropertyFilter] = useState("all");
+  const [buildingFilter, setBuildingFilter] = useState("all");
   const [districtFilter, setDistrictFilter] = useState("all");
   
   // Selection state
@@ -69,15 +70,17 @@ const AllTenantsPage = () => {
     if (contractTypeFilter !== "all") count++;
     if (customerTypeFilter !== "all") count++;
     if (propertyFilter !== "all") count++;
+    if (buildingFilter !== "all") count++;
     if (districtFilter !== "all") count++;
     return count;
-  }, [contractStatusFilter, contractTypeFilter, customerTypeFilter, propertyFilter, districtFilter]);
+  }, [contractStatusFilter, contractTypeFilter, customerTypeFilter, propertyFilter, buildingFilter, districtFilter]);
   
   const clearAllFilters = () => {
     setContractStatusFilter("all");
     setContractTypeFilter("all");
     setCustomerTypeFilter("all");
     setPropertyFilter("all");
+    setBuildingFilter("all");
     setDistrictFilter("all");
   };
 
@@ -210,6 +213,8 @@ const AllTenantsPage = () => {
                       setCustomerTypeFilter={setCustomerTypeFilter}
                       propertyFilter={propertyFilter}
                       setPropertyFilter={setPropertyFilter}
+                      buildingFilter={buildingFilter}
+                      setBuildingFilter={setBuildingFilter}
                       districtFilter={districtFilter}
                       setDistrictFilter={setDistrictFilter}
                     />
