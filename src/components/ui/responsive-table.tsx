@@ -2,6 +2,7 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
@@ -19,6 +20,9 @@ interface ResponsiveTableProps {
   keyExtractor: (item: any) => string;
   emptyMessage?: string;
   mobileCardRenderer?: (item: any) => ReactNode;
+  selectable?: boolean;
+  selectedKeys?: string[];
+  onSelectionChange?: (keys: string[]) => void;
 }
 
 export function ResponsiveTable({ 
@@ -26,9 +30,33 @@ export function ResponsiveTable({
   columns, 
   keyExtractor, 
   emptyMessage = "Inga resultat hittades",
-  mobileCardRenderer 
+  mobileCardRenderer,
+  selectable = false,
+  selectedKeys = [],
+  onSelectionChange
 }: ResponsiveTableProps) {
   const isMobile = useIsMobile();
+
+  const allSelected = data.length > 0 && data.every(item => selectedKeys.includes(keyExtractor(item)));
+  const someSelected = data.some(item => selectedKeys.includes(keyExtractor(item))) && !allSelected;
+
+  const handleSelectAll = () => {
+    if (!onSelectionChange) return;
+    if (allSelected) {
+      onSelectionChange([]);
+    } else {
+      onSelectionChange(data.map(item => keyExtractor(item)));
+    }
+  };
+
+  const handleSelectItem = (key: string) => {
+    if (!onSelectionChange) return;
+    if (selectedKeys.includes(key)) {
+      onSelectionChange(selectedKeys.filter(k => k !== key));
+    } else {
+      onSelectionChange([...selectedKeys, key]);
+    }
+  };
 
   if (data.length === 0) {
     return (
@@ -41,39 +69,62 @@ export function ResponsiveTable({
   if (isMobile && mobileCardRenderer) {
     return (
       <div className="space-y-3">
-        {data.map((item) => (
-          <Card key={keyExtractor(item)} className="overflow-hidden">
-            <CardContent className="p-4 min-h-[44px] flex items-center">
-              {mobileCardRenderer(item)}
-            </CardContent>
-          </Card>
-        ))}
+        {data.map((item) => {
+          const key = keyExtractor(item);
+          const isSelected = selectedKeys.includes(key);
+          return (
+            <Card key={key} className={cn("overflow-hidden", isSelected && "ring-2 ring-primary")}>
+              <CardContent className="p-4 min-h-[44px] flex items-center gap-3">
+                {selectable && (
+                  <Checkbox
+                    checked={isSelected}
+                    onCheckedChange={() => handleSelectItem(key)}
+                    aria-label="Välj rad"
+                  />
+                )}
+                <div className="flex-1">
+                  {mobileCardRenderer(item)}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     );
   }
 
   if (isMobile) {
-    // Fallback mobile layout when no custom renderer provided
     const visibleColumns = columns.filter(col => !col.hideOnMobile);
     
     return (
       <div className="space-y-3">
-        {data.map((item) => (
-          <Card key={keyExtractor(item)} className="overflow-hidden">
-            <CardContent className="p-4 space-y-3 min-h-[44px]">
-              {visibleColumns.map((column) => (
-                <div key={column.key} className="flex flex-col gap-1 min-h-[44px]">
-                  <span className="text-xs font-medium text-muted-foreground">
-                    {column.label}
-                  </span>
-                  <div className="text-sm">
-                    {column.render(item)}
+        {data.map((item) => {
+          const key = keyExtractor(item);
+          const isSelected = selectedKeys.includes(key);
+          return (
+            <Card key={key} className={cn("overflow-hidden", isSelected && "ring-2 ring-primary")}>
+              <CardContent className="p-4 space-y-3 min-h-[44px]">
+                {selectable && (
+                  <Checkbox
+                    checked={isSelected}
+                    onCheckedChange={() => handleSelectItem(key)}
+                    aria-label="Välj rad"
+                  />
+                )}
+                {visibleColumns.map((column) => (
+                  <div key={column.key} className="flex flex-col gap-1 min-h-[44px]">
+                    <span className="text-xs font-medium text-muted-foreground">
+                      {column.label}
+                    </span>
+                    <div className="text-sm">
+                      {column.render(item)}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        ))}
+                ))}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     );
   }
@@ -83,6 +134,18 @@ export function ResponsiveTable({
       <Table>
         <TableHeader>
           <TableRow>
+            {selectable && (
+              <TableHead className="w-12">
+                <Checkbox
+                  checked={allSelected}
+                  ref={(el) => {
+                    if (el) (el as any).indeterminate = someSelected;
+                  }}
+                  onCheckedChange={handleSelectAll}
+                  aria-label="Välj alla"
+                />
+              </TableHead>
+            )}
             {columns.map((column) => (
               <TableHead key={column.key} className={column.className}>
                 {column.label}
@@ -91,15 +154,28 @@ export function ResponsiveTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((item) => (
-            <TableRow key={keyExtractor(item)} className="min-h-[44px]">
-              {columns.map((column) => (
-                <TableCell key={column.key} className={cn(column.className, "py-3")}>
-                  {column.render(item)}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
+          {data.map((item) => {
+            const key = keyExtractor(item);
+            const isSelected = selectedKeys.includes(key);
+            return (
+              <TableRow key={key} className={cn("min-h-[44px]", isSelected && "bg-primary/5")}>
+                {selectable && (
+                  <TableCell className="w-12">
+                    <Checkbox
+                      checked={isSelected}
+                      onCheckedChange={() => handleSelectItem(key)}
+                      aria-label="Välj rad"
+                    />
+                  </TableCell>
+                )}
+                {columns.map((column) => (
+                  <TableCell key={column.key} className={cn(column.className, "py-3")}>
+                    {column.render(item)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
