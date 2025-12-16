@@ -1,10 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CollapsibleInfoCard } from "@/components/ui/collapsible-info-card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence, Building, PropertyDetail } from "@/types/api";
 import { useParams } from "react-router-dom";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
+
+// Mock function to check if residence has a barrier
+const getResidenceBarrier = (residenceId: string): { hasBarrier: boolean; reason: string } | null => {
+  // For demo purposes, mark lgh-001 as having a barrier
+  if (residenceId === "lgh-001") {
+    return { hasBarrier: true, reason: "[anledning]" };
+  }
+  return null;
+};
 
 interface ResidenceBasicInfoProps {
   residence: Residence;
@@ -67,40 +76,42 @@ export const ResidenceBasicInfo = ({ residence, property, district, buildingDeta
   const isSecondaryRental = checkSecondHandRental(id || "");
   const needsSpecialHandling = requiresSpecialHandling(id || "");
   const hasPestIssues = requiresPestControl(id || "");
+  const barrier = getResidenceBarrier(id || "");
   
   return (
     <TooltipProvider>
       <div className="mb-6">
         <div className="flex flex-col gap-2 mb-2">
           <h1 className="text-2xl sm:text-3xl font-bold">{residence.name}</h1>
-          {(needsSpecialHandling || hasPestIssues) && (
-            <div className="flex items-center gap-2">
-              {needsSpecialHandling && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex items-center justify-center w-7 h-7 bg-amber-100 rounded-full border border-amber-200 cursor-help">
-                      <TriangleAlert className="h-3.5 w-3.5 text-amber-600" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Kräver särskild hantering</p>
-                  </TooltipContent>
-                </Tooltip>
-              )}
-              {hasPestIssues && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex items-center justify-center w-7 h-7 bg-red-100 rounded-full border border-red-200 cursor-help">
-                      <Bug className="h-3.5 w-3.5 text-red-600" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Skadedjursproblem rapporterat</p>
-                  </TooltipContent>
-                </Tooltip>
-              )}
-            </div>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {barrier && (
+              <Badge variant="destructive">Spärr: {barrier.reason}</Badge>
+            )}
+            {needsSpecialHandling && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center justify-center w-7 h-7 bg-amber-100 rounded-full border border-amber-200 cursor-help">
+                    <TriangleAlert className="h-3.5 w-3.5 text-amber-600" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Kräver särskild hantering</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+            {hasPestIssues && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center justify-center w-7 h-7 bg-red-100 rounded-full border border-red-200 cursor-help">
+                    <Bug className="h-3.5 w-3.5 text-red-600" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Skadedjursproblem rapporterat</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
         </div>
       </div>
 
