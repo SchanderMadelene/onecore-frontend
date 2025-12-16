@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Eye, ChevronUp, ChevronDown, ChevronsUpDown, Check, X, Play, PlayCircle } from "lucide-react";
+import { Eye, ChevronUp, ChevronDown, ChevronsUpDown, Check, X, Play, PlayCircle, Search } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
@@ -314,6 +315,14 @@ export default function AllInspectionsPage() {
 
         {/* Filters */}
         <div className="flex flex-col gap-4">
+          {/* Search field */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Sök på adress, hyresgäst eller besiktningsnummer..."
+              className="pl-10"
+            />
+          </div>
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Inspector Filter */}
             <Popover open={openInspectorDropdown} onOpenChange={setOpenInspectorDropdown}>
@@ -322,7 +331,7 @@ export default function AllInspectionsPage() {
                   variant="outline"
                   role="combobox"
                   aria-expanded={openInspectorDropdown}
-                  className="w-full sm:w-[250px] justify-between"
+                  className="w-full sm:w-[180px] justify-between"
                 >
                   {selectedInspector ? selectedInspector : "Välj besiktningsman..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -365,7 +374,7 @@ export default function AllInspectionsPage() {
                   variant="outline"
                   role="combobox"
                   aria-expanded={openAddressDropdown}
-                  className="w-full sm:w-[250px] justify-between"
+                  className="w-full sm:w-[180px] justify-between"
                 >
                   {selectedAddress ? selectedAddress : "Välj adress..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -408,7 +417,7 @@ export default function AllInspectionsPage() {
                   variant="outline"
                   role="combobox"
                   aria-expanded={openDistrictDropdown}
-                  className="w-full sm:w-[250px] justify-between"
+                  className="w-full sm:w-[180px] justify-between"
                 >
                   {selectedDistrict ? selectedDistrict : "Välj distrikt..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -451,7 +460,7 @@ export default function AllInspectionsPage() {
                   variant="outline"
                   role="combobox"
                   aria-expanded={openPriorityDropdown}
-                  className="w-full sm:w-[250px] justify-between"
+                  className="w-full sm:w-[180px] justify-between"
                 >
                   {selectedPriority ? priorityOptions.find(p => p.value === selectedPriority)?.label : "Välj prioritet..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
