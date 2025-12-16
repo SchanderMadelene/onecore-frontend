@@ -119,13 +119,13 @@ export function LeaseContractsFilters({
               variant="outline"
               role="combobox"
               aria-expanded={openTypeDropdown}
-              className="w-full sm:w-[200px] justify-between"
+              className="w-full sm:w-[180px] justify-between"
             >
               {selectedType ? LEASE_TYPE_LABELS[selectedType] : "Kontraktstyp..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0 bg-background z-50" align="start">
+          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
             <Command>
               <CommandList>
                 <CommandEmpty>Ingen typ hittades.</CommandEmpty>
@@ -161,13 +161,13 @@ export function LeaseContractsFilters({
               variant="outline"
               role="combobox"
               aria-expanded={openStatusDropdown}
-              className="w-full sm:w-[200px] justify-between"
+              className="w-full sm:w-[180px] justify-between"
             >
               {selectedStatus !== '' ? LEASE_STATUS_LABELS[selectedStatus] : "Status..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0 bg-background z-50" align="start">
+          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
             <Command>
               <CommandList>
                 <CommandEmpty>Ingen status hittades.</CommandEmpty>
@@ -203,7 +203,7 @@ export function LeaseContractsFilters({
               variant="outline"
               role="combobox"
               aria-expanded={openPropertyDropdown}
-              className="w-full sm:w-[200px] justify-between"
+              className="w-full sm:w-[180px] justify-between"
             >
               {selectedProperty 
                 ? uniqueProperties.find(p => p.id === selectedProperty)?.name || "Fastighet..."
@@ -211,7 +211,7 @@ export function LeaseContractsFilters({
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0 bg-background z-50" align="start">
+          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
             <Command>
               <CommandInput placeholder="Sök fastighet..." />
               <CommandList>
@@ -248,7 +248,7 @@ export function LeaseContractsFilters({
               variant="outline"
               role="combobox"
               aria-expanded={openBuildingDropdown}
-              className="w-full sm:w-[200px] justify-between"
+              className="w-full sm:w-[180px] justify-between"
             >
               {selectedBuilding 
                 ? availableBuildings.find(b => b.id === selectedBuilding)?.name || "Byggnad..."
@@ -256,7 +256,7 @@ export function LeaseContractsFilters({
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0 bg-background z-50" align="start">
+          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
             <Command>
               <CommandInput placeholder="Sök byggnad..." />
               <CommandList>
@@ -293,13 +293,13 @@ export function LeaseContractsFilters({
               variant="outline"
               role="combobox"
               aria-expanded={openDistrictDropdown}
-              className="w-full sm:w-[200px] justify-between"
+              className="w-full sm:w-[180px] justify-between"
             >
               {selectedDistrict || "Distrikt..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0 bg-background z-50" align="start">
+          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
             <Command>
               <CommandInput placeholder="Sök distrikt..." />
               <CommandList>

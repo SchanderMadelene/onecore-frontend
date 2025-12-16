@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, X, Search } from "lucide-react";
 import { TenantsHeader } from "./components/TenantsHeader";
 import { TenantSelectionFilters } from "@/components/tenants/TenantSelectionFilters";
 import { getAllCustomers } from "@/data/tenants";
@@ -94,9 +94,10 @@ const AllTenantsPage = () => {
             <div className="flex flex-col gap-4 mb-6">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Sök på namn, personnummer eller fastighet..."
-                    className="pl-4"
+                    className="pl-10"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
