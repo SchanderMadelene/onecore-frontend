@@ -63,6 +63,8 @@ interface FeatureToggles {
   showFavorites: boolean;
   // Lease contracts page
   showLeaseContracts: boolean;
+  // Strofaktura underlag page
+  showStrofakturaUnderlag: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -133,6 +135,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showFavorites: false,
   // Lease contracts page
   showLeaseContracts: true,
+  // Strofaktura underlag page
+  showStrofakturaUnderlag: true,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);

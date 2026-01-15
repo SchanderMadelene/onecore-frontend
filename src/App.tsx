@@ -31,6 +31,8 @@ import SettingsPage from "./pages/settings/SettingsPage";
 import FavoritesPage from "./pages/favorites/FavoritesPage";
 // Import lease contracts page
 import LeaseContractsPage from "./pages/lease-contracts/LeaseContractsPage";
+// Import strofaktura page
+import StrofakturaUnderlagPage from "./pages/strofaktura/StrofakturaUnderlagPage";
 
 const ProtectedRoute = ({ children, isEnabled }: { children: React.ReactNode, isEnabled: boolean }) => {
   if (!isEnabled) {
@@ -146,13 +148,21 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } 
       />
-      <Route 
-        path="/lease-contracts" 
-        element={
-          <ProtectedRoute isEnabled={features.showLeaseContracts}>
-            <LeaseContractsPage />
-          </ProtectedRoute>
-        } 
+          <Route 
+            path="/lease-contracts" 
+            element={
+              <ProtectedRoute isEnabled={features.showLeaseContracts}>
+                <LeaseContractsPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/strofaktura" 
+            element={
+              <ProtectedRoute isEnabled={features.showStrofakturaUnderlag}>
+                <StrofakturaUnderlagPage />
+              </ProtectedRoute>
+            }
       />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="*" element={<NotFound />} />

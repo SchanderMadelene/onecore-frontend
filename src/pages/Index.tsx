@@ -111,6 +111,14 @@ const Index = () => {
     isExternal: true,
     enabled: features.showDashboardGreenview
   }, {
+    id: "strofaktura",
+    title: "Ströfaktura underlag",
+    icon: FileText,
+    description: "Hantera underlag för ströfakturering",
+    path: "/strofaktura",
+    isExternal: false,
+    enabled: features.showStrofakturaUnderlag
+  }, {
     id: "curves",
     title: "Curves",
     icon: TrendingUp,
