@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText } from "lucide-react";
+import { StrofakturaForm } from "@/components/strofaktura/StrofakturaForm";
 
 export default function StrofakturaUnderlagPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -18,19 +17,7 @@ export default function StrofakturaUnderlagPage() {
           </p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              Underlag
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground text-center py-8">
-              Innehåll för ströfaktura underlag kommer här
-            </p>
-          </CardContent>
-        </Card>
+        <StrofakturaForm />
       </div>
     </PageLayout>
   );
