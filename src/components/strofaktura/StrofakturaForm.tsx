@@ -213,7 +213,7 @@ export function StrofakturaForm() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Datum */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <Label>Datum</Label>
             <Popover>
               <PopoverTrigger asChild>
