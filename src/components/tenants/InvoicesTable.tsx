@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, FileText } from "lucide-react";
+import { ChevronDown, ChevronRight, FileText, Link2 } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { differenceInDays, parseISO } from "date-fns";
@@ -105,7 +105,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
               
               {isExpanded && invoice.lineItems.length > 0 && (
                 <div className="border-t bg-muted/30 p-4">
-                  {invoice.text && (
+                  {invoice.text && invoice.paymentStatus !== 'Kredit' && (
                     <div className="mb-3 text-sm">
                       <span className="font-medium">Text:</span> {invoice.text}
                     </div>
@@ -148,6 +148,17 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           <span className="font-medium">{invoice.paymentDate}</span>
                         </div>
                       )}
+                    </div>
+                  )}
+                  {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit') && (
+                    <div className="mb-3 bg-muted rounded-lg p-3 border-l-4 border-muted-foreground/30">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Link2 className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">
+                          {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 'Krediterar faktura:'}
+                        </span>
+                        <span className="font-semibold">{invoice.relatedInvoiceNumber}</span>
+                      </div>
                     </div>
                   )}
                   {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
@@ -265,7 +276,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 <tr>
                   <td colSpan={10} className="p-0">
                     <div className="bg-muted/50 border-l-4 border-primary/30 p-4 ml-4">
-                      {invoice.text && (
+                      {invoice.text && invoice.paymentStatus !== 'Kredit' && (
                         <div className="mb-3 text-sm bg-background/50 rounded p-2">
                           <span className="font-medium">Text:</span> {invoice.text}
                         </div>
@@ -309,6 +320,17 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 <span className="font-semibold">{invoice.paymentDate}</span>
                               </div>
                             )}
+                          </div>
+                        </div>
+                      )}
+                      {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit') && (
+                        <div className="mb-3 bg-muted rounded-lg p-3 border-l-4 border-muted-foreground/30">
+                          <div className="flex items-center gap-2 text-sm">
+                            <Link2 className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-muted-foreground">
+                              {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 'Krediterar faktura:'}
+                            </span>
+                            <span className="font-semibold">{invoice.relatedInvoiceNumber}</span>
                           </div>
                         </div>
                       )}
