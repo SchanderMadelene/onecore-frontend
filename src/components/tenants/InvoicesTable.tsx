@@ -105,7 +105,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
               
               {isExpanded && invoice.lineItems.length > 0 && (
                 <div className="border-t bg-muted/30 p-4">
-                  {invoice.text && (
+                  {invoice.text && invoice.paymentStatus !== 'Kredit' && (
                     <div className="mb-3 text-sm">
                       <span className="font-medium">Text:</span> {invoice.text}
                     </div>
@@ -276,7 +276,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 <tr>
                   <td colSpan={10} className="p-0">
                     <div className="bg-muted/50 border-l-4 border-primary/30 p-4 ml-4">
-                      {invoice.text && (
+                      {invoice.text && invoice.paymentStatus !== 'Kredit' && (
                         <div className="mb-3 text-sm bg-background/50 rounded p-2">
                           <span className="font-medium">Text:</span> {invoice.text}
                         </div>
