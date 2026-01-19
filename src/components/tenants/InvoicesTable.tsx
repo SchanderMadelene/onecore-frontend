@@ -118,7 +118,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       </div>
                     </div>
                   )}
-                  {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && (
+                  {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && (
                     <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
@@ -289,7 +289,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           </div>
                         </div>
                       )}
-                      {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && (
+                      {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && (
                         <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
