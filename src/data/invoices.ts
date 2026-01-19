@@ -63,14 +63,43 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       ]
     },
     {
-      invoiceNumber: "552510354931058",
+      invoiceNumber: "10007",
+      invoiceDate: "2025-09-20",
+      dueDate: "2025-10-05",
+      amount: 3500,
+      balance: 0,
+      invoiceType: "Avi",
+      paymentStatus: "Krediterad",
+      text: "Fakturan har krediterats pga felaktig debitering",
+      inCollection: false,
+      lineItems: [
+        {
+          amount: 0,
+          vat: 0,
+          total: 0,
+          rentalArticle: "",
+          description: "211-002-02-0101/04, STÅNGJÄRNSGATAN 24",
+          printGroup: ""
+        },
+        {
+          amount: 3500,
+          vat: 0,
+          total: 3500,
+          rentalArticle: "HYRAB_",
+          description: "Hyra bostad (dubbeldebitering)",
+          printGroup: "A"
+        }
+      ]
+    },
+    {
+      invoiceNumber: "10008",
       invoiceDate: "2025-09-20",
       dueDate: "2025-10-05",
       amount: -3500,
       balance: 0,
-      invoiceType: "Kreditfaktura",
-      paymentStatus: "Krediterad",
-      text: "Kreditering av felaktig debitering",
+      invoiceType: "Avi",
+      paymentStatus: "Kredit",
+      text: "Kreditfaktura för faktura 10007",
       inCollection: false,
       preliminaryRefund: 3500,
       preliminaryRefundDate: "2025-10-15",

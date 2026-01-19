@@ -29,6 +29,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
         return 'priority-medium'; // gul badge för delvis betalda
       case 'Förfallen':
         return 'destructive';
+      case 'Krediterad':
+        return 'secondary'; // fakturan är hanterad/stängd
+      case 'Kredit':
+        return 'outline'; // kreditfaktura (med negativt belopp)
       default:
         return 'secondary';
     }
