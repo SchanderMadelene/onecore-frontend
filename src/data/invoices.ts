@@ -72,6 +72,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Krediterad",
       text: "Fakturan har krediterats pga felaktig debitering",
       inCollection: false,
+      relatedInvoiceNumber: "10008",
       lineItems: [
         {
           amount: 0,
@@ -101,6 +102,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Kredit",
       text: "Kreditfaktura för faktura 10007",
       inCollection: false,
+      relatedInvoiceNumber: "10007",
       preliminaryRefund: 3500,
       preliminaryRefundDate: "2025-10-15",
       lineItems: [
