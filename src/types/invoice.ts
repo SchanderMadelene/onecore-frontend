@@ -15,6 +15,7 @@ export interface Invoice {
   balance: number;
   invoiceType: string;
   paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen' | 'Krediterad' | 'Kredit';
+  relatedInvoiceNumber?: string; // Referens till kopplad faktura (kredit/krediterad)
   text?: string;
   inCollection: boolean;
   inCollectionDate?: string; // Datum när fakturan skickades till inkasso
