@@ -87,18 +87,6 @@ export function ArticleSection({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="objectNumber">Avser objektsnummer</Label>
-        <Input
-          id="objectNumber"
-          value={objectNumber}
-          readOnly
-          disabled
-          placeholder="Fylls i automatiskt från valt kontrakt"
-          className="bg-muted"
-        />
-      </div>
-
-      <div className="space-y-2">
         <Label htmlFor="text">Text</Label>
         <Input
           id="text"
