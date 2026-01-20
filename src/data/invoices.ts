@@ -112,7 +112,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentEvents: [
         { date: "2025-10-10", amount: 2000, source: "OCR" },
         { date: "2025-10-18", amount: 1800, source: "Autogiro" },
-        { date: "2025-10-25", amount: 1400, source: "Swish" }
+        { date: "2025-10-25", amount: 1400, source: "OCR" }
       ],
       lineItems: [
         {
