@@ -51,10 +51,8 @@ export function LeaseContractSection({
           <SelectContent>
             {leaseContracts.map((lease) => (
               <SelectItem key={lease.leaseId} value={lease.leaseId}>
-                <div className="flex flex-col">
-                  <span>{lease.leaseId}</span>
-                  <span className="text-xs text-muted-foreground">{lease.address}</span>
-                </div>
+                <span>{lease.leaseId}</span>
+                <span className="text-muted-foreground ml-2">{lease.address}</span>
               </SelectItem>
             ))}
           </SelectContent>
