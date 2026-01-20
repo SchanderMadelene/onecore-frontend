@@ -50,10 +50,8 @@ export function AdditionalInfoSection({
               id="fakturanAvser"
               value={fakturanAvserFritext}
               onChange={(e) => onFakturanAvserFritextChange(e.target.value)}
-              placeholder={objectNumber ? "Beskrivning av vad fakturan avser..." : "Välj kontrakt först..."}
-              disabled={!objectNumber}
-              maxLength={maxFritextLength > 0 ? maxFritextLength : 0}
-              className={cn(!objectNumber && "bg-muted")}
+              placeholder="Beskrivning av vad fakturan avser..."
+              maxLength={maxFritextLength > 0 ? maxFritextLength : 252}
             />
             <p className="text-xs text-muted-foreground text-right">
               {combinedLength}/255 tecken
