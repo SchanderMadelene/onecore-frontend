@@ -109,6 +109,8 @@ export function StrofakturaForm() {
       setKst(selectedLease.district);
       setFastighet(selectedLease.propertyName);
       setObjectNumber(selectedLease.objectNumber);
+      // Pre-populate text field with object number
+      setText(selectedLease.objectNumber);
     }
     setErrors(prev => ({ ...prev, hyreskontrakt: undefined }));
   };
