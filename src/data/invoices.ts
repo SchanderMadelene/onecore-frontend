@@ -38,6 +38,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       paymentStatus: "Kredit",
       inCollection: false,
       relatedInvoiceNumber: "10245",
+      creditBookedDate: "2025-11-15",
       lineItems: [
         {
           amount: -600,

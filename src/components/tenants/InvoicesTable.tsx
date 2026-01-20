@@ -135,7 +135,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald') ||
                     invoice.paymentStatus === 'Delvis betald' ||
                     invoice.paymentStatus === 'Betald' ||
-                    invoice.paymentStatus === 'Delkrediterad') && (
+                    invoice.paymentStatus === 'Delkrediterad' ||
+                    (invoice.paymentStatus === 'Kredit' && invoice.creditBookedDate)) && (
                     <div className="space-y-2">
                       <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Händelser</div>
                       
@@ -149,6 +150,25 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             <div className="col-span-2">
                               <span className="text-muted-foreground block mb-1">Händelse:</span>
                               <span className="font-semibold text-destructive">Skickad till inkasso</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {invoice.paymentStatus === 'Kredit' && invoice.creditBookedDate && (
+                        <div className="bg-secondary/50 rounded-lg p-3 border-l-4 border-muted-foreground/50">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Datum:</span>
+                              <span className="font-semibold">{invoice.creditBookedDate}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Händelse:</span>
+                              <span className="font-semibold">Kreditering bokad</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Belopp:</span>
+                              <span className="font-semibold">{formatCurrency(invoice.amount)}</span>
                             </div>
                           </div>
                         </div>
@@ -358,7 +378,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                         (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald') ||
                         invoice.paymentStatus === 'Delvis betald' ||
                         invoice.paymentStatus === 'Betald' ||
-                        invoice.paymentStatus === 'Delkrediterad') && (
+                        invoice.paymentStatus === 'Delkrediterad' ||
+                        (invoice.paymentStatus === 'Kredit' && invoice.creditBookedDate)) && (
                         <div className="space-y-2">
                           <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Händelser</div>
                           
@@ -372,6 +393,25 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 <div className="col-span-2">
                                   <span className="text-muted-foreground block mb-1">Händelse:</span>
                                   <span className="font-semibold text-destructive">Skickad till inkasso</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {invoice.paymentStatus === 'Kredit' && invoice.creditBookedDate && (
+                            <div className="bg-secondary/50 rounded-lg p-3 border-l-4 border-muted-foreground/50">
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Datum:</span>
+                                  <span className="font-semibold">{invoice.creditBookedDate}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Händelse:</span>
+                                  <span className="font-semibold">Kreditering bokad</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Belopp:</span>
+                                  <span className="font-semibold">{formatCurrency(invoice.amount)}</span>
                                 </div>
                               </div>
                             </div>
