@@ -142,9 +142,6 @@ export function AdditionalInfoSection({
               </Button>
             </label>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Bifogade filer sparas med underlaget (ej implementerat ännu)
-          </p>
         </div>
       </div>
     </div>
