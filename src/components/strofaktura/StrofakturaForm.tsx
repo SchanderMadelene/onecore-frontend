@@ -69,11 +69,11 @@ export function StrofakturaForm() {
   const [fastighet, setFastighet] = useState("");
   const [artikel, setArtikel] = useState("");
   const [artikelnummer, setArtikelnummer] = useState("");
-  const [fritext, setFritext] = useState("");
+  const [text, setText] = useState("");
   const [antal, setAntal] = useState<number | string>(1);
   const [prisInkMoms, setPrisInkMoms] = useState<number | string>(0);
   const [projekt, setProjekt] = useState("");
-  const [fakturanAvser, setFakturanAvser] = useState("");
+  const [fakturanAvserFritext, setFakturanAvserFritext] = useState("");
   const [internInfo, setInternInfo] = useState("");
   const [objectNumber, setObjectNumber] = useState("");
   const [administrativaKostnader, setAdministrativaKostnader] = useState(false);
@@ -109,8 +109,8 @@ export function StrofakturaForm() {
       setKst(selectedLease.district);
       setFastighet(selectedLease.propertyName);
       setObjectNumber(selectedLease.objectNumber);
-      // Reset fritext when changing contract
-      setFritext("");
+      // Reset fakturan avser fritext when changing contract
+      setFakturanAvserFritext("");
     }
     setErrors(prev => ({ ...prev, hyreskontrakt: undefined }));
   };
@@ -135,11 +135,11 @@ export function StrofakturaForm() {
       fastighet,
       artikel,
       artikelnummer,
-      text: objectNumber + (fritext ? ` - ${fritext}` : ""),
+      text,
       antal: Number(antal),
       prisInkMoms: Number(prisInkMoms),
       projekt,
-      fakturanAvser,
+      fakturanAvser: objectNumber + (fakturanAvserFritext ? ` - ${fakturanAvserFritext}` : ""),
       internInfo,
     };
 
@@ -208,11 +208,11 @@ export function StrofakturaForm() {
     setFastighet("");
     setArtikel("");
     setArtikelnummer("");
-    setFritext("");
+    setText("");
     setAntal(1);
     setPrisInkMoms(0);
     setProjekt("");
-    setFakturanAvser("");
+    setFakturanAvserFritext("");
     setInternInfo("");
     setObjectNumber("");
     setAdministrativaKostnader(false);
@@ -305,13 +305,13 @@ export function StrofakturaForm() {
               selectedArticle={artikel}
               artikelnummer={artikelnummer}
               objectNumber={objectNumber}
-              fritext={fritext}
+              text={text}
               antal={antal}
               prisInkMoms={prisInkMoms}
               administrativaKostnader={administrativaKostnader}
               hanteringsavgift={hanteringsavgift}
               onArticleSelect={handleArticleSelect}
-              onFritextChange={setFritext}
+              onTextChange={setText}
               onAntalChange={setAntal}
               onPrisChange={setPrisInkMoms}
               onAdministrativaKostnaderChange={setAdministrativaKostnader}
@@ -331,10 +331,11 @@ export function StrofakturaForm() {
             <h3 className="font-medium">Övrig information</h3>
             <AdditionalInfoSection
               projekt={projekt}
-              fakturanAvser={fakturanAvser}
+              objectNumber={objectNumber}
+              fakturanAvserFritext={fakturanAvserFritext}
               internInfo={internInfo}
               onProjektChange={setProjekt}
-              onFakturanAvserChange={setFakturanAvser}
+              onFakturanAvserFritextChange={setFakturanAvserFritext}
               onInternInfoChange={setInternInfo}
             />
           </div>
