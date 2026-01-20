@@ -7,6 +7,12 @@ export interface InvoiceLineItem {
   printGroup: string;
 }
 
+export interface CreditEvent {
+  date: string;
+  amount: number;
+  relatedInvoiceNumber: string;
+}
+
 export interface Invoice {
   invoiceNumber: string;
   invoiceDate: string;
@@ -15,7 +21,7 @@ export interface Invoice {
   balance: number;
   invoiceType: string;
   paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen' | 'Krediterad' | 'Kredit' | 'Delkrediterad';
-  relatedInvoiceNumber?: string; // Referens till kopplad faktura (kredit/krediterad)
+  relatedInvoiceNumber?: string; // Referens till kopplad faktura (endast för kreditfakturor med status 'Kredit' eller helkrediterade 'Krediterad')
   text?: string;
   inCollection: boolean;
   inCollectionDate?: string; // Datum när fakturan skickades till inkasso
@@ -25,8 +31,7 @@ export interface Invoice {
   paymentSource?: string;
   preliminaryRefund?: number;
   preliminaryRefundDate?: string;
-  creditedAmount?: number; // Belopp som har krediterats (för delkrediterade fakturor)
-  creditedDate?: string; // Datum för delkreditering
-  creditBookedDate?: string; // Datum när kreditfaktura bokades
+  creditEvents?: CreditEvent[]; // Lista över alla krediteringshändelser (för delkrediterade fakturor)
+  creditBookedDate?: string; // Datum när kreditfaktura bokades (endast för kreditfakturor med status 'Kredit')
   lineItems: InvoiceLineItem[];
 }
