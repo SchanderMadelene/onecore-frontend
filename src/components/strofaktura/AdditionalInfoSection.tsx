@@ -38,18 +38,6 @@ export function AdditionalInfoSection({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="objectNumber">Avser objektsnummer</Label>
-        <Input
-          id="objectNumber"
-          value={objectNumber}
-          readOnly
-          disabled
-          placeholder="Fylls i automatiskt från valt kontrakt"
-          className="bg-muted"
-        />
-      </div>
-
-      <div className="space-y-2">
         <Label htmlFor="fakturanAvser">Fakturan avser</Label>
         <div className="space-y-1">
           <div className="flex items-center h-10 w-full rounded-md border border-input bg-background ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
