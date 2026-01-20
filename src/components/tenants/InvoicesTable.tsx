@@ -181,24 +181,28 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                         </div>
                       )}
                       
-                      {invoice.creditEvents && invoice.creditEvents.map((event, index) => (
-                        <div key={index} className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
-                          <div className="grid grid-cols-3 gap-4 text-sm">
-                            <div>
-                              <span className="text-muted-foreground block mb-1">Datum:</span>
-                              <span className="font-semibold">{event.date}</span>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground block mb-1">Händelse:</span>
-                              <span className="font-semibold">Delkrediterad</span>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground block mb-1">Krediterat belopp:</span>
-                              <span className="font-semibold text-priority-medium">{formatCurrency(event.amount)}</span>
-                            </div>
-                          </div>
+                      {invoice.creditEvents && invoice.creditEvents.length > 0 && (
+                        <div className="bg-priority-medium/10 rounded-lg border-l-4 border-priority-medium overflow-hidden">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b border-priority-medium/20">
+                                <th className="text-left p-3 text-xs font-medium text-muted-foreground">Datum</th>
+                                <th className="text-left p-3 text-xs font-medium text-muted-foreground">Händelse</th>
+                                <th className="text-left p-3 text-xs font-medium text-muted-foreground">Krediterat belopp</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {invoice.creditEvents.map((event, index) => (
+                                <tr key={index} className="border-b border-priority-medium/10 last:border-0">
+                                  <td className="p-3 text-sm font-semibold">{event.date}</td>
+                                  <td className="p-3 text-sm font-semibold">Delkrediterad</td>
+                                  <td className="p-3 text-sm font-semibold text-priority-medium">{formatCurrency(event.amount)}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
-                      ))}
+                      )}
                       
                       {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald' && (
                         <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
@@ -431,24 +435,28 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </div>
                           )}
                           
-                          {invoice.creditEvents && invoice.creditEvents.map((event, index) => (
-                            <div key={index} className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
-                              <div className="grid grid-cols-3 gap-4 text-sm">
-                                <div>
-                                  <span className="text-muted-foreground block mb-1">Datum:</span>
-                                  <span className="font-semibold">{event.date}</span>
-                                </div>
-                                <div>
-                                  <span className="text-muted-foreground block mb-1">Händelse:</span>
-                                  <span className="font-semibold">Delkrediterad</span>
-                                </div>
-                                <div>
-                                  <span className="text-muted-foreground block mb-1">Krediterat belopp:</span>
-                                  <span className="font-semibold text-priority-medium">{formatCurrency(event.amount)}</span>
-                                </div>
-                              </div>
+                          {invoice.creditEvents && invoice.creditEvents.length > 0 && (
+                            <div className="bg-priority-medium/10 rounded-lg border-l-4 border-priority-medium overflow-hidden">
+                              <table className="w-full">
+                                <thead>
+                                  <tr className="border-b border-priority-medium/20">
+                                    <th className="text-left p-3 text-xs font-medium text-muted-foreground">Datum</th>
+                                    <th className="text-left p-3 text-xs font-medium text-muted-foreground">Händelse</th>
+                                    <th className="text-left p-3 text-xs font-medium text-muted-foreground">Krediterat belopp</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {invoice.creditEvents.map((event, index) => (
+                                    <tr key={index} className="border-b border-priority-medium/10 last:border-0">
+                                      <td className="p-3 text-sm font-semibold">{event.date}</td>
+                                      <td className="p-3 text-sm font-semibold">Delkrediterad</td>
+                                      <td className="p-3 text-sm font-semibold text-priority-medium">{formatCurrency(event.amount)}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
                             </div>
-                          ))}
+                          )}
                           
                           {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald' && (
                             <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
