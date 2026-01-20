@@ -14,7 +14,7 @@ export interface Invoice {
   amount: number;
   balance: number;
   invoiceType: string;
-  paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen' | 'Krediterad' | 'Kredit';
+  paymentStatus: 'Obetald' | 'Betald' | 'Delvis betald' | 'Förfallen' | 'Krediterad' | 'Kredit' | 'Delkrediterad';
   relatedInvoiceNumber?: string; // Referens till kopplad faktura (kredit/krediterad)
   text?: string;
   inCollection: boolean;
@@ -25,5 +25,7 @@ export interface Invoice {
   paymentSource?: string;
   preliminaryRefund?: number;
   preliminaryRefundDate?: string;
+  creditedAmount?: number; // Belopp som har krediterats (för delkrediterade fakturor)
+  creditedDate?: string; // Datum för delkreditering
   lineItems: InvoiceLineItem[];
 }
