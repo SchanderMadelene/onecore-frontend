@@ -129,7 +129,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
 
                   {/* Händelser */}
                   {(invoice.inCollection || 
-                    (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit') ||
+                    (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald') ||
                     invoice.paymentStatus === 'Delvis betald' ||
                     invoice.paymentStatus === 'Betald') && (
                     <div className="space-y-2">
@@ -150,7 +150,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                         </div>
                       )}
                       
-                      {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && (
+                      {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald' && (
                         <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
@@ -331,7 +331,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
 
                       {/* Händelser */}
                       {(invoice.inCollection || 
-                        (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit') ||
+                        (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald') ||
                         invoice.paymentStatus === 'Delvis betald' ||
                         invoice.paymentStatus === 'Betald') && (
                         <div className="space-y-2">
@@ -352,7 +352,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </div>
                           )}
                           
-                          {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && (
+                          {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald' && (
                             <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                               <div className="grid grid-cols-3 gap-4 text-sm">
                                 <div>
