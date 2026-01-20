@@ -6,6 +6,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Popover,
@@ -53,6 +54,9 @@ export function StrofakturaForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
+
+  // Mock current user - in real app this would come from auth context
+  const currentUser = "Anna Andersson";
 
   // Form state
   const [datum, setDatum] = useState<Date>(new Date());
@@ -212,32 +216,44 @@ export function StrofakturaForm() {
           <CardTitle>Nytt ströfaktura-underlag</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Datum */}
-          <div className="space-y-3">
-            <Label>Datum</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full sm:w-[240px] justify-start text-left font-normal",
-                    !datum && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {datum ? format(datum, "PPP", { locale: sv }) : <span>Välj datum</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={datum}
-                  onSelect={(date) => date && setDatum(date)}
-                  initialFocus
-                  className="pointer-events-auto"
-                />
-              </PopoverContent>
-            </Popover>
+          {/* Datum och Referens */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <Label>Datum</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !datum && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {datum ? format(datum, "PPP", { locale: sv }) : <span>Välj datum</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={datum}
+                    onSelect={(date) => date && setDatum(date)}
+                    initialFocus
+                    className="pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="space-y-3">
+              <Label>Referens</Label>
+              <Input
+                value={currentUser}
+                readOnly
+                disabled
+                className="bg-muted"
+              />
+            </div>
           </div>
 
           <Separator />
