@@ -30,7 +30,7 @@ export function LeaseContractSection({
   disabled = false
 }: LeaseContractSectionProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr_1fr] gap-4">
       <div className="space-y-2">
         <Label htmlFor="hyreskontrakt">Hyreskontrakt</Label>
         <Select
@@ -51,10 +51,8 @@ export function LeaseContractSection({
           <SelectContent>
             {leaseContracts.map((lease) => (
               <SelectItem key={lease.leaseId} value={lease.leaseId}>
-                <div className="flex flex-col">
-                  <span>{lease.leaseId}</span>
-                  <span className="text-xs text-muted-foreground">{lease.address}</span>
-                </div>
+                <span>{lease.leaseId}</span>
+                <span className="text-muted-foreground ml-2">{lease.address}</span>
               </SelectItem>
             ))}
           </SelectContent>

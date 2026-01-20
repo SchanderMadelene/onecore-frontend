@@ -25,6 +25,7 @@ export interface StrofakturaUnderlag {
 
 export interface CustomerLeaseContract {
   leaseId: string;
+  objectNumber: string;
   propertyName: string;
   buildingName: string;
   district: string;

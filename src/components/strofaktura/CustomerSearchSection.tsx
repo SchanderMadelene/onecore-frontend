@@ -30,7 +30,7 @@ export function CustomerSearchSection({
       const customer = getCustomerByNumber(value);
       if (customer) {
         setSelectedCustomer(customer);
-        setSearchQuery(customer.customerNumber);
+        setSearchQuery(`${customer.customerNumber} • ${customer.personalNumber}`);
       }
     }
   }, [value, selectedCustomer]);
@@ -59,7 +59,7 @@ export function CustomerSearchSection({
 
   const handleSelectCustomer = (customer: CustomerSearchResult) => {
     setSelectedCustomer(customer);
-    setSearchQuery(customer.customerNumber);
+    setSearchQuery(`${customer.customerNumber} • ${customer.personalNumber}`);
     setIsOpen(false);
     onCustomerSelect(customer);
   };
