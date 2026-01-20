@@ -13,6 +13,12 @@ export interface CreditEvent {
   relatedInvoiceNumber: string;
 }
 
+export interface PaymentEvent {
+  date: string;
+  amount: number;
+  source: string;
+}
+
 export interface Invoice {
   invoiceNumber: string;
   invoiceDate: string;
@@ -28,6 +34,7 @@ export interface Invoice {
   deferralDate?: string; // Anståndsdatum - endast om fakturan fått anstånd
   paymentDate?: string;
   paidAmount?: number;
+  paymentEvents?: PaymentEvent[];
   paymentSource?: string;
   preliminaryRefund?: number;
   preliminaryRefundDate?: string;

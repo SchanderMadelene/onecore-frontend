@@ -223,7 +223,34 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                         </div>
                       )}
                       
-                      {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
+                      {invoice.paymentStatus === 'Delvis betald' && invoice.paymentEvents && invoice.paymentEvents.length > 0 && (
+                        <div className="bg-priority-medium/10 rounded-lg border-l-4 border-priority-medium overflow-hidden">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b border-priority-medium/20">
+                                <th className="text-left p-3 text-xs font-medium text-muted-foreground">Datum</th>
+                                <th className="text-left p-3 text-xs font-medium text-muted-foreground">Källa</th>
+                                <th className="text-left p-3 text-xs font-medium text-muted-foreground">Inbetalt</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {invoice.paymentEvents.map((event, index) => (
+                                <tr key={index} className="border-b border-priority-medium/10 last:border-0">
+                                  <td className="p-3 text-sm font-semibold">{event.date}</td>
+                                  <td className="p-3 text-sm font-semibold">{event.source}</td>
+                                  <td className="p-3 text-sm font-semibold text-success">{formatCurrency(event.amount)}</td>
+                                </tr>
+                              ))}
+                              <tr className="bg-priority-medium/10 border-t border-priority-medium/30">
+                                <td colSpan={2} className="p-3 text-sm font-semibold text-muted-foreground">Kvar att betala:</td>
+                                <td className="p-3 text-sm font-semibold text-priority-medium">{formatCurrency(invoice.balance)}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                      
+                      {invoice.paymentStatus === 'Delvis betald' && (!invoice.paymentEvents || invoice.paymentEvents.length === 0) && invoice.paidAmount !== undefined && (
                         <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
@@ -477,7 +504,34 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </div>
                           )}
                           
-                          {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
+                          {invoice.paymentStatus === 'Delvis betald' && invoice.paymentEvents && invoice.paymentEvents.length > 0 && (
+                            <div className="bg-priority-medium/10 rounded-lg border-l-4 border-priority-medium overflow-hidden">
+                              <table className="w-full">
+                                <thead>
+                                  <tr className="border-b border-priority-medium/20">
+                                    <th className="text-left p-3 text-xs font-medium text-muted-foreground">Datum</th>
+                                    <th className="text-left p-3 text-xs font-medium text-muted-foreground">Källa</th>
+                                    <th className="text-left p-3 text-xs font-medium text-muted-foreground">Inbetalt</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {invoice.paymentEvents.map((event, index) => (
+                                    <tr key={index} className="border-b border-priority-medium/10 last:border-0">
+                                      <td className="p-3 text-sm font-semibold">{event.date}</td>
+                                      <td className="p-3 text-sm font-semibold">{event.source}</td>
+                                      <td className="p-3 text-sm font-semibold text-success">{formatCurrency(event.amount)}</td>
+                                    </tr>
+                                  ))}
+                                  <tr className="bg-priority-medium/10 border-t border-priority-medium/30">
+                                    <td colSpan={2} className="p-3 text-sm font-semibold text-muted-foreground">Kvar att betala:</td>
+                                    <td className="p-3 text-sm font-semibold text-priority-medium">{formatCurrency(invoice.balance)}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+                          
+                          {invoice.paymentStatus === 'Delvis betald' && (!invoice.paymentEvents || invoice.paymentEvents.length === 0) && invoice.paidAmount !== undefined && (
                             <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
                               <div className="grid grid-cols-3 gap-4 text-sm">
                                 <div>
