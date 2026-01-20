@@ -104,95 +104,126 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
               </div>
               
               {isExpanded && invoice.lineItems.length > 0 && (
-                <div className="border-t bg-muted/30 p-4">
-                  {invoice.text && invoice.paymentStatus !== 'Kredit' && (
-                    <div className="mb-3 text-sm">
-                      <span className="font-medium">Text:</span> {invoice.text}
-                    </div>
-                  )}
-                  {invoice.inCollection && invoice.inCollectionDate && (
-                    <div className="mb-3 bg-destructive/10 rounded-lg p-3 border-l-4 border-destructive">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-muted-foreground">Skickad till inkasso:</span>
-                        <span className="font-semibold text-destructive">{invoice.inCollectionDate}</span>
-                      </div>
-                    </div>
-                  )}
-                  {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && (
-                    <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
-                        <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
-                      </div>
-                      {invoice.preliminaryRefundDate && (
-                        <div className="flex justify-between items-center text-sm mt-1">
-                          <span className="text-muted-foreground">Planerat datum:</span>
-                          <span className="font-medium">{invoice.preliminaryRefundDate}</span>
+                <div className="border-t bg-muted/30 p-4 space-y-4">
+                  {/* Statisk info */}
+                  {((invoice.text && invoice.paymentStatus !== 'Kredit') || 
+                    (invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit'))) && (
+                    <div className="bg-muted/50 rounded-lg p-3 space-y-2">
+                      {invoice.text && invoice.paymentStatus !== 'Kredit' && (
+                        <div className="text-sm">
+                          <span className="text-muted-foreground">Text:</span>{' '}
+                          <span className="font-medium">{invoice.text}</span>
+                        </div>
+                      )}
+                      {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit') && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Link2 className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-muted-foreground">
+                            {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 'Krediterar faktura:'}
+                          </span>
+                          <span className="font-semibold">{invoice.relatedInvoiceNumber}</span>
                         </div>
                       )}
                     </div>
                   )}
-                  {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
-                    <div className="mb-3 bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-muted-foreground">Inbetalt:</span>
-                        <span className="font-semibold">{formatCurrency(invoice.paidAmount)}</span>
-                      </div>
-                      <div className="flex justify-between items-center text-sm mt-1">
-                        <span className="text-muted-foreground">Kvar att betala:</span>
-                        <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
-                      </div>
-                      {invoice.paymentDate && (
-                        <div className="flex justify-between items-center text-sm mt-1">
-                          <span className="text-muted-foreground">Senaste inbetalning:</span>
-                          <span className="font-medium">{invoice.paymentDate}</span>
+
+                  {/* Händelser */}
+                  {(invoice.inCollection || 
+                    (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit') ||
+                    invoice.paymentStatus === 'Delvis betald' ||
+                    invoice.paymentStatus === 'Betald') && (
+                    <div className="space-y-2">
+                      <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Händelser</div>
+                      
+                      {invoice.inCollection && invoice.inCollectionDate && (
+                        <div className="bg-destructive/10 rounded-lg p-3 border-l-4 border-destructive">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Datum:</span>
+                              <span className="font-semibold">{invoice.inCollectionDate}</span>
+                            </div>
+                            <div className="col-span-2">
+                              <span className="text-muted-foreground block mb-1">Händelse:</span>
+                              <span className="font-semibold text-destructive">Skickad till inkasso</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && (
+                        <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Planerat datum:</span>
+                              <span className="font-semibold">{invoice.preliminaryRefundDate || '–'}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Händelse:</span>
+                              <span className="font-semibold">Prel. återbetalning</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Belopp:</span>
+                              <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
+                        <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Datum:</span>
+                              <span className="font-semibold">{invoice.paymentDate || '–'}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Inbetalt:</span>
+                              <span className="font-semibold">{formatCurrency(invoice.paidAmount)}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Kvar att betala:</span>
+                              <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
+                        <div className="bg-success/5 rounded-lg p-3 border-l-4 border-success">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Datum:</span>
+                              <span className="font-semibold">{invoice.paymentDate}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Källa:</span>
+                              <span className="font-semibold">{invoice.paymentSource || 'OCR'}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Inbetalat:</span>
+                              <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
+                            </div>
+                          </div>
+                          {invoice.invoiceType === 'Ströfaktura' && (
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenPDF(invoice.invoiceNumber);
+                              }}
+                              className="w-full mt-3"
+                            >
+                              <FileText className="h-4 w-4 mr-2" />
+                              Öppna PDF
+                            </Button>
+                          )}
                         </div>
                       )}
                     </div>
                   )}
-                  {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit') && (
-                    <div className="mb-3 bg-muted rounded-lg p-3 border-l-4 border-muted-foreground/30">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Link2 className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">
-                          {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 'Krediterar faktura:'}
-                        </span>
-                        <span className="font-semibold">{invoice.relatedInvoiceNumber}</span>
-                      </div>
-                    </div>
-                  )}
-                  {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
-                    <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
-                      <div className="grid grid-cols-3 gap-4 text-sm mb-3">
-                        <div>
-                          <span className="text-muted-foreground block mb-1">Betaldatum:</span>
-                          <span className="font-semibold">{invoice.paymentDate}</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground block mb-1">Källa:</span>
-                          <span className="font-semibold">{invoice.paymentSource || 'OCR'}</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground block mb-1">Inbetalat belopp:</span>
-                          <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
-                        </div>
-                      </div>
-                      {invoice.invoiceType === 'Ströfaktura' && (
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenPDF(invoice.invoiceNumber);
-                          }}
-                          className="w-full sm:w-auto"
-                        >
-                          <FileText className="h-4 w-4 mr-2" />
-                          Öppna PDF
-                        </Button>
-                      )}
-                    </div>
-                  )}
+
+                  {/* Fakturarader */}
                   <div className="space-y-2">
                     {invoice.lineItems.map((item, idx) => (
                       <div key={idx} className="bg-background rounded-lg p-3 text-sm">
@@ -275,97 +306,126 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 {isExpanded && invoice.lineItems.length > 0 && (
                 <tr>
                   <td colSpan={10} className="p-0">
-                    <div className="bg-muted/50 border-l-4 border-primary/30 p-4 ml-4">
-                      {invoice.text && invoice.paymentStatus !== 'Kredit' && (
-                        <div className="mb-3 text-sm bg-background/50 rounded p-2">
-                          <span className="font-medium">Text:</span> {invoice.text}
-                        </div>
-                      )}
-                      {invoice.inCollection && invoice.inCollectionDate && (
-                        <div className="mb-3 bg-destructive/10 rounded-lg p-3 border-l-4 border-destructive">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-muted-foreground">Skickad till inkasso:</span>
-                            <span className="font-semibold text-destructive">{invoice.inCollectionDate}</span>
-                          </div>
-                        </div>
-                      )}
-                      {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && (
-                        <div className="mb-3 bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-muted-foreground">Prel. bokad återbetalning:</span>
-                            <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
-                          </div>
-                          {invoice.preliminaryRefundDate && (
-                            <div className="flex justify-between items-center text-sm mt-1">
-                              <span className="text-muted-foreground">Planerat datum:</span>
-                              <span className="font-medium">{invoice.preliminaryRefundDate}</span>
+                    <div className="bg-muted/50 border-l-4 border-primary/30 p-4 ml-4 space-y-4">
+                      {/* Statisk info */}
+                      {((invoice.text && invoice.paymentStatus !== 'Kredit') || 
+                        (invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit'))) && (
+                        <div className="bg-background/50 rounded-lg p-3 space-y-2">
+                          {invoice.text && invoice.paymentStatus !== 'Kredit' && (
+                            <div className="text-sm">
+                              <span className="text-muted-foreground">Text:</span>{' '}
+                              <span className="font-medium">{invoice.text}</span>
+                            </div>
+                          )}
+                          {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit') && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <Link2 className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-muted-foreground">
+                                {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 'Krediterar faktura:'}
+                              </span>
+                              <span className="font-semibold">{invoice.relatedInvoiceNumber}</span>
                             </div>
                           )}
                         </div>
                       )}
-                      {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
-                        <div className="mb-3 bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
-                          <div className="grid grid-cols-3 gap-4 text-sm">
-                            <div>
-                              <span className="text-muted-foreground block mb-1">Inbetalt:</span>
-                              <span className="font-semibold">{formatCurrency(invoice.paidAmount)}</span>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground block mb-1">Kvar att betala:</span>
-                              <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
-                            </div>
-                            {invoice.paymentDate && (
-                              <div>
-                                <span className="text-muted-foreground block mb-1">Senaste inbetalning:</span>
-                                <span className="font-semibold">{invoice.paymentDate}</span>
+
+                      {/* Händelser */}
+                      {(invoice.inCollection || 
+                        (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit') ||
+                        invoice.paymentStatus === 'Delvis betald' ||
+                        invoice.paymentStatus === 'Betald') && (
+                        <div className="space-y-2">
+                          <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Händelser</div>
+                          
+                          {invoice.inCollection && invoice.inCollectionDate && (
+                            <div className="bg-destructive/10 rounded-lg p-3 border-l-4 border-destructive">
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Datum:</span>
+                                  <span className="font-semibold">{invoice.inCollectionDate}</span>
+                                </div>
+                                <div className="col-span-2">
+                                  <span className="text-muted-foreground block mb-1">Händelse:</span>
+                                  <span className="font-semibold text-destructive">Skickad till inkasso</span>
+                                </div>
                               </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                      {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit') && (
-                        <div className="mb-3 bg-muted rounded-lg p-3 border-l-4 border-muted-foreground/30">
-                          <div className="flex items-center gap-2 text-sm">
-                            <Link2 className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-muted-foreground">
-                              {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 'Krediterar faktura:'}
-                            </span>
-                            <span className="font-semibold">{invoice.relatedInvoiceNumber}</span>
-                          </div>
-                        </div>
-                      )}
-                      {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
-                        <div className="mb-4 bg-success/5 rounded-lg p-4 border-l-4 border-success">
-                          <div className="grid grid-cols-3 gap-4 text-sm mb-3">
-                            <div>
-                              <span className="text-muted-foreground block mb-1">Betaldatum:</span>
-                              <span className="font-semibold">{invoice.paymentDate}</span>
                             </div>
-                            <div>
-                              <span className="text-muted-foreground block mb-1">Källa:</span>
-                              <span className="font-semibold">{invoice.paymentSource || 'OCR'}</span>
+                          )}
+                          
+                          {invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && (
+                            <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Planerat datum:</span>
+                                  <span className="font-semibold">{invoice.preliminaryRefundDate || '–'}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Händelse:</span>
+                                  <span className="font-semibold">Prel. återbetalning</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Belopp:</span>
+                                  <span className="font-semibold text-warning">{formatCurrency(invoice.preliminaryRefund)}</span>
+                                </div>
+                              </div>
                             </div>
-                            <div>
-                              <span className="text-muted-foreground block mb-1">Inbetalat belopp:</span>
-                              <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
+                          )}
+                          
+                          {invoice.paymentStatus === 'Delvis betald' && invoice.paidAmount !== undefined && (
+                            <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Datum:</span>
+                                  <span className="font-semibold">{invoice.paymentDate || '–'}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Inbetalt:</span>
+                                  <span className="font-semibold">{formatCurrency(invoice.paidAmount)}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Kvar att betala:</span>
+                                  <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                          {invoice.invoiceType === 'Ströfaktura' && (
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleOpenPDF(invoice.invoiceNumber);
-                              }}
-                              className="w-full sm:w-auto"
-                            >
-                              <FileText className="h-4 w-4 mr-2" />
-                              Öppna PDF
-                            </Button>
+                          )}
+                          
+                          {invoice.paymentStatus === 'Betald' && invoice.paymentDate && invoice.paidAmount !== undefined && (
+                            <div className="bg-success/5 rounded-lg p-3 border-l-4 border-success">
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Datum:</span>
+                                  <span className="font-semibold">{invoice.paymentDate}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Källa:</span>
+                                  <span className="font-semibold">{invoice.paymentSource || 'OCR'}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Inbetalat:</span>
+                                  <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
+                                </div>
+                              </div>
+                              {invoice.invoiceType === 'Ströfaktura' && (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleOpenPDF(invoice.invoiceNumber);
+                                  }}
+                                  className="w-full sm:w-auto mt-3"
+                                >
+                                  <FileText className="h-4 w-4 mr-2" />
+                                  Öppna PDF
+                                </Button>
+                              )}
+                            </div>
                           )}
                         </div>
                       )}
+
+                      {/* Fakturarader */}
                       <div className="bg-background rounded-lg p-3 shadow-sm">
                         <div className="font-medium text-sm mb-3 text-muted-foreground">Fakturarader</div>
                         <table className="w-full">
