@@ -27,5 +27,6 @@ export interface Invoice {
   preliminaryRefundDate?: string;
   creditedAmount?: number; // Belopp som har krediterats (för delkrediterade fakturor)
   creditedDate?: string; // Datum för delkreditering
+  creditBookedDate?: string; // Datum när kreditfaktura bokades
   lineItems: InvoiceLineItem[];
 }
