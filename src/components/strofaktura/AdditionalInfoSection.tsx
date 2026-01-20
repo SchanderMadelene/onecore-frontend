@@ -51,24 +51,25 @@ export function AdditionalInfoSection({
 
       <div className="space-y-2">
         <Label htmlFor="fakturanAvser">Fakturan avser</Label>
-        <div className="flex gap-2 items-start">
-          {objectNumber && (
-            <span className="text-sm text-muted-foreground whitespace-nowrap bg-muted px-3 py-2 rounded-md border">
-              {objectNumber} -
-            </span>
-          )}
-          <div className="flex-1 space-y-1">
-            <Input
+        <div className="space-y-1">
+          <div className="flex items-center h-10 w-full rounded-md border border-input bg-background ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+            {objectNumber && (
+              <span className="text-sm text-muted-foreground whitespace-nowrap pl-3 pr-1 select-none">
+                {objectNumber} -
+              </span>
+            )}
+            <input
               id="fakturanAvser"
               value={fakturanAvserFritext}
               onChange={(e) => onFakturanAvserFritextChange(e.target.value)}
               placeholder="Beskrivning av vad fakturan avser..."
               maxLength={maxFritextLength > 0 ? maxFritextLength : 252}
+              className="flex-1 h-full px-3 py-2 text-sm bg-transparent placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             />
-            <p className="text-xs text-muted-foreground text-right">
-              {combinedLength}/255 tecken
-            </p>
           </div>
+          <p className="text-xs text-muted-foreground text-right">
+            {combinedLength}/255 tecken
+          </p>
         </div>
       </div>
 
