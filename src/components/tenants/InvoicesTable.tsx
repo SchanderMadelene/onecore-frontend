@@ -156,7 +156,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       )}
                       
                       {invoice.paymentStatus === 'Kredit' && invoice.creditBookedDate && (
-                        <div className="bg-secondary/50 rounded-lg p-3 border-l-4 border-muted-foreground/50">
+                        <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
                               <span className="text-muted-foreground block mb-1">Datum:</span>
@@ -167,8 +167,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-semibold">Kreditering bokad</span>
                             </div>
                             <div>
-                              <span className="text-muted-foreground block mb-1">Belopp:</span>
-                              <span className="font-semibold">{formatCurrency(invoice.amount)}</span>
+                              <span className="text-muted-foreground block mb-1">Krediterat belopp:</span>
+                              <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount)}</span>
                             </div>
                           </div>
                         </div>
@@ -399,7 +399,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           )}
                           
                           {invoice.paymentStatus === 'Kredit' && invoice.creditBookedDate && (
-                            <div className="bg-secondary/50 rounded-lg p-3 border-l-4 border-muted-foreground/50">
+                            <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
                               <div className="grid grid-cols-3 gap-4 text-sm">
                                 <div>
                                   <span className="text-muted-foreground block mb-1">Datum:</span>
@@ -410,8 +410,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                   <span className="font-semibold">Kreditering bokad</span>
                                 </div>
                                 <div>
-                                  <span className="text-muted-foreground block mb-1">Belopp:</span>
-                                  <span className="font-semibold">{formatCurrency(invoice.amount)}</span>
+                                  <span className="text-muted-foreground block mb-1">Krediterat belopp:</span>
+                                  <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount)}</span>
                                 </div>
                               </div>
                             </div>
