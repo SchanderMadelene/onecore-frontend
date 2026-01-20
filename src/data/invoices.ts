@@ -2,6 +2,53 @@ import type { Invoice } from "@/types/invoice";
 
 export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
   return [
+    // Delkrediterad ströfaktura
+    {
+      invoiceNumber: "10245",
+      invoiceDate: "2025-11-01",
+      dueDate: "2025-11-30",
+      amount: 3000,
+      balance: 2400,
+      invoiceType: "Ströfaktura",
+      paymentStatus: "Delkrediterad",
+      text: "Reparation av vitvaror",
+      inCollection: false,
+      relatedInvoiceNumber: "10255",
+      creditedAmount: 600,
+      creditedDate: "2025-11-15",
+      lineItems: [
+        {
+          amount: 3000,
+          vat: 0,
+          total: 3000,
+          rentalArticle: "REPVIT",
+          description: "Reparation diskmaskin",
+          printGroup: "A"
+        }
+      ]
+    },
+    // Kreditfaktura för delkredit
+    {
+      invoiceNumber: "10255",
+      invoiceDate: "2025-11-15",
+      dueDate: "2025-11-30",
+      amount: -600,
+      balance: 0,
+      invoiceType: "Ströfaktura",
+      paymentStatus: "Kredit",
+      inCollection: false,
+      relatedInvoiceNumber: "10245",
+      lineItems: [
+        {
+          amount: -600,
+          vat: 0,
+          total: -600,
+          rentalArticle: "KREDIT",
+          description: "Delkreditering - felaktigt debiterat belopp",
+          printGroup: "A"
+        }
+      ]
+    },
     {
       invoiceNumber: "10004",
       invoiceDate: "2025-10-01",

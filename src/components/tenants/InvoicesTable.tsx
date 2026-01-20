@@ -33,6 +33,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
         return 'secondary'; // fakturan är hanterad/stängd
       case 'Kredit':
         return 'outline'; // kreditfaktura (med negativt belopp)
+      case 'Delkrediterad':
+        return 'priority-medium'; // gul badge för delkrediterade
       default:
         return 'secondary';
     }
@@ -107,7 +109,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 <div className="border-t bg-muted/30 p-4 space-y-4">
                   {/* Statisk info */}
                   {((invoice.text && invoice.paymentStatus !== 'Kredit') || 
-                    (invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit'))) && (
+                    (invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit' || invoice.paymentStatus === 'Delkrediterad'))) && (
                     <div className="bg-muted/50 rounded-lg p-3 space-y-2">
                       {invoice.text && invoice.paymentStatus !== 'Kredit' && (
                         <div className="text-sm">
@@ -115,11 +117,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           <span className="font-medium">{invoice.text}</span>
                         </div>
                       )}
-                      {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit') && (
+                      {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit' || invoice.paymentStatus === 'Delkrediterad') && (
                         <div className="flex items-center gap-2 text-sm">
                           <Link2 className="h-4 w-4 text-muted-foreground" />
                           <span className="text-muted-foreground">
-                            {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 'Krediterar faktura:'}
+                            {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 
+                             invoice.paymentStatus === 'Delkrediterad' ? 'Delkrediteras av faktura:' : 'Krediterar faktura:'}
                           </span>
                           <span className="font-semibold">{invoice.relatedInvoiceNumber}</span>
                         </div>
@@ -131,7 +134,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   {(invoice.inCollection || 
                     (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald') ||
                     invoice.paymentStatus === 'Delvis betald' ||
-                    invoice.paymentStatus === 'Betald') && (
+                    invoice.paymentStatus === 'Betald' ||
+                    invoice.paymentStatus === 'Delkrediterad') && (
                     <div className="space-y-2">
                       <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Händelser</div>
                       
@@ -145,6 +149,25 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             <div className="col-span-2">
                               <span className="text-muted-foreground block mb-1">Händelse:</span>
                               <span className="font-semibold text-destructive">Skickad till inkasso</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {invoice.paymentStatus === 'Delkrediterad' && invoice.creditedAmount && invoice.creditedDate && (
+                        <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Datum:</span>
+                              <span className="font-semibold">{invoice.creditedDate}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Händelse:</span>
+                              <span className="font-semibold">Delkrediterad</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground block mb-1">Krediterat belopp:</span>
+                              <span className="font-semibold text-priority-medium">{formatCurrency(invoice.creditedAmount)}</span>
                             </div>
                           </div>
                         </div>
@@ -309,7 +332,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <div className="bg-muted/50 border-l-4 border-primary/30 p-4 ml-4 space-y-4">
                       {/* Statisk info */}
                       {((invoice.text && invoice.paymentStatus !== 'Kredit') || 
-                        (invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit'))) && (
+                        (invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit' || invoice.paymentStatus === 'Delkrediterad'))) && (
                         <div className="bg-background/50 rounded-lg p-3 space-y-2">
                           {invoice.text && invoice.paymentStatus !== 'Kredit' && (
                             <div className="text-sm">
@@ -317,11 +340,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-medium">{invoice.text}</span>
                             </div>
                           )}
-                          {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit') && (
+                          {invoice.relatedInvoiceNumber && (invoice.paymentStatus === 'Krediterad' || invoice.paymentStatus === 'Kredit' || invoice.paymentStatus === 'Delkrediterad') && (
                             <div className="flex items-center gap-2 text-sm">
                               <Link2 className="h-4 w-4 text-muted-foreground" />
                               <span className="text-muted-foreground">
-                                {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 'Krediterar faktura:'}
+                                {invoice.paymentStatus === 'Krediterad' ? 'Krediteras av faktura:' : 
+                                 invoice.paymentStatus === 'Delkrediterad' ? 'Delkrediteras av faktura:' : 'Krediterar faktura:'}
                               </span>
                               <span className="font-semibold">{invoice.relatedInvoiceNumber}</span>
                             </div>
@@ -333,7 +357,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       {(invoice.inCollection || 
                         (invoice.preliminaryRefund && invoice.preliminaryRefund > 0 && invoice.paymentStatus !== 'Kredit' && invoice.paymentStatus !== 'Betald') ||
                         invoice.paymentStatus === 'Delvis betald' ||
-                        invoice.paymentStatus === 'Betald') && (
+                        invoice.paymentStatus === 'Betald' ||
+                        invoice.paymentStatus === 'Delkrediterad') && (
                         <div className="space-y-2">
                           <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Händelser</div>
                           
@@ -347,6 +372,25 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 <div className="col-span-2">
                                   <span className="text-muted-foreground block mb-1">Händelse:</span>
                                   <span className="font-semibold text-destructive">Skickad till inkasso</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {invoice.paymentStatus === 'Delkrediterad' && invoice.creditedAmount && invoice.creditedDate && (
+                            <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Datum:</span>
+                                  <span className="font-semibold">{invoice.creditedDate}</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Händelse:</span>
+                                  <span className="font-semibold">Delkrediterad</span>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground block mb-1">Krediterat belopp:</span>
+                                  <span className="font-semibold text-priority-medium">{formatCurrency(invoice.creditedAmount)}</span>
                                 </div>
                               </div>
                             </div>
