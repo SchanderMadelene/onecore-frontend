@@ -69,7 +69,7 @@ export function StrofakturaForm() {
   const [fastighet, setFastighet] = useState("");
   const [artikel, setArtikel] = useState("");
   const [artikelnummer, setArtikelnummer] = useState("");
-  const [text, setText] = useState("");
+  const [fritext, setFritext] = useState("");
   const [antal, setAntal] = useState<number | string>(1);
   const [prisInkMoms, setPrisInkMoms] = useState<number | string>(0);
   const [projekt, setProjekt] = useState("");
@@ -109,8 +109,8 @@ export function StrofakturaForm() {
       setKst(selectedLease.district);
       setFastighet(selectedLease.propertyName);
       setObjectNumber(selectedLease.objectNumber);
-      // Pre-populate text field with object number
-      setText(selectedLease.objectNumber);
+      // Reset fritext when changing contract
+      setFritext("");
     }
     setErrors(prev => ({ ...prev, hyreskontrakt: undefined }));
   };
@@ -135,7 +135,7 @@ export function StrofakturaForm() {
       fastighet,
       artikel,
       artikelnummer,
-      text,
+      text: objectNumber + (fritext ? ` - ${fritext}` : ""),
       antal: Number(antal),
       prisInkMoms: Number(prisInkMoms),
       projekt,
@@ -208,7 +208,7 @@ export function StrofakturaForm() {
     setFastighet("");
     setArtikel("");
     setArtikelnummer("");
-    setText("");
+    setFritext("");
     setAntal(1);
     setPrisInkMoms(0);
     setProjekt("");
@@ -305,13 +305,13 @@ export function StrofakturaForm() {
               selectedArticle={artikel}
               artikelnummer={artikelnummer}
               objectNumber={objectNumber}
-              text={text}
+              fritext={fritext}
               antal={antal}
               prisInkMoms={prisInkMoms}
               administrativaKostnader={administrativaKostnader}
               hanteringsavgift={hanteringsavgift}
               onArticleSelect={handleArticleSelect}
-              onTextChange={setText}
+              onFritextChange={setFritext}
               onAntalChange={setAntal}
               onPrisChange={setPrisInkMoms}
               onAdministrativaKostnaderChange={setAdministrativaKostnader}
