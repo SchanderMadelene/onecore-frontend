@@ -15,13 +15,13 @@ interface ArticleSectionProps {
   selectedArticle: string;
   artikelnummer: string;
   objectNumber: string;
-  text: string;
+  fritext: string;
   antal: number | string;
   prisInkMoms: number | string;
   administrativaKostnader: boolean;
   hanteringsavgift: boolean;
   onArticleSelect: (artikelnummer: string) => void;
-  onTextChange: (text: string) => void;
+  onFritextChange: (fritext: string) => void;
   onAntalChange: (antal: number) => void;
   onPrisChange: (pris: number) => void;
   onAdministrativaKostnaderChange: (checked: boolean) => void;
@@ -37,13 +37,13 @@ export function ArticleSection({
   selectedArticle,
   artikelnummer,
   objectNumber,
-  text,
+  fritext,
   antal,
   prisInkMoms,
   administrativaKostnader,
   hanteringsavgift,
   onArticleSelect,
-  onTextChange,
+  onFritextChange,
   onAntalChange,
   onPrisChange,
   onAdministrativaKostnaderChange,
@@ -100,12 +100,21 @@ export function ArticleSection({
 
       <div className="space-y-2">
         <Label htmlFor="text">Text</Label>
-        <Input
-          id="text"
-          value={text}
-          onChange={(e) => onTextChange(e.target.value)}
-          placeholder="Beskrivning av debiteringen..."
-        />
+        <div className="flex gap-2 items-center">
+          {objectNumber && (
+            <span className="text-sm text-muted-foreground whitespace-nowrap bg-muted px-3 py-2 rounded-md border">
+              {objectNumber} -
+            </span>
+          )}
+          <Input
+            id="text"
+            value={fritext}
+            onChange={(e) => onFritextChange(e.target.value)}
+            placeholder={objectNumber ? "Beskrivning av debiteringen..." : "Välj kontrakt först..."}
+            disabled={!objectNumber}
+            className={cn(!objectNumber && "bg-muted")}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
