@@ -75,6 +75,9 @@ export function StrofakturaForm() {
   const [projekt, setProjekt] = useState("");
   const [fakturanAvser, setFakturanAvser] = useState("");
   const [internInfo, setInternInfo] = useState("");
+  const [objectNumber, setObjectNumber] = useState("");
+  const [administrativaKostnader, setAdministrativaKostnader] = useState(false);
+  const [hanteringsavgift, setHandteringsavgift] = useState(false);
 
   const handleCustomerSelect = (customer: CustomerSearchResult | null) => {
     setSelectedCustomer(customer);
@@ -86,6 +89,7 @@ export function StrofakturaForm() {
       setHyreskontrakt("");
       setKst("");
       setFastighet("");
+      setObjectNumber("");
     } else {
       setKundnummer("");
       setKundnamn("");
@@ -93,6 +97,7 @@ export function StrofakturaForm() {
       setHyreskontrakt("");
       setKst("");
       setFastighet("");
+      setObjectNumber("");
     }
     setErrors(prev => ({ ...prev, kundnummer: undefined }));
   };
@@ -103,6 +108,7 @@ export function StrofakturaForm() {
     if (selectedLease) {
       setKst(selectedLease.district);
       setFastighet(selectedLease.propertyName);
+      setObjectNumber(selectedLease.objectNumber);
     }
     setErrors(prev => ({ ...prev, hyreskontrakt: undefined }));
   };
@@ -206,6 +212,9 @@ export function StrofakturaForm() {
     setProjekt("");
     setFakturanAvser("");
     setInternInfo("");
+    setObjectNumber("");
+    setAdministrativaKostnader(false);
+    setHandteringsavgift(false);
     setErrors({});
   };
 
@@ -293,13 +302,18 @@ export function StrofakturaForm() {
             <ArticleSection
               selectedArticle={artikel}
               artikelnummer={artikelnummer}
+              objectNumber={objectNumber}
               text={text}
               antal={antal}
               prisInkMoms={prisInkMoms}
+              administrativaKostnader={administrativaKostnader}
+              hanteringsavgift={hanteringsavgift}
               onArticleSelect={handleArticleSelect}
               onTextChange={setText}
               onAntalChange={setAntal}
               onPrisChange={setPrisInkMoms}
+              onAdministrativaKostnaderChange={setAdministrativaKostnader}
+              onHandteringsavgiftChange={setHandteringsavgift}
               errors={{
                 artikel: errors.artikel,
                 antal: errors.antal,
