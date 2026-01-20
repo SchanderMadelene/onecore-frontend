@@ -2,6 +2,102 @@ import type { Invoice } from "@/types/invoice";
 
 export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
   return [
+    // Delkrediterad ströfaktura med tre krediteringar
+    {
+      invoiceNumber: "10245",
+      invoiceDate: "2025-11-01",
+      dueDate: "2025-11-30",
+      amount: 3000,
+      balance: 1200, // 3000 - (3 × 600)
+      invoiceType: "Ströfaktura",
+      paymentStatus: "Delkrediterad",
+      text: "Reparation av vitvaror",
+      inCollection: false,
+      creditEvents: [
+        { date: "2025-11-15", amount: -600, relatedInvoiceNumber: "10255" },
+        { date: "2025-11-20", amount: -600, relatedInvoiceNumber: "10256" },
+        { date: "2025-11-25", amount: -600, relatedInvoiceNumber: "10257" }
+      ],
+      lineItems: [
+        {
+          amount: 3000,
+          vat: 0,
+          total: 3000,
+          rentalArticle: "REPVIT",
+          description: "Reparation diskmaskin",
+          printGroup: "A"
+        }
+      ]
+    },
+    // Kreditfaktura 1 för delkredit
+    {
+      invoiceNumber: "10255",
+      invoiceDate: "2025-11-15",
+      dueDate: "2025-11-30",
+      amount: -600,
+      balance: 0,
+      invoiceType: "Ströfaktura",
+      paymentStatus: "Kredit",
+      inCollection: false,
+      relatedInvoiceNumber: "10245",
+      creditBookedDate: "2025-11-15",
+      lineItems: [
+        {
+          amount: -600,
+          vat: 0,
+          total: -600,
+          rentalArticle: "KREDIT",
+          description: "Delkreditering 1 - felaktigt debiterat belopp",
+          printGroup: "A"
+        }
+      ]
+    },
+    // Kreditfaktura 2 för delkredit
+    {
+      invoiceNumber: "10256",
+      invoiceDate: "2025-11-20",
+      dueDate: "2025-12-05",
+      amount: -600,
+      balance: 0,
+      invoiceType: "Ströfaktura",
+      paymentStatus: "Kredit",
+      inCollection: false,
+      relatedInvoiceNumber: "10245",
+      creditBookedDate: "2025-11-20",
+      lineItems: [
+        {
+          amount: -600,
+          vat: 0,
+          total: -600,
+          rentalArticle: "KREDIT",
+          description: "Delkreditering 2 - felaktigt debiterat belopp",
+          printGroup: "A"
+        }
+      ]
+    },
+    // Kreditfaktura 3 för delkredit
+    {
+      invoiceNumber: "10257",
+      invoiceDate: "2025-11-25",
+      dueDate: "2025-12-10",
+      amount: -600,
+      balance: 0,
+      invoiceType: "Ströfaktura",
+      paymentStatus: "Kredit",
+      inCollection: false,
+      relatedInvoiceNumber: "10245",
+      creditBookedDate: "2025-11-25",
+      lineItems: [
+        {
+          amount: -600,
+          vat: 0,
+          total: -600,
+          rentalArticle: "KREDIT",
+          description: "Delkreditering 3 - felaktigt debiterat belopp",
+          printGroup: "A"
+        }
+      ]
+    },
     {
       invoiceNumber: "10004",
       invoiceDate: "2025-10-01",
@@ -10,10 +106,14 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       balance: 2800,
       invoiceType: "Avi",
       paymentStatus: "Delvis betald",
-      text: "Delbetalning mottagen",
+      text: "Delbetalningar mottagna",
       inCollection: false,
-      paymentDate: "2025-10-15",
       paidAmount: 5200,
+      paymentEvents: [
+        { date: "2025-10-10", amount: 2000, source: "OCR" },
+        { date: "2025-10-18", amount: 1800, source: "Autogiro" },
+        { date: "2025-10-25", amount: 1400, source: "OCR" }
+      ],
       lineItems: [
         {
           amount: 0,
@@ -105,6 +205,7 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
       relatedInvoiceNumber: "10007",
       preliminaryRefund: 3500,
       preliminaryRefundDate: "2025-10-15",
+      creditBookedDate: "2025-09-20",
       lineItems: [
         {
           amount: 0,
