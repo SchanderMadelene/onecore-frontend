@@ -1,5 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -13,13 +14,18 @@ import { cn } from "@/lib/utils";
 interface ArticleSectionProps {
   selectedArticle: string;
   artikelnummer: string;
+  objectNumber: string;
   text: string;
   antal: number | string;
   prisInkMoms: number | string;
+  administrativaKostnader: boolean;
+  hanteringsavgift: boolean;
   onArticleSelect: (artikelnummer: string) => void;
   onTextChange: (text: string) => void;
   onAntalChange: (antal: number) => void;
   onPrisChange: (pris: number) => void;
+  onAdministrativaKostnaderChange: (checked: boolean) => void;
+  onHandteringsavgiftChange: (checked: boolean) => void;
   errors?: {
     artikel?: string;
     antal?: string;
@@ -30,13 +36,18 @@ interface ArticleSectionProps {
 export function ArticleSection({
   selectedArticle,
   artikelnummer,
+  objectNumber,
   text,
   antal,
   prisInkMoms,
+  administrativaKostnader,
+  hanteringsavgift,
   onArticleSelect,
   onTextChange,
   onAntalChange,
   onPrisChange,
+  onAdministrativaKostnaderChange,
+  onHandteringsavgiftChange,
   errors
 }: ArticleSectionProps) {
   return (
@@ -76,6 +87,18 @@ export function ArticleSection({
       </div>
 
       <div className="space-y-2">
+        <Label htmlFor="objectNumber">Avser objektsnummer</Label>
+        <Input
+          id="objectNumber"
+          value={objectNumber}
+          readOnly
+          disabled
+          placeholder="Fylls i automatiskt från valt kontrakt"
+          className="bg-muted"
+        />
+      </div>
+
+      <div className="space-y-2">
         <Label htmlFor="text">Text</Label>
         <Input
           id="text"
@@ -111,6 +134,38 @@ export function ArticleSection({
             className={cn(errors?.prisInkMoms && "border-destructive")}
           />
           {errors?.prisInkMoms && <p className="text-sm text-destructive">{errors.prisInkMoms}</p>}
+        </div>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-4 pt-2">
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="administrativaKostnader"
+            checked={administrativaKostnader}
+            onCheckedChange={onAdministrativaKostnaderChange}
+            className="rounded-[2px]"
+          />
+          <Label 
+            htmlFor="administrativaKostnader" 
+            className="text-sm font-normal cursor-pointer"
+          >
+            Administrativa kostnader
+          </Label>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="hanteringsavgift"
+            checked={hanteringsavgift}
+            onCheckedChange={onHandteringsavgiftChange}
+            className="rounded-[2px]"
+          />
+          <Label 
+            htmlFor="hanteringsavgift" 
+            className="text-sm font-normal cursor-pointer"
+          >
+            Hanteringsavgift
+          </Label>
         </div>
       </div>
     </div>
