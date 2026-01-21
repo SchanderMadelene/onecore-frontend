@@ -79,7 +79,7 @@ export function CustomerSearchSection({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             id="kundnummer"
-            placeholder="Sök på kundnr eller personnr..."
+            placeholder="Sök på namn, kundnr eller personnr..."
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
             onFocus={() => {
