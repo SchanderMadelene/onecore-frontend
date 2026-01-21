@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 
 interface AdditionalInfoSectionProps {
   projekt: string;
-  objectNumber: string;
   fakturanAvserFritext: string;
   internInfo: string;
   onProjektChange: (value: string) => void;
@@ -18,7 +17,6 @@ interface AdditionalInfoSectionProps {
 
 export function AdditionalInfoSection({
   projekt,
-  objectNumber,
   fakturanAvserFritext,
   internInfo,
   onProjektChange,
@@ -26,8 +24,6 @@ export function AdditionalInfoSection({
   onInternInfoChange
 }: AdditionalInfoSectionProps) {
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
-  const combinedLength = objectNumber.length + (fakturanAvserFritext ? 3 + fakturanAvserFritext.length : 0);
-  const maxFritextLength = 255 - objectNumber.length - 3;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -55,26 +51,16 @@ export function AdditionalInfoSection({
 
       <div className="space-y-2">
         <Label htmlFor="fakturanAvser">Fakturan avser</Label>
-        <div className="space-y-1">
-          <div className="flex items-center h-10 w-full rounded-md border border-input bg-background ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-            {objectNumber && (
-              <span className="text-sm text-muted-foreground whitespace-nowrap pl-3 pr-1 select-none">
-                {objectNumber} -
-              </span>
-            )}
-            <input
-              id="fakturanAvser"
-              value={fakturanAvserFritext}
-              onChange={(e) => onFakturanAvserFritextChange(e.target.value)}
-              placeholder="Beskrivning av vad fakturan avser..."
-              maxLength={maxFritextLength > 0 ? maxFritextLength : 252}
-              className="flex-1 h-full px-3 py-2 text-sm bg-transparent placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            />
-          </div>
-          <p className="text-xs text-muted-foreground text-right">
-            {combinedLength}/255 tecken
-          </p>
-        </div>
+        <Input
+          id="fakturanAvser"
+          value={fakturanAvserFritext}
+          onChange={(e) => onFakturanAvserFritextChange(e.target.value)}
+          placeholder="Beskrivning av vad fakturan avser..."
+          maxLength={255}
+        />
+        <p className="text-xs text-muted-foreground text-right">
+          {fakturanAvserFritext.length}/255 tecken
+        </p>
       </div>
 
       <div className="space-y-2">
