@@ -33,6 +33,8 @@ export default function AllInspectionsPage() {
   
   // Use custom hooks
   const {
+    searchQuery,
+    setSearchQuery,
     selectedInspector,
     setSelectedInspector,
     selectedAddress,
@@ -313,17 +315,19 @@ export default function AllInspectionsPage() {
       <div className="space-y-6">
         <InspectionsHeader />
 
-        {/* Filters */}
-        <div className="flex flex-col gap-4">
-          {/* Search field */}
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Sök på adress, hyresgäst eller besiktningsnummer..."
-              className="pl-10"
-            />
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4">
+        {/* Sökfält - full bredd */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Sök på adress, hyresgäst eller besiktningsnummer..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+
+        {/* Filter - egen rad */}
+        <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
             {/* Inspector Filter */}
             <Popover open={openInspectorDropdown} onOpenChange={setOpenInspectorDropdown}>
               <PopoverTrigger asChild>
@@ -502,7 +506,6 @@ export default function AllInspectionsPage() {
                 Rensa filter
               </Button>
             )}
-          </div>
         </div>
 
         <Tabs defaultValue="ongoing" className="space-y-6">
