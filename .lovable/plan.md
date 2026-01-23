@@ -1,178 +1,138 @@
 
-# Standardisering av sök- och filterlayout för samlingssidor
+# Enhetlig tabellstil för alla samlingssidor
 
-## Målbild
-Etablera ett enhetligt mönster för alla samlingssidor med:
-- Sökinput som fyller hela sidans bredd på sin egen rad
-- Filter nedanför sökningen (ej i Collapsible)
-- Behålla befintliga filter per sida
-- "Rensa filter"-knapp synlig när filter är aktiva
+## Nuläge
 
-## Sidor som ska uppdateras
+Tabellerna på samlingssidorna har inkonsekvent styling:
 
-### 1. BarriersPage
-**Nuvarande:** Sök och filter på samma rad
-**Ändring:** Bryt ut sökinputen till en egen rad ovanför filtren
+| Sida | Wrapper | Rubrik | Resultaträknare |
+|------|---------|--------|-----------------|
+| BarriersPage | Ingen | Nej | Nej |
+| TurnoverPage (Lista) | Ingen (men TurnoverList har egen rubrik) | Ja | Ja |
+| AllInspectionsPage | `space-y-4` div | Nej | Nej |
+| LeaseContractsPage | Ingen | Nej | Nej |
+| AllTenantsPage | Ingen | Nej | Nej |
+| AllPropertiesPage | PropertyFilteredResults | Ja | Ja |
 
-### 2. TurnoverPage  
-**Nuvarande:** Sök och filter på samma rad
-**Ändring:** Bryt ut sökinputen till en egen rad ovanför filtren
+## Standardmönster
 
-### 3. AllInspectionsPage
-**Nuvarande:** Begränsad bredd (`max-w-md`) på sök, filter i egen rad
-**Ändring:** Ta bort `max-w-md` så sök fyller hela bredden. Fixa `onChange`-funktionalitet
+Baserat på `PropertyFilteredResults` och `ResponsiveTable` etablerar vi följande standard:
 
-### 4. AllTenantsPage
-**Nuvarande:** Filter i Collapsible-komponent inuti Card
-**Ändring:** Ta bort Collapsible, visa filter direkt under sökinputen
-
-### 5. AllPropertiesPage
-**Nuvarande:** Filter i Collapsible-komponent inuti Card
-**Ändring:** Ta bort Collapsible, visa filter direkt under sökinputen
-
-### 6. LeaseContractsPage
-**Nuvarande:** Redan korrekt struktur med sök på egen rad och filter nedanför
-**Ändring:** Ingen ändring behövs (referenssida)
-
-## Implementation
-
-### Steg 1: BarriersPage
 ```text
-Före:
 ┌─────────────────────────────────────────────────────┐
-│ [Sök............] [Typ ▼] [Status ▼] [Rensa]        │
-└─────────────────────────────────────────────────────┘
-
-Efter:
-┌─────────────────────────────────────────────────────┐
-│ [Sök................................................] │
+│ Rubrik                          Visar X av Y resultat │
 ├─────────────────────────────────────────────────────┤
-│ [Typ ▼] [Status ▼] [Rensa filter]                   │
+│ ┌─────────────────────────────────────────────────┐ │
+│ │               ResponsiveTable                    │ │
+│ │           (rounded-md border)                    │ │
+│ └─────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────┘
 ```
 
-### Steg 2: TurnoverPage
-```text
-Före:
-┌─────────────────────────────────────────────────────┐
-│ [Sök............] [Status ▼] [Prioritet ▼] [Rensa]  │
-└─────────────────────────────────────────────────────┘
+Mönstret innehåller:
+1. En yttre wrapper med `space-y-4`
+2. En rubrikrad med titel till vänster och resultaträknare till höger
+3. Tabellen med sin inbyggda `rounded-md border` styling
 
-Efter:
-┌─────────────────────────────────────────────────────┐
-│ [Sök................................................] │
-├─────────────────────────────────────────────────────┤
-│ [Status ▼] [Prioritet ▼] [Rensa filter]             │
-└─────────────────────────────────────────────────────┘
-```
+## Filer som ändras
 
-### Steg 3: AllInspectionsPage
-```text
-Före:
-┌─────────────────────────────────────────────────────┐
-│ [Sök..........] (max-w-md, saknar onChange)         │
-├─────────────────────────────────────────────────────┤
-│ [Besiktningsman ▼] [Adress ▼] [Distrikt ▼] ...      │
-└─────────────────────────────────────────────────────┘
-
-Efter:
-┌─────────────────────────────────────────────────────┐
-│ [Sök................................................] │
-├─────────────────────────────────────────────────────┤
-│ [Besiktningsman ▼] [Adress ▼] [Distrikt ▼] ...      │
-└─────────────────────────────────────────────────────┘
-+ Fungerande söklogik
-```
-
-### Steg 4: AllTenantsPage
-```text
-Före:
-┌─────────────────────────────────────────────────────┐
-│ [Sök................................................] │
-├─ Collapsible ───────────────────────────────────────┤
-│ ▶ Filter (3)                           [Rensa alla] │
-│   ┌───────────────────────────────────────────────┐ │
-│   │ [Kontraktsstatus] [Kontraktstyp] [Kundtyp]    │ │
-│   │ [Fastighet] [Byggnad] [Distrikt]              │ │
-│   └───────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────┘
-
-Efter:
-┌─────────────────────────────────────────────────────┐
-│ [Sök................................................] │
-├─────────────────────────────────────────────────────┤
-│ [Kontraktsstatus ▼] [Kontraktstyp ▼] [Kundtyp ▼]    │
-│ [Fastighet ▼] [Byggnad ▼] [Distrikt ▼] [Rensa]      │
-└─────────────────────────────────────────────────────┘
-```
-
-### Steg 5: AllPropertiesPage
-```text
-Före:
-┌─────────────────────────────────────────────────────┐
-│ [PropertyTypeFilters]                               │
-│ [Sök................................................] │
-├─ Collapsible ───────────────────────────────────────┤
-│ ▶ Filter (2)                           [Rensa alla] │
-│   ┌───────────────────────────────────────────────┐ │
-│   │ [Diverse filter beroende på typ]              │ │
-│   └───────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────┘
-
-Efter:
-┌─────────────────────────────────────────────────────┐
-│ [PropertyTypeFilters]                               │
-│ [Sök................................................] │
-├─────────────────────────────────────────────────────┤
-│ [Beteckning ▼] [Kvartersvärd ▼] [Marknadsområde ▼]  │
-│ [Fastighetsnr ▼] [Distrikt ▼] [Område ▼] [Rensa]    │
-└─────────────────────────────────────────────────────┘
-(PropertyTypeFilters behålls ovanför sök)
-```
-
----
-
-## Tekniska detaljer
-
-### Filer som behöver ändras
-
-| Fil | Ändringstyp |
-|-----|-------------|
-| `src/pages/barriers/BarriersPage.tsx` | Ändra layout till två rader |
-| `src/pages/turnover/TurnoverPage.tsx` | Ändra layout till två rader |
-| `src/pages/inspections/AllInspectionsPage.tsx` | Ta bort `max-w-md`, lägg till söklogik |
-| `src/pages/tenants/AllTenantsPage.tsx` | Ta bort Collapsible, visa filter inline |
-| `src/pages/properties/AllPropertiesPage.tsx` | Ta bort Collapsible, visa filter inline |
-
-### Gemensam struktur för alla sidor
+### 1. BarriersPage.tsx
+Lägg till rubrik och resultaträknare ovanför `BarriersTable`:
 ```tsx
 <div className="space-y-4">
-  {/* Sökfält - full bredd */}
-  <div className="relative">
-    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-    <Input
-      placeholder="Sök..."
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      className="pl-10"
-    />
+  <div className="flex items-center justify-between">
+    <h2 className="text-lg font-semibold">Spärrar</h2>
+    <span className="text-sm text-muted-foreground">
+      Visar {filteredBarriers.length} av {allBarriers.length} spärrar
+    </span>
   </div>
-
-  {/* Filter - egen rad */}
-  <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-    {/* Filter-komponenter */}
-    {hasActiveFilters && (
-      <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-        <X className="h-4 w-4" />
-        Rensa filter
-      </Button>
-    )}
-  </div>
+  <BarriersTable ... />
 </div>
 ```
 
-### Konsekvenser
-- Alla filter synliga direkt utan extra klick
-- Enhetligt utseende över hela applikationen
-- Bättre UX då användare inte behöver öppna Collapsible för att se filter
-- Mobilanpassning med `flex-wrap` för att stapla filter på smala skärmar
+### 2. AllInspectionsPage.tsx
+Uppdatera `renderInspectionTable` för att inkludera rubrik och räknare:
+```tsx
+<div className="space-y-4">
+  <div className="flex items-center justify-between">
+    <h2 className="text-lg font-semibold">{title}</h2>
+    <span className="text-sm text-muted-foreground">
+      Visar {data.length} besiktningar
+    </span>
+  </div>
+  <ResponsiveTable ... />
+</div>
+```
+
+### 3. LeaseContractsPage.tsx
+Lägg till rubrik och resultaträknare:
+```tsx
+<div className="space-y-4">
+  <div className="flex items-center justify-between">
+    <h2 className="text-lg font-semibold">Hyreskontrakt</h2>
+    <span className="text-sm text-muted-foreground">
+      Visar {paginatedContracts.length} av {filteredContracts.length} kontrakt
+    </span>
+  </div>
+  <ResponsiveTable ... />
+  {totalPages > 1 && <LeaseContractsPagination ... />}
+</div>
+```
+
+### 4. AllTenantsPage.tsx
+Lägg till rubrik och resultaträknare:
+```tsx
+<div className="space-y-4">
+  <div className="flex items-center justify-between">
+    <h2 className="text-lg font-semibold">Kunder</h2>
+    <span className="text-sm text-muted-foreground">
+      Visar {filteredCustomers.length} av {customers.length} kunder
+    </span>
+  </div>
+  <ResponsiveTable ... />
+</div>
+```
+
+### 5. TurnoverList.tsx
+Behåll befintlig struktur då den redan följer mönstret, men verifiera konsistens i textformatering.
+
+### 6. AllPropertiesPage.tsx
+Redan korrekt via `PropertyFilteredResults` - ingen ändring behövs.
+
+## Tekniska detaljer
+
+### Gemensam wrapper-struktur
+```tsx
+<div className="space-y-4">
+  <div className="flex items-center justify-between">
+    <h2 className="text-lg font-semibold">{titel}</h2>
+    <span className="text-sm text-muted-foreground">
+      Visar {visade} av {totalt} {enhet}
+    </span>
+  </div>
+  {/* Tabell eller tom state */}
+</div>
+```
+
+### Stilregler
+- Wrapper: `space-y-4`
+- Rubrik: `text-lg font-semibold`
+- Resultaträknare: `text-sm text-muted-foreground`
+- Header-rad: `flex items-center justify-between`
+- Tabellens border kommer från `ResponsiveTable`: `rounded-md border`
+
+### Tom-tillstånd
+När data är tom visas centrerad text utan wrapper:
+```tsx
+<div className="text-center py-8 text-muted-foreground">
+  {emptyMessage}
+</div>
+```
+
+## Sammanfattning
+
+Ändringarna säkerställer att alla samlingssidor har:
+- Konsekvent visuell hierarki med rubrik och räknare
+- Enhetlig spacing (`space-y-4`)
+- Samma typografi för rubriker och metadata
+- `ResponsiveTable` med sin inbyggda `rounded-md border`
