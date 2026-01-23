@@ -1,15 +1,32 @@
 import React, { useState, useMemo } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { BarriersTable } from "@/components/barriers/BarriersTable";
-import { getAllBarriers } from "@/data/barriers";
+import { getAllBarriers, Barrier } from "@/data/barriers";
 import { BarriersHeader } from "./components/BarriersHeader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ExportButton } from "@/components/ui/export-button";
 import { Search, X } from "lucide-react";
+import { exportToExcel, formatDateForExcel, ExcelColumn } from "@/utils/excelExport";
+import { useToast } from "@/hooks/use-toast";
+
+const TYPE_LABELS: Record<string, string> = {
+  housing: "Bostad",
+  parking: "Bilplats",
+  storage: "Förråd",
+  commercial: "Lokal"
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  active: "Aktiv",
+  inactive: "Inaktiv",
+  expired: "Utgången"
+};
 
 const BarriersPage = () => {
+  const { toast } = useToast();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,6 +61,34 @@ const BarriersPage = () => {
     setRefreshKey(prev => prev + 1);
   };
 
+  const handleExport = () => {
+    const columns: ExcelColumn<Barrier>[] = [
+      { key: "id", header: "ID" },
+      { key: "type", header: "Typ", getValue: (item) => TYPE_LABELS[item.type] || item.type },
+      { key: "object", header: "Objekt" },
+      { key: "address", header: "Adress" },
+      { key: "reason", header: "Orsak" },
+      { key: "startDate", header: "Startdatum", getValue: (item) => formatDateForExcel(item.startDate) },
+      { key: "endDate", header: "Slutdatum", getValue: (item) => formatDateForExcel(item.endDate) },
+      { key: "status", header: "Status", getValue: (item) => STATUS_LABELS[item.status] || item.status },
+      { key: "createdBy", header: "Skapad av" },
+      { key: "createdDate", header: "Skapad datum", getValue: (item) => formatDateForExcel(item.createdDate) },
+      { key: "notes", header: "Anteckningar" }
+    ];
+
+    const today = new Date().toISOString().split('T')[0];
+    
+    exportToExcel(filteredBarriers, columns, {
+      filename: `sparrar-${today}`,
+      sheetName: "Spärrar"
+    });
+
+    toast({
+      title: "Export klar",
+      description: `${filteredBarriers.length} spärrar exporterades till Excel`,
+    });
+  };
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
@@ -63,7 +108,7 @@ const BarriersPage = () => {
             </div>
 
             {/* Filter - egen rad */}
-            <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+            <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-center">
               <Select value={typeFilter} onValueChange={setTypeFilter}>
                 <SelectTrigger className="w-full sm:w-[180px]">
                   <SelectValue placeholder="Typ" />
@@ -87,12 +132,21 @@ const BarriersPage = () => {
                   <SelectItem value="expired">Utgången</SelectItem>
                 </SelectContent>
               </Select>
+              
               {hasActiveFilters && (
                 <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
                   <X className="h-4 w-4" />
                   Rensa filter
                 </Button>
               )}
+
+              <div className="sm:ml-auto">
+                <ExportButton 
+                  onExport={handleExport} 
+                  count={filteredBarriers.length}
+                  disabled={filteredBarriers.length === 0}
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
