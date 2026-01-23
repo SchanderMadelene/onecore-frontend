@@ -56,7 +56,7 @@ export function TenantSelectionFilters({
   }, [propertyFilter]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
       <div className="space-y-2">
         <Label htmlFor="customerType">Kundtyp</Label>
         <Select value={customerTypeFilter} onValueChange={setCustomerTypeFilter}>
