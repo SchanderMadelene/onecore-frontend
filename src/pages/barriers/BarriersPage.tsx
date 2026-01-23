@@ -5,6 +5,7 @@ import { getAllBarriers } from "@/data/barriers";
 import { BarriersHeader } from "./components/BarriersHeader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, X } from "lucide-react";
 
@@ -92,10 +93,14 @@ const BarriersPage = () => {
           )}
         </div>
 
-        <BarriersTable 
-          barriers={filteredBarriers} 
-          onBarrierUpdated={handleBarrierCreated}
-        />
+        <Card>
+          <CardContent className="p-0">
+            <BarriersTable 
+              barriers={filteredBarriers} 
+              onBarrierUpdated={handleBarrierCreated}
+            />
+          </CardContent>
+        </Card>
       </div>
     </PageLayout>
   );

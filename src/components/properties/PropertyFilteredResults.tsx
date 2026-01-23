@@ -1,10 +1,10 @@
-
 import { SearchResultsTable } from "./SearchResultsTable";
 import { PropertiesTable } from "./PropertiesTable";
 import { Property } from "@/types/api";
 import { SearchResult } from "@/data/search";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { X, Building } from "lucide-react";
@@ -94,35 +94,17 @@ export const PropertyFilteredResults = ({
           }
         />
       ) : shouldShowSearchResults ? (
-        <>
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold">{contentType}</h2>
-            <p className="text-sm text-muted-foreground">
-              Visar {filteredSearchResults.length} resultat
-              {activeFilterCount > 0 && (
-                <span className="ml-1">
-                  med {activeFilterCount} {activeFilterCount === 1 ? 'filter' : 'filter'}
-                </span>
-              )}
-            </p>
-          </div>
-          <SearchResultsTable results={filteredSearchResults} />
-        </>
+        <Card>
+          <CardContent className="p-0">
+            <SearchResultsTable results={filteredSearchResults} />
+          </CardContent>
+        </Card>
       ) : (
-        <>
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold">Fastigheter</h2>
-            <p className="text-sm text-muted-foreground">
-              Visar {filteredProperties?.length || 0} fastigheter
-              {activeFilterCount > 0 && (
-                <span className="ml-1">
-                  med {activeFilterCount} {activeFilterCount === 1 ? 'filter' : 'filter'}
-                </span>
-              )}
-            </p>
-          </div>
-          <PropertiesTable properties={filteredProperties || []} />
-        </>
+        <Card>
+          <CardContent className="p-0">
+            <PropertiesTable properties={filteredProperties || []} />
+          </CardContent>
+        </Card>
       )}
     </>
   );

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { format } from "date-fns";
@@ -137,30 +138,36 @@ export default function LeaseContractsPage() {
         
         <LeaseContractsFilters {...filterHook} />
 
-        {paginatedContracts.length > 0 ? (
-          <>
-            <ResponsiveTable
-              data={paginatedContracts}
-              columns={columns}
-              keyExtractor={(contract: LeaseContract) => contract.leaseId}
-              emptyMessage="Inga hyreskontrakt hittades"
-            />
-            
-            {totalPages > 1 && (
-              <LeaseContractsPagination
-                currentPage={filterHook.page}
-                totalPages={totalPages}
-                totalItems={filteredContracts.length}
-                itemsPerPage={filterHook.limit}
-                onPageChange={filterHook.setPage}
-              />
+        <Card>
+          <CardContent className="p-0">
+            {paginatedContracts.length > 0 ? (
+              <>
+                <ResponsiveTable
+                  data={paginatedContracts}
+                  columns={columns}
+                  keyExtractor={(contract: LeaseContract) => contract.leaseId}
+                  emptyMessage="Inga hyreskontrakt hittades"
+                />
+                
+                {totalPages > 1 && (
+                  <div className="p-4 border-t">
+                    <LeaseContractsPagination
+                      currentPage={filterHook.page}
+                      totalPages={totalPages}
+                      totalItems={filteredContracts.length}
+                      itemsPerPage={filterHook.limit}
+                      onPageChange={filterHook.setPage}
+                    />
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                Inga kontrakt matchar dina filter
+              </div>
             )}
-          </>
-        ) : (
-          <div className="text-center py-8 text-muted-foreground">
-            Inga kontrakt matchar dina filter
-          </div>
-        )}
+          </CardContent>
+        </Card>
       </div>
     </PageLayout>
   );

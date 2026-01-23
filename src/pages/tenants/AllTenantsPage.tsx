@@ -183,81 +183,85 @@ const AllTenantsPage = () => {
           )}
         </div>
 
-        <ResponsiveTable
-          data={filteredCustomers}
-          columns={[
-              {
-                key: "name",
-                label: "Namn",
-                render: (customer) => (
-                  <span className="font-medium">
-                    {customer.firstName} {customer.lastName}
-                  </span>
-                ),
-              },
-              {
-                key: "id",
-                label: "Personnummer",
-                render: (customer) => customer.id,
-                hideOnMobile: true,
-              },
-              {
-                key: "type",
-                label: "Typ",
-                render: (customer) => (
-                  <span>
-                    {customer.displayRoles}
-                  </span>
-                ),
-              },
-              {
-                key: "property",
-                label: "Fastighet",
-                render: (customer) => customer.property,
-                hideOnMobile: true,
-              },
-              {
-                key: "action",
-                label: "Åtgärd",
-                render: (customer) => (
-                  <Button asChild variant="link" size="sm">
-                    <Link to={`/tenants/detail/${customer.id}`}>
-                      Visa detaljer
-                    </Link>
-                  </Button>
-                ),
-                className: "text-right",
-              },
-            ]}
-            keyExtractor={(customer) => customer.id}
-            emptyMessage="Inga kunder hittades med angivna sökkriterier"
-            selectable
-            selectedKeys={selectedCustomerIds}
-            onSelectionChange={setSelectedCustomerIds}
-            mobileCardRenderer={(customer) => (
-              <div className="space-y-2 w-full">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="font-medium">
-                      {customer.firstName} {customer.lastName}
+        <Card>
+          <CardContent className="p-0">
+            <ResponsiveTable
+              data={filteredCustomers}
+              columns={[
+                  {
+                    key: "name",
+                    label: "Namn",
+                    render: (customer) => (
+                      <span className="font-medium">
+                        {customer.firstName} {customer.lastName}
+                      </span>
+                    ),
+                  },
+                  {
+                    key: "id",
+                    label: "Personnummer",
+                    render: (customer) => customer.id,
+                    hideOnMobile: true,
+                  },
+                  {
+                    key: "type",
+                    label: "Typ",
+                    render: (customer) => (
+                      <span>
+                        {customer.displayRoles}
+                      </span>
+                    ),
+                  },
+                  {
+                    key: "property",
+                    label: "Fastighet",
+                    render: (customer) => customer.property,
+                    hideOnMobile: true,
+                  },
+                  {
+                    key: "action",
+                    label: "Åtgärd",
+                    render: (customer) => (
+                      <Button asChild variant="link" size="sm">
+                        <Link to={`/tenants/detail/${customer.id}`}>
+                          Visa detaljer
+                        </Link>
+                      </Button>
+                    ),
+                    className: "text-right",
+                  },
+                ]}
+                keyExtractor={(customer) => customer.id}
+                emptyMessage="Inga kunder hittades med angivna sökkriterier"
+                selectable
+                selectedKeys={selectedCustomerIds}
+                onSelectionChange={setSelectedCustomerIds}
+                mobileCardRenderer={(customer) => (
+                  <div className="space-y-2 w-full">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <div className="font-medium">
+                          {customer.firstName} {customer.lastName}
+                        </div>
+                        <div className="text-sm text-muted-foreground">{customer.id}</div>
+                      </div>
+                      <span className="text-sm">
+                        {customer.displayRoles}
+                      </span>
                     </div>
-                    <div className="text-sm text-muted-foreground">{customer.id}</div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">{customer.property}</span>
+                      <Button asChild variant="link" size="sm">
+                        <Link to={`/tenants/detail/${customer.id}`}>
+                          Visa detaljer
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
-                  <span className="text-sm">
-                    {customer.displayRoles}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">{customer.property}</span>
-                  <Button asChild variant="link" size="sm">
-                    <Link to={`/tenants/detail/${customer.id}`}>
-                      Visa detaljer
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            )}
-          />
+                )}
+              />
+          </CardContent>
+        </Card>
 
         <BulkActionBar
           selectedCount={selectedCustomerIds.length}
