@@ -51,13 +51,9 @@ export function TurnoverList({ cases }: TurnoverListProps) {
           ))}
         </div>
       ) : (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center py-8 text-muted-foreground">
-              Inga ärenden matchar dina filterkriterier
-            </div>
-          </CardContent>
-        </Card>
+        <div className="text-center py-8 text-muted-foreground">
+          Inga ärenden matchar dina filterkriterier
+        </div>
       )}
 
       <TurnoverCaseDetailDialog 

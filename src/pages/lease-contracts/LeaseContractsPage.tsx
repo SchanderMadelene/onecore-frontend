@@ -137,30 +137,38 @@ export default function LeaseContractsPage() {
         
         <LeaseContractsFilters {...filterHook} />
 
-        {paginatedContracts.length > 0 ? (
-          <>
-            <ResponsiveTable
-              data={paginatedContracts}
-              columns={columns}
-              keyExtractor={(contract: LeaseContract) => contract.leaseId}
-              emptyMessage="Inga hyreskontrakt hittades"
-            />
-            
-            {totalPages > 1 && (
-              <LeaseContractsPagination
-                currentPage={filterHook.page}
-                totalPages={totalPages}
-                totalItems={filteredContracts.length}
-                itemsPerPage={filterHook.limit}
-                onPageChange={filterHook.setPage}
-              />
-            )}
-          </>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-muted-foreground">Inga kontrakt matchar dina filter</p>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Hyreskontrakt</h2>
+            <span className="text-sm text-muted-foreground">
+              Visar {paginatedContracts.length} av {filteredContracts.length} kontrakt
+            </span>
           </div>
-        )}
+          {paginatedContracts.length > 0 ? (
+            <>
+              <ResponsiveTable
+                data={paginatedContracts}
+                columns={columns}
+                keyExtractor={(contract: LeaseContract) => contract.leaseId}
+                emptyMessage="Inga hyreskontrakt hittades"
+              />
+              
+              {totalPages > 1 && (
+                <LeaseContractsPagination
+                  currentPage={filterHook.page}
+                  totalPages={totalPages}
+                  totalItems={filteredContracts.length}
+                  itemsPerPage={filterHook.limit}
+                  onPageChange={filterHook.setPage}
+                />
+              )}
+            </>
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              Inga kontrakt matchar dina filter
+            </div>
+          )}
+        </div>
       </div>
     </PageLayout>
   );
