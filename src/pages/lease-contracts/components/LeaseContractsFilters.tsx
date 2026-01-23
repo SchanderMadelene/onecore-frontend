@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { ChevronsUpDown, Check, X, Search } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { X, Search } from "lucide-react";
 import { LeaseContractType, LeaseContractStatus, LEASE_STATUS_LABELS, LEASE_TYPE_LABELS } from "@/types/leaseContract";
 import { DateRangeFilter } from "./DateRangeFilter";
 
@@ -39,16 +37,6 @@ interface LeaseContractsFiltersProps {
   setLastDebitDateStart: (date: Date | undefined) => void;
   lastDebitDateEnd: Date | undefined;
   setLastDebitDateEnd: (date: Date | undefined) => void;
-  openTypeDropdown: boolean;
-  setOpenTypeDropdown: (open: boolean) => void;
-  openStatusDropdown: boolean;
-  setOpenStatusDropdown: (open: boolean) => void;
-  openDistrictDropdown: boolean;
-  setOpenDistrictDropdown: (open: boolean) => void;
-  openPropertyDropdown: boolean;
-  setOpenPropertyDropdown: (open: boolean) => void;
-  openBuildingDropdown: boolean;
-  setOpenBuildingDropdown: (open: boolean) => void;
   contractTypes: LeaseContractType[];
   statusOptions: LeaseContractStatus[];
   uniqueDistricts: string[];
@@ -79,16 +67,6 @@ export function LeaseContractsFilters({
   setLastDebitDateStart,
   lastDebitDateEnd,
   setLastDebitDateEnd,
-  openTypeDropdown,
-  setOpenTypeDropdown,
-  openStatusDropdown,
-  setOpenStatusDropdown,
-  openDistrictDropdown,
-  setOpenDistrictDropdown,
-  openPropertyDropdown,
-  setOpenPropertyDropdown,
-  openBuildingDropdown,
-  setOpenBuildingDropdown,
   contractTypes,
   statusOptions,
   uniqueDistricts,
@@ -111,223 +89,96 @@ export function LeaseContractsFilters({
       </div>
 
       {/* Filter row */}
-      <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
+      <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
         {/* Type Filter */}
-        <Popover open={openTypeDropdown} onOpenChange={setOpenTypeDropdown}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openTypeDropdown}
-              className="w-full sm:w-[180px] justify-between"
-            >
-              {selectedType ? LEASE_TYPE_LABELS[selectedType] : "Kontraktstyp..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
-            <Command>
-              <CommandList>
-                <CommandEmpty>Ingen typ hittades.</CommandEmpty>
-                <CommandGroup>
-                  {contractTypes.map((type) => (
-                    <CommandItem
-                      key={type}
-                      value={type}
-                      onSelect={() => {
-                        setSelectedType(selectedType === type ? '' : type);
-                        setOpenTypeDropdown(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          selectedType === type ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {LEASE_TYPE_LABELS[type]}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <Select 
+          value={selectedType || "all"} 
+          onValueChange={(value) => setSelectedType(value === "all" ? '' : value as LeaseContractType)}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Kontraktstyp" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla kontraktstyper</SelectItem>
+            {contractTypes.map((type) => (
+              <SelectItem key={type} value={type}>
+                {LEASE_TYPE_LABELS[type]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* Status Filter */}
-        <Popover open={openStatusDropdown} onOpenChange={setOpenStatusDropdown}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openStatusDropdown}
-              className="w-full sm:w-[180px] justify-between"
-            >
-              {selectedStatus !== '' ? LEASE_STATUS_LABELS[selectedStatus] : "Status..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
-            <Command>
-              <CommandList>
-                <CommandEmpty>Ingen status hittades.</CommandEmpty>
-                <CommandGroup>
-                  {statusOptions.map((status) => (
-                    <CommandItem
-                      key={status}
-                      value={String(status)}
-                      onSelect={() => {
-                        setSelectedStatus(selectedStatus === status ? '' : status);
-                        setOpenStatusDropdown(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          selectedStatus === status ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {LEASE_STATUS_LABELS[status]}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <Select 
+          value={selectedStatus !== '' ? String(selectedStatus) : "all"} 
+          onValueChange={(value) => setSelectedStatus(value === "all" ? '' : Number(value) as LeaseContractStatus)}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla statusar</SelectItem>
+            {statusOptions.map((status) => (
+              <SelectItem key={status} value={String(status)}>
+                {LEASE_STATUS_LABELS[status]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* Property Filter */}
-        <Popover open={openPropertyDropdown} onOpenChange={setOpenPropertyDropdown}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openPropertyDropdown}
-              className="w-full sm:w-[180px] justify-between"
-            >
-              {selectedProperty 
-                ? uniqueProperties.find(p => p.id === selectedProperty)?.name || "Fastighet..."
-                : "Fastighet..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
-            <Command>
-              <CommandInput placeholder="Sök fastighet..." />
-              <CommandList>
-                <CommandEmpty>Ingen fastighet hittades.</CommandEmpty>
-                <CommandGroup>
-                  {uniqueProperties.map((property) => (
-                    <CommandItem
-                      key={property.id}
-                      value={property.name}
-                      onSelect={() => {
-                        setSelectedProperty(selectedProperty === property.id ? '' : property.id);
-                        setOpenPropertyDropdown(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          selectedProperty === property.id ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {property.name}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <Select 
+          value={selectedProperty || "all"} 
+          onValueChange={(value) => setSelectedProperty(value === "all" ? '' : value)}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Fastighet" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla fastigheter</SelectItem>
+            {uniqueProperties.map((property) => (
+              <SelectItem key={property.id} value={property.id}>
+                {property.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* Building Filter */}
-        <Popover open={openBuildingDropdown} onOpenChange={setOpenBuildingDropdown}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openBuildingDropdown}
-              className="w-full sm:w-[180px] justify-between"
-            >
-              {selectedBuilding 
-                ? availableBuildings.find(b => b.id === selectedBuilding)?.name || "Byggnad..."
-                : "Byggnad..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
-            <Command>
-              <CommandInput placeholder="Sök byggnad..." />
-              <CommandList>
-                <CommandEmpty>Ingen byggnad hittades.</CommandEmpty>
-                <CommandGroup>
-                  {availableBuildings.map((building) => (
-                    <CommandItem
-                      key={building.id}
-                      value={building.name}
-                      onSelect={() => {
-                        setSelectedBuilding(selectedBuilding === building.id ? '' : building.id);
-                        setOpenBuildingDropdown(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          selectedBuilding === building.id ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {building.name}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <Select 
+          value={selectedBuilding || "all"} 
+          onValueChange={(value) => setSelectedBuilding(value === "all" ? '' : value)}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Byggnad" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla byggnader</SelectItem>
+            {availableBuildings.map((building) => (
+              <SelectItem key={building.id} value={building.id}>
+                {building.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* District Filter */}
-        <Popover open={openDistrictDropdown} onOpenChange={setOpenDistrictDropdown}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openDistrictDropdown}
-              className="w-full sm:w-[180px] justify-between"
-            >
-              {selectedDistrict || "Distrikt..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[180px] p-0 bg-background z-50" align="start">
-            <Command>
-              <CommandInput placeholder="Sök distrikt..." />
-              <CommandList>
-                <CommandEmpty>Inget distrikt hittades.</CommandEmpty>
-                <CommandGroup>
-                  {uniqueDistricts.map((district) => (
-                    <CommandItem
-                      key={district}
-                      value={district}
-                      onSelect={() => {
-                        setSelectedDistrict(selectedDistrict === district ? '' : district);
-                        setOpenDistrictDropdown(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          selectedDistrict === district ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {district}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <Select 
+          value={selectedDistrict || "all"} 
+          onValueChange={(value) => setSelectedDistrict(value === "all" ? '' : value)}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Distrikt" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla distrikt</SelectItem>
+            {uniqueDistricts.map((district) => (
+              <SelectItem key={district} value={district}>
+                {district}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* Date Range Filter - Lease Start Date */}
         <DateRangeFilter
@@ -346,7 +197,6 @@ export function LeaseContractsFilters({
           onFromDateChange={setLastDebitDateStart}
           onToDateChange={setLastDebitDateEnd}
         />
-
 
         {/* Clear filters */}
         {hasActiveFilters && (
