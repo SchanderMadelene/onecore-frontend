@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -138,40 +137,30 @@ export default function LeaseContractsPage() {
         
         <LeaseContractsFilters {...filterHook} />
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              Alla kontrakt
-              <Badge variant="outline">{filteredContracts.length}</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {paginatedContracts.length > 0 ? (
-              <>
-                <ResponsiveTable
-                  data={paginatedContracts}
-                  columns={columns}
-                  keyExtractor={(contract: LeaseContract) => contract.leaseId}
-                  emptyMessage="Inga hyreskontrakt hittades"
-                />
-                
-                {totalPages > 1 && (
-                  <LeaseContractsPagination
-                    currentPage={filterHook.page}
-                    totalPages={totalPages}
-                    totalItems={filteredContracts.length}
-                    itemsPerPage={filterHook.limit}
-                    onPageChange={filterHook.setPage}
-                  />
-                )}
-              </>
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">Inga kontrakt matchar dina filter</p>
-              </div>
+        {paginatedContracts.length > 0 ? (
+          <>
+            <ResponsiveTable
+              data={paginatedContracts}
+              columns={columns}
+              keyExtractor={(contract: LeaseContract) => contract.leaseId}
+              emptyMessage="Inga hyreskontrakt hittades"
+            />
+            
+            {totalPages > 1 && (
+              <LeaseContractsPagination
+                currentPage={filterHook.page}
+                totalPages={totalPages}
+                totalItems={filteredContracts.length}
+                itemsPerPage={filterHook.limit}
+                onPageChange={filterHook.setPage}
+              />
             )}
-          </CardContent>
-        </Card>
+          </>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">Inga kontrakt matchar dina filter</p>
+          </div>
+        )}
       </div>
     </PageLayout>
   );
