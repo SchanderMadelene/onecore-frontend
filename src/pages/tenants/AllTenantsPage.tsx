@@ -145,128 +145,119 @@ const AllTenantsPage = () => {
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="w-full pb-20">
+      <div className="w-full pb-20 space-y-6">
         <TenantsHeader />
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Sök i kundbasen</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col gap-4 mb-6">
-            {/* Sökfält - full bredd */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Sök på namn, personnummer eller fastighet..."
-                className="pl-10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
+        {/* Sökfält - full bredd */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Sök på namn, personnummer eller fastighet..."
+            className="pl-10"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
 
-            {/* Filter - egen rad */}
-            <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-end">
-              <TenantSelectionFilters
-                contractStatusFilter={contractStatusFilter}
-                setContractStatusFilter={setContractStatusFilter}
-                contractTypeFilter={contractTypeFilter}
-                setContractTypeFilter={setContractTypeFilter}
-                customerTypeFilter={customerTypeFilter}
-                setCustomerTypeFilter={setCustomerTypeFilter}
-                propertyFilter={propertyFilter}
-                setPropertyFilter={setPropertyFilter}
-                buildingFilter={buildingFilter}
-                setBuildingFilter={setBuildingFilter}
-                districtFilter={districtFilter}
-                setDistrictFilter={setDistrictFilter}
-              />
-              {activeFilterCount > 0 && (
-                <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1">
-                  <X className="h-4 w-4" />
-                  Rensa filter
+        {/* Filter - egen rad */}
+        <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-end">
+          <TenantSelectionFilters
+            contractStatusFilter={contractStatusFilter}
+            setContractStatusFilter={setContractStatusFilter}
+            contractTypeFilter={contractTypeFilter}
+            setContractTypeFilter={setContractTypeFilter}
+            customerTypeFilter={customerTypeFilter}
+            setCustomerTypeFilter={setCustomerTypeFilter}
+            propertyFilter={propertyFilter}
+            setPropertyFilter={setPropertyFilter}
+            buildingFilter={buildingFilter}
+            setBuildingFilter={setBuildingFilter}
+            districtFilter={districtFilter}
+            setDistrictFilter={setDistrictFilter}
+          />
+          {activeFilterCount > 0 && (
+            <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1">
+              <X className="h-4 w-4" />
+              Rensa filter
+            </Button>
+          )}
+        </div>
+
+        <ResponsiveTable
+          data={filteredCustomers}
+          columns={[
+            {
+              key: "name",
+              label: "Namn",
+              render: (customer) => (
+                <span className="font-medium">
+                  {customer.firstName} {customer.lastName}
+                </span>
+              ),
+            },
+            {
+              key: "id",
+              label: "Personnummer",
+              render: (customer) => customer.id,
+              hideOnMobile: true,
+            },
+            {
+              key: "type",
+              label: "Typ",
+              render: (customer) => (
+                <span>
+                  {customer.displayRoles}
+                </span>
+              ),
+            },
+            {
+              key: "property",
+              label: "Fastighet",
+              render: (customer) => customer.property,
+              hideOnMobile: true,
+            },
+            {
+              key: "action",
+              label: "Åtgärd",
+              render: (customer) => (
+                <Button asChild variant="link" size="sm">
+                  <Link to={`/tenants/detail/${customer.id}`}>
+                    Visa detaljer
+                  </Link>
                 </Button>
-              )}
-            </div>
-          </div>
-
-            <ResponsiveTable
-              data={filteredCustomers}
-              columns={[
-                {
-                  key: "name",
-                  label: "Namn",
-                  render: (customer) => (
-                    <span className="font-medium">
-                      {customer.firstName} {customer.lastName}
-                    </span>
-                  ),
-                },
-                {
-                  key: "id",
-                  label: "Personnummer",
-                  render: (customer) => customer.id,
-                  hideOnMobile: true,
-                },
-                {
-                  key: "type",
-                  label: "Typ",
-                  render: (customer) => (
-                    <span>
-                      {customer.displayRoles}
-                    </span>
-                  ),
-                },
-                {
-                  key: "property",
-                  label: "Fastighet",
-                  render: (customer) => customer.property,
-                  hideOnMobile: true,
-                },
-                {
-                  key: "action",
-                  label: "Åtgärd",
-                  render: (customer) => (
-                    <Button asChild variant="link" size="sm">
-                      <Link to={`/tenants/detail/${customer.id}`}>
-                        Visa detaljer
-                      </Link>
-                    </Button>
-                  ),
-                  className: "text-right",
-                },
-              ]}
-              keyExtractor={(customer) => customer.id}
-              emptyMessage="Inga kunder hittades med angivna sökkriterier"
-              selectable
-              selectedKeys={selectedCustomerIds}
-              onSelectionChange={setSelectedCustomerIds}
-              mobileCardRenderer={(customer) => (
-                <div className="space-y-2 w-full">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <div className="font-medium">
-                        {customer.firstName} {customer.lastName}
-                      </div>
-                      <div className="text-sm text-muted-foreground">{customer.id}</div>
-                    </div>
-                    <span className="text-sm">
-                      {customer.displayRoles}
-                    </span>
+              ),
+              className: "text-right",
+            },
+          ]}
+          keyExtractor={(customer) => customer.id}
+          emptyMessage="Inga kunder hittades med angivna sökkriterier"
+          selectable
+          selectedKeys={selectedCustomerIds}
+          onSelectionChange={setSelectedCustomerIds}
+          mobileCardRenderer={(customer) => (
+            <div className="space-y-2 w-full">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="font-medium">
+                    {customer.firstName} {customer.lastName}
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">{customer.property}</span>
-                    <Button asChild variant="link" size="sm">
-                      <Link to={`/tenants/detail/${customer.id}`}>
-                        Visa detaljer
-                      </Link>
-                    </Button>
-                  </div>
+                  <div className="text-sm text-muted-foreground">{customer.id}</div>
                 </div>
-              )}
-            />
-          </CardContent>
-        </Card>
+                <span className="text-sm">
+                  {customer.displayRoles}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">{customer.property}</span>
+                <Button asChild variant="link" size="sm">
+                  <Link to={`/tenants/detail/${customer.id}`}>
+                    Visa detaljer
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          )}
+        />
 
         <BulkActionBar
           selectedCount={selectedCustomerIds.length}
