@@ -285,13 +285,7 @@ export default function AllInspectionsPage() {
     ];
 
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <span className="text-sm text-muted-foreground">
-            Visar {data.length} besiktningar
-          </span>
-        </div>
+      <>
         {data.length > 0 ? (
           <ResponsiveTable
             data={data}
@@ -304,7 +298,7 @@ export default function AllInspectionsPage() {
             Inga besiktningar i denna kategori
           </div>
         )}
-      </div>
+      </>
     );
   };
 
