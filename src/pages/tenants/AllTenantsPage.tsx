@@ -183,16 +183,9 @@ const AllTenantsPage = () => {
           )}
         </div>
 
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Kunder</h2>
-            <span className="text-sm text-muted-foreground">
-              Visar {filteredCustomers.length} av {customers.length} kunder
-            </span>
-          </div>
-          <ResponsiveTable
-            data={filteredCustomers}
-            columns={[
+        <ResponsiveTable
+          data={filteredCustomers}
+          columns={[
               {
                 key: "name",
                 label: "Namn",
@@ -265,7 +258,6 @@ const AllTenantsPage = () => {
               </div>
             )}
           />
-        </div>
 
         <BulkActionBar
           selectedCount={selectedCustomerIds.length}

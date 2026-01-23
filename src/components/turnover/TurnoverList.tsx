@@ -33,13 +33,6 @@ export function TurnoverList({ cases }: TurnoverListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Alla ärenden</h2>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>Visar {cases.length} ärenden</span>
-        </div>
-      </div>
-
       {sortedCases.length > 0 ? (
         <div className="space-y-4">
           {sortedCases.map(case_ => (
