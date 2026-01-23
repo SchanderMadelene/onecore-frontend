@@ -49,49 +49,53 @@ const BarriersPage = () => {
       <div className="space-y-6">
         <BarriersHeader onBarrierCreated={handleBarrierCreated} />
 
-        {/* Sökfält - full bredd */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Sök på objekt, adress eller orsak..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
-        </div>
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            {/* Sökfält - full bredd */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Sök på objekt, adress eller orsak..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
 
-        {/* Filter - egen rad */}
-        <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-          <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Typ" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Alla typer</SelectItem>
-              <SelectItem value="housing">Bostad</SelectItem>
-              <SelectItem value="parking">Bilplats</SelectItem>
-              <SelectItem value="storage">Förråd</SelectItem>
-              <SelectItem value="commercial">Lokal</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Alla status</SelectItem>
-              <SelectItem value="active">Aktiv</SelectItem>
-              <SelectItem value="inactive">Inaktiv</SelectItem>
-              <SelectItem value="expired">Utgången</SelectItem>
-            </SelectContent>
-          </Select>
-          {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-              <X className="h-4 w-4" />
-              Rensa filter
-            </Button>
-          )}
-        </div>
+            {/* Filter - egen rad */}
+            <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+              <Select value={typeFilter} onValueChange={setTypeFilter}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Typ" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla typer</SelectItem>
+                  <SelectItem value="housing">Bostad</SelectItem>
+                  <SelectItem value="parking">Bilplats</SelectItem>
+                  <SelectItem value="storage">Förråd</SelectItem>
+                  <SelectItem value="commercial">Lokal</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla status</SelectItem>
+                  <SelectItem value="active">Aktiv</SelectItem>
+                  <SelectItem value="inactive">Inaktiv</SelectItem>
+                  <SelectItem value="expired">Utgången</SelectItem>
+                </SelectContent>
+              </Select>
+              {hasActiveFilters && (
+                <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
+                  <X className="h-4 w-4" />
+                  Rensa filter
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardContent className="p-0">

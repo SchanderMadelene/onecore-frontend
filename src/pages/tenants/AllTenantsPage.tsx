@@ -148,40 +148,44 @@ const AllTenantsPage = () => {
       <div className="w-full pb-20 space-y-6">
         <TenantsHeader />
 
-        {/* Sökfält - full bredd */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Sök på namn, personnummer eller fastighet..."
-            className="pl-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            {/* Sökfält - full bredd */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Sök på namn, personnummer eller fastighet..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
-        {/* Filter - egen rad */}
-        <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-end">
-          <TenantSelectionFilters
-            contractStatusFilter={contractStatusFilter}
-            setContractStatusFilter={setContractStatusFilter}
-            contractTypeFilter={contractTypeFilter}
-            setContractTypeFilter={setContractTypeFilter}
-            customerTypeFilter={customerTypeFilter}
-            setCustomerTypeFilter={setCustomerTypeFilter}
-            propertyFilter={propertyFilter}
-            setPropertyFilter={setPropertyFilter}
-            buildingFilter={buildingFilter}
-            setBuildingFilter={setBuildingFilter}
-            districtFilter={districtFilter}
-            setDistrictFilter={setDistrictFilter}
-          />
-          {activeFilterCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1">
-              <X className="h-4 w-4" />
-              Rensa filter
-            </Button>
-          )}
-        </div>
+            {/* Filter - egen rad */}
+            <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-end">
+              <TenantSelectionFilters
+                contractStatusFilter={contractStatusFilter}
+                setContractStatusFilter={setContractStatusFilter}
+                contractTypeFilter={contractTypeFilter}
+                setContractTypeFilter={setContractTypeFilter}
+                customerTypeFilter={customerTypeFilter}
+                setCustomerTypeFilter={setCustomerTypeFilter}
+                propertyFilter={propertyFilter}
+                setPropertyFilter={setPropertyFilter}
+                buildingFilter={buildingFilter}
+                setBuildingFilter={setBuildingFilter}
+                districtFilter={districtFilter}
+                setDistrictFilter={setDistrictFilter}
+              />
+              {activeFilterCount > 0 && (
+                <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1">
+                  <X className="h-4 w-4" />
+                  Rensa filter
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardContent className="p-0">

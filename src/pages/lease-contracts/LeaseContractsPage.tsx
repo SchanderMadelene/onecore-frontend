@@ -136,7 +136,11 @@ export default function LeaseContractsPage() {
       <div className="space-y-6">
         <LeaseContractsHeader />
         
-        <LeaseContractsFilters {...filterHook} />
+        <Card>
+          <CardContent className="pt-6">
+            <LeaseContractsFilters {...filterHook} />
+          </CardContent>
+        </Card>
 
         <Card>
           <CardContent className="p-0">

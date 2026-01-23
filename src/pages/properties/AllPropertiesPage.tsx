@@ -179,53 +179,57 @@ const AllPropertiesPage = () => {
       <div className="w-full space-y-6">
         <PropertiesHeader />
 
-        <PropertyTypeFilters searchTypeFilter={searchTypeFilter} setSearchTypeFilter={setSearchTypeFilter} />
-        
-        {/* Sökfält - full bredd */}
-        <PropertySearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        
-        {/* Filter - egen rad */}
-        <div className="flex flex-col gap-4">
-          {searchTypeFilter === "apartment" ? (
-            <ApartmentSelectionFilters
-              sizeFilter={sizeFilter}
-              setSizeFilter={setSizeFilter}
-              rentFilter={rentFilter}
-              setRentFilter={setRentFilter}
-              hasContractFilter={hasContractFilter}
-              setHasContractFilter={setHasContractFilter}
-              contractStatusFilter={contractStatusFilter}
-              setContractStatusFilter={setContractStatusFilter}
-            />
-          ) : (
-            <PropertySelectionFilters 
-              districtFilter={districtFilter} 
-              setDistrictFilter={setDistrictFilter} 
-              areaFilter={areaFilter} 
-              setAreaFilter={setAreaFilter} 
-              designationFilter={designationFilter}
-              setDesignationFilter={setDesignationFilter}
-              propertyManagerFilter={propertyManagerFilter}
-              setPropertyManagerFilter={setPropertyManagerFilter}
-              marketAreaFilter={marketAreaFilter}
-              setMarketAreaFilter={setMarketAreaFilter}
-              propertyNumberFilter={propertyNumberFilter}
-              setPropertyNumberFilter={setPropertyNumberFilter}
-              allDistricts={allDistricts} 
-              allAreas={allAreas} 
-              allDesignations={allDesignations}
-              allPropertyManagers={allPropertyManagers}
-              allMarketAreas={allMarketAreas}
-              allPropertyNumbers={allPropertyNumbers}
-            />
-          )}
-          {activeFilterCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1 w-fit">
-              <X className="h-4 w-4" />
-              Rensa filter
-            </Button>
-          )}
-        </div>
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            <PropertyTypeFilters searchTypeFilter={searchTypeFilter} setSearchTypeFilter={setSearchTypeFilter} />
+            
+            {/* Sökfält - full bredd */}
+            <PropertySearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            
+            {/* Filter - egen rad */}
+            <div className="flex flex-col gap-4">
+              {searchTypeFilter === "apartment" ? (
+                <ApartmentSelectionFilters
+                  sizeFilter={sizeFilter}
+                  setSizeFilter={setSizeFilter}
+                  rentFilter={rentFilter}
+                  setRentFilter={setRentFilter}
+                  hasContractFilter={hasContractFilter}
+                  setHasContractFilter={setHasContractFilter}
+                  contractStatusFilter={contractStatusFilter}
+                  setContractStatusFilter={setContractStatusFilter}
+                />
+              ) : (
+                <PropertySelectionFilters 
+                  districtFilter={districtFilter} 
+                  setDistrictFilter={setDistrictFilter} 
+                  areaFilter={areaFilter} 
+                  setAreaFilter={setAreaFilter} 
+                  designationFilter={designationFilter}
+                  setDesignationFilter={setDesignationFilter}
+                  propertyManagerFilter={propertyManagerFilter}
+                  setPropertyManagerFilter={setPropertyManagerFilter}
+                  marketAreaFilter={marketAreaFilter}
+                  setMarketAreaFilter={setMarketAreaFilter}
+                  propertyNumberFilter={propertyNumberFilter}
+                  setPropertyNumberFilter={setPropertyNumberFilter}
+                  allDistricts={allDistricts} 
+                  allAreas={allAreas} 
+                  allDesignations={allDesignations}
+                  allPropertyManagers={allPropertyManagers}
+                  allMarketAreas={allMarketAreas}
+                  allPropertyNumbers={allPropertyNumbers}
+                />
+              )}
+              {activeFilterCount > 0 && (
+                <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1 w-fit">
+                  <X className="h-4 w-4" />
+                  Rensa filter
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         <PropertyFilteredResults 
           showSearchResults={showSearchResults} 
