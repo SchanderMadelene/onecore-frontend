@@ -92,10 +92,18 @@ const BarriersPage = () => {
           )}
         </div>
 
-        <BarriersTable 
-          barriers={filteredBarriers} 
-          onBarrierUpdated={handleBarrierCreated}
-        />
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Spärrar</h2>
+            <span className="text-sm text-muted-foreground">
+              Visar {filteredBarriers.length} av {allBarriers.length} spärrar
+            </span>
+          </div>
+          <BarriersTable 
+            barriers={filteredBarriers} 
+            onBarrierUpdated={handleBarrierCreated}
+          />
+        </div>
       </div>
     </PageLayout>
   );
