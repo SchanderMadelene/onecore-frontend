@@ -285,28 +285,20 @@ export default function AllInspectionsPage() {
     ];
 
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            {title}
-            <Badge variant="outline">{data.length}</Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {data.length > 0 ? (
-            <ResponsiveTable
-              data={data}
-              columns={columns}
-              keyExtractor={(inspection: ExtendedInspection) => inspection.id}
-              emptyMessage="Inga besiktningar registrerade ännu"
-            />
-          ) : (
-            <div className="text-center py-8">
-              <p className="text-muted-foreground">Inga besiktningar i denna kategori</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <div className="space-y-4">
+        {data.length > 0 ? (
+          <ResponsiveTable
+            data={data}
+            columns={columns}
+            keyExtractor={(inspection: ExtendedInspection) => inspection.id}
+            emptyMessage="Inga besiktningar registrerade ännu"
+          />
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">Inga besiktningar i denna kategori</p>
+          </div>
+        )}
+      </div>
     );
   };
 
