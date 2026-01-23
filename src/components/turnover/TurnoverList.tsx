@@ -33,21 +33,25 @@ export function TurnoverList({ cases }: TurnoverListProps) {
 
   return (
     <div className="space-y-4">
-      {sortedCases.length > 0 ? (
-        <div className="space-y-4">
-          {sortedCases.map(case_ => (
-            <TurnoverCaseCard 
-              key={case_.id} 
-              case_={case_} 
-              onClick={() => handleCaseClick(case_)}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-8 text-muted-foreground">
-          Inga ärenden matchar dina filterkriterier
-        </div>
-      )}
+      <Card>
+        <CardContent className="p-0">
+          {sortedCases.length > 0 ? (
+            <div className="divide-y">
+              {sortedCases.map(case_ => (
+                <TurnoverCaseCard 
+                  key={case_.id} 
+                  case_={case_} 
+                  onClick={() => handleCaseClick(case_)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              Inga ärenden matchar dina filterkriterier
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <TurnoverCaseDetailDialog 
         case_={selectedCase}

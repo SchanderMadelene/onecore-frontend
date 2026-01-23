@@ -285,20 +285,22 @@ export default function AllInspectionsPage() {
     ];
 
     return (
-      <>
-        {data.length > 0 ? (
-          <ResponsiveTable
-            data={data}
-            columns={columns}
-            keyExtractor={(inspection: ExtendedInspection) => inspection.id}
-            emptyMessage="Inga besiktningar registrerade ännu"
-          />
-        ) : (
-          <div className="text-center py-8 text-muted-foreground">
-            Inga besiktningar i denna kategori
-          </div>
-        )}
-      </>
+      <Card>
+        <CardContent className="p-0">
+          {data.length > 0 ? (
+            <ResponsiveTable
+              data={data}
+              columns={columns}
+              keyExtractor={(inspection: ExtendedInspection) => inspection.id}
+              emptyMessage="Inga besiktningar registrerade ännu"
+            />
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              Inga besiktningar i denna kategori
+            </div>
+          )}
+        </CardContent>
+      </Card>
     );
   };
 
