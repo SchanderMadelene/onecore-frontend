@@ -14,7 +14,8 @@ import { cn } from "@/lib/utils";
 interface ArticleSectionProps {
   selectedArticle: string;
   artikelnummer: string;
-  objectNumber: string;
+  avserObjektnummer: string;
+  onAvserObjektnummerChange: (value: string) => void;
   text: string;
   antal: number | string;
   prisInkMoms: number | string;
@@ -36,7 +37,8 @@ interface ArticleSectionProps {
 export function ArticleSection({
   selectedArticle,
   artikelnummer,
-  objectNumber,
+  avserObjektnummer,
+  onAvserObjektnummerChange,
   text,
   antal,
   prisInkMoms,
@@ -93,6 +95,16 @@ export function ArticleSection({
           value={text}
           onChange={(e) => onTextChange(e.target.value)}
           placeholder="Beskrivning av debiteringen..."
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="avserObjektnummer">Avser objektsnummer</Label>
+        <Input
+          id="avserObjektnummer"
+          value={avserObjektnummer}
+          onChange={(e) => onAvserObjektnummerChange(e.target.value)}
+          placeholder="Objektsnummer..."
         />
       </div>
 
