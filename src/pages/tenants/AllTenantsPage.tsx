@@ -162,7 +162,7 @@ const AllTenantsPage = () => {
             </div>
 
             {/* Filter - egen rad */}
-            <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-end">
+            <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
               <TenantSelectionFilters
                 contractStatusFilter={contractStatusFilter}
                 setContractStatusFilter={setContractStatusFilter}
