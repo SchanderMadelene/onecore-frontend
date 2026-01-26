@@ -4,7 +4,7 @@ import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Settings } from "lucide-react";
 import { MaintenanceUnit } from "@/types/api";
-import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
+import { CreateOrderDialog } from "@/features/orders/components/CreateOrderDialog";
 
 interface PropertyMaintenanceUnitsTabProps {
   maintenanceUnits?: MaintenanceUnit[];
