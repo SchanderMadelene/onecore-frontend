@@ -3,7 +3,7 @@ import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Settings } from "lucide-react";
 import type { Building, SpaceComponent } from "@/types/api";
-import { ComponentCard } from "@/components/shared/ComponentCard";
+import { ComponentCard } from "@/features/shared/components";
 import { Component } from "@/data/components";
 
 interface BuildingInstallationsTabProps {

@@ -6,7 +6,7 @@ import { ResidenceInspection } from "@/components/residence/ResidenceInspection"
 import { ResidenceDocuments } from "@/components/residence/ResidenceDocuments";
 import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/features/shared/components";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { StickyNote } from "lucide-react";
 import { FeatureGatedContent } from "./FeatureGatedContent";

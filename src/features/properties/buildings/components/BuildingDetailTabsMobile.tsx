@@ -6,7 +6,7 @@ import { BuildingInstallationsTab } from "./tabs/BuildingInstallationsTab";
 import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
 import { BuildingDocumentsTab } from "./tabs/BuildingDocumentsTab";
 import { BuildingOrdersTab } from "./tabs/BuildingOrdersTab";
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/features/shared/components";
 import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
 import { FeatureGatedContent } from "./tabs/FeatureGatedContent";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";

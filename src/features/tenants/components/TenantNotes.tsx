@@ -1,5 +1,5 @@
 
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/features/shared/components";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { StickyNote } from "lucide-react";
 
