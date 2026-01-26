@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { ResidenceContent } from "@/components/residence/ResidenceContent";
 import { LoadingState } from "@/components/residence/LoadingState";
 import { ErrorState } from "@/components/residence/ErrorState";

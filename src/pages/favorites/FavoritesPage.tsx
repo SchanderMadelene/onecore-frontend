@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

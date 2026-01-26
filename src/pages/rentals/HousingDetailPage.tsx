@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { useHousingListing } from "@/hooks/useHousingListing";
 import { toast } from "@/hooks/use-toast";

@@ -1,5 +1,5 @@
 
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, User, Shield, Moon, Beaker } from "lucide-react";

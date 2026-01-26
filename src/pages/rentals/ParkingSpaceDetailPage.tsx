@@ -1,6 +1,6 @@
 
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParkingSpaceListing } from "@/hooks/useParkingSpaceListing";

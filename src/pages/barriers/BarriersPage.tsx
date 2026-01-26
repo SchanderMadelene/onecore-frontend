@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { BarriersTable, BarriersHeader } from "@/features/barriers/components";
 import { getAllBarriers } from "@/features/barriers/data";
 import type { Barrier } from "@/features/barriers/types";

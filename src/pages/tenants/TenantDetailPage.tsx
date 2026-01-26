@@ -1,7 +1,7 @@
 
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { TenantCard } from "@/components/tenants/TenantCard";
 import { getTenantById } from "@/data/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";

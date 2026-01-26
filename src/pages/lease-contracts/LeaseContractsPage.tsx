@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { LeaseContractsHeader } from "./components/LeaseContractsHeader";

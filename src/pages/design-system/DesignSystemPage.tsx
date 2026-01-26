@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon } from "lucide-react";
 

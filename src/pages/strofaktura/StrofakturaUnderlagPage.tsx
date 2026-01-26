@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { StrofakturaForm } from "@/components/strofaktura/StrofakturaForm";
 
 export default function StrofakturaUnderlagPage() {
