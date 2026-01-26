@@ -1,5 +1,5 @@
 
-import type { UnpublishedHousingSpace } from "@/components/rentals/types/unpublished-housing";
+import type { UnpublishedHousingSpace } from "@/features/rentals/components/types/unpublished-housing";
 
 export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
   {

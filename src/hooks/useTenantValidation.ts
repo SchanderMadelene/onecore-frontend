@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { getCustomerById } from "@/data/customers";
 import { getMockContractsForTenant } from "@/data/contracts";
-import type { Customer } from "@/components/rentals/types/parking";
+import type { Customer } from "@/features/rentals/components/types/parking";
 
 // Export the ValidationResult type
 export type ValidationResult = 

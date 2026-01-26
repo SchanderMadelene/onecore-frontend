@@ -1,6 +1,6 @@
 
 import { useQuery } from "@tanstack/react-query";
-import type { ParkingSpace } from "@/components/rentals/types/parking";
+import type { ParkingSpace } from "@/features/rentals/components/types/parking";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '/api';
 

@@ -5,9 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ContactSearch } from "@/components/rentals/residence-profile/ContactSearch";
-import { ProfileForm } from "@/components/rentals/residence-profile/ProfileForm";
-import type { ContactSearchData } from "@/components/rentals/residence-profile/types";
+import { ContactSearch } from "@/features/rentals/components/residence-profile/ContactSearch";
+import { ProfileForm } from "@/features/rentals/components/residence-profile/ProfileForm";
+import type { ContactSearchData } from "@/features/rentals/components/residence-profile/types";
 
 const ResidenceProfilePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
