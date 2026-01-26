@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { OrderCard } from "@/components/orders/OrderCard";
-import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
+import { OrderCard } from "@/features/orders/components/OrderCard";
+import { CreateOrderDialog } from "@/features/orders/components/CreateOrderDialog";
 import { Button } from "@/components/ui/button";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { useState } from "react";
