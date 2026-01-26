@@ -10,7 +10,7 @@ import { BulkActionBar } from "@/components/ui/bulk-action-bar";
 import { BulkSmsModal } from "@/components/communication/BulkSmsModal";
 import { BulkEmailModal } from "@/components/communication/BulkEmailModal";
 import { X, Search } from "lucide-react";
-import { TenantsHeader } from "./components/TenantsHeader";
+import { TenantsHeader } from "@/features/tenants";
 import { TenantSelectionFilters } from "@/components/tenants/TenantSelectionFilters";
 import { getAllCustomers } from "@/data/tenants";
 import { mockProperties } from "@/data/properties";

@@ -11,7 +11,7 @@ import { TurnoverList } from "@/components/turnover/TurnoverList";
 import { useTurnoverCases } from "@/hooks/useTurnoverCases";
 import { Search, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { TurnoverHeader } from "./components/TurnoverHeader";
+import { TurnoverHeader } from "@/features/turnover";
 
 export default function TurnoverPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

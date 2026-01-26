@@ -8,10 +8,7 @@ import { useCreateOffer } from "@/hooks/useOfferActions";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Notes } from "@/components/shared/Notes";
-import { ParkingSpaceHeader } from "./components/ParkingSpaceHeader";
-import { ApplicantsTable } from "./components/ApplicantsTable";
-import { ParkingSpaceInfo } from "./components/ParkingSpaceInfo";
-import { getOfferStatus, createMockSpace } from "./utils/parkingSpaceUtils";
+import { ParkingSpaceHeader, ApplicantsTable, ParkingSpaceInfo, getOfferStatus, createMockSpace } from "@/features/rentals";
 
 const ParkingSpaceDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

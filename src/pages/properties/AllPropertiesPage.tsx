@@ -10,7 +10,7 @@ import { PropertySelectionFilters } from "@/components/properties/PropertySelect
 import { ApartmentSelectionFilters } from "@/components/properties/ApartmentSelectionFilters";
 import { PropertyFilteredResults } from "@/components/properties/PropertyFilteredResults";
 import { usePropertyFilters } from "@/hooks/usePropertyFilters";
-import { PropertiesHeader } from "./components/PropertiesHeader";
+import { PropertiesHeader } from "@/features/properties";
 
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
