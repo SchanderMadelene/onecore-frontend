@@ -1,8 +1,8 @@
 
 import { useMemo } from "react";
 import { TreeItem } from "./TreeItem";
-import { TreeViewProps } from "./types";
-import { treeData } from "./treeData";
+import { TreeViewProps } from "../types";
+import { treeData } from "../data/treeData";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function TreeView({ 

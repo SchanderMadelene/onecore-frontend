@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { TreeItemProps } from "./types";
+import { TreeItemProps } from "../types";
 import { getNodeIcon } from "./treeViewUtils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
