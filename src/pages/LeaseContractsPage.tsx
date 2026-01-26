@@ -5,18 +5,24 @@ import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { PageLayout } from "@/layout/PageLayout";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
-import { LeaseContractsHeader } from "./components/LeaseContractsHeader";
-import { LeaseContractsFilters } from "./components/LeaseContractsFilters";
-import { LeaseContractActions } from "./components/LeaseContractActions";
-import { LeaseContractsPagination } from "./components/LeaseContractsPagination";
-import { useLeaseContractFilters } from "./hooks/useLeaseContractFilters";
-import { mockLeaseContracts } from "./data/mockLeaseContracts";
 import { 
+  LeaseContractsHeader,
+  LeaseContractsFilters,
+  LeaseContractActions,
+  LeaseContractsPagination
+} from "@/features/lease-contracts/components";
+import { useLeaseContractFilters } from "@/features/lease-contracts/hooks";
+import { mockLeaseContracts } from "@/features/lease-contracts/data";
+import type { 
   LeaseContract, 
+  LeaseContractStatus,
+  LeaseContractType
+} from "@/features/lease-contracts/types";
+import { 
   LEASE_STATUS_LABELS, 
   LEASE_STATUS_VARIANTS, 
   LEASE_TYPE_LABELS 
-} from "@/types/leaseContract";
+} from "@/features/lease-contracts/types";
 
 export default function LeaseContractsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
