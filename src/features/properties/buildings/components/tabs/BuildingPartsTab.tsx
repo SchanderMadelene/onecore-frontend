@@ -67,8 +67,8 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
             { label: "Ansvarig", value: "Teknisk förvaltning" },
             { label: "Placering", value: "Taknock, 1200 m²" },
             { label: "Byggår", value: "1973" },
-          { label: "Dokumentation", value: "Installationsprotokoll" },
-          { label: "Statusbesiktning", value: "4" },
+            { label: "Dokumentation", value: "Installationsprotokoll" },
+            { label: "Statusbesiktning", value: "4" },
           ],
         },
         {
@@ -245,8 +245,8 @@ export const BuildingPartsTab = ({ building }: BuildingPartsTabProps) => {
             { label: "Ansvarig", value: "Teknisk förvaltning" },
             { label: "Placering", value: "Hela byggnaden, 96 st" },
             { label: "Byggår", value: "1995" },
-          { label: "Dokumentation", value: "U-värde certifikat" },
-          { label: "Statusbesiktning", value: "3" },
+            { label: "Dokumentation", value: "U-värde certifikat" },
+            { label: "Statusbesiktning", value: "3" },
           ],
         },
         {

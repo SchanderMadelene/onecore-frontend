@@ -1,4 +1,3 @@
-// import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard"; // TODO: Replace with new unified component
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";

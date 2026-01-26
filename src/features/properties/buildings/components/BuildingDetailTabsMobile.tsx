@@ -8,7 +8,7 @@ import { BuildingDocumentsTab } from "./tabs/BuildingDocumentsTab";
 import { BuildingOrdersTab } from "./tabs/BuildingOrdersTab";
 import { Notes } from "@/components/shared/Notes";
 import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
-import { FeatureGatedContent } from "@/components/residence/tabs/FeatureGatedContent";
+import { FeatureGatedContent } from "./tabs/FeatureGatedContent";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import type { Building as BuildingType } from "@/types/api";
 

@@ -5,9 +5,7 @@ import { PageLayout } from "@/layout/PageLayout";
 import { useBuildingDetail } from "@/hooks/useBuildingDetail";
 import { usePropertyFromBuilding } from "@/hooks/usePropertyFromBuilding";
 import { useToast } from "@/hooks/use-toast";
-import { BuildingHeader } from "@/components/buildings/BuildingHeader";
-import { BuildingBasicInfo } from "@/components/buildings/BuildingBasicInfo";
-import { BuildingDetailTabs } from "@/components/buildings/BuildingDetailTabs";
+import { BuildingHeader, BuildingBasicInfo, BuildingDetailTabs } from "@/components/buildings";
 
 const BuildingDetailPage = () => {
   const { property, building } = useParams();

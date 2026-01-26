@@ -1,6 +1,4 @@
-
 import { Card, CardContent } from "@/components/ui/card";
-// import { ComponentCard } from "@/components/design-system/showcase/cards/ComponentCard"; // TODO: Replace with new unified component
 import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Car } from "lucide-react";
