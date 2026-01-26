@@ -1,6 +1,6 @@
 import { Phone, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LeaseContractTenant } from "@/types/leaseContract";
+import type { LeaseContractTenant } from "../types";
 
 interface LeaseContractActionsProps {
   tenant: LeaseContractTenant | undefined;

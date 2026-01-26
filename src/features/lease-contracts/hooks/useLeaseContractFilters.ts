@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { LeaseContract, LeaseContractType, LeaseContractStatus } from '@/types/leaseContract';
+import type { LeaseContract, LeaseContractType, LeaseContractStatus } from '../types';
 
 interface PropertyOption {
   id: string;

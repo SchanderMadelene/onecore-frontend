@@ -30,7 +30,7 @@ import SettingsPage from "./pages/settings/SettingsPage";
 // Import favorites page
 import FavoritesPage from "./pages/favorites/FavoritesPage";
 // Import lease contracts page
-import LeaseContractsPage from "./pages/lease-contracts/LeaseContractsPage";
+import LeaseContractsPage from "./pages/LeaseContractsPage";
 // Import strofaktura page
 import StrofakturaUnderlagPage from "./pages/strofaktura/StrofakturaUnderlagPage";
 
