@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { PageLayout } from "@/layout/PageLayout";
-import { ResidenceContent } from "@/components/residence/ResidenceContent";
-import { LoadingState } from "@/components/residence/LoadingState";
-import { ErrorState } from "@/components/residence/ErrorState";
+import { ResidenceContent } from "@/features/properties/residences/components/ResidenceContent";
+import { LoadingState } from "@/features/properties/residences/components/LoadingState";
+import { ErrorState } from "@/features/properties/residences/components/ErrorState";
 import { useResidenceData } from "@/hooks/useResidenceData";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useBuildingDetail } from "@/hooks/useBuildingDetail";

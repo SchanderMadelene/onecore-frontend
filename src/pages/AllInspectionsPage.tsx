@@ -7,8 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Eye, ChevronUp, ChevronDown, X, Play, PlayCircle, Search } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
-import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
+import { InspectionReadOnly } from "@/features/properties/residences/components/inspection/InspectionReadOnly";
+import { InspectionFormDialog } from "@/features/properties/residences/components/inspection/InspectionFormDialog";
 import { PageLayout } from "@/layout/PageLayout";
 import { 
   InspectionsHeader, 
@@ -25,7 +25,7 @@ import {
   getMockRooms 
 } from "@/features/inspections/data";
 import type { ExtendedInspection } from "@/features/inspections/types";
-import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "@/components/residence/inspection/types";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "@/features/properties/residences/components/inspection/types";
 
 export default function AllInspectionsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

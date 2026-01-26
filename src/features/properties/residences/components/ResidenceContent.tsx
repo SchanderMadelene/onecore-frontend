@@ -1,7 +1,7 @@
 
-import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
-import { ResidenceTabsList } from "@/components/residence/tabs/ResidenceTabsList";
-import { ResidenceTabsContent } from "@/components/residence/tabs/ResidenceTabsContent";
+import { ResidenceBasicInfo } from "./ResidenceBasicInfo";
+import { ResidenceTabsList } from "./tabs/ResidenceTabsList";
+import { ResidenceTabsContent } from "./tabs/ResidenceTabsContent";
 import { PropertyBreadcrumb } from "@/features/navigation/components";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room, Building, PropertyDetail } from "@/types/api";

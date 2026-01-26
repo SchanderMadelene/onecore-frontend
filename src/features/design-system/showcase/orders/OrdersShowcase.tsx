@@ -3,10 +3,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { OrderCard } from "@/features/orders/components/OrderCard";
 import { CreateOrderDialog } from "@/features/orders/components/CreateOrderDialog";
 import { Button } from "@/components/ui/button";
-import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
+import { InspectionReadOnly } from "@/features/properties/residences/components/inspection/InspectionReadOnly";
 import { useState } from "react";
-import type { Inspection, InspectionSubmitData } from "@/components/residence/inspection/types";
-import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
+import type { Inspection, InspectionSubmitData } from "@/features/properties/residences/components/inspection/types";
+import { InspectionFormDialog } from "@/features/properties/residences/components/inspection/InspectionFormDialog";
 import { mockRoomsData } from "@/data/rooms";
 import { mockTenant } from "@/data/tenants";
 
