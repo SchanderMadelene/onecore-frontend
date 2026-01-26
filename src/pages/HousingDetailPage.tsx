@@ -6,7 +6,7 @@ import { toast } from "@/hooks/use-toast";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { useHousingStatus } from "@/hooks/useHousingStatus";
 import { useState } from "react";
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/features/shared/components";
 import { HousingHeader, HousingApplicantsTable, HousingInfo } from "@/features/rentals";
 
 const HousingDetailPage = () => {

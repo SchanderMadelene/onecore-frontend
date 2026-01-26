@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ComponentCard } from "@/components/shared/ComponentCard";
+import { ComponentCard } from "@/features/shared/components";
 import { mockComponents } from "@/data/components";
 
 export const ComponentShowcase = () => {

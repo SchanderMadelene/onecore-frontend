@@ -1,7 +1,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { EmptyState } from "@/components/ui/empty-state";
-import { ComponentCard } from "@/components/shared/ComponentCard";
+import { ComponentCard } from "@/features/shared/components";
 import { Box } from "lucide-react";
 import type { Building } from "@/types/api";
 import type { Component } from "@/data/components";

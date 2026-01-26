@@ -8,7 +8,7 @@ import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
 import { BuildingDocumentsTab } from "./tabs/BuildingDocumentsTab";
 import { BuildingOrdersTab } from "./tabs/BuildingOrdersTab";
 import { BuildingDetailTabsMobile } from "./BuildingDetailTabsMobile";
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/features/shared/components";
 import { FeatureGatedContent } from "./tabs/FeatureGatedContent";
 import { MessageSquare } from "lucide-react";
 

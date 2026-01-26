@@ -7,7 +7,7 @@ import { useParkingSpaceListing } from "@/hooks/useParkingSpaceListing";
 import { useCreateOffer } from "@/hooks/useOfferActions";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/features/shared/components";
 import { ParkingSpaceHeader, ApplicantsTable, ParkingSpaceInfo, getOfferStatus, createMockSpace } from "@/features/rentals";
 
 const ParkingSpaceDetailPage = () => {
