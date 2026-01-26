@@ -4,13 +4,15 @@ import { PageLayout } from "@/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { PropertySearch } from "@/components/properties/PropertySearch";
-import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters";
-import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
-import { ApartmentSelectionFilters } from "@/components/properties/ApartmentSelectionFilters";
-import { PropertyFilteredResults } from "@/components/properties/PropertyFilteredResults";
+import { 
+  PropertySearch, 
+  PropertyTypeFilters, 
+  PropertySelectionFilters, 
+  ApartmentSelectionFilters, 
+  PropertyFilteredResults,
+  PropertiesHeader
+} from "@/features/properties/components";
 import { usePropertyFilters } from "@/hooks/usePropertyFilters";
-import { PropertiesHeader } from "@/features/properties";
 
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
