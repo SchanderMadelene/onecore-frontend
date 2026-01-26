@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ChevronUp, ChevronDown } from "lucide-react";
-import type { ExtendedInspection } from "../data/mockInspections";
+import type { ExtendedInspection } from "../types";
 
 export type SortField = 'priority' | 'contractId' | 'terminationDate';
 export type SortDirection = 'asc' | 'desc';
@@ -34,11 +32,12 @@ export function useInspectionSorting() {
           bValue = b.contractId || '';
           break;
         case 'terminationDate':
-          aValue = new Date(a.terminationDate || '').getTime();
-          bValue = new Date(b.terminationDate || '').getTime();
+          aValue = a.terminationDate || '';
+          bValue = b.terminationDate || '';
           break;
         default:
-          return 0;
+          aValue = 0;
+          bValue = 0;
       }
 
       if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;

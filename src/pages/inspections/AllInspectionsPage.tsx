@@ -10,13 +10,21 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { InspectionsHeader } from "./components/InspectionsHeader";
-import { InspectorCell } from "./components/InspectorCell";
-import { DateCell } from "./components/DateCell";
-import { useInspectionFilters } from "./hooks/useInspectionFilters";
-import { useInspectionSorting } from "./hooks/useInspectionSorting";
-import { getAllInspections, CURRENT_USER, type ExtendedInspection } from "./data/mockInspections";
-import { getMockRooms } from "./data/mockRooms";
+import { 
+  InspectionsHeader, 
+  InspectorCell, 
+  DateCell 
+} from "@/features/inspections/components";
+import { 
+  useInspectionFilters, 
+  useInspectionSorting 
+} from "@/features/inspections/hooks";
+import { 
+  getAllInspections, 
+  CURRENT_USER, 
+  getMockRooms 
+} from "@/features/inspections/data";
+import type { ExtendedInspection } from "@/features/inspections/types";
 import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "@/components/residence/inspection/types";
 
 export default function AllInspectionsPage() {
@@ -39,14 +47,6 @@ export default function AllInspectionsPage() {
     setSelectedDistrict,
     selectedPriority,
     setSelectedPriority,
-    openInspectorDropdown,
-    setOpenInspectorDropdown,
-    openAddressDropdown,
-    setOpenAddressDropdown,
-    openDistrictDropdown,
-    setOpenDistrictDropdown,
-    openPriorityDropdown,
-    setOpenPriorityDropdown,
     uniqueInspectors,
     uniqueAddresses,
     uniqueDistricts,

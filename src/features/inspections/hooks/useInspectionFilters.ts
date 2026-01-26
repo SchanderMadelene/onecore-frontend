@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import type { ExtendedInspection } from "../data/mockInspections";
+import type { ExtendedInspection } from "../types";
 
 export function useInspectionFilters(inspections: ExtendedInspection[]) {
   const [searchQuery, setSearchQuery] = useState<string>('');

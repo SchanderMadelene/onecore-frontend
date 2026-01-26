@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ChevronUp, ChevronDown } from "lucide-react";
-import type { SortField, SortDirection } from "../hooks/useInspectionSorting";
+import type { SortField, SortDirection } from "../hooks";
 
 interface SortableHeaderProps {
   field: SortField;

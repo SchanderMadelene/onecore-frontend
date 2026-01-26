@@ -1,18 +1,5 @@
-import type { Inspection, ResidenceInfo } from "@/components/residence/inspection/types";
-
-// Extended inspection type for the overview page
-export interface ExtendedInspection extends Inspection {
-  contractId?: string;
-  address?: string;
-  terminationDate?: string;
-  district?: string;
-  priority?: 'avflytt' | 'inflytt';
-  isAssigned?: boolean;
-  scheduledDate?: Date;
-  assignedInspector?: string;
-  tenantPhone?: string;
-  masterKey?: boolean;
-}
+import type { ResidenceInfo } from "@/components/residence/inspection/types";
+import type { ExtendedInspection } from "../types";
 
 // Available inspectors for assignment
 export const AVAILABLE_INSPECTORS = [

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import type { ExtendedInspection } from "../data/mockInspections";
+import type { ExtendedInspection } from "../types";
 
 interface DateCellProps {
   inspection: ExtendedInspection;
