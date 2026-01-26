@@ -5,13 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TurnoverDashboard } from "@/components/turnover/TurnoverDashboard";
-import { TurnoverKanban } from "@/components/turnover/TurnoverKanban";
-import { TurnoverList } from "@/components/turnover/TurnoverList";
+import { TurnoverDashboard, TurnoverKanban, TurnoverList, TurnoverHeader } from "@/features/turnover/components";
 import { useTurnoverCases } from "@/hooks/useTurnoverCases";
 import { Search, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { TurnoverHeader } from "@/features/turnover";
 
 export default function TurnoverPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
