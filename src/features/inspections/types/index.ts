@@ -6,10 +6,10 @@ export type {
   ResidenceInfo, 
   Inspection, 
   InspectionSubmitData 
-} from "@/components/residence/inspection/types";
+} from "@/features/properties/residences/components/inspection/types";
 
 // Extended inspection type for the overview page
-import type { Inspection, ResidenceInfo } from "@/components/residence/inspection/types";
+import type { Inspection, ResidenceInfo } from "@/features/properties/residences/components/inspection/types";
 
 export interface ExtendedInspection extends Inspection {
   contractId?: string;

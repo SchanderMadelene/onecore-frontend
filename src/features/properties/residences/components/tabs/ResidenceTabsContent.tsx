@@ -1,11 +1,11 @@
 
 import { TabsContent } from "@/components/ui/tabs";
-import { ResidenceInfo } from "@/components/residence/ResidenceInfo";
-import { ResidenceFloorplan } from "@/components/residence/ResidenceFloorplan";
-import { ResidenceInspection } from "@/components/residence/ResidenceInspection";
-import { ResidenceDocuments } from "@/components/residence/ResidenceDocuments";
-import { TenantInformation } from "@/components/residence/inspection/form/TenantInformation";
-import { OrdersManagement } from "@/components/residence/OrdersManagement";
+import { ResidenceInfo } from "../ResidenceInfo";
+import { ResidenceFloorplan } from "../ResidenceFloorplan";
+import { ResidenceInspection } from "../ResidenceInspection";
+import { ResidenceDocuments } from "../ResidenceDocuments";
+import { TenantInformation } from "../inspection/form/TenantInformation";
+import { OrdersManagement } from "../OrdersManagement";
 import { Notes } from "@/features/shared/components";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { StickyNote } from "lucide-react";

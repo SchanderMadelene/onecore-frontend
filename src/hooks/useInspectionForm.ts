@@ -1,8 +1,8 @@
 
 import { useState, useCallback } from "react";
-import type { InspectionRoom, Inspection } from "@/components/residence/inspection/types";
+import type { InspectionRoom, Inspection } from "@/features/properties/residences/components/inspection/types";
 import type { Room } from "@/types/api";
-import { initializeInspectionData } from "@/components/residence/inspection/form/initialData";
+import { initializeInspectionData } from "@/features/properties/residences/components/inspection/form/initialData";
 
 export function useInspectionForm(rooms: Room[], existingInspection?: Inspection) {
   const [inspectorName, setInspectorName] = useState(existingInspection?.inspectedBy || "");

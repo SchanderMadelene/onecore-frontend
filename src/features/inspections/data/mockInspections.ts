@@ -1,4 +1,4 @@
-import type { ResidenceInfo } from "@/components/residence/inspection/types";
+import type { ResidenceInfo } from "@/features/properties/residences/components/inspection/types";
 import type { ExtendedInspection } from "../types";
 
 // Available inspectors for assignment
