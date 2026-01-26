@@ -9,8 +9,7 @@ import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } fr
 import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, User, Users, Pencil } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { EditFavoriteDialog } from "@/components/favorites/EditFavoriteDialog";
-import { CreateFavoriteDialog } from "@/components/favorites/CreateFavoriteDialog";
+import { EditFavoriteDialog, CreateFavoriteDialog } from "@/features/favorites/components";
 import { Plus } from "lucide-react";
 
 export default function FavoritesPage() {
