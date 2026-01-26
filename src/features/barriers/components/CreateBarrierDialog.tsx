@@ -13,8 +13,8 @@ import { Plus, Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { createBarrier, getAvailableHousing } from "@/data/barriers";
-import type { AvailableHousing } from "@/data/barriers";
+import { createBarrier, getAvailableHousing } from "../data";
+import type { AvailableHousing } from "../types";
 
 interface CreateBarrierDialogProps {
   onBarrierCreated?: () => void;
