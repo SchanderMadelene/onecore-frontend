@@ -10,29 +10,26 @@ import { HousingOffersProvider } from "@/contexts/HousingOffersContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { RoleProvider } from "@/contexts/RoleContext";
 import Index from "./pages/Index";
-import PropertyDetailPage from "./pages/properties/PropertyDetailPage";
-import BuildingDetailPage from "./pages/properties/BuildingDetailPage";
-import ResidencePage from "./pages/properties/ResidencePage";
-import TenantDetailPage from "./pages/tenants/TenantDetailPage";
-import AllTenantsPage from "./pages/tenants/AllTenantsPage";
-import DesignSystemPage from "./pages/design-system/DesignSystemPage";
+import PropertyDetailPage from "./pages/PropertyDetailPage";
+import BuildingDetailPage from "./pages/BuildingDetailPage";
+import ResidencePage from "./pages/ResidencePage";
+import TenantDetailPage from "./pages/TenantDetailPage";
+import AllTenantsPage from "./pages/AllTenantsPage";
+import DesignSystemPage from "./pages/DesignSystemPage";
 import NotFound from "./pages/NotFound";
-import AllPropertiesPage from "./pages/properties/AllPropertiesPage";
-import RentalsPage from "./pages/rentals/RentalsPage";
-import CreateHousingAdPage from "./pages/rentals/CreateHousingAdPage";
-import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
-import HousingDetailPage from "./pages/rentals/HousingDetailPage";
-import ResidenceProfilePage from "./pages/rentals/ResidenceProfilePage";
-import TurnoverPage from "./pages/turnover/TurnoverPage";
-import BarriersPage from "@/pages/barriers/BarriersPage";
-import AllInspectionsPage from "./pages/inspections/AllInspectionsPage";
-import SettingsPage from "./pages/settings/SettingsPage";
-// Import favorites page
-import FavoritesPage from "./pages/favorites/FavoritesPage";
-// Import lease contracts page
+import AllPropertiesPage from "./pages/AllPropertiesPage";
+import RentalsPage from "./pages/RentalsPage";
+import CreateHousingAdPage from "./pages/CreateHousingAdPage";
+import ParkingSpaceDetailPage from "./pages/ParkingSpaceDetailPage";
+import HousingDetailPage from "./pages/HousingDetailPage";
+import ResidenceProfilePage from "./pages/ResidenceProfilePage";
+import TurnoverPage from "./pages/TurnoverPage";
+import BarriersPage from "./pages/BarriersPage";
+import AllInspectionsPage from "./pages/AllInspectionsPage";
+import SettingsPage from "./pages/SettingsPage";
+import FavoritesPage from "./pages/FavoritesPage";
 import LeaseContractsPage from "./pages/LeaseContractsPage";
-// Import strofaktura page
-import StrofakturaUnderlagPage from "./pages/strofaktura/StrofakturaUnderlagPage";
+import StrofakturaUnderlagPage from "./pages/StrofakturaUnderlagPage";
 
 const ProtectedRoute = ({ children, isEnabled }: { children: React.ReactNode, isEnabled: boolean }) => {
   if (!isEnabled) {
