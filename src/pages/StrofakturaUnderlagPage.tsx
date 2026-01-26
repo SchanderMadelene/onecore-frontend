@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PageLayout } from "@/layout/PageLayout";
-import { StrofakturaForm } from "@/components/strofaktura/StrofakturaForm";
+import { StrofakturaForm } from "@/features/strofaktura/components";
 
 export default function StrofakturaUnderlagPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
