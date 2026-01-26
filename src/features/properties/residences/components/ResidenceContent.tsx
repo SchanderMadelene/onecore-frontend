@@ -2,7 +2,7 @@
 import { ResidenceBasicInfo } from "@/components/residence/ResidenceBasicInfo";
 import { ResidenceTabsList } from "@/components/residence/tabs/ResidenceTabsList";
 import { ResidenceTabsContent } from "@/components/residence/tabs/ResidenceTabsContent";
-import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
+import { PropertyBreadcrumb } from "@/features/navigation/components";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room, Building, PropertyDetail } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
