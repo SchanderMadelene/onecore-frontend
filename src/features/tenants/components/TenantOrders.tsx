@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { OrdersManagement } from "@/components/residence/OrdersManagement";
+import { OrdersManagement } from "@/features/properties/residences/components/OrdersManagement";
 import { mockTenant } from "@/data/tenants";
 
 export function TenantOrders() {

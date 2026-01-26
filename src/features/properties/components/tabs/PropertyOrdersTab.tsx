@@ -1,5 +1,5 @@
 
-import { OrdersManagement } from "@/components/residence/OrdersManagement";
+import { OrdersManagement } from "@/features/properties/residences/components/OrdersManagement";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { MessageSquare } from "lucide-react";
 import { useParams } from "react-router-dom";
