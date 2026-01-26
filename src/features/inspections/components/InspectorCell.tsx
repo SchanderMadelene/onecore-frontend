@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { AVAILABLE_INSPECTORS, type ExtendedInspection } from "../data/mockInspections";
+import { AVAILABLE_INSPECTORS } from "../data";
+import type { ExtendedInspection } from "../types";
 
 interface InspectorCellProps {
   inspection: ExtendedInspection;
