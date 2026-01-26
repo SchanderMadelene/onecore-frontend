@@ -1,7 +1,7 @@
 
 import { Building } from "@/types/api";
 import { Building as BuildingIcon, Building2 } from "lucide-react";
-import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
+import { PropertyBreadcrumb } from "@/features/navigation/components";
 
 interface BuildingHeaderProps {
   building: Building;

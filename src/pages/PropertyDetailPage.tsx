@@ -8,7 +8,7 @@ import { PropertyDetailTabs } from "@/components/properties/PropertyDetailTabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { PropertyHeader } from "@/components/properties/PropertyHeader";
 import { PropertyBasicInfo } from "@/components/properties/PropertyBasicInfo";
-import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
+import { PropertyBreadcrumb } from "@/features/navigation/components";
 
 const PropertyDetailPage = () => {
   const { property } = useParams();
