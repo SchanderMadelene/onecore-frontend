@@ -8,7 +8,7 @@ import { Car, Home, Archive, Key } from "lucide-react";
 import { ParkingSpacesTable } from "@/components/rentals/ParkingSpacesTable";
 import { HousingSpacesTable } from "@/components/rentals/HousingSpacesTable";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
-import { RentalsHeader } from "./components/RentalsHeader";
+import { RentalsHeader } from "@/features/rentals";
 
 const RentalsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

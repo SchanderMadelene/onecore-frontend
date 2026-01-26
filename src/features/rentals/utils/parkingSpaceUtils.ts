@@ -1,4 +1,3 @@
-
 export const getOfferStatus = (offers: any[]) => {
   if (!offers.length) return "Intresseanmälningar";
   const latestOffer = offers[offers.length - 1];

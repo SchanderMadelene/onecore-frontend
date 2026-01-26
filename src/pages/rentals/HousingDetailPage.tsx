@@ -7,9 +7,7 @@ import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { useHousingStatus } from "@/hooks/useHousingStatus";
 import { useState } from "react";
 import { Notes } from "@/components/shared/Notes";
-import { HousingHeader } from "./components/HousingHeader";
-import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
-import { HousingInfo } from "./components/HousingInfo";
+import { HousingHeader, HousingApplicantsTable, HousingInfo } from "@/features/rentals";
 
 const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
