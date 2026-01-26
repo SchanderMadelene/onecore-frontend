@@ -9,7 +9,7 @@ import { Eye, ChevronUp, ChevronDown, X, Play, PlayCircle, Search } from "lucide
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { 
   InspectionsHeader, 
   InspectorCell, 

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { usePropertyDetail } from "@/hooks/usePropertyDetail";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layout/PageLayout";
 import { useToast } from "@/hooks/use-toast";
 import { PropertyDetailTabs } from "@/components/properties/PropertyDetailTabs";
 import { useIsMobile } from "@/hooks/use-mobile";
