@@ -1,5 +1,5 @@
 
-import { PropertyBuildingsList } from "@/components/properties";
+import { PropertyBuildingsList } from "@/features/properties/components";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { Building2 } from "lucide-react";
 import type { Building } from "@/types/api";

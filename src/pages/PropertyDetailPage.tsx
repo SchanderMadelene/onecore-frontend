@@ -4,10 +4,12 @@ import { useParams } from "react-router-dom";
 import { usePropertyDetail } from "@/hooks/usePropertyDetail";
 import { PageLayout } from "@/layout/PageLayout";
 import { useToast } from "@/hooks/use-toast";
-import { PropertyDetailTabs } from "@/components/properties/PropertyDetailTabs";
+import { 
+  PropertyDetailTabs, 
+  PropertyHeader, 
+  PropertyBasicInfo 
+} from "@/features/properties/components";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { PropertyHeader } from "@/components/properties/PropertyHeader";
-import { PropertyBasicInfo } from "@/components/properties/PropertyBasicInfo";
 import { PropertyBreadcrumb } from "@/features/navigation/components";
 
 const PropertyDetailPage = () => {

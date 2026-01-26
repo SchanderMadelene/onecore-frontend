@@ -1,5 +1,5 @@
 
-import { PropertyStatisticsSummary } from "@/components/properties/PropertyStatisticsSummary";
+import { PropertyStatisticsSummary } from "@/features/properties/components";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { BarChart3 } from "lucide-react";
 import type { PropertyDetail } from "@/types/api";
