@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { BarriersTable } from "@/components/barriers/BarriersTable";
-import { getAllBarriers, Barrier } from "@/data/barriers";
-import { BarriersHeader } from "./components/BarriersHeader";
+import { BarriersTable, BarriersHeader } from "../components";
+import { getAllBarriers } from "../data";
+import type { Barrier } from "../types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
