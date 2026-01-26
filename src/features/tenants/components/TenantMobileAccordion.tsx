@@ -1,8 +1,8 @@
-import { TenantContracts } from "./TenantContracts";
-import { TenantQueueSystem } from "./TenantQueueSystem";
-import { TenantNotes } from "./TenantNotes";
-import { TenantOrders } from "./TenantOrders";
-import { TenantLedger } from "./TenantLedger";
+import { TenantContracts } from "@/features/tenants/components/TenantContracts";
+import { TenantQueueSystem } from "@/features/tenants/components/TenantQueueSystem";
+import { TenantNotes } from "@/features/tenants/components/TenantNotes";
+import { TenantOrders } from "@/features/tenants/components/TenantOrders";
+import { TenantLedger } from "@/features/tenants/components/TenantLedger";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
 import { getMockLedgerForCustomer } from "@/data/ledger";

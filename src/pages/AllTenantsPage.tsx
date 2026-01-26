@@ -11,7 +11,7 @@ import { BulkSmsModal } from "@/components/communication/BulkSmsModal";
 import { BulkEmailModal } from "@/components/communication/BulkEmailModal";
 import { X, Search } from "lucide-react";
 import { TenantsHeader } from "@/features/tenants";
-import { TenantSelectionFilters } from "@/components/tenants/TenantSelectionFilters";
+import { TenantSelectionFilters } from "@/features/tenants/components/TenantSelectionFilters";
 import { getAllCustomers } from "@/data/tenants";
 import { mockProperties } from "@/data/properties";
 import { useToast } from "@/hooks/use-toast";
