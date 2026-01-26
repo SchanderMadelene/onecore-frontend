@@ -1,7 +1,2 @@
-
-export * from "./ColorPalette";
-export * from "./Typography";
-export * from "./ComponentShowcase";
-export * from "./GridSystem";
-export * from "./IconsShowcase";
-export * from "./LogosShowcase";
+// Re-export from new feature location for backwards compatibility
+export * from "@/features/design-system/components";

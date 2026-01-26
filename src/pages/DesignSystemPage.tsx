@@ -4,7 +4,7 @@ import { PageLayout } from "@/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon } from "lucide-react";
 
-// Import components from the new global location
+// Import components from the new feature location
 import { 
   ColorPalette, 
   Typography, 
@@ -12,7 +12,7 @@ import {
   GridSystem, 
   IconsShowcase,
   LogosShowcase 
-} from "@/components/design-system";
+} from "@/features/design-system/components";
 
 const DesignSystemPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

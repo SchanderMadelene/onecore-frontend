@@ -13,7 +13,7 @@ import { useState } from "react";
 import { Component } from "@/data/components";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAnalyzeModal, AIAnalysisResult } from "./PhotoAnalyzeModal";
-import { UpdateComponentModal } from "@/components/design-system/showcase/components/UpdateComponentModal";
+import { UpdateComponentModal } from "@/features/design-system/showcase/components/UpdateComponentModal";
 import type { ComponentLocation } from "@/types/api";
 
 interface ComponentCardProps {
