@@ -43,9 +43,9 @@ export const PropertySelectionFilters = ({
   allPropertyNumbers,
 }: PropertySelectionFiltersProps) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
       <Select value={designationFilter} onValueChange={setDesignationFilter}>
-        <SelectTrigger>
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Fastighetsbeteckning" />
         </SelectTrigger>
         <SelectContent>
@@ -59,7 +59,7 @@ export const PropertySelectionFilters = ({
       </Select>
 
       <Select value={propertyManagerFilter} onValueChange={setPropertyManagerFilter}>
-        <SelectTrigger>
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Kvartersvärd" />
         </SelectTrigger>
         <SelectContent>
@@ -73,7 +73,7 @@ export const PropertySelectionFilters = ({
       </Select>
 
       <Select value={marketAreaFilter} onValueChange={setMarketAreaFilter}>
-        <SelectTrigger>
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Marknadsområde" />
         </SelectTrigger>
         <SelectContent>
@@ -87,7 +87,7 @@ export const PropertySelectionFilters = ({
       </Select>
 
       <Select value={propertyNumberFilter} onValueChange={setPropertyNumberFilter}>
-        <SelectTrigger>
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Fastighetsnummer" />
         </SelectTrigger>
         <SelectContent>
@@ -101,8 +101,8 @@ export const PropertySelectionFilters = ({
       </Select>
 
       <Select value={districtFilter} onValueChange={setDistrictFilter}>
-        <SelectTrigger>
-          <SelectValue placeholder="Välj distrikt" />
+        <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectValue placeholder="Distrikt" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Alla distrikt</SelectItem>
@@ -115,8 +115,8 @@ export const PropertySelectionFilters = ({
       </Select>
 
       <Select value={areaFilter} onValueChange={setAreaFilter}>
-        <SelectTrigger>
-          <SelectValue placeholder="Välj kvartersvärdsområde" />
+        <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectValue placeholder="Kvartersvärdsområde" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Alla områden</SelectItem>

@@ -57,51 +57,56 @@ export default function TurnoverPage() {
       <div className="space-y-6">
         <TurnoverHeader />
 
-        {/* Filters */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Sök på adress, hyresgäst eller lägenhetsnummer..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          
-          <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Alla status</SelectItem>
-              <SelectItem value="pending">Väntar</SelectItem>
-              <SelectItem value="in_progress">Pågår</SelectItem>
-              <SelectItem value="completed">Klar</SelectItem>
-              <SelectItem value="blocked">Blockerad</SelectItem>
-            </SelectContent>
-          </Select>
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            {/* Sökfält - full bredd */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Sök på adress, hyresgäst eller lägenhetsnummer..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
 
-          <Select value={filterPriority} onValueChange={setFilterPriority}>
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Prioritet" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Alla prioriteter</SelectItem>
-              <SelectItem value="low">Låg</SelectItem>
-              <SelectItem value="normal">Normal</SelectItem>
-              <SelectItem value="high">Hög</SelectItem>
-              <SelectItem value="urgent">Brådskande</SelectItem>
-            </SelectContent>
-          </Select>
+            {/* Filter - egen rad */}
+            <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+              <Select value={filterStatus} onValueChange={setFilterStatus}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla status</SelectItem>
+                  <SelectItem value="pending">Väntar</SelectItem>
+                  <SelectItem value="in_progress">Pågår</SelectItem>
+                  <SelectItem value="completed">Klar</SelectItem>
+                  <SelectItem value="blocked">Blockerad</SelectItem>
+                </SelectContent>
+              </Select>
 
-          {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-              <X className="h-4 w-4" />
-              Rensa filter
-            </Button>
-          )}
-        </div>
+              <Select value={filterPriority} onValueChange={setFilterPriority}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Prioritet" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla prioriteter</SelectItem>
+                  <SelectItem value="low">Låg</SelectItem>
+                  <SelectItem value="normal">Normal</SelectItem>
+                  <SelectItem value="high">Hög</SelectItem>
+                  <SelectItem value="urgent">Brådskande</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {hasActiveFilters && (
+                <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
+                  <X className="h-4 w-4" />
+                  Rensa filter
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Main content */}
         <Tabs defaultValue="dashboard" className="w-full">

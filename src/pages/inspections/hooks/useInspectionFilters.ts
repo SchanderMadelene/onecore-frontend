@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import type { ExtendedInspection } from "../data/mockInspections";
 
 export function useInspectionFilters(inspections: ExtendedInspection[]) {
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedInspector, setSelectedInspector] = useState<string>('');
   const [selectedAddress, setSelectedAddress] = useState<string>('');
   const [selectedDistrict, setSelectedDistrict] = useState<string>('');
@@ -39,6 +40,17 @@ export function useInspectionFilters(inspections: ExtendedInspection[]) {
   const filterInspections = (inspectionsList: ExtendedInspection[]) => {
     let filtered = [...inspectionsList];
     
+    // Search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(i => 
+        i.address?.toLowerCase().includes(query) ||
+        i.inspectedBy?.toLowerCase().includes(query) ||
+        i.assignedInspector?.toLowerCase().includes(query) ||
+        i.inspectionNumber?.toLowerCase().includes(query)
+      );
+    }
+    
     if (selectedInspector) {
       filtered = filtered.filter(i => 
         i.inspectedBy === selectedInspector || i.assignedInspector === selectedInspector
@@ -58,15 +70,18 @@ export function useInspectionFilters(inspections: ExtendedInspection[]) {
   };
 
   const clearFilters = () => {
+    setSearchQuery('');
     setSelectedInspector('');
     setSelectedAddress('');
     setSelectedDistrict('');
     setSelectedPriority('');
   };
 
-  const hasActiveFilters = selectedInspector || selectedAddress || selectedDistrict || selectedPriority;
+  const hasActiveFilters = searchQuery || selectedInspector || selectedAddress || selectedDistrict || selectedPriority;
 
   return {
+    searchQuery,
+    setSearchQuery,
     selectedInspector,
     setSelectedInspector,
     selectedAddress,

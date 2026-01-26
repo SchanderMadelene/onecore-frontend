@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { format } from "date-fns";
@@ -136,16 +136,14 @@ export default function LeaseContractsPage() {
       <div className="space-y-6">
         <LeaseContractsHeader />
         
-        <LeaseContractsFilters {...filterHook} />
+        <Card>
+          <CardContent className="pt-6">
+            <LeaseContractsFilters {...filterHook} />
+          </CardContent>
+        </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              Alla kontrakt
-              <Badge variant="outline">{filteredContracts.length}</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="p-0">
             {paginatedContracts.length > 0 ? (
               <>
                 <ResponsiveTable
@@ -156,18 +154,20 @@ export default function LeaseContractsPage() {
                 />
                 
                 {totalPages > 1 && (
-                  <LeaseContractsPagination
-                    currentPage={filterHook.page}
-                    totalPages={totalPages}
-                    totalItems={filteredContracts.length}
-                    itemsPerPage={filterHook.limit}
-                    onPageChange={filterHook.setPage}
-                  />
+                  <div className="p-4 border-t">
+                    <LeaseContractsPagination
+                      currentPage={filterHook.page}
+                      totalPages={totalPages}
+                      totalItems={filteredContracts.length}
+                      itemsPerPage={filterHook.limit}
+                      onPageChange={filterHook.setPage}
+                    />
+                  </div>
                 )}
               </>
             ) : (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">Inga kontrakt matchar dina filter</p>
+              <div className="text-center py-8 text-muted-foreground">
+                Inga kontrakt matchar dina filter
               </div>
             )}
           </CardContent>

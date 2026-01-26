@@ -2,10 +2,8 @@
 import { useState, useMemo } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ChevronDown, X } from "lucide-react";
+import { X } from "lucide-react";
 import { PropertySearch } from "@/components/properties/PropertySearch";
 import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters";
 import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
@@ -16,7 +14,6 @@ import { PropertiesHeader } from "./components/PropertiesHeader";
 
 const AllPropertiesPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const {
     searchQuery,
     setSearchQuery,
@@ -177,107 +174,75 @@ const AllPropertiesPage = () => {
     return chips;
   }, [searchTypeFilter, designationFilter, propertyManagerFilter, marketAreaFilter, propertyNumberFilter, districtFilter, areaFilter, sizeFilter, rentFilter, hasContractFilter, contractStatusFilter]);
   
-  return <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="w-full">
+  return (
+    <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
+      <div className="w-full space-y-6">
         <PropertiesHeader />
 
         <Card>
-          <CardHeader>
-            <CardTitle>Sök i fastighetsbasen</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col gap-4 mb-6">
-              <PropertyTypeFilters searchTypeFilter={searchTypeFilter} setSearchTypeFilter={setSearchTypeFilter} />
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <PropertySearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-              </div>
-              
-              <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen} className="border rounded-lg">
-                <div className="flex items-center justify-between px-4 py-3">
-                  <CollapsibleTrigger asChild>
-                    <Button 
-                      variant="ghost" 
-                      className="flex-1 justify-between px-0 hover:bg-transparent"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">Filter</span>
-                        {activeFilterCount > 0 && (
-                          <Badge variant="secondary" className="h-5 min-w-5 px-1.5">
-                            {activeFilterCount}
-                          </Badge>
-                        )}
-                      </div>
-                      <ChevronDown className={`h-4 w-4 transition-transform ${isFiltersOpen ? 'rotate-180' : ''}`} />
-                    </Button>
-                  </CollapsibleTrigger>
-                  {activeFilterCount > 0 && (
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        clearAllFilters();
-                      }}
-                      className="h-8 px-2 text-xs ml-2"
-                    >
-                      <X className="h-3 w-3 mr-1" />
-                      Rensa alla
-                    </Button>
-                  )}
-                </div>
-                <CollapsibleContent className="px-4 pb-4">
-                  
-                  {searchTypeFilter === "apartment" ? (
-                    <ApartmentSelectionFilters
-                      sizeFilter={sizeFilter}
-                      setSizeFilter={setSizeFilter}
-                      rentFilter={rentFilter}
-                      setRentFilter={setRentFilter}
-                      hasContractFilter={hasContractFilter}
-                      setHasContractFilter={setHasContractFilter}
-                      contractStatusFilter={contractStatusFilter}
-                      setContractStatusFilter={setContractStatusFilter}
-                    />
-                  ) : (
-                    <PropertySelectionFilters 
-                      districtFilter={districtFilter} 
-                      setDistrictFilter={setDistrictFilter} 
-                      areaFilter={areaFilter} 
-                      setAreaFilter={setAreaFilter} 
-                      designationFilter={designationFilter}
-                      setDesignationFilter={setDesignationFilter}
-                      propertyManagerFilter={propertyManagerFilter}
-                      setPropertyManagerFilter={setPropertyManagerFilter}
-                      marketAreaFilter={marketAreaFilter}
-                      setMarketAreaFilter={setMarketAreaFilter}
-                      propertyNumberFilter={propertyNumberFilter}
-                      setPropertyNumberFilter={setPropertyNumberFilter}
-                      allDistricts={allDistricts} 
-                      allAreas={allAreas} 
-                      allDesignations={allDesignations}
-                      allPropertyManagers={allPropertyManagers}
-                      allMarketAreas={allMarketAreas}
-                      allPropertyNumbers={allPropertyNumbers}
-                    />
-                  )}
-                </CollapsibleContent>
-              </Collapsible>
+          <CardContent className="pt-6 space-y-4">
+            <PropertyTypeFilters searchTypeFilter={searchTypeFilter} setSearchTypeFilter={setSearchTypeFilter} />
+            
+            {/* Sökfält - full bredd */}
+            <PropertySearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            
+            {/* Filter - egen rad */}
+            <div className="flex flex-col gap-4">
+              {searchTypeFilter === "apartment" ? (
+                <ApartmentSelectionFilters
+                  sizeFilter={sizeFilter}
+                  setSizeFilter={setSizeFilter}
+                  rentFilter={rentFilter}
+                  setRentFilter={setRentFilter}
+                  hasContractFilter={hasContractFilter}
+                  setHasContractFilter={setHasContractFilter}
+                  contractStatusFilter={contractStatusFilter}
+                  setContractStatusFilter={setContractStatusFilter}
+                />
+              ) : (
+                <PropertySelectionFilters 
+                  districtFilter={districtFilter} 
+                  setDistrictFilter={setDistrictFilter} 
+                  areaFilter={areaFilter} 
+                  setAreaFilter={setAreaFilter} 
+                  designationFilter={designationFilter}
+                  setDesignationFilter={setDesignationFilter}
+                  propertyManagerFilter={propertyManagerFilter}
+                  setPropertyManagerFilter={setPropertyManagerFilter}
+                  marketAreaFilter={marketAreaFilter}
+                  setMarketAreaFilter={setMarketAreaFilter}
+                  propertyNumberFilter={propertyNumberFilter}
+                  setPropertyNumberFilter={setPropertyNumberFilter}
+                  allDistricts={allDistricts} 
+                  allAreas={allAreas} 
+                  allDesignations={allDesignations}
+                  allPropertyManagers={allPropertyManagers}
+                  allMarketAreas={allMarketAreas}
+                  allPropertyNumbers={allPropertyNumbers}
+                />
+              )}
+              {activeFilterCount > 0 && (
+                <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1 w-fit">
+                  <X className="h-4 w-4" />
+                  Rensa filter
+                </Button>
+              )}
             </div>
-
-            <PropertyFilteredResults 
-              showSearchResults={showSearchResults} 
-              filteredSearchResults={filteredSearchResults} 
-              filteredProperties={filteredProperties || []} 
-              searchTypeFilter={searchTypeFilter}
-              activeFilterCount={activeFilterCount}
-              isFiltering={isFiltering}
-              filterChips={filterChips}
-            />
           </CardContent>
         </Card>
+
+        <PropertyFilteredResults 
+          showSearchResults={showSearchResults} 
+          filteredSearchResults={filteredSearchResults} 
+          filteredProperties={filteredProperties || []} 
+          searchTypeFilter={searchTypeFilter}
+          activeFilterCount={activeFilterCount}
+          isFiltering={isFiltering}
+          filterChips={filterChips}
+        />
       </div>
-    </PageLayout>;
+    </PageLayout>
+  );
 };
 
 export default AllPropertiesPage;
