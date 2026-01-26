@@ -24,7 +24,7 @@ import ParkingSpaceDetailPage from "./pages/rentals/ParkingSpaceDetailPage";
 import HousingDetailPage from "./pages/rentals/HousingDetailPage";
 import ResidenceProfilePage from "./pages/rentals/ResidenceProfilePage";
 import TurnoverPage from "./pages/turnover/TurnoverPage";
-import { BarriersPage } from "@/features/barriers/pages";
+import BarriersPage from "@/pages/barriers/BarriersPage";
 import AllInspectionsPage from "./pages/inspections/AllInspectionsPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 // Import favorites page
