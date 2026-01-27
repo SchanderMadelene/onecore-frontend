@@ -18,14 +18,14 @@ src/
 │   ├── buildings/         ← ska till features/
 │   ├── communication/     ← ska till features/
 │   ├── favorites/         ← ska till features/
-│   ├── layout/            ← ska till src/layouts/
-│   ├── navigation/        ← ska till layouts/ eller common/
+│   ├── layout/            ✅ KLAR (re-export till layouts/)
+│   ├── navigation/        ✅ KLAR (Breadcrumb till common/)
 │   ├── orders/            ← ska till features/
 │   ├── properties/        ← ska till features/
 │   ├── rentals/           ← ska till features/
 │   ├── residence/         ← ska till features/
 │   ├── search/            ← ska till features/
-│   ├── shared/            ← ska till components/common/
+│   ├── shared/            ✅ KLAR (re-export till common/)
 │   ├── tenants/           ← ska till features/
 │   ├── turnover/          ← ska till features/
 │   └── ui/                ← BEHÅLL (shadcn)
@@ -40,8 +40,8 @@ src/
 src/
 ├── components/
 │   ├── ui/                ← shadcn (behåll)
-│   └── common/            ← delat (från shared/)
-├── layouts/
+│   └── common/            ✅ KLAR (från shared/)
+├── layouts/               ✅ KLAR
 │   ├── main-layout.tsx
 │   ├── NavigationBar.tsx
 │   └── TreeView/
@@ -85,25 +85,24 @@ src/
 
 ---
 
-## Fas 1: Strukturella ändringar
+## Fas 1: Strukturella ändringar ✅ KLAR
 
-### 1.1 Skapa src/layouts/
-Flytta och byt namn:
-| Från | Till |
-|------|------|
-| `src/components/layout/PageLayout.tsx` | `src/layouts/main-layout.tsx` |
-| `src/components/NavigationBar.tsx` | `src/layouts/NavigationBar.tsx` |
-| `src/components/TreeView.tsx` | `src/layouts/TreeView.tsx` |
-| `src/components/treeview/` | `src/layouts/treeview/` |
+### 1.1 Skapa src/layouts/ ✅
+| Från | Till | Status |
+|------|------|--------|
+| `src/components/layout/PageLayout.tsx` | `src/layouts/main-layout.tsx` | ✅ |
+| `src/components/NavigationBar.tsx` | `src/layouts/NavigationBar.tsx` | ✅ |
+| `src/components/TreeView.tsx` | `src/layouts/TreeView.tsx` | ✅ |
+| `src/components/treeview/` | `src/layouts/treeview/` | ✅ |
 
-### 1.2 Flytta shared till common
-| Från | Till |
-|------|------|
-| `src/components/shared/*` | `src/components/common/*` |
-| `src/components/navigation/Breadcrumb.tsx` | `src/components/common/Breadcrumb.tsx` |
+### 1.2 Flytta shared till common ✅
+| Från | Till | Status |
+|------|------|--------|
+| `src/components/shared/*` | `src/components/common/*` | ✅ |
+| `src/components/navigation/Breadcrumb.tsx` | `src/components/common/Breadcrumb.tsx` | ✅ |
 
-### 1.3 Uppdatera App.tsx och importer
-Uppdatera alla importer som refererar till de flyttade filerna.
+### 1.3 Backward-compatibility re-exports ✅
+Alla gamla importsökvägar fungerar via re-exports.
 
 ---
 
@@ -242,28 +241,28 @@ Samma mönster för: **orders**, **barriers**, **turnover**, **favorites**, **se
 
 ## Genomförandeordning
 
-| Steg | Fas | Beskrivning |
-|------|-----|-------------|
-| 1 | 1.1-1.3 | Strukturella ändringar (layouts, common) |
-| 2 | 2.1 | Migrera tenants |
-| 3 | 2.2 | Migrera properties |
-| 4 | 2.3 | Migrera buildings |
-| 5 | 2.4 | Migrera residences |
-| 6 | 2.5 | Migrera rentals (2 omgångar) |
-| 7 | 2.6-2.12 | Migrera övriga domäner |
-| 8 | 3 | Rensning och verifiering |
+| Steg | Fas | Beskrivning | Status |
+|------|-----|-------------|--------|
+| 1 | 1.1-1.3 | Strukturella ändringar (layouts, common) | ✅ KLAR |
+| 2 | 2.1 | Migrera tenants | ⏳ |
+| 3 | 2.2 | Migrera properties | ⏳ |
+| 4 | 2.3 | Migrera buildings | ⏳ |
+| 5 | 2.4 | Migrera residences | ⏳ |
+| 6 | 2.5 | Migrera rentals (2 omgångar) | ⏳ |
+| 7 | 2.6-2.12 | Migrera övriga domäner | ⏳ |
+| 8 | 3 | Rensning och verifiering | ⏳ |
 
 ---
 
 ## Filer per fas (teknisk detalj)
 
-### Fas 1 - Nya/ändrade filer
-- `src/layouts/main-layout.tsx` (ny)
-- `src/layouts/NavigationBar.tsx` (flyttad)
-- `src/layouts/TreeView.tsx` (flyttad)
-- `src/layouts/treeview/` (flyttad mapp)
-- `src/components/common/` (ny mapp med flyttade filer)
-- `src/App.tsx` (uppdaterade importer)
+### Fas 1 - Nya/ändrade filer ✅
+- `src/layouts/main-layout.tsx` ✅
+- `src/layouts/NavigationBar.tsx` ✅
+- `src/layouts/TreeView.tsx` ✅
+- `src/layouts/treeview/` ✅
+- `src/components/common/` ✅
+- Backward-compatibility re-exports ✅
 
 ### Per domänmigration
 - ~5-30 komponenter flyttas
@@ -271,4 +270,3 @@ Samma mönster för: **orders**, **barriers**, **turnover**, **favorites**, **se
 - 1-3 datafiler flyttas
 - 1 barrel-export skapas
 - Backward-compatibility re-exports på ursprungsplatser
-
