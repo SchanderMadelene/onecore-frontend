@@ -1,138 +1,100 @@
 
-# Enhetlig tabellstil för alla samlingssidor
+# Städa upp duplicerade filer i src/components/rentals/
 
-## Nuläge
+## Bakgrund
+Migreringen av rentals-komponenter till `src/features/rentals/components/` är klar, men de ursprungliga filerna finns fortfarande kvar i `src/components/rentals/`. Detta skapar dubbletter som behöver tas bort.
 
-Tabellerna på samlingssidorna har inkonsekvent styling:
+## Nuvarande status
+- **index.ts** har redan korrekt re-export: `export * from "@/features/rentals/components"`
+- Alla komponenter finns redan migrerade i `src/features/rentals/components/`
+- **54 duplicerade filer** kvarstår att ta bort
 
-| Sida | Wrapper | Rubrik | Resultaträknare |
-|------|---------|--------|-----------------|
-| BarriersPage | Ingen | Nej | Nej |
-| TurnoverPage (Lista) | Ingen (men TurnoverList har egen rubrik) | Ja | Ja |
-| AllInspectionsPage | `space-y-4` div | Nej | Nej |
-| LeaseContractsPage | Ingen | Nej | Nej |
-| AllTenantsPage | Ingen | Nej | Nej |
-| AllPropertiesPage | PropertyFilteredResults | Ja | Ja |
+## Filer att ta bort
 
-## Standardmönster
+### Rotfiler (21 st)
+- ApplicantActions.tsx
+- ApplicantProfileModal.tsx
+- CreateHousingApplicationDialog.tsx
+- CreateInterestApplicationDialog.tsx
+- CustomerInfoLoading.tsx
+- DeleteListingDialog.tsx
+- EditHousingDialog.tsx
+- FilterableTableHead.tsx
+- HousingApplicationDialog.tsx
+- HousingSpaceDetail.tsx
+- HousingSpacesTable.tsx
+- OfferActions.tsx
+- OfferedHousingTable.tsx
+- ParkingApplicationDialog.tsx
+- ParkingSpaceDetail.tsx
+- ParkingSpacesTable.tsx
+- PublishParkingSpacesDialog.tsx
+- PublishedHousingTable.tsx
+- ReadyForOfferHousingTable.tsx
+- SubHeadingsSection.tsx
+- SyncParkingSpacesDialog.tsx
+- UnpublishedHousingTable.tsx
 
-Baserat på `PropertyFilteredResults` och `ResponsiveTable` etablerar vi följande standard:
+### Undermappar att ta bort
 
+**edit-housing/** (5 filer)
+- BasicInfoSection.tsx
+- DetailedDescriptionTab.tsx
+- EditableFormSection.tsx
+- PlanritningTab.tsx
+- types.ts
+
+**housing-application/** (2 filer)
+- HousingObjectInformation.tsx
+- ValidationAlerts.tsx
+
+**interest-application/** (7 filer)
+- ApplicationTypeSelection.tsx
+- CustomerInformation.tsx
+- CustomerSearch.tsx
+- NotesSection.tsx
+- ObjectInformation.tsx
+- ValidationAlerts.tsx
+- types.ts
+
+**publish-dialog/** (3 filer)
+- DialogContentHeader.tsx
+- ParkingSpacesTable.tsx
+- QueueTypeCheckboxes.tsx
+
+**residence-profile/** (7 filer + 2 undermappar)
+- CompactProfileForm.tsx
+- ContactSearch.tsx
+- ProfileForm.tsx
+- types.ts
+- form/CustomerInfo.tsx
+- form/CustomerReference.tsx
+- form/HousingReferenceComment.tsx
+- form/HousingTypeSection.tsx
+- form/ReviewStatusSection.tsx
+- model/conditional.ts
+
+**tabs/** (5 filer)
+- HistoryTab.tsx
+- NeedsRepublishTab.tsx
+- OfferedTab.tsx
+- PublishedParkingTab.tsx
+- ReadyForOfferTab.tsx
+
+**types/** (3 filer)
+- housing.ts
+- parking.ts
+- unpublished-housing.ts
+
+## Fil att behålla
+- **index.ts** - behålls för bakåtkompatibilitet med re-export
+
+## Resultat efter städning
 ```text
-┌─────────────────────────────────────────────────────┐
-│ Rubrik                          Visar X av Y resultat │
-├─────────────────────────────────────────────────────┤
-│ ┌─────────────────────────────────────────────────┐ │
-│ │               ResponsiveTable                    │ │
-│ │           (rounded-md border)                    │ │
-│ └─────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────┘
+src/components/rentals/
+└── index.ts  ← Endast denna fil kvar (re-export)
 ```
 
-Mönstret innehåller:
-1. En yttre wrapper med `space-y-4`
-2. En rubrikrad med titel till vänster och resultaträknare till höger
-3. Tabellen med sin inbyggda `rounded-md border` styling
-
-## Filer som ändras
-
-### 1. BarriersPage.tsx
-Lägg till rubrik och resultaträknare ovanför `BarriersTable`:
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">Spärrar</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {filteredBarriers.length} av {allBarriers.length} spärrar
-    </span>
-  </div>
-  <BarriersTable ... />
-</div>
-```
-
-### 2. AllInspectionsPage.tsx
-Uppdatera `renderInspectionTable` för att inkludera rubrik och räknare:
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">{title}</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {data.length} besiktningar
-    </span>
-  </div>
-  <ResponsiveTable ... />
-</div>
-```
-
-### 3. LeaseContractsPage.tsx
-Lägg till rubrik och resultaträknare:
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">Hyreskontrakt</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {paginatedContracts.length} av {filteredContracts.length} kontrakt
-    </span>
-  </div>
-  <ResponsiveTable ... />
-  {totalPages > 1 && <LeaseContractsPagination ... />}
-</div>
-```
-
-### 4. AllTenantsPage.tsx
-Lägg till rubrik och resultaträknare:
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">Kunder</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {filteredCustomers.length} av {customers.length} kunder
-    </span>
-  </div>
-  <ResponsiveTable ... />
-</div>
-```
-
-### 5. TurnoverList.tsx
-Behåll befintlig struktur då den redan följer mönstret, men verifiera konsistens i textformatering.
-
-### 6. AllPropertiesPage.tsx
-Redan korrekt via `PropertyFilteredResults` - ingen ändring behövs.
-
-## Tekniska detaljer
-
-### Gemensam wrapper-struktur
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">{titel}</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {visade} av {totalt} {enhet}
-    </span>
-  </div>
-  {/* Tabell eller tom state */}
-</div>
-```
-
-### Stilregler
-- Wrapper: `space-y-4`
-- Rubrik: `text-lg font-semibold`
-- Resultaträknare: `text-sm text-muted-foreground`
-- Header-rad: `flex items-center justify-between`
-- Tabellens border kommer från `ResponsiveTable`: `rounded-md border`
-
-### Tom-tillstånd
-När data är tom visas centrerad text utan wrapper:
-```tsx
-<div className="text-center py-8 text-muted-foreground">
-  {emptyMessage}
-</div>
-```
-
-## Sammanfattning
-
-Ändringarna säkerställer att alla samlingssidor har:
-- Konsekvent visuell hierarki med rubrik och räknare
-- Enhetlig spacing (`space-y-4`)
-- Samma typografi för rubriker och metadata
-- `ResponsiveTable` med sin inbyggda `rounded-md border`
+## Teknisk information
+- Inga importändringar behövs då index.ts redan pekar på rätt plats
+- Bakåtkompatibilitet bibehålls för eventuella externa importer

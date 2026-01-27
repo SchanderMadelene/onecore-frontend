@@ -1,6 +1,6 @@
 
 import { getAllTenants, getAllApplicants } from "./tenants";
-import type { Customer } from "@/components/rentals/types/parking";
+import type { Customer } from "@/features/rentals/components/types/parking";
 
 // Utöka befintliga kunder med kundnummer
 const createCustomerWithNumber = (tenant: any, customerNumber: string): Customer => ({

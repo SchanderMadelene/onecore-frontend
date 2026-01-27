@@ -1,6 +1,5 @@
-
-import { TreeView as TreeViewComponent } from "./treeview";
-import { TreeViewProps } from "./treeview/types";
+import { TreeView as TreeViewComponent } from "@/features/treeview/components";
+import { TreeViewProps } from "@/features/treeview/types";
 
 export function TreeView(props: TreeViewProps) {
   return <TreeViewComponent {...props} />;

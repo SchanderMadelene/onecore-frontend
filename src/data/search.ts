@@ -1,4 +1,4 @@
-import { TreeNode } from "../components/treeview/types";
+import { TreeNode } from "@/features/treeview/types";
 
 export interface SearchResult {
   id: string;
