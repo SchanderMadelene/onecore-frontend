@@ -2,7 +2,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle } from "lucide-react";
 import type { ValidationResult } from "./types";
-import type { TenantValidation } from "@/hooks/useTenantValidation";
+import type { TenantValidation } from "@/features/tenants/hooks/useTenantValidation";
 
 interface ValidationAlertsProps {
   tenantValidation: TenantValidation;

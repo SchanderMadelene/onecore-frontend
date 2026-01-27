@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Loader2 } from "lucide-react";
-import { useParkingSpaceListings, type ParkingSpaceForPublishing } from "@/hooks/useParkingSpaceListings";
+import { useParkingSpaceListings, type ParkingSpaceForPublishing } from "../hooks/useParkingSpaceListings";
 import { useToast } from "@/hooks/use-toast";
 import { DialogContentHeader } from "./publish-dialog/DialogContentHeader";
 import { ParkingSpacesTable } from "./publish-dialog/ParkingSpacesTable";

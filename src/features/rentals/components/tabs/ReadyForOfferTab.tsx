@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Car, Loader2, ChevronRight } from "lucide-react";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
-import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
+import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
 import { Link } from "react-router-dom";
 import { FilterableTableHead } from "../FilterableTableHead";
 import { useState, useMemo } from "react";

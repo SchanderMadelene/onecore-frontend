@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useTenantValidation } from "../hooks/useTenantValidation";
-import { useCreateInterestApplication } from "@/hooks/useCreateInterestApplication";
+import { useCreateInterestApplication } from "@/features/rentals/hooks/useCreateInterestApplication";
 import { useToast } from "@/hooks/use-toast";
 import { ParkingSpaceSearch } from "./parking-interest/ParkingSpaceSearch";
 import { ApplicationTypeSelection } from "@/components/rentals/interest-application/ApplicationTypeSelection";
 import { NotesSection } from "@/components/rentals/interest-application/NotesSection";
 import { ValidationAlerts } from "@/components/rentals/interest-application/ValidationAlerts";
-import type { ParkingSpaceForPublishing } from "@/hooks/useParkingSpaceListings";
+import type { ParkingSpaceForPublishing } from "@/features/rentals/hooks/useParkingSpaceListings";
 
 interface CreateParkingInterestDialogProps {
   customerNumber: string;

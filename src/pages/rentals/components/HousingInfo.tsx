@@ -1,5 +1,5 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import type { HousingListing } from "@/hooks/useHousingListing";
+import type { HousingListing } from "@/features/rentals/hooks/useHousingListing";
 
 interface HousingInfoProps {
   housing: HousingListing;

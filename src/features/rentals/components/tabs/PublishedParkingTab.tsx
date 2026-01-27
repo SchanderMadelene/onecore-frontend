@@ -7,7 +7,7 @@ import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { PublishParkingSpacesDialog } from "../PublishParkingSpacesDialog";
 import { SyncParkingSpacesDialog } from "../SyncParkingSpacesDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
-import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
+import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
 import { Loader2, Car } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FilterableTableHead } from "../FilterableTableHead";

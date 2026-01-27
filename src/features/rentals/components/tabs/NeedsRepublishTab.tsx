@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Car, X, Loader2, ChevronRight } from "lucide-react";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
-import { useParkingSpaceListingsByType } from "@/hooks/useParkingSpaceListingsByType";
-import { useCloseParkingSpaceListing } from "@/hooks/useParkingSpaceActions";
+import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
+import { useCloseParkingSpaceListing } from "../../hooks/useParkingSpaceActions";
 import { Link } from "react-router-dom";
 
 export const NeedsRepublishTab = () => {

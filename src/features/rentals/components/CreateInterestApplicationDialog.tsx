@@ -4,8 +4,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { FormWrapper } from "@/components/ui/form-wrapper";
-import { useTenantValidation } from "@/hooks/useTenantValidation";
-import { useCreateInterestApplication } from "@/hooks/useCreateInterestApplication";
+import { useTenantValidation } from "@/features/tenants/hooks/useTenantValidation";
+import { useCreateInterestApplication } from "../hooks/useCreateInterestApplication";
 import { CustomerInfoLoading } from "./CustomerInfoLoading";
 import { useToast } from "@/hooks/use-toast";
 import type { ParkingSpace, Customer } from "./types/parking";

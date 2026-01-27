@@ -1,7 +1,7 @@
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import type { TenantValidation } from "@/hooks/useTenantValidation";
+import type { TenantValidation } from "@/features/tenants/hooks/useTenantValidation";
 
 interface ApplicationTypeSelectionProps {
   applicationType: "Replace" | "Additional";

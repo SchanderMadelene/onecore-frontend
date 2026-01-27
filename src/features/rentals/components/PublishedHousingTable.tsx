@@ -1,7 +1,7 @@
-import { publishedHousingSpaces } from "@/data/published-housing";
+import { publishedHousingSpaces } from "../data/published-housing";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
-import { useHousingStatus } from "@/hooks/useHousingStatus";
+import { useHousingStatus } from "../hooks/useHousingStatus";
 
 export function PublishedHousingTable() {
   const navigate = useNavigate();

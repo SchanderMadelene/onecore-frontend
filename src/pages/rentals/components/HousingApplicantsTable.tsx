@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CompactProfileForm } from "@/components/rentals/residence-profile/CompactProfileForm";
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import type { HousingApplicant } from "@/hooks/useHousingListing";
+import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
 
 
 interface HousingApplicantsTableProps {
