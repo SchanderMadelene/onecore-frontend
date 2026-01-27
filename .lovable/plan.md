@@ -1,33 +1,274 @@
 
 
-# Ändring: Flytta "Avser objektsnummer" till första raden
+# Migrationsplan: Feature-First Arkitektur
 
-## Vad ska ändras
-Fältet "Avser objektsnummer" ska flyttas från sin nuvarande position (efter "Text"-fältet) till att vara **första raden** i "Artikelinformation"-sektionen, direkt under rubriken.
+## Sammanfattning
 
-## Nuvarande ordning i ArticleSection
-1. Artikel + Artikelnummer (två kolumner)
-2. Text
-3. **Avser objektsnummer** ← ska flyttas
-4. Antal + Pris (två kolumner)
-5. Checkboxar (Administrativa kostnader, Hanteringsavgift)
+Projektet ska migreras från nuvarande struktur till den nya feature-first arkitekturen enligt knowledge-filen. **Ekonomi-domänen är redan migrerad** och tjänar som mall för övriga domäner.
 
-## Ny ordning efter ändring
-1. **Avser objektsnummer** ← ny position (första)
-2. Artikel + Artikelnummer (två kolumner)
-3. Text
-4. Antal + Pris (två kolumner)
-5. Checkboxar
+---
 
-## Implementation
-Ändra `src/features/ekonomi/components/strofaktura/ArticleSection.tsx`:
-- Flytta kodblocket för "Avser objektsnummer" (rad 101-109) till att ligga först i komponenten (efter öppnande `<div className="space-y-4">`)
-- Fältet förblir redigerbart eftersom användaren kan behöva justera värdet som hämtats från kontraktet
+## Nuvarande vs Målstruktur
 
-## Fil som berörs
-| Fil | Ändring |
-|-----|---------|
-| `src/features/ekonomi/components/strofaktura/ArticleSection.tsx` | Flytta "Avser objektsnummer" till första positionen |
+### Nuvarande struktur
+```text
+src/
+├── components/
+│   ├── barriers/          ← ska till features/
+│   ├── buildings/         ← ska till features/
+│   ├── communication/     ← ska till features/
+│   ├── favorites/         ← ska till features/
+│   ├── layout/            ← ska till src/layouts/
+│   ├── navigation/        ← ska till layouts/ eller common/
+│   ├── orders/            ← ska till features/
+│   ├── properties/        ← ska till features/
+│   ├── rentals/           ← ska till features/
+│   ├── residence/         ← ska till features/
+│   ├── search/            ← ska till features/
+│   ├── shared/            ← ska till components/common/
+│   ├── tenants/           ← ska till features/
+│   ├── turnover/          ← ska till features/
+│   └── ui/                ← BEHÅLL (shadcn)
+├── data/                  ← ska fördelas till features/
+├── hooks/                 ← ska fördelas till features/
+├── types/                 ← ska fördelas till features/
+└── features/ekonomi/      ✅ KLAR
+```
 
-Bakåtkompatibilitetsfilen `src/components/strofaktura/ArticleSection.tsx` behöver samma ändring för konsistens.
+### Målstruktur
+```text
+src/
+├── components/
+│   ├── ui/                ← shadcn (behåll)
+│   └── common/            ← delat (från shared/)
+├── layouts/
+│   ├── main-layout.tsx
+│   ├── NavigationBar.tsx
+│   └── TreeView/
+├── features/
+│   ├── ekonomi/           ✅ KLAR
+│   ├── tenants/
+│   ├── properties/
+│   ├── buildings/
+│   ├── residences/
+│   ├── rentals/
+│   ├── orders/
+│   ├── barriers/
+│   ├── turnover/
+│   ├── favorites/
+│   ├── search/
+│   ├── inspections/
+│   └── communication/
+├── hooks/                 ← endast delade hooks
+├── services/              ← behåll
+└── pages/                 ← behåll
+```
+
+---
+
+## Domäner att migrera (prioritetsordning)
+
+| Prioritet | Domän | Komplexitet | Komponenter | Hooks | Data/Types |
+|-----------|-------|-------------|-------------|-------|------------|
+| 1 | **tenants** | Hög | 17 filer | 1 | tenants.ts, tenant-events.ts |
+| 2 | **properties** | Hög | 18 filer | 3 | properties/, properties.ts |
+| 3 | **buildings** | Medel | 8 filer | 2 | buildings.ts |
+| 4 | **residences** | Hög | 13 filer | 2 | residences.ts, rooms.ts |
+| 5 | **rentals** | Mycket hög | 30+ filer | 8 | published-housing.ts, unpublished-housing.ts |
+| 6 | **orders** | Medel | 8 filer | 3 | - |
+| 7 | **barriers** | Låg | 4 filer | 0 | barriers.ts |
+| 8 | **turnover** | Medel | 6 filer | 1 | turnover.ts |
+| 9 | **favorites** | Låg | 3 filer | 1 | - |
+| 10 | **search** | Medel | 4 filer | 1 | search.ts, searchData.ts |
+| 11 | **inspections** | Medel | subfolder i residence | 2 | - |
+| 12 | **communication** | Låg | 3 filer | 0 | messageTemplates.ts |
+
+---
+
+## Fas 1: Strukturella ändringar
+
+### 1.1 Skapa src/layouts/
+Flytta och byt namn:
+| Från | Till |
+|------|------|
+| `src/components/layout/PageLayout.tsx` | `src/layouts/main-layout.tsx` |
+| `src/components/NavigationBar.tsx` | `src/layouts/NavigationBar.tsx` |
+| `src/components/TreeView.tsx` | `src/layouts/TreeView.tsx` |
+| `src/components/treeview/` | `src/layouts/treeview/` |
+
+### 1.2 Flytta shared till common
+| Från | Till |
+|------|------|
+| `src/components/shared/*` | `src/components/common/*` |
+| `src/components/navigation/Breadcrumb.tsx` | `src/components/common/Breadcrumb.tsx` |
+
+### 1.3 Uppdatera App.tsx och importer
+Uppdatera alla importer som refererar till de flyttade filerna.
+
+---
+
+## Fas 2: Domänmigrationer
+
+### Migrationsmall per domän
+
+För varje domän:
+1. Skapa `src/features/{domain}/` med undermappar
+2. Flytta komponenter från `src/components/{domain}/`
+3. Flytta relevanta typer från `src/types/`
+4. Flytta relevanta data från `src/data/`
+5. Flytta relevanta hooks från `src/hooks/`
+6. Skapa barrel-export `index.ts`
+7. Skapa backward-compatibility re-exports på gamla platser
+8. Uppdatera konsumerande filer
+
+### 2.1 Tenants-domänen
+```text
+src/features/tenants/
+├── components/
+│   ├── TenantCard.tsx
+│   ├── TenantContracts.tsx
+│   ├── TenantEventLog.tsx
+│   ├── TenantInformationCard.tsx
+│   ├── TenantMobileAccordion.tsx
+│   ├── TenantsList.tsx
+│   ├── parking-interest/
+│   └── tabs/
+├── hooks/
+│   └── useTenantValidation.ts
+├── types/
+│   └── tenant-types.ts
+├── data/
+│   ├── tenants.ts
+│   └── tenant-events.ts
+└── index.ts
+```
+
+### 2.2 Properties-domänen
+```text
+src/features/properties/
+├── components/
+│   ├── PropertyBasicInfo.tsx
+│   ├── PropertyBuildingCard.tsx
+│   ├── PropertyHeader.tsx
+│   ├── PropertySearch.tsx
+│   ├── PropertiesTable.tsx
+│   └── tabs/
+├── hooks/
+│   ├── usePropertyDetail.ts
+│   └── usePropertyFilters.ts
+├── data/
+│   ├── properties.ts
+│   └── properties/
+└── index.ts
+```
+
+### 2.3 Buildings-domänen
+```text
+src/features/buildings/
+├── components/
+│   ├── BuildingBasicInfo.tsx
+│   ├── BuildingHeader.tsx
+│   └── tabs/
+├── hooks/
+│   └── useBuildingDetail.ts
+├── data/
+│   └── buildings.ts
+└── index.ts
+```
+
+### 2.4 Residences-domänen
+```text
+src/features/residences/
+├── components/
+│   ├── ResidenceBasicInfo.tsx
+│   ├── ResidenceContent.tsx
+│   ├── MobileAccordion.tsx
+│   ├── inspection/
+│   └── tabs/
+├── hooks/
+│   ├── useResidenceData.ts
+│   └── useInspectionForm.ts
+├── data/
+│   ├── residences.ts
+│   └── rooms.ts
+└── index.ts
+```
+
+### 2.5 Rentals-domänen (störst)
+```text
+src/features/rentals/
+├── components/
+│   ├── HousingSpacesTable.tsx
+│   ├── ParkingSpacesTable.tsx
+│   ├── housing-application/
+│   ├── interest-application/
+│   ├── publish-dialog/
+│   └── tabs/
+├── hooks/
+│   ├── useHousingListing.ts
+│   ├── useParkingSpaceActions.ts
+│   └── useOfferActions.ts
+├── types/
+│   └── rentals-types.ts
+├── data/
+│   ├── published-housing.ts
+│   └── unpublished-housing.ts
+└── index.ts
+```
+
+### 2.6-2.12 Övriga domäner
+Samma mönster för: **orders**, **barriers**, **turnover**, **favorites**, **search**, **inspections**, **communication**.
+
+---
+
+## Fas 3: Rensning
+
+1. Ta bort tomma mappar i `src/components/`
+2. Uppdatera `src/data/index.ts` och `src/types/index.ts` till endast re-exports
+3. Verifiera alla backward-compatibility exports fungerar
+4. Kör TypeScript-kontroll för trasiga importer
+
+---
+
+## Hooks som förblir globala i src/hooks/
+
+- `use-mobile.tsx`
+- `use-toast.ts`
+- `useDebounce.ts`
+- `useFavorites.ts`
+- `useGlobalSearch.ts`
+
+---
+
+## Genomförandeordning
+
+| Steg | Fas | Beskrivning |
+|------|-----|-------------|
+| 1 | 1.1-1.3 | Strukturella ändringar (layouts, common) |
+| 2 | 2.1 | Migrera tenants |
+| 3 | 2.2 | Migrera properties |
+| 4 | 2.3 | Migrera buildings |
+| 5 | 2.4 | Migrera residences |
+| 6 | 2.5 | Migrera rentals (2 omgångar) |
+| 7 | 2.6-2.12 | Migrera övriga domäner |
+| 8 | 3 | Rensning och verifiering |
+
+---
+
+## Filer per fas (teknisk detalj)
+
+### Fas 1 - Nya/ändrade filer
+- `src/layouts/main-layout.tsx` (ny)
+- `src/layouts/NavigationBar.tsx` (flyttad)
+- `src/layouts/TreeView.tsx` (flyttad)
+- `src/layouts/treeview/` (flyttad mapp)
+- `src/components/common/` (ny mapp med flyttade filer)
+- `src/App.tsx` (uppdaterade importer)
+
+### Per domänmigration
+- ~5-30 komponenter flyttas
+- 0-3 hooks flyttas
+- 1-3 datafiler flyttas
+- 1 barrel-export skapas
+- Backward-compatibility re-exports på ursprungsplatser
 
