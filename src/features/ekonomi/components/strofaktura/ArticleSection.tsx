@@ -54,6 +54,16 @@ export function ArticleSection({
 }: ArticleSectionProps) {
   return (
     <div className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="avserObjektnummer">Avser objektsnummer</Label>
+        <Input
+          id="avserObjektnummer"
+          value={avserObjektnummer}
+          onChange={(e) => onAvserObjektnummerChange(e.target.value)}
+          placeholder="Objektsnummer..."
+        />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="artikel">Artikel</Label>
@@ -98,15 +108,6 @@ export function ArticleSection({
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="avserObjektnummer">Avser objektsnummer</Label>
-        <Input
-          id="avserObjektnummer"
-          value={avserObjektnummer}
-          onChange={(e) => onAvserObjektnummerChange(e.target.value)}
-          placeholder="Objektsnummer..."
-        />
-      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
