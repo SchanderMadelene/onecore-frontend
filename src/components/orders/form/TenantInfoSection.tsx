@@ -1,10 +1,2 @@
-
-import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
-
-type TenantInfoSectionProps = {
-  tenant: any | any[];
-};
-
-export function TenantInfoSection({ tenant }: TenantInfoSectionProps) {
-  return <TenantInformationCard tenant={tenant} displayMode="compact" />;
-}
+// Re-export from features for backward compatibility
+export { FormTenantInfoSection as TenantInfoSection } from '@/features/orders';
