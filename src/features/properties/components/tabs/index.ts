@@ -1,0 +1,11 @@
+export { PropertyInfoTab } from './PropertyInfoTab';
+export { PropertyDocumentsTab } from './PropertyDocumentsTab';
+export { PropertyPlanningTab } from './PropertyPlanningTab';
+export { PropertyBuildingsTab } from './PropertyBuildingsTab';
+export { PropertyMapTab } from './PropertyMapTab';
+export { PropertyStatisticsTab } from './PropertyStatisticsTab';
+export { PropertyMaintenanceUnitsTab } from './PropertyMaintenanceUnitsTab';
+export { PropertyOrdersTab } from './PropertyOrdersTab';
+export { PropertyAccessTab } from './PropertyAccessTab';
+export { PropertyResidenceTab } from './PropertyResidenceTab';
+export { PropertyApartmentsTab } from './PropertyApartmentsTab';
