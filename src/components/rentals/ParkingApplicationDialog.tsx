@@ -1,11 +1,2 @@
-
-import { CreateInterestApplicationDialog } from "./CreateInterestApplicationDialog";
-import type { ParkingSpace } from "./types/parking";
-
-interface ParkingApplicationDialogProps {
-  parkingSpace: ParkingSpace;
-}
-
-export const ParkingApplicationDialog = ({ parkingSpace }: ParkingApplicationDialogProps) => {
-  return <CreateInterestApplicationDialog parkingSpace={parkingSpace} />;
-};
+// Re-export for backward compatibility
+export { ParkingApplicationDialog } from '@/features/rentals/components/ParkingApplicationDialog';
