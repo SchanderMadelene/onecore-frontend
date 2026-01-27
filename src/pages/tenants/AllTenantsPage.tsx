@@ -1,19 +1,17 @@
 
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layouts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { BulkActionBar } from "@/components/ui/bulk-action-bar";
-import { BulkSmsModal } from "@/components/communication/BulkSmsModal";
-import { BulkEmailModal } from "@/components/communication/BulkEmailModal";
+import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 import { X, Search } from "lucide-react";
 import { TenantsHeader } from "./components/TenantsHeader";
-import { TenantSelectionFilters } from "@/components/tenants/TenantSelectionFilters";
-import { getAllCustomers } from "@/data/tenants";
-import { mockProperties } from "@/data/properties";
+import { TenantSelectionFilters, getAllCustomers } from "@/features/tenants";
+import { mockProperties } from "@/features/properties";
 import { useToast } from "@/hooks/use-toast";
 
 // Get property info for tenant

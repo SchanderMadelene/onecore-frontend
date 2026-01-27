@@ -1,5 +1,5 @@
 
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layouts";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

@@ -7,17 +7,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Eye, ChevronUp, ChevronDown, X, Play, PlayCircle, Search } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
-import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { InspectionsHeader } from "./components/InspectionsHeader";
-import { InspectorCell } from "./components/InspectorCell";
-import { DateCell } from "./components/DateCell";
-import { useInspectionFilters } from "./hooks/useInspectionFilters";
-import { useInspectionSorting } from "./hooks/useInspectionSorting";
-import { getAllInspections, CURRENT_USER, type ExtendedInspection } from "./data/mockInspections";
+import { InspectionReadOnly, InspectionFormDialog } from "@/features/residences";
+import { PageLayout } from "@/layouts";
+import { 
+  InspectionsHeader, 
+  InspectorCell, 
+  DateCell, 
+  useInspectionFilters, 
+  useInspectionSorting,
+  getAllInspections,
+  CURRENT_USER,
+  type ExtendedInspection
+} from "@/features/inspections";
 import { getMockRooms } from "./data/mockRooms";
-import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "@/components/residence/inspection/types";
+import type { InspectionRoom as InspectionRoomType, InspectionSubmitData } from "@/features/residences";
 
 export default function AllInspectionsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

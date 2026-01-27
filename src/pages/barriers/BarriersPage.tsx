@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { BarriersTable } from "@/components/barriers/BarriersTable";
-import { getAllBarriers, Barrier } from "@/data/barriers";
+import { PageLayout } from "@/layouts";
+import { BarriersTable, getAllBarriers, type Barrier } from "@/features/barriers";
 import { BarriersHeader } from "./components/BarriersHeader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

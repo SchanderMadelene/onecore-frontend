@@ -1,13 +1,10 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { useBuildingDetail } from "@/hooks/useBuildingDetail";
-import { usePropertyFromBuilding } from "@/hooks/usePropertyFromBuilding";
+import { PageLayout } from "@/layouts";
+import { useBuildingDetail, BuildingHeader, BuildingBasicInfo, BuildingDetailTabs } from "@/features/buildings";
+import { usePropertyFromBuilding } from "@/features/properties";
 import { useToast } from "@/hooks/use-toast";
-import { BuildingHeader } from "@/components/buildings/BuildingHeader";
-import { BuildingBasicInfo } from "@/components/buildings/BuildingBasicInfo";
-import { BuildingDetailTabs } from "@/components/buildings/BuildingDetailTabs";
 
 const BuildingDetailPage = () => {
   const { property, building } = useParams();

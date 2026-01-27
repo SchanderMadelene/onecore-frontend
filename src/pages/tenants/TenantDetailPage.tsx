@@ -1,16 +1,12 @@
 
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { TenantCard } from "@/components/tenants/TenantCard";
-import { getTenantById } from "@/data/tenants";
+import { PageLayout } from "@/layouts";
+import { TenantCard, TenantDetailTabs, TenantDetailTabsContent, TenantMobileAccordion, getTenantById } from "@/features/tenants";
 import { getMockContractsForTenant } from "@/data/contracts";
 import { TriangleAlert } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { TenantDetailTabs } from "@/components/tenants/tabs/TenantDetailTabs";
-import { TenantDetailTabsContent } from "@/components/tenants/tabs/TenantDetailTabsContent";
-import { TenantMobileAccordion } from "@/components/tenants/TenantMobileAccordion";
 
 const TenantDetailPage = () => {
   const { id } = useParams<{ id: string }>();
