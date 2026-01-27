@@ -1,138 +1,198 @@
 
-# Enhetlig tabellstil för alla samlingssidor
+# Migrationsplan: Ekonomi-domänen till Feature-First Struktur
 
-## Nuläge
+## Sammanfattning
+Ekonomi-domänen ska migreras från den nuvarande spridda strukturen till `src/features/ekonomi/` enligt feature-first arkitekturen. Detta omfattar kundreskontra (ledger), fakturor och ströfaktura-funktionalitet.
 
-Tabellerna på samlingssidorna har inkonsekvent styling:
-
-| Sida | Wrapper | Rubrik | Resultaträknare |
-|------|---------|--------|-----------------|
-| BarriersPage | Ingen | Nej | Nej |
-| TurnoverPage (Lista) | Ingen (men TurnoverList har egen rubrik) | Ja | Ja |
-| AllInspectionsPage | `space-y-4` div | Nej | Nej |
-| LeaseContractsPage | Ingen | Nej | Nej |
-| AllTenantsPage | Ingen | Nej | Nej |
-| AllPropertiesPage | PropertyFilteredResults | Ja | Ja |
-
-## Standardmönster
-
-Baserat på `PropertyFilteredResults` och `ResponsiveTable` etablerar vi följande standard:
+## Nuvarande struktur (före migration)
 
 ```text
-┌─────────────────────────────────────────────────────┐
-│ Rubrik                          Visar X av Y resultat │
-├─────────────────────────────────────────────────────┤
-│ ┌─────────────────────────────────────────────────┐ │
-│ │               ResponsiveTable                    │ │
-│ │           (rounded-md border)                    │ │
-│ └─────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────┘
+src/
+├── components/
+│   ├── tenants/
+│   │   ├── TenantLedger.tsx          ← Kundreskontra-vy
+│   │   └── InvoicesTable.tsx         ← Fakturatabell (627 rader)
+│   └── strofaktura/
+│       ├── StrofakturaForm.tsx       ← Huvudformulär
+│       ├── CustomerSearchSection.tsx  ← Kundsökning
+│       ├── LeaseContractSection.tsx   ← Kontraktsväljare
+│       ├── ArticleSection.tsx         ← Artikelsektion
+│       └── AdditionalInfoSection.tsx  ← Övrig info
+├── types/
+│   ├── invoice.ts                    ← Fakturatyper
+│   ├── ledger.ts                     ← Reskontratyper
+│   └── strofaktura.ts                ← Ströfakturatyper
+├── data/
+│   ├── invoices.ts                   ← Mock-fakturadata
+│   ├── ledger.ts                     ← Mock-reskontradata
+│   ├── strofakturaArticles.ts        ← Artikelkatalog
+│   └── strofakturaCustomers.ts       ← Mock-kunddata
+└── pages/strofaktura/
+    └── StrofakturaUnderlagPage.tsx   ← Sidkomponent
 ```
 
-Mönstret innehåller:
-1. En yttre wrapper med `space-y-4`
-2. En rubrikrad med titel till vänster och resultaträknare till höger
-3. Tabellen med sin inbyggda `rounded-md border` styling
+## Målstruktur (efter migration)
 
-## Filer som ändras
-
-### 1. BarriersPage.tsx
-Lägg till rubrik och resultaträknare ovanför `BarriersTable`:
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">Spärrar</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {filteredBarriers.length} av {allBarriers.length} spärrar
-    </span>
-  </div>
-  <BarriersTable ... />
-</div>
+```text
+src/features/ekonomi/
+├── components/
+│   ├── ledger/
+│   │   ├── CustomerLedger.tsx        ← Omdöpt från TenantLedger
+│   │   └── InvoicesTable.tsx
+│   ├── strofaktura/
+│   │   ├── StrofakturaForm.tsx
+│   │   ├── CustomerSearchSection.tsx
+│   │   ├── LeaseContractSection.tsx
+│   │   ├── ArticleSection.tsx
+│   │   └── AdditionalInfoSection.tsx
+│   └── index.ts                      ← Barrel-export
+├── types/
+│   ├── invoice.ts
+│   ├── ledger.ts
+│   ├── strofaktura.ts
+│   └── index.ts
+├── data/
+│   ├── invoices.ts
+│   ├── ledger.ts
+│   ├── strofakturaArticles.ts
+│   ├── strofakturaCustomers.ts
+│   └── index.ts
+└── index.ts                          ← Huvud-export för domänen
 ```
 
-### 2. AllInspectionsPage.tsx
-Uppdatera `renderInspectionTable` för att inkludera rubrik och räknare:
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">{title}</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {data.length} besiktningar
-    </span>
-  </div>
-  <ResponsiveTable ... />
-</div>
+## Implementationssteg
+
+### Steg 1: Skapa katalogstruktur
+Skapa följande mappar:
+- `src/features/ekonomi/`
+- `src/features/ekonomi/components/ledger/`
+- `src/features/ekonomi/components/strofaktura/`
+- `src/features/ekonomi/types/`
+- `src/features/ekonomi/data/`
+
+### Steg 2: Migrera typer
+Flytta typfiler till ekonomi-domänen:
+
+| Från | Till |
+|------|------|
+| `src/types/invoice.ts` | `src/features/ekonomi/types/invoice.ts` |
+| `src/types/ledger.ts` | `src/features/ekonomi/types/ledger.ts` |
+| `src/types/strofaktura.ts` | `src/features/ekonomi/types/strofaktura.ts` |
+
+Skapa `src/features/ekonomi/types/index.ts` med re-exports.
+
+### Steg 3: Migrera data
+Flytta datafiler:
+
+| Från | Till |
+|------|------|
+| `src/data/invoices.ts` | `src/features/ekonomi/data/invoices.ts` |
+| `src/data/ledger.ts` | `src/features/ekonomi/data/ledger.ts` |
+| `src/data/strofakturaArticles.ts` | `src/features/ekonomi/data/strofakturaArticles.ts` |
+| `src/data/strofakturaCustomers.ts` | `src/features/ekonomi/data/strofakturaCustomers.ts` |
+
+Uppdatera interna importer för att använda relativa sökvägar inom ekonomi-domänen.
+
+### Steg 4: Migrera komponenter
+
+#### Ledger-komponenter
+- Flytta `src/components/tenants/TenantLedger.tsx` → `src/features/ekonomi/components/ledger/CustomerLedger.tsx`
+  - Byt namn från `TenantLedger` till `CustomerLedger` för klarare domänspråk
+- Flytta `src/components/tenants/InvoicesTable.tsx` → `src/features/ekonomi/components/ledger/InvoicesTable.tsx`
+
+#### Ströfaktura-komponenter
+Flytta alla filer från `src/components/strofaktura/` till `src/features/ekonomi/components/strofaktura/`:
+- `StrofakturaForm.tsx`
+- `CustomerSearchSection.tsx`
+- `LeaseContractSection.tsx`
+- `ArticleSection.tsx`
+- `AdditionalInfoSection.tsx`
+
+### Steg 5: Uppdatera importer i komponenter
+Uppdatera alla importsökvägar i de migrerade filerna:
+
+```typescript
+// Före
+import type { Invoice } from "@/types/invoice";
+import { getMockInvoicesForCustomer } from "@/data/invoices";
+
+// Efter
+import type { Invoice } from "@/features/ekonomi/types";
+import { getMockInvoicesForCustomer } from "@/features/ekonomi/data";
 ```
 
-### 3. LeaseContractsPage.tsx
-Lägg till rubrik och resultaträknare:
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">Hyreskontrakt</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {paginatedContracts.length} av {filteredContracts.length} kontrakt
-    </span>
-  </div>
-  <ResponsiveTable ... />
-  {totalPages > 1 && <LeaseContractsPagination ... />}
-</div>
+### Steg 6: Skapa barrel-exports
+Skapa `src/features/ekonomi/index.ts`:
+```typescript
+// Komponenter
+export { CustomerLedger } from "./components/ledger/CustomerLedger";
+export { InvoicesTable } from "./components/ledger/InvoicesTable";
+export { StrofakturaForm } from "./components/strofaktura/StrofakturaForm";
+
+// Typer
+export * from "./types";
+
+// Data
+export * from "./data";
 ```
 
-### 4. AllTenantsPage.tsx
-Lägg till rubrik och resultaträknare:
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">Kunder</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {filteredCustomers.length} av {customers.length} kunder
-    </span>
-  </div>
-  <ResponsiveTable ... />
-</div>
+### Steg 7: Skapa backward-compatibility re-exports
+För att inte bryta existerande kod, skapa re-exports på de gamla platserna:
+
+**`src/components/tenants/TenantLedger.tsx`** (omvandla till re-export):
+```typescript
+export { CustomerLedger as TenantLedger } from "@/features/ekonomi";
 ```
 
-### 5. TurnoverList.tsx
-Behåll befintlig struktur då den redan följer mönstret, men verifiera konsistens i textformatering.
+**`src/components/strofaktura/index.ts`**:
+```typescript
+export { StrofakturaForm } from "@/features/ekonomi";
+// etc.
+```
 
-### 6. AllPropertiesPage.tsx
-Redan korrekt via `PropertyFilteredResults` - ingen ändring behövs.
+### Steg 8: Uppdatera konsumenter
+Uppdatera följande filer att använda nya importer:
+
+| Fil | Ändring |
+|-----|---------|
+| `TenantDetailTabsContent.tsx` | Importera från `@/features/ekonomi` |
+| `TenantMobileAccordion.tsx` | Importera från `@/features/ekonomi` |
+| `StrofakturaUnderlagPage.tsx` | Importera från `@/features/ekonomi` |
+
+### Steg 9: Rensa upp gamla filer
+Efter verifiering att allt fungerar, ta bort originalfilerna och behåll endast re-exports för backward compatibility.
+
+---
 
 ## Tekniska detaljer
 
-### Gemensam wrapper-struktur
-```tsx
-<div className="space-y-4">
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold">{titel}</h2>
-    <span className="text-sm text-muted-foreground">
-      Visar {visade} av {totalt} {enhet}
-    </span>
-  </div>
-  {/* Tabell eller tom state */}
-</div>
-```
+### Filer som berörs av migrationen
 
-### Stilregler
-- Wrapper: `space-y-4`
-- Rubrik: `text-lg font-semibold`
-- Resultaträknare: `text-sm text-muted-foreground`
-- Header-rad: `flex items-center justify-between`
-- Tabellens border kommer från `ResponsiveTable`: `rounded-md border`
+**Nya filer (13 st):**
+- `src/features/ekonomi/index.ts`
+- `src/features/ekonomi/types/index.ts`
+- `src/features/ekonomi/types/invoice.ts`
+- `src/features/ekonomi/types/ledger.ts`
+- `src/features/ekonomi/types/strofaktura.ts`
+- `src/features/ekonomi/data/index.ts`
+- `src/features/ekonomi/data/invoices.ts`
+- `src/features/ekonomi/data/ledger.ts`
+- `src/features/ekonomi/data/strofakturaArticles.ts`
+- `src/features/ekonomi/data/strofakturaCustomers.ts`
+- `src/features/ekonomi/components/ledger/CustomerLedger.tsx`
+- `src/features/ekonomi/components/ledger/InvoicesTable.tsx`
+- `src/features/ekonomi/components/strofaktura/` (5 filer)
 
-### Tom-tillstånd
-När data är tom visas centrerad text utan wrapper:
-```tsx
-<div className="text-center py-8 text-muted-foreground">
-  {emptyMessage}
-</div>
-```
+**Filer som uppdateras:**
+- `src/components/tenants/tabs/TenantDetailTabsContent.tsx`
+- `src/components/tenants/TenantMobileAccordion.tsx`
+- `src/pages/strofaktura/StrofakturaUnderlagPage.tsx`
 
-## Sammanfattning
+### Namnändring
+`TenantLedger` → `CustomerLedger` för att bättre reflektera att detta handlar om kundens ekonomiska vy, inte hyresgästen specifikt.
 
-Ändringarna säkerställer att alla samlingssidor har:
-- Konsekvent visuell hierarki med rubrik och räknare
-- Enhetlig spacing (`space-y-4`)
-- Samma typografi för rubriker och metadata
-- `ResponsiveTable` med sin inbyggda `rounded-md border`
+### Risker och åtgärder
+- **Risk:** Trasiga importer → **Åtgärd:** Re-exports på gamla platser
+- **Risk:** Typfel vid namnändring → **Åtgärd:** Alias-export (`TenantLedger` → `CustomerLedger`)
+- **Risk:** Glömda uppdateringar → **Åtgärd:** Sök i codebase efter gamla sökvägar
+
