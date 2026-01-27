@@ -1,14 +1,11 @@
 import { useState } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layouts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TurnoverDashboard } from "@/components/turnover/TurnoverDashboard";
-import { TurnoverKanban } from "@/components/turnover/TurnoverKanban";
-import { TurnoverList } from "@/components/turnover/TurnoverList";
-import { useTurnoverCases } from "@/hooks/useTurnoverCases";
+import { TurnoverDashboard, TurnoverKanban, TurnoverList, useTurnoverCases } from "@/features/turnover";
 import { Search, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { TurnoverHeader } from "./components/TurnoverHeader";

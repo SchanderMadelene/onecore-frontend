@@ -26,11 +26,14 @@
 
 ---
 
-## Fas 3: Rensning ⏳
+## Fas 3: Rensning 🔄 PÅGÅR
 
-1. ⏳ Ta bort tomma mappar i `src/components/`
-2. ⏳ Verifiera alla backward-compatibility exports fungerar
-3. ⏳ Kör TypeScript-kontroll för trasiga importer
+1. ✅ Uppdatera alla pages att importera PageLayout från `@/layouts`
+2. ✅ Uppdatera alla pages att importera från `@/features/` direkt
+3. ⏳ Ta bort tomma re-export-filer i `src/components/`
+4. ⏳ Ta bort tomma re-export-filer i `src/hooks/`
+5. ⏳ Ta bort tomma re-export-filer i `src/data/`
+6. ⏳ Kör TypeScript-kontroll för trasiga importer
 
 ---
 

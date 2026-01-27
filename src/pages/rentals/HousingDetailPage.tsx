@@ -1,12 +1,11 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layouts";
 import { Button } from "@/components/ui/button";
-import { useHousingListing } from "@/hooks/useHousingListing";
+import { useHousingListing, useHousingStatus } from "@/features/rentals";
 import { toast } from "@/hooks/use-toast";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
-import { useHousingStatus } from "@/hooks/useHousingStatus";
 import { useState } from "react";
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";

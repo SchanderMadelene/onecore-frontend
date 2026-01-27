@@ -1,13 +1,12 @@
 
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layouts";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useParkingSpaceListing } from "@/hooks/useParkingSpaceListing";
-import { useCreateOffer } from "@/hooks/useOfferActions";
+import { useParkingSpaceListing, useCreateOffer } from "@/features/rentals";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/components/common";
 import { ParkingSpaceHeader } from "./components/ParkingSpaceHeader";
 import { ApplicantsTable } from "./components/ApplicantsTable";
 import { ParkingSpaceInfo } from "./components/ParkingSpaceInfo";

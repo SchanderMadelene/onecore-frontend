@@ -1,14 +1,12 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { ResidenceContent } from "@/components/residence/ResidenceContent";
-import { LoadingState } from "@/components/residence/LoadingState";
-import { ErrorState } from "@/components/residence/ErrorState";
-import { useResidenceData } from "@/hooks/useResidenceData";
+import { PageLayout } from "@/layouts";
+import { ResidenceContent, LoadingState, ErrorState } from "@/features/residences";
+import { useResidenceData } from "@/features/residences";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useBuildingDetail } from "@/hooks/useBuildingDetail";
-import { usePropertyFromBuilding } from "@/hooks/usePropertyFromBuilding";
+import { useBuildingDetail } from "@/features/buildings";
+import { usePropertyFromBuilding } from "@/features/properties";
 
 export const ResidencePage = () => {
   const { property, building, id } = useParams();

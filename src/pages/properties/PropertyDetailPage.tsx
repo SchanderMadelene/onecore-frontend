@@ -1,14 +1,11 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { usePropertyDetail } from "@/hooks/usePropertyDetail";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { usePropertyDetail, PropertyDetailTabs, PropertyHeader, PropertyBasicInfo } from "@/features/properties";
+import { PageLayout } from "@/layouts";
 import { useToast } from "@/hooks/use-toast";
-import { PropertyDetailTabs } from "@/components/properties/PropertyDetailTabs";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { PropertyHeader } from "@/components/properties/PropertyHeader";
-import { PropertyBasicInfo } from "@/components/properties/PropertyBasicInfo";
-import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
+import { PropertyBreadcrumb } from "@/components/common";
 
 const PropertyDetailPage = () => {
   const { property } = useParams();

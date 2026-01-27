@@ -1,15 +1,17 @@
 
 import { useState, useMemo } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layouts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { PropertySearch } from "@/components/properties/PropertySearch";
-import { PropertyTypeFilters } from "@/components/properties/PropertyTypeFilters";
-import { PropertySelectionFilters } from "@/components/properties/PropertySelectionFilters";
-import { ApartmentSelectionFilters } from "@/components/properties/ApartmentSelectionFilters";
-import { PropertyFilteredResults } from "@/components/properties/PropertyFilteredResults";
-import { usePropertyFilters } from "@/hooks/usePropertyFilters";
+import { 
+  PropertySearch, 
+  PropertyTypeFilters, 
+  PropertySelectionFilters, 
+  ApartmentSelectionFilters, 
+  PropertyFilteredResults,
+  usePropertyFilters 
+} from "@/features/properties";
 import { PropertiesHeader } from "./components/PropertiesHeader";
 
 const AllPropertiesPage = () => {

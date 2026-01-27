@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PageLayout } from "@/layouts";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useFavorites, EditFavoriteDialog, CreateFavoriteDialog } from "@/features/favorites";
 import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/types/favorites";
-import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, User, Users, Pencil } from "lucide-react";
+import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, User, Users, Pencil, Plus } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { EditFavoriteDialog } from "@/components/favorites/EditFavoriteDialog";
-import { CreateFavoriteDialog } from "@/components/favorites/CreateFavoriteDialog";
-import { Plus } from "lucide-react";
+
 
 export default function FavoritesPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
