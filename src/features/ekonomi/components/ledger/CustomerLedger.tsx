@@ -1,0 +1,109 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { CustomerLedger as CustomerLedgerType } from "@/features/ekonomi/types";
+import type { Invoice } from "@/features/ekonomi/types";
+import { Badge } from "@/components/ui/badge";
+import { InvoicesTable } from "./InvoicesTable";
+
+interface CustomerLedgerProps {
+  ledger: CustomerLedgerType;
+  invoices: Invoice[];
+}
+
+export const CustomerLedger = ({ ledger, invoices }: CustomerLedgerProps) => {
+  const formatCurrency = (amount: number) => {
+    return amount.toFixed(2).replace('.', ',') + ' SEK';
+  };
+
+  const getInvoiceMethodLabel = () => {
+    switch (ledger.invoiceMethod) {
+      case 'e-faktura': return 'E-faktura';
+      case 'pappersfaktura-kivra': return 'Pappersfaktura/Kivra';
+      case 'autogiro': return 'Autogiro';
+      default: return 'Pappersfaktura/Kivra';
+    }
+  };
+
+  const InfoRow = ({ label, value, highlight = false }: { label: string; value: string | number; highlight?: boolean }) => (
+    <div className="flex justify-between py-2 border-b border-border last:border-0">
+      <span className="text-sm text-muted-foreground">{label}:</span>
+      <span className={`text-sm font-medium ${highlight ? 'text-destructive' : ''}`}>{value}</span>
+    </div>
+  );
+
+  return (
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Betalningsinformation</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Balans och saldon */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+            <div className="space-y-1">
+              <InfoRow 
+                label="Alternativ för avisering" 
+                value={getInvoiceMethodLabel()}
+              />
+              {ledger.invoiceMethod === 'autogiro' && ledger.autogiroDate && (
+                <InfoRow 
+                  label="Autogiro-dragning" 
+                  value={ledger.autogiroDate}
+                />
+              )}
+              <InfoRow 
+                label="Totalsumma förfallet" 
+                value={formatCurrency(ledger.balances.overdue)}
+                highlight={ledger.balances.overdue > 0}
+              />
+              <InfoRow 
+                label="Totalsumma inkasso" 
+                value={formatCurrency(ledger.balances.collections)}
+                highlight={ledger.balances.collections > 0}
+              />
+            </div>
+            <div className="space-y-1">
+              <InfoRow 
+                label="Medelvärde antal dagar för sent betalt" 
+                value={`${ledger.statistics.averageDaysLate} dagar`}
+                highlight={ledger.statistics.averageDaysLate > 0}
+              />
+              <InfoRow 
+                label="Antal skickade fakturor till inkasso" 
+                value={ledger.statistics.invoicesSentToCollections}
+                highlight={ledger.statistics.invoicesSentToCollections > 0}
+              />
+              <InfoRow 
+                label="Antal anstånd senaste 12 månaderna" 
+                value={ledger.statistics.defermentLast12Months}
+                highlight={ledger.statistics.defermentLast12Months > 0}
+              />
+            </div>
+          </div>
+
+          {/* Varningsmeddelande om det finns problem */}
+          {(ledger.balances.overdue > 0 || 
+            ledger.balances.collections > 0) && (
+            <div className="mt-4 p-3 bg-warning/10 border border-warning/30 rounded-lg">
+              <p className="text-sm text-warning-foreground">
+                <strong>OBS:</strong> Kunden har utestående betalningar eller inkassoärenden.
+              </p>
+            </div>
+          )}
+
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Fakturor</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <InvoicesTable invoices={invoices} />
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+// Backward compatibility alias
+export { CustomerLedger as TenantLedger };

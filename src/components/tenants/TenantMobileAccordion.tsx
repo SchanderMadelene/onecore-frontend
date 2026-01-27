@@ -2,11 +2,9 @@ import { TenantContracts } from "./TenantContracts";
 import { TenantQueueSystem } from "./TenantQueueSystem";
 import { TenantNotes } from "./TenantNotes";
 import { TenantOrders } from "./TenantOrders";
-import { TenantLedger } from "./TenantLedger";
+import { CustomerLedger, getMockLedgerForCustomer, getMockInvoicesForCustomer } from "@/features/ekonomi";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
-import { getMockLedgerForCustomer } from "@/data/ledger";
-import { getMockInvoicesForCustomer } from "@/data/invoices";
 
 interface TenantMobileAccordionProps {
   contracts: any[];
@@ -74,7 +72,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
       title: "Fakturor & betalningar",
       disabled: isApplicantOnly,
       content: features.showTenantLedger ? (
-        <TenantLedger 
+        <CustomerLedger 
           ledger={getMockLedgerForCustomer(customerNumber)} 
           invoices={getMockInvoicesForCustomer(customerNumber)}
         />
