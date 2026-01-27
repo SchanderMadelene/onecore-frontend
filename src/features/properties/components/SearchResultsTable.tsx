@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
-import { SearchResult } from "@/data/search";
+import { TreeSearchResult as SearchResult } from "@/features/search";
 
 interface SearchResultsTableProps {
   results: SearchResult[];

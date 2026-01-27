@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Contract } from "@/data/contracts";
+import { Contract } from "../data/contracts";
 
 interface TenantContractsProps {
   contracts: Contract[];

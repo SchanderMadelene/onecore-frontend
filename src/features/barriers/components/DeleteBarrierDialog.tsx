@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Barrier } from "@/data/barriers";
+import { Barrier } from "../types";
 
 interface DeleteBarrierDialogProps {
   barrier: Barrier;

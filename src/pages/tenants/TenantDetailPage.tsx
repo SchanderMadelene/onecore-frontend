@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/layouts";
 import { TenantCard, TenantDetailTabs, TenantDetailTabsContent, TenantMobileAccordion, getTenantById } from "@/features/tenants";
-import { getMockContractsForTenant } from "@/data/contracts";
+import { getMockContractsForTenant } from "@/features/tenants/data/contracts";
 import { TriangleAlert } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";

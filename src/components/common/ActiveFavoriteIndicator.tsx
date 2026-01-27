@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, AlertCircle, X, Save } from "lucide-react";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useFavorites } from "@/features/favorites";
 import { UpdateFavoriteDialog } from "./UpdateFavoriteDialog";
 import { useLocation } from "react-router-dom";
 

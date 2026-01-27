@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { TriangleAlert, Bug } from "lucide-react";
 import type { Residence, Building, PropertyDetail } from "@/types/api";
 import { useParams } from "react-router-dom";
-import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
+import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/features/tenants/data/tenants";
 
 // Mock function to check if residence has a barrier
 const getResidenceBarrier = (residenceId: string): { hasBarrier: boolean; reason: string } | null => {

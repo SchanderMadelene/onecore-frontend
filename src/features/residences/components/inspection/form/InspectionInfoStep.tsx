@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { TenantInformation } from "./TenantInformation";
-import { mockTenant } from "@/data/tenants";
+import { mockTenant } from "@/features/tenants/data/tenants";
 import {
   Select,
   SelectContent,

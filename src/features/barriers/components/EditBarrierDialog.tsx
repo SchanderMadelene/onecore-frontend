@@ -11,7 +11,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { Barrier } from "@/data/barriers";
+import { Barrier } from "../types";
 
 interface EditBarrierDialogProps {
   barrier: Barrier | null;

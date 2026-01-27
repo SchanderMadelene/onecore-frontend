@@ -26,14 +26,14 @@
 
 ---
 
-## Fas 3: Rensning 🔄 PÅGÅR
+## Fas 3: Rensning ✅ KLAR
 
 1. ✅ Uppdatera alla pages att importera PageLayout från `@/layouts`
 2. ✅ Uppdatera alla pages att importera från `@/features/` direkt
-3. ⏳ Ta bort tomma re-export-filer i `src/components/`
-4. ⏳ Ta bort tomma re-export-filer i `src/hooks/`
-5. ⏳ Ta bort tomma re-export-filer i `src/data/`
-6. ⏳ Kör TypeScript-kontroll för trasiga importer
+3. ✅ Ta bort re-export-filer i `src/components/` (barriers, turnover, favorites, search, communication, orders)
+4. ✅ Ta bort re-export-filer i `src/hooks/` (11 filer raderade)
+5. ✅ Ta bort re-export-filer i `src/data/` (barriers, turnover, messageTemplates, published/unpublished-housing, invoices, ledger, search, rooms, tenants, properties, buildings, strofaktura*)
+6. ✅ Flytta contracts.ts och customers.ts till `@/features/tenants/data/`
 
 ---
 
@@ -42,6 +42,9 @@
 - `use-mobile.tsx`
 - `use-toast.ts`
 - `useDebounce.ts`
+- `useInspectionProgress.ts`
+- `useOrderFormValidation.ts`
+- `useOrdersService.ts`
 
 ---
 
@@ -51,4 +54,4 @@
 |------|-----|-------------|--------|
 | 1 | 1.1-1.3 | Strukturella ändringar (layouts, common) | ✅ KLAR |
 | 2 | 2.1-2.12 | Migrera alla domäner | ✅ KLAR |
-| 3 | 3 | Rensning och verifiering | ⏳ |
+| 3 | 3 | Rensning och verifiering | ✅ KLAR |

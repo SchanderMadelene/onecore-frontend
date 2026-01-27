@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { mockProperties } from "@/features/properties/data";
-import { mockSearchResults, SearchResult } from "@/data/search";
+import { mockSearchResults, TreeSearchResult as SearchResult } from "@/features/search";
 import { Property } from "@/types/api";
 
 type SearchTypeFilter = "property" | "building" | "apartment" | "maintenance" | "buildingpart";

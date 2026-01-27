@@ -5,7 +5,7 @@ import { ResidenceTabsContent } from "@/components/residence/tabs/ResidenceTabsC
 import { PropertyBreadcrumb } from "@/components/navigation/Breadcrumb";
 import { getOrientationText } from "./RoomOrientation";
 import type { Residence, Room, Building, PropertyDetail } from "@/types/api";
-import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
+import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/features/tenants/data/tenants";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAccordion } from "./MobileAccordion";
 import { useParams } from "react-router-dom";

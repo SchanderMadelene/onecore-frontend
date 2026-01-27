@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { OrdersManagement } from "@/components/residence/OrdersManagement";
-import { mockTenant } from "@/data/tenants";
+import { mockTenant } from "@/features/tenants/data/tenants";
 
 export function TenantOrders() {
   // Anna Andersson (mockTenant) is connected to residence lgh-1001
