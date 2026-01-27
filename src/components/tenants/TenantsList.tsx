@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { getAllCustomers } from "@/data/tenants";
+import { getAllCustomers } from "@/features/tenants/data/tenants";
 
 // Get all customers (tenants and applicants) and create display data
 const customers = getAllCustomers().map(customer => ({

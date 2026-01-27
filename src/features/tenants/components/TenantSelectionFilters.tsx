@@ -5,8 +5,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { mockProperties } from "@/data/properties";
-import { mockBuildings } from "@/data/buildings";
+import { mockProperties } from "@/features/properties/data";
+import { mockBuildings } from "@/features/buildings/data";
 import { useMemo } from "react";
 
 interface TenantSelectionFiltersProps {

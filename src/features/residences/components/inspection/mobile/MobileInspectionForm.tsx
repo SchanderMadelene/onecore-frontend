@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft, ChevronRight, User } from "lucide-react";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot, Inspection } from "../types";
-import { useInspectionForm } from "@/hooks/useInspectionForm";
+import { useInspectionForm } from "@/features/residences/hooks/useInspectionForm";
 import { InspectionProgressIndicator } from "./InspectionProgressIndicator";
 import { RoomInspectionMobile } from "./RoomInspectionMobile";
 import { InspectorSelectionCard } from "./InspectorSelectionCard";

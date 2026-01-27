@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, MessageSquare, User } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TemplateSelector } from "./TemplateSelector";
-import { messageTemplates } from "@/data/messageTemplates";
+import { messageTemplates } from "@/features/communication";
 import { MessageTemplate } from "@/types/messageTemplates";
 
 interface Recipient {

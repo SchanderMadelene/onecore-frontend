@@ -21,7 +21,7 @@ import { LeaseContractSection } from "./LeaseContractSection";
 import { ArticleSection } from "./ArticleSection";
 import { AdditionalInfoSection } from "./AdditionalInfoSection";
 import { CustomerSearchResult, CustomerLeaseContract } from "@/types/strofaktura";
-import { getArticleByNumber } from "@/data/strofakturaArticles";
+import { getArticleByNumber } from "@/features/ekonomi";
 
 const strofakturaSchema = z.object({
   datum: z.date(),

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Search, X } from "lucide-react";
-import { searchStrofakturaCustomers, getCustomerByNumber } from "@/data/strofakturaCustomers";
+import { searchStrofakturaCustomers, getCustomerByNumber } from "@/features/ekonomi";
 import { CustomerSearchResult } from "@/types/strofaktura";
 import { cn } from "@/lib/utils";
 

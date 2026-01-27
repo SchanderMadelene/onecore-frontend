@@ -7,8 +7,8 @@ import { InspectionReadOnly } from "@/components/residence/inspection/Inspection
 import { useState } from "react";
 import type { Inspection, InspectionSubmitData } from "@/components/residence/inspection/types";
 import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
-import { mockRoomsData } from "@/data/rooms";
-import { mockTenant } from "@/data/tenants";
+import { mockRoomsData } from "@/features/residences/data/rooms";
+import { mockTenant } from "@/features/tenants/data/tenants";
 
 // Example inspection data
 const exampleInspection: Inspection = {

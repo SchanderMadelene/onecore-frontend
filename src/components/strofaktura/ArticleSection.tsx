@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { strofakturaArticles } from "@/data/strofakturaArticles";
+import { strofakturaArticles } from "@/features/ekonomi";
 import { cn } from "@/lib/utils";
 
 interface ArticleSectionProps {

@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FavoriteCategory, FavoriteVisibility, FavoriteParameters } from "@/types/favorites";
 import { toast } from "@/hooks/use-toast";
-import { mockProperties } from "@/data/properties";
+import { mockProperties } from "@/features/properties/data";
 
 interface CreateFavoriteDialogProps {
   open: boolean;

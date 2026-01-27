@@ -11,7 +11,7 @@ import { PlayCircle, RotateCcw } from "lucide-react";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, Inspection } from "./types";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { mockTenant } from "@/data/tenants";
+import { mockTenant } from "@/features/tenants/data/tenants";
 import { MobileInspectionSheet } from "./mobile/MobileInspectionSheet";
 import { DesktopInspectionForm } from "./desktop/DesktopInspectionForm";
 

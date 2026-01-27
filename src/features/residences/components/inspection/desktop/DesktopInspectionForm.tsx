@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { RoomInspectionMobile } from "../mobile/RoomInspectionMobile";
 import { InspectorSelectionCard } from "../mobile/InspectorSelectionCard";
-import { useInspectionForm } from "@/hooks/useInspectionForm";
+import { useInspectionForm } from "@/features/residences/hooks/useInspectionForm";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot, Inspection } from "../types";
 import { CheckCircle2 } from "lucide-react";

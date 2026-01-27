@@ -6,7 +6,7 @@ import { OrdersManagement } from "./OrdersManagement";
 
 import { Notes } from "@/components/shared/Notes";
 import type { Room } from "@/types/api";
-import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/data/tenants";
+import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/features/tenants/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useParams } from "react-router-dom";
 

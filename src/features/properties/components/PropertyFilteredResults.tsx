@@ -1,7 +1,7 @@
 import { SearchResultsTable } from "./SearchResultsTable";
 import { PropertiesTable } from "./PropertiesTable";
 import { Property } from "@/types/api";
-import { SearchResult } from "@/data/search";
+import { TreeSearchResult as SearchResult } from "@/features/search";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

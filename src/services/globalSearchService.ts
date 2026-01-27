@@ -1,5 +1,6 @@
 import { SearchResult, SearchResultType, SavedSearch } from "@/types/search";
-import { mockGlobalSearchResults, mockSavedSearches, mockSearchHistory } from "@/data/searchData";
+import { mockGlobalSearchResults } from "@/features/search";
+import { mockSavedSearches, mockSearchHistory } from "@/features/search/data/searchData";
 import { detectIdentifierType, IdentifierMatch, getEntityTypeForIdentifier } from "@/utils/searchIdentifiers";
 
 export interface SearchResponse {

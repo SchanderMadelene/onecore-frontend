@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Barrier } from "@/data/barriers";
+import { Barrier } from "../types";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { DeleteBarrierDialog } from "./DeleteBarrierDialog";
 import { EditBarrierDialog } from "./EditBarrierDialog";

@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ContractInfo } from "./tenant/ContractInfo";
 import { TenantCard } from "./tenant/TenantCard";
 import { HistoricalTenants } from "./tenant/HistoricalTenants";
-import { getHistoricalTenantsForResidence } from "@/data/contracts";
+import { getHistoricalTenantsForResidence } from "@/features/tenants/data/contracts";
 import { useParams } from "react-router-dom";
 import type { Tenant } from "./tenant/types";
 import { TabLayout } from "@/components/ui/tab-layout";
