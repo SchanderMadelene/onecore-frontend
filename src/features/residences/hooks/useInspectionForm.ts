@@ -1,0 +1,201 @@
+import { useState, useCallback } from "react";
+import type { InspectionRoom, Inspection } from "@/features/residences/components/inspection/types";
+import type { Room } from "@/types/api";
+import { initializeInspectionData } from "@/features/residences/components/inspection/form/initialData";
+
+export function useInspectionForm(rooms: Room[], existingInspection?: Inspection) {
+  const [inspectorName, setInspectorName] = useState(existingInspection?.inspectedBy || "");
+  const [inspectionTime, setInspectionTime] = useState(() => {
+    if (existingInspection?.date) {
+      // Try to extract time from existing inspection
+      return "10:00"; // Default time if not available
+    }
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  });
+  const [needsMasterKey, setNeedsMasterKey] = useState(existingInspection?.needsMasterKey || false);
+  const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean }>({
+    address: existingInspection?.residence?.address || "Odenplan 5, lägenhet 1001",
+    hasMainKey: existingInspection?.needsMasterKey || true
+  });
+  const [expandedRoomIds, setExpandedRoomIds] = useState<string[]>([]);
+  const [inspectionData, setInspectionData] = useState<Record<string, InspectionRoom>>(() => 
+    existingInspection?.rooms && Object.keys(existingInspection.rooms).length > 0
+      ? existingInspection.rooms
+      : initializeInspectionData(rooms)
+  );
+
+  const handleCancel = () => {
+    setInspectorName("");
+    setExpandedRoomIds([]);
+    return;
+  };
+
+  const handleToggleRoom = (roomId: string) => {
+    setExpandedRoomIds(prev => {
+      if (prev.includes(roomId)) {
+        return prev.filter(id => id !== roomId);
+      }
+      return [...prev, roomId];
+    });
+  };
+
+  const handleConditionUpdate = (
+    roomId: string,
+    field: keyof InspectionRoom["conditions"],
+    value: string
+  ) => {
+    setInspectionData(prev => {
+      const updatedRoom = {
+        ...prev[roomId],
+        conditions: {
+          ...prev[roomId].conditions,
+          [field]: value
+        }
+      };
+
+      // Check if all conditions are set to determine if room is handled
+      const allConditionsSet = Object.values(updatedRoom.conditions).every(
+        condition => condition && condition.trim() !== ""
+      );
+      
+      updatedRoom.isHandled = allConditionsSet;
+
+      return {
+        ...prev,
+        [roomId]: updatedRoom
+      };
+    });
+  };
+
+  const handleActionUpdate = (
+    roomId: string,
+    field: keyof InspectionRoom["actions"],
+    action: string
+  ) => {
+    setInspectionData(prev => {
+      const currentActions = prev[roomId].actions[field];
+      const newActions = currentActions.includes(action)
+        ? currentActions.filter(a => a !== action)
+        : [...currentActions, action];
+
+      return {
+        ...prev,
+        [roomId]: {
+          ...prev[roomId],
+          actions: {
+            ...prev[roomId].actions,
+            [field]: newActions
+          }
+        }
+      };
+    });
+  };
+
+  const handleComponentNoteUpdate = (
+    roomId: string,
+    field: keyof InspectionRoom["componentNotes"],
+    note: string
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        componentNotes: {
+          ...prev[roomId].componentNotes,
+          [field]: note
+        }
+      }
+    }));
+  };
+
+  const handleComponentPhotoAdd = useCallback((
+    roomId: string,
+    field: keyof InspectionRoom["componentPhotos"],
+    photoDataUrl: string
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        componentPhotos: {
+          ...prev[roomId].componentPhotos,
+          [field]: [...prev[roomId].componentPhotos[field], photoDataUrl]
+        }
+      }
+    }));
+  }, []);
+
+  const handleComponentPhotoRemove = useCallback((
+    roomId: string,
+    field: keyof InspectionRoom["componentPhotos"],
+    photoIndex: number
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        componentPhotos: {
+          ...prev[roomId].componentPhotos,
+          [field]: prev[roomId].componentPhotos[field].filter((_, i) => i !== photoIndex)
+        }
+      }
+    }));
+  }, []);
+
+  const handlePhotoAdd = useCallback((roomId: string, photoDataUrl: string) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        photos: [...prev[roomId].photos, photoDataUrl]
+      }
+    }));
+  }, []);
+
+  const handlePhotoRemove = useCallback((roomId: string, photoIndex: number) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        photos: prev[roomId].photos.filter((_, i) => i !== photoIndex)
+      }
+    }));
+  }, []);
+
+  const handleApproveRoom = (roomId: string) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        isApproved: !prev[roomId].isApproved,
+        isHandled: true
+      }
+    }));
+  };
+
+  return {
+    inspectorName,
+    setInspectorName,
+    inspectionTime,
+    setInspectionTime,
+    needsMasterKey,
+    setNeedsMasterKey,
+    apartmentInfo,
+    setApartmentInfo,
+    expandedRoomIds,
+    inspectionData,
+    handleCancel,
+    handleToggleRoom,
+    handleConditionUpdate,
+    handleActionUpdate,
+    handleComponentNoteUpdate,
+    handleComponentPhotoAdd,
+    handleComponentPhotoRemove,
+    handlePhotoAdd,
+    handlePhotoRemove,
+    handleApproveRoom
+  };
+}
