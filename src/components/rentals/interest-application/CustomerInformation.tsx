@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User } from "lucide-react";
 import type { Customer } from "../types/parking";
-import type { TenantValidation } from "@/hooks/useTenantValidation";
+import type { TenantValidation } from "@/features/tenants/hooks/useTenantValidation";
 
 interface CustomerInformationProps {
   customer: Customer;

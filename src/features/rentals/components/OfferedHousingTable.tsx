@@ -2,8 +2,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
-import { publishedHousingSpaces } from "@/data/published-housing";
-import { useHousingStatus } from "@/hooks/useHousingStatus";
+import { publishedHousingSpaces } from "../data/published-housing";
+import { useHousingStatus } from "../hooks/useHousingStatus";
 
 export function OfferedHousingTable() {
   const navigate = useNavigate();

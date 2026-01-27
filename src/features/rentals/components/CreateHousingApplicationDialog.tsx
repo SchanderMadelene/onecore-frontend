@@ -3,8 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { FormWrapper } from "@/components/ui/form-wrapper";
-import { useTenantValidation } from "@/hooks/useTenantValidation";
-import { useCreateHousingApplication } from "@/hooks/useCreateHousingApplication";
+import { useTenantValidation } from "@/features/tenants/hooks/useTenantValidation";
+import { useCreateHousingApplication } from "../hooks/useCreateHousingApplication";
 import { CustomerInfoLoading } from "./CustomerInfoLoading";
 import { useToast } from "@/hooks/use-toast";
 import type { HousingSpace } from "./types/housing";

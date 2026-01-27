@@ -1,6 +1,6 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { ParkingSpaceForPublishing } from "@/hooks/useParkingSpaceListings";
+import { ParkingSpaceForPublishing } from "@/features/rentals/hooks/useParkingSpaceListings";
 
 interface QueueTypeCheckboxesProps {
   space: ParkingSpaceForPublishing;

@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
-import { publishedHousingSpaces } from "@/data/published-housing";
-import { useHousingStatus } from "@/hooks/useHousingStatus";
+import { publishedHousingSpaces } from "../data/published-housing";
+import { useHousingStatus } from "../hooks/useHousingStatus";
 
 export function ReadyForOfferHousingTable() {
   const navigate = useNavigate();

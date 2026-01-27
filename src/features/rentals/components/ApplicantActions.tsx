@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { MoreHorizontal } from "lucide-react";
-import { useRemoveApplicant } from "@/hooks/useOfferActions";
+import { useRemoveApplicant } from "../hooks/useOfferActions";
 import { useToast } from "@/hooks/use-toast";
 
 interface ApplicantActionsProps {

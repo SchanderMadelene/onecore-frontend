@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { RefreshCw, Download } from "lucide-react";
-import { useSyncInternalParkingSpaces } from "@/hooks/useParkingSpaceActions";
+import { useSyncInternalParkingSpaces } from "../hooks/useParkingSpaceActions";
 
 export const SyncParkingSpacesDialog = () => {
   const [open, setOpen] = useState(false);

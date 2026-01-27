@@ -5,8 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search, Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useParkingSpaceListings } from "@/hooks/useParkingSpaceListings";
-import type { ParkingSpaceForPublishing } from "@/hooks/useParkingSpaceListings";
+import { useParkingSpaceListings, type ParkingSpaceForPublishing } from "@/features/rentals/hooks/useParkingSpaceListings";
 
 interface ParkingSpaceSearchProps {
   selectedParkingSpaces: ParkingSpaceForPublishing[];

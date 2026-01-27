@@ -1,4 +1,4 @@
-import type { TenantValidation } from "@/hooks/useTenantValidation";
+import type { TenantValidation } from "@/features/tenants/hooks/useTenantValidation";
 
 interface ValidationAlertsProps {
   tenantValidation: TenantValidation;
