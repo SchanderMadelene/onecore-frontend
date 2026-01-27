@@ -1,231 +1,163 @@
-
-
 # Migrationsplan: Feature-First Arkitektur
 
 ## Sammanfattning
 
-Projektet ska migreras från nuvarande struktur till den nya feature-first arkitekturen enligt knowledge-filen. **Ekonomi-domänen är redan migrerad** och tjänar som mall för övriga domäner.
+Projektet migreras från nuvarande struktur till den nya feature-first arkitekturen. **8 av 12 domäner är nu migrerade.**
 
 ---
 
-## Nuvarande vs Målstruktur
+## Migrationsstatus
 
-### Nuvarande struktur
+| Domän | Status | Komponenter | Hooks | Data/Types |
+|-------|--------|-------------|-------|------------|
+| **ekonomi** | ✅ KLAR | CustomerLedger, StrofakturaForm, etc. | - | invoices.ts |
+| **tenants** | ✅ KLAR | 17+ komponenter | useTenantValidation | tenants.ts, tenant-events.ts |
+| **properties** | ✅ KLAR | 18+ komponenter | usePropertyDetail, usePropertyFilters | properties.ts |
+| **buildings** | ✅ KLAR | 8+ komponenter | useBuildingDetail | buildings.ts |
+| **residences** | ✅ KLAR | 13+ komponenter + inspection/ | useResidenceData, useInspectionForm | residences.ts, rooms.ts |
+| **rentals** | ✅ KLAR | 30+ komponenter | 8 hooks | published-housing.ts, unpublished-housing.ts |
+| **orders** | ✅ KLAR | OrderCard, OrderForm, CreateOrderDialog | useOrdersService, useOrderForm | orders.ts |
+| **inspections** | ✅ KLAR | 4 page-komponenter | useInspectionFilters, useInspectionSorting | inspections.ts |
+| **barriers** | ⏳ Kvar | 4 filer | 0 | barriers.ts |
+| **turnover** | ⏳ Kvar | 6 filer | 1 | turnover.ts |
+| **favorites** | ⏳ Kvar | 3 filer | 1 | - |
+| **search** | ⏳ Kvar | 4 filer | 1 | search.ts, searchData.ts |
+| **communication** | ⏳ Kvar | 3 filer | 0 | messageTemplates.ts |
+
+---
+
+## Nuvarande struktur
+
 ```text
 src/
 ├── components/
-│   ├── barriers/          ← ska till features/
-│   ├── buildings/         ← ska till features/
-│   ├── communication/     ← ska till features/
-│   ├── favorites/         ← ska till features/
-│   ├── layout/            ✅ KLAR (re-export till layouts/)
-│   ├── navigation/        ✅ KLAR (Breadcrumb till common/)
-│   ├── orders/            ← ska till features/
-│   ├── properties/        ← ska till features/
-│   ├── rentals/           ← ska till features/
-│   ├── residence/         ← ska till features/
-│   ├── search/            ← ska till features/
-│   ├── shared/            ✅ KLAR (re-export till common/)
-│   ├── tenants/           ← ska till features/
-│   ├── turnover/          ← ska till features/
-│   └── ui/                ← BEHÅLL (shadcn)
-├── data/                  ← ska fördelas till features/
-├── hooks/                 ← ska fördelas till features/
-├── types/                 ← ska fördelas till features/
-└── features/ekonomi/      ✅ KLAR
-```
-
-### Målstruktur
-```text
-src/
-├── components/
-│   ├── ui/                ← shadcn (behåll)
-│   └── common/            ✅ KLAR (från shared/)
+│   ├── barriers/          ⏳ ska till features/
+│   ├── buildings/         ✅ re-export → features/buildings/
+│   ├── communication/     ⏳ ska till features/
+│   ├── favorites/         ⏳ ska till features/
+│   ├── layout/            ✅ re-export → layouts/
+│   ├── navigation/        ✅ re-export → common/
+│   ├── orders/            ✅ re-export → features/orders/
+│   ├── properties/        ✅ re-export → features/properties/
+│   ├── rentals/           ✅ re-export → features/rentals/
+│   ├── residence/         ✅ re-export → features/residences/
+│   ├── search/            ⏳ ska till features/
+│   ├── shared/            ✅ re-export → common/
+│   ├── tenants/           ✅ re-export → features/tenants/
+│   ├── turnover/          ⏳ ska till features/
+│   ├── ui/                ✅ BEHÅLL (shadcn)
+│   └── common/            ✅ KLAR
 ├── layouts/               ✅ KLAR
-│   ├── main-layout.tsx
-│   ├── NavigationBar.tsx
-│   └── TreeView/
 ├── features/
 │   ├── ekonomi/           ✅ KLAR
-│   ├── tenants/
-│   ├── properties/
-│   ├── buildings/
-│   ├── residences/
-│   ├── rentals/
-│   ├── orders/
-│   ├── barriers/
-│   ├── turnover/
-│   ├── favorites/
-│   ├── search/
-│   ├── inspections/
-│   └── communication/
-├── hooks/                 ← endast delade hooks
-├── services/              ← behåll
-└── pages/                 ← behåll
+│   ├── tenants/           ✅ KLAR
+│   ├── properties/        ✅ KLAR
+│   ├── buildings/         ✅ KLAR
+│   ├── residences/        ✅ KLAR
+│   ├── rentals/           ✅ KLAR
+│   ├── orders/            ✅ KLAR
+│   └── inspections/       ✅ KLAR
+├── hooks/                 ✅ Delade hooks + re-exports
+├── services/              ✅ Behålls
+└── pages/                 ✅ Behålls
 ```
-
----
-
-## Domäner att migrera (prioritetsordning)
-
-| Prioritet | Domän | Komplexitet | Komponenter | Hooks | Data/Types |
-|-----------|-------|-------------|-------------|-------|------------|
-| 1 | **tenants** | Hög | 17 filer | 1 | tenants.ts, tenant-events.ts |
-| 2 | **properties** | Hög | 18 filer | 3 | properties/, properties.ts |
-| 3 | **buildings** | Medel | 8 filer | 2 | buildings.ts |
-| 4 | **residences** | Hög | 13 filer | 2 | residences.ts, rooms.ts |
-| 5 | **rentals** | Mycket hög | 30+ filer | 8 | published-housing.ts, unpublished-housing.ts |
-| 6 | **orders** | Medel | 8 filer | 3 | - |
-| 7 | **barriers** | Låg | 4 filer | 0 | barriers.ts |
-| 8 | **turnover** | Medel | 6 filer | 1 | turnover.ts |
-| 9 | **favorites** | Låg | 3 filer | 1 | - |
-| 10 | **search** | Medel | 4 filer | 1 | search.ts, searchData.ts |
-| 11 | **inspections** | Medel | subfolder i residence | 2 | - |
-| 12 | **communication** | Låg | 3 filer | 0 | messageTemplates.ts |
 
 ---
 
 ## Fas 1: Strukturella ändringar ✅ KLAR
 
-### 1.1 Skapa src/layouts/ ✅
-| Från | Till | Status |
-|------|------|--------|
-| `src/components/layout/PageLayout.tsx` | `src/layouts/main-layout.tsx` | ✅ |
-| `src/components/NavigationBar.tsx` | `src/layouts/NavigationBar.tsx` | ✅ |
-| `src/components/TreeView.tsx` | `src/layouts/TreeView.tsx` | ✅ |
-| `src/components/treeview/` | `src/layouts/treeview/` | ✅ |
-
-### 1.2 Flytta shared till common ✅
-| Från | Till | Status |
-|------|------|--------|
-| `src/components/shared/*` | `src/components/common/*` | ✅ |
-| `src/components/navigation/Breadcrumb.tsx` | `src/components/common/Breadcrumb.tsx` | ✅ |
-
-### 1.3 Backward-compatibility re-exports ✅
-Alla gamla importsökvägar fungerar via re-exports.
+- `src/layouts/` skapad med main-layout, NavigationBar, TreeView
+- `src/components/common/` skapad från shared/
+- Backward-compatibility re-exports på plats
 
 ---
 
 ## Fas 2: Domänmigrationer
 
-### Migrationsmall per domän
-
-För varje domän:
-1. Skapa `src/features/{domain}/` med undermappar
-2. Flytta komponenter från `src/components/{domain}/`
-3. Flytta relevanta typer från `src/types/`
-4. Flytta relevanta data från `src/data/`
-5. Flytta relevanta hooks från `src/hooks/`
-6. Skapa barrel-export `index.ts`
-7. Skapa backward-compatibility re-exports på gamla platser
-8. Uppdatera konsumerande filer
-
-### 2.1 Tenants-domänen
+### 2.1 Tenants ✅ KLAR
 ```text
 src/features/tenants/
-├── components/
-│   ├── TenantCard.tsx
-│   ├── TenantContracts.tsx
-│   ├── TenantEventLog.tsx
-│   ├── TenantInformationCard.tsx
-│   ├── TenantMobileAccordion.tsx
-│   ├── TenantsList.tsx
-│   ├── parking-interest/
-│   └── tabs/
-├── hooks/
-│   └── useTenantValidation.ts
-├── types/
-│   └── tenant-types.ts
-├── data/
-│   ├── tenants.ts
-│   └── tenant-events.ts
+├── components/ (TenantCard, TenantContracts, TenantsList, tabs/, parking-interest/)
+├── hooks/ (useTenantValidation)
+├── data/ (tenants.ts, tenant-events.ts)
 └── index.ts
 ```
 
-### 2.2 Properties-domänen
+### 2.2 Properties ✅ KLAR
 ```text
 src/features/properties/
-├── components/
-│   ├── PropertyBasicInfo.tsx
-│   ├── PropertyBuildingCard.tsx
-│   ├── PropertyHeader.tsx
-│   ├── PropertySearch.tsx
-│   ├── PropertiesTable.tsx
-│   └── tabs/
-├── hooks/
-│   ├── usePropertyDetail.ts
-│   └── usePropertyFilters.ts
-├── data/
-│   ├── properties.ts
-│   └── properties/
+├── components/ (PropertyHeader, PropertySearch, PropertiesTable, tabs/)
+├── hooks/ (usePropertyDetail, usePropertyFilters)
+├── data/ (properties.ts, properties/)
 └── index.ts
 ```
 
-### 2.3 Buildings-domänen
+### 2.3 Buildings ✅ KLAR
 ```text
 src/features/buildings/
-├── components/
-│   ├── BuildingBasicInfo.tsx
-│   ├── BuildingHeader.tsx
-│   └── tabs/
-├── hooks/
-│   └── useBuildingDetail.ts
-├── data/
-│   └── buildings.ts
+├── components/ (BuildingHeader, BuildingBasicInfo, tabs/)
+├── hooks/ (useBuildingDetail)
+├── data/ (buildings.ts)
 └── index.ts
 ```
 
-### 2.4 Residences-domänen
+### 2.4 Residences ✅ KLAR
 ```text
 src/features/residences/
-├── components/
-│   ├── ResidenceBasicInfo.tsx
-│   ├── ResidenceContent.tsx
-│   ├── MobileAccordion.tsx
-│   ├── inspection/
-│   └── tabs/
-├── hooks/
-│   ├── useResidenceData.ts
-│   └── useInspectionForm.ts
-├── data/
-│   ├── residences.ts
-│   └── rooms.ts
+├── components/ (ResidenceContent, MobileAccordion, inspection/, tabs/)
+├── hooks/ (useResidenceData, useInspectionForm, useInspectionProgress)
+├── data/ (residences.ts, rooms.ts)
 └── index.ts
 ```
 
-### 2.5 Rentals-domänen (störst)
+### 2.5 Rentals ✅ KLAR
 ```text
 src/features/rentals/
-├── components/
-│   ├── HousingSpacesTable.tsx
-│   ├── ParkingSpacesTable.tsx
-│   ├── housing-application/
-│   ├── interest-application/
-│   ├── publish-dialog/
-│   └── tabs/
-├── hooks/
-│   ├── useHousingListing.ts
-│   ├── useParkingSpaceActions.ts
-│   └── useOfferActions.ts
-├── types/
-│   └── rentals-types.ts
-├── data/
-│   ├── published-housing.ts
-│   └── unpublished-housing.ts
+├── components/ (30+ komponenter, tabs/, publish-dialog/, interest-application/)
+├── hooks/ (useParkingSpaceListing, useHousingListing, useOfferActions, etc.)
+├── types/ (housing.ts, parking.ts, unpublished-housing.ts)
+├── data/ (published-housing.ts, unpublished-housing.ts)
 └── index.ts
 ```
 
-### 2.6-2.12 Övriga domäner
-Samma mönster för: **orders**, **barriers**, **turnover**, **favorites**, **search**, **inspections**, **communication**.
+### 2.6 Orders ✅ KLAR
+```text
+src/features/orders/
+├── components/ (OrderCard, OrdersTable, OrderForm, CreateOrderDialog, form/, form-rhf/)
+├── hooks/ (useOrdersService, useOrderForm, useOrderFormValidation)
+├── types/ (order.ts)
+├── data/ (orders.ts)
+└── index.ts
+```
+
+### 2.7 Inspections ✅ KLAR
+```text
+src/features/inspections/
+├── components/ (InspectionsHeader, DateCell, InspectorCell, SortableHeader)
+├── hooks/ (useInspectionFilters, useInspectionSorting)
+├── types/ (inspection.ts - ExtendedInspection)
+├── data/ (inspections.ts - getAllInspections, AVAILABLE_INSPECTORS)
+└── index.ts
+```
+
+### 2.8-2.12 Kvarvarande domäner ⏳
+
+| Domän | Komplexitet | Uppskattad tid |
+|-------|-------------|----------------|
+| barriers | Låg | 5 min |
+| turnover | Medel | 10 min |
+| favorites | Låg | 5 min |
+| search | Medel | 10 min |
+| communication | Låg | 5 min |
 
 ---
 
-## Fas 3: Rensning
+## Fas 3: Rensning ⏳
 
-1. Ta bort tomma mappar i `src/components/`
-2. Uppdatera `src/data/index.ts` och `src/types/index.ts` till endast re-exports
-3. Verifiera alla backward-compatibility exports fungerar
-4. Kör TypeScript-kontroll för trasiga importer
+1. ⏳ Ta bort tomma mappar i `src/components/`
+2. ⏳ Uppdatera `src/data/index.ts` och `src/types/index.ts` till endast re-exports
+3. ⏳ Verifiera alla backward-compatibility exports fungerar
+4. ⏳ Kör TypeScript-kontroll för trasiga importer
 
 ---
 
@@ -244,29 +176,12 @@ Samma mönster för: **orders**, **barriers**, **turnover**, **favorites**, **se
 | Steg | Fas | Beskrivning | Status |
 |------|-----|-------------|--------|
 | 1 | 1.1-1.3 | Strukturella ändringar (layouts, common) | ✅ KLAR |
-| 2 | 2.1 | Migrera tenants | ⏳ |
-| 3 | 2.2 | Migrera properties | ⏳ |
-| 4 | 2.3 | Migrera buildings | ⏳ |
-| 5 | 2.4 | Migrera residences | ⏳ |
-| 6 | 2.5 | Migrera rentals (2 omgångar) | ⏳ |
-| 7 | 2.6-2.12 | Migrera övriga domäner | ⏳ |
-| 8 | 3 | Rensning och verifiering | ⏳ |
-
----
-
-## Filer per fas (teknisk detalj)
-
-### Fas 1 - Nya/ändrade filer ✅
-- `src/layouts/main-layout.tsx` ✅
-- `src/layouts/NavigationBar.tsx` ✅
-- `src/layouts/TreeView.tsx` ✅
-- `src/layouts/treeview/` ✅
-- `src/components/common/` ✅
-- Backward-compatibility re-exports ✅
-
-### Per domänmigration
-- ~5-30 komponenter flyttas
-- 0-3 hooks flyttas
-- 1-3 datafiler flyttas
-- 1 barrel-export skapas
-- Backward-compatibility re-exports på ursprungsplatser
+| 2 | 2.1 | Migrera tenants | ✅ KLAR |
+| 3 | 2.2 | Migrera properties | ✅ KLAR |
+| 4 | 2.3 | Migrera buildings | ✅ KLAR |
+| 5 | 2.4 | Migrera residences | ✅ KLAR |
+| 6 | 2.5 | Migrera rentals | ✅ KLAR |
+| 7 | 2.6 | Migrera orders | ✅ KLAR |
+| 8 | 2.7 | Migrera inspections | ✅ KLAR |
+| 9 | 2.8-2.12 | Migrera övriga (barriers, turnover, favorites, search, communication) | ⏳ |
+| 10 | 3 | Rensning och verifiering | ⏳ |
