@@ -1,6 +1,5 @@
-import { SaveAsFavoriteButton } from "@/components/shared/SaveAsFavoriteButton";
-import { ActiveFavoriteIndicator } from "@/components/shared/ActiveFavoriteIndicator";
-import { CreateBarrierDialog } from "@/components/barriers/CreateBarrierDialog";
+import { SaveAsFavoriteButton, ActiveFavoriteIndicator } from "@/components/common";
+import { CreateBarrierDialog } from "@/features/barriers";
 
 interface BarriersHeaderProps {
   onBarrierCreated: () => void;

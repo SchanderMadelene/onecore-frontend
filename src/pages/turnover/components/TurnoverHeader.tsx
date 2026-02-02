@@ -1,5 +1,4 @@
-import { SaveAsFavoriteButton } from "@/components/shared/SaveAsFavoriteButton";
-import { ActiveFavoriteIndicator } from "@/components/shared/ActiveFavoriteIndicator";
+import { SaveAsFavoriteButton, ActiveFavoriteIndicator } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
