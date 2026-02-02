@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { InspectionRoom, Inspection } from "@/features/residences/components/inspection/types";
+import type { InspectionRoom, Inspection, CostResponsibility } from "@/features/residences/components/inspection/types";
 import type { Room } from "@/types/api";
 import { initializeInspectionData } from "@/features/residences/components/inspection/form/initialData";
 
@@ -176,6 +176,23 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     }));
   };
 
+  const handleCostResponsibilityUpdate = useCallback((
+    roomId: string,
+    field: keyof InspectionRoom["costResponsibility"],
+    value: CostResponsibility
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        costResponsibility: {
+          ...prev[roomId].costResponsibility,
+          [field]: value
+        }
+      }
+    }));
+  }, []);
+
   return {
     inspectorName,
     setInspectorName,
@@ -196,6 +213,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handleComponentPhotoRemove,
     handlePhotoAdd,
     handlePhotoRemove,
-    handleApproveRoom
+    handleApproveRoom,
+    handleCostResponsibilityUpdate
   };
 }

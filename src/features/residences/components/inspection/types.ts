@@ -1,3 +1,4 @@
+export type CostResponsibility = 'tenant' | 'landlord' | null;
 
 export interface InspectionRoom {
   roomId: string;
@@ -36,6 +37,15 @@ export interface InspectionRoom {
     floor: string[];
     ceiling: string[];
     details: string[];
+  };
+  costResponsibility: {
+    wall1: CostResponsibility;
+    wall2: CostResponsibility;
+    wall3: CostResponsibility;
+    wall4: CostResponsibility;
+    floor: CostResponsibility;
+    ceiling: CostResponsibility;
+    details: CostResponsibility;
   };
   photos: string[];
   isApproved: boolean;

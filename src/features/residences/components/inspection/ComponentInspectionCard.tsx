@@ -3,8 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { ChevronRight, Camera, Wrench, MessageSquare } from "lucide-react";
 import { PhotoCapture } from "./PhotoCapture";
+import type { CostResponsibility } from "./types";
 
 interface ComponentInspectionCardProps {
   componentKey: string;
@@ -13,10 +16,12 @@ interface ComponentInspectionCardProps {
   note: string;
   photoCount: number;
   actions: string[];
+  costResponsibility: CostResponsibility;
   onConditionChange: (value: string) => void;
   onNoteChange: (value: string) => void;
   onPhotoCapture: (photoDataUrl: string) => void;
   onOpenDetail: () => void;
+  onCostResponsibilityChange: (value: CostResponsibility) => void;
 }
 
 const CONDITION_OPTIONS = [
@@ -38,18 +43,22 @@ const CONDITION_OPTIONS = [
 ];
 
 export function ComponentInspectionCard({
+  componentKey,
   label,
   condition,
   note,
   photoCount,
   actions,
+  costResponsibility,
   onConditionChange,
   onNoteChange,
   onPhotoCapture,
-  onOpenDetail
+  onOpenDetail,
+  onCostResponsibilityChange
 }: ComponentInspectionCardProps) {
   const [isNoteFocused, setIsNoteFocused] = useState(false);
   const hasLongNote = note.length > 50;
+  const showCostResponsibility = condition === "Skadad" || condition === "Acceptabel";
 
   return (
     <div className="border-b border-border last:border-0 py-4">
@@ -106,6 +115,31 @@ export function ComponentInspectionCard({
           </Button>
         ))}
       </div>
+
+      {/* Cost responsibility - shown when condition is Skadad or Acceptabel */}
+      {showCostResponsibility && (
+        <div className="mb-3">
+          <span className="text-sm text-muted-foreground mb-2 block">Kostnadsansvar</span>
+          <RadioGroup
+            value={costResponsibility || ""}
+            onValueChange={(value) => onCostResponsibilityChange(value as CostResponsibility)}
+            className="flex gap-4"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="tenant" id={`${componentKey}-tenant`} />
+              <Label htmlFor={`${componentKey}-tenant`} className="text-sm font-normal cursor-pointer">
+                Hyresgäst
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="landlord" id={`${componentKey}-landlord`} />
+              <Label htmlFor={`${componentKey}-landlord`} className="text-sm font-normal cursor-pointer">
+                Hyresvärd
+              </Label>
+            </div>
+          </RadioGroup>
+        </div>
+      )}
 
       {/* Note field and photo button */}
       <div className="flex gap-2 items-start">

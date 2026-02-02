@@ -47,7 +47,8 @@ export function MobileInspectionForm({
     handleActionUpdate,
     handleComponentNoteUpdate,
     handleComponentPhotoAdd,
-    handleComponentPhotoRemove
+    handleComponentPhotoRemove,
+    handleCostResponsibilityUpdate
   } = useInspectionForm(rooms, existingInspection);
 
   const currentRoom = rooms[currentRoomIndex];
@@ -221,7 +222,8 @@ export function MobileInspectionForm({
               onActionUpdate={(field, action) => handleActionUpdate(currentRoom.id, field, action)} 
               onComponentNoteUpdate={(field, note) => handleComponentNoteUpdate(currentRoom.id, field, note)} 
               onComponentPhotoAdd={(field, photoDataUrl) => handleComponentPhotoAdd(currentRoom.id, field, photoDataUrl)} 
-              onComponentPhotoRemove={(field, index) => handleComponentPhotoRemove(currentRoom.id, field, index)} 
+              onComponentPhotoRemove={(field, index) => handleComponentPhotoRemove(currentRoom.id, field, index)}
+              onCostResponsibilityUpdate={(field, value) => handleCostResponsibilityUpdate(currentRoom.id, field, value)}
             />
           </div>
         </ScrollArea>

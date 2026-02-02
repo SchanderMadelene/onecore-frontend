@@ -70,6 +70,15 @@ export const RoomCard = ({
       ceiling: [],
       details: []
     },
+    costResponsibility: {
+      wall1: null,
+      wall2: null,
+      wall3: null,
+      wall4: null,
+      floor: null,
+      ceiling: null,
+      details: null
+    },
     photos: [],
     isApproved: false,
     isHandled: false
