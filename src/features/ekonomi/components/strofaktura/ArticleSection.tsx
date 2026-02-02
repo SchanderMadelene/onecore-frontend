@@ -12,26 +12,21 @@ import {
 } from "@/components/ui/select";
 import { strofakturaArticles } from "@/features/ekonomi/data";
 import { cn } from "@/lib/utils";
+import { InvoiceRow } from "@/features/ekonomi/types/invoice-row";
 
 interface ArticleSectionProps {
   selectedArticle: string;
   artikelnummer: string;
   avserObjektnummer: string;
-  textRows: string[];
-  antal: number | string;
-  prisInkMoms: number | string;
+  invoiceRows: InvoiceRow[];
   administrativaKostnader: boolean;
   hanteringsavgift: boolean;
   onArticleSelect: (artikelnummer: string) => void;
-  onTextRowsChange: (rows: string[]) => void;
-  onAntalChange: (antal: number) => void;
-  onPrisChange: (pris: number) => void;
+  onInvoiceRowsChange: (rows: InvoiceRow[]) => void;
   onAdministrativaKostnaderChange: (checked: boolean) => void;
   onHandteringsavgiftChange: (checked: boolean) => void;
   errors?: {
     artikel?: string;
-    antal?: string;
-    prisInkMoms?: string;
   };
 }
 
@@ -39,32 +34,34 @@ export function ArticleSection({
   selectedArticle,
   artikelnummer,
   avserObjektnummer,
-  textRows,
-  antal,
-  prisInkMoms,
+  invoiceRows,
   administrativaKostnader,
   hanteringsavgift,
   onArticleSelect,
-  onTextRowsChange,
-  onAntalChange,
-  onPrisChange,
+  onInvoiceRowsChange,
   onAdministrativaKostnaderChange,
   onHandteringsavgiftChange,
   errors
 }: ArticleSectionProps) {
-  const handleRowChange = (index: number, value: string) => {
-    const newRows = [...textRows];
-    newRows[index] = value;
-    onTextRowsChange(newRows);
+  const handleRowChange = (index: number, field: keyof InvoiceRow, value: string | number) => {
+    const newRows = [...invoiceRows];
+    if (field === 'text') {
+      newRows[index] = { ...newRows[index], text: value as string };
+    } else if (field === 'antal') {
+      newRows[index] = { ...newRows[index], antal: Number(value) || 1 };
+    } else if (field === 'pris') {
+      newRows[index] = { ...newRows[index], pris: Number(value) || 0 };
+    }
+    onInvoiceRowsChange(newRows);
   };
 
   const handleAddRow = () => {
-    onTextRowsChange([...textRows, ""]);
+    onInvoiceRowsChange([...invoiceRows, { text: "", antal: 1, pris: 0 }]);
   };
 
   const handleRemoveRow = (index: number) => {
-    if (textRows.length > 1) {
-      onTextRowsChange(textRows.filter((_, i) => i !== index));
+    if (invoiceRows.length > 1) {
+      onInvoiceRowsChange(invoiceRows.filter((_, i) => i !== index));
     }
   };
 
@@ -117,71 +114,71 @@ export function ArticleSection({
       </div>
 
       {/* Fakturarader - grupperat */}
-      <div className="rounded-lg border border-border p-4 space-y-4 bg-muted/30">
-        <div className="space-y-3">
-          <Label>Text</Label>
-          <div className="space-y-2">
-            {textRows.map((row, index) => (
-              <div key={index} className="flex gap-2">
-                <Input
-                  value={row}
-                  onChange={(e) => handleRowChange(index, e.target.value)}
-                  placeholder={index === 0 ? "Textrad..." : "Textrad (valfri)..."}
-                />
-                {textRows.length > 1 && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleRemoveRow(index)}
-                    className="shrink-0"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            ))}
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={handleAddRow}
-            className="mt-2"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            Lägg till rad
-          </Button>
+      <div className="rounded-lg border border-border p-4 space-y-3 bg-muted/30">
+        <Label>Fakturarader</Label>
+        
+        {/* Header row - only visible on larger screens */}
+        <div className="hidden sm:grid sm:grid-cols-[1fr_80px_100px_40px] gap-2 text-sm text-muted-foreground">
+          <span>Text</span>
+          <span>Antal</span>
+          <span>Pris (ink. moms)</span>
+          <span></span>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="antal">Antal</Label>
-            <Input
-              id="antal"
-              type="number"
-              min={1}
-              value={antal}
-              onChange={(e) => onAntalChange(Number(e.target.value))}
-              className={cn(errors?.antal && "border-destructive")}
-            />
-            {errors?.antal && <p className="text-sm text-destructive">{errors.antal}</p>}
+        {invoiceRows.map((row, index) => (
+          <div key={index} className="space-y-2 sm:space-y-0 sm:grid sm:grid-cols-[1fr_80px_100px_40px] gap-2">
+            <div className="space-y-1 sm:space-y-0">
+              <Label className="sm:hidden text-xs text-muted-foreground">Text</Label>
+              <Input
+                value={row.text}
+                onChange={(e) => handleRowChange(index, 'text', e.target.value)}
+                placeholder="Beskrivning..."
+              />
+            </div>
+            <div className="space-y-1 sm:space-y-0">
+              <Label className="sm:hidden text-xs text-muted-foreground">Antal</Label>
+              <Input
+                type="number"
+                min={1}
+                value={row.antal}
+                onChange={(e) => handleRowChange(index, 'antal', e.target.value)}
+              />
+            </div>
+            <div className="space-y-1 sm:space-y-0">
+              <Label className="sm:hidden text-xs text-muted-foreground">Pris (ink. moms)</Label>
+              <Input
+                type="number"
+                min={0}
+                step={0.01}
+                value={row.pris}
+                onChange={(e) => handleRowChange(index, 'pris', e.target.value)}
+              />
+            </div>
+            <div className="flex items-end sm:items-center justify-end sm:justify-center">
+              {invoiceRows.length > 1 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleRemoveRow(index)}
+                  className="shrink-0 h-9 w-9"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
           </div>
+        ))}
 
-          <div className="space-y-2">
-            <Label htmlFor="prisInkMoms">Pris (ink. moms)</Label>
-            <Input
-              id="prisInkMoms"
-              type="number"
-              min={0}
-              step={0.01}
-              value={prisInkMoms}
-              onChange={(e) => onPrisChange(Number(e.target.value))}
-              className={cn(errors?.prisInkMoms && "border-destructive")}
-            />
-            {errors?.prisInkMoms && <p className="text-sm text-destructive">{errors.prisInkMoms}</p>}
-          </div>
-        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleAddRow}
+        >
+          <Plus className="h-4 w-4 mr-1" />
+          Lägg till rad
+        </Button>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 pt-2">
