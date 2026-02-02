@@ -69,7 +69,7 @@ export function StrofakturaForm() {
   const [fastighet, setFastighet] = useState("");
   const [artikel, setArtikel] = useState("");
   const [artikelnummer, setArtikelnummer] = useState("");
-  const [textRows, setTextRows] = useState<[string, string, string]>(["", "", ""]);
+  const [textRows, setTextRows] = useState<string[]>([""]);
   const [antal, setAntal] = useState<number | string>(1);
   const [prisInkMoms, setPrisInkMoms] = useState<number | string>(0);
   const [projekt, setProjekt] = useState("");
@@ -208,7 +208,7 @@ export function StrofakturaForm() {
     setFastighet("");
     setArtikel("");
     setArtikelnummer("");
-    setTextRows(["", "", ""]);
+    setTextRows([""]);
     setAntal(1);
     setPrisInkMoms(0);
     setProjekt("");
@@ -311,11 +311,7 @@ export function StrofakturaForm() {
               administrativaKostnader={administrativaKostnader}
               hanteringsavgift={hanteringsavgift}
               onArticleSelect={handleArticleSelect}
-              onTextRowChange={(index, value) => {
-                const newRows = [...textRows] as [string, string, string];
-                newRows[index] = value;
-                setTextRows(newRows);
-              }}
+              onTextRowsChange={setTextRows}
               onAntalChange={setAntal}
               onPrisChange={setPrisInkMoms}
               onAdministrativaKostnaderChange={setAdministrativaKostnader}
