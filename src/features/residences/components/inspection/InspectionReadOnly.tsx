@@ -192,44 +192,56 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
             <AccordionContent>
               <div className="px-4 pb-4 pt-1 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {Object.entries(room.conditions).map(([component, condition]) => (
-                    <div key={component} className="space-y-2 p-3 bg-muted/30 rounded-lg">
-                      <h4 className="font-medium capitalize">{component}</h4>
-                      <p className="text-sm">
-                        <span className="text-muted-foreground">Skick:</span>{' '}
-                        {condition || "Ej angivet"}
-                      </p>
-                      
-                      {/* Åtgärder */}
-                      <div className="text-sm">
-                        <p className="text-muted-foreground">Åtgärder:</p>
-                        {room.actions[component as keyof typeof room.actions]?.length > 0 ? (
-                          <ul className="list-disc list-inside mt-1">
-                            {room.actions[component as keyof typeof room.actions].map((action, index) => (
-                              <li key={index}>{action}</li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="text-muted-foreground/70 italic">Inga åtgärder</p>
+                  {Object.entries(room.conditions).map(([component, condition]) => {
+                    const costResp = room.costResponsibility?.[component as keyof typeof room.costResponsibility];
+                    return (
+                      <div key={component} className="space-y-2 p-3 bg-muted/30 rounded-lg">
+                        <h4 className="font-medium capitalize">{component}</h4>
+                        <p className="text-sm">
+                          <span className="text-muted-foreground">Skick:</span>{' '}
+                          {condition || "Ej angivet"}
+                        </p>
+                        
+                        {/* Kostnadsansvar */}
+                        {costResp && (
+                          <div className="text-sm">
+                            <Badge variant={costResp === 'tenant' ? 'destructive' : 'secondary'}>
+                              {costResp === 'tenant' ? 'Hyresgästens ansvar' : 'Hyresvärdens ansvar'}
+                            </Badge>
+                          </div>
+                        )}
+                        
+                        {/* Åtgärder */}
+                        <div className="text-sm">
+                          <p className="text-muted-foreground">Åtgärder:</p>
+                          {room.actions[component as keyof typeof room.actions]?.length > 0 ? (
+                            <ul className="list-disc list-inside mt-1">
+                              {room.actions[component as keyof typeof room.actions].map((action, index) => (
+                                <li key={index}>{action}</li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="text-muted-foreground/70 italic">Inga åtgärder</p>
+                          )}
+                        </div>
+                        
+                        {/* Anteckningar */}
+                        {room.componentNotes[component as keyof typeof room.componentNotes] && (
+                          <div className="text-sm">
+                            <p className="text-muted-foreground">Anteckningar:</p>
+                            <p className="mt-1">{room.componentNotes[component as keyof typeof room.componentNotes]}</p>
+                          </div>
+                        )}
+                        
+                        {/* Expanderbara foton */}
+                        {renderComponentPhotos(
+                          roomId, 
+                          component, 
+                          room.componentPhotos?.[component as keyof typeof room.componentPhotos] || []
                         )}
                       </div>
-                      
-                      {/* Anteckningar */}
-                      {room.componentNotes[component as keyof typeof room.componentNotes] && (
-                        <div className="text-sm">
-                          <p className="text-muted-foreground">Anteckningar:</p>
-                          <p className="mt-1">{room.componentNotes[component as keyof typeof room.componentNotes]}</p>
-                        </div>
-                      )}
-                      
-                      {/* Expanderbara foton */}
-                      {renderComponentPhotos(
-                        roomId, 
-                        component, 
-                        room.componentPhotos?.[component as keyof typeof room.componentPhotos] || []
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </AccordionContent>
