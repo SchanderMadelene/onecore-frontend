@@ -8,19 +8,15 @@ import { cn } from "@/lib/utils";
 
 interface AdditionalInfoSectionProps {
   projekt: string;
-  fakturanAvserFritext: string;
   internInfo: string;
   onProjektChange: (value: string) => void;
-  onFakturanAvserFritextChange: (value: string) => void;
   onInternInfoChange: (value: string) => void;
 }
 
 export function AdditionalInfoSection({
   projekt,
-  fakturanAvserFritext,
   internInfo,
   onProjektChange,
-  onFakturanAvserFritextChange,
   onInternInfoChange
 }: AdditionalInfoSectionProps) {
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
@@ -47,20 +43,6 @@ export function AdditionalInfoSection({
           onChange={(e) => onProjektChange(e.target.value)}
           placeholder="Projektnummer (valfritt)"
         />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="fakturanAvser">Fakturan avser</Label>
-        <Input
-          id="fakturanAvser"
-          value={fakturanAvserFritext}
-          onChange={(e) => onFakturanAvserFritextChange(e.target.value)}
-          placeholder="Beskrivning av vad fakturan avser..."
-          maxLength={255}
-        />
-        <p className="text-xs text-muted-foreground text-right">
-          {fakturanAvserFritext.length}/255 tecken
-        </p>
       </div>
 
       <div className="space-y-2">
