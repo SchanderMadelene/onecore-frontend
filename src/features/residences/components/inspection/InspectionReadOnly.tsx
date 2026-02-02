@@ -13,6 +13,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Camera, ChevronDown, Key, Home, User, Phone, Mail } from "lucide-react";
 import { PdfDropdownMenu } from "./pdf";
+import {
+  getComponentLabel,
+  getConditionColor,
+  getConditionIcon,
+  getConditionLabel,
+  hasRemark,
+  getCostResponsibilityLabel,
+  getDefaultExpandedComponents,
+  countRemarks,
+  getRoomWorstCondition,
+} from "./inspection-utils";
 
 interface InspectionReadOnlyProps {
   inspection: Inspection;
@@ -28,9 +39,16 @@ export function InspectionReadOnly({
   roomNames 
 }: InspectionReadOnlyProps) {
   const [expandedPhotos, setExpandedPhotos] = useState<Record<string, boolean>>({});
+  const [expandedComponents, setExpandedComponents] = useState<string[]>(
+    () => getDefaultExpandedComponents(inspection.rooms)
+  );
 
   const togglePhotoExpansion = (key: string) => {
     setExpandedPhotos(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const getRoomName = (roomId: string): string => {
+    return roomNames?.[roomId] || `Rum ${roomId}`;
   };
 
   const renderHeader = () => (
@@ -167,7 +185,7 @@ export function InspectionReadOnly({
               <img 
                 key={i} 
                 src={photo} 
-                alt={`${component} foto ${i + 1}`}
+                alt={`${getComponentLabel(component)} foto ${i + 1}`}
                 className="rounded-md border object-cover aspect-square w-full"
               />
             ))}
@@ -177,82 +195,122 @@ export function InspectionReadOnly({
     );
   };
 
+  const renderComponentContent = (roomId: string, component: string, room: typeof inspection.rooms[string]) => {
+    const condition = room.conditions[component];
+    const costResp = room.costResponsibility?.[component as keyof typeof room.costResponsibility];
+    const actions = room.actions[component as keyof typeof room.actions] || [];
+    const notes = room.componentNotes[component as keyof typeof room.componentNotes];
+    const photos = room.componentPhotos?.[component as keyof typeof room.componentPhotos] || [];
+
+    return (
+      <div className="space-y-3 pt-2">
+        {/* Skick och kostnadsansvar */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={`font-medium ${getConditionColor(condition)}`}>
+            {getConditionLabel(condition)}
+          </span>
+          {costResp && (
+            <>
+              <span className="text-muted-foreground">·</span>
+              <Badge variant={costResp === 'tenant' ? 'destructive' : 'secondary'} className="text-xs">
+                {getCostResponsibilityLabel(costResp)}
+              </Badge>
+            </>
+          )}
+        </div>
+
+        {/* Anteckningar */}
+        {notes && (
+          <p className="text-sm text-muted-foreground">{notes}</p>
+        )}
+
+        {/* Åtgärder - endast om det finns några */}
+        {actions.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-sm text-muted-foreground">Åtgärder:</span>
+            {actions.map((action, index) => (
+              <Badge key={index} variant="outline" className="text-xs">
+                {action}
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        {/* Foton */}
+        {renderComponentPhotos(roomId, component, photos)}
+      </div>
+    );
+  };
+
   const renderRooms = () => (
     <div className="space-y-4">
       <h3 className="font-medium">Rum ({Object.keys(inspection.rooms).length})</h3>
       <Accordion type="single" collapsible className="space-y-2">
-        {Object.entries(inspection.rooms).map(([roomId, room]) => (
-          <AccordionItem 
-            key={roomId} 
-            value={roomId}
-            className="rounded-lg border bg-card"
-          >
-            <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-medium">Rum {roomId}</span>
-                {room.isHandled && (
-                  <Badge variant="default" className="text-xs">Hanterat</Badge>
-                )}
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="px-4 pb-4 pt-1 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {Object.entries(room.conditions).map(([component, condition]) => {
-                    const costResp = room.costResponsibility?.[component as keyof typeof room.costResponsibility];
-                    return (
-                      <div key={component} className="space-y-2 p-3 bg-muted/30 rounded-lg">
-                        <h4 className="font-medium capitalize">{component}</h4>
-                        <p className="text-sm">
-                          <span className="text-muted-foreground">Skick:</span>{' '}
-                          {condition || "Ej angivet"}
-                        </p>
-                        
-                        {/* Kostnadsansvar */}
-                        {costResp && (
-                          <div className="text-sm">
-                            <Badge variant={costResp === 'tenant' ? 'destructive' : 'secondary'}>
-                              {costResp === 'tenant' ? 'Hyresgästens ansvar' : 'Hyresvärdens ansvar'}
-                            </Badge>
-                          </div>
-                        )}
-                        
-                        {/* Åtgärder */}
-                        <div className="text-sm">
-                          <p className="text-muted-foreground">Åtgärder:</p>
-                          {room.actions[component as keyof typeof room.actions]?.length > 0 ? (
-                            <ul className="list-disc list-inside mt-1">
-                              {room.actions[component as keyof typeof room.actions].map((action, index) => (
-                                <li key={index}>{action}</li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <p className="text-muted-foreground/70 italic">Inga åtgärder</p>
-                          )}
-                        </div>
-                        
-                        {/* Anteckningar */}
-                        {room.componentNotes[component as keyof typeof room.componentNotes] && (
-                          <div className="text-sm">
-                            <p className="text-muted-foreground">Anteckningar:</p>
-                            <p className="mt-1">{room.componentNotes[component as keyof typeof room.componentNotes]}</p>
-                          </div>
-                        )}
-                        
-                        {/* Expanderbara foton */}
-                        {renderComponentPhotos(
-                          roomId, 
-                          component, 
-                          room.componentPhotos?.[component as keyof typeof room.componentPhotos] || []
-                        )}
-                      </div>
-                    );
-                  })}
+        {Object.entries(inspection.rooms).map(([roomId, room]) => {
+          const remarkCount = countRemarks(room);
+          const worstCondition = getRoomWorstCondition(room);
+          const RoomStatusIcon = getConditionIcon(worstCondition);
+          const statusColor = getConditionColor(worstCondition);
+
+          return (
+            <AccordionItem 
+              key={roomId} 
+              value={roomId}
+              className="rounded-lg border bg-card"
+            >
+              <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
+                <div className="flex items-center justify-between w-full pr-2">
+                  <div className="flex items-center gap-2">
+                    <RoomStatusIcon className={`h-4 w-4 ${statusColor}`} />
+                    <span className="text-lg font-medium">{getRoomName(roomId)}</span>
+                  </div>
+                  {remarkCount > 0 && (
+                    <span className="text-sm text-muted-foreground">
+                      {remarkCount} anmärkning{remarkCount > 1 ? 'ar' : ''}
+                    </span>
+                  )}
                 </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
+              </AccordionTrigger>
+              <AccordionContent className="px-0 pb-0">
+                <div className="px-2 sm:px-3 pb-3">
+                  <Accordion 
+                    type="multiple" 
+                    value={expandedComponents}
+                    onValueChange={setExpandedComponents}
+                    className="space-y-2"
+                  >
+                    {Object.entries(room.conditions).map(([component, condition]) => {
+                      const componentKey = `${roomId}-${component}`;
+                      const ConditionIcon = getConditionIcon(condition);
+                      const conditionColor = getConditionColor(condition);
+                      const isRemark = hasRemark(condition);
+
+                      return (
+                        <AccordionItem 
+                          key={componentKey}
+                          value={componentKey}
+                          className="rounded-md border bg-muted/20"
+                        >
+                          <AccordionTrigger className="px-3 py-2.5 hover:bg-accent/30 text-sm">
+                            <div className="flex items-center gap-2">
+                              <ConditionIcon className={`h-4 w-4 ${conditionColor}`} />
+                              <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
+                                {getComponentLabel(component)}
+                              </span>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="px-3 pb-3">
+                            {renderComponentContent(roomId, component, room)}
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </div>
   );
