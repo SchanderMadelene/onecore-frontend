@@ -15,14 +15,11 @@ import { Camera, ChevronDown, Key, Home, User, Phone, Mail } from "lucide-react"
 import { PdfDropdownMenu } from "./pdf";
 import {
   getComponentLabel,
-  getConditionColor,
-  getConditionIcon,
   getConditionLabel,
   hasRemark,
   getCostResponsibilityLabel,
   getDefaultExpandedComponents,
   countRemarks,
-  getRoomWorstCondition,
 } from "./inspection-utils";
 
 interface InspectionReadOnlyProps {
@@ -206,7 +203,7 @@ export function InspectionReadOnly({
       <div className="space-y-3 pt-2">
         {/* Skick och kostnadsansvar */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className={`font-medium ${getConditionColor(condition)}`}>
+          <span className="font-medium">
             {getConditionLabel(condition)}
           </span>
           {costResp && (
@@ -248,9 +245,6 @@ export function InspectionReadOnly({
       <Accordion type="single" collapsible className="space-y-2">
         {Object.entries(inspection.rooms).map(([roomId, room]) => {
           const remarkCount = countRemarks(room);
-          const worstCondition = getRoomWorstCondition(room);
-          const RoomStatusIcon = getConditionIcon(worstCondition);
-          const statusColor = getConditionColor(worstCondition);
 
           return (
             <AccordionItem 
@@ -260,10 +254,7 @@ export function InspectionReadOnly({
             >
               <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
                 <div className="flex items-center justify-between w-full pr-2">
-                  <div className="flex items-center gap-2">
-                    <RoomStatusIcon className={`h-4 w-4 ${statusColor}`} />
-                    <span className="text-lg font-medium">{getRoomName(roomId)}</span>
-                  </div>
+                  <span className="text-lg font-medium">{getRoomName(roomId)}</span>
                   {remarkCount > 0 && (
                     <span className="text-sm text-muted-foreground">
                       {remarkCount} anmärkning{remarkCount > 1 ? 'ar' : ''}
@@ -281,8 +272,6 @@ export function InspectionReadOnly({
                   >
                     {Object.entries(room.conditions).map(([component, condition]) => {
                       const componentKey = `${roomId}-${component}`;
-                      const ConditionIcon = getConditionIcon(condition);
-                      const conditionColor = getConditionColor(condition);
                       const isRemark = hasRemark(condition);
 
                       return (
@@ -292,12 +281,9 @@ export function InspectionReadOnly({
                           className="rounded-md border bg-muted/20"
                         >
                           <AccordionTrigger className="px-3 py-2.5 hover:bg-accent/30 text-sm">
-                            <div className="flex items-center gap-2">
-                              <ConditionIcon className={`h-4 w-4 ${conditionColor}`} />
-                              <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
-                                {getComponentLabel(component)}
-                              </span>
-                            </div>
+                            <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
+                              {getComponentLabel(component)}
+                            </span>
                           </AccordionTrigger>
                           <AccordionContent className="px-3 pb-3">
                             {renderComponentContent(roomId, component, room)}
