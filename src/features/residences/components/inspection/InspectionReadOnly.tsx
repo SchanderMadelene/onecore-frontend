@@ -77,11 +77,8 @@ export function InspectionReadOnly({
               {inspection.status === 'completed' ? 'Slutförd' : inspection.status === 'draft' ? 'Utkast' : 'Pågående'}
             </Badge>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground flex items-center gap-1">
-              <Key className="h-3 w-3" />
-              Huvudnyckel
-            </span>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Huvudnyckel</span>
             <span>{inspection.needsMasterKey ? 'Ja' : 'Nej'}</span>
           </div>
         </CardContent>
