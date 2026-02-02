@@ -11,7 +11,7 @@ import type { Inspection } from "./types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Camera, Home, User, Phone, Mail } from "lucide-react";
+import { Camera, Home, User } from "lucide-react";
 import { PdfDropdownMenu } from "./pdf";
 import {
   getComponentLabel,
@@ -143,14 +143,14 @@ export function InspectionReadOnly({
               <span>{inspection.tenant.personalNumber || '-'}</span>
             </div>
             {inspection.tenant.phone && (
-              <div className="flex items-center gap-2">
-                <Phone className="h-3 w-3 text-muted-foreground" />
+              <div>
+                <span className="text-muted-foreground block">Telefon</span>
                 <span>{inspection.tenant.phone}</span>
               </div>
             )}
             {inspection.tenant.email && (
-              <div className="flex items-center gap-2">
-                <Mail className="h-3 w-3 text-muted-foreground" />
+              <div>
+                <span className="text-muted-foreground block">E-post</span>
                 <span>{inspection.tenant.email}</span>
               </div>
             )}
