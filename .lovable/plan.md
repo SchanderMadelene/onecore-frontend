@@ -1,162 +1,134 @@
 
 
-# Förbättrad komponentvisning i besiktningsprotokoll
+# Fotoindikator med klickbar preview
 
 ## Sammanfattning
-Alla komponenter i ett rum visas i en lista där varje komponent är expanderbar. Komponenter med anmärkningar (Acceptabel/Skadad) är default expanderade, medan godkända komponenter (Bra) är ihopfällda. "Hanterat"-badge tas bort från rumsheadern.
+Lägg till en klickbar fotoindikator i komponentheadern som öppnar en fullskärmsvisning av bilderna direkt, utan att behöva expandera komponenten först.
 
 ---
 
 ## Ny design
 
-### Rumsheader (förenklad)
+### Komponentheader med fotoindikator
 
 ```text
-┌─────────────────────────────────────────────────────────┐
-│ 🔴 Kök                               4 anmärkningar   ∨ │
-└─────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────┐
+│ Vägg 2                                   [📷 2]     ∨ │
+└───────────────────────────────────────────────────────┘
 ```
 
-Notera: Ingen "Hanterat"-badge – allt i ett protokoll är per definition hanterat.
+Kameraknappen är klickbar och öppnar en lightbox/dialog med bilderna.
 
-### Komponentlista (expanderat rum)
-
-Varje komponent är en egen expanderbar rad. Anmärkningar expanderas automatiskt:
+### Lightbox-dialog
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
-│ Kök                                   4 anmärkningar  ∧ │
-├─────────────────────────────────────────────────────────┤
+│                                                     [X] │
 │                                                         │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │ 🔴 Vägg 2                                       ∧ │  │
-│  │                                                   │  │
-│  │ Skadad · Hyresgästens ansvar                     │  │
-│  │                                                   │  │
-│  │ Stora sprickor vid fönster, troligen fuktskada.  │  │
-│  │                                                   │  │
-│  │ Åtgärder: Målning · Spackling                    │  │
-│  │                                                   │  │
-│  │ 📷 Visa 2 foton                                   │  │
-│  └───────────────────────────────────────────────────┘  │
+│                    ┌─────────────────┐                  │
+│                    │                 │                  │
+│                    │   [Stor bild]   │                  │
+│                    │                 │                  │
+│                    └─────────────────┘                  │
 │                                                         │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │ 🟡 Golv                                         ∧ │  │
-│  │                                                   │  │
-│  │ Acceptabel · Hyresgästens ansvar                 │  │
-│  │                                                   │  │
-│  │ Repor vid diskbänk.                              │  │
-│  │                                                   │  │
-│  │ Åtgärder: Slipning                               │  │
-│  └───────────────────────────────────────────────────┘  │
-│                                                         │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │ 🟢 Vägg 1                                       ∨ │  │
-│  └───────────────────────────────────────────────────┘  │
-│                                                         │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │ 🟢 Tak                                          ∨ │  │
-│  └───────────────────────────────────────────────────┘  │
-│                                                         │
-│  ┌───────────────────────────────────────────────────┐  │
-│  │ 🟢 Detaljer                                     ∨ │  │
-│  └───────────────────────────────────────────────────┘  │
+│                      ● ○ ○                              │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
----
-
-## Designprinciper
-
-### 1. Default-expandering baserat på skick
-| Skick | Default | Logik |
-|-------|---------|-------|
-| Skadad | Expanderad | Viktig info som kräver uppmärksamhet |
-| Acceptabel | Expanderad | Har anmärkning som bör granskas |
-| Bra | Kollapsad | Inget att se, minskar brus |
-
-### 2. Kompakt header för godkända
-Godkända komponenter visar bara namn + grön ikon – inget mer behövs.
-
-### 3. Färgkodning
-- 🟢 `text-green-600` = Bra
-- 🟡 `text-amber-500` = Acceptabel
-- 🔴 `text-destructive` = Skadad
-
-### 4. Svenska komponentnamn
-
-```typescript
-const COMPONENT_LABELS: Record<string, string> = {
-  wall1: 'Vägg 1',
-  wall2: 'Vägg 2',
-  wall3: 'Vägg 3',
-  wall4: 'Vägg 4',
-  floor: 'Golv',
-  ceiling: 'Tak',
-  details: 'Detaljer',
-};
-```
+Samma stil som redan finns i PhotoGallery-komponenten.
 
 ---
 
-## Tekniska ändringar
+## Teknisk implementation
 
 ### Fil: InspectionReadOnly.tsx
 
-**1. Lägg till konstanter och hjälpfunktioner:**
+**1. Nytt state för foto-dialog:**
 
 ```typescript
-const COMPONENT_LABELS: Record<string, string> = { ... };
-
-const getConditionColor = (condition: string) => { ... };
-const getConditionIcon = (condition: string) => { ... };
-const hasRemark = (condition: string) => condition === 'Acceptabel' || condition === 'Skadad';
+const [photoDialog, setPhotoDialog] = useState<{
+  photos: string[];
+  label: string;
+  currentIndex: number;
+} | null>(null);
 ```
 
-**2. Beräkna default-expanderade komponenter:**
+**2. Uppdaterad komponentheader:**
 
 ```typescript
-// Hitta alla komponenter med anmärkningar för att auto-expandera
-const getDefaultExpandedComponents = (rooms: Record<string, InspectionRoom>) => {
-  const expanded: string[] = [];
-  Object.entries(rooms).forEach(([roomId, room]) => {
-    Object.entries(room.conditions).forEach(([component, condition]) => {
-      if (hasRemark(condition)) {
-        expanded.push(`${roomId}-${component}`);
-      }
-    });
-  });
-  return expanded;
+const photos = room.componentPhotos?.[component as keyof typeof room.componentPhotos] || [];
+const hasPhotos = photos.length > 0;
+
+<AccordionTrigger className="px-3 py-2.5 hover:bg-accent/30 text-sm">
+  <div className="flex items-center justify-between w-full pr-2">
+    <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
+      {getComponentLabel(component)}
+    </span>
+    {hasPhotos && (
+      <button
+        onClick={(e) => {
+          e.stopPropagation(); // Förhindrar att accordion öppnas
+          setPhotoDialog({
+            photos,
+            label: getComponentLabel(component),
+            currentIndex: 0
+          });
+        }}
+        className="flex items-center gap-1 text-muted-foreground hover:text-foreground text-xs"
+      >
+        <Camera className="h-3 w-3" />
+        {photos.length}
+      </button>
+    )}
+  </div>
+</AccordionTrigger>
+```
+
+**3. Lightbox-dialog (ny render-funktion):**
+
+```typescript
+const renderPhotoDialog = () => {
+  if (!photoDialog) return null;
+  
+  return (
+    <Dialog open={!!photoDialog} onOpenChange={() => setPhotoDialog(null)}>
+      <DialogContent className="max-w-[95vw] max-h-[95vh] p-0">
+        <div className="relative">
+          <img
+            src={photoDialog.photos[photoDialog.currentIndex]}
+            alt={`${photoDialog.label} foto ${photoDialog.currentIndex + 1}`}
+            className="w-full h-full object-contain"
+          />
+          {photoDialog.photos.length > 1 && (
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+              {photoDialog.photos.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`w-2 h-2 rounded-full ${
+                    idx === photoDialog.currentIndex ? 'bg-primary' : 'bg-muted'
+                  }`}
+                  onClick={() => setPhotoDialog({ ...photoDialog, currentIndex: idx })}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 };
 ```
 
-**3. Nytt state för expanderade komponenter:**
-
-```typescript
-const [expandedComponents, setExpandedComponents] = useState<string[]>(
-  () => getDefaultExpandedComponents(inspection.rooms)
-);
-```
-
-**4. Uppdaterad renderRooms():**
-- Ta bort "Hanterat"-badge
-- Använd `roomNames` för svenska rumsnamn
-- Visa anmärkningsräknare i header
-- Visa statusfärg baserat på värsta skicket i rummet
-
-**5. Ny renderComponentAccordion():**
-- Varje komponent som AccordionItem
-- Använd `type="multiple"` för att tillåta flera öppna samtidigt
-- Header visar: Ikon + svenskt namn + chevron
-- Innehåll (när expanderad): Skick, ansvar, åtgärder, anteckningar, foton
-
 ---
 
-## Komponenter som används
-- `Accordion` med `type="multiple"` (istället för `Collapsible`) för komponenterna
-- Befintlig `Accordion` behålls för rum
-- Befintlig `Collapsible` behålls för foton
+## Användarflöde
+
+1. Användaren ser kamera-ikon + antal i komponentheadern
+2. Klickar på ikonen → fullskärmsdialog öppnas
+3. Kan bläddra mellan bilder via prickarna i botten
+4. Klickar utanför eller på X → dialogen stängs
+5. Accordion-expandering påverkas inte (stopPropagation)
 
 ---
 
@@ -164,14 +136,9 @@ const [expandedComponents, setExpandedComponents] = useState<string[]>(
 
 | Ändring | Före | Efter |
 |---------|------|-------|
-| "Hanterat"-badge | Visas | Borttagen |
-| Komponentnamn | "wall1" | "Vägg 1" |
-| Rumsnamn | "Rum kitchen" | "Kök" |
-| Komponentlayout | Grid med kort | Expanderbar lista |
-| Anmärkningar | Samma som godkända | Auto-expanderade |
-| Godkända | Samma som anmärkningar | Kollapsade, minimal header |
-| "Inga åtgärder" | Visas alltid | Döljs |
-| Statusfärg | Saknas | Ikon + färg i header |
+| Fotoindikator | Saknas i header | Kamera + antal synlig |
+| Klickbar preview | Måste expandera först | Direkt från header |
+| Lightbox | Endast i PhotoGallery | Återanvänd mönster |
 
 ---
 
@@ -179,5 +146,5 @@ const [expandedComponents, setExpandedComponents] = useState<string[]>(
 
 | Fil | Ändring |
 |-----|---------|
-| `InspectionReadOnly.tsx` | Omstrukturering av renderRooms med ny expanderbar komponentlista |
+| `InspectionReadOnly.tsx` | Lägg till fotoindikator i header + lightbox-dialog |
 
