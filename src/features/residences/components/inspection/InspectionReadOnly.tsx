@@ -39,6 +39,11 @@ export function InspectionReadOnly({
   const [expandedComponents, setExpandedComponents] = useState<string[]>(
     () => getDefaultExpandedComponents(inspection.rooms)
   );
+  const [photoDialog, setPhotoDialog] = useState<{
+    photos: string[];
+    label: string;
+    currentIndex: number;
+  } | null>(null);
 
   const togglePhotoExpansion = (key: string) => {
     setExpandedPhotos(prev => ({ ...prev, [key]: !prev[key] }));
@@ -273,6 +278,8 @@ export function InspectionReadOnly({
                     {Object.entries(room.conditions).map(([component, condition]) => {
                       const componentKey = `${roomId}-${component}`;
                       const isRemark = hasRemark(condition);
+                      const photos = room.componentPhotos?.[component as keyof typeof room.componentPhotos] || [];
+                      const hasPhotos = photos.length > 0;
 
                       return (
                         <AccordionItem 
@@ -281,9 +288,27 @@ export function InspectionReadOnly({
                           className="rounded-md border bg-muted/20"
                         >
                           <AccordionTrigger className="px-3 py-2.5 hover:bg-accent/30 text-sm">
-                            <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
-                              {getComponentLabel(component)}
-                            </span>
+                            <div className="flex items-center justify-between w-full pr-2">
+                              <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
+                                {getComponentLabel(component)}
+                              </span>
+                              {hasPhotos && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setPhotoDialog({
+                                      photos,
+                                      label: getComponentLabel(component),
+                                      currentIndex: 0
+                                    });
+                                  }}
+                                  className="flex items-center gap-1 text-muted-foreground hover:text-foreground text-xs"
+                                >
+                                  <Camera className="h-3 w-3" />
+                                  {photos.length}
+                                </button>
+                              )}
+                            </div>
                           </AccordionTrigger>
                           <AccordionContent className="px-3 pb-3">
                             {renderComponentContent(roomId, component, room)}
@@ -301,6 +326,37 @@ export function InspectionReadOnly({
     </div>
   );
 
+  const renderPhotoDialog = () => {
+    if (!photoDialog) return null;
+    
+    return (
+      <Dialog open={!!photoDialog} onOpenChange={() => setPhotoDialog(null)}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0">
+          <div className="relative">
+            <img
+              src={photoDialog.photos[photoDialog.currentIndex]}
+              alt={`${photoDialog.label} foto ${photoDialog.currentIndex + 1}`}
+              className="w-full h-full object-contain"
+            />
+            {photoDialog.photos.length > 1 && (
+              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                {photoDialog.photos.map((_, idx) => (
+                  <button
+                    key={idx}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      idx === photoDialog.currentIndex ? 'bg-primary' : 'bg-muted'
+                    }`}
+                    onClick={() => setPhotoDialog({ ...photoDialog, currentIndex: idx })}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   const renderContent = () => (
     <div className="space-y-6">
       {/* PDF action dropdown */}
@@ -311,6 +367,7 @@ export function InspectionReadOnly({
       {renderHeader()}
       {renderTenantSnapshot()}
       {renderRooms()}
+      {renderPhotoDialog()}
     </div>
   );
 
