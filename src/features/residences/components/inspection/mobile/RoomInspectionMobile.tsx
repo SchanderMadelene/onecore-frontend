@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Room } from "@/types/api";
-import type { InspectionRoom } from "../types";
+import type { InspectionRoom, CostResponsibility } from "../types";
 import { ComponentInspectionCard } from "../ComponentInspectionCard";
 import { ComponentDetailSheet } from "../ComponentDetailSheet";
 
@@ -13,6 +13,7 @@ interface RoomInspectionMobileProps {
   onComponentNoteUpdate: (field: keyof InspectionRoom["componentNotes"], note: string) => void;
   onComponentPhotoAdd: (field: keyof InspectionRoom["componentPhotos"], photoDataUrl: string) => void;
   onComponentPhotoRemove: (field: keyof InspectionRoom["componentPhotos"], index: number) => void;
+  onCostResponsibilityUpdate: (field: keyof InspectionRoom["costResponsibility"], value: CostResponsibility) => void;
 }
 
 const COMPONENTS: Array<{
@@ -36,7 +37,8 @@ export function RoomInspectionMobile({
   onActionUpdate,
   onComponentNoteUpdate,
   onComponentPhotoAdd,
-  onComponentPhotoRemove
+  onComponentPhotoRemove,
+  onCostResponsibilityUpdate
 }: RoomInspectionMobileProps) {
   const [openDetailComponent, setOpenDetailComponent] = useState<keyof InspectionRoom["conditions"] | null>(null);
 
@@ -58,10 +60,12 @@ export function RoomInspectionMobile({
               note={inspectionData.componentNotes[component.key]}
               photoCount={inspectionData.componentPhotos[component.key].length}
               actions={inspectionData.actions[component.key]}
+              costResponsibility={inspectionData.costResponsibility[component.key]}
               onConditionChange={(value) => onConditionUpdate(component.key, value)}
               onNoteChange={(note) => onComponentNoteUpdate(component.key, note)}
               onPhotoCapture={(photoDataUrl) => onComponentPhotoAdd(component.key, photoDataUrl)}
               onOpenDetail={() => setOpenDetailComponent(component.key)}
+              onCostResponsibilityChange={(value) => onCostResponsibilityUpdate(component.key, value)}
             />
           ))}
         </div>
