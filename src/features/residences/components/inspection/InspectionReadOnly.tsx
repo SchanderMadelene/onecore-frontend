@@ -40,7 +40,7 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
         <CardContent className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span className="text-muted-foreground">Besiktningsnr</span>
-            <span className="font-mono">{inspection.inspectionNumber || '-'}</span>
+            <span>{inspection.inspectionNumber || '-'}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Datum</span>
@@ -76,7 +76,7 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
             <>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Objektnummer</span>
-                <span className="font-mono">{inspection.residence.objectNumber || '-'}</span>
+                <span>{inspection.residence.objectNumber || '-'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Adress</span>
@@ -122,7 +122,7 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
             </div>
             <div>
               <span className="text-muted-foreground block">Personnummer</span>
-              <span className="font-mono">{inspection.tenant.personalNumber || '-'}</span>
+              <span>{inspection.tenant.personalNumber || '-'}</span>
             </div>
             {inspection.tenant.phone && (
               <div className="flex items-center gap-2">
