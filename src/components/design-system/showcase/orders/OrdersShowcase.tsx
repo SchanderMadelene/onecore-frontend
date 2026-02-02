@@ -266,7 +266,6 @@ export const OrdersShowcase = () => {
               isOpen={isInspectionOpen} 
               onClose={() => setIsInspectionOpen(false)}
               roomNames={roomNames}
-              incomingTenant={incomingTenant}
             />
             
             <InspectionFormDialog 

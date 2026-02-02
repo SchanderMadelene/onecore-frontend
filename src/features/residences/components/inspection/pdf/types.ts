@@ -15,7 +15,6 @@ export interface CostItem {
 export interface PdfOptions {
   inspection: Inspection;
   recipient: 'outgoing' | 'incoming';
-  selectedCostItems?: string[]; // Array of cost item IDs to include
   roomNames?: Record<string, string>; // Map of roomId to room name
 }
 

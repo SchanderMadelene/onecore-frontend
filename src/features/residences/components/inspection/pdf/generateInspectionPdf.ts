@@ -13,7 +13,7 @@ const LINE_HEIGHT = 7;
  * Genererar ett besiktningsprotokoll som PDF
  */
 export function generateInspectionPdf(options: PdfOptions): jsPDF {
-  const { inspection, recipient, selectedCostItems, roomNames } = options;
+  const { inspection, recipient, roomNames } = options;
   const doc = new jsPDF();
   
   let yPos = MARGIN;
@@ -197,25 +197,19 @@ export function generateInspectionPdf(options: PdfOptions): jsPDF {
   // Kostnadssammanställning (endast för avflyttande)
   if (recipient === 'outgoing') {
     const allCostItems = extractCostItems(inspection, roomNames);
-    const tenantCostItems = getTenantCostItems(allCostItems);
-    
-    // Filtrera på valda om det finns
-    const displayItems = selectedCostItems 
-      ? tenantCostItems.filter(item => selectedCostItems.includes(item.id))
-      : tenantCostItems;
 
-    if (displayItems.length > 0) {
+    if (allCostItems.length > 0) {
       checkPageBreak(40);
       yPos += 10;
       
       doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
-      doc.text('Kostnadssammanställning - Hyresgästens ansvar', MARGIN, yPos);
+      doc.text('Kostnadssammanställning', MARGIN, yPos);
       yPos += LINE_HEIGHT + 3;
 
       doc.setFontSize(10);
-      displayItems.forEach((item, index) => {
-        checkPageBreak(20);
+      allCostItems.forEach((item, index) => {
+        checkPageBreak(25);
         
         doc.setFont('helvetica', 'bold');
         doc.text(`${index + 1}. ${item.roomName} - ${item.componentLabel}`, MARGIN, yPos);
@@ -230,6 +224,12 @@ export function generateInspectionPdf(options: PdfOptions): jsPDF {
           doc.text(`   Åtgärder: ${item.actions.join(', ')}`, MARGIN, yPos);
           yPos += LINE_HEIGHT;
         }
+        
+        // Visa kostnadsansvar
+        const respText = item.responsibility === 'tenant' ? 'Hyresgästens ansvar' : 'Hyresvärdens ansvar';
+        doc.text(`   Ansvar: ${respText}`, MARGIN, yPos);
+        yPos += LINE_HEIGHT;
+        
         yPos += 3;
       });
     }
