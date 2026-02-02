@@ -11,7 +11,7 @@ import type { Inspection } from "./types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Camera, Key, Home, User, Phone, Mail } from "lucide-react";
+import { Camera, Home, User, Phone, Mail } from "lucide-react";
 import { PdfDropdownMenu } from "./pdf";
 import {
   getComponentLabel,
