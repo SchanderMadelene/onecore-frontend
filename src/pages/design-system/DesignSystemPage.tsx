@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { PageLayout } from "@/layouts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon } from "lucide-react";
+import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon, ClipboardCheck } from "lucide-react";
 
 // Import components from the new global location
 import { 
@@ -13,6 +12,7 @@ import {
   IconsShowcase,
   LogosShowcase 
 } from "@/components/design-system";
+import { InspectionShowcase } from "@/components/design-system/showcase/inspection";
 
 const DesignSystemPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -27,8 +27,12 @@ const DesignSystemPage = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="logos" className="w-full">
-          <TabsList>
+        <Tabs defaultValue="inspection" className="w-full">
+          <TabsList className="flex-wrap h-auto gap-1">
+            <TabsTrigger value="inspection" className="flex items-center gap-2">
+              <ClipboardCheck className="h-4 w-4" />
+              <span className="hidden sm:inline">Besiktning</span>
+            </TabsTrigger>
             <TabsTrigger value="logos" className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4" />
               <span className="hidden sm:inline">Logos</span>
@@ -54,6 +58,10 @@ const DesignSystemPage = () => {
               <span className="hidden sm:inline">Icons</span>
             </TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="inspection" className="mt-6">
+            <InspectionShowcase />
+          </TabsContent>
           
           <TabsContent value="logos" className="mt-6">
             <LogosShowcase />
