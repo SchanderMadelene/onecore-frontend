@@ -69,7 +69,7 @@ export function StrofakturaForm() {
   const [fastighet, setFastighet] = useState("");
   const [artikel, setArtikel] = useState("");
   const [artikelnummer, setArtikelnummer] = useState("");
-  const [text, setText] = useState("");
+  const [textRows, setTextRows] = useState<[string, string, string]>(["", "", ""]);
   const [antal, setAntal] = useState<number | string>(1);
   const [prisInkMoms, setPrisInkMoms] = useState<number | string>(0);
   const [projekt, setProjekt] = useState("");
@@ -135,7 +135,7 @@ export function StrofakturaForm() {
       fastighet,
       artikel,
       artikelnummer,
-      text,
+      text: textRows.filter(r => r.trim()).join('\n'),
       antal: Number(antal),
       prisInkMoms: Number(prisInkMoms),
       projekt,
@@ -208,7 +208,7 @@ export function StrofakturaForm() {
     setFastighet("");
     setArtikel("");
     setArtikelnummer("");
-    setText("");
+    setTextRows(["", "", ""]);
     setAntal(1);
     setPrisInkMoms(0);
     setProjekt("");
@@ -305,13 +305,17 @@ export function StrofakturaForm() {
               selectedArticle={artikel}
               artikelnummer={artikelnummer}
               avserObjektnummer={avserObjektnummer}
-              text={text}
+              textRows={textRows}
               antal={antal}
               prisInkMoms={prisInkMoms}
               administrativaKostnader={administrativaKostnader}
               hanteringsavgift={hanteringsavgift}
               onArticleSelect={handleArticleSelect}
-              onTextChange={setText}
+              onTextRowChange={(index, value) => {
+                const newRows = [...textRows] as [string, string, string];
+                newRows[index] = value;
+                setTextRows(newRows);
+              }}
               onAntalChange={setAntal}
               onPrisChange={setPrisInkMoms}
               onAdministrativaKostnaderChange={setAdministrativaKostnader}
