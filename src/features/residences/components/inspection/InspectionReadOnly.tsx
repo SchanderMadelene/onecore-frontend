@@ -8,30 +8,26 @@ import {
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { format } from "date-fns";
-import type { Inspection, TenantSnapshot } from "./types";
+import type { Inspection } from "./types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Camera, ChevronDown, Key, Home, User, Phone, Mail, FileText } from "lucide-react";
-import { SendPdfDialog } from "./pdf";
+import { Camera, ChevronDown, Key, Home, User, Phone, Mail } from "lucide-react";
+import { PdfDropdownMenu } from "./pdf";
 
 interface InspectionReadOnlyProps {
   inspection: Inspection;
   onClose?: () => void;
   isOpen?: boolean;
   roomNames?: Record<string, string>;
-  incomingTenant?: { name: string; email?: string };
 }
 
 export function InspectionReadOnly({ 
   inspection, 
   onClose, 
   isOpen,
-  roomNames,
-  incomingTenant 
+  roomNames 
 }: InspectionReadOnlyProps) {
   const [expandedPhotos, setExpandedPhotos] = useState<Record<string, boolean>>({});
-  const [showPdfDialog, setShowPdfDialog] = useState(false);
 
   const togglePhotoExpansion = (key: string) => {
     setExpandedPhotos(prev => ({ ...prev, [key]: !prev[key] }));
@@ -263,32 +259,14 @@ export function InspectionReadOnly({
 
   const renderContent = () => (
     <div className="space-y-6">
-      {/* PDF action button */}
+      {/* PDF action dropdown */}
       <div className="flex justify-end">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowPdfDialog(true)}
-          className="gap-2"
-        >
-          <FileText className="h-4 w-4" />
-          Skicka som PDF
-        </Button>
+        <PdfDropdownMenu inspection={inspection} roomNames={roomNames} />
       </div>
       
       {renderHeader()}
       {renderTenantSnapshot()}
       {renderRooms()}
-      
-      {/* PDF Dialog */}
-      <SendPdfDialog
-        inspection={inspection}
-        outgoingTenant={inspection.tenant}
-        incomingTenant={incomingTenant}
-        roomNames={roomNames}
-        isOpen={showPdfDialog}
-        onClose={() => setShowPdfDialog(false)}
-      />
     </div>
   );
 
