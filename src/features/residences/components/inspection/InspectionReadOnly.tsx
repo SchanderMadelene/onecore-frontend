@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import type { Inspection } from "./types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Camera, Key, Home, User, Phone, Mail } from "lucide-react";
 import { PdfDropdownMenu } from "./pdf";
 import {
@@ -167,6 +168,8 @@ export function InspectionReadOnly({
     const costResp = room.costResponsibility?.[component as keyof typeof room.costResponsibility];
     const actions = room.actions[component as keyof typeof room.actions] || [];
     const notes = room.componentNotes[component as keyof typeof room.componentNotes];
+    const photos = room.componentPhotos?.[component as keyof typeof room.componentPhotos] || [];
+    const hasPhotos = photos.length > 0;
 
     return (
       <div className="space-y-3 pt-2">
@@ -199,6 +202,25 @@ export function InspectionReadOnly({
                 {action}
               </Badge>
             ))}
+          </div>
+        )}
+
+        {/* Fotoknapp i botten, högerställd */}
+        {hasPhotos && (
+          <div className="flex justify-end pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPhotoDialog({
+                photos,
+                label: getComponentLabel(component),
+                currentIndex: 0
+              })}
+              className="gap-2"
+            >
+              <Camera className="h-4 w-4" />
+              Visa foton ({photos.length})
+            </Button>
           </div>
         )}
       </div>
@@ -239,8 +261,6 @@ export function InspectionReadOnly({
                     {Object.entries(room.conditions).map(([component, condition]) => {
                       const componentKey = `${roomId}-${component}`;
                       const isRemark = hasRemark(condition);
-                      const photos = room.componentPhotos?.[component as keyof typeof room.componentPhotos] || [];
-                      const hasPhotos = photos.length > 0;
 
                       return (
                         <AccordionItem 
@@ -249,27 +269,9 @@ export function InspectionReadOnly({
                           className="rounded-md border bg-muted/20"
                         >
                           <AccordionTrigger className="px-3 py-2.5 hover:bg-accent/30 text-sm">
-                            <div className="flex items-center justify-between w-full pr-2">
-                              <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
-                                {getComponentLabel(component)}
-                              </span>
-                              {hasPhotos && (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setPhotoDialog({
-                                      photos,
-                                      label: getComponentLabel(component),
-                                      currentIndex: 0
-                                    });
-                                  }}
-                                  className="flex items-center gap-1 text-muted-foreground hover:text-foreground text-xs"
-                                >
-                                  <Camera className="h-3 w-3" />
-                                  {photos.length}
-                                </button>
-                              )}
-                            </div>
+                            <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
+                              {getComponentLabel(component)}
+                            </span>
                           </AccordionTrigger>
                           <AccordionContent className="px-3 pb-3">
                             {renderComponentContent(roomId, component, room)}
