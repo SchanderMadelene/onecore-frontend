@@ -331,10 +331,8 @@ export function StrofakturaForm() {
             <h3 className="font-medium">Övrig information</h3>
             <AdditionalInfoSection
               projekt={projekt}
-              fakturanAvserFritext={fakturanAvserFritext}
               internInfo={internInfo}
               onProjektChange={setProjekt}
-              onFakturanAvserFritextChange={setFakturanAvserFritext}
               onInternInfoChange={setInternInfo}
             />
           </div>
