@@ -62,12 +62,21 @@ const exampleInspection: Inspection = {
       },
       componentPhotos: {
         wall1: [],
-        wall2: [],
+        wall2: [
+          "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
+          "https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?w=400&h=400&fit=crop",
+        ],
         wall3: [],
         wall4: [],
-        floor: [],
+        floor: [
+          "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=400&h=400&fit=crop",
+        ],
         ceiling: [],
-        details: [],
+        details: [
+          "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
+          "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=400&h=400&fit=crop",
+          "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&h=400&fit=crop",
+        ],
       },
       costResponsibility: {
         wall1: null,
@@ -164,12 +173,16 @@ const exampleInspection: Inspection = {
       },
       componentPhotos: {
         wall1: [],
-        wall2: [],
+        wall2: [
+          "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&h=400&fit=crop",
+        ],
         wall3: [],
         wall4: [],
         floor: [],
         ceiling: [],
-        details: [],
+        details: [
+          "https://images.unsplash.com/photo-1585412727339-54e4bae3bbf9?w=400&h=400&fit=crop",
+        ],
       },
       costResponsibility: {
         wall1: "landlord",
