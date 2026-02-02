@@ -6,12 +6,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { format } from "date-fns";
 import type { Inspection } from "./types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Camera, ChevronDown, Key, Home, User, Phone, Mail } from "lucide-react";
+import { Camera, Key, Home, User, Phone, Mail } from "lucide-react";
 import { PdfDropdownMenu } from "./pdf";
 import {
   getComponentLabel,
@@ -35,7 +34,6 @@ export function InspectionReadOnly({
   isOpen,
   roomNames 
 }: InspectionReadOnlyProps) {
-  const [expandedPhotos, setExpandedPhotos] = useState<Record<string, boolean>>({});
   const [expandedComponents, setExpandedComponents] = useState<string[]>(
     () => getDefaultExpandedComponents(inspection.rooms)
   );
@@ -44,10 +42,6 @@ export function InspectionReadOnly({
     label: string;
     currentIndex: number;
   } | null>(null);
-
-  const togglePhotoExpansion = (key: string) => {
-    setExpandedPhotos(prev => ({ ...prev, [key]: !prev[key] }));
-  };
 
   const getRoomName = (roomId: string): string => {
     return roomNames?.[roomId] || `Rum ${roomId}`;
@@ -168,41 +162,11 @@ export function InspectionReadOnly({
     );
   };
 
-  const renderComponentPhotos = (roomId: string, component: string, photos: string[]) => {
-    if (!photos || photos.length === 0) return null;
-    
-    const photoKey = `${roomId}-${component}`;
-    const isExpanded = expandedPhotos[photoKey];
-
-    return (
-      <Collapsible open={isExpanded} onOpenChange={() => togglePhotoExpansion(photoKey)}>
-        <CollapsibleTrigger className="flex items-center gap-1 text-sm text-primary hover:underline mt-2">
-          <Camera className="h-3 w-3" />
-          Visa foton ({photos.length})
-          <ChevronDown className={`h-3 w-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
-            {photos.map((photo, i) => (
-              <img 
-                key={i} 
-                src={photo} 
-                alt={`${getComponentLabel(component)} foto ${i + 1}`}
-                className="rounded-md border object-cover aspect-square w-full"
-              />
-            ))}
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
-    );
-  };
-
   const renderComponentContent = (roomId: string, component: string, room: typeof inspection.rooms[string]) => {
     const condition = room.conditions[component];
     const costResp = room.costResponsibility?.[component as keyof typeof room.costResponsibility];
     const actions = room.actions[component as keyof typeof room.actions] || [];
     const notes = room.componentNotes[component as keyof typeof room.componentNotes];
-    const photos = room.componentPhotos?.[component as keyof typeof room.componentPhotos] || [];
 
     return (
       <div className="space-y-3 pt-2">
@@ -237,9 +201,6 @@ export function InspectionReadOnly({
             ))}
           </div>
         )}
-
-        {/* Foton */}
-        {renderComponentPhotos(roomId, component, photos)}
       </div>
     );
   };
