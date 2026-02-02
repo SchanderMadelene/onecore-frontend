@@ -290,7 +290,6 @@ export function StrofakturaForm() {
               selectedLease={hyreskontrakt}
               kst={kst}
               fastighet={fastighet}
-              avserObjektnummer={avserObjektnummer}
               onLeaseSelect={handleLeaseSelect}
               error={errors.hyreskontrakt}
               disabled={!selectedCustomer}
@@ -305,6 +304,7 @@ export function StrofakturaForm() {
             <ArticleSection
               selectedArticle={artikel}
               artikelnummer={artikelnummer}
+              avserObjektnummer={avserObjektnummer}
               text={text}
               antal={antal}
               prisInkMoms={prisInkMoms}

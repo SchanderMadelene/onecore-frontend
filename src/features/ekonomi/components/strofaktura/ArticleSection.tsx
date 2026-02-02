@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 interface ArticleSectionProps {
   selectedArticle: string;
   artikelnummer: string;
+  avserObjektnummer: string;
   text: string;
   antal: number | string;
   prisInkMoms: number | string;
@@ -35,6 +36,7 @@ interface ArticleSectionProps {
 export function ArticleSection({
   selectedArticle,
   artikelnummer,
+  avserObjektnummer,
   text,
   antal,
   prisInkMoms,
@@ -50,6 +52,17 @@ export function ArticleSection({
 }: ArticleSectionProps) {
   return (
     <div className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="avserObjektnummer">Avser objektsnummer</Label>
+        <Input
+          id="avserObjektnummer"
+          value={avserObjektnummer}
+          readOnly
+          disabled
+          placeholder="Fylls i automatiskt från kontrakt"
+          className="bg-muted"
+        />
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
