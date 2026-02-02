@@ -1,83 +1,177 @@
 
 
-# Förenklad PDF-export med dropdown-meny
+# Förbättrad komponentvisning i besiktningsprotokoll
 
 ## Sammanfattning
-Ersätter nuvarande "Skicka som PDF"-knapp + dialog med en enkel dropdown-meny. Tre direkta alternativ utan mellansteg – snabbare och smidigare för användaren.
+Alla komponenter i ett rum visas i en lista där varje komponent är expanderbar. Komponenter med anmärkningar (Acceptabel/Skadad) är default expanderade, medan godkända komponenter (Bra) är ihopfällda. "Hanterat"-badge tas bort från rumsheadern.
 
 ---
 
 ## Ny design
 
-### Visuellt
+### Rumsheader (förenklad)
 
 ```text
-┌─────────────────────────┐
-│  📄 Protokoll ▾         │  ← Knappen i headern
-└─────────────────────────┘
-          │
-          ▼
-┌─────────────────────────────────────┐
-│  ↓ Ladda ner PDF                    │
-│─────────────────────────────────────│
-│  📧 Skicka till avflyttande         │
-│  📧 Skicka till inflyttande         │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│ 🔴 Kök                               4 anmärkningar   ∨ │
+└─────────────────────────────────────────────────────────┘
 ```
 
-### Alternativ (mer kompakt)
+Notera: Ingen "Hanterat"-badge – allt i ett protokoll är per definition hanterat.
+
+### Komponentlista (expanderat rum)
+
+Varje komponent är en egen expanderbar rad. Anmärkningar expanderas automatiskt:
 
 ```text
-┌─────────────────────────────────────┐
-│  ↓ Ladda ner                        │
-│─────────────────────────────────────│
-│  📧 Till avflyttande hyresgäst      │
-│     Inkl. kostnadsansvar            │
-│                                     │
-│  📧 Till inflyttande hyresgäst      │
-│     Utan kostnadsinformation        │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│ Kök                                   4 anmärkningar  ∧ │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │ 🔴 Vägg 2                                       ∧ │  │
+│  │                                                   │  │
+│  │ Skadad · Hyresgästens ansvar                     │  │
+│  │                                                   │  │
+│  │ Stora sprickor vid fönster, troligen fuktskada.  │  │
+│  │                                                   │  │
+│  │ Åtgärder: Målning · Spackling                    │  │
+│  │                                                   │  │
+│  │ 📷 Visa 2 foton                                   │  │
+│  └───────────────────────────────────────────────────┘  │
+│                                                         │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │ 🟡 Golv                                         ∧ │  │
+│  │                                                   │  │
+│  │ Acceptabel · Hyresgästens ansvar                 │  │
+│  │                                                   │  │
+│  │ Repor vid diskbänk.                              │  │
+│  │                                                   │  │
+│  │ Åtgärder: Slipning                               │  │
+│  └───────────────────────────────────────────────────┘  │
+│                                                         │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │ 🟢 Vägg 1                                       ∨ │  │
+│  └───────────────────────────────────────────────────┘  │
+│                                                         │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │ 🟢 Tak                                          ∨ │  │
+│  └───────────────────────────────────────────────────┘  │
+│                                                         │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │ 🟢 Detaljer                                     ∨ │  │
+│  └───────────────────────────────────────────────────┘  │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
 ```
 
-### Beteende
-- **Ladda ner**: Genererar PDF med fullständig information (som avflyttande-versionen) och laddar ner direkt
-- **Skicka till avflyttande**: Visar toast "E-postfunktion kommer snart" (placeholder tills backend finns)
-- **Skicka till inflyttande**: Visar toast "E-postfunktion kommer snart" (placeholder tills backend finns)
+---
+
+## Designprinciper
+
+### 1. Default-expandering baserat på skick
+| Skick | Default | Logik |
+|-------|---------|-------|
+| Skadad | Expanderad | Viktig info som kräver uppmärksamhet |
+| Acceptabel | Expanderad | Har anmärkning som bör granskas |
+| Bra | Kollapsad | Inget att se, minskar brus |
+
+### 2. Kompakt header för godkända
+Godkända komponenter visar bara namn + grön ikon – inget mer behövs.
+
+### 3. Färgkodning
+- 🟢 `text-green-600` = Bra
+- 🟡 `text-amber-500` = Acceptabel
+- 🔴 `text-destructive` = Skadad
+
+### 4. Svenska komponentnamn
+
+```typescript
+const COMPONENT_LABELS: Record<string, string> = {
+  wall1: 'Vägg 1',
+  wall2: 'Vägg 2',
+  wall3: 'Vägg 3',
+  wall4: 'Vägg 4',
+  floor: 'Golv',
+  ceiling: 'Tak',
+  details: 'Detaljer',
+};
+```
 
 ---
 
 ## Tekniska ändringar
 
-### 1. Ta bort SendPdfDialog.tsx och CostItemSelector.tsx
-Dessa komponenter behövs inte längre.
+### Fil: InspectionReadOnly.tsx
 
-### 2. Skapa PdfDropdownMenu.tsx
-**Ny fil:** `src/features/residences/components/inspection/pdf/PdfDropdownMenu.tsx`
+**1. Lägg till konstanter och hjälpfunktioner:**
 
 ```typescript
-interface PdfDropdownMenuProps {
-  inspection: Inspection;
-  roomNames?: Record<string, string>;
-}
+const COMPONENT_LABELS: Record<string, string> = { ... };
+
+const getConditionColor = (condition: string) => { ... };
+const getConditionIcon = (condition: string) => { ... };
+const hasRemark = (condition: string) => condition === 'Acceptabel' || condition === 'Skadad';
 ```
 
-Använder:
-- `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuSeparator`
-- Ikoner: `Download`, `Mail`, `FileText`
-- `toast` för bekräftelse/placeholder
+**2. Beräkna default-expanderade komponenter:**
 
-### 3. Uppdatera InspectionReadOnly.tsx
-- Ta bort `useState(showPdfDialog)`
-- Ta bort `SendPdfDialog`-import och rendering
-- Ersätt "Skicka som PDF"-knappen med `PdfDropdownMenu`
+```typescript
+// Hitta alla komponenter med anmärkningar för att auto-expandera
+const getDefaultExpandedComponents = (rooms: Record<string, InspectionRoom>) => {
+  const expanded: string[] = [];
+  Object.entries(rooms).forEach(([roomId, room]) => {
+    Object.entries(room.conditions).forEach(([component, condition]) => {
+      if (hasRemark(condition)) {
+        expanded.push(`${roomId}-${component}`);
+      }
+    });
+  });
+  return expanded;
+};
+```
 
-### 4. Uppdatera generateInspectionPdf.ts
-- Ta bort `selectedCostItems`-logik (alla anmärkningar inkluderas alltid)
-- Förenkla parametrar till bara `recipient: 'outgoing' | 'incoming'`
+**3. Nytt state för expanderade komponenter:**
 
-### 5. Uppdatera pdf/index.ts
-- Ta bort export av `SendPdfDialog` och `CostItemSelector`
-- Lägg till export av `PdfDropdownMenu`
+```typescript
+const [expandedComponents, setExpandedComponents] = useState<string[]>(
+  () => getDefaultExpandedComponents(inspection.rooms)
+);
+```
+
+**4. Uppdaterad renderRooms():**
+- Ta bort "Hanterat"-badge
+- Använd `roomNames` för svenska rumsnamn
+- Visa anmärkningsräknare i header
+- Visa statusfärg baserat på värsta skicket i rummet
+
+**5. Ny renderComponentAccordion():**
+- Varje komponent som AccordionItem
+- Använd `type="multiple"` för att tillåta flera öppna samtidigt
+- Header visar: Ikon + svenskt namn + chevron
+- Innehåll (när expanderad): Skick, ansvar, åtgärder, anteckningar, foton
+
+---
+
+## Komponenter som används
+- `Accordion` med `type="multiple"` (istället för `Collapsible`) för komponenterna
+- Befintlig `Accordion` behålls för rum
+- Befintlig `Collapsible` behålls för foton
+
+---
+
+## Sammanfattning av ändringar
+
+| Ändring | Före | Efter |
+|---------|------|-------|
+| "Hanterat"-badge | Visas | Borttagen |
+| Komponentnamn | "wall1" | "Vägg 1" |
+| Rumsnamn | "Rum kitchen" | "Kök" |
+| Komponentlayout | Grid med kort | Expanderbar lista |
+| Anmärkningar | Samma som godkända | Auto-expanderade |
+| Godkända | Samma som anmärkningar | Kollapsade, minimal header |
+| "Inga åtgärder" | Visas alltid | Döljs |
+| Statusfärg | Saknas | Ikon + färg i header |
 
 ---
 
@@ -85,58 +179,5 @@ Använder:
 
 | Fil | Ändring |
 |-----|---------|
-| `pdf/PdfDropdownMenu.tsx` | **Ny** – Dropdown-meny med tre alternativ |
-| `pdf/SendPdfDialog.tsx` | **Raderas** |
-| `pdf/CostItemSelector.tsx` | **Raderas** |
-| `pdf/generateInspectionPdf.ts` | **Uppdatering** – Förenkla utan selectedCostItems |
-| `pdf/types.ts` | **Uppdatering** – Ta bort selectedCostItems från PdfOptions |
-| `pdf/index.ts` | **Uppdatering** – Ny export |
-| `InspectionReadOnly.tsx` | **Uppdatering** – Ersätt knapp med dropdown |
-
----
-
-## Detaljerad komponentstruktur
-
-```tsx
-// PdfDropdownMenu.tsx
-<DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <Button variant="outline" size="sm" className="gap-2">
-      <FileText className="h-4 w-4" />
-      Protokoll
-      <ChevronDown className="h-3 w-3" />
-    </Button>
-  </DropdownMenuTrigger>
-  
-  <DropdownMenuContent align="end">
-    <DropdownMenuItem onClick={handleDownload}>
-      <Download className="h-4 w-4 mr-2" />
-      Ladda ner PDF
-    </DropdownMenuItem>
-    
-    <DropdownMenuSeparator />
-    
-    <DropdownMenuItem onClick={handleSendToOutgoing}>
-      <Mail className="h-4 w-4 mr-2" />
-      <div className="flex flex-col">
-        <span>Skicka till avflyttande</span>
-        <span className="text-xs text-muted-foreground">Inkl. kostnadsansvar</span>
-      </div>
-    </DropdownMenuItem>
-    
-    <DropdownMenuItem onClick={handleSendToIncoming}>
-      <Mail className="h-4 w-4 mr-2" />
-      <div className="flex flex-col">
-        <span>Skicka till inflyttande</span>
-        <span className="text-xs text-muted-foreground">Utan kostnadsinformation</span>
-      </div>
-    </DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
-```
-
----
-
-## Tidsuppskattning
-~15-20 minuter (förenkling jämfört med nuvarande implementation)
+| `InspectionReadOnly.tsx` | Omstrukturering av renderRooms med ny expanderbar komponentlista |
 
