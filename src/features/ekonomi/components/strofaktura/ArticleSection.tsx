@@ -1,5 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
@@ -98,43 +99,46 @@ export function ArticleSection({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="text">Text</Label>
-        <Input
-          id="text"
-          value={text}
-          onChange={(e) => onTextChange(e.target.value)}
-          placeholder="Beskrivning av debiteringen..."
-        />
-      </div>
-
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Fakturarader - grupperat */}
+      <div className="rounded-lg border border-border p-4 space-y-4 bg-muted/30">
         <div className="space-y-2">
-          <Label htmlFor="antal">Antal</Label>
-          <Input
-            id="antal"
-            type="number"
-            min={1}
-            value={antal}
-            onChange={(e) => onAntalChange(Number(e.target.value))}
-            className={cn(errors?.antal && "border-destructive")}
+          <Label htmlFor="text">Text</Label>
+          <Textarea
+            id="text"
+            value={text}
+            onChange={(e) => onTextChange(e.target.value)}
+            placeholder="Beskrivning av debiteringen..."
+            rows={3}
           />
-          {errors?.antal && <p className="text-sm text-destructive">{errors.antal}</p>}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="prisInkMoms">Pris (ink. moms)</Label>
-          <Input
-            id="prisInkMoms"
-            type="number"
-            min={0}
-            step={0.01}
-            value={prisInkMoms}
-            onChange={(e) => onPrisChange(Number(e.target.value))}
-            className={cn(errors?.prisInkMoms && "border-destructive")}
-          />
-          {errors?.prisInkMoms && <p className="text-sm text-destructive">{errors.prisInkMoms}</p>}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="antal">Antal</Label>
+            <Input
+              id="antal"
+              type="number"
+              min={1}
+              value={antal}
+              onChange={(e) => onAntalChange(Number(e.target.value))}
+              className={cn(errors?.antal && "border-destructive")}
+            />
+            {errors?.antal && <p className="text-sm text-destructive">{errors.antal}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="prisInkMoms">Pris (ink. moms)</Label>
+            <Input
+              id="prisInkMoms"
+              type="number"
+              min={0}
+              step={0.01}
+              value={prisInkMoms}
+              onChange={(e) => onPrisChange(Number(e.target.value))}
+              className={cn(errors?.prisInkMoms && "border-destructive")}
+            />
+            {errors?.prisInkMoms && <p className="text-sm text-destructive">{errors.prisInkMoms}</p>}
+          </div>
         </div>
       </div>
 
