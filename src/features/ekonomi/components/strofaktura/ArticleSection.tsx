@@ -1,6 +1,5 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
@@ -16,13 +15,13 @@ interface ArticleSectionProps {
   selectedArticle: string;
   artikelnummer: string;
   avserObjektnummer: string;
-  text: string;
+  textRows: [string, string, string];
   antal: number | string;
   prisInkMoms: number | string;
   administrativaKostnader: boolean;
   hanteringsavgift: boolean;
   onArticleSelect: (artikelnummer: string) => void;
-  onTextChange: (text: string) => void;
+  onTextRowChange: (index: number, value: string) => void;
   onAntalChange: (antal: number) => void;
   onPrisChange: (pris: number) => void;
   onAdministrativaKostnaderChange: (checked: boolean) => void;
@@ -38,13 +37,13 @@ export function ArticleSection({
   selectedArticle,
   artikelnummer,
   avserObjektnummer,
-  text,
+  textRows,
   antal,
   prisInkMoms,
   administrativaKostnader,
   hanteringsavgift,
   onArticleSelect,
-  onTextChange,
+  onTextRowChange,
   onAntalChange,
   onPrisChange,
   onAdministrativaKostnaderChange,
@@ -101,15 +100,28 @@ export function ArticleSection({
 
       {/* Fakturarader - grupperat */}
       <div className="rounded-lg border border-border p-4 space-y-4 bg-muted/30">
-        <div className="space-y-2">
-          <Label htmlFor="text">Text</Label>
-          <Textarea
-            id="text"
-            value={text}
-            onChange={(e) => onTextChange(e.target.value)}
-            placeholder="Beskrivning av debiteringen..."
-            rows={3}
-          />
+        <div className="space-y-3">
+          <Label>Text</Label>
+          <div className="space-y-2">
+            <Input
+              id="text1"
+              value={textRows[0]}
+              onChange={(e) => onTextRowChange(0, e.target.value)}
+              placeholder="Textrad 1..."
+            />
+            <Input
+              id="text2"
+              value={textRows[1]}
+              onChange={(e) => onTextRowChange(1, e.target.value)}
+              placeholder="Textrad 2 (valfri)..."
+            />
+            <Input
+              id="text3"
+              value={textRows[2]}
+              onChange={(e) => onTextRowChange(2, e.target.value)}
+              placeholder="Textrad 3 (valfri)..."
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
