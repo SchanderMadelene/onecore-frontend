@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Dialog,
@@ -7,24 +6,46 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { format } from "date-fns";
 import type { Inspection } from "./types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Camera, ChevronDown, Key, Home, User, Phone, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Camera, Home } from "lucide-react";
+import { PdfDropdownMenu } from "./pdf";
+import {
+  getComponentLabel,
+  getConditionLabel,
+  hasRemark,
+  getCostResponsibilityLabel,
+  getDefaultExpandedComponents,
+  countRemarks,
+} from "./inspection-utils";
 
 interface InspectionReadOnlyProps {
   inspection: Inspection;
   onClose?: () => void;
   isOpen?: boolean;
+  roomNames?: Record<string, string>;
 }
 
-export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionReadOnlyProps) {
-  const [expandedPhotos, setExpandedPhotos] = useState<Record<string, boolean>>({});
+export function InspectionReadOnly({ 
+  inspection, 
+  onClose, 
+  isOpen,
+  roomNames 
+}: InspectionReadOnlyProps) {
+  const [expandedComponents, setExpandedComponents] = useState<string[]>(
+    () => getDefaultExpandedComponents(inspection.rooms)
+  );
+  const [photoDialog, setPhotoDialog] = useState<{
+    photos: string[];
+    label: string;
+    currentIndex: number;
+  } | null>(null);
 
-  const togglePhotoExpansion = (key: string) => {
-    setExpandedPhotos(prev => ({ ...prev, [key]: !prev[key] }));
+  const getRoomName = (roomId: string): string => {
+    return roomNames?.[roomId] || `Rum ${roomId}`;
   };
 
   const renderHeader = () => (
@@ -56,11 +77,8 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
               {inspection.status === 'completed' ? 'Slutförd' : inspection.status === 'draft' ? 'Utkast' : 'Pågående'}
             </Badge>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground flex items-center gap-1">
-              <Key className="h-3 w-3" />
-              Huvudnyckel
-            </span>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Huvudnyckel</span>
             <span>{inspection.needsMasterKey ? 'Ja' : 'Nej'}</span>
           </div>
         </CardContent>
@@ -109,8 +127,7 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
     return (
       <Card className="mb-6">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base flex items-center gap-2">
-            <User className="h-4 w-4" />
+          <CardTitle className="text-base">
             Hyresgäst vid besiktningstillfället
           </CardTitle>
         </CardHeader>
@@ -125,14 +142,14 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
               <span>{inspection.tenant.personalNumber || '-'}</span>
             </div>
             {inspection.tenant.phone && (
-              <div className="flex items-center gap-2">
-                <Phone className="h-3 w-3 text-muted-foreground" />
+              <div>
+                <span className="text-muted-foreground block">Telefon</span>
                 <span>{inspection.tenant.phone}</span>
               </div>
             )}
             {inspection.tenant.email && (
-              <div className="flex items-center gap-2">
-                <Mail className="h-3 w-3 text-muted-foreground" />
+              <div>
+                <span className="text-muted-foreground block">E-post</span>
                 <span>{inspection.tenant.email}</span>
               </div>
             )}
@@ -142,32 +159,67 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
     );
   };
 
-  const renderComponentPhotos = (roomId: string, component: string, photos: string[]) => {
-    if (!photos || photos.length === 0) return null;
-    
-    const photoKey = `${roomId}-${component}`;
-    const isExpanded = expandedPhotos[photoKey];
+  const renderComponentContent = (roomId: string, component: string, room: typeof inspection.rooms[string]) => {
+    const condition = room.conditions[component];
+    const costResp = room.costResponsibility?.[component as keyof typeof room.costResponsibility];
+    const actions = room.actions[component as keyof typeof room.actions] || [];
+    const notes = room.componentNotes[component as keyof typeof room.componentNotes];
+    const photos = room.componentPhotos?.[component as keyof typeof room.componentPhotos] || [];
+    const hasPhotos = photos.length > 0;
 
     return (
-      <Collapsible open={isExpanded} onOpenChange={() => togglePhotoExpansion(photoKey)}>
-        <CollapsibleTrigger className="flex items-center gap-1 text-sm text-primary hover:underline mt-2">
-          <Camera className="h-3 w-3" />
-          Visa foton ({photos.length})
-          <ChevronDown className={`h-3 w-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
-            {photos.map((photo, i) => (
-              <img 
-                key={i} 
-                src={photo} 
-                alt={`${component} foto ${i + 1}`}
-                className="rounded-md border object-cover aspect-square w-full"
-              />
+      <div className="space-y-3 pt-2">
+        {/* Skick och kostnadsansvar */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-medium">
+            {getConditionLabel(condition)}
+          </span>
+          {costResp && (
+            <>
+              <span className="text-muted-foreground">·</span>
+              <Badge variant={costResp === 'tenant' ? 'destructive' : 'secondary'} className="text-xs">
+                {getCostResponsibilityLabel(costResp)}
+              </Badge>
+            </>
+          )}
+        </div>
+
+        {/* Anteckningar */}
+        {notes && (
+          <p className="text-sm text-muted-foreground">{notes}</p>
+        )}
+
+        {/* Åtgärder - endast om det finns några */}
+        {actions.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-sm text-muted-foreground">Åtgärder:</span>
+            {actions.map((action, index) => (
+              <Badge key={index} variant="outline" className="text-xs">
+                {action}
+              </Badge>
             ))}
           </div>
-        </CollapsibleContent>
-      </Collapsible>
+        )}
+
+        {/* Fotoknapp i botten, högerställd */}
+        {hasPhotos && (
+          <div className="flex justify-end pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPhotoDialog({
+                photos,
+                label: getComponentLabel(component),
+                currentIndex: 0
+              })}
+              className="gap-2"
+            >
+              <Camera className="h-4 w-4" />
+              Visa foton ({photos.length})
+            </Button>
+          </div>
+        )}
+      </div>
     );
   };
 
@@ -175,87 +227,106 @@ export function InspectionReadOnly({ inspection, onClose, isOpen }: InspectionRe
     <div className="space-y-4">
       <h3 className="font-medium">Rum ({Object.keys(inspection.rooms).length})</h3>
       <Accordion type="single" collapsible className="space-y-2">
-        {Object.entries(inspection.rooms).map(([roomId, room]) => (
-          <AccordionItem 
-            key={roomId} 
-            value={roomId}
-            className="rounded-lg border border-slate-200 bg-white"
-          >
-            <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-medium">Rum {roomId}</span>
-                {room.isHandled && (
-                  <Badge variant="default" className="text-xs">Hanterat</Badge>
-                )}
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="px-4 pb-4 pt-1 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {Object.entries(room.conditions).map(([component, condition]) => {
-                    const costResp = room.costResponsibility?.[component as keyof typeof room.costResponsibility];
-                    return (
-                      <div key={component} className="space-y-2 p-3 bg-muted/30 rounded-lg">
-                        <h4 className="font-medium capitalize">{component}</h4>
-                        <p className="text-sm">
-                          <span className="text-muted-foreground">Skick:</span>{' '}
-                          {condition || "Ej angivet"}
-                        </p>
-                        
-                        {/* Kostnadsansvar */}
-                        {costResp && (
-                          <div className="text-sm">
-                            <Badge variant={costResp === 'tenant' ? 'destructive' : 'secondary'}>
-                              {costResp === 'tenant' ? 'Hyresgästens ansvar' : 'Hyresvärdens ansvar'}
-                            </Badge>
-                          </div>
-                        )}
-                        
-                        {/* Åtgärder */}
-                        <div className="text-sm">
-                          <p className="text-muted-foreground">Åtgärder:</p>
-                          {room.actions[component as keyof typeof room.actions]?.length > 0 ? (
-                            <ul className="list-disc list-inside mt-1">
-                              {room.actions[component as keyof typeof room.actions].map((action, index) => (
-                                <li key={index}>{action}</li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <p className="text-muted-foreground/70 italic">Inga åtgärder</p>
-                          )}
-                        </div>
-                        
-                        {/* Anteckningar */}
-                        {room.componentNotes[component as keyof typeof room.componentNotes] && (
-                          <div className="text-sm">
-                            <p className="text-muted-foreground">Anteckningar:</p>
-                            <p className="mt-1">{room.componentNotes[component as keyof typeof room.componentNotes]}</p>
-                          </div>
-                        )}
-                        
-                        {/* Expanderbara foton */}
-                        {renderComponentPhotos(
-                          roomId, 
-                          component, 
-                          room.componentPhotos?.[component as keyof typeof room.componentPhotos] || []
-                        )}
-                      </div>
-                    );
-                  })}
+        {Object.entries(inspection.rooms).map(([roomId, room]) => {
+          const remarkCount = countRemarks(room);
+
+          return (
+            <AccordionItem 
+              key={roomId} 
+              value={roomId}
+              className="rounded-lg border bg-card"
+            >
+              <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-muted/50">
+                <div className="flex items-center justify-between w-full pr-2">
+                  <span className="text-lg font-medium">{getRoomName(roomId)}</span>
+                  {remarkCount > 0 && (
+                    <span className="text-sm text-muted-foreground">
+                      {remarkCount} anmärkning{remarkCount > 1 ? 'ar' : ''}
+                    </span>
+                  )}
                 </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
+              </AccordionTrigger>
+              <AccordionContent className="px-0 pb-0">
+                <div className="px-2 sm:px-3 pb-3">
+                  <Accordion 
+                    type="multiple" 
+                    value={expandedComponents}
+                    onValueChange={setExpandedComponents}
+                    className="space-y-2"
+                  >
+                    {Object.entries(room.conditions).map(([component, condition]) => {
+                      const componentKey = `${roomId}-${component}`;
+                      const isRemark = hasRemark(condition);
+
+                      return (
+                        <AccordionItem 
+                          key={componentKey}
+                          value={componentKey}
+                          className="rounded-md border bg-muted/20"
+                        >
+                          <AccordionTrigger className="px-3 py-2.5 hover:bg-muted/50 text-sm">
+                            <span className={`font-medium ${isRemark ? '' : 'text-muted-foreground'}`}>
+                              {getComponentLabel(component)}
+                            </span>
+                          </AccordionTrigger>
+                          <AccordionContent className="px-3 pb-3">
+                            {renderComponentContent(roomId, component, room)}
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </div>
   );
 
+  const renderPhotoDialog = () => {
+    if (!photoDialog) return null;
+    
+    return (
+      <Dialog open={!!photoDialog} onOpenChange={() => setPhotoDialog(null)}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0">
+          <div className="relative">
+            <img
+              src={photoDialog.photos[photoDialog.currentIndex]}
+              alt={`${photoDialog.label} foto ${photoDialog.currentIndex + 1}`}
+              className="w-full h-full object-contain"
+            />
+            {photoDialog.photos.length > 1 && (
+              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                {photoDialog.photos.map((_, idx) => (
+                  <button
+                    key={idx}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      idx === photoDialog.currentIndex ? 'bg-primary' : 'bg-muted'
+                    }`}
+                    onClick={() => setPhotoDialog({ ...photoDialog, currentIndex: idx })}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   const renderContent = () => (
     <div className="space-y-6">
+      {/* PDF action dropdown */}
+      <div className="flex justify-end">
+        <PdfDropdownMenu inspection={inspection} roomNames={roomNames} />
+      </div>
+      
       {renderHeader()}
       {renderTenantSnapshot()}
       {renderRooms()}
+      {renderPhotoDialog()}
     </div>
   );
 

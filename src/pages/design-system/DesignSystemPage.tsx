@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { PageLayout } from "@/layouts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -28,7 +27,7 @@ const DesignSystemPage = () => {
         </div>
 
         <Tabs defaultValue="logos" className="w-full">
-          <TabsList>
+          <TabsList className="flex-wrap h-auto gap-1">
             <TabsTrigger value="logos" className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4" />
               <span className="hidden sm:inline">Logos</span>
