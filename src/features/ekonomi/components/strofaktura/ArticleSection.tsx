@@ -1,6 +1,8 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Plus, X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -15,13 +17,13 @@ interface ArticleSectionProps {
   selectedArticle: string;
   artikelnummer: string;
   avserObjektnummer: string;
-  textRows: [string, string, string];
+  textRows: string[];
   antal: number | string;
   prisInkMoms: number | string;
   administrativaKostnader: boolean;
   hanteringsavgift: boolean;
   onArticleSelect: (artikelnummer: string) => void;
-  onTextRowChange: (index: number, value: string) => void;
+  onTextRowsChange: (rows: string[]) => void;
   onAntalChange: (antal: number) => void;
   onPrisChange: (pris: number) => void;
   onAdministrativaKostnaderChange: (checked: boolean) => void;
@@ -43,13 +45,29 @@ export function ArticleSection({
   administrativaKostnader,
   hanteringsavgift,
   onArticleSelect,
-  onTextRowChange,
+  onTextRowsChange,
   onAntalChange,
   onPrisChange,
   onAdministrativaKostnaderChange,
   onHandteringsavgiftChange,
   errors
 }: ArticleSectionProps) {
+  const handleRowChange = (index: number, value: string) => {
+    const newRows = [...textRows];
+    newRows[index] = value;
+    onTextRowsChange(newRows);
+  };
+
+  const handleAddRow = () => {
+    onTextRowsChange([...textRows, ""]);
+  };
+
+  const handleRemoveRow = (index: number) => {
+    if (textRows.length > 1) {
+      onTextRowsChange(textRows.filter((_, i) => i !== index));
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -103,25 +121,37 @@ export function ArticleSection({
         <div className="space-y-3">
           <Label>Text</Label>
           <div className="space-y-2">
-            <Input
-              id="text1"
-              value={textRows[0]}
-              onChange={(e) => onTextRowChange(0, e.target.value)}
-              placeholder="Textrad 1..."
-            />
-            <Input
-              id="text2"
-              value={textRows[1]}
-              onChange={(e) => onTextRowChange(1, e.target.value)}
-              placeholder="Textrad 2 (valfri)..."
-            />
-            <Input
-              id="text3"
-              value={textRows[2]}
-              onChange={(e) => onTextRowChange(2, e.target.value)}
-              placeholder="Textrad 3 (valfri)..."
-            />
+            {textRows.map((row, index) => (
+              <div key={index} className="flex gap-2">
+                <Input
+                  value={row}
+                  onChange={(e) => handleRowChange(index, e.target.value)}
+                  placeholder={index === 0 ? "Textrad..." : "Textrad (valfri)..."}
+                />
+                {textRows.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleRemoveRow(index)}
+                    className="shrink-0"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            ))}
           </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleAddRow}
+            className="mt-2"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Lägg till rad
+          </Button>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
