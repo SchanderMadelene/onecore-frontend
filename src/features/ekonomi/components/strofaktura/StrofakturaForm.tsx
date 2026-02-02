@@ -21,6 +21,7 @@ import { LeaseContractSection } from "./LeaseContractSection";
 import { ArticleSection } from "./ArticleSection";
 import { AdditionalInfoSection } from "./AdditionalInfoSection";
 import { CustomerSearchResult, CustomerLeaseContract } from "@/features/ekonomi/types";
+import { InvoiceRow } from "@/features/ekonomi/types/invoice-row";
 import { getArticleByNumber } from "@/features/ekonomi/data";
 
 const strofakturaSchema = z.object({
@@ -32,22 +33,14 @@ const strofakturaSchema = z.object({
   fastighet: z.string(),
   artikel: z.string().min(1, "Välj artikel"),
   artikelnummer: z.string(),
-  text: z.string().optional(),
-  antal: z.number().min(1, "Ange antal (minst 1)"),
-  prisInkMoms: z.number().min(0, "Ange ett giltigt pris"),
   projekt: z.string().optional(),
-  fakturanAvser: z.string().max(255).optional(),
   internInfo: z.string().max(255).optional(),
 });
-
-type StrofakturaFormData = z.infer<typeof strofakturaSchema>;
 
 interface FormErrors {
   kundnummer?: string;
   hyreskontrakt?: string;
   artikel?: string;
-  antal?: string;
-  prisInkMoms?: string;
 }
 
 export function StrofakturaForm() {
@@ -69,11 +62,8 @@ export function StrofakturaForm() {
   const [fastighet, setFastighet] = useState("");
   const [artikel, setArtikel] = useState("");
   const [artikelnummer, setArtikelnummer] = useState("");
-  const [textRows, setTextRows] = useState<string[]>([""]);
-  const [antal, setAntal] = useState<number | string>(1);
-  const [prisInkMoms, setPrisInkMoms] = useState<number | string>(0);
+  const [invoiceRows, setInvoiceRows] = useState<InvoiceRow[]>([{ text: "", antal: 1, pris: 0 }]);
   const [projekt, setProjekt] = useState("");
-  const [fakturanAvserFritext, setFakturanAvserFritext] = useState("");
   const [internInfo, setInternInfo] = useState("");
   const [avserObjektnummer, setAvserObjektnummer] = useState("");
   const [administrativaKostnader, setAdministrativaKostnader] = useState(false);
@@ -109,8 +99,6 @@ export function StrofakturaForm() {
       setKst(selectedLease.district);
       setFastighet(selectedLease.propertyName);
       setAvserObjektnummer(selectedLease.objectNumber);
-      // Reset fakturan avser fritext when changing contract
-      setFakturanAvserFritext("");
     }
     setErrors(prev => ({ ...prev, hyreskontrakt: undefined }));
   };
@@ -120,7 +108,14 @@ export function StrofakturaForm() {
     setArtikelnummer(artikelnr);
     const articleData = getArticleByNumber(artikelnr);
     if (articleData && articleData.standardPris > 0) {
-      setPrisInkMoms(articleData.standardPris);
+      // Update first row price with article standard price
+      setInvoiceRows(prev => {
+        const newRows = [...prev];
+        if (newRows.length > 0) {
+          newRows[0] = { ...newRows[0], pris: articleData.standardPris };
+        }
+        return newRows;
+      });
     }
     setErrors(prev => ({ ...prev, artikel: undefined }));
   };
@@ -135,11 +130,7 @@ export function StrofakturaForm() {
       fastighet,
       artikel,
       artikelnummer,
-      text: textRows.filter(r => r.trim()).join('\n'),
-      antal: Number(antal),
-      prisInkMoms: Number(prisInkMoms),
       projekt,
-      fakturanAvser: avserObjektnummer + (fakturanAvserFritext ? ` - ${fakturanAvserFritext}` : ""),
       internInfo,
     };
 
@@ -149,7 +140,7 @@ export function StrofakturaForm() {
       const newErrors: FormErrors = {};
       result.error.errors.forEach(err => {
         const field = err.path[0] as keyof FormErrors;
-        if (field in newErrors || ['kundnummer', 'hyreskontrakt', 'artikel', 'antal', 'prisInkMoms'].includes(field as string)) {
+        if (['kundnummer', 'hyreskontrakt', 'artikel'].includes(field as string)) {
           newErrors[field] = err.message;
         }
       });
@@ -208,11 +199,8 @@ export function StrofakturaForm() {
     setFastighet("");
     setArtikel("");
     setArtikelnummer("");
-    setTextRows([""]);
-    setAntal(1);
-    setPrisInkMoms(0);
+    setInvoiceRows([{ text: "", antal: 1, pris: 0 }]);
     setProjekt("");
-    setFakturanAvserFritext("");
     setInternInfo("");
     setAvserObjektnummer("");
     setAdministrativaKostnader(false);
@@ -305,21 +293,15 @@ export function StrofakturaForm() {
               selectedArticle={artikel}
               artikelnummer={artikelnummer}
               avserObjektnummer={avserObjektnummer}
-              textRows={textRows}
-              antal={antal}
-              prisInkMoms={prisInkMoms}
+              invoiceRows={invoiceRows}
               administrativaKostnader={administrativaKostnader}
               hanteringsavgift={hanteringsavgift}
               onArticleSelect={handleArticleSelect}
-              onTextRowsChange={setTextRows}
-              onAntalChange={setAntal}
-              onPrisChange={setPrisInkMoms}
+              onInvoiceRowsChange={setInvoiceRows}
               onAdministrativaKostnaderChange={setAdministrativaKostnader}
               onHandteringsavgiftChange={setHandteringsavgift}
               errors={{
                 artikel: errors.artikel,
-                antal: errors.antal,
-                prisInkMoms: errors.prisInkMoms,
               }}
             />
           </div>
