@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { InfoIcon, Home, Car, User, UserCheck, Users, Plus, Warehouse, ExternalLink } from "lucide-react";
 import { CreateParkingInterestDialog } from "./CreateParkingInterestDialog";
-import { ApplicantProfileModal } from "@/components/rentals/ApplicantProfileModal";
+import { ApplicantProfileModal } from "@/features/rentals/components/ApplicantProfileModal";
 
 // Mock data for the queue system
 const queueData = {

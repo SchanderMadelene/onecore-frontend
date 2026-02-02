@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabLayout } from "@/components/ui/tab-layout";
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/components/common";
 
 interface TenantInformationCardProps {
   tenant: {

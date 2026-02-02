@@ -1,4 +1,4 @@
-import { TenantInformationCard } from "@/components/tenants/TenantInformationCard";
+import { TenantInformationCard } from "@/features/tenants";
 
 type TenantInfoSectionProps = {
   tenant: any | any[];
