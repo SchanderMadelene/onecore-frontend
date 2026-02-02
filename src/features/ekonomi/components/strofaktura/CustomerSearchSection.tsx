@@ -108,10 +108,10 @@ export function CustomerSearchSection({
                   key={customer.customerNumber}
                   type="button"
                   onClick={() => handleSelectCustomer(customer)}
-                  className="w-full px-3 py-2 text-left hover:bg-accent transition-colors"
+                  className="w-full px-3 py-2 text-left hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   <div className="font-medium">{customer.fullName}</div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm opacity-70">
                     {customer.customerNumber} • {customer.personalNumber}
                   </div>
                 </button>
