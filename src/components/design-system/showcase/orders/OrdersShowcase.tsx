@@ -1,12 +1,11 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { OrderCard } from "@/components/orders/OrderCard";
-import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
+import { OrderCard, CreateOrderDialog } from "@/features/orders";
 import { Button } from "@/components/ui/button";
-import { InspectionReadOnly } from "@/components/residence/inspection/InspectionReadOnly";
+import { InspectionReadOnly } from "@/features/residences/components/inspection/InspectionReadOnly";
 import { useState } from "react";
-import type { Inspection, InspectionSubmitData } from "@/components/residence/inspection/types";
-import { InspectionFormDialog } from "@/components/residence/inspection/InspectionFormDialog";
+import type { Inspection, InspectionSubmitData } from "@/features/residences/components/inspection/types";
+import { InspectionFormDialog } from "@/features/residences/components/inspection/InspectionFormDialog";
 import { mockRoomsData } from "@/features/residences/data/rooms";
 import { mockTenant } from "@/features/tenants/data/tenants";
 

@@ -1,4 +1,4 @@
-import { OrdersManagement } from "@/components/residence/OrdersManagement";
+import { OrdersManagement } from "@/features/residences/components/OrdersManagement";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { MessageSquare } from "lucide-react";
 import type { Building } from "@/types/api";

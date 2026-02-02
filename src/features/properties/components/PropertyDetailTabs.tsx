@@ -12,7 +12,7 @@ import { PropertyAccessTab } from "./tabs/PropertyAccessTab";
 import { PropertyDetailTabsMobile } from "./PropertyDetailTabsMobile";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
-import { FeatureGatedContent } from "@/components/residence/tabs/FeatureGatedContent";
+import { FeatureGatedContent } from "@/features/residences/components/tabs/FeatureGatedContent";
 import type { PropertyDetail } from "@/types/api";
 
 interface PropertyDetailTabsProps {

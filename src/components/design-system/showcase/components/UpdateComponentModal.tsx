@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import type { ComponentLocation } from "@/types/api";
-import type { AIAnalysisResult } from "@/components/shared/PhotoAnalyzeModal";
+import type { AIAnalysisResult } from "@/components/common";
 
 const updateComponentSchema = z.object({
   ekonomiskLivslangd: z.string().optional(),

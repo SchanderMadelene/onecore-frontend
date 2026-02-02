@@ -4,7 +4,7 @@ import { ResidenceInspection } from "./ResidenceInspection";
 import { TenantInformation } from "./inspection/form/TenantInformation";
 import { OrdersManagement } from "./OrdersManagement";
 
-import { Notes } from "@/components/shared/Notes";
+import { Notes } from "@/components/common";
 import type { Room } from "@/types/api";
 import { mockTenant, mockMultipleTenants, mockSecondHandTenants } from "@/features/tenants/data/tenants";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";

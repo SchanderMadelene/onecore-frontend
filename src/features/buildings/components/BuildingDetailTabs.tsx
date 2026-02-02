@@ -8,8 +8,8 @@ import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
 import { BuildingDocumentsTab } from "./tabs/BuildingDocumentsTab";
 import { BuildingOrdersTab } from "./tabs/BuildingOrdersTab";
 import { BuildingDetailTabsMobile } from "./BuildingDetailTabsMobile";
-import { Notes } from "@/components/shared/Notes";
-import { FeatureGatedContent } from "@/components/residence/tabs/FeatureGatedContent";
+import { Notes } from "@/components/common";
+import { FeatureGatedContent } from "@/features/residences/components/tabs/FeatureGatedContent";
 import { MessageSquare } from "lucide-react";
 
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";

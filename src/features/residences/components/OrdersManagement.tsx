@@ -1,6 +1,5 @@
-import { CreateOrderDialog } from "@/components/orders/CreateOrderDialog";
+import { CreateOrderDialog, OrdersTable } from "@/features/orders";
 import { useOrdersService } from "@/hooks/useOrdersService";
-import { OrdersTable } from "@/components/orders/OrdersTable";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { TabLayout } from "@/components/ui/tab-layout";

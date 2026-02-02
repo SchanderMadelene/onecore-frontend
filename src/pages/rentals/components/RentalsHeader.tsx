@@ -1,4 +1,4 @@
-import { SaveAsFavoriteButton } from "@/components/shared/SaveAsFavoriteButton";
+import { SaveAsFavoriteButton } from "@/components/common";
 
 export function RentalsHeader() {
   return (

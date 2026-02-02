@@ -1,5 +1,4 @@
-import { SaveAsFavoriteButton } from "@/components/shared/SaveAsFavoriteButton";
-import { ActiveFavoriteIndicator } from "@/components/shared/ActiveFavoriteIndicator";
+import { SaveAsFavoriteButton, ActiveFavoriteIndicator } from "@/components/common";
 
 export function InspectionsHeader() {
   return (

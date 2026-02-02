@@ -1,5 +1,5 @@
 import { TabLayout } from "@/components/ui/tab-layout";
-import { ComponentCard } from "@/components/shared/ComponentCard";
+import { ComponentCard } from "@/components/common";
 import type { Building } from "@/types/api";
 import type { Component } from "@/data/components";
 
