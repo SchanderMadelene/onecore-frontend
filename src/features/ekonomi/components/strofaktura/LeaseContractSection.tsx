@@ -15,7 +15,6 @@ interface LeaseContractSectionProps {
   selectedLease: string;
   kst: string;
   fastighet: string;
-  avserObjektnummer: string;
   onLeaseSelect: (leaseId: string) => void;
   error?: string;
   disabled?: boolean;
@@ -26,76 +25,61 @@ export function LeaseContractSection({
   selectedLease,
   kst,
   fastighet,
-  avserObjektnummer,
   onLeaseSelect,
   error,
   disabled = false
 }: LeaseContractSectionProps) {
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr_1fr] gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="hyreskontrakt">Hyreskontrakt</Label>
-          <Select
-            value={selectedLease}
-            onValueChange={onLeaseSelect}
-            disabled={disabled || leaseContracts.length === 0}
+    <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr_1fr] gap-4">
+      <div className="space-y-2">
+        <Label htmlFor="hyreskontrakt">Hyreskontrakt</Label>
+        <Select
+          value={selectedLease}
+          onValueChange={onLeaseSelect}
+          disabled={disabled || leaseContracts.length === 0}
+        >
+          <SelectTrigger 
+            id="hyreskontrakt"
+            className={cn(error && "border-destructive")}
           >
-            <SelectTrigger 
-              id="hyreskontrakt"
-              className={cn(error && "border-destructive")}
-            >
-              <SelectValue placeholder={
-                leaseContracts.length === 0 
-                  ? "Välj kund först" 
-                  : "Välj hyreskontrakt"
-              } />
-            </SelectTrigger>
-            <SelectContent>
-              {leaseContracts.map((lease) => (
-                <SelectItem key={lease.leaseId} value={lease.leaseId}>
-                  <span>{lease.leaseId}</span>
-                  <span className="text-muted-foreground ml-2">{lease.address}</span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {error && <p className="text-sm text-destructive">{error}</p>}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="kst">KST (Kostnadsställe)</Label>
-          <Input
-            id="kst"
-            value={kst}
-            readOnly
-            disabled
-            placeholder="Fylls i automatiskt"
-            className="bg-muted"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="fastighet">Fastighet</Label>
-          <Input
-            id="fastighet"
-            value={fastighet}
-            readOnly
-            disabled
-            placeholder="Fylls i automatiskt"
-            className="bg-muted"
-          />
-        </div>
+            <SelectValue placeholder={
+              leaseContracts.length === 0 
+                ? "Välj kund först" 
+                : "Välj hyreskontrakt"
+            } />
+          </SelectTrigger>
+          <SelectContent>
+            {leaseContracts.map((lease) => (
+              <SelectItem key={lease.leaseId} value={lease.leaseId}>
+                <span>{lease.leaseId}</span>
+                <span className="text-muted-foreground ml-2">{lease.address}</span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {error && <p className="text-sm text-destructive">{error}</p>}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="avserObjektnummer">Avser objektsnummer</Label>
+        <Label htmlFor="kst">KST (Kostnadsställe)</Label>
         <Input
-          id="avserObjektnummer"
-          value={avserObjektnummer}
+          id="kst"
+          value={kst}
           readOnly
           disabled
-          placeholder="Fylls i automatiskt från kontrakt"
+          placeholder="Fylls i automatiskt"
+          className="bg-muted"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="fastighet">Fastighet</Label>
+        <Input
+          id="fastighet"
+          value={fastighet}
+          readOnly
+          disabled
+          placeholder="Fylls i automatiskt"
           className="bg-muted"
         />
       </div>
