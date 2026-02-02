@@ -11,7 +11,7 @@ import type { Inspection } from "./types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Camera, Home, User } from "lucide-react";
+import { Camera, Home } from "lucide-react";
 import { PdfDropdownMenu } from "./pdf";
 import {
   getComponentLabel,
@@ -127,8 +127,7 @@ export function InspectionReadOnly({
     return (
       <Card className="mb-6">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base flex items-center gap-2">
-            <User className="h-4 w-4" />
+          <CardTitle className="text-base">
             Hyresgäst vid besiktningstillfället
           </CardTitle>
         </CardHeader>
