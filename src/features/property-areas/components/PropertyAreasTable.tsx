@@ -1,7 +1,7 @@
 import React from "react";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
-import { PropertyAreaEntry, COST_CENTER_NAMES, BUILDING_TYPES } from "../types";
-import { Badge } from "@/components/ui/badge";
+import { PropertyAreaEntry, COST_CENTER_NAMES } from "../types";
+import { BuildingTypeBadge } from "./BuildingTypeBadge";
 
 interface PropertyAreasTableProps {
   entries: PropertyAreaEntry[];
@@ -78,11 +78,9 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
     {
       key: "buildingType",
       label: "Typ",
-      render: (entry: PropertyAreaEntry) => entry.buildingType ? (
-        <Badge variant="outline" className="text-xs">
-          {BUILDING_TYPES[entry.buildingType] || entry.buildingType}
-        </Badge>
-      ) : "-",
+      render: (entry: PropertyAreaEntry) => (
+        <BuildingTypeBadge type={entry.buildingType} />
+      ),
       hideOnMobile: true,
     },
     {
@@ -168,11 +166,7 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
                   </span>
                 )}
               </div>
-              {entry.buildingType && (
-                <Badge variant="outline" className="text-xs">
-                  {BUILDING_TYPES[entry.buildingType] || entry.buildingType}
-                </Badge>
-              )}
+              <BuildingTypeBadge type={entry.buildingType} />
             </div>
           </div>
           <div className="text-sm">

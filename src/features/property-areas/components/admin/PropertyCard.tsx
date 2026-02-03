@@ -2,9 +2,8 @@ import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { PropertyForAdmin } from '../../types/admin-types';
-import { getBuildingTypeName } from '../../data';
+import { BuildingTypeBadge } from '../BuildingTypeBadge';
 
 interface PropertyCardProps {
   property: PropertyForAdmin;
@@ -50,11 +49,7 @@ export function PropertyCard({ property, isDragging }: PropertyCardProps) {
         <div className="text-xs text-muted-foreground truncate">
           {property.address}
         </div>
-        {property.buildingType && (
-          <Badge variant="secondary" className="mt-1 text-xs">
-            {getBuildingTypeName(property.buildingType)}
-          </Badge>
-        )}
+        <BuildingTypeBadge type={property.buildingType} className="mt-1" />
       </div>
     </div>
   );
