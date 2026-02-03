@@ -145,13 +145,6 @@ export function SendProtocolDialog({
               </div>
             )}
           </div>
-
-          {/* Hyresgästinfo om tillgänglig */}
-          {recipientType === "outgoing" && inspection.tenant && (
-            <div className="text-sm text-muted-foreground">
-              <p>Hyresgäst: {inspection.tenant.name}</p>
-            </div>
-          )}
         </div>
 
         <DialogFooter className="gap-2 sm:gap-0">
