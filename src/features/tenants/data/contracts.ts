@@ -15,7 +15,9 @@ export interface Contract {
     lastName: string;
     personalNumber: string;
     moveInDate: string;
-    moveOutDate: string;
+    moveOutDate?: string;
+    email?: string;
+    phone?: string;
   };
 }
 
@@ -151,4 +153,47 @@ export const getHistoricalTenantsForResidence = (residenceId: string) => {
     default:
       return [];
   }
+};
+
+// Hämta kommande/väntande kontrakt för en lägenhet (inflyttande hyresgäst)
+export const getPendingContractForResidence = (residenceId: string): Contract | null => {
+  // Mock data - i verkligheten skulle detta hämtas från API
+  const pendingContracts: Record<string, Contract> = {
+    "lgh-1001": {
+      id: "KT2026-012",
+      type: "housing",
+      objectName: "Lägenhet 1001",
+      objectId: "lgh-1001",
+      startDate: "2026-03-01",
+      rent: 8500,
+      status: "pending",
+      tenant: {
+        firstName: "Anna",
+        lastName: "Lindberg",
+        personalNumber: "19920315-4521",
+        moveInDate: "2026-03-01",
+        email: "anna.lindberg@email.se",
+        phone: "070-123 45 67"
+      }
+    },
+    "lgh-1002": {
+      id: "KT2026-018",
+      type: "housing",
+      objectName: "Lägenhet 1002",
+      objectId: "lgh-1002",
+      startDate: "2026-04-01",
+      rent: 7200,
+      status: "pending",
+      tenant: {
+        firstName: "Johan",
+        lastName: "Bergström",
+        personalNumber: "19880722-8834",
+        moveInDate: "2026-04-01",
+        email: "johan.bergstrom@gmail.com",
+        phone: "073-987 65 43"
+      }
+    }
+  };
+
+  return pendingContracts[residenceId] || null;
 };
