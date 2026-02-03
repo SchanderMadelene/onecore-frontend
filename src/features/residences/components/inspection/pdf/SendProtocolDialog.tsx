@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
@@ -129,19 +128,20 @@ export function SendProtocolDialog({
 
           {/* Mejladress */}
           <div className="space-y-2">
-            <Label htmlFor="recipient-email">E-postadress</Label>
-            <Input
-              id="recipient-email"
-              type="email"
-              placeholder="namn@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={!email && recipientType === "incoming" ? "border-warning" : ""}
-            />
-            {!email && recipientType === "incoming" && (
-              <div className="flex items-start gap-2 text-sm text-warning">
-                <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
-                <span>Ingen mejladress hittades för inflyttande hyresgäst. Ange manuellt.</span>
+            <Label>E-postadress</Label>
+            {email ? (
+              <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm">
+                <Mail className="h-4 w-4 text-muted-foreground" />
+                <span>{email}</span>
+              </div>
+            ) : (
+              <div className="flex items-start gap-2 rounded-md border border-warning bg-warning/10 px-3 py-2 text-sm">
+                <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0 text-warning" />
+                <span>
+                  {recipientType === "incoming" 
+                    ? "Ingen mejladress hittades för inflyttande hyresgäst"
+                    : "Ingen mejladress hittades för hyresgästen"}
+                </span>
               </div>
             )}
           </div>
