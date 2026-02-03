@@ -24,7 +24,7 @@ export const BUILDING_TYPE_STYLES: Record<string, BuildingTypeStyle> = {
     label: "55+"
   },
   "STUD": {
-    bg: "bg-orange-400",
+    bg: "bg-amber-400",
     text: "text-black",
     label: "Student"
   },
