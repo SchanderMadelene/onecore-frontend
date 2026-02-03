@@ -88,8 +88,8 @@ export function StewardAssignmentDialog({
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[380px] p-0 z-50 bg-white dark:bg-slate-900" align="start">
-              <Command className="bg-white dark:bg-slate-900">
+            <PopoverContent className="w-[380px] p-0 z-50" align="start">
+              <Command>
                 <CommandInput placeholder="Sök kvartersvärd..." />
                 <CommandList>
                   <CommandEmpty>Ingen kvartersvärd hittades.</CommandEmpty>
@@ -110,8 +110,8 @@ export function StewardAssignmentDialog({
                           )}
                         />
                         <div className="flex flex-col">
-                          <span className="text-slate-900 dark:text-slate-100">{steward.name}</span>
-                          <span className="text-slate-600 dark:text-slate-400 text-xs">
+                          <span className="text-popover-foreground">{steward.name}</span>
+                          <span className="text-popover-foreground/70 text-xs">
                             {steward.refNr}
                             {steward.phone && ` • ${steward.phone}`}
                           </span>
