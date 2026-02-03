@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDroppable } from '@dnd-kit/core';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Pencil } from 'lucide-react';
 import { PropertyCard } from './PropertyCard';
 import { StewardAssignmentDialog } from './StewardAssignmentDialog';
-import { StewardInfo, PropertyForAdmin } from '../../types/admin-types';
+import { KvvAreaInfo, PropertyForAdmin } from '../../types/admin-types';
 
 interface Steward {
   refNr: string;
@@ -16,49 +15,34 @@ interface Steward {
 }
 
 interface StewardColumnProps {
-  steward: StewardInfo;
+  kvvArea: KvvAreaInfo;
   properties: PropertyForAdmin[];
-  activePropertyId?: string | null;
   allStewards?: Steward[];
-  onReassignArea?: (fromStewardRefNr: string, toStewardRefNr: string) => void;
+  onReassignArea?: (kvvArea: string, toStewardRefNr: string) => void;
 }
 
 export function StewardColumn({ 
-  steward, 
+  kvvArea, 
   properties, 
-  activePropertyId,
   allStewards = [],
   onReassignArea
 }: StewardColumnProps) {
   const [showAssignDialog, setShowAssignDialog] = useState(false);
-  
-  const { isOver, setNodeRef } = useDroppable({
-    id: steward.refNr,
-    data: {
-      steward,
-      type: 'steward'
-    }
-  });
 
   const handleAssign = (newStewardRefNr: string) => {
     if (onReassignArea) {
-      onReassignArea(steward.refNr, newStewardRefNr);
+      onReassignArea(kvvArea.kvvArea, newStewardRefNr);
     }
   };
 
   return (
     <>
       <Card 
-        ref={setNodeRef}
-        className={`
-          flex-shrink-0 w-[280px] flex flex-col h-full
-          transition-all duration-200
-          ${isOver ? 'ring-2 ring-primary bg-primary/5' : ''}
-        `}
+        className="flex-shrink-0 w-[280px] flex flex-col h-full"
       >
         <CardHeader className="pb-3 space-y-1">
           <div className="flex items-start justify-between">
-            <div className="font-bold text-lg">{steward.kvvArea || 'Ej tilldelat'}</div>
+            <div className="font-bold text-lg">{kvvArea.kvvArea}</div>
             {onReassignArea && (
               <Button 
                 variant="ghost" 
@@ -70,13 +54,13 @@ export function StewardColumn({
               </Button>
             )}
           </div>
-          <div className="font-medium text-sm">{steward.name}</div>
+          <div className="font-medium text-sm">{kvvArea.stewardName}</div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>{steward.refNr}</span>
-            {steward.phone && (
+            <span>{kvvArea.stewardRefNr}</span>
+            {kvvArea.stewardPhone && (
               <>
                 <span>•</span>
-                <span>{steward.phone}</span>
+                <span>{kvvArea.stewardPhone}</span>
               </>
             )}
           </div>
@@ -92,7 +76,6 @@ export function StewardColumn({
                 <PropertyCard 
                   key={property.id} 
                   property={property}
-                  isDragging={activePropertyId === property.id}
                 />
               ))}
               {properties.length === 0 && (
@@ -108,8 +91,8 @@ export function StewardColumn({
       <StewardAssignmentDialog
         open={showAssignDialog}
         onOpenChange={setShowAssignDialog}
-        kvvArea={steward.kvvArea || 'Ej tilldelat'}
-        currentSteward={{ refNr: steward.refNr, name: steward.name, phone: steward.phone }}
+        kvvArea={kvvArea.kvvArea}
+        currentSteward={{ refNr: kvvArea.stewardRefNr, name: kvvArea.stewardName, phone: kvvArea.stewardPhone }}
         allStewards={allStewards}
         onAssign={handleAssign}
       />

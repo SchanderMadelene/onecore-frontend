@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ChevronDown, ChevronUp, Undo2, ArrowRight } from 'lucide-react';
-import { PropertyReassignment } from '../../types/admin-types';
+import { AreaReassignment } from '../../types/admin-types';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface PendingChangesPanelProps {
-  changes: PropertyReassignment[];
-  onUndo: (propertyId: string) => void;
+  changes: AreaReassignment[];
+  onUndo: (kvvArea: string) => void;
 }
 
 export function PendingChangesPanel({ changes, onUndo }: PendingChangesPanelProps) {
@@ -44,24 +44,24 @@ export function PendingChangesPanel({ changes, onUndo }: PendingChangesPanelProp
             <div className="space-y-2">
               {changes.map(change => (
                 <div 
-                  key={change.propertyId}
+                  key={change.kvvArea}
                   className="flex items-center justify-between gap-2 p-2 rounded-md bg-background/80"
                 >
                   <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <span className="font-medium text-sm truncate">
-                      {change.propertyName}
+                    <span className="font-medium text-sm">
+                      Område {change.kvvArea}
                     </span>
                     <span className="text-muted-foreground text-sm hidden sm:inline">:</span>
                     <div className="hidden sm:flex items-center gap-1 text-sm text-muted-foreground">
-                      <span className="truncate max-w-[100px]">{change.fromSteward.name}</span>
+                      <span className="truncate max-w-[120px]">{change.fromSteward.name}</span>
                       <ArrowRight className="h-3 w-3 flex-shrink-0" />
-                      <span className="truncate max-w-[100px] text-foreground">{change.toSteward.name}</span>
+                      <span className="truncate max-w-[120px] text-foreground">{change.toSteward.name}</span>
                     </div>
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onUndo(change.propertyId)}
+                    onClick={() => onUndo(change.kvvArea)}
                     className="flex-shrink-0"
                   >
                     <Undo2 className="h-4 w-4 mr-1" />

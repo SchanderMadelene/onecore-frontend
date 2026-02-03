@@ -1,12 +1,12 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { PropertyReassignment, PropertyForAdmin, StewardInfo } from '../types/admin-types';
+import { AreaReassignment, PropertyForAdmin, KvvAreaInfo } from '../types/admin-types';
 import { getAllPropertyAreas, getUniqueStewards, getKvvArea } from '../data';
 import { useToast } from '@/hooks/use-toast';
 
 export function useStewardAdmin(selectedCostCenter: string) {
   const { toast } = useToast();
   
-  // Get all property areas and build initial assignments
+  // Get all property areas and stewards
   const allPropertyAreas = getAllPropertyAreas();
   const allStewards = getUniqueStewards();
   
@@ -16,92 +16,128 @@ export function useStewardAdmin(selectedCostCenter: string) {
     return allPropertyAreas.filter(area => area.costCenter === selectedCostCenter);
   }, [allPropertyAreas, selectedCostCenter]);
   
-  // Current assignments (mutable state)
-  const [assignments, setAssignments] = useState<Map<string, string>>(() => new Map());
+  // Get unique KVV areas in the selected cost center with their original stewards
+  const kvvAreasInCostCenter = useMemo(() => {
+    const kvvMap = new Map<string, { stewardRefNr: string; stewardName: string; stewardPhone?: string }>();
+    
+    filteredAreas.forEach(area => {
+      const kvvArea = area.kvvArea || getKvvArea(area.stewardRefNr);
+      if (kvvArea && !kvvMap.has(kvvArea)) {
+        const steward = allStewards.find(s => s.refNr === area.stewardRefNr);
+        kvvMap.set(kvvArea, {
+          stewardRefNr: area.stewardRefNr,
+          stewardName: steward?.name || area.stewardRefNr,
+          stewardPhone: steward?.phone
+        });
+      }
+    });
+    
+    return kvvMap;
+  }, [filteredAreas, allStewards]);
   
-  // Pending changes
-  const [pendingChanges, setPendingChanges] = useState<PropertyReassignment[]>([]);
+  // Area assignments: kvvArea -> stewardRefNr (mutable state)
+  const [areaAssignments, setAreaAssignments] = useState<Map<string, string>>(() => new Map());
+  
+  // Pending area changes
+  const [pendingChanges, setPendingChanges] = useState<AreaReassignment[]>([]);
   
   // Reset assignments when cost center changes
   useEffect(() => {
     const newAssignments = new Map<string, string>();
-    filteredAreas.forEach(area => {
-      newAssignments.set(area.id, area.stewardRefNr);
+    kvvAreasInCostCenter.forEach((data, kvvArea) => {
+      newAssignments.set(kvvArea, data.stewardRefNr);
     });
-    setAssignments(newAssignments);
+    setAreaAssignments(newAssignments);
     setPendingChanges([]);
   }, [selectedCostCenter]);
   
-  // Get stewards for the selected cost center
-  const stewardsInCostCenter = useMemo((): StewardInfo[] => {
-    const stewardRefNrs = new Set(filteredAreas.map(a => a.stewardRefNr));
-    return allStewards
-      .filter(s => stewardRefNrs.has(s.refNr))
-      .map(s => ({
-        refNr: s.refNr,
-        name: s.name,
-        phone: s.phone,
-        kvvArea: getKvvArea(s.refNr),
-        propertyCount: filteredAreas.filter(a => assignments.get(a.id) === s.refNr).length
-      }));
-  }, [filteredAreas, allStewards, assignments]);
-  
-  // Get properties grouped by steward
-  const propertiesBySteward = useMemo(() => {
-    const grouped = new Map<string, PropertyForAdmin[]>();
+  // Get KVV area info list (for columns/accordion)
+  const kvvAreaList = useMemo((): KvvAreaInfo[] => {
+    const list: KvvAreaInfo[] = [];
     
-    stewardsInCostCenter.forEach(steward => {
-      grouped.set(steward.refNr, []);
+    kvvAreasInCostCenter.forEach((originalData, kvvArea) => {
+      const currentStewardRefNr = areaAssignments.get(kvvArea) || originalData.stewardRefNr;
+      const currentSteward = allStewards.find(s => s.refNr === currentStewardRefNr);
+      
+      // Count properties in this KVV area
+      const propertyCount = filteredAreas.filter(a => 
+        (a.kvvArea || getKvvArea(a.stewardRefNr)) === kvvArea
+      ).length;
+      
+      list.push({
+        kvvArea,
+        stewardRefNr: currentStewardRefNr,
+        stewardName: currentSteward?.name || currentStewardRefNr,
+        stewardPhone: currentSteward?.phone,
+        propertyCount
+      });
     });
     
+    return list.sort((a, b) => a.kvvArea.localeCompare(b.kvvArea));
+  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards]);
+  
+  // Get properties grouped by KVV area
+  const propertiesByKvvArea = useMemo(() => {
+    const grouped = new Map<string, PropertyForAdmin[]>();
+    
+    // Initialize all KVV areas
+    kvvAreaList.forEach(area => {
+      grouped.set(area.kvvArea, []);
+    });
+    
+    // Group properties by their KVV area
     filteredAreas.forEach(area => {
-      const stewardRefNr = assignments.get(area.id) || area.stewardRefNr;
-      const properties = grouped.get(stewardRefNr) || [];
+      const kvvArea = area.kvvArea || getKvvArea(area.stewardRefNr);
+      if (!kvvArea) return;
+      
+      const properties = grouped.get(kvvArea) || [];
       properties.push({
         id: area.id,
         propertyCode: area.propertyCode,
         propertyName: area.propertyName,
         address: area.address,
         buildingType: area.buildingType,
-        stewardRefNr: stewardRefNr,
+        kvvArea: kvvArea,
+        stewardRefNr: areaAssignments.get(kvvArea) || area.stewardRefNr,
         costCenter: area.costCenter
       });
-      grouped.set(stewardRefNr, properties);
+      grouped.set(kvvArea, properties);
     });
     
     return grouped;
-  }, [filteredAreas, stewardsInCostCenter, assignments]);
+  }, [filteredAreas, kvvAreaList, areaAssignments]);
   
   // Check if there are unsaved changes
   const isDirty = pendingChanges.length > 0;
   
-  // Move a property to a new steward
-  const moveProperty = useCallback((propertyId: string, toStewardRefNr: string) => {
-    const property = filteredAreas.find(a => a.id === propertyId);
-    if (!property) return;
-    
-    const currentStewardRefNr = assignments.get(propertyId) || property.stewardRefNr;
-    if (currentStewardRefNr === toStewardRefNr) return;
+  // Reassign a KVV area to a new steward
+  const reassignArea = useCallback((kvvArea: string, toStewardRefNr: string) => {
+    const currentStewardRefNr = areaAssignments.get(kvvArea);
+    if (!currentStewardRefNr || currentStewardRefNr === toStewardRefNr) return;
     
     const fromSteward = allStewards.find(s => s.refNr === currentStewardRefNr);
     const toSteward = allStewards.find(s => s.refNr === toStewardRefNr);
     
     if (!fromSteward || !toSteward) return;
     
-    // Update assignments
-    setAssignments(prev => {
+    // Update assignment
+    setAreaAssignments(prev => {
       const newMap = new Map(prev);
-      newMap.set(propertyId, toStewardRefNr);
+      newMap.set(kvvArea, toStewardRefNr);
       return newMap;
     });
     
+    // Get original steward for this area
+    const originalData = kvvAreasInCostCenter.get(kvvArea);
+    const originalStewardRefNr = originalData?.stewardRefNr;
+    
     // Check if this reverts a previous change
-    const existingChangeIndex = pendingChanges.findIndex(c => c.propertyId === propertyId);
+    const existingChangeIndex = pendingChanges.findIndex(c => c.kvvArea === kvvArea);
     
     if (existingChangeIndex >= 0) {
       const existingChange = pendingChanges[existingChangeIndex];
       // If we're moving back to the original steward, remove the change
-      if (existingChange.fromSteward.refNr === toStewardRefNr) {
+      if (originalStewardRefNr === toStewardRefNr) {
         setPendingChanges(prev => prev.filter((_, i) => i !== existingChangeIndex));
         return;
       }
@@ -114,72 +150,58 @@ export function useStewardAdmin(selectedCostCenter: string) {
     } else {
       // Add new pending change
       setPendingChanges(prev => [...prev, {
-        propertyId,
-        propertyName: property.propertyName,
+        kvvArea,
         fromSteward: { refNr: fromSteward.refNr, name: fromSteward.name },
         toSteward: { refNr: toSteward.refNr, name: toSteward.name },
         timestamp: new Date()
       }]);
     }
-  }, [filteredAreas, allStewards, assignments, pendingChanges]);
+  }, [areaAssignments, allStewards, pendingChanges, kvvAreasInCostCenter]);
   
   // Undo a specific change
-  const undoChange = useCallback((propertyId: string) => {
-    const change = pendingChanges.find(c => c.propertyId === propertyId);
+  const undoChange = useCallback((kvvArea: string) => {
+    const change = pendingChanges.find(c => c.kvvArea === kvvArea);
     if (!change) return;
     
     // Revert assignment
-    setAssignments(prev => {
+    setAreaAssignments(prev => {
       const newMap = new Map(prev);
-      newMap.set(propertyId, change.fromSteward.refNr);
+      newMap.set(kvvArea, change.fromSteward.refNr);
       return newMap;
     });
     
     // Remove from pending changes
-    setPendingChanges(prev => prev.filter(c => c.propertyId !== propertyId));
+    setPendingChanges(prev => prev.filter(c => c.kvvArea !== kvvArea));
   }, [pendingChanges]);
   
   // Cancel all changes
   const cancelAllChanges = useCallback(() => {
     const originalAssignments = new Map<string, string>();
-    filteredAreas.forEach(area => {
-      originalAssignments.set(area.id, area.stewardRefNr);
+    kvvAreasInCostCenter.forEach((data, kvvArea) => {
+      originalAssignments.set(kvvArea, data.stewardRefNr);
     });
-    setAssignments(originalAssignments);
+    setAreaAssignments(originalAssignments);
     setPendingChanges([]);
-  }, [filteredAreas]);
+  }, [kvvAreasInCostCenter]);
   
   // Save all changes
   const saveChanges = useCallback(() => {
     // In a real app, this would call an API
-    // For now, we just show a success message
     toast({
       title: "Ändringar sparade",
-      description: `${pendingChanges.length} ${pendingChanges.length === 1 ? 'ändring' : 'ändringar'} har sparats.`
+      description: `${pendingChanges.length} ${pendingChanges.length === 1 ? 'område har' : 'områden har'} fått ny ansvarig.`
     });
     
     // Clear pending changes (keep assignments as they are)
     setPendingChanges([]);
   }, [pendingChanges, toast]);
   
-  // Reassign all properties from one steward to another (area reassignment)
-  const reassignArea = useCallback((fromStewardRefNr: string, toStewardRefNr: string) => {
-    const propertiesInArea = filteredAreas.filter(a => 
-      (assignments.get(a.id) || a.stewardRefNr) === fromStewardRefNr
-    );
-    
-    propertiesInArea.forEach(property => {
-      moveProperty(property.id, toStewardRefNr);
-    });
-  }, [filteredAreas, assignments, moveProperty]);
-  
   return {
-    stewardsInCostCenter,
-    propertiesBySteward,
+    kvvAreaList,
+    propertiesByKvvArea,
     allStewards,
     pendingChanges,
     isDirty,
-    moveProperty,
     reassignArea,
     undoChange,
     cancelAllChanges,
