@@ -46,6 +46,7 @@ export default function FavoritesPage() {
     const labels: Record<FavoriteCategory, string> = {
       rentals: "Uthyrning",
       properties: "Fastigheter",
+      "property-areas": "Förvaltningsområden",
       tenants: "Kunder",
       barriers: "Spärrar",
       turnover: "In- och utflytt",
@@ -59,6 +60,7 @@ export default function FavoritesPage() {
     const icons: Record<FavoriteCategory, string> = {
       rentals: "🔑",
       properties: "🏢",
+      "property-areas": "📍",
       tenants: "👤",
       barriers: "🚫",
       turnover: "🔄",
