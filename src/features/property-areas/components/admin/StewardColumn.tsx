@@ -31,8 +31,9 @@ export function StewardColumn({ steward, properties, activePropertyId }: Steward
       `}
     >
       <CardHeader className="pb-3 space-y-1">
-        <div className="font-semibold text-base">{steward.name}</div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="font-bold text-lg">{steward.kvvArea || 'Ej tilldelat'}</div>
+        <div className="font-medium text-sm">{steward.name}</div>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span>{steward.refNr}</span>
           {steward.phone && (
             <>

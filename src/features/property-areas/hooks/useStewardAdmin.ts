@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { PropertyReassignment, PropertyForAdmin, StewardInfo } from '../types/admin-types';
-import { getAllPropertyAreas, getUniqueStewards } from '../data';
+import { getAllPropertyAreas, getUniqueStewards, getKvvArea } from '../data';
 import { useToast } from '@/hooks/use-toast';
 
 export function useStewardAdmin(selectedCostCenter: string) {
@@ -41,6 +41,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
         refNr: s.refNr,
         name: s.name,
         phone: s.phone,
+        kvvArea: getKvvArea(s.refNr),
         propertyCount: filteredAreas.filter(a => assignments.get(a.id) === s.refNr).length
       }));
   }, [filteredAreas, allStewards, assignments]);
