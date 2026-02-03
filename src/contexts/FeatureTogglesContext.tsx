@@ -65,6 +65,8 @@ interface FeatureToggles {
   showLeaseContracts: boolean;
   // Strofaktura underlag page
   showStrofakturaUnderlag: boolean;
+  // Property areas page
+  showPropertyAreas: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -137,6 +139,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showLeaseContracts: true,
   // Strofaktura underlag page
   showStrofakturaUnderlag: true,
+  // Property areas page
+  showPropertyAreas: true,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
