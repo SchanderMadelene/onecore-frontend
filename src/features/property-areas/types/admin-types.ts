@@ -16,6 +16,7 @@ export interface StewardInfo {
   refNr: string;
   name: string;
   phone?: string;
+  kvvArea?: string;
   propertyCount: number;
 }
 
