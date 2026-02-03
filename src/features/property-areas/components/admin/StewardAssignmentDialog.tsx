@@ -110,8 +110,8 @@ export function StewardAssignmentDialog({
                           )}
                         />
                         <div className="flex flex-col">
-                          <span className="text-popover-foreground">{steward.name}</span>
-                          <span className="text-popover-foreground/70 text-xs">
+                          <span>{steward.name}</span>
+                          <span className="opacity-70 text-xs">
                             {steward.refNr}
                             {steward.phone && ` • ${steward.phone}`}
                           </span>
