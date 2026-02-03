@@ -91,10 +91,18 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
         return group.stewardRefNr;
       case "propertyName":
         if (isChild) return null;
+        const isPropertyExpanded = expandedGroups.has(group.groupKey);
         return (
-          <div className="flex flex-col">
-            <span className="font-medium">{group.propertyName}</span>
-            <span className="text-xs text-muted-foreground">{group.propertyCode}</span>
+          <div className="flex items-center gap-2">
+            {group.isGroup && (
+              <span className={`flex items-center justify-center w-6 h-6 rounded-md transition-colors ${isPropertyExpanded ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-primary/20'}`}>
+                {isPropertyExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              </span>
+            )}
+            <div className="flex flex-col">
+              <span className="font-medium">{group.propertyName}</span>
+              <span className="text-xs text-muted-foreground">{group.propertyCode}</span>
+            </div>
           </div>
         );
       case "address":
@@ -167,7 +175,7 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 {group.isGroup && (
-                  <span className="text-muted-foreground">
+                  <span className={`flex items-center justify-center w-6 h-6 rounded-md transition-colors ${isExpanded ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
                     {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                   </span>
                 )}
@@ -280,14 +288,9 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
                     className={group.isGroup ? "cursor-pointer hover:bg-muted/50" : ""}
                     onClick={() => group.isGroup && toggleGroup(group.groupKey)}
                   >
-                    {visibleColumns.map((columnKey, index) => (
+                    {visibleColumns.map((columnKey) => (
                       <TableCell key={columnKey}>
                         <div className="flex items-center gap-2">
-                          {index === 0 && group.isGroup && (
-                            <span className="text-muted-foreground">
-                              {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                            </span>
-                          )}
                           {renderCellContent(columnKey, group)}
                         </div>
                       </TableCell>
