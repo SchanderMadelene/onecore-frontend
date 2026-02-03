@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import type { Inspection } from "../types";
+import { getPendingContractForResidence } from "@/features/tenants/data/contracts";
 
 export type RecipientType = "outgoing" | "incoming";
 
@@ -31,25 +32,38 @@ export function SendProtocolDialog({
   roomNames,
 }: SendProtocolDialogProps) {
   const [email, setEmail] = useState("");
+  const [recipientName, setRecipientName] = useState("");
   const [isSending, setIsSending] = useState(false);
 
   // Hämta förpopulerad mejladress baserat på mottagartyp
   useEffect(() => {
     if (open) {
-      const defaultEmail = getDefaultEmail(recipientType, inspection);
+      const { email: defaultEmail, name } = getRecipientInfo(recipientType, inspection);
       setEmail(defaultEmail);
+      setRecipientName(name);
     }
   }, [open, recipientType, inspection]);
 
-  const getDefaultEmail = (type: RecipientType, insp: Inspection): string => {
+  const getRecipientInfo = (type: RecipientType, insp: Inspection): { email: string; name: string } => {
     if (type === "outgoing") {
-      // Avflyttande hyresgäst - ta mejl från tenant snapshot (avflyttande)
-      return insp.tenant?.email || "";
+      // Avflyttande hyresgäst - ta mejl från tenant snapshot
+      return {
+        email: insp.tenant?.email || "",
+        name: insp.tenant?.name || ""
+      };
     } else {
-      // Inflyttande hyresgäst - skulle hämtas från kommande kontrakt
-      // I denna implementation returnerar vi tom sträng om det inte finns
-      // I framtiden kan detta hämtas från API baserat på residence.id
-      return "";
+      // Inflyttande hyresgäst - hämta från kommande kontrakt
+      const residenceId = insp.residence?.id;
+      if (residenceId) {
+        const pendingContract = getPendingContractForResidence(residenceId);
+        if (pendingContract?.tenant) {
+          return {
+            email: pendingContract.tenant.email || "",
+            name: `${pendingContract.tenant.firstName} ${pendingContract.tenant.lastName}`
+          };
+        }
+      }
+      return { email: "", name: "" };
     }
   };
 
@@ -126,13 +140,18 @@ export function SendProtocolDialog({
             )}
           </div>
 
-          {/* Mejladress */}
+          {/* Mottagare */}
           <div className="space-y-2">
-            <Label>E-postadress</Label>
+            <Label>Mottagare</Label>
             {email ? (
-              <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2 text-sm">
-                <Mail className="h-4 w-4 text-muted-foreground" />
-                <span>{email}</span>
+              <div className="rounded-md border bg-muted/50 px-3 py-2 text-sm space-y-1">
+                {recipientName && (
+                  <p className="font-medium">{recipientName}</p>
+                )}
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Mail className="h-4 w-4" />
+                  <span>{email}</span>
+                </div>
               </div>
             ) : (
               <div className="flex items-start gap-2 rounded-md border border-warning bg-warning/10 px-3 py-2 text-sm">
