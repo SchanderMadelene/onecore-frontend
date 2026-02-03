@@ -10,6 +10,7 @@ import {
   getBuildingTypeName,
   type PropertyAreaEntry 
 } from "@/features/property-areas";
+import { ColumnSelector, ALL_COLUMNS, DEFAULT_VISIBLE_COLUMNS } from "@/features/property-areas/components/ColumnSelector";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,14 +19,17 @@ import { ExportButton } from "@/components/ui/export-button";
 import { Search, X, MapPin } from "lucide-react";
 import { exportToExcel, ExcelColumn } from "@/utils/excelExport";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const PropertyAreasPage = () => {
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [costCenterFilter, setCostCenterFilter] = useState("all");
   const [stewardFilter, setStewardFilter] = useState("all");
   const [buildingTypeFilter, setBuildingTypeFilter] = useState("all");
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(DEFAULT_VISIBLE_COLUMNS);
 
   const allEntries = getAllPropertyAreas();
   const costCenters = getUniqueCostCenters();
@@ -39,6 +43,14 @@ const PropertyAreasPage = () => {
     setCostCenterFilter("all");
     setStewardFilter("all");
     setBuildingTypeFilter("all");
+  };
+
+  const handleColumnVisibilityChange = (columnKey: string, visible: boolean) => {
+    if (visible) {
+      setVisibleColumns(prev => [...prev, columnKey]);
+    } else {
+      setVisibleColumns(prev => prev.filter(key => key !== columnKey));
+    }
   };
 
   const filteredEntries = useMemo(() => {
@@ -173,7 +185,14 @@ const PropertyAreasPage = () => {
                 </Button>
               )}
 
-              <div className="sm:ml-auto">
+              <div className="sm:ml-auto flex gap-2">
+                {!isMobile && (
+                  <ColumnSelector
+                    columns={ALL_COLUMNS}
+                    visibleColumns={visibleColumns}
+                    onVisibilityChange={handleColumnVisibilityChange}
+                  />
+                )}
                 <ExportButton 
                   onExport={handleExport} 
                   count={filteredEntries.length}
@@ -187,7 +206,7 @@ const PropertyAreasPage = () => {
         {/* Tabell */}
         <Card>
           <CardContent className="p-0">
-            <PropertyAreasTable entries={filteredEntries} />
+            <PropertyAreasTable entries={filteredEntries} visibleColumns={visibleColumns} />
           </CardContent>
         </Card>
       </div>

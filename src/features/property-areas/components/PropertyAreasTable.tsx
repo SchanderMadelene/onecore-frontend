@@ -5,9 +5,10 @@ import { Badge } from "@/components/ui/badge";
 
 interface PropertyAreasTableProps {
   entries: PropertyAreaEntry[];
+  visibleColumns: string[];
 }
 
-export function PropertyAreasTable({ entries }: PropertyAreasTableProps) {
+export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTableProps) {
   const formatNumber = (num?: number) => {
     if (num === undefined || num === null) return "-";
     return num.toLocaleString('sv-SE');
@@ -18,78 +19,126 @@ export function PropertyAreasTable({ entries }: PropertyAreasTableProps) {
     return `${area.toLocaleString('sv-SE')} kvm`;
   };
 
+  // Define all possible columns
+  const allColumns = [
+    {
+      key: "costCenter",
+      label: "K-ställe",
+      render: (entry: PropertyAreaEntry) => (
+        <div className="flex flex-col">
+          <span className="font-medium">{entry.costCenter}</span>
+          <span className="text-xs text-muted-foreground">
+            {COST_CENTER_NAMES[entry.costCenter] || entry.costCenter}
+          </span>
+        </div>
+      ),
+    },
+    {
+      key: "stewardName",
+      label: "Kvartersvärd",
+      render: (entry: PropertyAreaEntry) => (
+        <div className="flex flex-col">
+          <span>{entry.stewardName}</span>
+          {entry.stewardPhone && (
+            <span className="text-xs text-muted-foreground">{entry.stewardPhone}</span>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: "stewardRefNr",
+      label: "Ref.nr",
+      render: (entry: PropertyAreaEntry) => entry.stewardRefNr,
+      hideOnMobile: true,
+    },
+    {
+      key: "propertyName",
+      label: "Fastighet",
+      render: (entry: PropertyAreaEntry) => (
+        <div className="flex flex-col">
+          <span className="font-medium">{entry.propertyName}</span>
+          <span className="text-xs text-muted-foreground">{entry.propertyCode}</span>
+        </div>
+      ),
+    },
+    {
+      key: "address",
+      label: "Adress",
+      render: (entry: PropertyAreaEntry) => entry.address,
+    },
+    {
+      key: "buildingType",
+      label: "Typ",
+      render: (entry: PropertyAreaEntry) => entry.buildingType ? (
+        <Badge variant="outline" className="text-xs">
+          {BUILDING_TYPES[entry.buildingType] || entry.buildingType}
+        </Badge>
+      ) : "-",
+      hideOnMobile: true,
+    },
+    {
+      key: "residenceCount",
+      label: "Bostäder",
+      render: (entry: PropertyAreaEntry) => formatNumber(entry.residenceCount),
+      hideOnMobile: true,
+    },
+    {
+      key: "commercialCount",
+      label: "Lokaler",
+      render: (entry: PropertyAreaEntry) => formatNumber(entry.commercialCount),
+      hideOnMobile: true,
+    },
+    {
+      key: "garageCount",
+      label: "Garage",
+      render: (entry: PropertyAreaEntry) => formatNumber(entry.garageCount),
+      hideOnMobile: true,
+    },
+    {
+      key: "parkingCount",
+      label: "P-platser",
+      render: (entry: PropertyAreaEntry) => formatNumber(entry.parkingCount),
+      hideOnMobile: true,
+    },
+    {
+      key: "otherCount",
+      label: "Övrigt",
+      render: (entry: PropertyAreaEntry) => formatNumber(entry.otherCount),
+      hideOnMobile: true,
+    },
+    {
+      key: "residenceArea",
+      label: "Yta bostad",
+      render: (entry: PropertyAreaEntry) => entry.residenceArea ? `${formatNumber(entry.residenceArea)}` : "-",
+      hideOnMobile: true,
+    },
+    {
+      key: "commercialArea",
+      label: "Yta lokal",
+      render: (entry: PropertyAreaEntry) => entry.commercialArea ? `${formatNumber(entry.commercialArea)}` : "-",
+      hideOnMobile: true,
+    },
+    {
+      key: "garageArea",
+      label: "Yta garage",
+      render: (entry: PropertyAreaEntry) => entry.garageArea ? `${formatNumber(entry.garageArea)}` : "-",
+      hideOnMobile: true,
+    },
+    {
+      key: "entranceCount",
+      label: "Trappor",
+      render: (entry: PropertyAreaEntry) => formatNumber(entry.entranceCount),
+      hideOnMobile: true,
+    },
+  ];
+
+  // Filter columns based on visibleColumns
+  const columns = allColumns.filter(col => visibleColumns.includes(col.key));
+
   return (
     <ResponsiveTable
       data={entries}
-      columns={[
-        {
-          key: "costCenter",
-          label: "K-ställe",
-          render: (entry) => (
-            <div className="flex flex-col">
-              <span className="font-medium">{entry.costCenter}</span>
-              <span className="text-xs text-muted-foreground">
-                {COST_CENTER_NAMES[entry.costCenter] || entry.costCenter}
-              </span>
-            </div>
-          ),
-        },
-        {
-          key: "stewardName",
-          label: "Kvartersvärd",
-          render: (entry) => (
-            <div className="flex flex-col">
-              <span>{entry.stewardName}</span>
-              {entry.stewardPhone && (
-                <span className="text-xs text-muted-foreground">{entry.stewardPhone}</span>
-              )}
-            </div>
-          ),
-        },
-        {
-          key: "stewardRefNr",
-          label: "Ref.nr",
-          render: (entry) => entry.stewardRefNr,
-          hideOnMobile: true,
-        },
-        {
-          key: "propertyName",
-          label: "Fastighet",
-          render: (entry) => (
-            <div className="flex flex-col">
-              <span className="font-medium">{entry.propertyName}</span>
-              <span className="text-xs text-muted-foreground">{entry.propertyCode}</span>
-            </div>
-          ),
-        },
-        {
-          key: "address",
-          label: "Adress",
-          render: (entry) => entry.address,
-        },
-        {
-          key: "buildingType",
-          label: "Typ",
-          render: (entry) => entry.buildingType ? (
-            <Badge variant="outline" className="text-xs">
-              {BUILDING_TYPES[entry.buildingType] || entry.buildingType}
-            </Badge>
-          ) : "-",
-          hideOnMobile: true,
-        },
-        {
-          key: "residenceCount",
-          label: "Bostäder",
-          render: (entry) => formatNumber(entry.residenceCount),
-          hideOnMobile: true,
-        },
-        {
-          key: "residenceArea",
-          label: "Yta",
-          render: (entry) => entry.residenceArea ? `${formatNumber(entry.residenceArea)}` : "-",
-          hideOnMobile: true,
-        },
-      ]}
+      columns={columns}
       keyExtractor={(entry) => entry.id}
       emptyMessage="Inga områden hittades"
       mobileCardRenderer={(entry) => (
