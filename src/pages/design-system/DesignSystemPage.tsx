@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PageLayout } from "@/layouts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon } from "lucide-react";
+import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon, Play } from "lucide-react";
 
 // Import components from the new global location
 import { 
@@ -10,7 +10,8 @@ import {
   ComponentShowcase, 
   GridSystem, 
   IconsShowcase,
-  LogosShowcase 
+  LogosShowcase,
+  InteractiveShowcase
 } from "@/components/design-system";
 
 const DesignSystemPage = () => {
@@ -26,23 +27,27 @@ const DesignSystemPage = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="logos" className="w-full">
+        <Tabs defaultValue="interactive" className="w-full">
           <TabsList className="flex-wrap h-auto gap-1">
+            <TabsTrigger value="interactive" className="flex items-center gap-2">
+              <Play className="h-4 w-4" />
+              <span className="hidden sm:inline">Interaktiv</span>
+            </TabsTrigger>
             <TabsTrigger value="logos" className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Logos</span>
+              <span className="hidden sm:inline">Logotyper</span>
             </TabsTrigger>
             <TabsTrigger value="colors" className="flex items-center gap-2">
               <Palette className="h-4 w-4" />
-              <span className="hidden sm:inline">Colors</span>
+              <span className="hidden sm:inline">Färger</span>
             </TabsTrigger>
             <TabsTrigger value="typography" className="flex items-center gap-2">
               <Type className="h-4 w-4" />
-              <span className="hidden sm:inline">Typography</span>
+              <span className="hidden sm:inline">Typografi</span>
             </TabsTrigger>
             <TabsTrigger value="components" className="flex items-center gap-2">
               <Component className="h-4 w-4" />
-              <span className="hidden sm:inline">Components</span>
+              <span className="hidden sm:inline">Komponenter</span>
             </TabsTrigger>
             <TabsTrigger value="grid" className="flex items-center gap-2">
               <Grid className="h-4 w-4" />
@@ -50,9 +55,13 @@ const DesignSystemPage = () => {
             </TabsTrigger>
             <TabsTrigger value="icons" className="flex items-center gap-2">
               <LibraryIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Icons</span>
+              <span className="hidden sm:inline">Ikoner</span>
             </TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="interactive" className="mt-6">
+            <InteractiveShowcase />
+          </TabsContent>
           
           <TabsContent value="logos" className="mt-6">
             <LogosShowcase />
