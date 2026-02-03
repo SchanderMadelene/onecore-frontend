@@ -162,12 +162,25 @@ export function useStewardAdmin(selectedCostCenter: string) {
     setPendingChanges([]);
   }, [pendingChanges, toast]);
   
+  // Reassign all properties from one steward to another (area reassignment)
+  const reassignArea = useCallback((fromStewardRefNr: string, toStewardRefNr: string) => {
+    const propertiesInArea = filteredAreas.filter(a => 
+      (assignments.get(a.id) || a.stewardRefNr) === fromStewardRefNr
+    );
+    
+    propertiesInArea.forEach(property => {
+      moveProperty(property.id, toStewardRefNr);
+    });
+  }, [filteredAreas, assignments, moveProperty]);
+  
   return {
     stewardsInCostCenter,
     propertiesBySteward,
+    allStewards,
     pendingChanges,
     isDirty,
     moveProperty,
+    reassignArea,
     undoChange,
     cancelAllChanges,
     saveChanges
