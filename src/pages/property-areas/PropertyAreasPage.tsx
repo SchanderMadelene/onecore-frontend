@@ -118,21 +118,12 @@ const PropertyAreasPage = () => {
               Överblick över kostnadställen och kvartersvärdar
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              onClick={() => navigate('/property-areas/admin')}
-            >
-              <Settings className="h-4 w-4 mr-2" />
-              Administrera
-            </Button>
-            <SaveAsFavoriteButton
-              category="property-areas"
-              pageTitle="Förvaltningsområden"
-              defaultName="Min förvaltningsvy"
-              icon="📍"
-            />
-          </div>
+          <SaveAsFavoriteButton
+            category="property-areas"
+            pageTitle="Förvaltningsområden"
+            defaultName="Min förvaltningsvy"
+            icon="📍"
+          />
         </div>
 
         {/* Search and filters */}
@@ -202,11 +193,20 @@ const PropertyAreasPage = () => {
 
               <div className="sm:ml-auto flex gap-2">
                 {!isMobile && (
-                  <ColumnSelector
-                    columns={ALL_COLUMNS}
-                    visibleColumns={visibleColumns}
-                    onVisibilityChange={handleColumnVisibilityChange}
-                  />
+                  <>
+                    <ColumnSelector
+                      columns={ALL_COLUMNS}
+                      visibleColumns={visibleColumns}
+                      onVisibilityChange={handleColumnVisibilityChange}
+                    />
+                    <Button 
+                      variant="outline" 
+                      onClick={() => navigate('/property-areas/admin')}
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      Administrera
+                    </Button>
+                  </>
                 )}
                 <ExportButton 
                   onExport={handleExport} 
