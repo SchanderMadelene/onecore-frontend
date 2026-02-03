@@ -5,7 +5,9 @@ import {
   getAllPropertyAreas, 
   getUniqueCostCenters, 
   getUniqueStewards,
+  getUniqueBuildingTypes,
   getCostCenterName,
+  getBuildingTypeName,
   type PropertyAreaEntry 
 } from "@/features/property-areas";
 import { Input } from "@/components/ui/input";
@@ -23,17 +25,20 @@ const PropertyAreasPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [costCenterFilter, setCostCenterFilter] = useState("all");
   const [stewardFilter, setStewardFilter] = useState("all");
+  const [buildingTypeFilter, setBuildingTypeFilter] = useState("all");
 
   const allEntries = getAllPropertyAreas();
   const costCenters = getUniqueCostCenters();
   const stewards = getUniqueStewards();
+  const buildingTypes = getUniqueBuildingTypes();
 
-  const hasActiveFilters = searchQuery !== "" || costCenterFilter !== "all" || stewardFilter !== "all";
+  const hasActiveFilters = searchQuery !== "" || costCenterFilter !== "all" || stewardFilter !== "all" || buildingTypeFilter !== "all";
 
   const clearFilters = () => {
     setSearchQuery("");
     setCostCenterFilter("all");
     setStewardFilter("all");
+    setBuildingTypeFilter("all");
   };
 
   const filteredEntries = useMemo(() => {
@@ -42,23 +47,36 @@ const PropertyAreasPage = () => {
         entry.stewardName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         entry.propertyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         entry.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        entry.propertyCode.toLowerCase().includes(searchQuery.toLowerCase());
+        entry.propertyCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (entry.stewardPhone && entry.stewardPhone.includes(searchQuery));
 
       const matchesCostCenter = costCenterFilter === "all" || entry.costCenter === costCenterFilter;
       const matchesSteward = stewardFilter === "all" || entry.stewardRefNr === stewardFilter;
+      const matchesBuildingType = buildingTypeFilter === "all" || entry.buildingType === buildingTypeFilter;
 
-      return matchesSearch && matchesCostCenter && matchesSteward;
+      return matchesSearch && matchesCostCenter && matchesSteward && matchesBuildingType;
     });
-  }, [allEntries, searchQuery, costCenterFilter, stewardFilter]);
+  }, [allEntries, searchQuery, costCenterFilter, stewardFilter, buildingTypeFilter]);
 
   const handleExport = () => {
     const columns: ExcelColumn<PropertyAreaEntry>[] = [
       { key: "costCenter", header: "K-ställe" },
       { key: "stewardName", header: "Kvartersvärd" },
+      { key: "stewardPhone", header: "Telefon" },
       { key: "stewardRefNr", header: "Ref.nr" },
       { key: "propertyCode", header: "Fastighetsnummer" },
       { key: "propertyName", header: "Fastighet" },
       { key: "address", header: "Adress" },
+      { key: "buildingType", header: "Typ" },
+      { key: "residenceCount", header: "Antal bostäder" },
+      { key: "commercialCount", header: "Antal lokaler" },
+      { key: "garageCount", header: "Antal garage" },
+      { key: "parkingCount", header: "Antal p-platser" },
+      { key: "otherCount", header: "Antal övrigt" },
+      { key: "residenceArea", header: "Yta bostad (kvm)" },
+      { key: "commercialArea", header: "Yta lokal (kvm)" },
+      { key: "garageArea", header: "Yta garage (kvm)" },
+      { key: "entranceCount", header: "Antal trappuppgångar" },
     ];
 
     const today = new Date().toISOString().split('T')[0];
@@ -97,7 +115,7 @@ const PropertyAreasPage = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Sök på kvartersvärd, fastighet, adress eller fastighetsnummer..."
+                placeholder="Sök på kvartersvärd, fastighet, adress, fastighetsnummer eller telefon..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -129,6 +147,20 @@ const PropertyAreasPage = () => {
                   {stewards.map(s => (
                     <SelectItem key={s.refNr} value={s.refNr}>
                       {s.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={buildingTypeFilter} onValueChange={setBuildingTypeFilter}>
+                <SelectTrigger className="w-full sm:w-[160px]">
+                  <SelectValue placeholder="Byggnadstyp" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla typer</SelectItem>
+                  {buildingTypes.map(type => (
+                    <SelectItem key={type} value={type}>
+                      {getBuildingTypeName(type)}
                     </SelectItem>
                   ))}
                 </SelectContent>
