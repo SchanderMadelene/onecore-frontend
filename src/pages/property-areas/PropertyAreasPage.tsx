@@ -7,6 +7,7 @@ import {
   getUniqueCostCenters, 
   getUniqueStewards,
   getUniqueBuildingTypes,
+  getUniqueKvvAreas,
   getCostCenterName,
   getBuildingTypeName,
   type PropertyAreaEntry 
@@ -76,6 +77,7 @@ const PropertyAreasPage = () => {
   const handleExport = () => {
     const columns: ExcelColumn<PropertyAreaEntry>[] = [
       { key: "costCenter", header: "K-ställe" },
+      { key: "kvvArea", header: "KVV-område" },
       { key: "stewardName", header: "Kvartersvärd" },
       { key: "stewardPhone", header: "Telefon" },
       { key: "stewardRefNr", header: "Ref.nr" },

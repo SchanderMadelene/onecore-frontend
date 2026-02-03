@@ -34,6 +34,15 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
       ),
     },
     {
+      key: "kvvArea",
+      label: "KVV",
+      render: (entry: PropertyAreaEntry) => entry.kvvArea ? (
+        <span className="font-mono text-sm bg-muted px-2 py-0.5 rounded">
+          {entry.kvvArea}
+        </span>
+      ) : "-",
+    },
+    {
       key: "stewardName",
       label: "Kvartersvärd",
       render: (entry: PropertyAreaEntry) => (
@@ -149,9 +158,16 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
               <div className="text-sm text-muted-foreground truncate">{entry.address}</div>
             </div>
             <div className="flex flex-col items-end gap-1 flex-shrink-0">
-              <span className="text-xs font-medium bg-muted px-2 py-1 rounded">
-                {entry.costCenter}
-              </span>
+              <div className="flex gap-1">
+                <span className="text-xs font-medium bg-muted px-2 py-1 rounded">
+                  {entry.costCenter}
+                </span>
+                {entry.kvvArea && (
+                  <span className="text-xs font-mono bg-primary/10 text-primary px-2 py-1 rounded">
+                    {entry.kvvArea}
+                  </span>
+                )}
+              </div>
               {entry.buildingType && (
                 <Badge variant="outline" className="text-xs">
                   {BUILDING_TYPES[entry.buildingType] || entry.buildingType}

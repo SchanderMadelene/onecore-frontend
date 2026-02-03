@@ -1,10 +1,15 @@
 import { PropertyAreaEntry, Steward, CostCenter, COST_CENTER_NAMES, BUILDING_TYPES } from '../types';
 import { propertyAreaEntries } from './property-areas';
+import { STEWARD_TO_KVV_AREA, getKvvArea, getUniqueKvvAreas } from './kvv-mapping';
 
-export { propertyAreaEntries };
+export { propertyAreaEntries, STEWARD_TO_KVV_AREA, getKvvArea, getUniqueKvvAreas };
 
 export function getAllPropertyAreas(): PropertyAreaEntry[] {
-  return propertyAreaEntries;
+  // Beräkna kvvArea dynamiskt baserat på stewardRefNr
+  return propertyAreaEntries.map(entry => ({
+    ...entry,
+    kvvArea: getKvvArea(entry.stewardRefNr)
+  }));
 }
 
 export function getUniqueCostCenters(): string[] {

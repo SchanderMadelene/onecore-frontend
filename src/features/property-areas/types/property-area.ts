@@ -1,6 +1,7 @@
 export interface PropertyAreaEntry {
   id: string;
   costCenter: string;           // k-ställe (61110, 61120, etc)
+  kvvArea?: string;             // Kvartersvärdsområde (61111, 61112, etc)
   stewardName: string;          // Kvartersvärd
   stewardRefNr: string;         // Ref.nr (YY2489, etc)
   stewardPhone?: string;        // Telefonnummer
