@@ -16,26 +16,21 @@ export function useStewardAdmin(selectedCostCenter: string) {
     return allPropertyAreas.filter(area => area.costCenter === selectedCostCenter);
   }, [allPropertyAreas, selectedCostCenter]);
   
-  // Build initial assignments map (propertyId -> stewardRefNr)
-  const initialAssignments = useMemo(() => {
-    const map = new Map<string, string>();
-    filteredAreas.forEach(area => {
-      map.set(area.id, area.stewardRefNr);
-    });
-    return map;
-  }, [filteredAreas]);
-  
   // Current assignments (mutable state)
   const [assignments, setAssignments] = useState<Map<string, string>>(() => new Map());
   
   // Pending changes
   const [pendingChanges, setPendingChanges] = useState<PropertyReassignment[]>([]);
   
-  // Reset assignments when cost center changes - use useEffect instead of useMemo
+  // Reset assignments when cost center changes
   useEffect(() => {
-    setAssignments(initialAssignments);
+    const newAssignments = new Map<string, string>();
+    filteredAreas.forEach(area => {
+      newAssignments.set(area.id, area.stewardRefNr);
+    });
+    setAssignments(newAssignments);
     setPendingChanges([]);
-  }, [initialAssignments]);
+  }, [selectedCostCenter]);
   
   // Get stewards for the selected cost center
   const stewardsInCostCenter = useMemo((): StewardInfo[] => {
@@ -145,9 +140,13 @@ export function useStewardAdmin(selectedCostCenter: string) {
   
   // Cancel all changes
   const cancelAllChanges = useCallback(() => {
-    setAssignments(initialAssignments);
+    const originalAssignments = new Map<string, string>();
+    filteredAreas.forEach(area => {
+      originalAssignments.set(area.id, area.stewardRefNr);
+    });
+    setAssignments(originalAssignments);
     setPendingChanges([]);
-  }, [initialAssignments]);
+  }, [filteredAreas]);
   
   // Save all changes
   const saveChanges = useCallback(() => {
