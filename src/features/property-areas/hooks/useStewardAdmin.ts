@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { PropertyReassignment, PropertyForAdmin, StewardInfo } from '../types/admin-types';
 import { getAllPropertyAreas, getUniqueStewards } from '../data';
 import { useToast } from '@/hooks/use-toast';
@@ -26,13 +26,13 @@ export function useStewardAdmin(selectedCostCenter: string) {
   }, [filteredAreas]);
   
   // Current assignments (mutable state)
-  const [assignments, setAssignments] = useState<Map<string, string>>(initialAssignments);
+  const [assignments, setAssignments] = useState<Map<string, string>>(() => new Map());
   
   // Pending changes
   const [pendingChanges, setPendingChanges] = useState<PropertyReassignment[]>([]);
   
-  // Reset assignments when cost center changes
-  useMemo(() => {
+  // Reset assignments when cost center changes - use useEffect instead of useMemo
+  useEffect(() => {
     setAssignments(initialAssignments);
     setPendingChanges([]);
   }, [initialAssignments]);
