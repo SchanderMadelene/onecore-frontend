@@ -42,9 +42,11 @@ const StewardAdminPage = () => {
   const {
     stewardsInCostCenter,
     propertiesBySteward,
+    allStewards,
     pendingChanges,
     isDirty,
     moveProperty,
+    reassignArea,
     undoChange,
     cancelAllChanges,
     saveChanges
@@ -185,6 +187,8 @@ const StewardAdminPage = () => {
                       steward={steward}
                       properties={propertiesBySteward.get(steward.refNr) || []}
                       activePropertyId={activeProperty?.id}
+                      allStewards={allStewards}
+                      onReassignArea={reassignArea}
                     />
                   ))}
                 </div>
