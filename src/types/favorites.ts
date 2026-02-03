@@ -1,6 +1,7 @@
 export type FavoriteCategory = 
   | "rentals"
   | "properties" 
+  | "property-areas"
   | "tenants"
   | "barriers"
   | "turnover"
