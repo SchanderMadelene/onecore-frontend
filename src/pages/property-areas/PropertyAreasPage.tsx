@@ -12,6 +12,7 @@ import {
 } from "@/features/property-areas";
 import { ColumnSelector, ALL_COLUMNS, DEFAULT_VISIBLE_COLUMNS } from "@/features/property-areas/components/ColumnSelector";
 import { Input } from "@/components/ui/input";
+import { SaveAsFavoriteButton } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -115,6 +116,12 @@ const PropertyAreasPage = () => {
               Överblick över kostnadställen och kvartersvärdar
             </p>
           </div>
+          <SaveAsFavoriteButton
+            category="property-areas"
+            pageTitle="Förvaltningsområden"
+            defaultName="Min förvaltningsvy"
+            icon="📍"
+          />
         </div>
 
         {/* Search and filters */}

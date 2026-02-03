@@ -148,6 +148,7 @@ export function CreateFavoriteDialog({
     const labels: Record<FavoriteCategory, string> = {
       rentals: "Uthyrning",
       properties: "Fastigheter",
+      "property-areas": "Förvaltningsområden",
       tenants: "Kunder",
       barriers: "Spärrar",
       turnover: "In- och utflytt",
