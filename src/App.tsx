@@ -33,8 +33,8 @@ import FavoritesPage from "./pages/favorites/FavoritesPage";
 import LeaseContractsPage from "./pages/lease-contracts/LeaseContractsPage";
 // Import strofaktura page
 import StrofakturaUnderlagPage from "./pages/strofaktura/StrofakturaUnderlagPage";
-// Import property areas page
 import PropertyAreasPage from "./pages/property-areas/PropertyAreasPage";
+import StewardAdminPage from "./pages/property-areas/StewardAdminPage";
 
 const ProtectedRoute = ({ children, isEnabled }: { children: React.ReactNode, isEnabled: boolean }) => {
   if (!isEnabled) {
@@ -171,6 +171,14 @@ const AppRoutes = () => {
             element={
               <ProtectedRoute isEnabled={features.showPropertyAreas}>
                 <PropertyAreasPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/property-areas/admin" 
+            element={
+              <ProtectedRoute isEnabled={features.showPropertyAreas}>
+                <StewardAdminPage />
               </ProtectedRoute>
             }
           />

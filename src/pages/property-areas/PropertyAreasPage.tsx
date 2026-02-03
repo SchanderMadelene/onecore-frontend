@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageLayout } from "@/layouts";
 import { 
   PropertyAreasTable, 
@@ -17,12 +18,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ExportButton } from "@/components/ui/export-button";
-import { Search, X } from "lucide-react";
+import { Search, X, Settings } from "lucide-react";
 import { exportToExcel, ExcelColumn } from "@/utils/excelExport";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const PropertyAreasPage = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -109,19 +111,28 @@ const PropertyAreasPage = () => {
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold">Förvaltningsområden</h1>
             <p className="text-muted-foreground mt-1">
               Överblick över kostnadställen och kvartersvärdar
             </p>
           </div>
-          <SaveAsFavoriteButton
-            category="property-areas"
-            pageTitle="Förvaltningsområden"
-            defaultName="Min förvaltningsvy"
-            icon="📍"
-          />
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/property-areas/admin')}
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              Administrera
+            </Button>
+            <SaveAsFavoriteButton
+              category="property-areas"
+              pageTitle="Förvaltningsområden"
+              defaultName="Min förvaltningsvy"
+              icon="📍"
+            />
+          </div>
         </div>
 
         {/* Search and filters */}
