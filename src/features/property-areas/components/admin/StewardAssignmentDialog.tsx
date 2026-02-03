@@ -89,7 +89,7 @@ export function StewardAssignmentDialog({
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[380px] p-0 z-50" align="start">
-              <Command>
+              <Command className="bg-popover">
                 <CommandInput placeholder="Sök kvartersvärd..." />
                 <CommandList>
                   <CommandEmpty>Ingen kvartersvärd hittades.</CommandEmpty>
@@ -110,8 +110,8 @@ export function StewardAssignmentDialog({
                           )}
                         />
                         <div className="flex flex-col">
-                          <span>{steward.name}</span>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-foreground">{steward.name}</span>
+                          <span className="text-foreground opacity-70 text-xs">
                             {steward.refNr}
                             {steward.phone && ` • ${steward.phone}`}
                           </span>
