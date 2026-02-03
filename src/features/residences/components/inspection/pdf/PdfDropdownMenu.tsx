@@ -69,7 +69,7 @@ export function PdfDropdownMenu({ inspection, roomNames }: PdfDropdownMenuProps)
             <Mail className="h-4 w-4 mr-2" />
             <div className="flex flex-col">
               <span>Skicka till avflyttande</span>
-              <span className="text-xs text-muted-foreground">Inkl. kostnadsansvar</span>
+              <span className="text-xs opacity-70">Inkl. kostnadsansvar</span>
             </div>
           </DropdownMenuItem>
 
@@ -77,7 +77,7 @@ export function PdfDropdownMenu({ inspection, roomNames }: PdfDropdownMenuProps)
             <Mail className="h-4 w-4 mr-2" />
             <div className="flex flex-col">
               <span>Skicka till inflyttande</span>
-              <span className="text-xs text-muted-foreground">Utan kostnadsinformation</span>
+              <span className="text-xs opacity-70">Utan kostnadsinformation</span>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
