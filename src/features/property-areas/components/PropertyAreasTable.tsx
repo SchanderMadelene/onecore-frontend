@@ -91,36 +91,33 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
         return group.stewardRefNr;
       case "propertyName":
         if (isChild) return null;
-        const isPropertyExpanded = expandedGroups.has(group.groupKey);
         return (
-          <div className="flex items-center gap-2">
-            {group.isGroup && (
-              <span className={`flex items-center justify-center w-6 h-6 rounded-md transition-colors ${isPropertyExpanded ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-primary/20'}`}>
-                {isPropertyExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-              </span>
-            )}
-            <div className="flex flex-col">
-              <span className="font-medium">{group.propertyName}</span>
-              <span className="text-xs text-muted-foreground">{group.propertyCode}</span>
-            </div>
+          <div className="flex flex-col">
+            <span className="font-medium">{group.propertyName}</span>
+            <span className="text-xs text-muted-foreground">{group.propertyCode}</span>
           </div>
         );
       case "address":
         if (isChild && childEntry) {
-          return <span className="text-sm">{childEntry.address}</span>;
+          return <span className="text-sm pl-8">{childEntry.address}</span>;
         }
         if (group.isGroup) {
           const isExpanded = expandedGroups.has(group.groupKey);
           return (
-            <div className="flex flex-col">
-              <span className="font-medium text-primary">
-                {group.addresses.length} adresser
+            <div className="flex items-center gap-2">
+              <span className={`flex items-center justify-center w-6 h-6 rounded-md transition-colors ${isExpanded ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-primary/20'}`}>
+                {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
               </span>
-              {!isExpanded && (
-                <span className="text-xs text-muted-foreground truncate max-w-[200px]">
-                  {group.addresses.join(", ")}
+              <div className="flex flex-col">
+                <span className="font-medium text-primary">
+                  {group.addresses.length} adresser
                 </span>
-              )}
+                {!isExpanded && (
+                  <span className="text-xs text-muted-foreground truncate max-w-[200px]">
+                    {group.addresses.join(", ")}
+                  </span>
+                )}
+              </div>
             </div>
           );
         }
@@ -173,17 +170,15 @@ export function PropertyAreasTable({ entries, visibleColumns }: PropertyAreasTab
         <div className="space-y-2 w-full">
           <div className="flex justify-between items-start gap-2">
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                {group.isGroup && (
-                  <span className={`flex items-center justify-center w-6 h-6 rounded-md transition-colors ${isExpanded ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
-                    {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                  </span>
-                )}
-                <div className="font-medium truncate">{group.propertyName}</div>
-              </div>
+              <div className="font-medium truncate">{group.propertyName}</div>
               {group.isGroup ? (
-                <div className="text-sm text-primary ml-6">
-                  {group.addresses.length} adresser
+                <div className="flex items-center gap-2 mt-1">
+                  <span className={`flex items-center justify-center w-5 h-5 rounded transition-colors ${isExpanded ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                    {isExpanded ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+                  </span>
+                  <span className="text-sm text-primary">
+                    {group.addresses.length} adresser
+                  </span>
                 </div>
               ) : (
                 <div className="text-sm text-muted-foreground truncate">{group.addresses[0]}</div>
