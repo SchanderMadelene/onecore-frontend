@@ -1,0 +1,1 @@
+export { PropertyAreasTable } from './PropertyAreasTable';

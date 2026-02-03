@@ -45,6 +45,12 @@ export const navigationNodes: TreeNode[] = [
     path: "/favorites",
   },
   {
+    id: "property-areas",
+    label: "Förvaltningsområden",
+    icon: "map-pin",
+    path: "/property-areas",
+  },
+  {
     id: "design-system",
     label: "Design System",
     icon: "palette",
