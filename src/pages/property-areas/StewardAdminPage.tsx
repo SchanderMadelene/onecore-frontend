@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DndContext, DragEndEvent, DragStartEvent, DragOverlay, closestCenter, pointerWithin } from '@dnd-kit/core';
 import { PageLayout } from '@/layouts';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,10 +25,8 @@ import { useStewardAdmin } from '@/features/property-areas/hooks/useStewardAdmin
 import { 
   StewardColumn, 
   PendingChangesPanel, 
-  StewardAdminMobile,
-  PropertyCard
+  StewardAdminMobile
 } from '@/features/property-areas/components/admin';
-import { PropertyForAdmin } from '@/features/property-areas/types/admin-types';
 
 const StewardAdminPage = () => {
   const navigate = useNavigate();
@@ -40,44 +37,19 @@ const StewardAdminPage = () => {
   const [selectedCostCenter, setSelectedCostCenter] = useState(costCenters[0] || 'all');
   
   const {
-    stewardsInCostCenter,
-    propertiesBySteward,
+    kvvAreaList,
+    propertiesByKvvArea,
     allStewards,
     pendingChanges,
     isDirty,
-    moveProperty,
     reassignArea,
     undoChange,
     cancelAllChanges,
     saveChanges
   } = useStewardAdmin(selectedCostCenter);
   
-  const [activeProperty, setActiveProperty] = useState<PropertyForAdmin | null>(null);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
-  
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event;
-    const property = active.data.current?.property as PropertyForAdmin | undefined;
-    if (property) {
-      setActiveProperty(property);
-    }
-  };
-  
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveProperty(null);
-    
-    if (!over) return;
-    
-    const propertyId = active.id as string;
-    const toStewardRefNr = over.id as string;
-    
-    // Verify it's a steward drop zone
-    if (over.data.current?.type === 'steward') {
-      moveProperty(propertyId, toStewardRefNr);
-    }
-  };
   
   const handleBack = () => {
     if (isDirty) {
@@ -124,7 +96,7 @@ const StewardAdminPage = () => {
             <div>
               <h1 className="text-2xl font-bold">Administrera förvaltningsområden</h1>
               <p className="text-muted-foreground text-sm">
-                Dra och släpp fastigheter mellan kvartersvärdar
+                Byt ansvarig kvartersvärd för KVV-områden
               </p>
             </div>
           </div>
@@ -168,42 +140,28 @@ const StewardAdminPage = () => {
         {/* Main content */}
         {isMobile ? (
           <StewardAdminMobile
-            stewards={stewardsInCostCenter}
-            propertiesBySteward={propertiesBySteward}
-            onMoveProperty={moveProperty}
+            kvvAreas={kvvAreaList}
+            propertiesByKvvArea={propertiesByKvvArea}
+            allStewards={allStewards}
+            onReassignArea={reassignArea}
           />
         ) : (
-          <DndContext
-            collisionDetection={pointerWithin}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-          >
-            <div className="flex-1 min-h-0">
-              <ScrollArea className="h-full w-full">
-                <div className="flex gap-4 p-1 min-h-[500px]">
-                  {stewardsInCostCenter.map(steward => (
-                    <StewardColumn
-                      key={steward.refNr}
-                      steward={steward}
-                      properties={propertiesBySteward.get(steward.refNr) || []}
-                      activePropertyId={activeProperty?.id}
-                      allStewards={allStewards}
-                      onReassignArea={reassignArea}
-                    />
-                  ))}
-                </div>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
-            </div>
-            
-            <DragOverlay>
-              {activeProperty && (
-                <div className="opacity-90">
-                  <PropertyCard property={activeProperty} />
-                </div>
-              )}
-            </DragOverlay>
-          </DndContext>
+          <div className="flex-1 min-h-0">
+            <ScrollArea className="h-full w-full">
+              <div className="flex gap-4 p-1 min-h-[500px]">
+                {kvvAreaList.map(kvvArea => (
+                  <StewardColumn
+                    key={kvvArea.kvvArea}
+                    kvvArea={kvvArea}
+                    properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
+                    allStewards={allStewards}
+                    onReassignArea={reassignArea}
+                  />
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
         )}
       </div>
       

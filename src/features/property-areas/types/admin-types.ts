@@ -1,6 +1,6 @@
-export interface PropertyReassignment {
-  propertyId: string;
-  propertyName: string;
+// Ändring av ansvarig kvartersvärd för ett KVV-område
+export interface AreaReassignment {
+  kvvArea: string;
   fromSteward: {
     refNr: string;
     name: string;
@@ -10,6 +10,15 @@ export interface PropertyReassignment {
     name: string;
   };
   timestamp: Date;
+}
+
+// Information om ett KVV-område
+export interface KvvAreaInfo {
+  kvvArea: string;
+  stewardRefNr: string;
+  stewardName: string;
+  stewardPhone?: string;
+  propertyCount: number;
 }
 
 export interface StewardInfo {
@@ -26,6 +35,7 @@ export interface PropertyForAdmin {
   propertyName: string;
   address: string;
   buildingType?: string;
+  kvvArea?: string;
   stewardRefNr: string;
   costCenter: string;
 }

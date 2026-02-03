@@ -1,56 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MobileAccordion, MobileAccordionItem } from '@/components/ui/mobile-accordion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowRight } from 'lucide-react';
-import { StewardInfo, PropertyForAdmin } from '../../types/admin-types';
+import { Pencil } from 'lucide-react';
+import { KvvAreaInfo, PropertyForAdmin } from '../../types/admin-types';
 import { getBuildingTypeName } from '../../data';
+import { StewardAssignmentDialog } from './StewardAssignmentDialog';
+
+interface Steward {
+  refNr: string;
+  name: string;
+  phone?: string;
+}
 
 interface StewardAdminMobileProps {
-  stewards: StewardInfo[];
-  propertiesBySteward: Map<string, PropertyForAdmin[]>;
-  onMoveProperty: (propertyId: string, toStewardRefNr: string) => void;
+  kvvAreas: KvvAreaInfo[];
+  propertiesByKvvArea: Map<string, PropertyForAdmin[]>;
+  allStewards: Steward[];
+  onReassignArea: (kvvArea: string, toStewardRefNr: string) => void;
 }
 
 export function StewardAdminMobile({ 
-  stewards, 
-  propertiesBySteward,
-  onMoveProperty 
+  kvvAreas, 
+  propertiesByKvvArea,
+  allStewards,
+  onReassignArea 
 }: StewardAdminMobileProps) {
-  const [selectedMoves, setSelectedMoves] = React.useState<Map<string, string>>(new Map());
+  const [showAssignDialog, setShowAssignDialog] = useState(false);
+  const [selectedKvvArea, setSelectedKvvArea] = useState<KvvAreaInfo | null>(null);
 
-  const handleSelectSteward = (propertyId: string, stewardRefNr: string) => {
-    setSelectedMoves(prev => {
-      const newMap = new Map(prev);
-      newMap.set(propertyId, stewardRefNr);
-      return newMap;
-    });
+  const handleOpenAssignDialog = (kvvArea: KvvAreaInfo) => {
+    setSelectedKvvArea(kvvArea);
+    setShowAssignDialog(true);
   };
 
-  const handleConfirmMove = (propertyId: string) => {
-    const toStewardRefNr = selectedMoves.get(propertyId);
-    if (toStewardRefNr) {
-      onMoveProperty(propertyId, toStewardRefNr);
-      setSelectedMoves(prev => {
-        const newMap = new Map(prev);
-        newMap.delete(propertyId);
-        return newMap;
-      });
+  const handleAssign = (newStewardRefNr: string) => {
+    if (selectedKvvArea) {
+      onReassignArea(selectedKvvArea.kvvArea, newStewardRefNr);
     }
   };
 
-  const accordionItems: MobileAccordionItem[] = stewards.map(steward => {
-    const properties = propertiesBySteward.get(steward.refNr) || [];
+  const accordionItems: MobileAccordionItem[] = kvvAreas.map(kvvArea => {
+    const properties = propertiesByKvvArea.get(kvvArea.kvvArea) || [];
     
     return {
-      id: steward.refNr,
-      title: `${steward.name} (${properties.length})`,
+      id: kvvArea.kvvArea,
+      title: (
+        <div className="flex items-center justify-between w-full pr-2">
+          <span>{kvvArea.kvvArea} - {kvvArea.stewardName} ({properties.length})</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenAssignDialog(kvvArea);
+            }}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+        </div>
+      ),
       content: (
         <div className="space-y-3">
-          {steward.phone && (
+          {kvvArea.stewardPhone && (
             <div className="text-sm text-muted-foreground px-2">
-              {steward.refNr} • {steward.phone}
+              {kvvArea.stewardRefNr} • {kvvArea.stewardPhone}
             </div>
           )}
           
@@ -59,54 +75,22 @@ export function StewardAdminMobile({
               Inga fastigheter
             </div>
           ) : (
-            properties.map(property => {
-              const selectedSteward = selectedMoves.get(property.id);
-              const otherStewards = stewards.filter(s => s.refNr !== steward.refNr);
-              
-              return (
-                <div 
-                  key={property.id}
-                  className="p-3 rounded-md border bg-card space-y-2"
-                >
-                  <div>
-                    <div className="font-medium text-sm">{property.propertyName}</div>
-                    <div className="text-xs text-muted-foreground">{property.address}</div>
-                    {property.buildingType && (
-                      <Badge variant="secondary" className="mt-1 text-xs">
-                        {getBuildingTypeName(property.buildingType)}
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Select
-                      value={selectedSteward || ''}
-                      onValueChange={(value) => handleSelectSteward(property.id, value)}
-                    >
-                      <SelectTrigger className="flex-1">
-                        <SelectValue placeholder="Flytta till..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {otherStewards.map(s => (
-                          <SelectItem key={s.refNr} value={s.refNr}>
-                            {s.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    
-                    {selectedSteward && (
-                      <Button
-                        size="sm"
-                        onClick={() => handleConfirmMove(property.id)}
-                      >
-                        <ArrowRight className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
+            properties.map(property => (
+              <div 
+                key={property.id}
+                className="p-3 rounded-md border bg-card space-y-2"
+              >
+                <div>
+                  <div className="font-medium text-sm">{property.propertyName}</div>
+                  <div className="text-xs text-muted-foreground">{property.address}</div>
+                  {property.buildingType && (
+                    <Badge variant="secondary" className="mt-1 text-xs">
+                      {getBuildingTypeName(property.buildingType)}
+                    </Badge>
+                  )}
                 </div>
-              );
-            })
+              </div>
+            ))
           )}
         </div>
       )
@@ -114,9 +98,26 @@ export function StewardAdminMobile({
   });
 
   return (
-    <MobileAccordion 
-      items={accordionItems} 
-      defaultOpen={stewards.length > 0 ? [stewards[0].refNr] : []}
-    />
+    <>
+      <MobileAccordion 
+        items={accordionItems} 
+        defaultOpen={kvvAreas.length > 0 ? [kvvAreas[0].kvvArea] : []}
+      />
+      
+      {selectedKvvArea && (
+        <StewardAssignmentDialog
+          open={showAssignDialog}
+          onOpenChange={setShowAssignDialog}
+          kvvArea={selectedKvvArea.kvvArea}
+          currentSteward={{ 
+            refNr: selectedKvvArea.stewardRefNr, 
+            name: selectedKvvArea.stewardName, 
+            phone: selectedKvvArea.stewardPhone 
+          }}
+          allStewards={allStewards}
+          onAssign={handleAssign}
+        />
+      )}
+    </>
   );
 }
