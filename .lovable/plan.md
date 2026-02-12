@@ -1,229 +1,149 @@
 
-# Plan: Administrationspanel med drag-and-drop för kvartersvärdar
+# Plan: Ändra områdesadministration till KVV-baserad struktur
 
 ## Sammanfattning
-Skapa en separat administrationspanel som nås via en "Administrera"-knapp på Förvaltningsområden-sidan. Panelen visar kvartersvärdar som kolumner där man kan dra och släppa fastigheter mellan dem. Detta ger en tydlig överblick och ett intuitivt sätt att flytta ansvar.
+Ändra administrationsvyn så att kolumnerna representerar **KVV-områden** (t.ex. 61118) istället för kvartersvärdar. När man byter ansvarig kvartersvärd för ett område ändras endast kolumnens rubrik - fastigheterna stannar kvar i samma kolumn.
 
-## Användarflöde
+## Vad som ändras
 
-```text
-┌─────────────────────────────────────────────────────────────────┐
-│  Förvaltningsområden                          [Administrera]   │
-│  ─────────────────────────────────────────────────────────────  │
-│  Sök...                                                         │
-│  [Filter: Kostnadställe] [Kvartersvärd] [Typ]    [Kolumner ▼]  │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────────┐│
-│  │ K-ställe │ Kvartersvärd │ Fastighet │ Adress │ Typ │ ...   ││
-│  │──────────┼──────────────┼───────────┼────────┼─────┼───────││
-│  │ 61110    │ U. Hallgren  │ JOSEF 7   │ ...    │ STD │       ││
-│  └─────────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────────┘
-                            │
-                            ▼ Klicka "Administrera"
-                            
-┌─────────────────────────────────────────────────────────────────┐
-│  ← Tillbaka          Administrera förvaltningsområden           │
-│  ─────────────────────────────────────────────────────────────  │
-│  [Kostnadställe: 61110 - Mimer Mitt ▼]         [Spara] [Avbryt] │
-│                                                                 │
-│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐            │
-│  │ U. Hallgren  │ │ C. Dahlback  │ │ M. Sevedsson │ ...        │
-│  │ YY2489       │ │ YY2522       │ │ YY1473       │            │
-│  │ 021391959    │ │ 021397052    │ │ 021397177    │            │
-│  │ ───────────  │ │ ───────────  │ │ ───────────  │            │
-│  │ ☰ JOSEF 7    │ │ ☰ JULIUS 10  │ │ ☰ JOHAN 4    │            │
-│  │   Alléstigen │ │   Östermalmsg│ │   Badhusg 1  │            │
-│  │              │ │              │ │              │            │
-│  │ ☰ JOSEF 8    │ │ ☰ GUDE 1     │ │ ☰ JOHANNES 1 │            │
-│  │   Östermalmsg│ │   S Allégatan│ │   Badhusg 2  │            │
-│  │              │ │              │ │              │            │
-│  │ ☰ KÅRE 5     │ │ ☰ LUDOLF 1   │ │ ☰ JOAKIM 1   │            │
-│  │   Timmermans.│ │   Stora gatan│ │   Badhusg 3  │            │
-│  └──────────────┘ └──────────────┘ └──────────────┘            │
-│        ↑                  ↓                                     │
-│        └──── Dra fastighet mellan kvartersvärdar ───┘          │
-└─────────────────────────────────────────────────────────────────┘
-```
+### Före (nuvarande)
+- Kolumner = Kvartersvärdar
+- Byta ansvarig = Flytta alla fastigheter till en annan kolumn
+- Varje ändring registreras som en fastighetsflytt
 
-## Funktioner
+### Efter (nytt)
+- Kolumner = KVV-områden (61118, 61119, etc.)
+- Byta ansvarig = Ändra vem som står i kolumnrubriken
+- Fastigheterna rör sig inte - de tillhör området
+- Ändringar registreras som "områdesomtilldelningar"
 
-**Vy-uppdelning:**
-- Filtrera på kostnadställe (ett i taget för att begränsa antal kolumner)
-- Varje kvartersvärd visas som en vertikal kolumn med sitt namn, ref.nr och telefon
-- Fastigheterna visas som kort under respektive kvartersvärd
+## Användarupplevelse
 
-**Drag-and-drop:**
-- Dra ett fastighetskort till en annan kvartersvärd-kolumn
-- Visuell feedback när man drar (kort lyfts, dropzon markeras)
-- Bekräftelse innan ändring sparas
+När användaren klickar på penn-ikonen för område 61118:
+1. Dialog öppnas: "Byt ansvarig för område 61118"
+2. Användaren väljer en ny kvartersvärd
+3. Kolumnrubriken uppdateras med den nya kvartersvärdens namn
+4. Fastigheterna i kolumnen påverkas inte visuellt
+5. Ändringen visas i panelen för väntande ändringar
 
-**Spara/Avbryt:**
-- Ändringar sparas inte förrän man klickar "Spara"
-- "Avbryt" återställer alla ändringar
-- Möjlighet att se en lista på gjorda ändringar innan man sparar
+---
 
-**Mobilvy:**
-- På mobil: Använd accordion-vy istället för kolumner
-- Varje kvartersvärd som expanderbar sektion
-- Flytta via "Flytta till..."-knapp istället för drag-and-drop
+## Tekniska ändringar
 
-## Nya komponenter
-
-| Komponent | Beskrivning |
-|-----------|-------------|
-| `StewardAdminPage.tsx` | Ny sida under `/property-areas/admin` |
-| `StewardColumn.tsx` | En kolumn för en kvartersvärd med droppable-zon |
-| `PropertyCard.tsx` | Draggbart kort för en fastighet |
-| `PendingChangesPanel.tsx` | Visar väntande ändringar innan sparning |
-| `StewardAdminMobile.tsx` | Mobilanpassad accordion-version |
-
-## Datamodell för ändringar
-
+### 1. Nya typer (`admin-types.ts`)
 ```typescript
-// Ny typ för att spåra ändringar
-interface PropertyReassignment {
-  propertyId: string;
-  propertyName: string;
-  fromSteward: {
-    refNr: string;
-    name: string;
-  };
-  toSteward: {
-    refNr: string;
-    name: string;
-  };
+// Lägg till ny typ för områdesomtilldelning
+export interface AreaReassignment {
+  kvvArea: string;
+  fromSteward: { refNr: string; name: string };
+  toSteward: { refNr: string; name: string };
   timestamp: Date;
 }
-
-// State i admin-sidan
-interface AdminState {
-  assignments: Map<string, string>; // propertyId -> stewardRefNr
-  pendingChanges: PropertyReassignment[];
-  isDirty: boolean;
-}
 ```
 
-## Teknisk implementation
+### 2. Ny hook-logik (`useStewardAdmin.ts`)
 
-### Fas 1: Grundstruktur (utan drag-and-drop)
+**Ändra datastrukturen:**
+- Gruppera fastigheter efter **kvvArea** istället för stewardRefNr
+- Skapa en `Map<kvvArea, stewardRefNr>` för att spåra vilken kvartersvärd som är ansvarig för varje område
+- `reassignArea` uppdaterar mappningen, inte individuella fastigheter
 
-1. **Ny rutt och sida**
-   - Skapa `/property-areas/admin` rutt
-   - `StewardAdminPage.tsx` med grundläggande layout
-   - Tillbaka-knapp till `/property-areas`
+**Ny state:**
+```typescript
+// Ersätt fastighetsbaserade assignments med områdesbaserade
+const [areaAssignments, setAreaAssignments] = useState<Map<string, string>>(); // kvvArea -> stewardRefNr
 
-2. **Kostnadställe-filter**
-   - Select för att välja ett kostnadställe
-   - Visa endast kvartersvärdar inom valt kostnadställe
-
-3. **Kolumn-layout**
-   - Horisontellt scrollbar med kvartersvärd-kolumner
-   - ScrollArea för varje kolumn
-
-4. **Fastighetskort**
-   - Grundläggande kort med fastighetsnamn och adress
-   - Styling med hover-effekt
-
-### Fas 2: Drag-and-drop
-
-5. **Installera @dnd-kit**
-   - `@dnd-kit/core` och `@dnd-kit/sortable`
-   - Wrap layout med `DndContext`
-
-6. **Gör kort draggbara**
-   - `useDraggable` på PropertyCard
-   - Drag-handle med grip-ikon
-
-7. **Gör kolumner droppable**
-   - `useDroppable` på StewardColumn
-   - Visuell feedback vid dragning över
-
-8. **Hantera drop-event**
-   - `onDragEnd` - uppdatera assignments
-   - Lägg till i pendingChanges
-
-### Fas 3: Spara och återställ
-
-9. **PendingChangesPanel**
-   - Lista över väntande ändringar
-   - Möjlighet att ångra enskild ändring
-
-10. **Spara-funktionalitet**
-    - Bekräftelse-dialog
-    - "Spara"-knapp (disabled om inga ändringar)
-    - Toast-notifikation vid lyckad sparning
-
-11. **Avbryt-funktionalitet**
-    - Varning om osparade ändringar
-    - Återställ till ursprungligt state
-
-### Fas 4: Mobilanpassning
-
-12. **StewardAdminMobile**
-    - Accordion med kvartersvärdar
-    - "Flytta till..."-knapp på varje fastighetskort
-    - Select-dialog för att välja ny kvartersvärd
-
-## Filer som skapas/ändras
-
-| Fil | Typ | Beskrivning |
-|-----|-----|-------------|
-| `src/pages/property-areas/StewardAdminPage.tsx` | Ny | Huvudsida för administration |
-| `src/features/property-areas/components/admin/StewardColumn.tsx` | Ny | Kolumn per kvartersvärd |
-| `src/features/property-areas/components/admin/PropertyCard.tsx` | Ny | Draggbart fastighetskort |
-| `src/features/property-areas/components/admin/PendingChangesPanel.tsx` | Ny | Panel för väntande ändringar |
-| `src/features/property-areas/components/admin/StewardAdminMobile.tsx` | Ny | Mobilversion med accordion |
-| `src/features/property-areas/components/admin/index.ts` | Ny | Barrel export |
-| `src/features/property-areas/types/admin-types.ts` | Ny | Typer för admin-funktionalitet |
-| `src/features/property-areas/hooks/useStewardAdmin.ts` | Ny | Hook för admin-state |
-| `src/pages/property-areas/PropertyAreasPage.tsx` | Ändra | Lägg till "Administrera"-knapp |
-| `src/App.tsx` | Ändra | Lägg till rutt för admin-sida |
-
-## Nytt beroende
-
-```json
-"@dnd-kit/core": "^6.1.0",
-"@dnd-kit/sortable": "^8.0.0"
+// Ny typ av pending changes
+const [pendingAreaChanges, setPendingAreaChanges] = useState<AreaReassignment[]>([]);
 ```
 
-## Användargränssnitt i detalj
+**Nytt beräkningsflöde:**
+```
+1. Hämta unika KVV-områden från datan
+2. Bestäm initial kvartersvärd för varje område (från kvv-mapping.ts)
+3. Gruppera fastigheter per KVV-område (inte per steward)
+4. Vid reassignArea: uppdatera areaAssignments, inte flytta fastigheter
+```
 
-**Kvartersvärd-kolumn:**
+### 3. Uppdatera `StewardColumn.tsx`
+- Ta emot `kvvArea` som identifierare istället för `steward`
+- Hämta aktuell kvartersvärd från `areaAssignments`
+- Behåll drag-and-drop för enskilda fastigheter (valfritt att ta bort)
+
+### 4. Uppdatera `PendingChangesPanel.tsx`
+- Visa områdesändringar istället för fastighetsändringar
+- Exempel: "Område 61118: Christopher Dahlback → Anna Andersson"
+
+### 5. Uppdatera `StewardAssignmentDialog.tsx`
+- Bättre beskrivning: "Välj ny ansvarig kvartersvärd för området"
+- Tydliggör att fastigheterna inte flyttas
+
+---
+
+## Flödesdiagram
+
 ```text
-┌────────────────────┐
-│ Ulrica Hallgren    │ ← Namn (bold)
-│ YY2489             │ ← Ref.nr (muted)
-│ 021391959          │ ← Telefon (muted)
-│ ─────────────────  │
-│ 7 fastigheter      │ ← Antal (badge)
-├────────────────────┤
-│ ☰ JOSEF 7          │ ← Drag-handle + Namn
-│   Alléstigen 7-11  │ ← Adress
-│   [STD]            │ ← Byggnadstyp badge
-│ ────────────────── │
-│ ☰ JOSEF 8          │
-│   Östermalmsg 6-14 │
-│   [STD]            │
-│ ────────────────── │
-│ ...                │
-└────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                    KVV-OMRÅDESBASERAD VY                    │
+├─────────────┬─────────────┬─────────────┬─────────────────┤
+│   61116     │   61117     │   61118     │   61119          │
+│ Madelen L.  │ Ulrica H.   │ Chris D. ✎ │ Emil S.          │
+│ YY2523      │ YY2489      │ YY2522      │ YY2531           │
+├─────────────┼─────────────┼─────────────┼─────────────────┤
+│ [Fastighet] │ [Fastighet] │ [JULIUS 10] │ [Fastighet]      │
+│ [Fastighet] │ [Fastighet] │ [GUDE 1]    │ [Fastighet]      │
+│             │             │ [LUDOLF 1]  │                  │
+└─────────────┴─────────────┴─────────────┴─────────────────┘
+
+         ↓ Klicka på ✎ för 61118
+
+┌─────────────────────────────────────────┐
+│ Byt ansvarig för område 61118           │
+│                                         │
+│ Nuvarande: Christopher Dahlback         │
+│                                         │
+│ Ny kvartersvärd: [Dropdown ▾]           │
+│   > Thomas Sweijer                      │
+│   > Maria Sevedsson                     │
+│   > etc.                                │
+│                                         │
+│ [Avbryt]                    [Spara]     │
+└─────────────────────────────────────────┘
+
+         ↓ Väljer ny kvartersvärd
+
+┌─────────────────────────────────────────────────────────────┐
+│ VÄNTANDE ÄNDRINGAR                                          │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Område 61118: Christopher Dahlback → Thomas Sweijer [↩]│ │
+│ └─────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-**Väntande ändringar-panel:**
-```text
-┌─────────────────────────────────────────────────────┐
-│ 2 ändringar att spara                     [Minimera]│
-├─────────────────────────────────────────────────────┤
-│ • JOSEF 7: U. Hallgren → C. Dahlback       [Ångra] │
-│ • LUDOLF 1: C. Dahlback → M. Sevedsson     [Ångra] │
-└─────────────────────────────────────────────────────┘
-```
+---
 
-## Framtida utbyggnad
+## Filer som ändras
 
-Denna implementation lägger grunden för:
-- Historik över ändringar (vem ändrade vad, när)
-- Massflyttning av flera fastigheter samtidigt
-- Byte av kostnadställe för en hel kvartersvärd
-- Integration med backend-API för beständig lagring
+| Fil | Åtgärd |
+|-----|--------|
+| `src/features/property-areas/types/admin-types.ts` | Lägg till `AreaReassignment` |
+| `src/features/property-areas/hooks/useStewardAdmin.ts` | Skriv om till KVV-baserad struktur |
+| `src/features/property-areas/components/admin/StewardColumn.tsx` | Anpassa props och visning |
+| `src/features/property-areas/components/admin/PendingChangesPanel.tsx` | Visa områdesändringar |
+| `src/features/property-areas/components/admin/StewardAdminMobile.tsx` | Samma anpassning för mobil |
+| `src/pages/property-areas/StewardAdminPage.tsx` | Uppdatera hook-användning |
+
+---
+
+## Bakåtkompatibilitet
+
+- Drag-and-drop för enskilda fastigheter kan behållas om det finns behov av att flytta enstaka fastigheter mellan områden
+- Om inte, kan drag-and-drop tas bort helt för att förenkla gränssnittet
+
+## Fråga
+
+**Ska drag-and-drop för enskilda fastigheter behållas?** Det skulle innebära att man kan:
+1. Byta ansvarig för hela området (via penn-knappen)
+2. OCH flytta enskilda fastigheter till andra områden (via drag-and-drop)
+
+Om ja, behöver vi två typer av ändringar i pending changes. Om nej, kan vi förenkla och ta bort drag-and-drop helt.

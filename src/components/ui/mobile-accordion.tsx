@@ -3,7 +3,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { LucideIcon } from "lucide-react";
 export interface MobileAccordionItem {
   id: string;
-  title: string;
+  title: string | React.ReactNode;
   content: React.ReactNode;
   disabled?: boolean;
 }

@@ -55,6 +55,7 @@ export function ColumnSelector({
 
 export const ALL_COLUMNS: ColumnDefinition[] = [
   { key: "costCenter", label: "K-ställe", locked: true },
+  { key: "kvvArea", label: "KVV-område" },
   { key: "stewardName", label: "Kvartersvärd" },
   { key: "stewardRefNr", label: "Ref.nr" },
   { key: "propertyName", label: "Fastighet" },
@@ -73,6 +74,7 @@ export const ALL_COLUMNS: ColumnDefinition[] = [
 
 export const DEFAULT_VISIBLE_COLUMNS = [
   "costCenter",
+  "kvvArea",
   "stewardName", 
   "propertyName",
   "address",
