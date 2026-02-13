@@ -1,54 +1,35 @@
 
+# Förbättra mobila accordions
 
-# Kommunikationslogg på kundkortet
+## Problem
+De mobila accordion-raderna ser platta och tråkiga ut — liten padding, ingen bakgrundsfärg, och inte tillräckligt tydliga som interaktiva element.
 
-## Vad ska byggas
-En liten, alltid synlig logg som visas direkt under kundkortet (TenantCard) pa detaljsidan. Loggen visar SMS och e-post som skickats till kunden de senaste 48 timmarna.
+## Lösning
+Ge varje accordion-rad mer visuell vikt och tydligare interaktivitet:
 
-## Designforslag
+- Öka padding i triggern från `px-2 py-2` till `px-4 py-3.5` för bättre touchyta
+- Lägg till `bg-white` på varje item så de sticker ut mot sidans bakgrund
+- Ge den öppna/aktiva raden en subtil markering med vänsterborder i primärfärg
+- Lägg till en mjuk skuggeffekt (`shadow-sm`) för att ge djupkänsla
+- Öka typsnittsstorleken något och ge chevron-ikonen mer kontrast
 
-Loggen visas som en kompakt lista utan att ta for mycket plats. Om det inte finns nagra meddelanden visas texten "Inga meddelanden skickade senaste 48 timmarna".
+## Teknisk ändring
 
-Exempel pa hur en rad ser ut:
+Enbart en fil behöver ändras: `src/components/ui/mobile-accordion.tsx`
 
-```text
-SMS till 070-123 45 67 | 13 feb 13:42 | "Elavbrott i omradet..."
-E-post till anna@mail.com | 12 feb 09:15 | "Planerat underhall"
+### Före
+```
+AccordionItem className="rounded-lg border border-slate-200"
+AccordionTrigger className="px-2 py-2"
 ```
 
-- Varje rad visar: typ (SMS/E-post), mottagare (telefonnummer/e-post), tidpunkt, och en forhandsvisning av meddelandet (trunkerat)
-- En liten rubrik: "Skickade meddelanden (senaste 48h)"
-- Hela komponenten ar en enkel Card utan kollapsfunktion -- alltid oppen och synlig
-- Responsiv: pa mobil visas raderna vertikalt istallet for horisontellt
-
-## Teknisk losning
-
-### 1. Datamodell - ny fil `src/features/tenants/data/communication-log.ts`
-Skapa mockdata for skickade meddelanden med interfacet:
-
-```typescript
-interface SentMessage {
-  id: string;
-  type: 'sms' | 'email';
-  recipient: string;       // telefonnummer eller e-post
-  subject?: string;        // bara for e-post
-  messagePreview: string;  // forsta ~50 tecken
-  sentAt: string;          // ISO timestamp
-  sentBy: string;          // anvandare som skickade
-}
+### Efter
+```
+AccordionItem className="rounded-lg border border-slate-200 bg-white shadow-sm 
+  data-[state=open]:border-l-[3px] data-[state=open]:border-l-blue-500"
+AccordionTrigger className="px-4 py-3.5"
 ```
 
-En funktion `getRecentMessages(personalNumber)` som filtrerar pa senaste 48h.
+Innehållets padding uppdateras också fran `px-0 pb-2` till `px-4 pb-4` for att matcha triggerns indrag.
 
-### 2. Komponent - ny fil `src/features/tenants/components/TenantCommunicationLog.tsx`
-- Tar emot `personalNumber` som prop
-- Hamtar meddelanden via `getRecentMessages()`
-- Visar en kompakt Card med Badge for SMS/E-post
-- Visar "Inga meddelanden..." om listan ar tom
-
-### 3. Placering - andring i `src/pages/tenants/TenantDetailPage.tsx`
-Laggs till direkt under TenantCard-sektionen, ovanfor flikarna/accordion. Pa sa vis syns den alltid oavsett vilken flik man ar pa.
-
-### 4. Export - uppdatera `src/features/tenants/index.ts`
-Exportera den nya komponenten.
-
+Ändringen påverkar alla ställen i systemet där MobileAccordion används, vilket ger konsekvent förbättring överallt.
