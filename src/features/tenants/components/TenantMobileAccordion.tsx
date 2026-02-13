@@ -27,7 +27,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
       title: "Hyreskontrakt",
       disabled: isApplicantOnly,
       content: features.showTenantContracts ? (
-        <TenantContracts contracts={contracts} />
+        <TenantContracts contracts={contracts} compact />
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <p className="text-slate-500">
@@ -58,7 +58,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
       title: hasActiveCases ? `Ärenden (2)` : "Ärenden",
       disabled: isApplicantOnly,
       content: features.showTenantCases ? (
-        <TenantOrders />
+        <TenantOrders compact />
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <p className="text-slate-500">
@@ -89,7 +89,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
       title: "Noteringar",
       disabled: isApplicantOnly,
       content: features.showTenantNotes ? (
-        <TenantNotes />
+        <TenantNotes compact />
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <p className="text-slate-500">För att se noteringar, aktivera funktionen i inställningarna.</p>

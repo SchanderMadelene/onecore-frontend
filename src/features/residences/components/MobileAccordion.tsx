@@ -75,7 +75,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       id: "issues",
       title: "Ärenden",
       content: features.showApartmentIssues ? (
-        <OrdersManagement residenceId={id} />
+        <OrdersManagement residenceId={id} compact />
       ) : (
         <p className="text-slate-500 p-1">
           För att se felanmälningar, aktivera funktionen i inställningarna.

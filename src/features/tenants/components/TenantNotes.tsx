@@ -2,12 +2,16 @@
 import { Notes } from "@/components/common/Notes";
 import { TabLayout } from "@/components/ui/tab-layout";
 
-export function TenantNotes() {
+interface TenantNotesProps {
+  compact?: boolean;
+}
+
+export function TenantNotes({ compact = false }: TenantNotesProps) {
   return (
     <TabLayout 
       title="Noteringar" 
-      showCard={true}
-      showHeader={true}
+      showCard={!compact}
+      showHeader={!compact}
     >
       <Notes
         entityType="tenant"

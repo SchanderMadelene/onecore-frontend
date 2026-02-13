@@ -19,9 +19,10 @@ import { Contract } from "../data/contracts";
 
 interface TenantContractsProps {
   contracts: Contract[];
+  compact?: boolean;
 }
 
-export function TenantContracts({ contracts }: TenantContractsProps) {
+export function TenantContracts({ contracts, compact = false }: TenantContractsProps) {
   if (!contracts.length) {
     return null;
   }
@@ -77,56 +78,64 @@ export function TenantContracts({ contracts }: TenantContractsProps) {
     }).format(amount);
   };
 
+  const tableContent = (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Typ</TableHead>
+          <TableHead>Kontraktsnummer</TableHead>
+          <TableHead>Objekt</TableHead>
+          <TableHead>Startdatum</TableHead>
+          <TableHead>Slutdatum</TableHead>
+          <TableHead>Månadshyra</TableHead>
+          <TableHead>Kontrakttyp</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead></TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {contracts.map((contract) => (
+          <TableRow key={contract.id}>
+            <TableCell>
+              <div className="flex items-center">
+                <span>{getContractTypeName(contract.type)}</span>
+              </div>
+            </TableCell>
+            <TableCell>{contract.id}</TableCell>
+            <TableCell>{contract.objectName}</TableCell>
+            <TableCell>
+              <div>
+                {formatDate(contract.startDate)}
+              </div>
+            </TableCell>
+            <TableCell>
+              {contract.endDate ? formatDate(contract.endDate) : ""}
+            </TableCell>
+            <TableCell>{formatCurrency(contract.rent)}</TableCell>
+            <TableCell>{getContractCategory(contract.type)}</TableCell>
+            <TableCell>{getStatusBadge(contract.status)}</TableCell>
+            <TableCell>
+              <Button variant="outline" size="sm">
+                Visa kontrakt
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
+  if (compact) {
+    return tableContent;
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Kontrakt</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Typ</TableHead>
-              <TableHead>Kontraktsnummer</TableHead>
-              <TableHead>Objekt</TableHead>
-              <TableHead>Startdatum</TableHead>
-              <TableHead>Slutdatum</TableHead>
-              <TableHead>Månadshyra</TableHead>
-              <TableHead>Kontrakttyp</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {contracts.map((contract) => (
-              <TableRow key={contract.id}>
-                <TableCell>
-                  <div className="flex items-center">
-                    <span>{getContractTypeName(contract.type)}</span>
-                  </div>
-                </TableCell>
-                <TableCell>{contract.id}</TableCell>
-                <TableCell>{contract.objectName}</TableCell>
-                <TableCell>
-                  <div>
-                    {formatDate(contract.startDate)}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {contract.endDate ? formatDate(contract.endDate) : ""}
-                </TableCell>
-                <TableCell>{formatCurrency(contract.rent)}</TableCell>
-                <TableCell>{getContractCategory(contract.type)}</TableCell>
-                <TableCell>{getStatusBadge(contract.status)}</TableCell>
-                <TableCell>
-                  <Button variant="outline" size="sm">
-                    Visa kontrakt
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        {tableContent}
       </CardContent>
     </Card>
   );
