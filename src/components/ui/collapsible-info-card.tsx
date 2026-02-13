@@ -33,7 +33,7 @@ export const CollapsibleInfoCard = ({
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <Card className={`rounded-lg border border-y-slate-200 border-r-slate-200 bg-white shadow-sm border-l-[2px] ${isOpen ? 'border-l-primary/40' : 'border-l-transparent'}`}>
+      <Card className={`rounded-lg bg-white shadow-sm border-l-[2px] ${isOpen ? '!border-l-primary/40' : '!border-l-transparent'}`}>
         <CollapsibleTrigger className="w-full text-left">
           <div className="px-4 py-3.5">
             <div className="flex items-center justify-between">
