@@ -167,7 +167,7 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Lägenheter */}
-        <ToggleSection title="Lägenhetsflikar" icon={Home} toggleKeys={['showApartments', 'showRoomInformation', 'showFloorplan', 'showDocuments', 'showInspections', 'showApartmentIssues', 'showResidenceNotes', 'showTenantInfo', 'showResidenceAccess']}>
+        <ToggleSection title="Lägenheter" icon={Home} toggleKeys={['showApartments', 'showRoomInformation', 'showFloorplan', 'showDocuments', 'showInspections', 'showApartmentIssues', 'showResidenceNotes', 'showTenantInfo', 'showResidenceAccess']}>
           <ToggleItem id="apartments" icon={Home} label="Lägenheter" description="Visa lägenhetskort" checked={features.showApartments} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showApartments')} />
           <div className="pl-4 border-l space-y-1">
             <ToggleItem id="room-information" icon={LayoutDashboard} label="Rumsinformation" description="Visa rumsinformation på lägenhetskortet" checked={features.showRoomInformation} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showRoomInformation')} />
