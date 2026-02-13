@@ -138,16 +138,19 @@ export function BetaSettings() {
         </div>
 
         {/* Fastigheter */}
-        <ToggleSection title="Fastigheter" icon={Building} defaultOpen={false} toggleKeys={['showProperties']}>
-          <ToggleItem
-            id="properties"
-            icon={Building}
-            label="Fastigheter"
-            description="Visa fastighetsfunktioner"
-            checked={features.showProperties}
-            disabled={navDisabled}
-            onToggle={() => handleFeatureToggle('showProperties')}
-          />
+        <ToggleSection title="Fastighetsflikar" icon={Building} defaultOpen={false} toggleKeys={['showProperties', 'showPropertyInfo', 'showPropertyStatistics', 'showPropertyDocuments', 'showPropertyPlanning', 'showPropertyBuildings', 'showPropertyMaintenance', 'showPropertyOrders', 'showPropertyAccess', 'showPropertyMap']}>
+          <ToggleItem id="properties" icon={Building} label="Fastigheter" description="Visa fastighetsfunktioner" checked={features.showProperties} disabled={navDisabled} onToggle={() => handleFeatureToggle('showProperties')} />
+          <div className="pl-4 border-l space-y-1">
+            <ToggleItem id="property-info" icon={Building} label="Information" description="Visa informationsflik" checked={features.showPropertyInfo} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyInfo')} />
+            <ToggleItem id="property-statistics" icon={TrendingUp} label="Statistik" description="Visa statistikflik" checked={features.showPropertyStatistics} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyStatistics')} />
+            <ToggleItem id="property-documents" icon={FileText} label="Dokument" description="Visa dokumentflik" checked={features.showPropertyDocuments} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyDocuments')} />
+            <ToggleItem id="property-planning" icon={Calendar} label="Planering" description="Visa planeringsflik" checked={features.showPropertyPlanning} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyPlanning')} />
+            <ToggleItem id="property-buildings" icon={Building2} label="Byggnader" description="Visa byggnadsflik" checked={features.showPropertyBuildings} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyBuildings')} />
+            <ToggleItem id="property-maintenance" icon={Settings} label="Underhåll" description="Visa underhållsflik" checked={features.showPropertyMaintenance} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyMaintenance')} />
+            <ToggleItem id="property-orders" icon={ClipboardList} label="Beställningar" description="Visa beställningsflik" checked={features.showPropertyOrders} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyOrders')} />
+            <ToggleItem id="property-access" icon={Key} label="Lås & passage" description="Visa lås- och passageflik" checked={features.showPropertyAccess} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyAccess')} />
+            <ToggleItem id="property-map" icon={MapPin} label="Karta" description="Visa kartflik" checked={features.showPropertyMap} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyMap')} />
+          </div>
         </ToggleSection>
 
         {/* Byggnader */}
