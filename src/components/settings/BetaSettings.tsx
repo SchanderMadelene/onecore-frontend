@@ -16,6 +16,10 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
+interface FeatureTogglesInterface {
+  [key: string]: boolean;
+}
+
 
 // Reusable toggle item
 function ToggleItem({ 
@@ -45,15 +49,20 @@ function ToggleItem({
 
 // Collapsible section wrapper
 function ToggleSection({ 
-  title, icon: Icon, children, defaultOpen = false, badge
+  title, icon: Icon, children, defaultOpen = false, toggleKeys
 }: { 
   title: string; 
   icon: LucideIcon; 
   children: React.ReactNode; 
   defaultOpen?: boolean;
-  badge?: number;
+  toggleKeys?: (keyof FeatureTogglesInterface)[];
 }) {
+  const { features } = useFeatureToggles();
   const [open, setOpen] = useState(defaultOpen);
+
+  // Count active toggles
+  const activeCount = toggleKeys?.filter(key => features[key as string]).length ?? 0;
+  const totalCount = toggleKeys?.length ?? 0;
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
@@ -61,9 +70,9 @@ function ToggleSection({
         <div className="flex items-center gap-2">
           <Icon className="h-4 w-4 text-muted-foreground" />
           <span className="font-semibold text-sm">{title}</span>
-          {badge !== undefined && (
+          {totalCount > 0 && (
             <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-              {badge}
+              {activeCount} av {totalCount}
             </span>
           )}
         </div>
@@ -129,7 +138,7 @@ export function BetaSettings() {
         </div>
 
         {/* Fastigheter */}
-        <ToggleSection title="Fastigheter" icon={Building} defaultOpen={false} badge={3}>
+        <ToggleSection title="Fastigheter" icon={Building} defaultOpen={false} toggleKeys={['showProperties', 'showBuildings', 'showApartments']}>
           <ToggleItem
             id="properties"
             icon={Building}
@@ -186,7 +195,7 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Kunder */}
-        <ToggleSection title="Kunder" icon={Users} badge={8}>
+        <ToggleSection title="Kunder" icon={Users} toggleKeys={['showTenants', 'showTenantContracts', 'showTenantQueue', 'showTenantCases', 'showTenantLedger', 'showTenantNotes', 'showTenantKeys', 'showTenantEvents', 'showTenantDocuments']}>
           <ToggleItem id="tenants" icon={Users} label="Kunder" description="Visa kundfunktioner" checked={features.showTenants} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTenants')} />
           <div className="pl-4 border-l space-y-1">
             <ToggleItem id="tenant-contracts" icon={FileText} label="Hyreskontrakt" description="Visa hyreskontrakt på kundkort" checked={features.showTenantContracts} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantContracts')} />
@@ -201,7 +210,7 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Uthyrning */}
-        <ToggleSection title="Uthyrning" icon={Key} badge={3}>
+        <ToggleSection title="Uthyrning" icon={Key} toggleKeys={['showRentals', 'showRentalsHousing', 'showRentalsParking', 'showRentalsStorage']}>
           <ToggleItem id="rentals" icon={Key} label="Uthyrning" description="Aktivera uthyrningsfunktioner" checked={features.showRentals} disabled={navDisabled} onToggle={() => handleFeatureToggle('showRentals')} />
           <div className="pl-4 border-l space-y-1">
             <ToggleItem id="rentals-housing" icon={Home} label="Bostad" description="Visa bostadsuthyrning" checked={features.showRentalsHousing} disabled={!features.showRentals || navDisabled} onToggle={() => handleFeatureToggle('showRentalsHousing')} />
@@ -211,7 +220,7 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Övriga sidor */}
-        <ToggleSection title="Övriga sidor" icon={Star} badge={7}>
+        <ToggleSection title="Övriga sidor" icon={Star} toggleKeys={['showBarriers', 'showTurnover', 'showDesignSystem', 'showAllInspections', 'showFavorites', 'showLeaseContracts', 'showStrofakturaUnderlag', 'showPropertyAreas']}>
           <ToggleItem id="barriers" icon={ShieldX} label="Spärrar" description="Aktivera spärrarfunktioner för bostäder och bilplatser" checked={features.showBarriers} disabled={navDisabled} onToggle={() => handleFeatureToggle('showBarriers')} />
           <ToggleItem id="turnover" icon={Key} label="In- och utflytt" description="Aktivera funktioner för in- och utflytthantering" checked={features.showTurnover} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTurnover')} />
           <ToggleItem id="design-system" icon={Palette} label="Designsystem" description="Visa sidan för designsystem" checked={features.showDesignSystem} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDesignSystem')} />
@@ -223,7 +232,7 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Dashboard-kort */}
-        <ToggleSection title="Dashboard-kort" icon={LayoutDashboard} badge={10}>
+        <ToggleSection title="Dashboard-kort" icon={LayoutDashboard} toggleKeys={['showProperties', 'showTenants', 'showRentals', 'showBarriers', 'showTurnover', 'showAllInspections', 'showDashboardEconomy', 'showDashboardContracts', 'showDashboardLocks', 'showDashboardOdoo', 'showDashboardGreenview', 'showDashboardCurves']}>
           <p className="text-xs text-muted-foreground pb-1">Välj vilka kort som ska visas på dashboarden</p>
           <ToggleItem id="dashboard-properties" icon={Building} label="Fastigheter" description="Visa fastighetskort på dashboarden" checked={features.showProperties} disabled={navDisabled} onToggle={() => handleFeatureToggle('showProperties')} />
           <ToggleItem id="dashboard-tenants" icon={Users} label="Kunder" description="Visa kundkort på dashboarden" checked={features.showTenants} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTenants')} />
