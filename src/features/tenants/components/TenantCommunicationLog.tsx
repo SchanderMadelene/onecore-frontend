@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { MessageSquare, Mail, Inbox, ChevronDown, ChevronUp } from "lucide-react";
+import { MessageSquare, Mail, Inbox, ChevronDown } from "lucide-react";
 import { getRecentMessages } from "../data/communication-log";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -56,31 +56,25 @@ export function TenantCommunicationLog({ personalNumber }: TenantCommunicationLo
 
   if (isMobile) {
     return (
-      <Card>
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <Card className={`rounded-lg border border-slate-200 bg-white shadow-sm ${isOpen ? 'border-l-[3px] border-l-primary' : ''}`}>
           <CollapsibleTrigger asChild>
-            <div className="w-full cursor-pointer">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Skickade meddelanden (senaste 48h)
-                  </CardTitle>
-                  {isOpen ? (
-                    <ChevronUp className="h-5 w-5 text-muted-foreground" />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                  )}
-                </div>
-              </CardHeader>
+            <div className="w-full cursor-pointer px-4 py-3.5">
+              <div className="flex items-center justify-between">
+                <span className="text-base font-medium">
+                  Skickade meddelanden (senaste 48h)
+                </span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+              </div>
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <CardContent className="pt-0">
+            <div className="px-4 pb-4">
               {messageList}
-            </CardContent>
+            </div>
           </CollapsibleContent>
-        </Collapsible>
-      </Card>
+        </Card>
+      </Collapsible>
     );
   }
 
