@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp, Code, Star, RotateCcw } from "lucide-react";
+import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp, Code, Star, RotateCcw, MapPin } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole } from "@/contexts/RoleContext";
 import { toast } from "sonner";
@@ -585,6 +585,39 @@ export function BetaSettings() {
                 <p className="text-sm text-muted-foreground">Visa sidan för sparade sökningar</p>
               </div>
               <Switch id="favorites" checked={features.showFavorites} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showFavorites')} />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  <Label htmlFor="lease-contracts">Hyreskontrakt</Label>
+                </div>
+                <p className="text-sm text-muted-foreground">Visa sidan för hyreskontrakt</p>
+              </div>
+              <Switch id="lease-contracts" checked={features.showLeaseContracts} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showLeaseContracts')} />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <Wallet className="h-4 w-4" />
+                  <Label htmlFor="strofaktura">Ströfaktura underlag</Label>
+                </div>
+                <p className="text-sm text-muted-foreground">Visa sidan för ströfaktura underlag</p>
+              </div>
+              <Switch id="strofaktura" checked={features.showStrofakturaUnderlag} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showStrofakturaUnderlag')} />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  <Label htmlFor="property-areas">Förvaltningsområden</Label>
+                </div>
+                <p className="text-sm text-muted-foreground">Visa sidan för förvaltnings- och kvartersvärdsområden</p>
+              </div>
+              <Switch id="property-areas" checked={features.showPropertyAreas} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showPropertyAreas')} />
             </div>
 
             <div className="space-y-3 pt-4 border-t">
