@@ -154,7 +154,7 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Byggnader */}
-        <ToggleSection title="Byggnadsflikar" icon={Building2} toggleKeys={['showBuildings', 'showBuildingEntrances', 'showBuildingParts', 'showBuildingSpaces', 'showBuildingInstallations', 'showBuildingParking', 'showBuildingDocuments']}>
+        <ToggleSection title="Byggnader" icon={Building2} toggleKeys={['showBuildings', 'showBuildingEntrances', 'showBuildingParts', 'showBuildingSpaces', 'showBuildingInstallations', 'showBuildingParking', 'showBuildingDocuments']}>
           <ToggleItem id="buildings" icon={Building} label="Byggnader" description="Visa byggnadskort" checked={features.showBuildings} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildings')} />
           <div className="pl-4 border-l space-y-1">
             <ToggleItem id="building-entrances" icon={Home} label="Uppgångar" description="Visa uppgångsflik på byggnadskort" checked={features.showBuildingEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingEntrances')} />
