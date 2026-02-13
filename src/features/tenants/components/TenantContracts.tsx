@@ -1,20 +1,8 @@
 
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Contract } from "../data/contracts";
 
 interface TenantContractsProps {
@@ -29,27 +17,18 @@ export function TenantContracts({ contracts, compact = false }: TenantContractsP
 
   const getContractTypeName = (type: Contract["type"]) => {
     switch (type) {
-      case "housing":
-        return "Bostad";
-      case "parking":
-        return "Bilplats";
-      case "storage":
-        return "Förråd";
-      default:
-        return "Övrigt";
+      case "housing": return "Bostad";
+      case "parking": return "Bilplats";
+      case "storage": return "Förråd";
+      default: return "Övrigt";
     }
   };
 
   const getContractCategory = (type: Contract["type"]) => {
     switch (type) {
-      case "housing":
-        return "Korttid";
-      case "parking":
-        return "Poängfri";
-      case "storage":
-        return "";
-      default:
-        return "";
+      case "housing": return "Korttid";
+      case "parking": return "Poängfri";
+      default: return "";
     }
   };
 
@@ -78,51 +57,83 @@ export function TenantContracts({ contracts, compact = false }: TenantContractsP
     }).format(amount);
   };
 
+  const columns = [
+    {
+      key: "type",
+      label: "Typ",
+      render: (contract: Contract) => getContractTypeName(contract.type),
+    },
+    {
+      key: "id",
+      label: "Kontraktsnummer",
+      render: (contract: Contract) => contract.id,
+    },
+    {
+      key: "objectName",
+      label: "Objekt",
+      render: (contract: Contract) => contract.objectName,
+    },
+    {
+      key: "startDate",
+      label: "Startdatum",
+      render: (contract: Contract) => formatDate(contract.startDate),
+    },
+    {
+      key: "endDate",
+      label: "Slutdatum",
+      render: (contract: Contract) => contract.endDate ? formatDate(contract.endDate) : "",
+      hideOnMobile: true,
+    },
+    {
+      key: "rent",
+      label: "Månadshyra",
+      render: (contract: Contract) => formatCurrency(contract.rent),
+    },
+    {
+      key: "category",
+      label: "Kontrakttyp",
+      render: (contract: Contract) => getContractCategory(contract.type),
+      hideOnMobile: true,
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (contract: Contract) => getStatusBadge(contract.status),
+    },
+    {
+      key: "action",
+      label: "",
+      render: () => (
+        <Button variant="outline" size="sm">
+          Visa kontrakt
+        </Button>
+      ),
+    },
+  ];
+
   const tableContent = (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Typ</TableHead>
-          <TableHead>Kontraktsnummer</TableHead>
-          <TableHead>Objekt</TableHead>
-          <TableHead>Startdatum</TableHead>
-          <TableHead>Slutdatum</TableHead>
-          <TableHead>Månadshyra</TableHead>
-          <TableHead>Kontrakttyp</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead></TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {contracts.map((contract) => (
-          <TableRow key={contract.id}>
-            <TableCell>
-              <div className="flex items-center">
-                <span>{getContractTypeName(contract.type)}</span>
-              </div>
-            </TableCell>
-            <TableCell>{contract.id}</TableCell>
-            <TableCell>{contract.objectName}</TableCell>
-            <TableCell>
-              <div>
-                {formatDate(contract.startDate)}
-              </div>
-            </TableCell>
-            <TableCell>
-              {contract.endDate ? formatDate(contract.endDate) : ""}
-            </TableCell>
-            <TableCell>{formatCurrency(contract.rent)}</TableCell>
-            <TableCell>{getContractCategory(contract.type)}</TableCell>
-            <TableCell>{getStatusBadge(contract.status)}</TableCell>
-            <TableCell>
-              <Button variant="outline" size="sm">
-                Visa kontrakt
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <ResponsiveTable
+      data={contracts}
+      columns={columns}
+      keyExtractor={(contract) => contract.id}
+      mobileCardRenderer={(contract: Contract) => (
+        <div className="space-y-2 w-full">
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="font-medium">{getContractTypeName(contract.type)} — {contract.objectName}</div>
+              <div className="text-sm text-muted-foreground">{contract.id}</div>
+            </div>
+            {getStatusBadge(contract.status)}
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">{formatCurrency(contract.rent)}/mån</span>
+            <Button variant="outline" size="sm">
+              Visa kontrakt
+            </Button>
+          </div>
+        </div>
+      )}
+    />
   );
 
   if (compact) {
