@@ -216,7 +216,7 @@ export function TenantCard({ tenant }: TenantCardProps) {
   if (isMobile) {
     return (
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card className={`rounded-lg border border-slate-200 bg-white shadow-sm ${isOpen ? 'border-l-[3px] border-l-primary' : ''}`}>
+        <Card className={`rounded-lg border border-slate-200 bg-white shadow-sm ${isOpen ? 'border-l-[2px] border-l-primary' : ''}`}>
           <CollapsibleTrigger asChild>
             <div className="w-full cursor-pointer px-4 py-3.5">
               <div className="flex items-center justify-between">
