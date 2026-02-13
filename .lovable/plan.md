@@ -1,28 +1,54 @@
 
 
-# Lägg till saknade feature toggles på beta-sidan
+# Kommunikationslogg på kundkortet
 
-## Sammanfattning
-Tre feature toggles som redan finns definierade i `FeatureTogglesContext` och används i routing saknas på inställningssidan (`BetaSettings.tsx`):
+## Vad ska byggas
+En liten, alltid synlig logg som visas direkt under kundkortet (TenantCard) pa detaljsidan. Loggen visar SMS och e-post som skickats till kunden de senaste 48 timmarna.
 
-1. **Hyreskontrakt** (`showLeaseContracts`) - Visa sidan för hyreskontrakt
-2. **Förvaltningsområden** (`showPropertyAreas`) - Visa sidan för förvaltnings- och kvartersvärdsområden
-3. **Ströfaktura underlag** (`showStrofakturaUnderlag`) - Visa sidan för ströfaktura underlag
+## Designforslag
 
-## Vad som ändras
+Loggen visas som en kompakt lista utan att ta for mycket plats. Om det inte finns nagra meddelanden visas texten "Inga meddelanden skickade senaste 48 timmarna".
 
-Alla tre toggles läggs till i `BetaSettings.tsx` i huvudsektionen (samma nivå som Besiktningar, Favoriter, etc.), placerade mellan "Favoriter" och "Dashboard-kort"-sektionen.
+Exempel pa hur en rad ser ut:
 
-## Tekniska detaljer
+```text
+SMS till 070-123 45 67 | 13 feb 13:42 | "Elavbrott i omradet..."
+E-post till anna@mail.com | 12 feb 09:15 | "Planerat underhall"
+```
 
-### Fil: `src/components/settings/BetaSettings.tsx`
+- Varje rad visar: typ (SMS/E-post), mottagare (telefonnummer/e-post), tidpunkt, och en forhandsvisning av meddelandet (trunkerat)
+- En liten rubrik: "Skickade meddelanden (senaste 48h)"
+- Hela komponenten ar en enkel Card utan kollapsfunktion -- alltid oppen och synlig
+- Responsiv: pa mobil visas raderna vertikalt istallet for horisontellt
 
-- Importera ikoner: `MapPin` (förvaltningsområden), `Receipt` eller `FileText` (ströfaktura)
-- Lägg till tre nya toggle-block efter Favoriter-togglen (rad 588), med samma mönster som övriga toggles
-- Varje toggle disabled om `!features.showNavigation`
+## Teknisk losning
 
-Ordning:
-1. Hyreskontrakt (FileText-ikon)
-2. Ströfaktura underlag (Wallet-ikon, redan importerad)
-3. Förvaltningsområden (MapPin-ikon, behöver importeras)
+### 1. Datamodell - ny fil `src/features/tenants/data/communication-log.ts`
+Skapa mockdata for skickade meddelanden med interfacet:
+
+```typescript
+interface SentMessage {
+  id: string;
+  type: 'sms' | 'email';
+  recipient: string;       // telefonnummer eller e-post
+  subject?: string;        // bara for e-post
+  messagePreview: string;  // forsta ~50 tecken
+  sentAt: string;          // ISO timestamp
+  sentBy: string;          // anvandare som skickade
+}
+```
+
+En funktion `getRecentMessages(personalNumber)` som filtrerar pa senaste 48h.
+
+### 2. Komponent - ny fil `src/features/tenants/components/TenantCommunicationLog.tsx`
+- Tar emot `personalNumber` som prop
+- Hamtar meddelanden via `getRecentMessages()`
+- Visar en kompakt Card med Badge for SMS/E-post
+- Visar "Inga meddelanden..." om listan ar tom
+
+### 3. Placering - andring i `src/pages/tenants/TenantDetailPage.tsx`
+Laggs till direkt under TenantCard-sektionen, ovanfor flikarna/accordion. Pa sa vis syns den alltid oavsett vilken flik man ar pa.
+
+### 4. Export - uppdatera `src/features/tenants/index.ts`
+Exportera den nya komponenten.
 
