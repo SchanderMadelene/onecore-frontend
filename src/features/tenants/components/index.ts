@@ -10,6 +10,7 @@ export { CreateParkingInterestDialog } from './CreateParkingInterestDialog';
 export { ParkingSpaceSearch } from './parking-interest/ParkingSpaceSearch';
 
 // New migrated components
+export { TenantCommunicationLog } from './TenantCommunicationLog';
 export { TenantInformationCard } from './TenantInformationCard';
 export { TenantEventLog } from './TenantEventLog';
 export { TenantDocuments } from './TenantDocuments';
