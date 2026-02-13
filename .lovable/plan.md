@@ -1,45 +1,30 @@
 
+# Migrera TenantContracts och TenantKeys till ResponsiveTable
 
-# Harmonisera alla collapsible-stilar pa mobil
+## Bakgrund
+Projektstandarden ar att alla tabeller ska anvanda `ResponsiveTable`-komponenten, som automatiskt visar kort-layout pa mobil istallet for horisontellt scrollande tabeller. Tva komponenter pa hyresgastsidan bryter mot detta: **TenantContracts** och **TenantKeys**.
 
-## Problem
-Det finns fyra olika visuella stilar for kollapserbara sektioner pa mobilen:
+## Andringar
 
-1. **MobileAccordion** (standard) — vit bakgrund, subtil skugga, primar vansterborder nar oppen. Anvands pa: fastighet (tabs), byggnad (tabs), lagenhet (tabs), hyresgast (tabs).
-2. **CollapsibleInfoCard** — vanlig Card utan skugga eller oppna-markering. Anvands pa: fastighet ("Grundlaggande information"), byggnad ("Grundlaggande information"), lagenhet ("Grundlaggande information").
-3. **TenantCard** — vanlig Card med Collapsible, egen styling. Anvands pa: hyresgast ("Hyresgast").
-4. **TenantCommunicationLog** — vanlig Card med Collapsible, gra titel. Anvands pa: hyresgast ("Skickade meddelanden").
+### 1. `src/features/tenants/components/TenantContracts.tsx`
+- Byt fran ra `Table`-import till `ResponsiveTable`
+- Definiera kolumner med `ResponsiveTableColumn[]` (Typ, Kontraktsnummer, Objekt, Startdatum, Slutdatum, Manadshyra, Kontrakttyp, Status, Atgard)
+- Lagg till en `mobileCardRenderer` som visar kontraktets viktigaste info: typ + objektnamn som rubrik, kontraktsnummer, hyra, status-badge och "Visa kontrakt"-knapp
+- Dolja mindre viktiga kolumner pa mobil via `hideOnMobile` (Slutdatum, Kontrakttyp)
+- Behall `compact`-prop: nar `compact=true`, rendera bara ResponsiveTable utan Card-wrapper; nar `compact=false`, wrappa i Card med rubrik
 
-Alla fyra bor se likadana ut nar de ar pa mobilen.
+### 2. `src/features/tenants/components/TenantKeys.tsx`
+- Byt fran ra `Table`-import till `ResponsiveTable`
+- Definiera kolumner (Nyckeltyp, Nyckelnamn, Flexnummer, Tillhor hyresobjekt, Nyckelsystem, Lopnummer, Utlaningsdatum)
+- Lagg till en `mobileCardRenderer` som visar nyckelnamn + typ som rubrik, hyresobjekt, flexnummer och utlaningsdatum
+- Dolja mindre viktiga kolumner pa mobil via `hideOnMobile` (Nyckelsystem, Lopnummer)
+- Lagg till `compact`-prop for konsistens med ovriga tab-komponenter
 
-## Losning
-Uppdatera de tre avvikande komponenterna (CollapsibleInfoCard, TenantCard, TenantCommunicationLog) sa att de matchar MobileAccordion-standarden pa mobilen:
+### Mobilkortens layout
+Korten foljer samma monster som befintliga ResponsiveTable-implementationer (t.ex. OrdersTable, BarriersTable):
+- Rubrikrad med fet text (objektnamn/nyckelnamn)
+- Kompletterande info i `text-sm text-muted-foreground`
+- Eventuella badges och knappar langst ner
 
-- `rounded-lg border border-slate-200 bg-white shadow-sm`
-- Nar oppen: `border-l-[3px] border-l-primary`
-- Trigger padding: `px-4 py-3.5`
-- Titel: `text-base font-medium` (svart, inte gra)
-- Chevron-ikon konsekvent
-
-## Tekniska andringar
-
-### 1. `src/components/ui/collapsible-info-card.tsx`
-Uppdatera mobilversionen sa Card far samma klasser som MobileAccordion-items:
-- Card: lagg till `border-slate-200 bg-white shadow-sm` och villkorlig `border-l-[3px] border-l-primary` nar oppen
-- Titel: `text-base font-medium` istallet for `text-lg`
-- Behall preview-content och expanderat-content logiken som den ar
-
-### 2. `src/features/tenants/components/TenantCard.tsx`
-Uppdatera mobilversionen:
-- Card: lagg till `border-slate-200 bg-white shadow-sm` och villkorlig `border-l-[3px] border-l-primary` nar oppen
-- CardTitle: `text-base font-medium`
-- Behall preview-info (adress, P-nummer, telefon) under titeln
-
-### 3. `src/features/tenants/components/TenantCommunicationLog.tsx`
-Uppdatera mobilversionen:
-- Card: lagg till `border-slate-200 bg-white shadow-sm` och villkorlig `border-l-[3px] border-l-primary` nar oppen
-- Titel: andra fran `text-sm font-medium text-muted-foreground` till `text-base font-medium` (svart text)
-
-## Resultat
-Alla kollapserbara sektioner pa samtliga detaljsidor (fastighet, byggnad, lagenhet, hyresgast) far exakt samma visuella stil. Inga andringar pa desktop.
-
+### Ingen paverkan pa desktop
+Desktop-vyn forblir identisk — ResponsiveTable renderar samma tabellstruktur som tidigare.
