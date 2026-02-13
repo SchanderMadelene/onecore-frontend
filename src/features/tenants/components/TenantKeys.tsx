@@ -1,12 +1,6 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { ResponsiveTable } from "@/components/ui/responsive-table";
 
 interface KeyData {
   id: string;
@@ -72,43 +66,80 @@ const mockKeys: KeyData[] = [
   },
 ];
 
-export const TenantKeys = () => {
+interface TenantKeysProps {
+  compact?: boolean;
+}
+
+export const TenantKeys = ({ compact = false }: TenantKeysProps) => {
+  const columns = [
+    {
+      key: "keyType",
+      label: "Nyckeltyp",
+      render: (key: KeyData) => key.keyType,
+    },
+    {
+      key: "keyName",
+      label: "Nyckelnamn",
+      render: (key: KeyData) => <span className="font-medium">{key.keyName}</span>,
+    },
+    {
+      key: "flexNumber",
+      label: "Flexnummer",
+      render: (key: KeyData) => key.flexNumber,
+    },
+    {
+      key: "rentalObject",
+      label: "Tillhör hyresobjekt",
+      render: (key: KeyData) => key.rentalObject,
+    },
+    {
+      key: "keySystem",
+      label: "Nyckelsystem",
+      render: (key: KeyData) => key.keySystem,
+      hideOnMobile: true,
+    },
+    {
+      key: "serialNumber",
+      label: "Löpnummer",
+      render: (key: KeyData) => key.serialNumber,
+      hideOnMobile: true,
+    },
+    {
+      key: "loanedDate",
+      label: "Utlåningsdatum",
+      render: (key: KeyData) => key.loanedDate,
+    },
+  ];
+
+  const tableContent = (
+    <ResponsiveTable
+      data={mockKeys}
+      columns={columns}
+      keyExtractor={(key) => key.id}
+      mobileCardRenderer={(key: KeyData) => (
+        <div className="space-y-1 w-full">
+          <div className="font-medium">{key.keyName} <span className="text-muted-foreground font-normal">({key.keyType})</span></div>
+          <div className="text-sm text-muted-foreground">{key.rentalObject}</div>
+          <div className="flex justify-between text-sm text-muted-foreground">
+            <span>{key.flexNumber}</span>
+            <span>{key.loanedDate}</span>
+          </div>
+        </div>
+      )}
+    />
+  );
+
+  if (compact) {
+    return tableContent;
+  }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Nyckelknippa</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nyckeltyp</TableHead>
-                <TableHead>Nyckelnamn</TableHead>
-                <TableHead>Flexnummer</TableHead>
-                <TableHead>Tillhör hyresobjekt</TableHead>
-                <TableHead>Nyckelsystem</TableHead>
-                <TableHead>Löpnummer</TableHead>
-                <TableHead>Utlåningsdatum</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockKeys.map((key) => (
-                <TableRow key={key.id}>
-                  <TableCell>
-                    {key.keyType}
-                  </TableCell>
-                  <TableCell className="font-medium">{key.keyName}</TableCell>
-                  <TableCell>{key.flexNumber}</TableCell>
-                  <TableCell>{key.rentalObject}</TableCell>
-                  <TableCell>{key.keySystem}</TableCell>
-                  <TableCell>{key.serialNumber}</TableCell>
-                  <TableCell>{key.loanedDate}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        {tableContent}
       </CardContent>
     </Card>
   );
