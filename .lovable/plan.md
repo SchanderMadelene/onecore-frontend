@@ -1,35 +1,42 @@
 
-# Förbättra mobila accordions
+# Ta bort dubbel-wrapping i accordion-innehall
 
 ## Problem
-De mobila accordion-raderna ser platta och tråkiga ut — liten padding, ingen bakgrundsfärg, och inte tillräckligt tydliga som interaktiva element.
+Nar innehall visas i en MobileAccordion far det dubbla ramar, dubbla titlar och onodigt djup. Accordionen har redan card-liknande styling (bg-white, border, shadow), men innehallet (TenantOrders, TenantNotes, OrdersManagement, TenantContracts, etc.) wrappar sig ocksa i egna Card-komponenter. Resultatet ar en "card-i-card"-effekt som ser rörigt ut.
 
-## Lösning
-Ge varje accordion-rad mer visuell vikt och tydligare interaktivitet:
+## Losning
+Ge innehallskomponenterna en "compact mode" sa de inte renderar sin egen Card-wrapper nar de ligger i en accordion. Tva alternativ:
 
-- Öka padding i triggern från `px-2 py-2` till `px-4 py-3.5` för bättre touchyta
-- Lägg till `bg-white` på varje item så de sticker ut mot sidans bakgrund
-- Ge den öppna/aktiva raden en subtil markering med vänsterborder i primärfärg
-- Lägg till en mjuk skuggeffekt (`shadow-sm`) för att ge djupkänsla
-- Öka typsnittsstorleken något och ge chevron-ikonen mer kontrast
+**Alternativ A (rekommenderat)**: Lagg till en `compact`-prop pa de komponenter som anvands i accordions. Nar `compact=true` renderas innehallet utan Card/TabLayout-wrapper och utan dubblerad rubrik.
 
-## Teknisk ändring
+Komponenter som behover andras:
+- **TenantOrders** — ta bort Card-wrappern nar compact
+- **OrdersManagement** — skicka `showCard=false` till TabLayout nar compact
+- **TenantNotes** — skicka `showCard=false` till TabLayout nar compact
+- **TenantContracts** — ta bort Card-wrappern nar compact
+- **TenantMobileAccordion** — skicka `compact={true}` till alla innehallskomponenter
 
-Enbart en fil behöver ändras: `src/components/ui/mobile-accordion.tsx`
+Samma princip appliceras pa `ResidenceMobileAccordion` for residences-vyn.
 
-### Före
-```
-AccordionItem className="rounded-lg border border-slate-200"
-AccordionTrigger className="px-2 py-2"
-```
+## Tekniska andringar
 
-### Efter
-```
-AccordionItem className="rounded-lg border border-slate-200 bg-white shadow-sm 
-  data-[state=open]:border-l-[3px] data-[state=open]:border-l-blue-500"
-AccordionTrigger className="px-4 py-3.5"
-```
+### 1. TenantOrders.tsx
+Lagg till `compact?: boolean` prop. Om `compact` ar true, rendera bara `OrdersManagement` direkt utan Card-wrapper.
 
-Innehållets padding uppdateras också fran `px-0 pb-2` till `px-4 pb-4` for att matcha triggerns indrag.
+### 2. OrdersManagement.tsx
+Lagg till `compact?: boolean` prop. Om `compact` ar true, anvand `showCard={false}` och `showHeader={false}` pa TabLayout.
 
-Ändringen påverkar alla ställen i systemet där MobileAccordion används, vilket ger konsekvent förbättring överallt.
+### 3. TenantNotes.tsx
+Lagg till `compact?: boolean` prop. Om `compact` ar true, skicka `showCard={false}` och `showHeader={false}` till TabLayout.
+
+### 4. TenantContracts.tsx
+Lagg till `compact?: boolean` prop. Om `compact` ar true, rendera Table direkt utan Card-wrapper.
+
+### 5. TenantMobileAccordion.tsx
+Skicka `compact={true}` till TenantOrders, TenantNotes, TenantContracts nar de anvands som accordion-innehall.
+
+### 6. ResidenceMobileAccordion (src/features/residences/components/MobileAccordion.tsx)
+Samma princip — skicka compact-props till OrdersManagement och Notes nar de anvands i accordions.
+
+## Resultat
+Innehallet i accordions renderas utan extra ramar, skuggor och dubblerade rubriker. Samma komponenter fungerar fortfarande som vanligt i desktop-flikar dar de behover sin Card-wrapper.
