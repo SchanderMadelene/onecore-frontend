@@ -1,42 +1,45 @@
 
-# Ta bort dubbel-wrapping i accordion-innehall
+
+# Harmonisera alla collapsible-stilar pa mobil
 
 ## Problem
-Nar innehall visas i en MobileAccordion far det dubbla ramar, dubbla titlar och onodigt djup. Accordionen har redan card-liknande styling (bg-white, border, shadow), men innehallet (TenantOrders, TenantNotes, OrdersManagement, TenantContracts, etc.) wrappar sig ocksa i egna Card-komponenter. Resultatet ar en "card-i-card"-effekt som ser rörigt ut.
+Det finns fyra olika visuella stilar for kollapserbara sektioner pa mobilen:
+
+1. **MobileAccordion** (standard) — vit bakgrund, subtil skugga, primar vansterborder nar oppen. Anvands pa: fastighet (tabs), byggnad (tabs), lagenhet (tabs), hyresgast (tabs).
+2. **CollapsibleInfoCard** — vanlig Card utan skugga eller oppna-markering. Anvands pa: fastighet ("Grundlaggande information"), byggnad ("Grundlaggande information"), lagenhet ("Grundlaggande information").
+3. **TenantCard** — vanlig Card med Collapsible, egen styling. Anvands pa: hyresgast ("Hyresgast").
+4. **TenantCommunicationLog** — vanlig Card med Collapsible, gra titel. Anvands pa: hyresgast ("Skickade meddelanden").
+
+Alla fyra bor se likadana ut nar de ar pa mobilen.
 
 ## Losning
-Ge innehallskomponenterna en "compact mode" sa de inte renderar sin egen Card-wrapper nar de ligger i en accordion. Tva alternativ:
+Uppdatera de tre avvikande komponenterna (CollapsibleInfoCard, TenantCard, TenantCommunicationLog) sa att de matchar MobileAccordion-standarden pa mobilen:
 
-**Alternativ A (rekommenderat)**: Lagg till en `compact`-prop pa de komponenter som anvands i accordions. Nar `compact=true` renderas innehallet utan Card/TabLayout-wrapper och utan dubblerad rubrik.
-
-Komponenter som behover andras:
-- **TenantOrders** — ta bort Card-wrappern nar compact
-- **OrdersManagement** — skicka `showCard=false` till TabLayout nar compact
-- **TenantNotes** — skicka `showCard=false` till TabLayout nar compact
-- **TenantContracts** — ta bort Card-wrappern nar compact
-- **TenantMobileAccordion** — skicka `compact={true}` till alla innehallskomponenter
-
-Samma princip appliceras pa `ResidenceMobileAccordion` for residences-vyn.
+- `rounded-lg border border-slate-200 bg-white shadow-sm`
+- Nar oppen: `border-l-[3px] border-l-primary`
+- Trigger padding: `px-4 py-3.5`
+- Titel: `text-base font-medium` (svart, inte gra)
+- Chevron-ikon konsekvent
 
 ## Tekniska andringar
 
-### 1. TenantOrders.tsx
-Lagg till `compact?: boolean` prop. Om `compact` ar true, rendera bara `OrdersManagement` direkt utan Card-wrapper.
+### 1. `src/components/ui/collapsible-info-card.tsx`
+Uppdatera mobilversionen sa Card far samma klasser som MobileAccordion-items:
+- Card: lagg till `border-slate-200 bg-white shadow-sm` och villkorlig `border-l-[3px] border-l-primary` nar oppen
+- Titel: `text-base font-medium` istallet for `text-lg`
+- Behall preview-content och expanderat-content logiken som den ar
 
-### 2. OrdersManagement.tsx
-Lagg till `compact?: boolean` prop. Om `compact` ar true, anvand `showCard={false}` och `showHeader={false}` pa TabLayout.
+### 2. `src/features/tenants/components/TenantCard.tsx`
+Uppdatera mobilversionen:
+- Card: lagg till `border-slate-200 bg-white shadow-sm` och villkorlig `border-l-[3px] border-l-primary` nar oppen
+- CardTitle: `text-base font-medium`
+- Behall preview-info (adress, P-nummer, telefon) under titeln
 
-### 3. TenantNotes.tsx
-Lagg till `compact?: boolean` prop. Om `compact` ar true, skicka `showCard={false}` och `showHeader={false}` till TabLayout.
-
-### 4. TenantContracts.tsx
-Lagg till `compact?: boolean` prop. Om `compact` ar true, rendera Table direkt utan Card-wrapper.
-
-### 5. TenantMobileAccordion.tsx
-Skicka `compact={true}` till TenantOrders, TenantNotes, TenantContracts nar de anvands som accordion-innehall.
-
-### 6. ResidenceMobileAccordion (src/features/residences/components/MobileAccordion.tsx)
-Samma princip — skicka compact-props till OrdersManagement och Notes nar de anvands i accordions.
+### 3. `src/features/tenants/components/TenantCommunicationLog.tsx`
+Uppdatera mobilversionen:
+- Card: lagg till `border-slate-200 bg-white shadow-sm` och villkorlig `border-l-[3px] border-l-primary` nar oppen
+- Titel: andra fran `text-sm font-medium text-muted-foreground` till `text-base font-medium` (svart text)
 
 ## Resultat
-Innehallet i accordions renderas utan extra ramar, skuggor och dubblerade rubriker. Samma komponenter fungerar fortfarande som vanligt i desktop-flikar dar de behover sin Card-wrapper.
+Alla kollapserbara sektioner pa samtliga detaljsidor (fastighet, byggnad, lagenhet, hyresgast) far exakt samma visuella stil. Inga andringar pa desktop.
+
