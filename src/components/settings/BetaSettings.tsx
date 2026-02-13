@@ -2,17 +2,85 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, Lock, Eye, TrendingUp, Code, Star, RotateCcw, MapPin } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { 
+  Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, 
+  LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, 
+  StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, 
+  Lock, Eye, TrendingUp, Code, Star, RotateCcw, MapPin, ChevronDown,
+  LucideIcon
+} from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole } from "@/contexts/RoleContext";
 import { toast } from "sonner";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+
+
+// Reusable toggle item
+function ToggleItem({ 
+  id, icon: Icon, label, description, checked, disabled, onToggle 
+}: { 
+  id: string; 
+  icon: LucideIcon; 
+  label: string; 
+  description: string; 
+  checked: boolean; 
+  disabled?: boolean; 
+  onToggle: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-between py-2">
+      <div className="space-y-0.5">
+        <div className="flex items-center gap-2">
+          <Icon className="h-4 w-4 text-muted-foreground" />
+          <Label htmlFor={id}>{label}</Label>
+        </div>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+      <Switch id={id} checked={checked} disabled={disabled} onCheckedChange={onToggle} />
+    </div>
+  );
+}
+
+// Collapsible section wrapper
+function ToggleSection({ 
+  title, icon: Icon, children, defaultOpen = false, badge
+}: { 
+  title: string; 
+  icon: LucideIcon; 
+  children: React.ReactNode; 
+  defaultOpen?: boolean;
+  badge?: number;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <CollapsibleTrigger className="flex items-center justify-between w-full py-3 px-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors group">
+        <div className="flex items-center gap-2">
+          <Icon className="h-4 w-4 text-muted-foreground" />
+          <span className="font-semibold text-sm">{title}</span>
+          {badge !== undefined && (
+            <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+              {badge}
+            </span>
+          )}
+        </div>
+        <ChevronDown className={cn(
+          "h-4 w-4 text-muted-foreground transition-transform",
+          open && "rotate-180"
+        )} />
+      </CollapsibleTrigger>
+      <CollapsibleContent className="px-4 pt-1 pb-2 space-y-1">
+        {children}
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
 
 export function BetaSettings() {
-  const {
-    features,
-    handleFeatureToggle
-  } = useFeatureToggles();
-  
+  const { features, handleFeatureToggle } = useFeatureToggles();
   const { devModeEnabled, setDevModeEnabled } = useRole();
   
   const handleResetToDefaults = () => {
@@ -23,6 +91,8 @@ export function BetaSettings() {
     }, 1000);
   };
   
+  const navDisabled = !features.showNavigation;
+
   return (
     <Card>
       <CardHeader>
@@ -37,730 +107,138 @@ export function BetaSettings() {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2">
-                <Code className="h-4 w-4" />
-                <Label htmlFor="dev-mode">Utvecklingsläge</Label>
-              </div>
-              <p className="text-sm text-muted-foreground">Aktivera rollbaserad dashboard-testning</p>
-            </div>
-            <Switch 
-              id="dev-mode" 
-              checked={devModeEnabled} 
-              onCheckedChange={setDevModeEnabled} 
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label htmlFor="navigation">Navigation</Label>
-              <p className="text-sm text-muted-foreground">Visa hierarkisk navigeringsmeny</p>
-            </div>
-            <Switch id="navigation" checked={features.showNavigation} onCheckedChange={() => handleFeatureToggle('showNavigation')} />
-          </div>
-          
-          <div className="pl-6 space-y-4 border-l">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <Building className="h-4 w-4" />
-                    <Label htmlFor="properties">Fastigheter</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa fastighetsfunktioner</p>
-                </div>
-                <Switch id="properties" checked={features.showProperties} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showProperties')} />
-              </div>
-
-              <div className="pl-6 space-y-3 border-l">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <Building className="h-4 w-4" />
-                      <Label htmlFor="buildings">Byggnader</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa byggnadskort</p>
-                  </div>
-                  <Switch id="buildings" checked={features.showBuildings} disabled={!features.showProperties || !features.showNavigation} onCheckedChange={() => handleFeatureToggle('showBuildings')} />
-                </div>
-
-                <div className="pl-6 space-y-3 border-l">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <Home className="h-4 w-4" />
-                        <Label htmlFor="building-entrances">Uppgångar</Label>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Visa uppgångsflik på byggnadskort</p>
-                    </div>
-                    <Switch 
-                      id="building-entrances" 
-                      checked={features.showBuildingEntrances} 
-                      disabled={!features.showBuildings || !features.showProperties || !features.showNavigation}
-                      onCheckedChange={() => handleFeatureToggle('showBuildingEntrances')} 
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <Building2 className="h-4 w-4" />
-                        <Label htmlFor="building-parts">Byggnadsdelar</Label>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Visa byggnadsdelarflik på byggnadskort</p>
-                    </div>
-                    <Switch 
-                      id="building-parts" 
-                      checked={features.showBuildingParts} 
-                      disabled={!features.showBuildings || !features.showProperties || !features.showNavigation}
-                      onCheckedChange={() => handleFeatureToggle('showBuildingParts')} 
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <Box className="h-4 w-4" />
-                        <Label htmlFor="building-spaces">Utrymmen</Label>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Visa utrymmenflik på byggnadskort</p>
-                    </div>
-                    <Switch 
-                      id="building-spaces" 
-                      checked={features.showBuildingSpaces} 
-                      disabled={!features.showBuildings || !features.showProperties || !features.showNavigation}
-                      onCheckedChange={() => handleFeatureToggle('showBuildingSpaces')} 
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <Settings className="h-4 w-4" />
-                        <Label htmlFor="building-installations">Installationer</Label>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Visa installationerflik på byggnadskort</p>
-                    </div>
-                    <Switch 
-                      id="building-installations" 
-                      checked={features.showBuildingInstallations} 
-                      disabled={!features.showBuildings || !features.showProperties || !features.showNavigation}
-                      onCheckedChange={() => handleFeatureToggle('showBuildingInstallations')} 
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <Car className="h-4 w-4" />
-                        <Label htmlFor="building-parking">Parkering</Label>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Visa parkeringflik på byggnadskort</p>
-                    </div>
-                    <Switch 
-                      id="building-parking" 
-                      checked={features.showBuildingParking} 
-                      disabled={!features.showBuildings || !features.showProperties || !features.showNavigation}
-                      onCheckedChange={() => handleFeatureToggle('showBuildingParking')} 
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4" />
-                        <Label htmlFor="building-documents">Dokument</Label>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Visa dokumentflik på byggnadskort</p>
-                    </div>
-                    <Switch 
-                      id="building-documents" 
-                      checked={features.showBuildingDocuments} 
-                      disabled={!features.showBuildings || !features.showProperties || !features.showNavigation}
-                      onCheckedChange={() => handleFeatureToggle('showBuildingDocuments')} 
-                    />
-                  </div>
-                </div>
-
-              <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <Home className="h-4 w-4" />
-                        <Label htmlFor="apartments">Lägenheter</Label>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Visa lägenhetskort</p>
-                    </div>
-                    <Switch id="apartments" checked={features.showApartments} disabled={!features.showProperties || !features.showNavigation} onCheckedChange={() => handleFeatureToggle('showApartments')} />
-                  </div>
-
-                  <div className="pl-6 space-y-3 border-l">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <LayoutDashboard className="h-4 w-4" />
-                          <Label htmlFor="room-information">Rumsinformation</Label>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Visa rumsinformation på lägenhetskortet</p>
-                      </div>
-                      <Switch 
-                        id="room-information" 
-                        checked={features.showRoomInformation} 
-                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
-                        onCheckedChange={() => handleFeatureToggle('showRoomInformation')} 
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <FileImage className="h-4 w-4" />
-                          <Label htmlFor="floorplan">Planritning</Label>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Visa planritningsflik på lägenhetskortet</p>
-                      </div>
-                      <Switch 
-                        id="floorplan" 
-                        checked={features.showFloorplan} 
-                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
-                        onCheckedChange={() => handleFeatureToggle('showFloorplan')} 
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <FileText className="h-4 w-4" />
-                          <Label htmlFor="documents">Dokument</Label>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Visa dokumentflik på lägenhetskortet</p>
-                      </div>
-                      <Switch 
-                        id="documents" 
-                        checked={features.showDocuments} 
-                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
-                        onCheckedChange={() => handleFeatureToggle('showDocuments')} 
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <ClipboardList className="h-4 w-4" />
-                          <Label htmlFor="inspections">Besiktning</Label>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Visa besiktningsfunktioner på lägenhetskortet</p>
-                      </div>
-                      <Switch 
-                        id="inspections" 
-                        checked={features.showInspections} 
-                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
-                        onCheckedChange={() => handleFeatureToggle('showInspections')} 
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <MessageSquare className="h-4 w-4" />
-                          <Label htmlFor="apartment-issues">Ärenden</Label>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Visa ärendefunktioner på lägenhetskortet</p>
-                      </div>
-                      <Switch 
-                        id="apartment-issues" 
-                        checked={features.showApartmentIssues} 
-                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
-                        onCheckedChange={() => handleFeatureToggle('showApartmentIssues')} 
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <StickyNote className="h-4 w-4" />
-                          <Label htmlFor="residence-notes">Noteringar</Label>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Visa noteringsfunktioner på lägenhetskortet</p>
-                      </div>
-                      <Switch 
-                        id="residence-notes" 
-                        checked={features.showResidenceNotes} 
-                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
-                        onCheckedChange={() => handleFeatureToggle('showResidenceNotes')} 
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4" />
-                          <Label htmlFor="tenant-info">Hyresgästinformation</Label>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Visa hyresgästinformation på lägenhetskortet</p>
-                      </div>
-                      <Switch 
-                        id="tenant-info" 
-                        checked={features.showTenantInfo} 
-                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
-                        onCheckedChange={() => handleFeatureToggle('showTenantInfo')} 
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-2">
-                          <Key className="h-4 w-4" />
-                          <Label htmlFor="residence-access">Lås och passage</Label>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Visa lås- och passagefunktioner på lägenhetskortet</p>
-                      </div>
-                      <Switch 
-                        id="residence-access" 
-                        checked={features.showResidenceAccess} 
-                        disabled={!features.showApartments || !features.showProperties || !features.showNavigation}
-                        onCheckedChange={() => handleFeatureToggle('showResidenceAccess')} 
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  <Label htmlFor="tenants">Kunder</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Visa kundfunktioner</p>
-              </div>
-              <Switch id="tenants" checked={features.showTenants} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showTenants')} />
-            </div>
-
-            <div className="pl-6 space-y-3 border-l">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    <Label htmlFor="tenant-contracts">Hyreskontrakt</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa hyreskontrakt på kundkort</p>
-                </div>
-                <Switch 
-                  id="tenant-contracts" 
-                  checked={features.showTenantContracts} 
-                  disabled={!features.showTenants || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showTenantContracts')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    <Label htmlFor="tenant-queue">Kösystem</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa kösystem på kundkort</p>
-                </div>
-                <Switch 
-                  id="tenant-queue" 
-                  checked={features.showTenantQueue} 
-                  disabled={!features.showTenants || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showTenantQueue')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4" />
-                    <Label htmlFor="tenant-cases">Ärenden</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa ärenden på kundkort</p>
-                </div>
-                <Switch 
-                  id="tenant-cases" 
-                  checked={features.showTenantCases} 
-                  disabled={!features.showTenants || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showTenantCases')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <Wallet className="h-4 w-4" />
-                    <Label htmlFor="tenant-ledger">Kundreskontra</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa kundreskontra på kundkort</p>
-                </div>
-                <Switch 
-                  id="tenant-ledger" 
-                  checked={features.showTenantLedger} 
-                  disabled={!features.showTenants || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showTenantLedger')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <StickyNote className="h-4 w-4" />
-                    <Label htmlFor="tenant-notes">Noteringar</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa noteringar på kundkort</p>
-                </div>
-                <Switch 
-                  id="tenant-notes" 
-                  checked={features.showTenantNotes} 
-                  disabled={!features.showTenants || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showTenantNotes')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <Key className="h-4 w-4" />
-                    <Label htmlFor="tenant-keys">Nyckelknippa</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa nyckelknippa på kundkort</p>
-                </div>
-                <Switch 
-                  id="tenant-keys" 
-                  checked={features.showTenantKeys} 
-                  disabled={!features.showTenants || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showTenantKeys')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <Bell className="h-4 w-4" />
-                    <Label htmlFor="tenant-events">Händelselogg</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa händelselogg på kundkort</p>
-                </div>
-                <Switch 
-                  id="tenant-events" 
-                  checked={features.showTenantEvents} 
-                  disabled={!features.showTenants || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showTenantEvents')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    <Label htmlFor="tenant-documents">Dokument</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa dokument på kundkort</p>
-                </div>
-                <Switch 
-                  id="tenant-documents" 
-                  checked={features.showTenantDocuments} 
-                  disabled={!features.showTenants || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showTenantDocuments')} 
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <ShieldX className="h-4 w-4" />
-                  <Label htmlFor="barriers">Spärrar</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Aktivera spärrarfunktioner för bostäder och bilplatser</p>
-              </div>
-              <Switch id="barriers" checked={features.showBarriers} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showBarriers')} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <Key className="h-4 w-4" />
-                  <Label htmlFor="turnover">In- och utflytt</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Aktivera funktioner för in- och utflytthantering</p>
-              </div>
-              <Switch id="turnover" checked={features.showTurnover} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showTurnover')} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <Key className="h-4 w-4" />
-                  <Label htmlFor="rentals">Uthyrning</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Aktivera uthyrningsfunktioner</p>
-              </div>
-              <Switch id="rentals" checked={features.showRentals} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showRentals')} />
-            </div>
-
-            <div className="pl-6 space-y-3 border-l">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <Home className="h-4 w-4" />
-                    <Label htmlFor="rentals-housing">Bostad</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa bostadsuthyrning</p>
-                </div>
-                <Switch 
-                  id="rentals-housing" 
-                  checked={features.showRentalsHousing} 
-                  disabled={!features.showRentals || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showRentalsHousing')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <Car className="h-4 w-4" />
-                    <Label htmlFor="rentals-parking">Bilplats</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa bilplatsuthyrning</p>
-                </div>
-                <Switch 
-                  id="rentals-parking" 
-                  checked={features.showRentalsParking} 
-                  disabled={!features.showRentals || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showRentalsParking')} 
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <Archive className="h-4 w-4" />
-                    <Label htmlFor="rentals-storage">Förråd</Label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Visa förrådsuthyrning</p>
-                </div>
-                <Switch 
-                  id="rentals-storage" 
-                  checked={features.showRentalsStorage} 
-                  disabled={!features.showRentals || !features.showNavigation}
-                  onCheckedChange={() => handleFeatureToggle('showRentalsStorage')} 
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <Palette className="h-4 w-4" />
-                  <Label htmlFor="design-system">Designsystem</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Visa sidan för designsystem</p>
-              </div>
-              <Switch id="design-system" checked={features.showDesignSystem} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDesignSystem')} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <ClipboardList className="h-4 w-4" />
-                  <Label htmlFor="all-inspections">Besiktningar (Global vy)</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Visa global besiktningsvy</p>
-              </div>
-              <Switch id="all-inspections" checked={features.showAllInspections} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showAllInspections')} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <Star className="h-4 w-4" />
-                  <Label htmlFor="favorites">Favoriter</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Visa sidan för sparade sökningar</p>
-              </div>
-              <Switch id="favorites" checked={features.showFavorites} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showFavorites')} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  <Label htmlFor="lease-contracts">Hyreskontrakt</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Visa sidan för hyreskontrakt</p>
-              </div>
-              <Switch id="lease-contracts" checked={features.showLeaseContracts} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showLeaseContracts')} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <Wallet className="h-4 w-4" />
-                  <Label htmlFor="strofaktura">Ströfaktura underlag</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Visa sidan för ströfaktura underlag</p>
-              </div>
-              <Switch id="strofaktura" checked={features.showStrofakturaUnderlag} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showStrofakturaUnderlag')} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  <Label htmlFor="property-areas">Förvaltningsområden</Label>
-                </div>
-                <p className="text-sm text-muted-foreground">Visa sidan för förvaltnings- och kvartersvärdsområden</p>
-              </div>
-              <Switch id="property-areas" checked={features.showPropertyAreas} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showPropertyAreas')} />
-            </div>
-
-            <div className="space-y-3 pt-4 border-t">
-              <h3 className="font-semibold text-sm">Dashboard-kort</h3>
-              <p className="text-xs text-muted-foreground">Välj vilka kort som ska visas på dashboarden</p>
-              
-              <div className="space-y-3 pl-4 border-l">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <Building className="h-4 w-4" />
-                      <Label htmlFor="dashboard-properties">Fastigheter</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa fastighetskort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-properties" checked={features.showProperties} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showProperties')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4" />
-                      <Label htmlFor="dashboard-tenants">Kunder</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa kundkort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-tenants" checked={features.showTenants} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showTenants')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <Key className="h-4 w-4" />
-                      <Label htmlFor="dashboard-rentals">Uthyrning</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa uthyrningskort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-rentals" checked={features.showRentals} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showRentals')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <ShieldX className="h-4 w-4" />
-                      <Label htmlFor="dashboard-barriers">Spärrar</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa spärrkort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-barriers" checked={features.showBarriers} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showBarriers')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <Key className="h-4 w-4" />
-                      <Label htmlFor="dashboard-turnover">In- och utflytt</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa in- och utflyttskort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-turnover" checked={features.showTurnover} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showTurnover')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <ClipboardList className="h-4 w-4" />
-                      <Label htmlFor="dashboard-inspections">Besiktningar</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa besiktningskort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-inspections" checked={features.showAllInspections} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showAllInspections')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="h-4 w-4" />
-                      <Label htmlFor="dashboard-economy">Ekonomi (XLedger)</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa ekonomikort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-economy" checked={features.showDashboardEconomy} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardEconomy')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <FileText className="h-4 w-4" />
-                      <Label htmlFor="dashboard-contracts">Hyresadministration & avtal (TenFast)</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa hyresadministrationskort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-contracts" checked={features.showDashboardContracts} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardContracts')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <Lock className="h-4 w-4" />
-                      <Label htmlFor="dashboard-locks">Lås & passage (Alliera)</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa lås- och passagekort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-locks" checked={features.showDashboardLocks} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardLocks')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <MessageSquare className="h-4 w-4" />
-                      <Label htmlFor="dashboard-odoo">Ärendehantering (Odoo)</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa ärendehanteringskort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-odoo" checked={features.showDashboardOdoo} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardOdoo')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <Eye className="h-4 w-4" />
-                      <Label htmlFor="dashboard-greenview">Greenview</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa Greenview-kort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-greenview" checked={features.showDashboardGreenview} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardGreenview')} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4" />
-                      <Label htmlFor="dashboard-curves">Curves (IMD)</Label>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Visa Curves-kort på dashboarden</p>
-                  </div>
-                  <Switch id="dashboard-curves" checked={features.showDashboardCurves} disabled={!features.showNavigation} onCheckedChange={() => handleFeatureToggle('showDashboardCurves')} />
-                </div>
-              </div>
-            </div>
-          </div>
+      <CardContent className="space-y-3">
+        {/* General / always-visible toggles */}
+        <div className="space-y-1 pb-3 border-b">
+          <ToggleItem
+            id="dev-mode"
+            icon={Code}
+            label="Utvecklingsläge"
+            description="Aktivera rollbaserad dashboard-testning"
+            checked={devModeEnabled}
+            onToggle={() => setDevModeEnabled(!devModeEnabled)}
+          />
+          <ToggleItem
+            id="navigation"
+            icon={LayoutDashboard}
+            label="Navigation"
+            description="Visa hierarkisk navigeringsmeny"
+            checked={features.showNavigation}
+            onToggle={() => handleFeatureToggle('showNavigation')}
+          />
         </div>
+
+        {/* Fastigheter */}
+        <ToggleSection title="Fastigheter" icon={Building} defaultOpen={false} badge={3}>
+          <ToggleItem
+            id="properties"
+            icon={Building}
+            label="Fastigheter"
+            description="Visa fastighetsfunktioner"
+            checked={features.showProperties}
+            disabled={navDisabled}
+            onToggle={() => handleFeatureToggle('showProperties')}
+          />
+
+          {/* Byggnader sub-group */}
+          <div className="pl-4 border-l space-y-1">
+            <ToggleItem
+              id="buildings"
+              icon={Building}
+              label="Byggnader"
+              description="Visa byggnadskort"
+              checked={features.showBuildings}
+              disabled={!features.showProperties || navDisabled}
+              onToggle={() => handleFeatureToggle('showBuildings')}
+            />
+            <div className="pl-4 border-l space-y-1">
+              <ToggleItem id="building-entrances" icon={Home} label="Uppgångar" description="Visa uppgångsflik på byggnadskort" checked={features.showBuildingEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingEntrances')} />
+              <ToggleItem id="building-parts" icon={Building2} label="Byggnadsdelar" description="Visa byggnadsdelarflik" checked={features.showBuildingParts} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingParts')} />
+              <ToggleItem id="building-spaces" icon={Box} label="Utrymmen" description="Visa utrymmenflik" checked={features.showBuildingSpaces} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingSpaces')} />
+              <ToggleItem id="building-installations" icon={Settings} label="Installationer" description="Visa installationerflik" checked={features.showBuildingInstallations} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingInstallations')} />
+              <ToggleItem id="building-parking" icon={Car} label="Parkering" description="Visa parkeringflik" checked={features.showBuildingParking} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingParking')} />
+              <ToggleItem id="building-documents" icon={FileText} label="Dokument" description="Visa dokumentflik" checked={features.showBuildingDocuments} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingDocuments')} />
+            </div>
+          </div>
+
+          {/* Lägenheter sub-group */}
+          <div className="pl-4 border-l space-y-1">
+            <ToggleItem
+              id="apartments"
+              icon={Home}
+              label="Lägenheter"
+              description="Visa lägenhetskort"
+              checked={features.showApartments}
+              disabled={!features.showProperties || navDisabled}
+              onToggle={() => handleFeatureToggle('showApartments')}
+            />
+            <div className="pl-4 border-l space-y-1">
+              <ToggleItem id="room-information" icon={LayoutDashboard} label="Rumsinformation" description="Visa rumsinformation på lägenhetskortet" checked={features.showRoomInformation} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showRoomInformation')} />
+              <ToggleItem id="floorplan" icon={FileImage} label="Planritning" description="Visa planritningsflik" checked={features.showFloorplan} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showFloorplan')} />
+              <ToggleItem id="documents" icon={FileText} label="Dokument" description="Visa dokumentflik" checked={features.showDocuments} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showDocuments')} />
+              <ToggleItem id="inspections" icon={ClipboardList} label="Besiktning" description="Visa besiktningsfunktioner" checked={features.showInspections} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showInspections')} />
+              <ToggleItem id="apartment-issues" icon={MessageSquare} label="Ärenden" description="Visa ärendefunktioner" checked={features.showApartmentIssues} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showApartmentIssues')} />
+              <ToggleItem id="residence-notes" icon={StickyNote} label="Noteringar" description="Visa noteringsfunktioner" checked={features.showResidenceNotes} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showResidenceNotes')} />
+              <ToggleItem id="tenant-info" icon={Users} label="Hyresgästinformation" description="Visa hyresgästinformation" checked={features.showTenantInfo} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showTenantInfo')} />
+              <ToggleItem id="residence-access" icon={Key} label="Lås och passage" description="Visa lås- och passagefunktioner" checked={features.showResidenceAccess} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showResidenceAccess')} />
+            </div>
+          </div>
+        </ToggleSection>
+
+        {/* Kunder */}
+        <ToggleSection title="Kunder" icon={Users} badge={8}>
+          <ToggleItem id="tenants" icon={Users} label="Kunder" description="Visa kundfunktioner" checked={features.showTenants} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTenants')} />
+          <div className="pl-4 border-l space-y-1">
+            <ToggleItem id="tenant-contracts" icon={FileText} label="Hyreskontrakt" description="Visa hyreskontrakt på kundkort" checked={features.showTenantContracts} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantContracts')} />
+            <ToggleItem id="tenant-queue" icon={Users} label="Kösystem" description="Visa kösystem på kundkort" checked={features.showTenantQueue} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantQueue')} />
+            <ToggleItem id="tenant-cases" icon={MessageSquare} label="Ärenden" description="Visa ärenden på kundkort" checked={features.showTenantCases} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantCases')} />
+            <ToggleItem id="tenant-ledger" icon={Wallet} label="Kundreskontra" description="Visa kundreskontra på kundkort" checked={features.showTenantLedger} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantLedger')} />
+            <ToggleItem id="tenant-notes" icon={StickyNote} label="Noteringar" description="Visa noteringar på kundkort" checked={features.showTenantNotes} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantNotes')} />
+            <ToggleItem id="tenant-keys" icon={Key} label="Nyckelknippa" description="Visa nyckelknippa på kundkort" checked={features.showTenantKeys} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantKeys')} />
+            <ToggleItem id="tenant-events" icon={Bell} label="Händelselogg" description="Visa händelselogg på kundkort" checked={features.showTenantEvents} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantEvents')} />
+            <ToggleItem id="tenant-documents" icon={FileText} label="Dokument" description="Visa dokument på kundkort" checked={features.showTenantDocuments} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantDocuments')} />
+          </div>
+        </ToggleSection>
+
+        {/* Uthyrning */}
+        <ToggleSection title="Uthyrning" icon={Key} badge={3}>
+          <ToggleItem id="rentals" icon={Key} label="Uthyrning" description="Aktivera uthyrningsfunktioner" checked={features.showRentals} disabled={navDisabled} onToggle={() => handleFeatureToggle('showRentals')} />
+          <div className="pl-4 border-l space-y-1">
+            <ToggleItem id="rentals-housing" icon={Home} label="Bostad" description="Visa bostadsuthyrning" checked={features.showRentalsHousing} disabled={!features.showRentals || navDisabled} onToggle={() => handleFeatureToggle('showRentalsHousing')} />
+            <ToggleItem id="rentals-parking" icon={Car} label="Bilplats" description="Visa bilplatsuthyrning" checked={features.showRentalsParking} disabled={!features.showRentals || navDisabled} onToggle={() => handleFeatureToggle('showRentalsParking')} />
+            <ToggleItem id="rentals-storage" icon={Archive} label="Förråd" description="Visa förrådsuthyrning" checked={features.showRentalsStorage} disabled={!features.showRentals || navDisabled} onToggle={() => handleFeatureToggle('showRentalsStorage')} />
+          </div>
+        </ToggleSection>
+
+        {/* Övriga sidor */}
+        <ToggleSection title="Övriga sidor" icon={Star} badge={7}>
+          <ToggleItem id="barriers" icon={ShieldX} label="Spärrar" description="Aktivera spärrarfunktioner för bostäder och bilplatser" checked={features.showBarriers} disabled={navDisabled} onToggle={() => handleFeatureToggle('showBarriers')} />
+          <ToggleItem id="turnover" icon={Key} label="In- och utflytt" description="Aktivera funktioner för in- och utflytthantering" checked={features.showTurnover} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTurnover')} />
+          <ToggleItem id="design-system" icon={Palette} label="Designsystem" description="Visa sidan för designsystem" checked={features.showDesignSystem} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDesignSystem')} />
+          <ToggleItem id="all-inspections" icon={ClipboardList} label="Besiktningar (Global vy)" description="Visa global besiktningsvy" checked={features.showAllInspections} disabled={navDisabled} onToggle={() => handleFeatureToggle('showAllInspections')} />
+          <ToggleItem id="favorites" icon={Star} label="Favoriter" description="Visa sidan för sparade sökningar" checked={features.showFavorites} disabled={navDisabled} onToggle={() => handleFeatureToggle('showFavorites')} />
+          <ToggleItem id="lease-contracts" icon={FileText} label="Hyreskontrakt" description="Visa sidan för hyreskontrakt" checked={features.showLeaseContracts} disabled={navDisabled} onToggle={() => handleFeatureToggle('showLeaseContracts')} />
+          <ToggleItem id="strofaktura" icon={Wallet} label="Ströfaktura underlag" description="Visa sidan för ströfaktura underlag" checked={features.showStrofakturaUnderlag} disabled={navDisabled} onToggle={() => handleFeatureToggle('showStrofakturaUnderlag')} />
+          <ToggleItem id="property-areas" icon={MapPin} label="Förvaltningsområden" description="Visa sidan för förvaltnings- och kvartersvärdsområden" checked={features.showPropertyAreas} disabled={navDisabled} onToggle={() => handleFeatureToggle('showPropertyAreas')} />
+        </ToggleSection>
+
+        {/* Dashboard-kort */}
+        <ToggleSection title="Dashboard-kort" icon={LayoutDashboard} badge={10}>
+          <p className="text-xs text-muted-foreground pb-1">Välj vilka kort som ska visas på dashboarden</p>
+          <ToggleItem id="dashboard-properties" icon={Building} label="Fastigheter" description="Visa fastighetskort på dashboarden" checked={features.showProperties} disabled={navDisabled} onToggle={() => handleFeatureToggle('showProperties')} />
+          <ToggleItem id="dashboard-tenants" icon={Users} label="Kunder" description="Visa kundkort på dashboarden" checked={features.showTenants} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTenants')} />
+          <ToggleItem id="dashboard-rentals" icon={Key} label="Uthyrning" description="Visa uthyrningskort på dashboarden" checked={features.showRentals} disabled={navDisabled} onToggle={() => handleFeatureToggle('showRentals')} />
+          <ToggleItem id="dashboard-barriers" icon={ShieldX} label="Spärrar" description="Visa spärrkort på dashboarden" checked={features.showBarriers} disabled={navDisabled} onToggle={() => handleFeatureToggle('showBarriers')} />
+          <ToggleItem id="dashboard-turnover" icon={Key} label="In- och utflytt" description="Visa in- och utflyttskort på dashboarden" checked={features.showTurnover} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTurnover')} />
+          <ToggleItem id="dashboard-inspections" icon={ClipboardList} label="Besiktningar" description="Visa besiktningskort på dashboarden" checked={features.showAllInspections} disabled={navDisabled} onToggle={() => handleFeatureToggle('showAllInspections')} />
+          <ToggleItem id="dashboard-economy" icon={DollarSign} label="Ekonomi (XLedger)" description="Visa ekonomikort på dashboarden" checked={features.showDashboardEconomy} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDashboardEconomy')} />
+          <ToggleItem id="dashboard-contracts" icon={FileText} label="Hyresadministration & avtal (TenFast)" description="Visa hyresadministrationskort" checked={features.showDashboardContracts} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDashboardContracts')} />
+          <ToggleItem id="dashboard-locks" icon={Lock} label="Lås & passage (Alliera)" description="Visa lås- och passagekort" checked={features.showDashboardLocks} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDashboardLocks')} />
+          <ToggleItem id="dashboard-odoo" icon={MessageSquare} label="Ärendehantering (Odoo)" description="Visa ärendehanteringskort" checked={features.showDashboardOdoo} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDashboardOdoo')} />
+          <ToggleItem id="dashboard-greenview" icon={Eye} label="Greenview" description="Visa Greenview-kort" checked={features.showDashboardGreenview} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDashboardGreenview')} />
+          <ToggleItem id="dashboard-curves" icon={TrendingUp} label="Curves (IMD)" description="Visa Curves-kort" checked={features.showDashboardCurves} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDashboardCurves')} />
+        </ToggleSection>
       </CardContent>
     </Card>
   );
-};
+}
