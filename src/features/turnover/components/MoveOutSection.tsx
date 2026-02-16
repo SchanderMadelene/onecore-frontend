@@ -16,7 +16,7 @@ export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionPro
       key: 'contractNumber',
       label: 'Kontraktsnr',
       render: (item: MoveInListEntry) => (
-        <span className="font-mono text-xs">{item.contractNumber}</span>
+        <span className="text-sm">{item.contractNumber}</span>
       ),
       hideOnMobile: true,
     },
@@ -74,7 +74,7 @@ export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionPro
       {item.tenantPhone && (
         <div className="text-sm text-muted-foreground">{item.tenantPhone}</div>
       )}
-      <div className="text-xs text-muted-foreground font-mono">{item.contractNumber}</div>
+      <div className="text-sm text-muted-foreground">{item.contractNumber}</div>
       <div className="text-sm text-muted-foreground">
         {format(parseISO(item.date), 'd MMM yyyy', { locale: sv })}
       </div>
