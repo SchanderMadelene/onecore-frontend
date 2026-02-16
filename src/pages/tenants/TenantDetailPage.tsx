@@ -2,7 +2,7 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { PageLayout } from "@/layouts";
-import { TenantCard, TenantCommunicationLog, TenantDetailTabs, TenantDetailTabsContent, TenantMobileAccordion, getTenantById } from "@/features/tenants";
+import { TenantCard, TenantDetailTabs, TenantDetailTabsContent, TenantMobileAccordion, getTenantById } from "@/features/tenants";
 import { getMockContractsForTenant } from "@/features/tenants/data/contracts";
 import { TriangleAlert } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -42,10 +42,6 @@ const TenantDetailPage = () => {
 
         <div className="grid grid-cols-1 gap-6 mb-4">
           <TenantCard tenant={tenant} />
-        </div>
-
-        <div className="mb-6">
-          <TenantCommunicationLog personalNumber={tenant.personalNumber} />
         </div>
 
         {isMobile ? (

@@ -71,6 +71,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
       case 'contract': return 'Kontrakt';
       case 'payment': return 'Betalning';
       case 'support': return 'Support';
+      case 'communication': return 'Kommunikation';
       default: return 'Övrigt';
     }
   };
@@ -108,6 +109,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                   <SelectItem value="contract">Kontrakt</SelectItem>
                   <SelectItem value="payment">Betalning</SelectItem>
                   <SelectItem value="support">Support</SelectItem>
+                  <SelectItem value="communication">Kommunikation</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -219,7 +221,13 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
                                 <h3 className="font-medium text-foreground">{event.title}</h3>
-                                <Badge variant="outline" className="text-xs">
+                                <Badge variant="outline" className={`text-xs ${
+                                  event.type === 'communication' && event.metadata?.messageType === 'sms'
+                                    ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                    : event.type === 'communication' && event.metadata?.messageType === 'email'
+                                    ? 'bg-purple-50 text-purple-700 border-purple-200'
+                                    : ''
+                                }`}>
                                   {getEventTypeName(event.type)}
                                 </Badge>
                               </div>
