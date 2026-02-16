@@ -81,6 +81,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
       ip: 'IP-adress',
       device: 'Enhet',
       channel: 'Kanal',
+      system: 'System',
       newEndDate: 'Nytt slutdatum',
       previousEndDate: 'Tidigare slutdatum',
     };
