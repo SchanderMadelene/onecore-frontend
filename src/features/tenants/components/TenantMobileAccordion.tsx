@@ -2,6 +2,7 @@ import { TenantContracts } from "./TenantContracts";
 import { TenantQueueSystem } from "./TenantQueueSystem";
 import { TenantNotes } from "./TenantNotes";
 import { TenantOrders } from "./TenantOrders";
+import { TenantEventLog } from "./TenantEventLog";
 import { CustomerLedger, getMockLedgerForCustomer, getMockInvoicesForCustomer } from "@/features/ekonomi";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
@@ -117,10 +118,7 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
       id: "events",
       title: "Händelselogg",
       content: features.showTenantEvents ? (
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <h3 className="text-lg font-medium mb-4">Händelselogg</h3>
-          <p className="text-muted-foreground">Ingen händelsehistorik tillgänglig för denna kund.</p>
-        </div>
+        <TenantEventLog personalNumber={personalNumber || ''} />
       ) : (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <p className="text-slate-500">
