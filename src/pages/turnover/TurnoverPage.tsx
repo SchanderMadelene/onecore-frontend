@@ -10,9 +10,10 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function TurnoverPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {
-    periods,
-    selectedPeriod,
-    setSelectedPeriod,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
     selectedKvvArea,
     setSelectedKvvArea,
     moveOutEntries,
@@ -29,9 +30,10 @@ export default function TurnoverPage() {
         <Card>
           <CardContent className="pt-6">
             <MoveInListFilters
-              periods={periods}
-              selectedPeriod={selectedPeriod}
-              onPeriodChange={setSelectedPeriod}
+              startDate={startDate}
+              endDate={endDate}
+              onStartDateChange={setStartDate}
+              onEndDateChange={setEndDate}
               kvvAreas={availableKvvAreas}
               selectedKvvArea={selectedKvvArea}
               onKvvAreaChange={setSelectedKvvArea}

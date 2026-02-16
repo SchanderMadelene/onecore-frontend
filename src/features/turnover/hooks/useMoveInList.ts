@@ -1,37 +1,33 @@
 import { useState, useMemo } from 'react';
-import { MoveInListEntry, MoveInListChecklist, MoveInListPeriod } from '../types/move-in-list-types';
+import { MoveInListEntry, MoveInListChecklist } from '../types/move-in-list-types';
 import { mockMoveInListEntries } from '../data/mock-move-in-list';
-import { generatePeriods, getCurrentPeriod } from '../data/periods';
-import { parseISO, isWithinInterval } from 'date-fns';
+import { parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 
 export function useMoveInList() {
-  const periods = useMemo(() => generatePeriods(12), []);
-  const defaultPeriod = getCurrentPeriod(periods);
+  // Default: 16:e i aktuell månad till 15:e i nästa
+  const now = new Date();
+  const defaultStart = new Date(now.getFullYear(), now.getMonth(), 16);
+  const defaultEnd = new Date(now.getFullYear(), now.getMonth() + 1, 15);
 
-  const [selectedPeriod, setSelectedPeriod] = useState<string>(defaultPeriod?.startDate ?? periods[0]?.startDate ?? '');
+  const [startDate, setStartDate] = useState<Date>(defaultStart);
+  const [endDate, setEndDate] = useState<Date>(defaultEnd);
   const [selectedKvvArea, setSelectedKvvArea] = useState<string>('all');
   const [entries, setEntries] = useState<MoveInListEntry[]>(mockMoveInListEntries);
 
-  const activePeriod = periods.find(p => p.startDate === selectedPeriod);
-
   const filteredEntries = useMemo(() => {
     return entries.filter(entry => {
-      // Period filter
-      if (activePeriod) {
-        const entryDate = parseISO(entry.date);
-        const inPeriod = isWithinInterval(entryDate, {
-          start: parseISO(activePeriod.startDate),
-          end: parseISO(activePeriod.endDate),
-        });
-        if (!inPeriod) return false;
-      }
+      const entryDate = parseISO(entry.date);
+      const inRange = isWithinInterval(entryDate, {
+        start: startOfDay(startDate),
+        end: endOfDay(endDate),
+      });
+      if (!inRange) return false;
 
-      // KVV filter
       if (selectedKvvArea !== 'all' && entry.kvvArea !== selectedKvvArea) return false;
 
       return true;
     });
-  }, [entries, activePeriod, selectedKvvArea]);
+  }, [entries, startDate, endDate, selectedKvvArea]);
 
   const moveOutEntries = filteredEntries.filter(e => e.type === 'move_out');
   const moveInEntries = filteredEntries.filter(e => e.type === 'move_in');
@@ -46,15 +42,15 @@ export function useMoveInList() {
     );
   };
 
-  // Unika KVV-områden från datan
   const availableKvvAreas = useMemo(() => {
     return [...new Set(entries.map(e => e.kvvArea))].sort();
   }, [entries]);
 
   return {
-    periods,
-    selectedPeriod,
-    setSelectedPeriod,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
     selectedKvvArea,
     setSelectedKvvArea,
     moveOutEntries,

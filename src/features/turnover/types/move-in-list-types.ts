@@ -19,8 +19,3 @@ export interface MoveInListEntry {
   checklist: MoveInListChecklist;
 }
 
-export interface MoveInListPeriod {
-  label: string;
-  startDate: string; // ISO date
-  endDate: string; // ISO date
-}
