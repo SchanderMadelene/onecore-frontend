@@ -281,17 +281,15 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                   {hasMetadata && (
                     <CollapsibleContent>
                       <CardContent className="pt-0 pb-4 px-4">
-                        <div className="sm:ml-14 pl-4 border-l-2 border-muted">
-                          <div className="space-y-2">
-                            <h4 className="text-sm font-medium text-foreground">Detaljer</h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                              {Object.entries(event.metadata || {}).map(([key, value]) => (
-                                <div key={key} className="flex justify-between gap-2">
-                                  <span className="text-muted-foreground">{formatMetadataKey(key)}:</span>
-                                  <span className="text-foreground text-right break-all">{String(value)}</span>
-                                </div>
-                              ))}
-                            </div>
+                        <div className="pl-4 border-l-2 border-muted">
+                          <h4 className="text-xs font-medium text-muted-foreground mb-2">Detaljer</h4>
+                          <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs">
+                            {Object.entries(event.metadata || {}).map(([key, value]) => (
+                              <div key={key} className="flex gap-1.5">
+                                <span className="text-muted-foreground whitespace-nowrap">{formatMetadataKey(key)}:</span>
+                                <span className="text-foreground">{String(value)}</span>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </CardContent>
