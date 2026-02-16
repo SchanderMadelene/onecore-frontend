@@ -1,6 +1,4 @@
 import { SaveAsFavoriteButton, ActiveFavoriteIndicator } from "@/components/common";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 
 export function TurnoverHeader() {
   return (
@@ -9,7 +7,7 @@ export function TurnoverHeader() {
         <div>
           <h1 className="text-3xl font-bold">In- och utflytt</h1>
           <p className="text-muted-foreground">
-            Översikt och hantering av in- och utflyttärenden
+            Operativ checklista för in- och utflyttningar
           </p>
         </div>
         <div className="flex gap-2">
@@ -20,10 +18,6 @@ export function TurnoverHeader() {
             icon="🔄"
             variant="outline"
           />
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Nytt ärende
-          </Button>
         </div>
       </div>
       <ActiveFavoriteIndicator />
