@@ -244,13 +244,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1 flex-wrap">
                               <h3 className="font-medium text-foreground">{event.title}</h3>
-                              <Badge variant="outline" className={`text-xs ${
-                                event.type === 'communication' && event.metadata?.messageType === 'sms'
-                                  ? 'bg-blue-50 text-blue-700 border-blue-200'
-                                  : event.type === 'communication' && event.metadata?.messageType === 'email'
-                                  ? 'bg-purple-50 text-purple-700 border-purple-200'
-                                  : ''
-                              }`}>
+                              <Badge variant="outline" className="text-xs">
                                 {getEventTypeName(event.type)}
                               </Badge>
                             </div>
