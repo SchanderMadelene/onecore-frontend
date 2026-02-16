@@ -1,5 +1,6 @@
 import { MoveInListEntry } from '../types/move-in-list-types';
 
+// Mock-data för in- och utflyttslistan
 export const mockMoveInListEntries: MoveInListEntry[] = [
   // === UTFLYTTNINGAR ===
   {
