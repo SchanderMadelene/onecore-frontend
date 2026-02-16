@@ -29,7 +29,7 @@ const mockMessages: SentMessage[] = [
     type: "email",
     recipient: "anna.andersson@email.com",
     subject: "Planerat underhåll",
-    messagePreview: "Hej! Vi vill informera om planerat underhåll i ert område den 15 februari...",
+    messagePreview: "Hej Anna!\n\nVi vill informera dig om att vi planerar underhållsarbete i ert område den 15 februari mellan kl. 08:00 och 16:00. Under denna tid kommer vi att byta ut ventiler i värmesystemet, vilket innebär att varmvattnet tillfälligt kan stängas av.\n\nVi ber er att se till att alla kranar är stängda under denna period. Om ni har frågor eller funderingar är ni välkomna att kontakta oss på kundcenter@mimer.nu eller 021-39 74 00.\n\nMed vänliga hälsningar,\nKarl Pettersson\nMimer Fastigheter",
     sentAt: hoursAgo(18),
     sentBy: "Karl Pettersson",
     personalNumber: "19850101-1234",
