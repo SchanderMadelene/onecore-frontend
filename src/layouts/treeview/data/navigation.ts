@@ -28,7 +28,7 @@ export const navigationNodes: TreeNode[] = [
   },
   {
     id: "turnover",
-    label: "In- och utflytt",
+    label: "Ut- & inflytt",
     icon: "arrow-right-left",
     path: "/turnover",
   },
