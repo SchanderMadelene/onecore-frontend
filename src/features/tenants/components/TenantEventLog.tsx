@@ -63,6 +63,31 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
     });
   };
 
+  const formatMetadataKey = (key: string): string => {
+    const keyMap: Record<string, string> = {
+      messageType: 'Typ',
+      messagePreview: 'Meddelande',
+      recipient: 'Mottagare',
+      subject: 'Ämne',
+      sentBy: 'Skickat av',
+      caseId: 'Ärendenr',
+      priority: 'Prioritet',
+      resolution: 'Lösning',
+      amount: 'Belopp',
+      period: 'Period',
+      field: 'Fält',
+      oldValue: 'Tidigare värde',
+      newValue: 'Nytt värde',
+      ip: 'IP-adress',
+      device: 'Enhet',
+      channel: 'Kanal',
+      system: 'System',
+      newEndDate: 'Nytt slutdatum',
+      previousEndDate: 'Tidigare slutdatum',
+    };
+    return keyMap[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
+  };
+
   const getEventTypeName = (type: TenantEvent['type']): string => {
     switch (type) {
       case 'system': return 'System';
@@ -71,6 +96,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
       case 'contract': return 'Kontrakt';
       case 'payment': return 'Betalning';
       case 'support': return 'Support';
+      case 'communication': return 'Kommunikation';
       default: return 'Övrigt';
     }
   };
@@ -108,6 +134,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                   <SelectItem value="contract">Kontrakt</SelectItem>
                   <SelectItem value="payment">Betalning</SelectItem>
                   <SelectItem value="support">Support</SelectItem>
+                  <SelectItem value="communication">Kommunikation</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -212,40 +239,35 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                 <Card className="transition-all duration-200 hover:shadow-sm">
                   <CollapsibleTrigger asChild>
                     <CardContent className="p-4 cursor-pointer">
-                      <div className="flex items-start gap-4">
-                        {/* Huvudinnehåll */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-medium text-foreground">{event.title}</h3>
-                                <Badge variant="outline" className="text-xs">
-                                  {getEventTypeName(event.type)}
-                                </Badge>
-                              </div>
-                              <p className="text-sm text-muted-foreground">{event.description}</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <h3 className="font-medium text-foreground">{event.title}</h3>
+                              <Badge variant="outline" className="text-xs">
+                                {getEventTypeName(event.type)}
+                              </Badge>
                             </div>
-                            
-                            {/* Tidsstämpel och expanderingsikon */}
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
-                              <Clock className="h-4 w-4" />
-                              <span>{formatTimestamp(event.timestamp)}</span>
-                              {hasMetadata && (
-                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                                  {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                                </Button>
-                              )}
-                            </div>
+                            <p className="text-sm text-muted-foreground break-words line-clamp-2">{event.description}</p>
                           </div>
                           
-                          {/* Användare som utförde åtgärden */}
-                          {event.user && (
-                            <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-                              <User className="h-3 w-3" />
-                              <span>Utfört av: {event.user}</span>
-                            </div>
-                          )}
+                          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground shrink-0">
+                            <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span>{formatTimestamp(event.timestamp)}</span>
+                            {hasMetadata && (
+                              <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                              </Button>
+                            )}
+                          </div>
                         </div>
+                        
+                        {event.user && (
+                          <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+                            <User className="h-3 w-3" />
+                            <span>Utfört av: {event.user}</span>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </CollapsibleTrigger>
@@ -254,17 +276,23 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                   {hasMetadata && (
                     <CollapsibleContent>
                       <CardContent className="pt-0 pb-4 px-4">
-                        <div className="ml-14 pl-4 border-l-2 border-muted">
-                          <div className="space-y-2">
-                            <h4 className="text-sm font-medium text-foreground">Detaljer</h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                              {Object.entries(event.metadata || {}).map(([key, value]) => (
-                                <div key={key} className="flex justify-between">
-                                  <span className="text-muted-foreground capitalize">{key.replace('_', ' ')}:</span>
-                                  <span className="font-mono text-foreground">{String(value)}</span>
-                                </div>
-                              ))}
-                            </div>
+                        <div className="pl-4 border-l-2 border-muted">
+                          <h4 className="text-sm font-medium text-muted-foreground mb-2">Detaljer</h4>
+                          {/* Visa hela meddelandet för kommunikationshändelser */}
+                          {event.type === 'communication' && event.metadata?.messagePreview && (
+                            <p className="text-sm text-foreground mb-3 whitespace-pre-wrap">
+                              {String(event.metadata.messagePreview)}
+                            </p>
+                          )}
+                          <div className="flex flex-wrap gap-x-6 gap-y-1.5 text-sm">
+                            {Object.entries(event.metadata || {}).filter(([key]) => 
+                              !(event.type === 'communication' && key === 'messagePreview')
+                            ).map(([key, value]) => (
+                              <div key={key} className="flex gap-1.5">
+                                <span className="text-muted-foreground whitespace-nowrap">{formatMetadataKey(key)}:</span>
+                                <span className="text-foreground">{String(value)}</span>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </CardContent>

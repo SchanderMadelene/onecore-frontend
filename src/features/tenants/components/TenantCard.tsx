@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Phone, Mail, MessageSquare, User, Users, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { Phone, Mail, MessageSquare, User, Users, Clock, ChevronDown } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TenantCardProps {
@@ -215,38 +215,32 @@ export function TenantCard({ tenant }: TenantCardProps) {
 
   if (isMobile) {
     return (
-      <Card>
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <Card className={`rounded-lg bg-white shadow-sm border-l-[2px] ${isOpen ? '!border-l-primary/40' : '!border-l-transparent'}`}>
           <CollapsibleTrigger asChild>
-            <div className="w-full cursor-pointer">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-left">
-                      {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                    </CardTitle>
-                    <div className="space-y-1 mt-2">
-                      <p className="text-sm font-medium">{tenant.address}</p>
-                      <p className="text-sm text-muted-foreground">{formatPersonalNumber(tenant.personalNumber)} • {tenant.phone}</p>
-                    </div>
+            <div className="w-full cursor-pointer px-4 py-3.5">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <span className="text-base font-medium">
+                    {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+                  </span>
+                  <div className="space-y-1 mt-2">
+                    <p className="text-sm font-medium">{tenant.address}</p>
+                    <p className="text-sm text-muted-foreground">{formatPersonalNumber(tenant.personalNumber)} • {tenant.phone}</p>
                   </div>
-                  {isOpen ? (
-                    <ChevronUp className="h-5 w-5 text-muted-foreground" />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                  )}
                 </div>
-              </CardHeader>
+                <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+              </div>
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <div className="border-t border-border mx-6 mb-4"></div>
-            <CardContent>
+            <div className="border-t border-border mx-4 mb-4"></div>
+            <div className="px-4 pb-4">
               {cardContent}
-            </CardContent>
+            </div>
           </CollapsibleContent>
-        </Collapsible>
-      </Card>
+        </Card>
+      </Collapsible>
     );
   }
 

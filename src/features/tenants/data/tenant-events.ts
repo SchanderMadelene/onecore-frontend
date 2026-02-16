@@ -1,11 +1,13 @@
 // Mock data för kundhandelselogg
+import { getRecentMessages } from "./communication-log";
+
 export interface TenantEvent {
   id: string;
   timestamp: string;
-  type: 'system' | 'login' | 'profile_change' | 'contract' | 'payment' | 'support';
+  type: 'system' | 'login' | 'profile_change' | 'contract' | 'payment' | 'support' | 'communication';
   title: string;
   description: string;
-  user?: string; // Vem som utförde åtgärden
+  user?: string;
   metadata?: Record<string, any>;
 }
 
@@ -97,8 +99,28 @@ export const mockTenantEvents: TenantEvent[] = [
   }
 ];
 
+// Konvertera kommunikationsmeddelanden till TenantEvent-objekt
+const getCommunicationEvents = (personalNumber: string): TenantEvent[] => {
+  const messages = getRecentMessages(personalNumber);
+  return messages.map(msg => ({
+    id: `comm-${msg.id}`,
+    timestamp: msg.sentAt,
+    type: 'communication' as const,
+    title: msg.type === 'sms' ? 'SMS skickat' : 'E-post skickad',
+    description: `Till ${msg.recipient}: "${msg.messagePreview.length > 80 ? msg.messagePreview.substring(0, 80) + '...' : msg.messagePreview}"`,
+    user: msg.sentBy,
+    metadata: { 
+      messageType: msg.type, 
+      system: msg.system,
+      recipient: msg.recipient, 
+      messagePreview: msg.messagePreview,
+      ...(msg.subject ? { subject: msg.subject } : {})
+    }
+  }));
+};
+
 // Funktion för att hämta händelser för en specifik kund
 export const getTenantEvents = (personalNumber: string): TenantEvent[] => {
-  // I en riktig applikation skulle detta göra en API-förfrågan
-  return mockTenantEvents.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  const events = [...mockTenantEvents, ...getCommunicationEvents(personalNumber)];
+  return events.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 };

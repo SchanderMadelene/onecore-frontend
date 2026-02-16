@@ -7,10 +7,11 @@ import { TabLayout } from "@/components/ui/tab-layout";
 export interface OrdersManagementProps {
   contextType?: "tenant" | "residence" | "building";
   residenceId?: string;
-  tenant?: any; // Adding the missing tenant prop
+  tenant?: any;
+  compact?: boolean;
 }
 
-export function OrdersManagement({ contextType = "residence", residenceId, tenant }: OrdersManagementProps) {
+export function OrdersManagement({ contextType = "residence", residenceId, tenant, compact = false }: OrdersManagementProps) {
   const { id } = useParams<{ id: string }>();
   const { getOrdersByResidence } = useOrdersService();
   const [refreshKey, setRefreshKey] = useState(0);
@@ -33,7 +34,8 @@ export function OrdersManagement({ contextType = "residence", residenceId, tenan
     <TabLayout 
       title="Ärenden" 
       count={allOrders.length}
-      showCard={true}
+      showCard={!compact}
+      showHeader={!compact}
     >
       <div className="space-y-4">
         <div className="flex items-center justify-start">

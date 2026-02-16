@@ -40,7 +40,7 @@ const TenantDetailPage = () => {
           </div>
         </TooltipProvider>
 
-        <div className="grid grid-cols-1 gap-6 mb-6">
+        <div className="grid grid-cols-1 gap-6 mb-4">
           <TenantCard tenant={tenant} />
         </div>
 

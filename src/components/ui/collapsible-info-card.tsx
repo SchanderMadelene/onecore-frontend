@@ -33,25 +33,25 @@ export const CollapsibleInfoCard = ({
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <Card>
+      <Card className={`rounded-lg bg-white shadow-sm border-l-[2px] ${isOpen ? '!border-l-primary/40' : '!border-l-transparent'}`}>
         <CollapsibleTrigger className="w-full text-left">
-          <CardHeader className="pb-0">
+          <div className="px-4 py-3.5">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">{title}</CardTitle>
+              <span className="text-base font-medium">{title}</span>
               <ChevronDown 
                 className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
               />
             </div>
-          </CardHeader>
-          <CardContent className="pt-3 pb-4">
+          </div>
+          <div className="px-4 pb-4">
             {previewContent}
-          </CardContent>
+          </div>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <div className="border-t border-border mx-6 mb-4"></div>
-          <CardContent>
+          <div className="border-t border-border mx-4 mb-4"></div>
+          <div className="px-4 pb-4">
             {children}
-          </CardContent>
+          </div>
         </CollapsibleContent>
       </Card>
     </Collapsible>

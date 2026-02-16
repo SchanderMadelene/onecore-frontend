@@ -75,7 +75,7 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
       id: "issues",
       title: "Ärenden",
       content: features.showApartmentIssues ? (
-        <OrdersManagement residenceId={id} />
+        <OrdersManagement residenceId={id} compact />
       ) : (
         <p className="text-slate-500 p-1">
           För att se felanmälningar, aktivera funktionen i inställningarna.
@@ -118,14 +118,14 @@ export function MobileAccordion({ rooms, getOrientationText }: ResidenceMobileAc
     <div className="w-full">
       <Accordion type="multiple" defaultValue={["info"]} className="space-y-2">
         {accordionItems.map(item => (
-          <AccordionItem key={item.id} value={item.id} className="rounded-lg border border-slate-200">
-            <AccordionTrigger className="px-2 py-2">
+          <AccordionItem key={item.id} value={item.id} className="rounded-lg border border-slate-200 bg-white shadow-sm border-l-[2px] !border-l-transparent data-[state=open]:!border-l-primary/40">
+            <AccordionTrigger className="px-4 py-3.5">
               <div className="flex items-center gap-2">
                 <span className="text-base font-medium">{item.title}</span>
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="px-0 pb-2">
+              <div className="px-4 pb-4">
                 {item.content}
               </div>
             </AccordionContent>

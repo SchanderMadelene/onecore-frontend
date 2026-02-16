@@ -1,28 +1,28 @@
 
-
-# Lägg till saknade feature toggles på beta-sidan
+# Baka in kommunikationsloggen i handelsloggen
 
 ## Sammanfattning
-Tre feature toggles som redan finns definierade i `FeatureTogglesContext` och används i routing saknas på inställningssidan (`BetaSettings.tsx`):
+Istallet for att visa "Skickade meddelanden (senaste 48h)" som en separat komponent ovanfor tabbarna, integreras SMS- och e-postmeddelanden som handelser i den befintliga handelsloggen. Den separata `TenantCommunicationLog`-sektionen tas bort fran sidan.
 
-1. **Hyreskontrakt** (`showLeaseContracts`) - Visa sidan för hyreskontrakt
-2. **Förvaltningsområden** (`showPropertyAreas`) - Visa sidan för förvaltnings- och kvartersvärdsområden
-3. **Ströfaktura underlag** (`showStrofakturaUnderlag`) - Visa sidan för ströfaktura underlag
+## Andringar
 
-## Vad som ändras
+### 1. Utoka TenantEvent-typen (`src/features/tenants/data/tenant-events.ts`)
+- Lagg till `'communication'` som ny typ i `TenantEvent['type']`
+- Skapa en hjalpfunktion `getCommunicationEvents(personalNumber)` som konverterar `SentMessage`-data till `TenantEvent`-objekt med typ `'communication'`, titel "SMS skickat"/"E-post skickad", mottagare och forhandsvisning i description, och metadata (recipient, messagePreview, sentBy)
+- Uppdatera `getTenantEvents()` sa den mergar vanliga handelser med kommunikationshardelser och sorterar allt kronologiskt
 
-Alla tre toggles läggs till i `BetaSettings.tsx` i huvudsektionen (samma nivå som Besiktningar, Favoriter, etc.), placerade mellan "Favoriter" och "Dashboard-kort"-sektionen.
+### 2. Uppdatera TenantEventLog-komponenten (`src/features/tenants/components/TenantEventLog.tsx`)
+- Lagg till `'communication'` i typfiltrets Select-dropdown med texten "Kommunikation"
+- Lagg till `getEventTypeName`-mapping: `'communication'` -> `'Kommunikation'`
+- Ge kommunikationshardelser en distinkt badge-styling (bla for SMS, lila for e-post) baserat pa metadata, liknande den nuvarande kommunikationsloggens badges
 
-## Tekniska detaljer
+### 3. Ta bort kommunikationsloggen fran TenantDetailPage (`src/pages/tenants/TenantDetailPage.tsx`)
+- Ta bort `<TenantCommunicationLog>`-sektionen som ligger mellan TenantCard och tabbarna
+- Importraden for `TenantCommunicationLog` kan tas bort
 
-### Fil: `src/components/settings/BetaSettings.tsx`
+### 4. Uppdatera TenantMobileAccordion (`src/features/tenants/components/TenantMobileAccordion.tsx`)
+- Handelslogg-accordionen ska rendera `TenantEventLog` (med personalNumber) istallet for placeholder-text, sa att kommunikationshardelserna syns aven pa mobil
 
-- Importera ikoner: `MapPin` (förvaltningsområden), `Receipt` eller `FileText` (ströfaktura)
-- Lägg till tre nya toggle-block efter Favoriter-togglen (rad 588), med samma mönster som övriga toggles
-- Varje toggle disabled om `!features.showNavigation`
-
-Ordning:
-1. Hyreskontrakt (FileText-ikon)
-2. Ströfaktura underlag (Wallet-ikon, redan importerad)
-3. Förvaltningsområden (MapPin-ikon, behöver importeras)
-
+### Vad som inte andras
+- Filerna `TenantCommunicationLog.tsx` och `communication-log.ts` behalls i kodbasen (kan rensas senare) men anvands inte langre pa sidan
+- Desktop-tabben "Handelslogg" behaller sin befintliga layout, filter och expanderbara kort — den far bara nya rader av typen "Kommunikation"
