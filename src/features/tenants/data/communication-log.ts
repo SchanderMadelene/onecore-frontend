@@ -8,6 +8,7 @@ export interface SentMessage {
   sentAt: string;
   sentBy: string;
   personalNumber: string;
+  system: string;
 }
 
 // Mock data - timestamps relative to now for 48h filtering
@@ -23,6 +24,7 @@ const mockMessages: SentMessage[] = [
     sentAt: hoursAgo(2),
     sentBy: "Maria Johansson",
     personalNumber: "19850101-1234",
+    system: "Infobip",
   },
   {
     id: "msg-2",
@@ -33,6 +35,7 @@ const mockMessages: SentMessage[] = [
     sentAt: hoursAgo(18),
     sentBy: "Karl Pettersson",
     personalNumber: "19850101-1234",
+    system: "Odoo",
   },
   {
     id: "msg-3",
@@ -42,6 +45,7 @@ const mockMessages: SentMessage[] = [
     sentAt: hoursAgo(36),
     sentBy: "Maria Johansson",
     personalNumber: "19850101-1234",
+    system: "Infobip",
   },
   {
     id: "msg-4",
@@ -52,6 +56,7 @@ const mockMessages: SentMessage[] = [
     sentAt: hoursAgo(5),
     sentBy: "Lisa Svensson",
     personalNumber: "19900215-5678",
+    system: "Odoo",
   },
   // Old message (>48h) - should be filtered out
   {
@@ -62,6 +67,7 @@ const mockMessages: SentMessage[] = [
     sentAt: hoursAgo(72),
     sentBy: "Maria Johansson",
     personalNumber: "19850101-1234",
+    system: "Infobip",
   },
 ];
 

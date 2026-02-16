@@ -111,6 +111,7 @@ const getCommunicationEvents = (personalNumber: string): TenantEvent[] => {
     user: msg.sentBy,
     metadata: { 
       messageType: msg.type, 
+      system: msg.system,
       recipient: msg.recipient, 
       messagePreview: msg.messagePreview,
       ...(msg.subject ? { subject: msg.subject } : {})
