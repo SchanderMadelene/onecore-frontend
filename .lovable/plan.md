@@ -1,30 +1,28 @@
 
-# Migrera TenantContracts och TenantKeys till ResponsiveTable
+# Baka in kommunikationsloggen i handelsloggen
 
-## Bakgrund
-Projektstandarden ar att alla tabeller ska anvanda `ResponsiveTable`-komponenten, som automatiskt visar kort-layout pa mobil istallet for horisontellt scrollande tabeller. Tva komponenter pa hyresgastsidan bryter mot detta: **TenantContracts** och **TenantKeys**.
+## Sammanfattning
+Istallet for att visa "Skickade meddelanden (senaste 48h)" som en separat komponent ovanfor tabbarna, integreras SMS- och e-postmeddelanden som handelser i den befintliga handelsloggen. Den separata `TenantCommunicationLog`-sektionen tas bort fran sidan.
 
 ## Andringar
 
-### 1. `src/features/tenants/components/TenantContracts.tsx`
-- Byt fran ra `Table`-import till `ResponsiveTable`
-- Definiera kolumner med `ResponsiveTableColumn[]` (Typ, Kontraktsnummer, Objekt, Startdatum, Slutdatum, Manadshyra, Kontrakttyp, Status, Atgard)
-- Lagg till en `mobileCardRenderer` som visar kontraktets viktigaste info: typ + objektnamn som rubrik, kontraktsnummer, hyra, status-badge och "Visa kontrakt"-knapp
-- Dolja mindre viktiga kolumner pa mobil via `hideOnMobile` (Slutdatum, Kontrakttyp)
-- Behall `compact`-prop: nar `compact=true`, rendera bara ResponsiveTable utan Card-wrapper; nar `compact=false`, wrappa i Card med rubrik
+### 1. Utoka TenantEvent-typen (`src/features/tenants/data/tenant-events.ts`)
+- Lagg till `'communication'` som ny typ i `TenantEvent['type']`
+- Skapa en hjalpfunktion `getCommunicationEvents(personalNumber)` som konverterar `SentMessage`-data till `TenantEvent`-objekt med typ `'communication'`, titel "SMS skickat"/"E-post skickad", mottagare och forhandsvisning i description, och metadata (recipient, messagePreview, sentBy)
+- Uppdatera `getTenantEvents()` sa den mergar vanliga handelser med kommunikationshardelser och sorterar allt kronologiskt
 
-### 2. `src/features/tenants/components/TenantKeys.tsx`
-- Byt fran ra `Table`-import till `ResponsiveTable`
-- Definiera kolumner (Nyckeltyp, Nyckelnamn, Flexnummer, Tillhor hyresobjekt, Nyckelsystem, Lopnummer, Utlaningsdatum)
-- Lagg till en `mobileCardRenderer` som visar nyckelnamn + typ som rubrik, hyresobjekt, flexnummer och utlaningsdatum
-- Dolja mindre viktiga kolumner pa mobil via `hideOnMobile` (Nyckelsystem, Lopnummer)
-- Lagg till `compact`-prop for konsistens med ovriga tab-komponenter
+### 2. Uppdatera TenantEventLog-komponenten (`src/features/tenants/components/TenantEventLog.tsx`)
+- Lagg till `'communication'` i typfiltrets Select-dropdown med texten "Kommunikation"
+- Lagg till `getEventTypeName`-mapping: `'communication'` -> `'Kommunikation'`
+- Ge kommunikationshardelser en distinkt badge-styling (bla for SMS, lila for e-post) baserat pa metadata, liknande den nuvarande kommunikationsloggens badges
 
-### Mobilkortens layout
-Korten foljer samma monster som befintliga ResponsiveTable-implementationer (t.ex. OrdersTable, BarriersTable):
-- Rubrikrad med fet text (objektnamn/nyckelnamn)
-- Kompletterande info i `text-sm text-muted-foreground`
-- Eventuella badges och knappar langst ner
+### 3. Ta bort kommunikationsloggen fran TenantDetailPage (`src/pages/tenants/TenantDetailPage.tsx`)
+- Ta bort `<TenantCommunicationLog>`-sektionen som ligger mellan TenantCard och tabbarna
+- Importraden for `TenantCommunicationLog` kan tas bort
 
-### Ingen paverkan pa desktop
-Desktop-vyn forblir identisk — ResponsiveTable renderar samma tabellstruktur som tidigare.
+### 4. Uppdatera TenantMobileAccordion (`src/features/tenants/components/TenantMobileAccordion.tsx`)
+- Handelslogg-accordionen ska rendera `TenantEventLog` (med personalNumber) istallet for placeholder-text, sa att kommunikationshardelserna syns aven pa mobil
+
+### Vad som inte andras
+- Filerna `TenantCommunicationLog.tsx` och `communication-log.ts` behalls i kodbasen (kan rensas senare) men anvands inte langre pa sidan
+- Desktop-tabben "Handelslogg" behaller sin befintliga layout, filter och expanderbara kort — den far bara nya rader av typen "Kommunikation"
