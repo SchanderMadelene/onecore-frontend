@@ -1,37 +1,74 @@
+import { format } from 'date-fns';
+import { sv } from 'date-fns/locale';
+import { CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MoveInListPeriod } from '../types/move-in-list-types';
 
 interface MoveInListFiltersProps {
-  periods: MoveInListPeriod[];
-  selectedPeriod: string;
-  onPeriodChange: (value: string) => void;
+  startDate: Date;
+  endDate: Date;
+  onStartDateChange: (date: Date) => void;
+  onEndDateChange: (date: Date) => void;
   kvvAreas: string[];
   selectedKvvArea: string;
   onKvvAreaChange: (value: string) => void;
 }
 
 export function MoveInListFilters({
-  periods,
-  selectedPeriod,
-  onPeriodChange,
+  startDate,
+  endDate,
+  onStartDateChange,
+  onEndDateChange,
   kvvAreas,
   selectedKvvArea,
   onKvvAreaChange,
 }: MoveInListFiltersProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-      <Select value={selectedPeriod} onValueChange={onPeriodChange}>
-        <SelectTrigger className="w-full sm:w-[220px]">
-          <SelectValue placeholder="Period" />
-        </SelectTrigger>
-        <SelectContent>
-          {periods.map(p => (
-            <SelectItem key={p.startDate} value={p.startDate}>
-              {p.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn("w-full sm:w-[180px] justify-start text-left font-normal")}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {format(startDate, 'd MMM yyyy', { locale: sv })}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={startDate}
+            onSelect={(date) => date && onStartDateChange(date)}
+            initialFocus
+            className={cn("p-3 pointer-events-auto")}
+          />
+        </PopoverContent>
+      </Popover>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn("w-full sm:w-[180px] justify-start text-left font-normal")}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {format(endDate, 'd MMM yyyy', { locale: sv })}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={endDate}
+            onSelect={(date) => date && onEndDateChange(date)}
+            initialFocus
+            className={cn("p-3 pointer-events-auto")}
+          />
+        </PopoverContent>
+      </Popover>
 
       <Select value={selectedKvvArea} onValueChange={onKvvAreaChange}>
         <SelectTrigger className="w-full sm:w-[180px]">
