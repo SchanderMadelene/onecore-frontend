@@ -11,6 +11,8 @@ export interface MoveInListEntry {
   address: string;
   residenceCode: string;
   kvvArea: string;
+  contractNumber: string;
+  apartmentType: string; // e.g. "2RK", "3RK", "4RK"
   tenantName: string;
   tenantPhone?: string;
   tenantEmail?: string;

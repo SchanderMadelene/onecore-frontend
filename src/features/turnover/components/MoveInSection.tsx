@@ -13,11 +13,25 @@ interface MoveInSectionProps {
 export function MoveInSection({ entries, onChecklistChange }: MoveInSectionProps) {
   const columns = [
     {
+      key: 'contractNumber',
+      label: 'Kontraktsnr',
+      render: (item: MoveInListEntry) => (
+        <span className="font-mono text-xs">{item.contractNumber}</span>
+      ),
+      hideOnMobile: true,
+    },
+    {
       key: 'address',
-      label: 'Adress',
+      label: 'Uppgång',
       render: (item: MoveInListEntry) => (
         <span className="font-medium">{item.address}</span>
       ),
+    },
+    {
+      key: 'type',
+      label: 'Typ',
+      render: (item: MoveInListEntry) => item.apartmentType,
+      hideOnMobile: true,
     },
     {
       key: 'tenant',
@@ -25,8 +39,14 @@ export function MoveInSection({ entries, onChecklistChange }: MoveInSectionProps
       render: (item: MoveInListEntry) => item.tenantName,
     },
     {
+      key: 'phone',
+      label: 'Telefon',
+      render: (item: MoveInListEntry) => item.tenantPhone || '–',
+      hideOnMobile: true,
+    },
+    {
       key: 'date',
-      label: 'Inflyttdatum',
+      label: 'Kontraktstid',
       render: (item: MoveInListEntry) => format(parseISO(item.date), 'd MMM', { locale: sv }),
       hideOnMobile: true,
     },
@@ -69,9 +89,16 @@ export function MoveInSection({ entries, onChecklistChange }: MoveInSectionProps
   ];
 
   const mobileCardRenderer = (item: MoveInListEntry) => (
-    <div className="space-y-2">
-      <div className="font-medium">{item.address}</div>
+    <div className="space-y-1">
+      <div className="flex items-center justify-between">
+        <span className="font-medium">{item.address}</span>
+        <span className="text-xs text-muted-foreground">{item.apartmentType}</span>
+      </div>
       <div className="text-sm text-muted-foreground">{item.tenantName}</div>
+      {item.tenantPhone && (
+        <div className="text-sm text-muted-foreground">{item.tenantPhone}</div>
+      )}
+      <div className="text-xs text-muted-foreground font-mono">{item.contractNumber}</div>
       <div className="text-sm text-muted-foreground">
         {format(parseISO(item.date), 'd MMM yyyy', { locale: sv })}
       </div>
