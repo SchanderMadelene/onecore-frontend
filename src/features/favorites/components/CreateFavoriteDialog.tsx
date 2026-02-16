@@ -151,7 +151,7 @@ export function CreateFavoriteDialog({
       "property-areas": "Förvaltningsområden",
       tenants: "Kunder",
       barriers: "Spärrar",
-      turnover: "In- och utflytt",
+      turnover: "Ut- & inflytt",
       inspections: "Besiktningar",
       general: "Allmänt"
     };

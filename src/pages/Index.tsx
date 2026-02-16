@@ -56,9 +56,9 @@ const Index = () => {
     enabled: features.showBarriers
   }, {
     id: "turnover",
-    title: "In- och utflytt",
+    title: "Ut- & inflytt",
     icon: ArrowRightLeft,
-    description: "Hantera in- och utflyttningsprocesser",
+    description: "Hantera ut- och inflyttningsprocesser",
     path: "/turnover",
     isExternal: false,
     enabled: features.showTurnover
