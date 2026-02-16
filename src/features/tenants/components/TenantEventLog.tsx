@@ -253,7 +253,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                                 {getEventTypeName(event.type)}
                               </Badge>
                             </div>
-                            <p className="text-sm text-muted-foreground break-words">{event.description}</p>
+                            <p className="text-sm text-muted-foreground break-words line-clamp-2">{event.description}</p>
                           </div>
                           
                           <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground shrink-0">
@@ -282,9 +282,17 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                     <CollapsibleContent>
                       <CardContent className="pt-0 pb-4 px-4">
                         <div className="pl-4 border-l-2 border-muted">
-                          <h4 className="text-xs font-medium text-muted-foreground mb-2">Detaljer</h4>
-                          <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs">
-                            {Object.entries(event.metadata || {}).map(([key, value]) => (
+                          <h4 className="text-sm font-medium text-muted-foreground mb-2">Detaljer</h4>
+                          {/* Visa hela meddelandet för kommunikationshändelser */}
+                          {event.type === 'communication' && event.metadata?.messagePreview && (
+                            <p className="text-sm text-foreground mb-3 whitespace-pre-wrap">
+                              {String(event.metadata.messagePreview)}
+                            </p>
+                          )}
+                          <div className="flex flex-wrap gap-x-6 gap-y-1.5 text-sm">
+                            {Object.entries(event.metadata || {}).filter(([key]) => 
+                              !(event.type === 'communication' && key === 'messagePreview')
+                            ).map(([key, value]) => (
                               <div key={key} className="flex gap-1.5">
                                 <span className="text-muted-foreground whitespace-nowrap">{formatMetadataKey(key)}:</span>
                                 <span className="text-foreground">{String(value)}</span>
