@@ -107,7 +107,7 @@ const getCommunicationEvents = (personalNumber: string): TenantEvent[] => {
     timestamp: msg.sentAt,
     type: 'communication' as const,
     title: msg.type === 'sms' ? 'SMS skickat' : 'E-post skickad',
-    description: `Till ${msg.recipient}: "${msg.messagePreview.length > 60 ? msg.messagePreview.slice(0, 60) + '...' : msg.messagePreview}"`,
+    description: `Till ${msg.recipient}: "${msg.messagePreview}"`,
     user: msg.sentBy,
     metadata: { 
       messageType: msg.type, 
