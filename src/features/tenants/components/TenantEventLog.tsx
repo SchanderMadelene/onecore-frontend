@@ -288,7 +288,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                               {Object.entries(event.metadata || {}).map(([key, value]) => (
                                 <div key={key} className="flex justify-between gap-2">
                                   <span className="text-muted-foreground">{formatMetadataKey(key)}:</span>
-                                  <span className="font-mono text-foreground text-right break-all">{String(value)}</span>
+                                  <span className="text-foreground text-right break-all">{String(value)}</span>
                                 </div>
                               ))}
                             </div>
