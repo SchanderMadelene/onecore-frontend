@@ -7,12 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { BasicInfoSection } from "@/components/rentals/edit-housing/BasicInfoSection";
-import { EditableFormSection } from "@/components/rentals/edit-housing/EditableFormSection";
-import { DetailedDescriptionTab } from "@/components/rentals/edit-housing/DetailedDescriptionTab";
-import { PlanritningTab } from "@/components/rentals/edit-housing/PlanritningTab";
+import { BasicInfoSection } from "@/features/rentals/components/edit-housing/BasicInfoSection";
+import { EditableFormSection } from "@/features/rentals/components/edit-housing/EditableFormSection";
+import { DetailedDescriptionTab } from "@/features/rentals/components/edit-housing/DetailedDescriptionTab";
+import { PlanritningTab } from "@/features/rentals/components/edit-housing/PlanritningTab";
 import { useIsMobile } from "@/hooks/use-mobile";
-import type { EditHousingFormData } from "@/components/rentals/edit-housing/types";
+import type { EditHousingFormData } from "@/features/rentals/components/edit-housing/types";
 
 export default function CreateHousingAdPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

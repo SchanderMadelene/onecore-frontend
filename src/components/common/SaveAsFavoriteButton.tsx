@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Star, Users, User } from "lucide-react";
 import { useFavorites } from "@/features/favorites";
-import { FavoriteCategory, FavoriteVisibility } from "@/types/favorites";
+import { FavoriteCategory, FavoriteVisibility } from "@/features/favorites/types/favorite";
 import { toast } from "@/hooks/use-toast";
 
 interface SaveAsFavoriteButtonProps {

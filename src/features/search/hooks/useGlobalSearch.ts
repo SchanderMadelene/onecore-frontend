@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { SearchState, IdentifierMatch } from "@/types/search";
+import { SearchState, IdentifierMatch } from "@/features/search/types/search";
 import { globalSearchService } from "@/services/globalSearchService";
 import { useDebounce } from "@/hooks/useDebounce";
 import { detectIdentifierType } from "@/utils/searchIdentifiers";

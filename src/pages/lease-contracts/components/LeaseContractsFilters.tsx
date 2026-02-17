@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { X, Search } from "lucide-react";
-import { LeaseContractType, LeaseContractStatus, LEASE_STATUS_LABELS, LEASE_TYPE_LABELS } from "@/types/leaseContract";
+import { LeaseContractType, LeaseContractStatus, LEASE_STATUS_LABELS, LEASE_TYPE_LABELS } from "../types/leaseContract";
 import { DateRangeFilter } from "./DateRangeFilter";
 
 interface PropertyOption {

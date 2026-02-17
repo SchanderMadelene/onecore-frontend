@@ -1,4 +1,4 @@
-import { LeaseContract } from '@/types/leaseContract';
+import { LeaseContract } from '../types/leaseContract';
 
 export const mockLeaseContracts: LeaseContract[] = [
   {

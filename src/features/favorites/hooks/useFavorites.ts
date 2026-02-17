@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/types/favorites";
+import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/features/favorites/types/favorite";
 import { favoritesService } from "@/services/favoritesService";
 import { useNavigate, useLocation } from "react-router-dom";
 

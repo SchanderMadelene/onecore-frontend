@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFavorites, EditFavoriteDialog, CreateFavoriteDialog } from "@/features/favorites";
-import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/types/favorites";
+import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/features/favorites/types/favorite";
 import { Star, Search, Trash2, Clock, TrendingUp, ExternalLink, Upload, Download, Share2, User, Users, Pencil, Plus } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";

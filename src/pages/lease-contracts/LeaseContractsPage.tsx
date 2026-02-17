@@ -16,7 +16,7 @@ import {
   LEASE_STATUS_LABELS, 
   LEASE_STATUS_VARIANTS, 
   LEASE_TYPE_LABELS 
-} from "@/types/leaseContract";
+} from "./types/leaseContract";
 
 export default function LeaseContractsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

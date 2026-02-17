@@ -15,7 +15,7 @@ import { AlertTriangle, MessageSquare, User } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TemplateSelector } from "./TemplateSelector";
 import { messageTemplates } from "@/features/communication";
-import { MessageTemplate } from "@/types/messageTemplates";
+import { MessageTemplate } from "@/features/communication/types/messageTemplate";
 
 interface Recipient {
   id: string;

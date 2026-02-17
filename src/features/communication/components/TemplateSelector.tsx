@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MessageTemplate } from "@/types/messageTemplates";
+import { MessageTemplate } from "@/features/communication/types/messageTemplate";
 import { FileText } from "lucide-react";
 
 interface TemplateSelectorProps {
