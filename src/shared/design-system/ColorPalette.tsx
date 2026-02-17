@@ -130,6 +130,51 @@ export const ColorPalette = () => {
     },
   ];
 
+  const decorativeColors: ColorSwatch[] = [
+    {
+      name: "Purple",
+      description: "Kategorifärg, t.ex. 55+ boende",
+      cssVar: "purple",
+      foregroundVar: "purple-foreground",
+      className: "bg-purple text-purple-foreground",
+    },
+    {
+      name: "Teal",
+      description: "Kategorifärg, t.ex. trygghetsboende",
+      cssVar: "teal",
+      foregroundVar: "teal-foreground",
+      className: "bg-teal text-teal-foreground",
+    },
+    {
+      name: "Amber",
+      description: "Kategorifärg, t.ex. studentboende",
+      cssVar: "amber",
+      foregroundVar: "amber-foreground",
+      className: "bg-amber text-amber-foreground",
+    },
+    {
+      name: "Rose",
+      description: "Kategorifärg, t.ex. co-living",
+      cssVar: "rose",
+      foregroundVar: "rose-foreground",
+      className: "bg-rose text-rose-foreground",
+    },
+    {
+      name: "Orange",
+      description: "Kategorifärg, t.ex. poängfritt",
+      cssVar: "orange",
+      foregroundVar: "orange-foreground",
+      className: "bg-orange text-orange-foreground",
+    },
+    {
+      name: "Slate",
+      description: "Neutral kategorifärg, t.ex. standard",
+      cssVar: "slate",
+      foregroundVar: "slate-foreground",
+      className: "bg-slate text-slate-foreground",
+    },
+  ];
+
   const uiColors: ColorSwatch[] = [
     {
       name: "Border",
@@ -183,7 +228,13 @@ export const ColorPalette = () => {
           colors={statusColors}
         />
 
-        {/* UI Colors */}
+        {/* Decorative Colors */}
+        <ColorSection
+          title="Dekorativa färger"
+          description="Färger för badges, taggar och kategorier (t.ex. byggnadstyper)"
+          colors={decorativeColors}
+        />
+
         <ColorSection
           title="Gränssnittsfärger"
           description="Färger för UI-element som kanter och fokusringar"
