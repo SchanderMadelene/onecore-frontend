@@ -1,0 +1,1 @@
+export { mockBarriers, getBarriersByType, getActiveBarriers, getAllBarriers, getAvailableHousing, getAvailableParkingSpaces, getAvailableStorage, getAvailableCommercial, createBarrier } from '@/features/barriers/data/barriers';
