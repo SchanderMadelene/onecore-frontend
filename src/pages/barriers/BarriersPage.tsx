@@ -11,6 +11,7 @@ import { Search, X } from "lucide-react";
 import { exportToExcel, formatDateForExcel, ExcelColumn } from "@/utils/excelExport";
 import { useToast } from "@/hooks/use-toast";
 import { FavoriteParameters } from "@/features/favorites/types/favorite";
+import { BARRIER_REASON_CATEGORY_LABELS, type BarrierReasonCategory } from "@/entities/barrier/types";
 
 const TYPE_LABELS: Record<string, string> = {
   housing: "Bostad",
@@ -32,24 +33,59 @@ const BarriersPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [districtFilter, setDistrictFilter] = useState("all");
+  const [propertyFilter, setPropertyFilter] = useState("all");
+  const [costCenterFilter, setCostCenterFilter] = useState("all");
+  const [reasonCategoryFilter, setReasonCategoryFilter] = useState("all");
 
   const allBarriers = getAllBarriers();
 
-  const hasActiveFilters = searchQuery !== "" || typeFilter !== "all" || statusFilter !== "all";
+  const hasActiveFilters = searchQuery !== "" || typeFilter !== "all" || statusFilter !== "all" 
+    || districtFilter !== "all" || propertyFilter !== "all" || costCenterFilter !== "all" 
+    || reasonCategoryFilter !== "all";
 
   const clearFilters = () => {
     setSearchQuery("");
     setTypeFilter("all");
     setStatusFilter("all");
+    setDistrictFilter("all");
+    setPropertyFilter("all");
+    setCostCenterFilter("all");
+    setReasonCategoryFilter("all");
   };
 
   const getActiveFilters = useCallback((): FavoriteParameters => {
     const params: FavoriteParameters = {};
     if (typeFilter !== "all") params.type = typeFilter;
     if (statusFilter !== "all") params.status = statusFilter;
+    if (districtFilter !== "all") params.district = districtFilter;
+    if (propertyFilter !== "all") params.property = propertyFilter;
+    if (costCenterFilter !== "all") params.costCenter = costCenterFilter;
+    if (reasonCategoryFilter !== "all") params.reasonCategory = reasonCategoryFilter;
     if (searchQuery) params.search = searchQuery;
     return params;
-  }, [typeFilter, statusFilter, searchQuery]);
+  }, [typeFilter, statusFilter, districtFilter, propertyFilter, costCenterFilter, reasonCategoryFilter, searchQuery]);
+
+  // Extract unique values for filters
+  const uniqueDistricts = useMemo(() => {
+    return [...new Set(allBarriers.map(b => b.district).filter(Boolean) as string[])].sort();
+  }, [allBarriers]);
+
+  const uniqueProperties = useMemo(() => {
+    const map = new Map<string, string>();
+    allBarriers.forEach(b => {
+      if (b.propertyId && b.propertyName) map.set(b.propertyId, b.propertyName);
+    });
+    return Array.from(map.entries()).map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name));
+  }, [allBarriers]);
+
+  const uniqueCostCenters = useMemo(() => {
+    return [...new Set(allBarriers.map(b => b.costCenter).filter(Boolean) as string[])].sort();
+  }, [allBarriers]);
+
+  const uniqueReasonCategories = useMemo(() => {
+    return [...new Set(allBarriers.map(b => b.reasonCategory).filter(Boolean) as BarrierReasonCategory[])].sort();
+  }, [allBarriers]);
 
   const filteredBarriers = useMemo(() => {
     return allBarriers.filter(barrier => {
@@ -60,10 +96,14 @@ const BarriersPage = () => {
 
       const matchesType = typeFilter === "all" || barrier.type === typeFilter;
       const matchesStatus = statusFilter === "all" || barrier.status === statusFilter;
+      const matchesDistrict = districtFilter === "all" || barrier.district === districtFilter;
+      const matchesProperty = propertyFilter === "all" || barrier.propertyId === propertyFilter;
+      const matchesCostCenter = costCenterFilter === "all" || barrier.costCenter === costCenterFilter;
+      const matchesReasonCategory = reasonCategoryFilter === "all" || barrier.reasonCategory === reasonCategoryFilter;
 
-      return matchesSearch && matchesType && matchesStatus;
+      return matchesSearch && matchesType && matchesStatus && matchesDistrict && matchesProperty && matchesCostCenter && matchesReasonCategory;
     });
-  }, [allBarriers, searchQuery, typeFilter, statusFilter]);
+  }, [allBarriers, searchQuery, typeFilter, statusFilter, districtFilter, propertyFilter, costCenterFilter, reasonCategoryFilter]);
 
   const handleBarrierCreated = () => {
     setRefreshKey(prev => prev + 1);
@@ -76,9 +116,13 @@ const BarriersPage = () => {
       { key: "object", header: "Objekt" },
       { key: "address", header: "Adress" },
       { key: "reason", header: "Orsak" },
+      { key: "reasonCategory", header: "Orsakkategori", getValue: (item) => item.reasonCategory ? BARRIER_REASON_CATEGORY_LABELS[item.reasonCategory] : '' },
       { key: "startDate", header: "Startdatum", getValue: (item) => formatDateForExcel(item.startDate) },
       { key: "endDate", header: "Slutdatum", getValue: (item) => formatDateForExcel(item.endDate) },
       { key: "status", header: "Status", getValue: (item) => STATUS_LABELS[item.status] || item.status },
+      { key: "district", header: "Distrikt" },
+      { key: "propertyName", header: "Fastighet" },
+      { key: "costCenter", header: "Kostnadsställe" },
       { key: "createdBy", header: "Skapad av" },
       { key: "createdDate", header: "Skapad datum", getValue: (item) => formatDateForExcel(item.createdDate) },
       { key: "notes", header: "Anteckningar" }
@@ -129,6 +173,7 @@ const BarriersPage = () => {
                   <SelectItem value="commercial">Lokal</SelectItem>
                 </SelectContent>
               </Select>
+
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-full sm:w-[180px]">
                   <SelectValue placeholder="Status" />
@@ -138,6 +183,60 @@ const BarriersPage = () => {
                   <SelectItem value="active">Aktiv</SelectItem>
                   <SelectItem value="inactive">Inaktiv</SelectItem>
                   <SelectItem value="expired">Utgången</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Reason Category Filter */}
+              <Select value={reasonCategoryFilter} onValueChange={setReasonCategoryFilter}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Orsakkategori" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla orsaker</SelectItem>
+                  {uniqueReasonCategories.map((rc) => (
+                    <SelectItem key={rc} value={rc}>
+                      {BARRIER_REASON_CATEGORY_LABELS[rc]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* District Filter */}
+              <Select value={districtFilter} onValueChange={setDistrictFilter}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Distrikt" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla distrikt</SelectItem>
+                  {uniqueDistricts.map((d) => (
+                    <SelectItem key={d} value={d}>{d}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Property Filter */}
+              <Select value={propertyFilter} onValueChange={setPropertyFilter}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Fastighet" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla fastigheter</SelectItem>
+                  {uniqueProperties.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Cost Center Filter */}
+              <Select value={costCenterFilter} onValueChange={setCostCenterFilter}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Kostnadsställe" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla kostnadsställen</SelectItem>
+                  {uniqueCostCenters.map((cc) => (
+                    <SelectItem key={cc} value={cc}>{cc}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               
