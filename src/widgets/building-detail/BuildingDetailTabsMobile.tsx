@@ -1,11 +1,11 @@
 import { Building, Wrench, FileText, Users, Car, Home, MessageSquare, StickyNote } from "lucide-react";
-import { BuildingEntrances } from "./BuildingEntrances";
-import { BuildingPartsTab } from "./tabs/BuildingPartsTab";
-import { BuildingSpacesTab } from "./tabs/BuildingSpacesTab";
-import { BuildingInstallationsTab } from "./tabs/BuildingInstallationsTab";
-import { BuildingParkingTab } from "./tabs/BuildingParkingTab";
-import { BuildingDocumentsTab } from "./tabs/BuildingDocumentsTab";
-import { BuildingOrdersTab } from "./tabs/BuildingOrdersTab";
+import { BuildingEntrances } from "@/features/buildings/components/BuildingEntrances";
+import { BuildingPartsTab } from "@/features/buildings/components/tabs/BuildingPartsTab";
+import { BuildingSpacesTab } from "@/features/buildings/components/tabs/BuildingSpacesTab";
+import { BuildingInstallationsTab } from "@/features/buildings/components/tabs/BuildingInstallationsTab";
+import { BuildingParkingTab } from "@/features/buildings/components/tabs/BuildingParkingTab";
+import { BuildingDocumentsTab } from "@/features/buildings/components/tabs/BuildingDocumentsTab";
+import { BuildingOrdersTab } from "@/features/buildings/components/tabs/BuildingOrdersTab";
 import { Notes } from "@/components/common";
 import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
 import { FeatureGatedContent } from "@/features/residences/components/tabs/FeatureGatedContent";

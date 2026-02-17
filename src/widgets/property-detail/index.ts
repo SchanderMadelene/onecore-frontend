@@ -1,2 +1,2 @@
-export { PropertyDetailTabs } from '@/features/properties/components/PropertyDetailTabs';
-export { PropertyDetailTabsMobile } from '@/features/properties/components/PropertyDetailTabsMobile';
+export { PropertyDetailTabs } from './PropertyDetailTabs';
+export { PropertyDetailTabsMobile } from './PropertyDetailTabsMobile';

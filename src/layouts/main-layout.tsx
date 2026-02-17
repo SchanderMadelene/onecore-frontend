@@ -1,6 +1,6 @@
 
-import { NavigationBar } from "@/layouts/NavigationBar";
-import { TreeView } from "@/layouts/TreeView";
+import { NavigationBar } from "@/widgets/navigation";
+import { TreeView } from "@/widgets/navigation";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";

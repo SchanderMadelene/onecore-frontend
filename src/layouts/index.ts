@@ -1,5 +1,5 @@
 
 export { PageLayout } from './main-layout';
-export { NavigationBar } from './NavigationBar';
-export { TreeView } from './TreeView';
-export type { TreeNode, TreeItemProps, TreeViewProps } from './treeview/types';
+// Re-exports for backward compatibility
+export { NavigationBar, TreeView } from '@/widgets/navigation';
+export type { TreeNode, TreeItemProps, TreeViewProps } from '@/widgets/navigation';
