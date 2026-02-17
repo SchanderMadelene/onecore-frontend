@@ -5,7 +5,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Settings } from "lucide-react";
 import type { Building, SpaceComponent } from "@/types/api";
 import { ComponentCard } from "@/components/common";
-import { Component } from "@/data/components";
+import { Component } from "@/components/common/components-data";
 
 interface BuildingInstallationsTabProps {
   building: Building;

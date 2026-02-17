@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ComponentCard } from "@/components/common";
-import { mockComponents } from "@/data/components";
+import { mockComponents } from "@/components/common/components-data";
 
 export const ComponentShowcase = () => {
   return (
