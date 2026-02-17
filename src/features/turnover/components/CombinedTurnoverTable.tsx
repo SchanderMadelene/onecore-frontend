@@ -129,16 +129,22 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead rowSpan={2} className="align-bottom">Uppgång</TableHead>
-                <TableHead rowSpan={2} className="align-bottom">Typ</TableHead>
-                <TableHead colSpan={3} className="text-center border-l-2 border-border">Utflytt</TableHead>
-                <TableHead colSpan={5} className="text-center border-l-2 border-border">Inflytt</TableHead>
-              </TableRow>
-              <TableRow>
-                <TableHead className="border-l-2 border-border">Hyresgäst</TableHead>
+                <TableHead>Uppgång</TableHead>
+                <TableHead>Typ</TableHead>
+                <TableHead>
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center rounded-md bg-destructive/10 px-2 py-0.5 text-xs font-medium text-destructive">Utflytt</span>
+                    Hyresgäst
+                  </div>
+                </TableHead>
                 <TableHead>Sista deb.</TableHead>
                 <TableHead className="text-center">Städkontr.</TableHead>
-                <TableHead className="border-l-2 border-border">Hyresgäst</TableHead>
+                <TableHead>
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">Inflytt</span>
+                    Hyresgäst
+                  </div>
+                </TableHead>
                 <TableHead>Kontrakt</TableHead>
                 <TableHead className="text-center">Samtal</TableHead>
                 <TableHead className="text-center">Besök</TableHead>
@@ -151,7 +157,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                   <TableCell className="font-medium text-sm whitespace-nowrap">{row.address}</TableCell>
                   <TableCell className="text-sm">{row.apartmentType}</TableCell>
                   {/* Move-out columns */}
-                  <TableCell className="border-l-2 border-border">
+                  <TableCell>
                     {row.moveOut ? (
                       <div>
                         <span className="text-sm">{row.moveOut.tenantName}</span>
@@ -174,7 +180,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in columns */}
-                  <TableCell className="border-l-2 border-border">
+                  <TableCell>
                     {row.moveIn ? (
                       <div>
                         <span className="text-sm">{row.moveIn.tenantName}</span>
