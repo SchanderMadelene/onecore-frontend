@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { PageLayout } from "@/layouts";
 import { BarriersTable, getAllBarriers, type Barrier } from "@/features/barriers";
 import { BarriersHeader } from "./components/BarriersHeader";
@@ -28,15 +29,16 @@ const STATUS_LABELS: Record<string, string> = {
 
 const BarriersPage = () => {
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [districtFilter, setDistrictFilter] = useState("all");
-  const [propertyFilter, setPropertyFilter] = useState("all");
-  const [costCenterFilter, setCostCenterFilter] = useState("all");
-  const [reasonCategoryFilter, setReasonCategoryFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get('search') || "");
+  const [typeFilter, setTypeFilter] = useState(() => searchParams.get('type') || "all");
+  const [statusFilter, setStatusFilter] = useState(() => searchParams.get('status') || "all");
+  const [districtFilter, setDistrictFilter] = useState(() => searchParams.get('district') || "all");
+  const [propertyFilter, setPropertyFilter] = useState(() => searchParams.get('property') || "all");
+  const [costCenterFilter, setCostCenterFilter] = useState(() => searchParams.get('costCenter') || "all");
+  const [reasonCategoryFilter, setReasonCategoryFilter] = useState(() => searchParams.get('reasonCategory') || "all");
 
   const allBarriers = getAllBarriers();
 

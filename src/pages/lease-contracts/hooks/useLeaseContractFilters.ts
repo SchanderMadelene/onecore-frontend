@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { LeaseContract, LeaseContractType, LeaseContractStatus, LeaseContractSubType } from '../types/leaseContract';
 
 interface PropertyOption {
@@ -12,28 +13,42 @@ interface BuildingOption {
   propertyId: string;
 }
 
+function parseUrlDate(value: string | null): Date | undefined {
+  if (!value) return undefined;
+  const d = new Date(value);
+  return isNaN(d.getTime()) ? undefined : d;
+}
+
 export function useLeaseContractFilters(contracts: LeaseContract[]) {
-  const [selectedType, setSelectedType] = useState<LeaseContractType | ''>('');
-  const [selectedSubType, setSelectedSubType] = useState<LeaseContractSubType | ''>('');
-  const [selectedStatus, setSelectedStatus] = useState<LeaseContractStatus | ''>('');
-  const [selectedDistrict, setSelectedDistrict] = useState<string>('');
-  const [selectedProperty, setSelectedProperty] = useState<string>('');
-  const [selectedBuilding, setSelectedBuilding] = useState<string>('');
-  const [selectedKvvArea, setSelectedKvvArea] = useState<string>('');
-  const [selectedCostCenter, setSelectedCostCenter] = useState<string>('');
-  const [selectedMarketArea, setSelectedMarketArea] = useState<string>('');
-  const [selectedRentRow, setSelectedRentRow] = useState<string>('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Initialize state from URL params
+  const [selectedType, setSelectedType] = useState<LeaseContractType | ''>(() => 
+    (searchParams.get('type') as LeaseContractType) || '');
+  const [selectedSubType, setSelectedSubType] = useState<LeaseContractSubType | ''>(() =>
+    (searchParams.get('subType') as LeaseContractSubType) || '');
+  const [selectedStatus, setSelectedStatus] = useState<LeaseContractStatus | ''>(() => {
+    const s = searchParams.get('status');
+    return s !== null ? Number(s) as LeaseContractStatus : '';
+  });
+  const [selectedDistrict, setSelectedDistrict] = useState<string>(() => searchParams.get('district') || '');
+  const [selectedProperty, setSelectedProperty] = useState<string>(() => searchParams.get('property') || '');
+  const [selectedBuilding, setSelectedBuilding] = useState<string>(() => searchParams.get('building') || '');
+  const [selectedKvvArea, setSelectedKvvArea] = useState<string>(() => searchParams.get('kvvArea') || '');
+  const [selectedCostCenter, setSelectedCostCenter] = useState<string>(() => searchParams.get('costCenter') || '');
+  const [selectedMarketArea, setSelectedMarketArea] = useState<string>(() => searchParams.get('marketArea') || '');
+  const [selectedRentRow, setSelectedRentRow] = useState<string>(() => searchParams.get('rentRow') || '');
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get('search') || '');
   
   // Date range filters
-  const [fromDateStart, setFromDateStart] = useState<Date | undefined>(undefined);
-  const [fromDateEnd, setFromDateEnd] = useState<Date | undefined>(undefined);
-  const [lastDebitDateStart, setLastDebitDateStart] = useState<Date | undefined>(undefined);
-  const [lastDebitDateEnd, setLastDebitDateEnd] = useState<Date | undefined>(undefined);
-  const [noticeDateStart, setNoticeDateStart] = useState<Date | undefined>(undefined);
-  const [noticeDateEnd, setNoticeDateEnd] = useState<Date | undefined>(undefined);
-  const [terminationDateStart, setTerminationDateStart] = useState<Date | undefined>(undefined);
-  const [terminationDateEnd, setTerminationDateEnd] = useState<Date | undefined>(undefined);
+  const [fromDateStart, setFromDateStart] = useState<Date | undefined>(() => parseUrlDate(searchParams.get('fromDateStart')));
+  const [fromDateEnd, setFromDateEnd] = useState<Date | undefined>(() => parseUrlDate(searchParams.get('fromDateEnd')));
+  const [lastDebitDateStart, setLastDebitDateStart] = useState<Date | undefined>(() => parseUrlDate(searchParams.get('lastDebitDateStart')));
+  const [lastDebitDateEnd, setLastDebitDateEnd] = useState<Date | undefined>(() => parseUrlDate(searchParams.get('lastDebitDateEnd')));
+  const [noticeDateStart, setNoticeDateStart] = useState<Date | undefined>(() => parseUrlDate(searchParams.get('noticeDateStart')));
+  const [noticeDateEnd, setNoticeDateEnd] = useState<Date | undefined>(() => parseUrlDate(searchParams.get('noticeDateEnd')));
+  const [terminationDateStart, setTerminationDateStart] = useState<Date | undefined>(() => parseUrlDate(searchParams.get('terminationDateStart')));
+  const [terminationDateEnd, setTerminationDateEnd] = useState<Date | undefined>(() => parseUrlDate(searchParams.get('terminationDateEnd')));
   
   // Pagination
   const [page, setPage] = useState(1);

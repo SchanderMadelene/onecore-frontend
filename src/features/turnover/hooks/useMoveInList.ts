@@ -1,17 +1,28 @@
 import { useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { MoveInListEntry, MoveInListChecklist, TurnoverRow } from '../types/move-in-list-types';
 import { mockMoveInListEntries } from '../data/mock-move-in-list';
 import { parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 
 export function useMoveInList() {
+  const [searchParams] = useSearchParams();
   const now = new Date();
   const defaultStart = new Date(now.getFullYear(), now.getMonth(), 16);
   const defaultEnd = new Date(now.getFullYear(), now.getMonth() + 1, 15);
 
-  const [startDate, setStartDate] = useState<Date>(defaultStart);
-  const [endDate, setEndDate] = useState<Date>(defaultEnd);
-  const [selectedKvvArea, setSelectedKvvArea] = useState<string>('all');
-  const [selectedDistrict, setSelectedDistrict] = useState<string>('all');
+  const parseDate = (key: string, fallback: Date): Date => {
+    const val = searchParams.get(key);
+    if (val) {
+      const d = new Date(val);
+      if (!isNaN(d.getTime())) return d;
+    }
+    return fallback;
+  };
+
+  const [startDate, setStartDate] = useState<Date>(() => parseDate('startDate', defaultStart));
+  const [endDate, setEndDate] = useState<Date>(() => parseDate('endDate', defaultEnd));
+  const [selectedKvvArea, setSelectedKvvArea] = useState<string>(() => searchParams.get('kvvArea') || 'all');
+  const [selectedDistrict, setSelectedDistrict] = useState<string>(() => searchParams.get('district') || 'all');
   const [entries, setEntries] = useState<MoveInListEntry[]>(mockMoveInListEntries);
 
   const filteredEntries = useMemo(() => {
