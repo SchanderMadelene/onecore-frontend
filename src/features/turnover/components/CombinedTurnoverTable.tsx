@@ -134,7 +134,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                 <TableHead>Typ</TableHead>
                 <TableHead className="border-l-2 border-border">
                   <div className="flex items-center gap-1.5">
-                    <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground" />
+                    <ArrowUpRight className="h-4 w-4 text-destructive" />
                     Hyresgäst
                   </div>
                 </TableHead>
@@ -142,7 +142,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                 <TableHead className="text-center">Städkontr.</TableHead>
                 <TableHead className="border-l-2 border-border">
                   <div className="flex items-center gap-1.5">
-                    <ArrowDownLeft className="h-3.5 w-3.5 text-muted-foreground" />
+                    <ArrowDownLeft className="h-4 w-4 text-primary" />
                     Hyresgäst
                   </div>
                 </TableHead>
