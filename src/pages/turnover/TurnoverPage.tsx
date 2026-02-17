@@ -2,8 +2,7 @@ import { useState } from "react";
 import { PageLayout } from "@/layouts";
 import { useMoveInList } from "@/features/turnover";
 import { MoveInListFilters } from "@/features/turnover/components/MoveInListFilters";
-import { MoveOutSection } from "@/features/turnover/components/MoveOutSection";
-import { MoveInSection } from "@/features/turnover/components/MoveInSection";
+import { CombinedTurnoverTable } from "@/features/turnover/components/CombinedTurnoverTable";
 import { TurnoverHeader } from "./components/TurnoverHeader";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -16,8 +15,7 @@ export default function TurnoverPage() {
     setEndDate,
     selectedKvvArea,
     setSelectedKvvArea,
-    moveOutEntries,
-    moveInEntries,
+    combinedEntries,
     updateChecklist,
     availableKvvAreas,
   } = useMoveInList();
@@ -41,8 +39,7 @@ export default function TurnoverPage() {
           </CardContent>
         </Card>
 
-        <MoveOutSection entries={moveOutEntries} onChecklistChange={updateChecklist} />
-        <MoveInSection entries={moveInEntries} onChecklistChange={updateChecklist} />
+        <CombinedTurnoverTable entries={combinedEntries} onChecklistChange={updateChecklist} />
       </div>
     </PageLayout>
   );
