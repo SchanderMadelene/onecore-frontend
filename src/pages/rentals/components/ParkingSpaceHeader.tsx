@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, PlusCircle } from "lucide-react";
-import { ParkingApplicationDialog } from "@/components/rentals/ParkingApplicationDialog";
+import { ParkingApplicationDialog } from "@/features/rentals/components/ParkingApplicationDialog";
 
 interface ParkingSpaceHeaderProps {
   spaceAddress: string;

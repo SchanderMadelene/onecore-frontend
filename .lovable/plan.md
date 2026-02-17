@@ -1,111 +1,118 @@
 
-# Inflyttslista — ersatter innehallet pa In- och utflytt-sidan
+
+# Slutfor FSD-migreringen: Widgets och Layouts
 
 ## Sammanfattning
 
-Istallet for att skapa en ny route och navigationspunkt ersatter vi allt innehall pa den befintliga sidan **In- och utflytt** (`/turnover`). Routen, navigationen och feature toggle (`showTurnover`) behalls som de ar. Bara sidans innehall byts ut.
+Flytta NavigationBar, TreeView (med hela treeview-mappen) och DetailTabs fysiskt till `src/widgets/`. Rensa `src/layouts/` sa att den bara innehaller `main-layout.tsx`. Uppdatera alla importer och behall re-exports for bakatkompatibilitet.
 
-De befintliga komponenterna (TurnoverDashboard, TurnoverKanban, TurnoverList, etc.) tas bort och ersatts med den nya inflyttslistan.
+---
 
-## Vad den nya sidan visar
+## Steg 1: Flytta Navigation till widgets/
 
-1. **Periodfilter** — dropdown med manadshalvor (16/1-15/2, 16/2-15/3, etc.), aktuell period forvald
-2. **KVV-omradesfilter** — dropdown med befintliga KVV-nummer fran `kvv-mapping.ts`
-3. **Utflyttningar** — tabell med adress, hyresgast, datum, checkbox for stadkontroll
-4. **Inflyttningar** — tabell med adress, hyresgast, datum, checkboxar for valkomstsamtal, valkomstbesok, namn/porttelefon
-5. Pa mobil visas sektionerna med **MobileAccordion** istallet for tabeller
+**Flytta filer fysiskt:**
+- `src/layouts/NavigationBar.tsx` -> `src/widgets/navigation/NavigationBar.tsx`
+- `src/layouts/TreeView.tsx` -> `src/widgets/navigation/TreeView.tsx`
+- `src/layouts/treeview/` (hela mappen) -> `src/widgets/navigation/treeview/`
+  - `TreeItem.tsx`, `TreeView.tsx`, `treeData.ts`, `treeViewUtils.tsx`, `types.ts`, `index.ts`
+  - `data/navigation.ts`, `data/properties/` (alla filer)
 
-## Teknisk plan
-
-### Nya filer
-
-```text
-src/features/turnover/
-  types/move-in-list-types.ts    -- MoveInListEntry, MoveInListPeriod
-  data/periods.ts                -- Periodberakning (manadshalvor)
-  data/mock-move-in-list.ts      -- Mockdata med KVV-koppling
-  hooks/useMoveInList.ts         -- Filtrering + checklistestatus (lokalt state)
-  components/MoveInListFilters.tsx -- Period + KVV-filter
-  components/MoveOutSection.tsx   -- Utflyttningstabell (ResponsiveTable)
-  components/MoveInSection.tsx    -- Inflyttningstabell (ResponsiveTable)
-  components/ChecklistCell.tsx    -- Checkbox-komponent
+**Uppdatera `src/widgets/navigation/index.ts`:**
+```typescript
+export { NavigationBar } from './NavigationBar';
+export { TreeView } from './TreeView';
+export type { TreeNode, TreeItemProps, TreeViewProps } from './treeview/types';
 ```
 
-### Filer som andras
+**Uppdatera interna importer i flyttade filer:**
+- `NavigationBar.tsx`: Inga andringar behovs (importerar fran `@/components/ui`, `@/features/search`, etc.)
+- `TreeView.tsx` (wrapper): Uppdatera fran `./treeview` (samma relativa sokvag, fungerar)
+- `treeview/TreeView.tsx`: Uppdatera import av `treeData` och `types` (relativa sokvagar, fungerar)
+- Alla interna treeview-filer anvander relativa importer, sa de fungerar utan andring
 
-1. **`src/pages/turnover/TurnoverPage.tsx`** — Helt nytt innehall: ersatt dashboard/kanban/list-flikar med period/KVV-filter och utflytt/inflyttsektioner
-2. **`src/pages/turnover/components/TurnoverHeader.tsx`** — Uppdaterad rubrik och beskrivning
-3. **`src/features/turnover/index.ts`** — Exporterar nya komponenter och hooks
+## Steg 2: Flytta DetailTabs till widgets/
 
-### Filer som tas bort
+**Property DetailTabs:**
+- `src/features/properties/components/PropertyDetailTabs.tsx` -> `src/widgets/property-detail/PropertyDetailTabs.tsx`
+- `src/features/properties/components/PropertyDetailTabsMobile.tsx` -> `src/widgets/property-detail/PropertyDetailTabsMobile.tsx`
 
-Alla befintliga turnover-komponenter som inte langre behovs:
-- `TurnoverDashboard.tsx`
-- `TurnoverKanban.tsx`
-- `TurnoverList.tsx`
-- `TurnoverCaseCard.tsx`
-- `TurnoverCaseDetailDialog.tsx`
-- `TurnoverStepIndicator.tsx`
-- `useTurnoverCases.ts`
-- `data/turnover.ts` (mockdata for gamla arenden)
+**Building DetailTabs:**
+- `src/features/buildings/components/BuildingDetailTabs.tsx` -> `src/widgets/building-detail/BuildingDetailTabs.tsx`
+- `src/features/buildings/components/BuildingDetailTabsMobile.tsx` -> `src/widgets/building-detail/BuildingDetailTabsMobile.tsx`
 
-### Typer
+**Uppdatera widget index-filer:**
+```typescript
+// widgets/property-detail/index.ts
+export { PropertyDetailTabs } from './PropertyDetailTabs';
+export { PropertyDetailTabsMobile } from './PropertyDetailTabsMobile';
 
-```text
-MoveInListEntry:
-  id, type (move_in/move_out), address, residenceCode,
-  kvvArea, tenantName, tenantPhone, tenantEmail,
-  date, contractId,
-  checklist: {
-    cleaningDone       -- utflytt
-    welcomeCallDone    -- inflytt
-    welcomeVisitDone   -- inflytt
-    nameAndIntercomDone -- inflytt
-  }
-
-MoveInListPeriod:
-  label, startDate, endDate
+// widgets/building-detail/index.ts
+export { BuildingDetailTabs } from './BuildingDetailTabs';
+export { BuildingDetailTabsMobile } from './BuildingDetailTabsMobile';
 ```
 
-### Komponenter som ateranvands
+**Uppdatera importer i de flyttade filerna:**
+- `PropertyDetailTabs.tsx`: Andrar importerna av tab-komponenter fran `./tabs/` till `@/features/properties/components/tabs/`
+- `PropertyDetailTabsMobile.tsx`: Samma andring
+- `BuildingDetailTabs.tsx`: Andrar tab-imports fran `./` till `@/features/buildings/components/`
+- `BuildingDetailTabsMobile.tsx`: Samma andring
 
-- **ResponsiveTable** — tabell med mobilkort
-- **MobileAccordion** — for mobil-sektionsgruppering
-- **Select** — period- och KVV-filter (standard filtermonster, w-full sm:w-[180px])
-- **Checkbox** — checklistepunkterna
-- **PageLayout** — sidomall
-- **SaveAsFavoriteButton** och **ActiveFavoriteIndicator** — behalls i headern
+## Steg 3: Uppdatera konsumenter
 
-### Sidlayout (desktop)
+**`src/layouts/main-layout.tsx`** (2 importer):
+- Andrar `import { NavigationBar } from "@/layouts/NavigationBar"` -> `from "@/widgets/navigation"`
+- Andrar `import { TreeView } from "@/layouts/TreeView"` -> `from "@/widgets/navigation"`
 
-```text
-+--------------------------------------------------+
-| In- och utflytt                                   |
-| Operativ checklista for in- och utflyttningar     |
-|                                                   |
-| [Period: 16/2 - 15/3 v]  [KVV-omrade: Alla v]   |
-+--------------------------------------------------+
-| UTFLYTTNINGAR (3)                                 |
-|                                                   |
-| Adress         | Hyresgast    | Datum  | Stad     |
-| Odenplan 5A    | A. Andersson | 28 feb | [x]      |
-| Kopparb. 12B   | M. Svensson  | 1 mar  | [ ]      |
-+--------------------------------------------------+
-| INFLYTTNINGAR (2)                                 |
-|                                                   |
-| Adress         | Hyresgast    | Datum  | Sam|Bes|NP|
-| Odenplan 5A    | E. Eriksson  | 1 mar  | [ ]|[ ]|[ ]|
-| Kopparb. 12B   | (ej utsedd)  | -      |    |   |   |
-+--------------------------------------------------+
+**`src/features/search/data/search.ts`** (1 import):
+- Andrar `import { TreeNode } from "@/layouts/treeview/types"` -> `from "@/widgets/navigation"`
+
+**`src/features/properties/components/index.ts`:**
+- Andrar exporten av `PropertyDetailTabs` och `PropertyDetailTabsMobile` till re-exports fran `@/widgets/property-detail`
+
+**`src/features/buildings/components/index.ts`:**
+- Andrar exporten av `BuildingDetailTabs` och `BuildingDetailTabsMobile` till re-exports fran `@/widgets/building-detail`
+
+## Steg 4: Re-exports for bakatkompatibilitet
+
+**`src/layouts/index.ts`** behalls men uppdateras:
+```typescript
+export { PageLayout } from './main-layout';
+// Re-exports for backward compatibility
+export { NavigationBar, TreeView } from '@/widgets/navigation';
+export type { TreeNode, TreeItemProps, TreeViewProps } from '@/widgets/navigation';
 ```
 
-### Mockdata
+**`src/layouts/NavigationBar.tsx`** och **`src/layouts/TreeView.tsx`** tas bort (kallkoden flyttas).
 
-Ny mockdata i `mock-move-in-list.ts` med 5-6 poster spridda over nagra perioder, kopplade till KVV-omraden fran `kvv-mapping.ts`. Checklistestatus sparas i lokalt React-state.
+**`src/layouts/treeview/`** mappen tas bort helt.
 
-### Vad som INTE ingar
+## Steg 5: Rensa dubbletter i features/
 
-- Persistering av checklistestatus (bara lokalt state)
-- Delning mellan anvandare
-- Integration med kundcenters nyckellistor
-- Export/utskrift
+Kontrollera om `entities/`-lagrets data- och UI-filer ar fysiskt kopierade (inte bara re-exports). Om det finns dubbletter i `features/*/data/` som nu ocksa finns i `entities/*/data/`, ersatt features-filerna med re-exports fran entities.
+
+---
+
+## Filer som skapas (nya)
+- `src/widgets/navigation/NavigationBar.tsx`
+- `src/widgets/navigation/TreeView.tsx`
+- `src/widgets/navigation/treeview/` (hela strukturen)
+- `src/widgets/property-detail/PropertyDetailTabs.tsx`
+- `src/widgets/property-detail/PropertyDetailTabsMobile.tsx`
+- `src/widgets/building-detail/BuildingDetailTabs.tsx`
+- `src/widgets/building-detail/BuildingDetailTabsMobile.tsx`
+
+## Filer som tas bort
+- `src/layouts/NavigationBar.tsx`
+- `src/layouts/TreeView.tsx`
+- `src/layouts/treeview/` (hela mappen)
+
+## Filer som uppdateras
+- `src/layouts/index.ts` (re-exports)
+- `src/layouts/main-layout.tsx` (importer)
+- `src/features/search/data/search.ts` (import)
+- `src/features/properties/components/index.ts` (re-export)
+- `src/features/buildings/components/index.ts` (re-export)
+- `src/widgets/navigation/index.ts`
+- `src/widgets/property-detail/index.ts`
+- `src/widgets/building-detail/index.ts`
+

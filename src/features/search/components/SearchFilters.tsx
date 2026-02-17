@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import { SearchFilter, SearchResultType } from "@/types/search";
+import { SearchFilter, SearchResultType } from "@/features/search/types/search";
 
 interface SearchFiltersProps {
   filters: SearchFilter[];

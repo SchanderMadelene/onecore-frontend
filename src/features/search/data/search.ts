@@ -1,4 +1,4 @@
-import { TreeNode } from "@/layouts/treeview/types";
+import { TreeNode } from "@/widgets/navigation";
 
 export interface SearchResult {
   id: string;

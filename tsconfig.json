@@ -1,19 +1,32 @@
 {
+  "compilerOptions": {
+    "allowJs": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/ui/*": ["./src/shared/ui/*"],
+      "@/components/common/*": ["./src/shared/common/*"],
+      "@/components/common": ["./src/shared/common"],
+      "@/components/design-system/*": ["./src/shared/design-system/*"],
+      "@/components/design-system": ["./src/shared/design-system"],
+      "@/hooks/*": ["./src/shared/hooks/*"],
+      "@/lib/*": ["./src/shared/lib/*"],
+      "@/utils/*": ["./src/shared/utils/*"],
+      "@/types/*": ["./src/shared/types/*"],
+      "@/contexts/*": ["./src/shared/contexts/*"]
+    },
+    "skipLibCheck": true,
+    "strictNullChecks": false
+  },
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
+    {
+      "path": "./tsconfig.app.json"
     },
-    "noImplicitAny": false,
-    "noUnusedParameters": false,
-    "skipLibCheck": true,
-    "allowJs": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": false
-  }
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

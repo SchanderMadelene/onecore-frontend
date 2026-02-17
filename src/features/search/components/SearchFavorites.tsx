@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, Star, Plus, Clock } from "lucide-react";
-import { SavedSearch } from "@/types/search";
+import { SavedSearch } from "@/features/search/types/search";
 import { toast } from "@/hooks/use-toast";
 
 interface SearchFavoritesProps {

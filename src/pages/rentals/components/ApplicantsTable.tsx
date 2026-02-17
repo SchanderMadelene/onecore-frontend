@@ -1,8 +1,8 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { ApplicantActions } from "@/components/rentals/ApplicantActions";
-import { OfferActions } from "@/components/rentals/OfferActions";
+import { ApplicantActions } from "@/features/rentals/components/ApplicantActions";
+import { OfferActions } from "@/features/rentals/components/OfferActions";
 
 interface Applicant {
   id: number;

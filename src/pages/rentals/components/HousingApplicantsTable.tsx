@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { CompactProfileForm } from "@/components/rentals/residence-profile/CompactProfileForm";
+import { CompactProfileForm } from "@/features/rentals/components/residence-profile/CompactProfileForm";
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
