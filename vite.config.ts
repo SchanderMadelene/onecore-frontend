@@ -15,8 +15,18 @@ export default defineConfig(({ mode }) => ({
     componentTagger(),
   ].filter(Boolean),
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+    alias: [
+      // Backward-compat aliases: old paths → shared/ (more specific must come first)
+      { find: "@/components/ui", replacement: path.resolve(__dirname, "./src/shared/ui") },
+      { find: "@/components/common", replacement: path.resolve(__dirname, "./src/shared/common") },
+      { find: "@/components/design-system", replacement: path.resolve(__dirname, "./src/shared/design-system") },
+      { find: "@/hooks", replacement: path.resolve(__dirname, "./src/shared/hooks") },
+      { find: "@/lib", replacement: path.resolve(__dirname, "./src/shared/lib") },
+      { find: "@/utils", replacement: path.resolve(__dirname, "./src/shared/utils") },
+      { find: "@/types", replacement: path.resolve(__dirname, "./src/shared/types") },
+      { find: "@/contexts", replacement: path.resolve(__dirname, "./src/shared/contexts") },
+      // General alias (must be last)
+      { find: "@", replacement: path.resolve(__dirname, "./src") },
+    ],
   },
 }));
