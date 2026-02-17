@@ -129,16 +129,20 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Uppgång</TableHead>
-                <TableHead>Typ</TableHead>
-                <TableHead className="bg-rose-50/50">Utflyttande</TableHead>
-                <TableHead className="bg-rose-50/50">Sista deb.</TableHead>
-                <TableHead className="bg-rose-50/50 text-center">Städkontr.</TableHead>
-                <TableHead className="bg-emerald-50/50">Inflyttande</TableHead>
-                <TableHead className="bg-emerald-50/50">Kontrakt</TableHead>
-                <TableHead className="bg-emerald-50/50 text-center">Samtal</TableHead>
-                <TableHead className="bg-emerald-50/50 text-center">Besök</TableHead>
-                <TableHead className="bg-emerald-50/50 text-center">Namn/Port</TableHead>
+                <TableHead rowSpan={2} className="align-bottom">Uppgång</TableHead>
+                <TableHead rowSpan={2} className="align-bottom">Typ</TableHead>
+                <TableHead colSpan={3} className="text-center border-l-2 border-border">Utflytt</TableHead>
+                <TableHead colSpan={5} className="text-center border-l-2 border-border">Inflytt</TableHead>
+              </TableRow>
+              <TableRow>
+                <TableHead className="border-l-2 border-border">Hyresgäst</TableHead>
+                <TableHead>Sista deb.</TableHead>
+                <TableHead className="text-center">Städkontr.</TableHead>
+                <TableHead className="border-l-2 border-border">Hyresgäst</TableHead>
+                <TableHead>Kontrakt</TableHead>
+                <TableHead className="text-center">Samtal</TableHead>
+                <TableHead className="text-center">Besök</TableHead>
+                <TableHead className="text-center">Namn/Port</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -147,7 +151,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                   <TableCell className="font-medium text-sm whitespace-nowrap">{row.address}</TableCell>
                   <TableCell className="text-sm">{row.apartmentType}</TableCell>
                   {/* Move-out columns */}
-                  <TableCell className="bg-rose-50/30">
+                  <TableCell className="border-l-2 border-border">
                     {row.moveOut ? (
                       <div>
                         <span className="text-sm">{row.moveOut.tenantName}</span>
@@ -157,10 +161,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
-                  <TableCell className="bg-rose-50/30 text-sm whitespace-nowrap">
+                  <TableCell className="text-sm whitespace-nowrap">
                     {formatDate(row.moveOut?.date)}
                   </TableCell>
-                  <TableCell className="bg-rose-50/30">
+                  <TableCell>
                     {row.moveOut ? (
                       <ChecklistCell
                         checked={row.moveOut.checklist.cleaningDone}
@@ -170,7 +174,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in columns */}
-                  <TableCell className="bg-emerald-50/30">
+                  <TableCell className="border-l-2 border-border">
                     {row.moveIn ? (
                       <div>
                         <span className="text-sm">{row.moveIn.tenantName}</span>
@@ -180,11 +184,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
-                  <TableCell className="bg-emerald-50/30 text-sm whitespace-nowrap">
+                  <TableCell className="text-sm whitespace-nowrap">
                     {formatDate(row.moveIn?.date)}
                   </TableCell>
                   {(['welcomeCallDone', 'welcomeVisitDone', 'nameAndIntercomDone'] as const).map(field => (
-                    <TableCell key={field} className="bg-emerald-50/30">
+                    <TableCell key={field}>
                       {row.moveIn ? (
                         <ChecklistCell
                           checked={row.moveIn.checklist[field]}
