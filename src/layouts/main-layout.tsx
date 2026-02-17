@@ -1,10 +1,23 @@
 
 import { NavigationBar } from "@/widgets/navigation";
 import { TreeView } from "@/widgets/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+
+const LG_BREAKPOINT = 1024;
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia(`(min-width: ${LG_BREAKPOINT}px)`);
+    const onChange = () => setIsDesktop(mql.matches);
+    mql.addEventListener("change", onChange);
+    setIsDesktop(mql.matches);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  return isDesktop;
+}
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -14,15 +27,14 @@ interface PageLayoutProps {
 
 export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLayoutProps) => {
   const location = useLocation();
-  const isMobile = useIsMobile();
+  const isDesktop = useIsDesktop();
   const { features } = useFeatureToggles();
   
   useEffect(() => {
-    if (!isMobile) {
-      // On desktop, sidebar is always visible
+    if (isDesktop) {
       setIsSidebarOpen(true);
     }
-  }, [location.pathname, isMobile]); // Removed setIsSidebarOpen from deps to prevent infinite loop
+  }, [location.pathname, isDesktop]);
 
   const handleSidebarToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -35,7 +47,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
       />
       
       <div className="flex h-[calc(100vh-3.5rem)] mt-14 relative">
-        {/* Backdrop overlay with improved z-index */}
+        {/* Backdrop overlay */}
         {isSidebarOpen && features.showNavigation && (
           <div 
             className="fixed inset-0 bg-black/20 z-[45] lg:hidden backdrop-blur-sm"
@@ -61,7 +73,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
               ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
             `}
             style={{
-              transform: isSidebarOpen || !isMobile 
+              transform: isSidebarOpen || isDesktop 
                 ? 'translateX(0)' 
                 : 'translateX(-100%)',
               willChange: 'transform'
@@ -69,7 +81,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
           >
             <TreeView 
               onNavigate={() => {
-                if (isMobile) setIsSidebarOpen(false);
+                if (!isDesktop) setIsSidebarOpen(false);
               }}
               showRentals={features.showRentals}
               showDesignSystem={features.showDesignSystem}

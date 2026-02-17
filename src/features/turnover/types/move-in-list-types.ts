@@ -12,12 +12,22 @@ export interface MoveInListEntry {
   residenceCode: string;
   kvvArea: string;
   contractNumber: string;
-  apartmentType: string; // e.g. "2RK", "3RK", "4RK"
+  apartmentType: string;
   tenantName: string;
   tenantPhone?: string;
   tenantEmail?: string;
-  date: string; // ISO date
+  date: string;
   contractId?: string;
   checklist: MoveInListChecklist;
+}
+
+export interface TurnoverRow {
+  residenceKey: string;
+  address: string;
+  residenceCode: string;
+  kvvArea: string;
+  apartmentType: string;
+  moveOut?: MoveInListEntry;
+  moveIn?: MoveInListEntry;
 }
 
