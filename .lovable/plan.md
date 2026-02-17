@@ -1,111 +1,97 @@
 
-# Inflyttslista — ersatter innehallet pa In- och utflytt-sidan
+# Omstrukturering till FSD - Steg 1: Städa bort dubbletter och oanvända mappar
 
-## Sammanfattning
+## Bakgrund
+Projektet har idag en blandning av kod i `src/components/` och `src/features/`. Många mappar i `src/components/` innehåller antingen ren duplicerad kod eller re-exports till `src/features/`. Innan vi kan gå mot en FSD-struktur (Feature-Sliced Design) behöver vi rensa detta.
 
-Istallet for att skapa en ny route och navigationspunkt ersatter vi allt innehall pa den befintliga sidan **In- och utflytt** (`/turnover`). Routen, navigationen och feature toggle (`showTurnover`) behalls som de ar. Bara sidans innehall byts ut.
+## Analys av nuläget
 
-De befintliga komponenterna (TurnoverDashboard, TurnoverKanban, TurnoverList, etc.) tas bort och ersatts med den nya inflyttslistan.
+Mapparna i `src/components/` kan delas in i tre kategorier:
 
-## Vad den nya sidan visar
+**Oanvända (inga importer hittas) - kan raderas direkt:**
+- `barriers/` - dubbletter finns i `src/features/barriers/components/`
+- `buildings/` - dubbletter finns i `src/features/buildings/components/`
+- `communication/` - dubbletter finns i `src/features/communication/components/`
+- `favorites/` - dubbletter finns i `src/features/favorites/components/`
+- `layout/` - `PageLayout.tsx` importeras inte
+- `shared/` - `Notes/` importeras inte harifran
+- `treeview/` - importeras inte
 
-1. **Periodfilter** — dropdown med manadshalvor (16/1-15/2, 16/2-15/3, etc.), aktuell period forvald
-2. **KVV-omradesfilter** — dropdown med befintliga KVV-nummer fran `kvv-mapping.ts`
-3. **Utflyttningar** — tabell med adress, hyresgast, datum, checkbox for stadkontroll
-4. **Inflyttningar** — tabell med adress, hyresgast, datum, checkboxar for valkomstsamtal, valkomstbesok, namn/porttelefon
-5. Pa mobil visas sektionerna med **MobileAccordion** istallet for tabeller
+**Har få kvarvarande importer - kan migreras:**
+- `properties/` - re-exporterar fran `src/features/properties/components/`. Importeras av 8 filer (mest tabs-filer inom sig sjalv och features). Alla importer ska pekas om till `@/features/properties/components`.
+- `search/` - `GlobalSearchBar` importeras av `src/layouts/NavigationBar.tsx`. Flytta till `src/features/search/components/`.
+- `settings/` - importeras av `src/pages/settings/SettingsPage.tsx`. Flytta till `src/features/settings/components/`.
+- `strofaktura/` - inga importer hittas, men koden kan behova vara i `src/features/ekonomi/`.
 
-## Teknisk plan
+**Ska behallas:**
+- `ui/` - shadcn-komponenter, dessa blir `shared/ui` i FSD
+- `common/` - delade komponenter (Breadcrumb, ComponentCard, etc.)
+- `design-system/` - dokumentation och showcases
 
-### Nya filer
+## Vad gors i detta steg
 
-```text
-src/features/turnover/
-  types/move-in-list-types.ts    -- MoveInListEntry, MoveInListPeriod
-  data/periods.ts                -- Periodberakning (manadshalvor)
-  data/mock-move-in-list.ts      -- Mockdata med KVV-koppling
-  hooks/useMoveInList.ts         -- Filtrering + checklistestatus (lokalt state)
-  components/MoveInListFilters.tsx -- Period + KVV-filter
-  components/MoveOutSection.tsx   -- Utflyttningstabell (ResponsiveTable)
-  components/MoveInSection.tsx    -- Inflyttningstabell (ResponsiveTable)
-  components/ChecklistCell.tsx    -- Checkbox-komponent
-```
+### 1. Radera oanvanda dubblettmappar (6 mappar)
+Ta bort foljande mappar fran `src/components/`:
+- `barriers/`
+- `buildings/`
+- `communication/`
+- `favorites/`
+- `layout/`
+- `shared/`
+- `treeview/`
 
-### Filer som andras
+### 2. Migrera `properties/` tabs
+Filerna i `src/components/properties/tabs/` verkar vara dubbletter av de som finns i `src/features/properties/components/tabs/`. Dubletterna raderas.
 
-1. **`src/pages/turnover/TurnoverPage.tsx`** — Helt nytt innehall: ersatt dashboard/kanban/list-flikar med period/KVV-filter och utflytt/inflyttsektioner
-2. **`src/pages/turnover/components/TurnoverHeader.tsx`** — Uppdaterad rubrik och beskrivning
-3. **`src/features/turnover/index.ts`** — Exporterar nya komponenter och hooks
+Uppdatera de 4 filerna i `src/features/properties/components/tabs/` som importerar fran `@/components/properties` till att importera fran `@/features/properties/components` istallet.
 
-### Filer som tas bort
+Radera hela `src/components/properties/`.
 
-Alla befintliga turnover-komponenter som inte langre behovs:
-- `TurnoverDashboard.tsx`
-- `TurnoverKanban.tsx`
-- `TurnoverList.tsx`
-- `TurnoverCaseCard.tsx`
-- `TurnoverCaseDetailDialog.tsx`
-- `TurnoverStepIndicator.tsx`
-- `useTurnoverCases.ts`
-- `data/turnover.ts` (mockdata for gamla arenden)
+### 3. Flytta `search/`-komponenter
+Flytta `GlobalSearchBar.tsx`, `SearchFavorites.tsx`, `SearchFilters.tsx`, `SearchResultsList.tsx` till `src/features/search/components/`.
 
-### Typer
+Uppdatera importen i `src/layouts/NavigationBar.tsx`.
 
-```text
-MoveInListEntry:
-  id, type (move_in/move_out), address, residenceCode,
-  kvvArea, tenantName, tenantPhone, tenantEmail,
-  date, contractId,
-  checklist: {
-    cleaningDone       -- utflytt
-    welcomeCallDone    -- inflytt
-    welcomeVisitDone   -- inflytt
-    nameAndIntercomDone -- inflytt
-  }
+### 4. Skapa `src/features/settings/`
+Flytta alla filer fran `src/components/settings/` till `src/features/settings/components/`.
 
-MoveInListPeriod:
-  label, startDate, endDate
-```
+Uppdatera importen i `src/pages/settings/SettingsPage.tsx`.
 
-### Komponenter som ateranvands
+### 5. Flytta `strofaktura/` till features
+Kontrollera om koden redan finns i `src/features/ekonomi/components/` (verkar sa baserat pa exports). Om det ar dubbletter, radera `src/components/strofaktura/`.
 
-- **ResponsiveTable** — tabell med mobilkort
-- **MobileAccordion** — for mobil-sektionsgruppering
-- **Select** — period- och KVV-filter (standard filtermonster, w-full sm:w-[180px])
-- **Checkbox** — checklistepunkterna
-- **PageLayout** — sidomall
-- **SaveAsFavoriteButton** och **ActiveFavoriteIndicator** — behalls i headern
+## Resultat efter steg 1
+`src/components/` kommer bara innehalla:
+- `ui/` - shadcn primitiver
+- `common/` - delade komponenter
+- `design-system/` - dokumentation
 
-### Sidlayout (desktop)
+Alla domanspecifika komponenter kommer ligga i `src/features/`.
 
-```text
-+--------------------------------------------------+
-| In- och utflytt                                   |
-| Operativ checklista for in- och utflyttningar     |
-|                                                   |
-| [Period: 16/2 - 15/3 v]  [KVV-omrade: Alla v]   |
-+--------------------------------------------------+
-| UTFLYTTNINGAR (3)                                 |
-|                                                   |
-| Adress         | Hyresgast    | Datum  | Stad     |
-| Odenplan 5A    | A. Andersson | 28 feb | [x]      |
-| Kopparb. 12B   | M. Svensson  | 1 mar  | [ ]      |
-+--------------------------------------------------+
-| INFLYTTNINGAR (2)                                 |
-|                                                   |
-| Adress         | Hyresgast    | Datum  | Sam|Bes|NP|
-| Odenplan 5A    | E. Eriksson  | 1 mar  | [ ]|[ ]|[ ]|
-| Kopparb. 12B   | (ej utsedd)  | -      |    |   |   |
-+--------------------------------------------------+
-```
+## Kommande steg (framtida iterationer)
+- **Steg 2**: Flytta `src/types/` till respektive feature eller `shared/types`
+- **Steg 3**: Flytta `src/data/` till respektive feature
+- **Steg 4**: Flytta `src/services/` och `src/hooks/` till features eller `shared/`
+- **Steg 5**: Infor FSD-lagren `entities/`, `widgets/`, `shared/` enligt GitHub-repots struktur
 
-### Mockdata
+---
 
-Ny mockdata i `mock-move-in-list.ts` med 5-6 poster spridda over nagra perioder, kopplade till KVV-omraden fran `kvv-mapping.ts`. Checklistestatus sparas i lokalt React-state.
+## Tekniska detaljer
 
-### Vad som INTE ingar
+### Filer som behover uppdaterade importer
 
-- Persistering av checklistestatus (bara lokalt state)
-- Delning mellan anvandare
-- Integration med kundcenters nyckellistor
-- Export/utskrift
+| Fil | Andring |
+|-----|---------|
+| `src/features/properties/components/tabs/PropertyStatisticsTab.tsx` | `@/components/properties/...` -> `@/features/properties/components/...` |
+| `src/features/properties/components/tabs/PropertyMapTab.tsx` | `@/components/properties` -> `@/features/properties/components` |
+| `src/features/properties/components/tabs/PropertyBuildingsTab.tsx` | `@/components/properties` -> `@/features/properties/components` |
+| `src/features/properties/components/tabs/PropertyInfoTab.tsx` | `@/components/properties/...` -> `@/features/properties/components/...` |
+| `src/layouts/NavigationBar.tsx` | `@/components/search/...` -> `@/features/search/components/...` |
+| `src/pages/settings/SettingsPage.tsx` | `@/components/settings/...` -> `@/features/settings/components/...` |
+
+### Nya features-mappar
+- `src/features/settings/` (ny)
+- `src/features/settings/components/` (ny)
+
+### Totalt antal filer att radera (dubbletter)
+Ca 30-40 filer i `src/components/` som ar dubbletter av befintlig kod i `src/features/`.
