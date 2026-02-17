@@ -122,11 +122,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
   // Desktop table
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Ut- & inflytt ({entries.length})</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="rounded-md border overflow-x-auto">
+      <CardContent className="p-0">
+        <div className="rounded-md border-0 overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
