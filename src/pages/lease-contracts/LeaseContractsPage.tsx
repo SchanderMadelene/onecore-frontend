@@ -31,17 +31,26 @@ export default function LeaseContractsPage() {
   const getActiveFilters = useCallback((): FavoriteParameters => {
     const params: FavoriteParameters = {};
     if (filterHook.selectedType) params.type = filterHook.selectedType;
+    if (filterHook.selectedSubType) params.subType = filterHook.selectedSubType;
     if (filterHook.selectedStatus !== '') params.status = String(filterHook.selectedStatus);
     if (filterHook.selectedDistrict) params.district = filterHook.selectedDistrict;
     if (filterHook.selectedProperty) params.property = filterHook.selectedProperty;
     if (filterHook.selectedBuilding) params.building = filterHook.selectedBuilding;
+    if (filterHook.selectedKvvArea) params.kvvArea = filterHook.selectedKvvArea;
+    if (filterHook.selectedCostCenter) params.costCenter = filterHook.selectedCostCenter;
+    if (filterHook.selectedMarketArea) params.marketArea = filterHook.selectedMarketArea;
+    if (filterHook.selectedRentRow) params.rentRow = filterHook.selectedRentRow;
     if (filterHook.searchQuery) params.search = filterHook.searchQuery;
     if (filterHook.fromDateStart) params.fromDateStart = filterHook.fromDateStart.toISOString();
     if (filterHook.fromDateEnd) params.fromDateEnd = filterHook.fromDateEnd.toISOString();
     if (filterHook.lastDebitDateStart) params.lastDebitDateStart = filterHook.lastDebitDateStart.toISOString();
     if (filterHook.lastDebitDateEnd) params.lastDebitDateEnd = filterHook.lastDebitDateEnd.toISOString();
+    if (filterHook.noticeDateStart) params.noticeDateStart = filterHook.noticeDateStart.toISOString();
+    if (filterHook.noticeDateEnd) params.noticeDateEnd = filterHook.noticeDateEnd.toISOString();
+    if (filterHook.terminationDateStart) params.terminationDateStart = filterHook.terminationDateStart.toISOString();
+    if (filterHook.terminationDateEnd) params.terminationDateEnd = filterHook.terminationDateEnd.toISOString();
     return params;
-  }, [filterHook.selectedType, filterHook.selectedStatus, filterHook.selectedDistrict, filterHook.selectedProperty, filterHook.selectedBuilding, filterHook.searchQuery, filterHook.fromDateStart, filterHook.fromDateEnd, filterHook.lastDebitDateStart, filterHook.lastDebitDateEnd]);
+  }, [filterHook.selectedType, filterHook.selectedSubType, filterHook.selectedStatus, filterHook.selectedDistrict, filterHook.selectedProperty, filterHook.selectedBuilding, filterHook.selectedKvvArea, filterHook.selectedCostCenter, filterHook.selectedMarketArea, filterHook.selectedRentRow, filterHook.searchQuery, filterHook.fromDateStart, filterHook.fromDateEnd, filterHook.lastDebitDateStart, filterHook.lastDebitDateEnd, filterHook.noticeDateStart, filterHook.noticeDateEnd, filterHook.terminationDateStart, filterHook.terminationDateEnd]);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";

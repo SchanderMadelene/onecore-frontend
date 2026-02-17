@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { LeaseContract, LeaseContractType, LeaseContractStatus } from '../types/leaseContract';
+import { LeaseContract, LeaseContractType, LeaseContractStatus, LeaseContractSubType } from '../types/leaseContract';
 
 interface PropertyOption {
   id: string;
@@ -14,10 +14,15 @@ interface BuildingOption {
 
 export function useLeaseContractFilters(contracts: LeaseContract[]) {
   const [selectedType, setSelectedType] = useState<LeaseContractType | ''>('');
+  const [selectedSubType, setSelectedSubType] = useState<LeaseContractSubType | ''>('');
   const [selectedStatus, setSelectedStatus] = useState<LeaseContractStatus | ''>('');
   const [selectedDistrict, setSelectedDistrict] = useState<string>('');
   const [selectedProperty, setSelectedProperty] = useState<string>('');
   const [selectedBuilding, setSelectedBuilding] = useState<string>('');
+  const [selectedKvvArea, setSelectedKvvArea] = useState<string>('');
+  const [selectedCostCenter, setSelectedCostCenter] = useState<string>('');
+  const [selectedMarketArea, setSelectedMarketArea] = useState<string>('');
+  const [selectedRentRow, setSelectedRentRow] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   
   // Date range filters
@@ -25,6 +30,10 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
   const [fromDateEnd, setFromDateEnd] = useState<Date | undefined>(undefined);
   const [lastDebitDateStart, setLastDebitDateStart] = useState<Date | undefined>(undefined);
   const [lastDebitDateEnd, setLastDebitDateEnd] = useState<Date | undefined>(undefined);
+  const [noticeDateStart, setNoticeDateStart] = useState<Date | undefined>(undefined);
+  const [noticeDateEnd, setNoticeDateEnd] = useState<Date | undefined>(undefined);
+  const [terminationDateStart, setTerminationDateStart] = useState<Date | undefined>(undefined);
+  const [terminationDateEnd, setTerminationDateEnd] = useState<Date | undefined>(undefined);
   
   // Pagination
   const [page, setPage] = useState(1);
@@ -38,7 +47,8 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
   const [openBuildingDropdown, setOpenBuildingDropdown] = useState(false);
 
   const contractTypes: LeaseContractType[] = ['Bostadskontrakt', 'Bilplatskontrakt', 'Förrådkontrakt'];
-  const statusOptions: LeaseContractStatus[] = [0, 1, 2, 3, 4, 5];
+  const subTypes: LeaseContractSubType[] = ['standard', 'andrahand', 'korttid'];
+  const statusOptions: LeaseContractStatus[] = [0, 1, 2, 3, 4, 5, 6];
 
   // Extract unique properties from contracts
   const uniqueProperties = useMemo((): PropertyOption[] => {
@@ -77,7 +87,7 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     return uniqueBuildings.filter(b => b.propertyId === selectedProperty);
   }, [uniqueBuildings, selectedProperty]);
 
-  // Cascading reset: clear building selection when property changes if building doesn't belong to new property
+  // Cascading reset: clear building selection when property changes
   useEffect(() => {
     if (selectedProperty && selectedBuilding) {
       const buildingBelongsToProperty = uniqueBuildings.some(
@@ -96,22 +106,52 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     return [...new Set(districts)].sort();
   }, [contracts]);
 
+  const uniqueKvvAreas = useMemo(() => {
+    const areas = contracts
+      .map(c => c.kvvArea)
+      .filter((a): a is string => Boolean(a));
+    return [...new Set(areas)].sort();
+  }, [contracts]);
+
+  const uniqueCostCenters = useMemo(() => {
+    const centers = contracts
+      .map(c => c.costCenter)
+      .filter((c): c is string => Boolean(c));
+    return [...new Set(centers)].sort();
+  }, [contracts]);
+
+  const uniqueMarketAreas = useMemo(() => {
+    const areas = contracts
+      .map(c => c.marketArea)
+      .filter((a): a is string => Boolean(a));
+    return [...new Set(areas)].sort();
+  }, [contracts]);
+
+  const uniqueRentRows = useMemo(() => {
+    const descriptions = new Set<string>();
+    contracts.forEach(c => {
+      c.rentRows?.forEach(rr => descriptions.add(rr.description));
+    });
+    return [...descriptions].sort();
+  }, [contracts]);
+
   const filterContracts = (contractsToFilter: LeaseContract[]) => {
     return contractsToFilter.filter(contract => {
-      // Type filter
       if (selectedType && contract.type !== selectedType) return false;
-      
-      // Status filter
+      if (selectedSubType && contract.subType !== selectedSubType) return false;
       if (selectedStatus !== '' && contract.status !== selectedStatus) return false;
-      
-      // District filter
       if (selectedDistrict && contract.district !== selectedDistrict) return false;
-      
-      // Property filter
       if (selectedProperty && contract.propertyId !== selectedProperty) return false;
-      
-      // Building filter
       if (selectedBuilding && contract.buildingId !== selectedBuilding) return false;
+      if (selectedKvvArea && contract.kvvArea !== selectedKvvArea) return false;
+      if (selectedCostCenter && contract.costCenter !== selectedCostCenter) return false;
+      if (selectedMarketArea && contract.marketArea !== selectedMarketArea) return false;
+      
+      // Rent row filter
+      if (selectedRentRow) {
+        const hasRentRow = contract.rentRows?.some(rr => rr.description === selectedRentRow);
+        if (!hasRentRow) return false;
+      }
       
       // Date range filter for lease start date
       if (fromDateStart || fromDateEnd) {
@@ -128,8 +168,28 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
         if (lastDebitDateStart && lastDebit < lastDebitDateStart) return false;
         if (lastDebitDateEnd && lastDebit > lastDebitDateEnd) return false;
       }
+
+      // Date range filter for notice date
+      if (noticeDateStart || noticeDateEnd) {
+        const notice = contract.noticeDate ? new Date(contract.noticeDate) : null;
+        if (!notice) return false;
+        if (noticeDateStart && notice < noticeDateStart) return false;
+        if (noticeDateEnd && notice > noticeDateEnd) return false;
+      }
+
+      // Date range filter for termination/move-out date
+      if (terminationDateStart || terminationDateEnd) {
+        const termDate = contract.terminationDate 
+          ? new Date(contract.terminationDate) 
+          : contract.preferredMoveOutDate 
+            ? new Date(contract.preferredMoveOutDate) 
+            : null;
+        if (!termDate) return false;
+        if (terminationDateStart && termDate < terminationDateStart) return false;
+        if (terminationDateEnd && termDate > terminationDateEnd) return false;
+      }
       
-      // Search query (search in lease ID, tenant name, address)
+      // Search query
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const tenantName = contract.tenants[0]?.fullName?.toLowerCase() || '';
@@ -147,29 +207,47 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
 
   const clearFilters = () => {
     setSelectedType('');
+    setSelectedSubType('');
     setSelectedStatus('');
     setSelectedDistrict('');
     setSelectedProperty('');
     setSelectedBuilding('');
+    setSelectedKvvArea('');
+    setSelectedCostCenter('');
+    setSelectedMarketArea('');
+    setSelectedRentRow('');
     setSearchQuery('');
     setFromDateStart(undefined);
     setFromDateEnd(undefined);
     setLastDebitDateStart(undefined);
     setLastDebitDateEnd(undefined);
+    setNoticeDateStart(undefined);
+    setNoticeDateEnd(undefined);
+    setTerminationDateStart(undefined);
+    setTerminationDateEnd(undefined);
     setPage(1);
   };
 
   const hasActiveFilters = Boolean(
     selectedType || 
+    selectedSubType ||
     selectedStatus !== '' || 
     selectedDistrict || 
     selectedProperty ||
     selectedBuilding ||
+    selectedKvvArea ||
+    selectedCostCenter ||
+    selectedMarketArea ||
+    selectedRentRow ||
     searchQuery ||
     fromDateStart ||
     fromDateEnd ||
     lastDebitDateStart ||
-    lastDebitDateEnd
+    lastDebitDateEnd ||
+    noticeDateStart ||
+    noticeDateEnd ||
+    terminationDateStart ||
+    terminationDateEnd
   );
 
   // Pagination helpers
@@ -184,6 +262,8 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
   return {
     selectedType,
     setSelectedType,
+    selectedSubType,
+    setSelectedSubType,
     selectedStatus,
     setSelectedStatus,
     selectedDistrict,
@@ -192,6 +272,14 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     setSelectedProperty,
     selectedBuilding,
     setSelectedBuilding,
+    selectedKvvArea,
+    setSelectedKvvArea,
+    selectedCostCenter,
+    setSelectedCostCenter,
+    selectedMarketArea,
+    setSelectedMarketArea,
+    selectedRentRow,
+    setSelectedRentRow,
     searchQuery,
     setSearchQuery,
     fromDateStart,
@@ -202,6 +290,14 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     setLastDebitDateStart,
     lastDebitDateEnd,
     setLastDebitDateEnd,
+    noticeDateStart,
+    setNoticeDateStart,
+    noticeDateEnd,
+    setNoticeDateEnd,
+    terminationDateStart,
+    setTerminationDateStart,
+    terminationDateEnd,
+    setTerminationDateEnd,
     page,
     setPage,
     limit,
@@ -216,10 +312,15 @@ export function useLeaseContractFilters(contracts: LeaseContract[]) {
     openBuildingDropdown,
     setOpenBuildingDropdown,
     contractTypes,
+    subTypes,
     statusOptions,
     uniqueDistricts,
     uniqueProperties,
     availableBuildings,
+    uniqueKvvAreas,
+    uniqueCostCenters,
+    uniqueMarketAreas,
+    uniqueRentRows,
     filterContracts,
     getPaginatedContracts,
     totalPages,
