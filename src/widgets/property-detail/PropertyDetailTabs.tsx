@@ -1,14 +1,14 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PropertyInfoTab } from "./tabs/PropertyInfoTab";
-import { PropertyDocumentsTab } from "./tabs/PropertyDocumentsTab";
-import { PropertyPlanningTab } from "./tabs/PropertyPlanningTab";
-import { PropertyBuildingsTab } from "./tabs/PropertyBuildingsTab";
-import { PropertyMapTab } from "./tabs/PropertyMapTab";
-import { PropertyStatisticsTab } from "./tabs/PropertyStatisticsTab";
-import { PropertyMaintenanceUnitsTab } from "./tabs/PropertyMaintenanceUnitsTab";
-import { PropertyOrdersTab } from "./tabs/PropertyOrdersTab";
-import { PropertyAccessTab } from "./tabs/PropertyAccessTab";
+import { PropertyInfoTab } from "@/features/properties/components/tabs/PropertyInfoTab";
+import { PropertyDocumentsTab } from "@/features/properties/components/tabs/PropertyDocumentsTab";
+import { PropertyPlanningTab } from "@/features/properties/components/tabs/PropertyPlanningTab";
+import { PropertyBuildingsTab } from "@/features/properties/components/tabs/PropertyBuildingsTab";
+import { PropertyMapTab } from "@/features/properties/components/tabs/PropertyMapTab";
+import { PropertyStatisticsTab } from "@/features/properties/components/tabs/PropertyStatisticsTab";
+import { PropertyMaintenanceUnitsTab } from "@/features/properties/components/tabs/PropertyMaintenanceUnitsTab";
+import { PropertyOrdersTab } from "@/features/properties/components/tabs/PropertyOrdersTab";
+import { PropertyAccessTab } from "@/features/properties/components/tabs/PropertyAccessTab";
 import { PropertyDetailTabsMobile } from "./PropertyDetailTabsMobile";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
