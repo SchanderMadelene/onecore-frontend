@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { PageLayout } from "@/layouts";
 import { useMoveInList } from "@/features/turnover";
 import { MoveInListFilters } from "@/features/turnover/components/MoveInListFilters";
 import { CombinedTurnoverTable } from "@/features/turnover/components/CombinedTurnoverTable";
 import { TurnoverHeader } from "./components/TurnoverHeader";
 import { Card, CardContent } from "@/components/ui/card";
+import { FavoriteParameters } from "@/features/favorites/types/favorite";
 
 export default function TurnoverPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,10 +24,19 @@ export default function TurnoverPage() {
     availableDistricts,
   } = useMoveInList();
 
+  const getActiveFilters = useCallback((): FavoriteParameters => {
+    const params: FavoriteParameters = {};
+    params.startDate = startDate.toISOString();
+    params.endDate = endDate.toISOString();
+    if (selectedKvvArea !== 'all') params.kvvArea = selectedKvvArea;
+    if (selectedDistrict !== 'all') params.district = selectedDistrict;
+    return params;
+  }, [startDate, endDate, selectedKvvArea, selectedDistrict]);
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
-        <TurnoverHeader />
+        <TurnoverHeader getActiveFilters={getActiveFilters} />
 
         <Card>
           <CardContent className="pt-6">

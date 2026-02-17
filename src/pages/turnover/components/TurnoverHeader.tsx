@@ -1,6 +1,11 @@
 import { SaveAsFavoriteButton, ActiveFavoriteIndicator } from "@/components/common";
+import { FavoriteParameters } from "@/features/favorites/types/favorite";
 
-export function TurnoverHeader() {
+interface TurnoverHeaderProps {
+  getActiveFilters?: () => FavoriteParameters;
+}
+
+export function TurnoverHeader({ getActiveFilters }: TurnoverHeaderProps) {
   return (
     <>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -17,6 +22,7 @@ export function TurnoverHeader() {
             defaultName="Min ut-/inflyttsvy"
             icon="🔄"
             variant="outline"
+            getActiveFilters={getActiveFilters}
           />
         </div>
       </div>

@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Star, Users, User } from "lucide-react";
 import { useFavorites } from "@/features/favorites";
-import { FavoriteCategory, FavoriteVisibility } from "@/features/favorites/types/favorite";
+import { FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/features/favorites/types/favorite";
 import { toast } from "@/hooks/use-toast";
 
 interface SaveAsFavoriteButtonProps {
@@ -19,6 +19,8 @@ interface SaveAsFavoriteButtonProps {
   variant?: "default" | "outline" | "ghost";
   size?: "default" | "sm" | "lg" | "icon";
   className?: string;
+  /** Callback that returns current filter state to save with the favorite */
+  getActiveFilters?: () => FavoriteParameters;
 }
 
 export function SaveAsFavoriteButton({
@@ -28,13 +30,23 @@ export function SaveAsFavoriteButton({
   icon,
   variant = "outline",
   size = "sm",
-  className
+  className,
+  getActiveFilters
 }: SaveAsFavoriteButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState(defaultName || "");
   const [description, setDescription] = useState("");
   const [visibility, setVisibility] = useState<FavoriteVisibility>("personal");
-  const { createFavorite } = useFavorites();
+  const [capturedFilters, setCapturedFilters] = useState<FavoriteParameters>({});
+  const { createFavorite, createCustomFavorite } = useFavorites();
+
+  const handleOpen = () => {
+    // Capture filters at the moment the dialog opens
+    if (getActiveFilters) {
+      setCapturedFilters(getActiveFilters());
+    }
+    setIsOpen(true);
+  };
 
   const handleSave = () => {
     if (!name.trim()) {
@@ -46,14 +58,29 @@ export function SaveAsFavoriteButton({
       return;
     }
 
-    createFavorite(
-      name.trim(),
-      description.trim() || undefined,
-      category,
-      pageTitle,
-      visibility,
-      icon
-    );
+    if (getActiveFilters) {
+      // Use custom favorite with captured filter parameters
+      createCustomFavorite(
+        name.trim(),
+        description.trim() || undefined,
+        category,
+        window.location.pathname,
+        capturedFilters,
+        pageTitle,
+        visibility,
+        icon
+      );
+    } else {
+      // Fallback: use URL-based parameters
+      createFavorite(
+        name.trim(),
+        description.trim() || undefined,
+        category,
+        pageTitle,
+        visibility,
+        icon
+      );
+    }
 
     const visibilityText = visibility === "team" ? "och delad med ditt team" : "som personlig favorit";
     toast({
@@ -65,15 +92,21 @@ export function SaveAsFavoriteButton({
     setName(defaultName || "");
     setDescription("");
     setVisibility("personal");
+    setCapturedFilters({});
     setIsOpen(false);
   };
+
+  // Build a summary of captured filters for preview
+  const filterSummary = Object.entries(capturedFilters).filter(
+    ([, value]) => value !== undefined && value !== '' && value !== 'all'
+  );
 
   return (
     <>
       <Button
         variant={variant}
         size={size}
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
         className={className}
       >
         <Star className="h-4 w-4 mr-2" />
@@ -145,7 +178,11 @@ export function SaveAsFavoriteButton({
               <div className="font-medium mb-1">Detta sparas:</div>
               <ul className="list-disc list-inside space-y-1">
                 <li>Nuvarande sida: {pageTitle}</li>
-                <li>Alla aktiva filter och parametrar</li>
+                {filterSummary.length > 0 ? (
+                  <li>{filterSummary.length} aktiva filter</li>
+                ) : (
+                  <li>Inga aktiva filter (standardvy)</li>
+                )}
                 <li>Kategori: {category}</li>
               </ul>
             </div>
