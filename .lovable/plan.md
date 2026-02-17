@@ -1,101 +1,118 @@
 
 
-# Steg 5: Infor entities/ och widgets/ i FSD-strukturen
+# Slutfor FSD-migreringen: Widgets och Layouts
 
-## Bakgrund
+## Sammanfattning
 
-FSD (Feature-Sliced Design) har foljande lager:
-- **shared/** - Ateranbara primitiver (klar)
-- **entities/** - Karndomanobjekt: typer, data, grundlaggande UI (kort, listor)
-- **features/** - Anvandningsfall som komponerar entities (inspektioner, sok, uthyrning)
-- **widgets/** - Sammansatta UI-block som kombinerar flera entities/features (navigation, tabblayout)
-- **pages/** - Routeniva (klar)
+Flytta NavigationBar, TreeView (med hela treeview-mappen) och DetailTabs fysiskt till `src/widgets/`. Rensa `src/layouts/` sa att den bara innehaller `main-layout.tsx`. Uppdatera alla importer och behall re-exports for bakatkompatibilitet.
 
-Idag ligger allt domanspecifikt i `features/`. Vi ska separera ut "passiva" domanmodeller till `entities/` och sammansatta navigations-/layoutblock till `widgets/`.
+---
 
-## Vad ar en entity vs en feature?
+## Steg 1: Flytta Navigation till widgets/
 
-- **Entity**: Representerar en sak i systemet - dess typer, mockdata och enkel display-komponent (kort, rad). Har ingen komplex anvandningslogik.
-- **Feature**: Representerar en handling eller ett flode - sok, filtrera, skapa, inspektera.
+**Flytta filer fysiskt:**
+- `src/layouts/NavigationBar.tsx` -> `src/widgets/navigation/NavigationBar.tsx`
+- `src/layouts/TreeView.tsx` -> `src/widgets/navigation/TreeView.tsx`
+- `src/layouts/treeview/` (hela mappen) -> `src/widgets/navigation/treeview/`
+  - `TreeItem.tsx`, `TreeView.tsx`, `treeData.ts`, `treeViewUtils.tsx`, `types.ts`, `index.ts`
+  - `data/navigation.ts`, `data/properties/` (alla filer)
 
-## Nya entities
+**Uppdatera `src/widgets/navigation/index.ts`:**
+```typescript
+export { NavigationBar } from './NavigationBar';
+export { TreeView } from './TreeView';
+export type { TreeNode, TreeItemProps, TreeViewProps } from './treeview/types';
+```
 
-### entities/property/
-- **types**: `Property`, `PropertyDetail`, `PropertyMap`, `BuildingLocation`, `MaintenanceUnit` (fran `shared/types/api.ts`)
-- **data**: `mockProperties`, `mockPropertyDetails` (fran `features/properties/data/`)
-- **ui**: `PropertyBasicInfo`, `PropertyHeader`, `PropertyBuildingCard` (grundlaggande displaykomponenter)
+**Uppdatera interna importer i flyttade filer:**
+- `NavigationBar.tsx`: Inga andringar behovs (importerar fran `@/components/ui`, `@/features/search`, etc.)
+- `TreeView.tsx` (wrapper): Uppdatera fran `./treeview` (samma relativa sokvag, fungerar)
+- `treeview/TreeView.tsx`: Uppdatera import av `treeData` och `types` (relativa sokvagar, fungerar)
+- Alla interna treeview-filer anvander relativa importer, sa de fungerar utan andring
 
-### entities/building/
-- **types**: `Building`, `BuildingSpace`, `SpaceType`, `SpaceComponent`, `Entrance`, `EntranceAddress` (fran `shared/types/api.ts`)
-- **data**: `mockBuildings` (fran `features/buildings/data/`)
-- **ui**: `BuildingBasicInfo`, `BuildingInfo`, `BuildingHeader`
+## Steg 2: Flytta DetailTabs till widgets/
 
-### entities/residence/
-- **types**: `Residence`, `Room`, `RoomComponent`, `ApartmentType` (fran `shared/types/api.ts`)
-- **data**: `mockResidenceData`, `mockRooms` (fran `features/residences/data/`)
-- **ui**: `ResidenceBasicInfo`, `ResidenceInfo`
+**Property DetailTabs:**
+- `src/features/properties/components/PropertyDetailTabs.tsx` -> `src/widgets/property-detail/PropertyDetailTabs.tsx`
+- `src/features/properties/components/PropertyDetailTabsMobile.tsx` -> `src/widgets/property-detail/PropertyDetailTabsMobile.tsx`
 
-### entities/tenant/
-- **types**: Tenant-relaterade typer
-- **data**: `mockTenant`, `mockTenants`, `customers` (fran `features/tenants/data/`)
-- **ui**: `TenantCard`, `TenantInformationCard`
+**Building DetailTabs:**
+- `src/features/buildings/components/BuildingDetailTabs.tsx` -> `src/widgets/building-detail/BuildingDetailTabs.tsx`
+- `src/features/buildings/components/BuildingDetailTabsMobile.tsx` -> `src/widgets/building-detail/BuildingDetailTabsMobile.tsx`
 
-### entities/barrier/
-- **types**: `Barrier`, `AvailableHousing`, etc. (fran `features/barriers/types/`)
-- **data**: `mockBarriers` och hjalp-funktioner (fran `features/barriers/data/`)
+**Uppdatera widget index-filer:**
+```typescript
+// widgets/property-detail/index.ts
+export { PropertyDetailTabs } from './PropertyDetailTabs';
+export { PropertyDetailTabsMobile } from './PropertyDetailTabsMobile';
 
-## Nytt widget-lager
+// widgets/building-detail/index.ts
+export { BuildingDetailTabs } from './BuildingDetailTabs';
+export { BuildingDetailTabsMobile } from './BuildingDetailTabsMobile';
+```
 
-### widgets/navigation/
-- `NavigationBar.tsx` (fran `layouts/NavigationBar.tsx`)
-- `TreeView.tsx` (fran `layouts/TreeView.tsx`)
-- `treeview/` data och typer (fran `layouts/treeview/`)
+**Uppdatera importer i de flyttade filerna:**
+- `PropertyDetailTabs.tsx`: Andrar importerna av tab-komponenter fran `./tabs/` till `@/features/properties/components/tabs/`
+- `PropertyDetailTabsMobile.tsx`: Samma andring
+- `BuildingDetailTabs.tsx`: Andrar tab-imports fran `./` till `@/features/buildings/components/`
+- `BuildingDetailTabsMobile.tsx`: Samma andring
 
-### widgets/property-detail/
-- `PropertyDetailTabs.tsx` och `PropertyDetailTabsMobile.tsx` (kombinerar flera flikar/features)
+## Steg 3: Uppdatera konsumenter
 
-### widgets/building-detail/
-- `BuildingDetailTabs.tsx` och `BuildingDetailTabsMobile.tsx`
+**`src/layouts/main-layout.tsx`** (2 importer):
+- Andrar `import { NavigationBar } from "@/layouts/NavigationBar"` -> `from "@/widgets/navigation"`
+- Andrar `import { TreeView } from "@/layouts/TreeView"` -> `from "@/widgets/navigation"`
 
-## Vad som behalls i features/
+**`src/features/search/data/search.ts`** (1 import):
+- Andrar `import { TreeNode } from "@/layouts/treeview/types"` -> `from "@/widgets/navigation"`
 
-Features behaller sina use-case-specifika komponenter, hooks och logik:
-- `features/properties/` - Sok, filtrering, tabbar (PropertySearch, PropertySelectionFilters, etc.)
-- `features/buildings/` - Tabs (BuildingPartsTab, BuildingInstallationsTab, etc.)
-- `features/residences/` - Inspektion, dokument, ordrar
-- `features/tenants/` - Kommunikation, kontrakt, kohantering
-- `features/inspections/`, `features/rentals/`, `features/orders/`, etc. - oforandrade
+**`src/features/properties/components/index.ts`:**
+- Andrar exporten av `PropertyDetailTabs` och `PropertyDetailTabsMobile` till re-exports fran `@/widgets/property-detail`
 
-## Hantering av shared/types/api.ts
+**`src/features/buildings/components/index.ts`:**
+- Andrar exporten av `BuildingDetailTabs` och `BuildingDetailTabsMobile` till re-exports fran `@/widgets/building-detail`
 
-Filen `shared/types/api.ts` innehaller typer for alla domanentiteter. Dessa splittras:
-- `APIResponse` och `Company` stannar i `shared/types/`
-- Property-typer flyttas till `entities/property/types/`
-- Building-typer flyttas till `entities/building/types/`
-- Residence/Room-typer flyttas till `entities/residence/types/`
-- Re-exports fran `shared/types/api.ts` bibehalls for bakatkompatibilitet
+## Steg 4: Re-exports for bakatkompatibilitet
 
-## Importstrategi
+**`src/layouts/index.ts`** behalls men uppdateras:
+```typescript
+export { PageLayout } from './main-layout';
+// Re-exports for backward compatibility
+export { NavigationBar, TreeView } from '@/widgets/navigation';
+export type { TreeNode, TreeItemProps, TreeViewProps } from '@/widgets/navigation';
+```
 
-Precis som i steg 5 anvands Vite-alias for bakatkompatibilitet:
-- `@/features/properties/data` -> `@/entities/property/data` (for dataexporter)
-- `@/features/buildings/data` -> `@/entities/building/data`
-- Befintliga importer fortsatter fungera via re-exports fran features-mapparna
+**`src/layouts/NavigationBar.tsx`** och **`src/layouts/TreeView.tsx`** tas bort (kallkoden flyttas).
 
-## Genomforande i ordning
+**`src/layouts/treeview/`** mappen tas bort helt.
 
-1. Skapa `src/entities/` med undermappar: property, building, residence, tenant, barrier
-2. Flytta typer fran `shared/types/api.ts` till respektive entity
-3. Flytta data fran `features/*/data/` till `entities/*/data/`
-4. Flytta grundlaggande UI-komponenter till `entities/*/ui/`
-5. Uppdatera barrel-exports i features/ sa de re-exporterar fran entities/
-6. Skapa `src/widgets/` med navigation och detail-tabs
-7. Flytta layout-komponenter till widgets/
-8. Uppdatera alla importer (eller anvand alias for bakatkompatibilitet)
+## Steg 5: Rensa dubbletter i features/
 
-## Risker
+Kontrollera om `entities/`-lagrets data- och UI-filer ar fysiskt kopierade (inte bara re-exports). Om det finns dubbletter i `features/*/data/` som nu ocksa finns i `entities/*/data/`, ersatt features-filerna med re-exports fran entities.
 
-- Manga filer importerar fran `@/types/api` (som redan pekar pa `shared/types/api.ts`). Re-exports behover bibehallas.
-- Features-barrel-exports (`features/properties/index.ts`) maste fortsatta fungera for befintliga konsumenter.
-- Stegvis migration rekommenderas: borja med entities, verifiera, sedan widgets.
+---
+
+## Filer som skapas (nya)
+- `src/widgets/navigation/NavigationBar.tsx`
+- `src/widgets/navigation/TreeView.tsx`
+- `src/widgets/navigation/treeview/` (hela strukturen)
+- `src/widgets/property-detail/PropertyDetailTabs.tsx`
+- `src/widgets/property-detail/PropertyDetailTabsMobile.tsx`
+- `src/widgets/building-detail/BuildingDetailTabs.tsx`
+- `src/widgets/building-detail/BuildingDetailTabsMobile.tsx`
+
+## Filer som tas bort
+- `src/layouts/NavigationBar.tsx`
+- `src/layouts/TreeView.tsx`
+- `src/layouts/treeview/` (hela mappen)
+
+## Filer som uppdateras
+- `src/layouts/index.ts` (re-exports)
+- `src/layouts/main-layout.tsx` (importer)
+- `src/features/search/data/search.ts` (import)
+- `src/features/properties/components/index.ts` (re-export)
+- `src/features/buildings/components/index.ts` (re-export)
+- `src/widgets/navigation/index.ts`
+- `src/widgets/property-detail/index.ts`
+- `src/widgets/building-detail/index.ts`
 
