@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/features/favorites/types/favorite";
-import { favoritesService } from "@/services/favoritesService";
+import { favoritesService } from "@/features/favorites/services/favoritesService";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export function useFavorites() {
