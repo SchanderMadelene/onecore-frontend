@@ -1,1 +1,2 @@
-export { mockBuildings, type Building } from './buildings';
+// Re-export from entities layer
+export { mockBuildings, type Building } from '@/entities/building/data';
