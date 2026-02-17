@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { GlobalSearchBar } from "@/components/search/GlobalSearchBar";
+import { GlobalSearchBar } from "@/features/search";
 import { Link } from "react-router-dom";
 import { Settings, Menu, Search } from "lucide-react";
 import onecoreLogo from "@/assets/logos/full/onecore_logo_black.svg";

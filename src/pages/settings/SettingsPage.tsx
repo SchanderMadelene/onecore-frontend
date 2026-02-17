@@ -3,11 +3,7 @@ import { PageLayout } from "@/layouts";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, User, Shield, Moon, Beaker } from "lucide-react";
-import { ProfileSettings } from "@/components/settings/ProfileSettings";
-import { NotificationSettings } from "@/components/settings/NotificationSettings";
-import { PrivacySettings } from "@/components/settings/PrivacySettings";
-import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
-import { BetaSettings } from "@/components/settings/BetaSettings";
+import { ProfileSettings, NotificationSettings, PrivacySettings, AppearanceSettings, BetaSettings } from "@/features/settings";
 
 const SettingsPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
