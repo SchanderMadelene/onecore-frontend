@@ -11,6 +11,7 @@ export function useMoveInList() {
   const [startDate, setStartDate] = useState<Date>(defaultStart);
   const [endDate, setEndDate] = useState<Date>(defaultEnd);
   const [selectedKvvArea, setSelectedKvvArea] = useState<string>('all');
+  const [selectedDistrict, setSelectedDistrict] = useState<string>('all');
   const [entries, setEntries] = useState<MoveInListEntry[]>(mockMoveInListEntries);
 
   const filteredEntries = useMemo(() => {
@@ -22,9 +23,13 @@ export function useMoveInList() {
       });
       if (!inRange) return false;
       if (selectedKvvArea !== 'all' && entry.kvvArea !== selectedKvvArea) return false;
+      if (selectedDistrict !== 'all') {
+        const entryDistrict = getDistrictFromKvv(entry.kvvArea);
+        if (entryDistrict !== selectedDistrict) return false;
+      }
       return true;
     });
-  }, [entries, startDate, endDate, selectedKvvArea]);
+  }, [entries, startDate, endDate, selectedKvvArea, selectedDistrict]);
 
   const moveOutEntries = filteredEntries.filter(e => e.type === 'move_out');
   const moveInEntries = filteredEntries.filter(e => e.type === 'move_in');
@@ -67,6 +72,10 @@ export function useMoveInList() {
     return [...new Set(entries.map(e => e.kvvArea))].sort();
   }, [entries]);
 
+  const availableDistricts = useMemo(() => {
+    return [...new Set(entries.map(e => getDistrictFromKvv(e.kvvArea)))].sort();
+  }, [entries]);
+
   return {
     startDate,
     setStartDate,
@@ -74,10 +83,26 @@ export function useMoveInList() {
     setEndDate,
     selectedKvvArea,
     setSelectedKvvArea,
+    selectedDistrict,
+    setSelectedDistrict,
     moveOutEntries,
     moveInEntries,
     combinedEntries,
     updateChecklist,
     availableKvvAreas,
+    availableDistricts,
   };
+}
+
+const DISTRICT_MAP: Record<string, string> = {
+  '611': 'Mimer Mitt',
+  '612': 'Mimer Norr',
+  '613': 'Mimer Öst',
+  '614': 'Mimer Väst',
+  '615': 'Mimer Student',
+};
+
+function getDistrictFromKvv(kvvArea: string): string {
+  const prefix = kvvArea.substring(0, 3);
+  return DISTRICT_MAP[prefix] ?? 'Okänt';
 }

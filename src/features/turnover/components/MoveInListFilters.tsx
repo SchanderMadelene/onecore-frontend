@@ -15,6 +15,9 @@ interface MoveInListFiltersProps {
   kvvAreas: string[];
   selectedKvvArea: string;
   onKvvAreaChange: (value: string) => void;
+  districts: string[];
+  selectedDistrict: string;
+  onDistrictChange: (value: string) => void;
 }
 
 export function MoveInListFilters({
@@ -25,6 +28,9 @@ export function MoveInListFilters({
   kvvAreas,
   selectedKvvArea,
   onKvvAreaChange,
+  districts,
+  selectedDistrict,
+  onDistrictChange,
 }: MoveInListFiltersProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
@@ -69,6 +75,20 @@ export function MoveInListFilters({
           />
         </PopoverContent>
       </Popover>
+
+      <Select value={selectedDistrict} onValueChange={onDistrictChange}>
+        <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectValue placeholder="Distrikt" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Alla distrikt</SelectItem>
+          {districts.map(district => (
+            <SelectItem key={district} value={district}>
+              {district}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       <Select value={selectedKvvArea} onValueChange={onKvvAreaChange}>
         <SelectTrigger className="w-full sm:w-[180px]">
