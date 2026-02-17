@@ -1,97 +1,101 @@
 
-# Omstrukturering till FSD - Steg 1: Städa bort dubbletter och oanvända mappar
+
+# Steg 5: Infor entities/ och widgets/ i FSD-strukturen
 
 ## Bakgrund
-Projektet har idag en blandning av kod i `src/components/` och `src/features/`. Många mappar i `src/components/` innehåller antingen ren duplicerad kod eller re-exports till `src/features/`. Innan vi kan gå mot en FSD-struktur (Feature-Sliced Design) behöver vi rensa detta.
 
-## Analys av nuläget
+FSD (Feature-Sliced Design) har foljande lager:
+- **shared/** - Ateranbara primitiver (klar)
+- **entities/** - Karndomanobjekt: typer, data, grundlaggande UI (kort, listor)
+- **features/** - Anvandningsfall som komponerar entities (inspektioner, sok, uthyrning)
+- **widgets/** - Sammansatta UI-block som kombinerar flera entities/features (navigation, tabblayout)
+- **pages/** - Routeniva (klar)
 
-Mapparna i `src/components/` kan delas in i tre kategorier:
+Idag ligger allt domanspecifikt i `features/`. Vi ska separera ut "passiva" domanmodeller till `entities/` och sammansatta navigations-/layoutblock till `widgets/`.
 
-**Oanvända (inga importer hittas) - kan raderas direkt:**
-- `barriers/` - dubbletter finns i `src/features/barriers/components/`
-- `buildings/` - dubbletter finns i `src/features/buildings/components/`
-- `communication/` - dubbletter finns i `src/features/communication/components/`
-- `favorites/` - dubbletter finns i `src/features/favorites/components/`
-- `layout/` - `PageLayout.tsx` importeras inte
-- `shared/` - `Notes/` importeras inte harifran
-- `treeview/` - importeras inte
+## Vad ar en entity vs en feature?
 
-**Har få kvarvarande importer - kan migreras:**
-- `properties/` - re-exporterar fran `src/features/properties/components/`. Importeras av 8 filer (mest tabs-filer inom sig sjalv och features). Alla importer ska pekas om till `@/features/properties/components`.
-- `search/` - `GlobalSearchBar` importeras av `src/layouts/NavigationBar.tsx`. Flytta till `src/features/search/components/`.
-- `settings/` - importeras av `src/pages/settings/SettingsPage.tsx`. Flytta till `src/features/settings/components/`.
-- `strofaktura/` - inga importer hittas, men koden kan behova vara i `src/features/ekonomi/`.
+- **Entity**: Representerar en sak i systemet - dess typer, mockdata och enkel display-komponent (kort, rad). Har ingen komplex anvandningslogik.
+- **Feature**: Representerar en handling eller ett flode - sok, filtrera, skapa, inspektera.
 
-**Ska behallas:**
-- `ui/` - shadcn-komponenter, dessa blir `shared/ui` i FSD
-- `common/` - delade komponenter (Breadcrumb, ComponentCard, etc.)
-- `design-system/` - dokumentation och showcases
+## Nya entities
 
-## Vad gors i detta steg
+### entities/property/
+- **types**: `Property`, `PropertyDetail`, `PropertyMap`, `BuildingLocation`, `MaintenanceUnit` (fran `shared/types/api.ts`)
+- **data**: `mockProperties`, `mockPropertyDetails` (fran `features/properties/data/`)
+- **ui**: `PropertyBasicInfo`, `PropertyHeader`, `PropertyBuildingCard` (grundlaggande displaykomponenter)
 
-### 1. Radera oanvanda dubblettmappar (6 mappar)
-Ta bort foljande mappar fran `src/components/`:
-- `barriers/`
-- `buildings/`
-- `communication/`
-- `favorites/`
-- `layout/`
-- `shared/`
-- `treeview/`
+### entities/building/
+- **types**: `Building`, `BuildingSpace`, `SpaceType`, `SpaceComponent`, `Entrance`, `EntranceAddress` (fran `shared/types/api.ts`)
+- **data**: `mockBuildings` (fran `features/buildings/data/`)
+- **ui**: `BuildingBasicInfo`, `BuildingInfo`, `BuildingHeader`
 
-### 2. Migrera `properties/` tabs
-Filerna i `src/components/properties/tabs/` verkar vara dubbletter av de som finns i `src/features/properties/components/tabs/`. Dubletterna raderas.
+### entities/residence/
+- **types**: `Residence`, `Room`, `RoomComponent`, `ApartmentType` (fran `shared/types/api.ts`)
+- **data**: `mockResidenceData`, `mockRooms` (fran `features/residences/data/`)
+- **ui**: `ResidenceBasicInfo`, `ResidenceInfo`
 
-Uppdatera de 4 filerna i `src/features/properties/components/tabs/` som importerar fran `@/components/properties` till att importera fran `@/features/properties/components` istallet.
+### entities/tenant/
+- **types**: Tenant-relaterade typer
+- **data**: `mockTenant`, `mockTenants`, `customers` (fran `features/tenants/data/`)
+- **ui**: `TenantCard`, `TenantInformationCard`
 
-Radera hela `src/components/properties/`.
+### entities/barrier/
+- **types**: `Barrier`, `AvailableHousing`, etc. (fran `features/barriers/types/`)
+- **data**: `mockBarriers` och hjalp-funktioner (fran `features/barriers/data/`)
 
-### 3. Flytta `search/`-komponenter
-Flytta `GlobalSearchBar.tsx`, `SearchFavorites.tsx`, `SearchFilters.tsx`, `SearchResultsList.tsx` till `src/features/search/components/`.
+## Nytt widget-lager
 
-Uppdatera importen i `src/layouts/NavigationBar.tsx`.
+### widgets/navigation/
+- `NavigationBar.tsx` (fran `layouts/NavigationBar.tsx`)
+- `TreeView.tsx` (fran `layouts/TreeView.tsx`)
+- `treeview/` data och typer (fran `layouts/treeview/`)
 
-### 4. Skapa `src/features/settings/`
-Flytta alla filer fran `src/components/settings/` till `src/features/settings/components/`.
+### widgets/property-detail/
+- `PropertyDetailTabs.tsx` och `PropertyDetailTabsMobile.tsx` (kombinerar flera flikar/features)
 
-Uppdatera importen i `src/pages/settings/SettingsPage.tsx`.
+### widgets/building-detail/
+- `BuildingDetailTabs.tsx` och `BuildingDetailTabsMobile.tsx`
 
-### 5. Flytta `strofaktura/` till features
-Kontrollera om koden redan finns i `src/features/ekonomi/components/` (verkar sa baserat pa exports). Om det ar dubbletter, radera `src/components/strofaktura/`.
+## Vad som behalls i features/
 
-## Resultat efter steg 1
-`src/components/` kommer bara innehalla:
-- `ui/` - shadcn primitiver
-- `common/` - delade komponenter
-- `design-system/` - dokumentation
+Features behaller sina use-case-specifika komponenter, hooks och logik:
+- `features/properties/` - Sok, filtrering, tabbar (PropertySearch, PropertySelectionFilters, etc.)
+- `features/buildings/` - Tabs (BuildingPartsTab, BuildingInstallationsTab, etc.)
+- `features/residences/` - Inspektion, dokument, ordrar
+- `features/tenants/` - Kommunikation, kontrakt, kohantering
+- `features/inspections/`, `features/rentals/`, `features/orders/`, etc. - oforandrade
 
-Alla domanspecifika komponenter kommer ligga i `src/features/`.
+## Hantering av shared/types/api.ts
 
-## Kommande steg (framtida iterationer)
-- **Steg 2**: Flytta `src/types/` till respektive feature eller `shared/types`
-- **Steg 3**: Flytta `src/data/` till respektive feature
-- **Steg 4**: Flytta `src/services/` och `src/hooks/` till features eller `shared/`
-- **Steg 5**: Infor FSD-lagren `entities/`, `widgets/`, `shared/` enligt GitHub-repots struktur
+Filen `shared/types/api.ts` innehaller typer for alla domanentiteter. Dessa splittras:
+- `APIResponse` och `Company` stannar i `shared/types/`
+- Property-typer flyttas till `entities/property/types/`
+- Building-typer flyttas till `entities/building/types/`
+- Residence/Room-typer flyttas till `entities/residence/types/`
+- Re-exports fran `shared/types/api.ts` bibehalls for bakatkompatibilitet
 
----
+## Importstrategi
 
-## Tekniska detaljer
+Precis som i steg 5 anvands Vite-alias for bakatkompatibilitet:
+- `@/features/properties/data` -> `@/entities/property/data` (for dataexporter)
+- `@/features/buildings/data` -> `@/entities/building/data`
+- Befintliga importer fortsatter fungera via re-exports fran features-mapparna
 
-### Filer som behover uppdaterade importer
+## Genomforande i ordning
 
-| Fil | Andring |
-|-----|---------|
-| `src/features/properties/components/tabs/PropertyStatisticsTab.tsx` | `@/components/properties/...` -> `@/features/properties/components/...` |
-| `src/features/properties/components/tabs/PropertyMapTab.tsx` | `@/components/properties` -> `@/features/properties/components` |
-| `src/features/properties/components/tabs/PropertyBuildingsTab.tsx` | `@/components/properties` -> `@/features/properties/components` |
-| `src/features/properties/components/tabs/PropertyInfoTab.tsx` | `@/components/properties/...` -> `@/features/properties/components/...` |
-| `src/layouts/NavigationBar.tsx` | `@/components/search/...` -> `@/features/search/components/...` |
-| `src/pages/settings/SettingsPage.tsx` | `@/components/settings/...` -> `@/features/settings/components/...` |
+1. Skapa `src/entities/` med undermappar: property, building, residence, tenant, barrier
+2. Flytta typer fran `shared/types/api.ts` till respektive entity
+3. Flytta data fran `features/*/data/` till `entities/*/data/`
+4. Flytta grundlaggande UI-komponenter till `entities/*/ui/`
+5. Uppdatera barrel-exports i features/ sa de re-exporterar fran entities/
+6. Skapa `src/widgets/` med navigation och detail-tabs
+7. Flytta layout-komponenter till widgets/
+8. Uppdatera alla importer (eller anvand alias for bakatkompatibilitet)
 
-### Nya features-mappar
-- `src/features/settings/` (ny)
-- `src/features/settings/components/` (ny)
+## Risker
 
-### Totalt antal filer att radera (dubbletter)
-Ca 30-40 filer i `src/components/` som ar dubbletter av befintlig kod i `src/features/`.
+- Manga filer importerar fran `@/types/api` (som redan pekar pa `shared/types/api.ts`). Re-exports behover bibehallas.
+- Features-barrel-exports (`features/properties/index.ts`) maste fortsatta fungera for befintliga konsumenter.
+- Stegvis migration rekommenderas: borja med entities, verifiera, sedan widgets.
+
