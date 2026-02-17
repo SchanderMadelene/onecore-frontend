@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronDown, MoreVertical, FileText, Sparkles, Edit, History } from "lucide-react";
 import { useState } from "react";
-import { Component } from "@/data/components";
+import { Component } from "@/components/common/components-data";
 import { useToast } from "@/hooks/use-toast";
 import { PhotoAnalyzeModal, AIAnalysisResult } from "./PhotoAnalyzeModal";
 import { UpdateComponentModal } from "@/components/design-system/showcase/components/UpdateComponentModal";

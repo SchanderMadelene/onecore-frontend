@@ -1,7 +1,7 @@
 import { TabLayout } from "@/components/ui/tab-layout";
 import { ComponentCard } from "@/components/common";
 import type { Building } from "@/types/api";
-import type { Component } from "@/data/components";
+import type { Component } from "@/components/common/components-data";
 
 interface BuildingPartsTabProps {
   building: Building;

@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { ComponentCard } from "@/components/common";
 import { Info } from "lucide-react";
 import type { Room } from "@/types/api";
-import type { Component } from "@/data/components";
+import type { Component } from "@/components/common/components-data";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ResidenceInfoProps {
