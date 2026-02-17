@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
@@ -17,6 +17,7 @@ import {
   LEASE_STATUS_VARIANTS, 
   LEASE_TYPE_LABELS 
 } from "./types/leaseContract";
+import { FavoriteParameters } from "@/features/favorites/types/favorite";
 
 export default function LeaseContractsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -26,6 +27,21 @@ export default function LeaseContractsPage() {
   const filteredContracts = filterHook.filterContracts(contracts);
   const paginatedContracts = filterHook.getPaginatedContracts(filteredContracts);
   const totalPages = filterHook.totalPages(filteredContracts.length);
+
+  const getActiveFilters = useCallback((): FavoriteParameters => {
+    const params: FavoriteParameters = {};
+    if (filterHook.selectedType) params.type = filterHook.selectedType;
+    if (filterHook.selectedStatus !== '') params.status = String(filterHook.selectedStatus);
+    if (filterHook.selectedDistrict) params.district = filterHook.selectedDistrict;
+    if (filterHook.selectedProperty) params.property = filterHook.selectedProperty;
+    if (filterHook.selectedBuilding) params.building = filterHook.selectedBuilding;
+    if (filterHook.searchQuery) params.search = filterHook.searchQuery;
+    if (filterHook.fromDateStart) params.fromDateStart = filterHook.fromDateStart.toISOString();
+    if (filterHook.fromDateEnd) params.fromDateEnd = filterHook.fromDateEnd.toISOString();
+    if (filterHook.lastDebitDateStart) params.lastDebitDateStart = filterHook.lastDebitDateStart.toISOString();
+    if (filterHook.lastDebitDateEnd) params.lastDebitDateEnd = filterHook.lastDebitDateEnd.toISOString();
+    return params;
+  }, [filterHook.selectedType, filterHook.selectedStatus, filterHook.selectedDistrict, filterHook.selectedProperty, filterHook.selectedBuilding, filterHook.searchQuery, filterHook.fromDateStart, filterHook.fromDateEnd, filterHook.lastDebitDateStart, filterHook.lastDebitDateEnd]);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";
@@ -134,7 +150,7 @@ export default function LeaseContractsPage() {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
-        <LeaseContractsHeader />
+        <LeaseContractsHeader getActiveFilters={getActiveFilters} />
         
         <Card>
           <CardContent className="pt-6">

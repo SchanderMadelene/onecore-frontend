@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { PageLayout } from "@/layouts";
 import { BarriersTable, getAllBarriers, type Barrier } from "@/features/barriers";
 import { BarriersHeader } from "./components/BarriersHeader";
@@ -10,6 +10,7 @@ import { ExportButton } from "@/components/ui/export-button";
 import { Search, X } from "lucide-react";
 import { exportToExcel, formatDateForExcel, ExcelColumn } from "@/utils/excelExport";
 import { useToast } from "@/hooks/use-toast";
+import { FavoriteParameters } from "@/features/favorites/types/favorite";
 
 const TYPE_LABELS: Record<string, string> = {
   housing: "Bostad",
@@ -41,6 +42,14 @@ const BarriersPage = () => {
     setTypeFilter("all");
     setStatusFilter("all");
   };
+
+  const getActiveFilters = useCallback((): FavoriteParameters => {
+    const params: FavoriteParameters = {};
+    if (typeFilter !== "all") params.type = typeFilter;
+    if (statusFilter !== "all") params.status = statusFilter;
+    if (searchQuery) params.search = searchQuery;
+    return params;
+  }, [typeFilter, statusFilter, searchQuery]);
 
   const filteredBarriers = useMemo(() => {
     return allBarriers.filter(barrier => {
@@ -91,7 +100,7 @@ const BarriersPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
-        <BarriersHeader onBarrierCreated={handleBarrierCreated} />
+        <BarriersHeader onBarrierCreated={handleBarrierCreated} getActiveFilters={getActiveFilters} />
 
         <Card>
           <CardContent className="pt-6 space-y-4">
