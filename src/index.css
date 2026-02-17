@@ -48,20 +48,6 @@
     --input: 214 32% 91%;
     --ring: 222 84% 4.9%;
     
-    /* Dekorativa färger – för badges, taggar och kategorier */
-    --purple: 270 60% 70%;
-    --purple-foreground: 270 60% 20%;
-    --teal: 174 60% 45%;
-    --teal-foreground: 174 60% 10%;
-    --amber: 38 90% 55%;
-    --amber-foreground: 38 90% 15%;
-    --rose: 350 70% 75%;
-    --rose-foreground: 350 70% 20%;
-    --orange: 25 90% 55%;
-    --orange-foreground: 25 90% 15%;
-    --slate: 215 15% 80%;
-    --slate-foreground: 215 15% 25%;
-
     /* Övrigt */
     --radius: 0.75rem;
   }

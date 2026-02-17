@@ -1,5 +1,5 @@
 // Mimer's official color coding for building types
-// Uses design system decorative color tokens
+// Based on their customer-facing branding
 
 export interface BuildingTypeStyle {
   bg: string;
@@ -9,43 +9,43 @@ export interface BuildingTypeStyle {
 
 export const BUILDING_TYPE_STYLES: Record<string, BuildingTypeStyle> = {
   "STD": {
-    bg: "bg-slate/30",
-    text: "text-slate-foreground",
+    bg: "bg-slate-100",
+    text: "text-slate-800",
     label: "Standard"
   },
   "BLOCK": {
-    bg: "bg-slate/50",
-    text: "text-slate-foreground",
+    bg: "bg-slate-200",
+    text: "text-slate-800",
     label: "Block"
   },
   "55PLUS": {
-    bg: "bg-purple/20",
-    text: "text-purple-foreground",
+    bg: "bg-purple-100",
+    text: "text-purple-800",
     label: "55+"
   },
   "STUD": {
-    bg: "bg-amber/40",
-    text: "text-amber-foreground",
+    bg: "bg-amber-400",
+    text: "text-black",
     label: "Student"
   },
   "TRYGG": {
-    bg: "bg-teal/40",
-    text: "text-teal-foreground",
+    bg: "bg-teal-400",
+    text: "text-black",
     label: "Trygghetsboende"
   },
   "CO-LIVING": {
-    bg: "bg-rose/30",
-    text: "text-rose-foreground",
+    bg: "bg-rose-200",
+    text: "text-rose-900",
     label: "Co-living"
   },
   "KOOPERATIV": {
-    bg: "bg-teal/40",
-    text: "text-teal-foreground",
+    bg: "bg-teal-400",
+    text: "text-black",
     label: "Kooperativ"
   },
   "POANGFRITT": {
-    bg: "bg-orange/40",
-    text: "text-orange-foreground",
+    bg: "bg-orange-400",
+    text: "text-black",
     label: "Poängfritt"
   }
 };
