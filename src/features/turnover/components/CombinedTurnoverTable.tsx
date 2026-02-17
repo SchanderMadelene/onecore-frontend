@@ -1,4 +1,5 @@
 import { TurnoverRow, MoveInListChecklist } from '../types/move-in-list-types';
+import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 import { ChecklistCell } from './ChecklistCell';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
@@ -131,17 +132,17 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
               <TableRow>
                 <TableHead>Uppgång</TableHead>
                 <TableHead>Typ</TableHead>
-                <TableHead>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center rounded-md bg-destructive/10 px-2 py-0.5 text-xs font-medium text-destructive">Utflytt</span>
+                <TableHead className="border-l-2 border-border">
+                  <div className="flex items-center gap-1.5">
+                    <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground" />
                     Hyresgäst
                   </div>
                 </TableHead>
                 <TableHead>Sista deb.</TableHead>
                 <TableHead className="text-center">Städkontr.</TableHead>
-                <TableHead>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">Inflytt</span>
+                <TableHead className="border-l-2 border-border">
+                  <div className="flex items-center gap-1.5">
+                    <ArrowDownLeft className="h-3.5 w-3.5 text-muted-foreground" />
                     Hyresgäst
                   </div>
                 </TableHead>
@@ -157,7 +158,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                   <TableCell className="font-medium text-sm whitespace-nowrap">{row.address}</TableCell>
                   <TableCell className="text-sm">{row.apartmentType}</TableCell>
                   {/* Move-out columns */}
-                  <TableCell>
+                  <TableCell className="border-l-2 border-border">
                     {row.moveOut ? (
                       <div>
                         <span className="text-sm">{row.moveOut.tenantName}</span>
@@ -180,7 +181,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in columns */}
-                  <TableCell>
+                  <TableCell className="border-l-2 border-border">
                     {row.moveIn ? (
                       <div>
                         <span className="text-sm">{row.moveIn.tenantName}</span>
