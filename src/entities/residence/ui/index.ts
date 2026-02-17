@@ -1,1 +1,2 @@
-// Residence entity UI components - re-export from features for now
+export { ResidenceBasicInfo } from './ResidenceBasicInfo';
+export { ResidenceInfo } from './ResidenceInfo';

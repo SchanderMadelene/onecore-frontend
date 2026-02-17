@@ -1,1 +1,2 @@
-// Tenant entity UI components - re-export from features for now
+export { TenantCard } from './TenantCard';
+export { TenantInformationCard } from './TenantInformationCard';

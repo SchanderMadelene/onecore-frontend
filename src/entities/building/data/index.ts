@@ -1,1 +1,1 @@
-export { mockBuildings } from '@/features/buildings/data/buildings';
+export { mockBuildings, type Building } from './buildings';

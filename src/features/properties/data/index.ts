@@ -1,2 +1,2 @@
-export { mockProperties, mockPropertyDetails } from './properties';
-export { mockPropertyDetails as propertyDetails } from './properties/index';
+// Re-export from entities layer
+export { mockProperties, mockPropertyDetails, propertyDetails } from '@/entities/property/data';
