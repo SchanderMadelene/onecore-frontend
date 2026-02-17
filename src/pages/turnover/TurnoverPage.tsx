@@ -15,9 +15,12 @@ export default function TurnoverPage() {
     setEndDate,
     selectedKvvArea,
     setSelectedKvvArea,
+    selectedDistrict,
+    setSelectedDistrict,
     combinedEntries,
     updateChecklist,
     availableKvvAreas,
+    availableDistricts,
   } = useMoveInList();
 
   return (
@@ -35,6 +38,9 @@ export default function TurnoverPage() {
               kvvAreas={availableKvvAreas}
               selectedKvvArea={selectedKvvArea}
               onKvvAreaChange={setSelectedKvvArea}
+              districts={availableDistricts}
+              selectedDistrict={selectedDistrict}
+              onDistrictChange={setSelectedDistrict}
             />
           </CardContent>
         </Card>
