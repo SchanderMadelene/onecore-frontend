@@ -1,4 +1,4 @@
-import { MessageTemplate } from "@/types/messageTemplates";
+import { MessageTemplate } from "@/features/communication/types/messageTemplate";
 
 export const messageTemplates: MessageTemplate[] = [
   {

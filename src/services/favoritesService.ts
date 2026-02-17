@@ -1,4 +1,4 @@
-import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/types/favorites";
+import { Favorite, FavoriteCategory, FavoriteParameters, FavoriteVisibility } from "@/features/favorites/types/favorite";
 
 class FavoritesService {
   private static instance: FavoritesService;

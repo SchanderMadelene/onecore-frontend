@@ -1,4 +1,4 @@
-import { SearchResult } from "@/types/search";
+import { SearchResult } from "@/features/search/types/search";
 
 // Expanded mock data for global search with identifier fields
 export const mockGlobalSearchResults: SearchResult[] = [
