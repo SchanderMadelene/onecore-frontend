@@ -1,22 +1,41 @@
 
 
-# Byt favicon till OneCore-logotypen
+# Favicon med stöd för dark/light mode
 
 ## Vad som görs
 
-Byter ut den nuvarande `favicon.ico` mot OneCore-symbolen (`onecore_simple_color.svg`) så att webbläsarfliken visar OneCore-logotypen.
+Uppdaterar `public/favicon.svg` så att OneCore-logotypen automatiskt anpassar sig till webbläsarens dark/light mode via CSS `prefers-color-scheme` inuti SVG-filen.
 
-## Steg
+## Hur det fungerar
 
-1. **Kopiera logotypen till public-mappen** -- Kopiera `src/assets/logos/simple/onecore_simple_color.svg` till `public/favicon.svg`
-2. **Uppdatera `index.html`** -- Byt ut den befintliga favicon-referensen till den nya SVG-filen:
-   ```html
-   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-   ```
+SVG-formatet stöder inbäddad CSS med media queries. Genom att lägga till en `<style>`-tagg i SVG-filen kan vi ändra `fill`-färgen beroende på om användaren har ljust eller mörkt läge i sin webbläsare.
+
+- **Ljust läge**: Logotypen visas i blått (`#1200FF`) -- som idag
+- **Mörkt läge**: Logotypen visas i vitt (`#FFFFFF`) för synlighet mot mörk bakgrund
 
 ## Tekniska detaljer
 
-- SVG-favicons stöds av alla moderna webbläsare och ger skarp rendering i alla storlekar
-- Den befintliga `favicon.ico` kan tas bort eller behållas som fallback
-- Filen `onecore_simple_color.svg` är symbol-varianten (utan text), vilket passar bäst i en liten flik
+### Ändrad fil
+
+| Fil | Ändring |
+|-----|---------|
+| `public/favicon.svg` | Lägg till `<style>` med `prefers-color-scheme: dark` som byter fill-färg |
+
+### Resultat i SVG-filen
+
+```xml
+<svg ...>
+  <style>
+    path { fill: #1200FF; }
+    @media (prefers-color-scheme: dark) {
+      path { fill: #FFFFFF; }
+    }
+  </style>
+  <!-- befintlig path utan fill-attribut -->
+</svg>
+```
+
+### Webbläsarstöd
+
+SVG-favicons med `prefers-color-scheme` stöds av Chrome, Firefox, Edge och Safari (moderna versioner). Ingen ändring behövs i `index.html` -- den befintliga `<link>`-taggen fungerar som den är.
 
