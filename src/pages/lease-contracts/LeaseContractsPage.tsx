@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
@@ -17,6 +17,7 @@ import {
   LEASE_STATUS_VARIANTS, 
   LEASE_TYPE_LABELS 
 } from "./types/leaseContract";
+import { FavoriteParameters } from "@/features/favorites/types/favorite";
 
 export default function LeaseContractsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -26,6 +27,30 @@ export default function LeaseContractsPage() {
   const filteredContracts = filterHook.filterContracts(contracts);
   const paginatedContracts = filterHook.getPaginatedContracts(filteredContracts);
   const totalPages = filterHook.totalPages(filteredContracts.length);
+
+  const getActiveFilters = useCallback((): FavoriteParameters => {
+    const params: FavoriteParameters = {};
+    if (filterHook.selectedType) params.type = filterHook.selectedType;
+    if (filterHook.selectedSubType) params.subType = filterHook.selectedSubType;
+    if (filterHook.selectedStatus !== '') params.status = String(filterHook.selectedStatus);
+    if (filterHook.selectedDistrict) params.district = filterHook.selectedDistrict;
+    if (filterHook.selectedProperty) params.property = filterHook.selectedProperty;
+    if (filterHook.selectedBuilding) params.building = filterHook.selectedBuilding;
+    if (filterHook.selectedKvvArea) params.kvvArea = filterHook.selectedKvvArea;
+    if (filterHook.selectedCostCenter) params.costCenter = filterHook.selectedCostCenter;
+    if (filterHook.selectedMarketArea) params.marketArea = filterHook.selectedMarketArea;
+    if (filterHook.selectedRentRow) params.rentRow = filterHook.selectedRentRow;
+    if (filterHook.searchQuery) params.search = filterHook.searchQuery;
+    if (filterHook.fromDateStart) params.fromDateStart = filterHook.fromDateStart.toISOString();
+    if (filterHook.fromDateEnd) params.fromDateEnd = filterHook.fromDateEnd.toISOString();
+    if (filterHook.lastDebitDateStart) params.lastDebitDateStart = filterHook.lastDebitDateStart.toISOString();
+    if (filterHook.lastDebitDateEnd) params.lastDebitDateEnd = filterHook.lastDebitDateEnd.toISOString();
+    if (filterHook.noticeDateStart) params.noticeDateStart = filterHook.noticeDateStart.toISOString();
+    if (filterHook.noticeDateEnd) params.noticeDateEnd = filterHook.noticeDateEnd.toISOString();
+    if (filterHook.terminationDateStart) params.terminationDateStart = filterHook.terminationDateStart.toISOString();
+    if (filterHook.terminationDateEnd) params.terminationDateEnd = filterHook.terminationDateEnd.toISOString();
+    return params;
+  }, [filterHook.selectedType, filterHook.selectedSubType, filterHook.selectedStatus, filterHook.selectedDistrict, filterHook.selectedProperty, filterHook.selectedBuilding, filterHook.selectedKvvArea, filterHook.selectedCostCenter, filterHook.selectedMarketArea, filterHook.selectedRentRow, filterHook.searchQuery, filterHook.fromDateStart, filterHook.fromDateEnd, filterHook.lastDebitDateStart, filterHook.lastDebitDateEnd, filterHook.noticeDateStart, filterHook.noticeDateEnd, filterHook.terminationDateStart, filterHook.terminationDateEnd]);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";
@@ -134,7 +159,7 @@ export default function LeaseContractsPage() {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
-        <LeaseContractsHeader />
+        <LeaseContractsHeader getActiveFilters={getActiveFilters} />
         
         <Card>
           <CardContent className="pt-6">

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { X, Search } from "lucide-react";
-import { LeaseContractType, LeaseContractStatus, LEASE_STATUS_LABELS, LEASE_TYPE_LABELS } from "../types/leaseContract";
+import { LeaseContractType, LeaseContractStatus, LeaseContractSubType, LEASE_STATUS_LABELS, LEASE_TYPE_LABELS, LEASE_SUBTYPE_LABELS } from "../types/leaseContract";
 import { DateRangeFilter } from "./DateRangeFilter";
 
 interface PropertyOption {
@@ -19,6 +19,8 @@ interface BuildingOption {
 interface LeaseContractsFiltersProps {
   selectedType: LeaseContractType | '';
   setSelectedType: (type: LeaseContractType | '') => void;
+  selectedSubType: LeaseContractSubType | '';
+  setSelectedSubType: (subType: LeaseContractSubType | '') => void;
   selectedStatus: LeaseContractStatus | '';
   setSelectedStatus: (status: LeaseContractStatus | '') => void;
   selectedDistrict: string;
@@ -27,6 +29,14 @@ interface LeaseContractsFiltersProps {
   setSelectedProperty: (property: string) => void;
   selectedBuilding: string;
   setSelectedBuilding: (building: string) => void;
+  selectedKvvArea: string;
+  setSelectedKvvArea: (kvv: string) => void;
+  selectedCostCenter: string;
+  setSelectedCostCenter: (cc: string) => void;
+  selectedMarketArea: string;
+  setSelectedMarketArea: (ma: string) => void;
+  selectedRentRow: string;
+  setSelectedRentRow: (rr: string) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   fromDateStart: Date | undefined;
@@ -37,44 +47,55 @@ interface LeaseContractsFiltersProps {
   setLastDebitDateStart: (date: Date | undefined) => void;
   lastDebitDateEnd: Date | undefined;
   setLastDebitDateEnd: (date: Date | undefined) => void;
+  noticeDateStart: Date | undefined;
+  setNoticeDateStart: (date: Date | undefined) => void;
+  noticeDateEnd: Date | undefined;
+  setNoticeDateEnd: (date: Date | undefined) => void;
+  terminationDateStart: Date | undefined;
+  setTerminationDateStart: (date: Date | undefined) => void;
+  terminationDateEnd: Date | undefined;
+  setTerminationDateEnd: (date: Date | undefined) => void;
   contractTypes: LeaseContractType[];
+  subTypes: LeaseContractSubType[];
   statusOptions: LeaseContractStatus[];
   uniqueDistricts: string[];
   uniqueProperties: PropertyOption[];
   availableBuildings: BuildingOption[];
+  uniqueKvvAreas: string[];
+  uniqueCostCenters: string[];
+  uniqueMarketAreas: string[];
+  uniqueRentRows: string[];
   clearFilters: () => void;
   hasActiveFilters: boolean;
 }
 
-export function LeaseContractsFilters({
-  selectedType,
-  setSelectedType,
-  selectedStatus,
-  setSelectedStatus,
-  selectedDistrict,
-  setSelectedDistrict,
-  selectedProperty,
-  setSelectedProperty,
-  selectedBuilding,
-  setSelectedBuilding,
-  searchQuery,
-  setSearchQuery,
-  fromDateStart,
-  setFromDateStart,
-  fromDateEnd,
-  setFromDateEnd,
-  lastDebitDateStart,
-  setLastDebitDateStart,
-  lastDebitDateEnd,
-  setLastDebitDateEnd,
-  contractTypes,
-  statusOptions,
-  uniqueDistricts,
-  uniqueProperties,
-  availableBuildings,
-  clearFilters,
-  hasActiveFilters
-}: LeaseContractsFiltersProps) {
+export function LeaseContractsFilters(props: LeaseContractsFiltersProps) {
+  const {
+    selectedType, setSelectedType,
+    selectedSubType, setSelectedSubType,
+    selectedStatus, setSelectedStatus,
+    selectedDistrict, setSelectedDistrict,
+    selectedProperty, setSelectedProperty,
+    selectedBuilding, setSelectedBuilding,
+    selectedKvvArea, setSelectedKvvArea,
+    selectedCostCenter, setSelectedCostCenter,
+    selectedMarketArea, setSelectedMarketArea,
+    selectedRentRow, setSelectedRentRow,
+    searchQuery, setSearchQuery,
+    fromDateStart, setFromDateStart,
+    fromDateEnd, setFromDateEnd,
+    lastDebitDateStart, setLastDebitDateStart,
+    lastDebitDateEnd, setLastDebitDateEnd,
+    noticeDateStart, setNoticeDateStart,
+    noticeDateEnd, setNoticeDateEnd,
+    terminationDateStart, setTerminationDateStart,
+    terminationDateEnd, setTerminationDateEnd,
+    contractTypes, subTypes, statusOptions,
+    uniqueDistricts, uniqueProperties, availableBuildings,
+    uniqueKvvAreas, uniqueCostCenters, uniqueMarketAreas, uniqueRentRows,
+    clearFilters, hasActiveFilters
+  } = props;
+
   return (
     <div className="space-y-4">
       {/* Search */}
@@ -108,6 +129,24 @@ export function LeaseContractsFilters({
           </SelectContent>
         </Select>
 
+        {/* SubType Filter */}
+        <Select 
+          value={selectedSubType || "all"} 
+          onValueChange={(value) => setSelectedSubType(value === "all" ? '' : value as LeaseContractSubType)}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Undertyp" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla undertyper</SelectItem>
+            {subTypes.map((st) => (
+              <SelectItem key={st} value={st}>
+                {LEASE_SUBTYPE_LABELS[st]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
         {/* Status Filter */}
         <Select 
           value={selectedStatus !== '' ? String(selectedStatus) : "all"} 
@@ -125,6 +164,84 @@ export function LeaseContractsFilters({
             ))}
           </SelectContent>
         </Select>
+
+        {/* District Filter */}
+        <Select 
+          value={selectedDistrict || "all"} 
+          onValueChange={(value) => setSelectedDistrict(value === "all" ? '' : value)}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="Distrikt" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Alla distrikt</SelectItem>
+            {uniqueDistricts.map((district) => (
+              <SelectItem key={district} value={district}>
+                {district}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* KVV Area Filter */}
+        {uniqueKvvAreas.length > 0 && (
+          <Select 
+            value={selectedKvvArea || "all"} 
+            onValueChange={(value) => setSelectedKvvArea(value === "all" ? '' : value)}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="KVV-område" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alla KVV-områden</SelectItem>
+              {uniqueKvvAreas.map((area) => (
+                <SelectItem key={area} value={area}>
+                  {area}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
+        {/* Cost Center Filter */}
+        {uniqueCostCenters.length > 0 && (
+          <Select 
+            value={selectedCostCenter || "all"} 
+            onValueChange={(value) => setSelectedCostCenter(value === "all" ? '' : value)}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Kostnadsställe" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alla kostnadsställen</SelectItem>
+              {uniqueCostCenters.map((cc) => (
+                <SelectItem key={cc} value={cc}>
+                  {cc}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
+        {/* Market Area Filter */}
+        {uniqueMarketAreas.length > 0 && (
+          <Select 
+            value={selectedMarketArea || "all"} 
+            onValueChange={(value) => setSelectedMarketArea(value === "all" ? '' : value)}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Marknadsområde" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alla marknadsområden</SelectItem>
+              {uniqueMarketAreas.map((area) => (
+                <SelectItem key={area} value={area}>
+                  {area}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
 
         {/* Property Filter */}
         <Select 
@@ -162,23 +279,25 @@ export function LeaseContractsFilters({
           </SelectContent>
         </Select>
 
-        {/* District Filter */}
-        <Select 
-          value={selectedDistrict || "all"} 
-          onValueChange={(value) => setSelectedDistrict(value === "all" ? '' : value)}
-        >
-          <SelectTrigger className="w-full sm:w-[180px]">
-            <SelectValue placeholder="Distrikt" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Alla distrikt</SelectItem>
-            {uniqueDistricts.map((district) => (
-              <SelectItem key={district} value={district}>
-                {district}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {/* Rent Row Filter */}
+        {uniqueRentRows.length > 0 && (
+          <Select 
+            value={selectedRentRow || "all"} 
+            onValueChange={(value) => setSelectedRentRow(value === "all" ? '' : value)}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Hyresrad" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alla hyresrader</SelectItem>
+              {uniqueRentRows.map((rr) => (
+                <SelectItem key={rr} value={rr}>
+                  {rr}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
 
         {/* Date Range Filter - Lease Start Date */}
         <DateRangeFilter
@@ -196,6 +315,24 @@ export function LeaseContractsFilters({
           toDate={lastDebitDateEnd}
           onFromDateChange={setLastDebitDateStart}
           onToDateChange={setLastDebitDateEnd}
+        />
+
+        {/* Date Range Filter - Notice Date */}
+        <DateRangeFilter
+          label="Uppsägningsdatum"
+          fromDate={noticeDateStart}
+          toDate={noticeDateEnd}
+          onFromDateChange={setNoticeDateStart}
+          onToDateChange={setNoticeDateEnd}
+        />
+
+        {/* Date Range Filter - Termination/Move-out Date */}
+        <DateRangeFilter
+          label="Avflyttningsdatum"
+          fromDate={terminationDateStart}
+          toDate={terminationDateEnd}
+          onFromDateChange={setTerminationDateStart}
+          onToDateChange={setTerminationDateEnd}
         />
 
         {/* Clear filters */}

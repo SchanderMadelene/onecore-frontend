@@ -4,12 +4,17 @@ export interface Barrier {
   object: string;
   address: string;
   reason: string;
+  reasonCategory?: import('@/entities/barrier/types').BarrierReasonCategory;
   startDate: string;
   endDate?: string;
   status: 'active' | 'inactive' | 'expired';
   createdBy: string;
   createdDate: string;
   notes?: string;
+  district?: string;
+  propertyId?: string;
+  propertyName?: string;
+  costCenter?: string;
 }
 
 export const mockBarriers: Barrier[] = [
@@ -20,12 +25,17 @@ export const mockBarriers: Barrier[] = [
     object: 'Algen 1, Lgh 1201 (123-456-01-1201)',
     address: 'Algengatan 12, 1tr',
     reason: 'Vattenskada - renovering pågår',
+    reasonCategory: 'renovation_before',
     startDate: '2024-01-15',
     endDate: '2024-03-30',
     status: 'active',
     createdBy: 'Anna Svensson',
     createdDate: '2024-01-10',
-    notes: 'Omfattande renovering efter rörbrott'
+    notes: 'Omfattande renovering efter rörbrott',
+    district: 'Mimer Mitt',
+    propertyId: 'PROP-001',
+    propertyName: 'Kvarngärdet 1',
+    costCenter: '6111'
   },
   {
     id: 'H002',
@@ -33,22 +43,32 @@ export const mockBarriers: Barrier[] = [
     object: 'Lindaren 2, Lgh 0304 (234-567-02-0304)',
     address: 'Lindarens väg 8, 3tr',
     reason: 'Brandskada',
+    reasonCategory: 'damage',
     startDate: '2024-02-10',
     status: 'active',
     createdBy: 'Per Eriksson',
-    createdDate: '2024-02-08'
+    createdDate: '2024-02-08',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
   },
   {
     id: 'H003',
     type: 'housing',
     object: 'Björnen 4, Lgh 0801 (345-678-03-0801)',
     address: 'Björkgatan 15, 8tr',
-    reason: 'Asbetsanering',
+    reason: 'VLU till FLU - uppsagd lgh ska uppdateras',
+    reasonCategory: 'VLU',
     startDate: '2023-12-01',
     endDate: '2024-01-31',
     status: 'expired',
     createdBy: 'Maria Johansson',
-    createdDate: '2023-11-20'
+    createdDate: '2023-11-20',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
   },
   {
     id: 'H004',
@@ -56,10 +76,47 @@ export const mockBarriers: Barrier[] = [
     object: 'Algen 1, Lgh 0502 (123-456-01-0502)',
     address: 'Algengatan 12, 5tr',
     reason: 'Fuktsanering',
+    reasonCategory: 'renovation_after',
     startDate: '2024-03-01',
     status: 'active',
     createdBy: 'Lars Nilsson',
-    createdDate: '2024-02-25'
+    createdDate: '2024-02-25',
+    district: 'Mimer Mitt',
+    propertyId: 'PROP-001',
+    propertyName: 'Kvarngärdet 1',
+    costCenter: '6111'
+  },
+  {
+    id: 'H005',
+    type: 'housing',
+    object: 'Lindaren 2, Lgh 0501 (234-567-02-0501)',
+    address: 'Lindarens väg 8, 5tr',
+    reason: 'FLU - renoveras innan inflytt',
+    reasonCategory: 'FLU',
+    startDate: '2024-03-10',
+    status: 'active',
+    createdBy: 'Anna Svensson',
+    createdDate: '2024-03-08',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
+  },
+  {
+    id: 'H006',
+    type: 'housing',
+    object: 'Ekudden 5, Lgh 0201 (345-678-03-0201)',
+    address: 'Eriksbergsgatan 3, 2tr',
+    reason: 'VLU - väntar på FLU-beslut',
+    reasonCategory: 'VLU',
+    startDate: '2024-02-15',
+    status: 'active',
+    createdBy: 'Maria Johansson',
+    createdDate: '2024-02-12',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
   },
 
   // Parking barriers
@@ -69,11 +126,16 @@ export const mockBarriers: Barrier[] = [
     object: 'Bilplats 45A (FAST-001-P045A)',
     address: 'Algengatan 12, garage',
     reason: 'Markarbeten - schakt för fiber',
+    reasonCategory: 'maintenance',
     startDate: '2024-02-20',
     endDate: '2024-04-15',
     status: 'active',
     createdBy: 'Anna Svensson',
-    createdDate: '2024-02-15'
+    createdDate: '2024-02-15',
+    district: 'Mimer Mitt',
+    propertyId: 'PROP-001',
+    propertyName: 'Kvarngärdet 1',
+    costCenter: '6111'
   },
   {
     id: 'P002',
@@ -81,11 +143,16 @@ export const mockBarriers: Barrier[] = [
     object: 'Bilplats 67B (FAST-002-P067B)',
     address: 'Lindarens väg 8, utomhus',
     reason: 'Asfaltskador',
+    reasonCategory: 'damage',
     startDate: '2024-01-30',
     endDate: '2024-03-01',
     status: 'expired',
     createdBy: 'Per Eriksson',
-    createdDate: '2024-01-28'
+    createdDate: '2024-01-28',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
   },
   {
     id: 'P003',
@@ -93,11 +160,16 @@ export const mockBarriers: Barrier[] = [
     object: 'Bilplats 23C (FAST-003-P023C)',
     address: 'Björkgatan 15, garage',
     reason: 'Takläckage - reparation',
+    reasonCategory: 'maintenance',
     startDate: '2024-03-10',
     status: 'active',
     createdBy: 'Maria Johansson',
     createdDate: '2024-03-08',
-    notes: 'Väntar på entreprenör'
+    notes: 'Väntar på entreprenör',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
   },
   {
     id: 'P004',
@@ -105,11 +177,16 @@ export const mockBarriers: Barrier[] = [
     object: 'Bilplats 89A (FAST-001-P089A)',
     address: 'Algengatan 12, utomhus',
     reason: 'Elkabel - underhåll',
+    reasonCategory: 'maintenance',
     startDate: '2024-02-15',
     endDate: '2024-02-28',
     status: 'expired',
     createdBy: 'Lars Nilsson',
-    createdDate: '2024-02-10'
+    createdDate: '2024-02-10',
+    district: 'Mimer Mitt',
+    propertyId: 'PROP-001',
+    propertyName: 'Kvarngärdet 1',
+    costCenter: '6111'
   },
   {
     id: 'P005',
@@ -117,10 +194,15 @@ export const mockBarriers: Barrier[] = [
     object: 'Bilplats 12D (FAST-002-P012D)',
     address: 'Lindarens väg 8, garage',
     reason: 'Ventilation - service',
+    reasonCategory: 'maintenance',
     startDate: '2024-03-05',
     status: 'active',
     createdBy: 'Anna Svensson',
-    createdDate: '2024-03-01'
+    createdDate: '2024-03-01',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
   },
   
   // Storage barriers
@@ -130,11 +212,16 @@ export const mockBarriers: Barrier[] = [
     object: 'Förråd 15A (FAST-001-F015A)',
     address: 'Algengatan 12, källare',
     reason: 'Fuktskada - sanering',
+    reasonCategory: 'damage',
     startDate: '2024-02-01',
     endDate: '2024-04-01',
     status: 'active',
     createdBy: 'Per Eriksson',
-    createdDate: '2024-01-25'
+    createdDate: '2024-01-25',
+    district: 'Mimer Mitt',
+    propertyId: 'PROP-001',
+    propertyName: 'Kvarngärdet 1',
+    costCenter: '6111'
   },
   {
     id: 'S002',
@@ -142,11 +229,16 @@ export const mockBarriers: Barrier[] = [
     object: 'Förråd 27B (FAST-002-F027B)',
     address: 'Lindarens väg 8, källare',
     reason: 'Dörr behöver bytas',
+    reasonCategory: 'maintenance',
     startDate: '2024-01-10',
     endDate: '2024-02-28',
     status: 'expired',
     createdBy: 'Maria Johansson',
-    createdDate: '2024-01-05'
+    createdDate: '2024-01-05',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
   },
   {
     id: 'S003',
@@ -154,10 +246,15 @@ export const mockBarriers: Barrier[] = [
     object: 'Förråd 8C (FAST-003-F008C)',
     address: 'Björkgatan 15, vind',
     reason: 'Elinstallation',
+    reasonCategory: 'maintenance',
     startDate: '2024-03-15',
     status: 'active',
     createdBy: 'Lars Nilsson',
-    createdDate: '2024-03-12'
+    createdDate: '2024-03-12',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
   },
   
   // Commercial barriers
@@ -167,11 +264,16 @@ export const mockBarriers: Barrier[] = [
     object: 'Lokal 1 (FAST-001-L001)',
     address: 'Algengatan 12, bottenvåning',
     reason: 'Ombyggnad - nya hyresgästen',
+    reasonCategory: 'other',
     startDate: '2024-01-20',
     endDate: '2024-05-01',
     status: 'active',
     createdBy: 'Anna Svensson',
-    createdDate: '2024-01-10'
+    createdDate: '2024-01-10',
+    district: 'Mimer Mitt',
+    propertyId: 'PROP-001',
+    propertyName: 'Kvarngärdet 1',
+    costCenter: '6111'
   },
   {
     id: 'C002',
@@ -179,11 +281,16 @@ export const mockBarriers: Barrier[] = [
     object: 'Lokal 3 (FAST-002-L003)',
     address: 'Lindarens väg 8, bottenvåning',
     reason: 'Ventilationsarbeten',
+    reasonCategory: 'maintenance',
     startDate: '2023-11-15',
     endDate: '2024-01-15',
     status: 'expired',
     createdBy: 'Per Eriksson',
-    createdDate: '2023-11-01'
+    createdDate: '2023-11-01',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
   },
   {
     id: 'C003',
@@ -191,10 +298,164 @@ export const mockBarriers: Barrier[] = [
     object: 'Lokal 5 (FAST-003-L005)',
     address: 'Björkgatan 15, bottenvåning',
     reason: 'Brandskyddskontroll',
+    reasonCategory: 'maintenance',
     startDate: '2024-03-01',
     status: 'active',
     createdBy: 'Maria Johansson',
-    createdDate: '2024-02-20'
+    createdDate: '2024-02-20',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
+  },
+
+  // Additional barriers for better statistics
+  {
+    id: 'H007',
+    type: 'housing',
+    object: 'Björnen 4, Lgh 0602 (345-678-03-0602)',
+    address: 'Björkgatan 15, 6tr',
+    reason: 'VLU - uppsagd, väntar på beslut',
+    reasonCategory: 'VLU',
+    startDate: '2025-06-01',
+    endDate: '2025-08-15',
+    status: 'expired',
+    createdBy: 'Per Eriksson',
+    createdDate: '2025-05-28',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
+  },
+  {
+    id: 'H008',
+    type: 'housing',
+    object: 'Lindaren 2, Lgh 0102 (234-567-02-0102)',
+    address: 'Lindarens väg 8, 1tr',
+    reason: 'FLU - planerat underhåll',
+    reasonCategory: 'FLU',
+    startDate: '2025-09-01',
+    status: 'active',
+    createdBy: 'Anna Svensson',
+    createdDate: '2025-08-25',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
+  },
+  {
+    id: 'H009',
+    type: 'housing',
+    object: 'Algen 1, Lgh 0301 (123-456-01-0301)',
+    address: 'Algengatan 12, 3tr',
+    reason: 'VLU - avflyttad hyresgäst',
+    reasonCategory: 'VLU',
+    startDate: '2025-10-15',
+    endDate: '2025-12-20',
+    status: 'expired',
+    createdBy: 'Lars Nilsson',
+    createdDate: '2025-10-10',
+    district: 'Mimer Mitt',
+    propertyId: 'PROP-001',
+    propertyName: 'Kvarngärdet 1',
+    costCenter: '6111'
+  },
+  {
+    id: 'H010',
+    type: 'housing',
+    object: 'Ekudden 5, Lgh 0401 (345-678-03-0401)',
+    address: 'Eriksbergsgatan 3, 4tr',
+    reason: 'Renovering innan inflytt - stambyte',
+    reasonCategory: 'renovation_before',
+    startDate: '2025-11-01',
+    status: 'active',
+    createdBy: 'Maria Johansson',
+    createdDate: '2025-10-28',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
+  },
+  {
+    id: 'H011',
+    type: 'housing',
+    object: 'Lindaren 2, Lgh 0702 (234-567-02-0702)',
+    address: 'Lindarens väg 8, 7tr',
+    reason: 'Renovering efter inflytt - badrum',
+    reasonCategory: 'renovation_after',
+    startDate: '2025-12-10',
+    status: 'active',
+    createdBy: 'Per Eriksson',
+    createdDate: '2025-12-05',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
+  },
+  {
+    id: 'H012',
+    type: 'housing',
+    object: 'Algen 1, Lgh 0901 (123-456-01-0901)',
+    address: 'Algengatan 12, 9tr',
+    reason: 'VLU - väntar på FLU-beslut',
+    reasonCategory: 'VLU',
+    startDate: '2026-01-05',
+    status: 'active',
+    createdBy: 'Anna Svensson',
+    createdDate: '2026-01-02',
+    district: 'Mimer Mitt',
+    propertyId: 'PROP-001',
+    propertyName: 'Kvarngärdet 1',
+    costCenter: '6111'
+  },
+  {
+    id: 'H013',
+    type: 'housing',
+    object: 'Björnen 4, Lgh 0503 (345-678-03-0503)',
+    address: 'Björkgatan 15, 5tr',
+    reason: 'FLU - beslutad renovering',
+    reasonCategory: 'FLU',
+    startDate: '2026-01-20',
+    status: 'active',
+    createdBy: 'Lars Nilsson',
+    createdDate: '2026-01-18',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
+  },
+  {
+    id: 'H014',
+    type: 'housing',
+    object: 'Lindaren 2, Lgh 0303 (234-567-02-0303)',
+    address: 'Lindarens väg 8, 3tr',
+    reason: 'Skada - vattenintrång',
+    reasonCategory: 'damage',
+    startDate: '2025-07-15',
+    status: 'active',
+    createdBy: 'Maria Johansson',
+    createdDate: '2025-07-12',
+    district: 'Mimer Norr',
+    propertyId: 'PROP-002',
+    propertyName: 'Björklunden 3',
+    costCenter: '6121'
+  },
+  {
+    id: 'P006',
+    type: 'parking',
+    object: 'Bilplats 34B (FAST-003-P034B)',
+    address: 'Björkgatan 15, utomhus',
+    reason: 'VLU - ledig plats',
+    reasonCategory: 'VLU',
+    startDate: '2025-08-01',
+    endDate: '2025-09-15',
+    status: 'expired',
+    createdBy: 'Anna Svensson',
+    createdDate: '2025-07-28',
+    district: 'Mimer Öst',
+    propertyId: 'PROP-003',
+    propertyName: 'Ekudden 5',
+    costCenter: '6132'
   }
 ];
 
@@ -321,8 +582,8 @@ export const createBarrier = (barrierData: Omit<Barrier, 'id' | 'createdBy' | 'c
   const newBarrier: Barrier = {
     ...barrierData,
     id: `${barrierData.type.toUpperCase().charAt(0)}${String(Date.now()).slice(-3)}`,
-    createdBy: 'Nuvarande användare', // In real app, this would be the current user
-    createdDate: new Date().toISOString().split('T')[0] // Current date
+    createdBy: 'Nuvarande användare',
+    createdDate: new Date().toISOString().split('T')[0]
   };
   
   mockBarriers.unshift(newBarrier);

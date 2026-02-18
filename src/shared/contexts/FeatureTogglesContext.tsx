@@ -48,6 +48,7 @@ interface FeatureToggles {
   showBuildingDocuments: boolean;
   // Barriers (Spärrar)
   showBarriers: boolean;
+  showBarrierStatistics: boolean;
   // Turnover (In- och utflytt)
   showTurnover: boolean;
   // Global inspections view
@@ -122,6 +123,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showBuildingDocuments: true,
   // Barriers (Spärrar)
   showBarriers: false,
+  showBarrierStatistics: false,
   // Turnover (In- och utflytt)
   showTurnover: false,
   // Global inspections view

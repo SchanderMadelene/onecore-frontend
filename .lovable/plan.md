@@ -1,115 +1,83 @@
 
 
-# Kombinerad vy for Ut- och inflytt
+# Fas 3: VLU/FLU Statistik och Rapportvyer
 
-## Sammanfattning
+## Vad ska byggas
 
-Ersatt de tva separata tabellerna (MoveOutSection + MoveInSection) med en enda kombinerad tabell dar varje rad representerar en bostad. Raden visar bade den utflyttande och inflyttande hyresgasten, med respektive checklistor. Bostader som bara har utflytt eller bara inflytt visas ocksa, med tom kolumn for den saknade parten.
+En ny statistik-tab/vy pa sparrsidan (`/barriers`) som ger forvaltare och kvartersvardar overblick over:
+- Fordelning av sparrar per orsakkategori (VLU, FLU, renovering, skada, etc.)
+- Manadsvis utveckling av sparrar over tid
+- Uppfoljning av renoveringar (innan/efter inflytt)
+- VLU-till-FLU-overganger
 
-## Datamodell
+Statistikvyn laggs till som en tab/sektion pa befintliga `/barriers`-sidan -- inte som en ny route -- for att halla det samlat.
 
-**Ny typ: `TurnoverRow`**
+## Oversikt
 
-Varje rad matchas pa `address + residenceCode`. Resultat:
+Sidan `/barriers` far en tab-struktur med tva flikar:
+1. **Sparrar** (befintlig listvy, default)
+2. **Statistik / VLU/FLU** (ny vy med diagram och nyckeltal)
 
-```text
-+----------+--------------------+--------------+--------------------+-----------+
-| Uppgang  | Utflyttande        | Stadkontroll | Inflyttande        | Samtal ...|
-+----------+--------------------+--------------+--------------------+-----------+
-| Vallj 12 | Lindberg Maria     |    [x]       | Khalil Mohammed    |  [x]  ... |
-| Karla 5  | Westin Tomas       |    [ ]       | Al Hendi Sara      |  [x]  ... |
-| Rubingat | Axelsson Andre     |    [x]       | —                  |   —       |
-+----------+--------------------+--------------+--------------------+-----------+
-```
+## Vad som ingår i statistikvyn
 
-## Steg
+### Sammanfattningskort (overst)
+- Totalt antal aktiva sparrar
+- Antal VLU (aktiva)
+- Antal FLU (aktiva)
+- Antal renoveringar (innan + efter inflytt)
 
-### 1. Ny typ `TurnoverRow` i `move-in-list-types.ts`
+### Diagram 1: Sparrar per orsakkategori (Pie/Bar chart)
+Visar fordelning av alla sparrar per `reasonCategory` (VLU, FLU, renovation_before, renovation_after, damage, maintenance, other).
 
-```typescript
-export interface TurnoverRow {
-  residenceKey: string; // address + residenceCode
-  address: string;
-  residenceCode: string;
-  kvvArea: string;
-  apartmentType: string;
-  moveOut?: MoveInListEntry;
-  moveIn?: MoveInListEntry;
-}
-```
+### Diagram 2: Manadsvis utveckling (Line/Bar chart)
+Visar antal sparrar som skapats per manad under senaste 12 manaderna, uppdelat pa VLU/FLU/renovering/ovrigt.
 
-### 2. Uppdatera `useMoveInList.ts`
+### Tabell: VLU till FLU-overgångar
+Lista over sparrar som har `reasonCategory = 'VLU'` och status `expired` (dvs genomforda overganger), med start- och slutdatum for att se ledtider.
 
-Lagg till en `combinedEntries`-lista som:
-- Grupperar filtrerade entries pa `address + residenceCode`
-- Skapar en `TurnoverRow` per unik bostad
-- Sorterar pa utflyttdatum (tidigast forst)
+### Tabell: Renoveringar -- uppfoljning
+Lista over sparrar med `reasonCategory = 'renovation_before'` eller `'renovation_after'`, filtrerad pa aktiva, med dagar sedan start.
 
-Exportera `combinedEntries` utover befintliga `moveOutEntries` / `moveInEntries` (behall for bakatkompatibilitet).
-
-### 3. Ny komponent `CombinedTurnoverTable.tsx`
-
-En enda tabell med kolumner:
-
-**Desktop-kolumner:**
-| Kolumn | Innehall |
-|--------|----------|
-| Uppgang | address |
-| Typ | apartmentType |
-| Utflyttande | tenantName + telefon |
-| Sista deb. | utflyttdatum |
-| Stadkontroll | checkbox |
-| Inflyttande | tenantName + telefon |
-| Kontraktstid | inflyttdatum |
-| Samtal | checkbox |
-| Besok | checkbox |
-| Namn/Port | checkbox |
-
-**Mobil:** MobileAccordion-kort per bostad med bade ut- och inflyttinfo grupperat.
-
-### 4. Uppdatera `TurnoverPage.tsx`
-
-Ersatt `<MoveOutSection>` + `<MoveInSection>` med `<CombinedTurnoverTable>`.
-
-### 5. Behall gamla komponenter
-
-`MoveOutSection` och `MoveInSection` tas inte bort, men anvands inte langre fran TurnoverPage. De kan finnas kvar for eventuell ateranvandning.
-
----
+## Feature toggle
+En ny toggle `showBarrierStatistics` laggs till for att styra synligheten av statistik-tabben. Tabben syns aven nar toggled av (enligt reglerna), men innehallet doljs.
 
 ## Tekniska detaljer
 
-**Matchningslogik i hooken:**
-```typescript
-const combinedEntries = useMemo(() => {
-  const map = new Map<string, TurnoverRow>();
-  filteredEntries.forEach(entry => {
-    const key = `${entry.address}|${entry.residenceCode}`;
-    if (!map.has(key)) {
-      map.set(key, {
-        residenceKey: key,
-        address: entry.address,
-        residenceCode: entry.residenceCode,
-        kvvArea: entry.kvvArea,
-        apartmentType: entry.apartmentType,
-      });
-    }
-    const row = map.get(key)!;
-    if (entry.type === 'move_out') row.moveOut = entry;
-    else row.moveIn = entry;
-  });
-  return [...map.values()].sort(/*...*/);
-}, [filteredEntries]);
-```
+### Nya filer
 
-**Visuell separering i tabellen:**
-- Utflyttkolumner far en subtil rosatonad bakgrund
-- Inflyttkolumner far en subtil grontonad bakgrund
-- Tomma celler visar ett streck (–)
+| Fil | Beskrivning |
+|-----|-------------|
+| `src/features/barriers/components/BarrierStatisticsView.tsx` | Huvudkomponent for statistikvyn med sammanfattningskort och diagram |
+| `src/features/barriers/components/BarrierCategoryChart.tsx` | Cirkel- eller stapeldiagram for fordelning per orsakkategori (Recharts) |
+| `src/features/barriers/components/BarrierMonthlyTrendChart.tsx` | Linjesjagram for manadsvis utveckling (Recharts) |
+| `src/features/barriers/components/VluFluTransitionsTable.tsx` | Tabell med VLU-till-FLU-overganger |
+| `src/features/barriers/components/RenovationTrackingTable.tsx` | Tabell for uppfoljning av renoveringar |
+| `src/features/barriers/hooks/useBarrierStatistics.ts` | Hook som beraknar statistik fran mockBarriers-data |
 
-**Filer som andras:**
-- `src/features/turnover/types/move-in-list-types.ts` — ny typ
-- `src/features/turnover/hooks/useMoveInList.ts` — ny kombinerad lista
-- `src/features/turnover/components/CombinedTurnoverTable.tsx` — ny komponent
-- `src/pages/turnover/TurnoverPage.tsx` — byt till kombinerad vy
-- `src/features/turnover/index.ts` — exportera nya delar
+### Andrade filer
+
+| Fil | Andring |
+|-----|---------|
+| `src/pages/barriers/BarriersPage.tsx` | Lagg till Tabs-komponent med "Sparrar" och "Statistik" flikar |
+| `src/shared/contexts/FeatureTogglesContext.tsx` | Lagg till `showBarrierStatistics: boolean` |
+| `src/features/settings/components/BetaSettings.tsx` | Lagg till toggle for `showBarrierStatistics` under Sparrar-sektionen |
+| `src/features/barriers/data/barriers.ts` | Utoka mockdata med fler VLU/FLU-poster och varierade datum for bra statistik |
+
+### Anvanda bibliotek
+- **Recharts** (redan installerat) for diagram
+- **shadcn Tabs** for fliknavigering pa sparrsidan
+- Befintliga UI-komponenter: Card, CardContent, CardHeader
+
+### Hooks-logik (`useBarrierStatistics`)
+Hooken tar in `Barrier[]` och returnerar:
+- `summary`: { total, activeVlu, activeFlu, activeRenovations }
+- `categoryDistribution`: Array med { category, label, count }
+- `monthlyTrend`: Array med { month, vlu, flu, renovation, other }
+- `vluToFluTransitions`: Filtrerade sparrar (VLU + expired)
+- `activeRenovations`: Filtrerade sparrar (renovation_before/after + active)
+
+### Responsivitet
+- Pa mobil staplas sammanfattningskorten 2x2
+- Diagram skalas automatiskt via Recharts ResponsiveContainer
+- Tabeller anvander befintligt responsivt monster
+

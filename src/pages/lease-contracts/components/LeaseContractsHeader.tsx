@@ -1,20 +1,29 @@
-import { SaveAsFavoriteButton } from "@/components/common";
+import { SaveAsFavoriteButton, ActiveFavoriteIndicator } from "@/components/common";
+import { FavoriteParameters } from "@/features/favorites/types/favorite";
 
-export function LeaseContractsHeader() {
+interface LeaseContractsHeaderProps {
+  getActiveFilters?: () => FavoriteParameters;
+}
+
+export function LeaseContractsHeader({ getActiveFilters }: LeaseContractsHeaderProps) {
   return (
-    <div className="flex items-center justify-between mb-6">
-      <div>
-        <h1 className="text-3xl font-bold">Hyreskontrakt</h1>
-        <p className="text-muted-foreground">
-          Hantera och sök bland alla hyreskontrakt
-        </p>
+    <>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-3xl font-bold">Hyreskontrakt</h1>
+          <p className="text-muted-foreground">
+            Hantera och sök bland alla hyreskontrakt
+          </p>
+        </div>
+        <SaveAsFavoriteButton
+          category="rentals"
+          pageTitle="Hyreskontrakt"
+          defaultName="Min hyreskontraktsvy"
+          icon="📄"
+          getActiveFilters={getActiveFilters}
+        />
       </div>
-      <SaveAsFavoriteButton
-        category="rentals"
-        pageTitle="Hyreskontrakt"
-        defaultName="Min hyreskontraktsvy"
-        icon="📄"
-      />
-    </div>
+      <ActiveFavoriteIndicator />
+    </>
   );
 }
