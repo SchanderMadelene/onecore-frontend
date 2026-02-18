@@ -209,6 +209,9 @@ export function BetaSettings() {
         {/* Övriga sidor */}
         <ToggleSection title="Övriga sidor" icon={Star} toggleKeys={['showBarriers', 'showTurnover', 'showDesignSystem', 'showAllInspections', 'showFavorites', 'showLeaseContracts', 'showStrofakturaUnderlag', 'showPropertyAreas']}>
           <ToggleItem id="barriers" icon={ShieldX} label="Spärrar" description="Aktivera spärrarfunktioner för bostäder och bilplatser" checked={features.showBarriers} disabled={navDisabled} onToggle={() => handleFeatureToggle('showBarriers')} />
+          <div className="pl-4 border-l space-y-1">
+            <ToggleItem id="barrier-statistics" icon={TrendingUp} label="Spärr-statistik" description="Visa statistik och VLU/FLU-uppföljning" checked={features.showBarrierStatistics} disabled={!features.showBarriers || navDisabled} onToggle={() => handleFeatureToggle('showBarrierStatistics')} />
+          </div>
           <ToggleItem id="turnover" icon={Key} label="Ut- & inflytt" description="Aktivera funktioner för ut- och inflytthantering" checked={features.showTurnover} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTurnover')} />
           <ToggleItem id="design-system" icon={Palette} label="Designsystem" description="Visa sidan för designsystem" checked={features.showDesignSystem} disabled={navDisabled} onToggle={() => handleFeatureToggle('showDesignSystem')} />
           <ToggleItem id="all-inspections" icon={ClipboardList} label="Besiktningar (Global vy)" description="Visa global besiktningsvy" checked={features.showAllInspections} disabled={navDisabled} onToggle={() => handleFeatureToggle('showAllInspections')} />
