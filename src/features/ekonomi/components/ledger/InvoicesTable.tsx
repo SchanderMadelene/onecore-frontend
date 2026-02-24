@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, Clock, FileText, Link2 } from "lucide-react";
+import { AlertCircle, ChevronDown, ChevronRight, FileText, Link2 } from "lucide-react";
 import type { Invoice } from "@/features/ekonomi/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { differenceInDays, parseISO } from "date-fns";
@@ -91,7 +91,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <Badge variant={getStatusVariant(invoice.paymentStatus)} className="gap-1">
                     {getStatusText(invoice)}
                     {getDaysLate(invoice) && (
-                      <Clock className="h-3 w-3" />
+                      <AlertCircle className="h-3 w-3" />
                     )}
                   </Badge>
                 </div>
@@ -260,7 +260,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </tbody>
                           </table>
                           {getDaysLate(invoice) && (
-                            <div className="text-xs text-destructive px-3 py-2">
+                            <div className="text-xs text-destructive px-3 py-2 flex items-center gap-1">
+                              <AlertCircle className="h-3 w-3 shrink-0" />
                               Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
                             </div>
                           )}
@@ -303,7 +304,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </div>
                           </div>
                           {getDaysLate(invoice) && (
-                            <div className="text-xs text-destructive mt-2">
+                            <div className="text-xs text-destructive mt-2 flex items-center gap-1">
+                              <AlertCircle className="h-3 w-3 shrink-0" />
                               Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
                             </div>
                           )}
@@ -397,7 +399,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <Badge variant={getStatusVariant(invoice.paymentStatus)} className="gap-1">
                       {getStatusText(invoice)}
                       {getDaysLate(invoice) && (
-                        <Clock className="h-3 w-3" />
+                        <AlertCircle className="h-3 w-3" />
                       )}
                     </Badge>
                   </td>
@@ -554,7 +556,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 </tbody>
                               </table>
                               {getDaysLate(invoice) && (
-                                <div className="text-xs text-destructive px-3 py-2">
+                                <div className="text-xs text-destructive px-3 py-2 flex items-center gap-1">
+                                  <AlertCircle className="h-3 w-3 shrink-0" />
                                   Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
                                 </div>
                               )}
@@ -597,7 +600,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 </div>
                               </div>
                               {getDaysLate(invoice) && (
-                                <div className="text-xs text-destructive mt-2">
+                              <div className="text-xs text-destructive mt-2 flex items-center gap-1">
+                                  <AlertCircle className="h-3 w-3 shrink-0" />
                                   Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
                                 </div>
                               )}
