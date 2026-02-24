@@ -26,6 +26,7 @@ export interface MoveInListEntry {
   tenantEmail?: string;
   date: string;
   contractId?: string;
+  hasSecurityWarning?: boolean;
   checklist: MoveInListChecklist;
 }
 

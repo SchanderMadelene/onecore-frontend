@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveTable } from '@/components/ui/responsive-table';
 import { MoveInListEntry, MoveInListChecklist, CleaningStatus } from '../types/move-in-list-types';
 import { CleaningCheckCell } from './CleaningCheckCell';
+import { SecurityWarningIcon } from './SecurityWarningIcon';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
@@ -39,7 +40,12 @@ export function MoveOutSection({ entries, onChecklistChange, onCleaningStatusCha
     {
       key: 'tenant',
       label: 'Hyresgäst',
-      render: (item: MoveInListEntry) => item.tenantName,
+      render: (item: MoveInListEntry) => (
+        <div className="flex items-center gap-1.5">
+          <span>{item.tenantName}</span>
+          <SecurityWarningIcon show={item.hasSecurityWarning} />
+        </div>
+      ),
     },
     {
       key: 'phone',
@@ -77,7 +83,10 @@ export function MoveOutSection({ entries, onChecklistChange, onCleaningStatusCha
         <span className="font-medium">{item.address}</span>
         <span className="text-xs text-muted-foreground">{item.apartmentType}</span>
       </div>
-      <div className="text-sm text-muted-foreground">{item.tenantName}</div>
+      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+        <span>{item.tenantName}</span>
+        <SecurityWarningIcon show={item.hasSecurityWarning} />
+      </div>
       {item.tenantPhone && (
         <div className="text-sm text-muted-foreground">{item.tenantPhone}</div>
       )}
