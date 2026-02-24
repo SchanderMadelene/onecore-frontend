@@ -1,14 +1,23 @@
 
 
-# Fix: Ta bort full-width stretching pa badges
+# Byt ikon och koppla ihop badge med infotext
 
-## Problem
+## Vad som andras
 
-Att lagga till `className="flex items-center gap-1"` pa Badge-komponenten overskriver dess default `inline-flex` fran badgeVariants, vilket gor att badgen tar upp hela radens bredd.
+1. Byt ut `Clock`-ikonen mot `AlertCircle` (en cirkel med utropstecken) -- mer universellt "anmarkning"-symbol.
+2. Lagg samma `AlertCircle`-ikon bredvid infotexten "Betald X dagar efter forfall..." i den expanderade vyn, sa att man tydligt ser kopplingen mellan ikonen i badgen och forklaringstexten.
 
-## Losning
+## Design
 
-Byt `className="flex items-center gap-1"` till bara `className="gap-1"`. Badge har redan `inline-flex items-center` i sin CVA-definition, sa vi behover bara lagga till `gap-1` for att fa mellanrum mellan text och ikon.
+```text
+Badge:
+[Betald ⚠]
+
+Expanderad rad:
+⚠ Betald 5 dagar efter forfall (forfall: 2025-05-30)
+```
+
+Ikonen i badgen arver badgens textfarg (vit i success-badge). Ikonen vid infotexten far `text-destructive` som matchar textfargen dar.
 
 ## Tekniska detaljer
 
@@ -16,20 +25,24 @@ Byt `className="flex items-center gap-1"` till bara `className="gap-1"`. Badge h
 
 | Fil | Andring |
 |-----|---------|
-| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Byt `className="flex items-center gap-1"` till `className="gap-1"` pa bada stallen |
+| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Byt `Clock` till `AlertCircle`, lagg till ikon vid infotexterna |
 
 ### Andringar
 
-1. **Mobilvy (rad 91)**: Andra fran:
+1. **Import (rad 5)**: Byt `Clock` mot `AlertCircle` i lucide-react-importen.
+
+2. **Badge -- mobilvy (rad 94) och desktopvy (rad 400)**: Byt `Clock` till `AlertCircle`:
 ```tsx
-<Badge variant={...} className="flex items-center gap-1">
-```
-till:
-```tsx
-<Badge variant={...} className="gap-1">
+<AlertCircle className="h-3 w-3" />
 ```
 
-2. **Desktopvy (rad 397)**: Samma andring.
+3. **Infotext i expanderad vy (4 stallen: rad 263, 306, 557, 600)**: Lagg till ikonen och wrappa i flex-container. Exempel:
+```tsx
+<div className="text-xs text-destructive px-3 py-2 flex items-center gap-1">
+  <AlertCircle className="h-3 w-3 shrink-0" />
+  Betald {getDaysLate(invoice)} dagar efter forfall (forfall: {invoice.dueDate})
+</div>
+```
 
-Badge-komponenten har redan `inline-flex items-center` i sin CVA-bas, sa vi behover inte upprepa det.
+Samma monster for alla 4 forekomster (2 mobil, 2 desktop), med respektive padding/margin-klasser bevarade.
 
