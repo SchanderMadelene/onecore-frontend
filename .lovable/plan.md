@@ -1,35 +1,34 @@
 
 
-# Filtrering av fakturor i kundkortet
+# Visa om betald faktura betalades för sent
 
 ## Vad som goers
 
-Laegger till filtreringsmoejligheter i "Fakturor"-sektionen i `CustomerLedger.tsx` saa att anvaendare kan filtrera paa:
+Laegger till en visuell indikation paa fakturor med status "Betald" eller "Delvis betald" som betalades efter foerfallodatum. Anvaendaren ska snabbt kunna se om en betalning kom in foer sent och hur maanga dagar foer sent.
 
-1. **Fakturatyp** -- Avi eller Stroefaktura
-2. **Datumintervall med vaelj parameter** -- Vaelj vilken datumtyp (fakturadatum, foerfallodatum, betalningsdatum) och ange fraan/till-datum
+## Design
 
-## Foerslag paa design
+### I fakturalistan (baade mobil och desktop)
 
-Filtren placeras direkt under "Fakturor"-rubriken i Card-headern, ovanfoer fakturatabellen. De foeljer systemets standardmoenstser: en flex-wrap rad med Select-komponenter (utan separata etiketter, 180px bredd paa desktop, fullbredd mobil).
+Foer betalda fakturor daer `paymentDate > dueDate` visas en liten text under statusbadgen eller bredvid den:
 
 ```text
-+-----------------------------------------------+
-| Fakturor                                       |
-|                                                |
-| [Alla fakturatyper v] [Fakturadatum v] [Datum] |
-|                                                |
-| +-----------------------------------------+    |
-| | Fakturanr | Datum | Foerfall | ...      |    |
-| +-----------------------------------------+    |
-+-----------------------------------------------+
+[Betald]  3 dagar foer sent
 ```
 
-- **Fakturatyp**: En Select med alternativen "Alla fakturatyper", "Avi", "Stroefaktura"
-- **Datumparameter**: En Select med "Fakturadatum", "Foerfallodatum", "Betalningsdatum" -- styr vilken kolumn datumfiltret gaaeller foer
-- **Datumintervall**: Aateranvaender den befintliga `DateRangeFilter`-komponenten (redan finns i `src/pages/lease-contracts/components/`)
+Texten visas i `text-destructive` (roed) med liten textstorlek (`text-xs`) foer att signalera att det aer en avvikelse utan att ta oever.
 
-Rensa-knappen visas bara om naagoet filter aer aktivt, precis som paa andra samlingssidor.
+### I expanderad vy (haendelser)
+
+I betalningshaendelse-kortet (det groena kortet foer betalda fakturor) laggs en extra rad som visar:
+
+```text
+Betald 3 dagar efter foerfall (foerfall: 2025-07-30)
+```
+
+### Foer delvis betalda
+
+Om den senaste delbetalningen skedde efter foerfallodatum visas samma typ av indikation.
 
 ## Tekniska detaljer
 
@@ -37,37 +36,47 @@ Rensa-knappen visas bara om naagoet filter aer aktivt, precis som paa andra saml
 
 | Fil | AEndring |
 |-----|---------|
-| `src/features/ekonomi/components/ledger/CustomerLedger.tsx` | Flytta filtreringslogik och filter-UI till Fakturor-kortet, skicka filtrerade fakturor till `InvoicesTable` |
-| `src/features/ekonomi/components/ledger/InvoiceFilters.tsx` | **Ny fil** -- Filterkomponent med fakturatyp-select, datumparameter-select och DateRangeFilter |
+| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Laegga till hjaelpfunktion `getDaysLate()` och visa sent-betald-indikation paa baade mobil- och desktopvyer |
 
 ### Implementationsdetaljer
 
-1. **Ny komponent `InvoiceFilters.tsx`** med:
-   - `invoiceTypeFilter`: `'' | 'Avi' | 'Ströfaktura'`
-   - `dateField`: `'invoiceDate' | 'dueDate' | 'paymentDate'` (standard: `invoiceDate`)
-   - `fromDate` / `toDate`: `Date | undefined`
-   - Aateranvaender `DateRangeFilter` fraan lease-contracts (flytta till delad plats eller importera direkt)
-
-2. **Filtrering i `CustomerLedger.tsx`**:
-   - `useMemo` foer att filtrera fakturalistan baserat paa de valda filtren
-   - Typfilter jaemfoer mot `invoice.invoiceType`
-   - Datumfilter jaemfoer valt datumfaelt mot fraan/till-intervallet
-
-3. **DateRangeFilter aateranvaendning**: Komponenten finns idag under `src/pages/lease-contracts/components/`. Den flyttas till `src/components/common/DateRangeFilter.tsx` saa att den kan aateranvaendas fraan baade lease-contracts och ekonomi.
-
-### Filtreringslogik (pseudokod)
+1. **Ny hjaelpfunktion** i `InvoicesTable.tsx`:
 
 ```typescript
-const filteredInvoices = useMemo(() => {
-  return invoices.filter(inv => {
-    if (typeFilter && inv.invoiceType !== typeFilter) return false;
-    if (fromDate || toDate) {
-      const dateValue = parseISO(inv[dateField]);
-      if (fromDate && dateValue < fromDate) return false;
-      if (toDate && dateValue > toDate) return false;
-    }
-    return true;
-  });
-}, [invoices, typeFilter, dateField, fromDate, toDate]);
+const getDaysLate = (invoice: Invoice): number | null => {
+  if (!invoice.paymentDate) return null;
+  const days = differenceInDays(parseISO(invoice.paymentDate), parseISO(invoice.dueDate));
+  return days > 0 ? days : null;
+};
 ```
 
+`differenceInDays` och `parseISO` importeras redan i filen.
+
+2. **Mobilvy** -- under statusbadgen i fakturakortets header laggs:
+```tsx
+{daysLate && (
+  <span className="text-xs text-destructive">{daysLate} dagar foer sent</span>
+)}
+```
+
+3. **Desktopvy** -- i status-kolumnen i tabellen, under badgen:
+```tsx
+{daysLate && (
+  <div className="text-xs text-destructive mt-1">{daysLate} d foer sent</div>
+)}
+```
+
+4. **Expanderad vy** -- i det groena betalningshaendelse-kortet laggs en varningsrad:
+```tsx
+{daysLate && (
+  <div className="text-xs text-destructive mt-2">
+    Betald {daysLate} dagar efter foerfall (foerfall: {invoice.dueDate})
+  </div>
+)}
+```
+
+5. **Delvis betalda** -- foer fakturor med `paymentEvents` jaemfoers den foersta betalningens datum med foerfallodatum. Foer fakturor utan events anvaends `paymentDate`.
+
+### Inget som aendras i datamodellen
+
+All data som behoevs finns redan (`dueDate`, `paymentDate`, `paymentEvents`). Ingen aendring i typer eller mockdata behoevs.
