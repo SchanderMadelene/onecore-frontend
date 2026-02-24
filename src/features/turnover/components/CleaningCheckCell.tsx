@@ -1,6 +1,5 @@
 import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-import { Minus, Plus } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 interface CleaningCheckCellProps {
   checked: boolean;
@@ -24,36 +23,20 @@ export function CleaningCheckCell({
         onCheckedChange={(val) => onCheckedChange(val === true)}
         aria-label="Städkontroll"
       />
+      {showLabel && <span className="text-xs">Städkontroll</span>}
       {checked && (
-        <div className="flex items-center gap-1">
-          {showLabel && <span className="text-xs">Städkontroll</span>}
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-5 w-5"
-            onClick={() => onCountChange(Math.max(1, count - 1))}
-            aria-label="Minska antal"
-          >
-            <Minus className="h-3 w-3" />
-          </Button>
-          <span className="text-xs font-medium w-4 text-center">{count}</span>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-5 w-5"
-            onClick={() => onCountChange(count + 1)}
-            aria-label="Öka antal"
-          >
-            <Plus className="h-3 w-3" />
-          </Button>
-          {showLabel && (
-            <span className="text-xs text-muted-foreground">
-              ({count} {count === 1 ? 'kontroll' : 'kontroller'})
-            </span>
-          )}
-        </div>
+        <Input
+          type="number"
+          min={1}
+          value={count}
+          onChange={(e) => {
+            const val = parseInt(e.target.value, 10);
+            if (!isNaN(val) && val >= 1) onCountChange(val);
+          }}
+          className="h-6 w-10 px-1 text-center text-xs [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          aria-label="Antal kontroller"
+        />
       )}
-      {!checked && showLabel && <span className="text-xs">Städkontroll</span>}
     </div>
   );
 }
