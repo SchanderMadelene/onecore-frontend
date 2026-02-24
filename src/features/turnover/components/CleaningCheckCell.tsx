@@ -7,7 +7,8 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/shared/ui/calendar';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -65,19 +66,18 @@ export function CleaningCheckCell({
       {showDatePicker && (
         <Popover>
           <PopoverTrigger asChild>
-            <button
+            <Button
+              variant="outline"
               className={cn(
-                'inline-flex items-center gap-1 h-7 rounded-full px-2.5 text-xs font-medium border cursor-pointer',
-                bookedDate
-                  ? 'bg-sky-50 text-sky-700 border-sky-200 hover:bg-sky-100'
-                  : 'bg-muted text-muted-foreground border-muted hover:bg-accent'
+                'h-7 px-2.5 text-xs font-normal gap-1.5',
+                bookedDate && 'border-primary'
               )}
             >
-              <CalendarIcon className="h-3 w-3" />
-              {bookedDate ? format(parseISO(bookedDate), 'd MMM', { locale: sv }) : 'Datum?'}
-            </button>
+              <CalendarIcon className="h-3.5 w-3.5" />
+              {bookedDate ? format(parseISO(bookedDate), 'd MMM yyyy', { locale: sv }) : 'Välj datum'}
+            </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 z-50" align="start">
+          <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
             <Calendar
               mode="single"
               selected={bookedDate ? parseISO(bookedDate) : undefined}
