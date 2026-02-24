@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, FileText, Link2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Clock, FileText, Link2 } from "lucide-react";
 import type { Invoice } from "@/features/ekonomi/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { differenceInDays, parseISO } from "date-fns";
@@ -88,16 +88,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <div className="font-medium">{invoice.invoiceNumber}</div>
                     <div className="text-sm text-muted-foreground">{invoice.invoiceType}</div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                      {getStatusText(invoice)}
-                    </Badge>
+                  <Badge variant={getStatusVariant(invoice.paymentStatus)} className="flex items-center gap-1">
+                    {getStatusText(invoice)}
                     {getDaysLate(invoice) && (
-                      <Badge variant="priority-medium" className="text-[10px] px-2 py-0.5">
-                        {getDaysLate(invoice)}d sen
-                      </Badge>
+                      <Clock className="h-3 w-3" />
                     )}
-                  </div>
+                  </Badge>
                 </div>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
@@ -398,16 +394,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm">{invoice.inCollection ? 'Ja' : 'Nej'}</td>
                   <td className="p-3 text-sm">{invoice.deferralDate || '–'}</td>
                   <td className="p-3 text-sm">
-                    <div className="flex items-center gap-1">
-                      <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                        {getStatusText(invoice)}
-                      </Badge>
+                    <Badge variant={getStatusVariant(invoice.paymentStatus)} className="flex items-center gap-1">
+                      {getStatusText(invoice)}
                       {getDaysLate(invoice) && (
-                        <Badge variant="priority-medium" className="text-[10px] px-2 py-0.5">
-                          {getDaysLate(invoice)}d sen
-                        </Badge>
+                        <Clock className="h-3 w-3" />
                       )}
-                    </div>
+                    </Badge>
                   </td>
                   <td className="p-3">
                     {isExpanded ? (
