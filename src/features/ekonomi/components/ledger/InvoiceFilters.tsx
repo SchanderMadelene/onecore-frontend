@@ -73,15 +73,14 @@ export function InvoiceFilters({
         </SelectContent>
       </Select>
 
-      {dateField && (
-        <DateRangeFilter
-          label={dateFieldLabels[dateField]}
-          fromDate={fromDate}
-          toDate={toDate}
-          onFromDateChange={onFromDateChange}
-          onToDateChange={onToDateChange}
-        />
-      )}
+      <DateRangeFilter
+        label={dateField ? dateFieldLabels[dateField] : "Välj datumtyp först"}
+        fromDate={fromDate}
+        toDate={toDate}
+        onFromDateChange={onFromDateChange}
+        onToDateChange={onToDateChange}
+        disabled={!dateField}
+      />
 
       {hasActiveFilters && (
         <Button variant="ghost" size="sm" onClick={clearAll} className="gap-1">

@@ -13,6 +13,7 @@ interface DateRangeFilterProps {
   toDate: Date | undefined;
   onFromDateChange: (date: Date | undefined) => void;
   onToDateChange: (date: Date | undefined) => void;
+  disabled?: boolean;
 }
 
 export function DateRangeFilter({
@@ -20,7 +21,8 @@ export function DateRangeFilter({
   fromDate,
   toDate,
   onFromDateChange,
-  onToDateChange
+  onToDateChange,
+  disabled = false
 }: DateRangeFilterProps) {
   const [open, setOpen] = useState(false);
 
@@ -46,10 +48,11 @@ export function DateRangeFilter({
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={disabled ? undefined : setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
+          disabled={disabled}
           className={cn(
             "w-full sm:w-[200px] justify-between",
             hasValue && "border-primary"
