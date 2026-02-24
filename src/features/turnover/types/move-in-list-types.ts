@@ -1,11 +1,14 @@
 export type CleaningStatus = 'not_done' | 'approved' | 'reinspection';
 
+export type WelcomeHomeMethod = 'none' | 'digital' | 'manual';
+
 export interface MoveInListChecklist {
   cleaningStatus: CleaningStatus;
   cleaningCount: number;
   welcomeCallDone: boolean;
   welcomeVisitDone: boolean;
   nameAndIntercomDone: boolean;
+  welcomeHomeMethod: WelcomeHomeMethod;
 }
 
 export interface MoveInListEntry {

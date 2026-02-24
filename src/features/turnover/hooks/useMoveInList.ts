@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MoveInListEntry, MoveInListChecklist, TurnoverRow, CleaningStatus } from '../types/move-in-list-types';
+import { MoveInListEntry, MoveInListChecklist, TurnoverRow, CleaningStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
 import { mockMoveInListEntries } from '../data/mock-move-in-list';
 import { parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 
@@ -101,6 +101,16 @@ export function useMoveInList() {
     );
   };
 
+  const updateWelcomeHome = (entryId: string, method: WelcomeHomeMethod) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, checklist: { ...entry.checklist, welcomeHomeMethod: method } }
+          : entry
+      )
+    );
+  };
+
   const availableKvvAreas = useMemo(() => {
     return [...new Set(entries.map(e => e.kvvArea))].sort();
   }, [entries]);
@@ -124,6 +134,7 @@ export function useMoveInList() {
     updateChecklist,
     updateCleaningStatus,
     updateCleaningCount,
+    updateWelcomeHome,
     availableKvvAreas,
     availableDistricts,
   };
