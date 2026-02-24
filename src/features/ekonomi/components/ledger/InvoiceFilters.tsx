@@ -15,6 +15,8 @@ export type InvoiceDateField = "" | "invoiceDate" | "dueDate" | "paymentDate";
 interface InvoiceFiltersProps {
   typeFilter: string;
   onTypeFilterChange: (value: string) => void;
+  statusFilter: string;
+  onStatusFilterChange: (value: string) => void;
   dateField: InvoiceDateField;
   onDateFieldChange: (value: InvoiceDateField) => void;
   fromDate: Date | undefined;
@@ -32,6 +34,8 @@ const dateFieldLabels: Record<string, string> = {
 export function InvoiceFilters({
   typeFilter,
   onTypeFilterChange,
+  statusFilter,
+  onStatusFilterChange,
   dateField,
   onDateFieldChange,
   fromDate,
@@ -39,10 +43,11 @@ export function InvoiceFilters({
   onFromDateChange,
   onToDateChange,
 }: InvoiceFiltersProps) {
-  const hasActiveFilters = typeFilter || dateField || fromDate || toDate;
+  const hasActiveFilters = typeFilter || statusFilter || dateField || fromDate || toDate;
 
   const clearAll = () => {
     onTypeFilterChange("");
+    onStatusFilterChange("");
     onDateFieldChange("" as InvoiceDateField);
     onFromDateChange(undefined);
     onToDateChange(undefined);
@@ -58,6 +63,22 @@ export function InvoiceFilters({
           <SelectItem value="all">Alla fakturatyper</SelectItem>
           <SelectItem value="Avi">Avi</SelectItem>
           <SelectItem value="Ströfaktura">Ströfaktura</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select value={statusFilter || "all"} onValueChange={(v) => onStatusFilterChange(v === "all" ? "" : v)}>
+        <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectValue placeholder="Alla betalstatus" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Alla betalstatus</SelectItem>
+          <SelectItem value="Obetald">Obetald</SelectItem>
+          <SelectItem value="Betald">Betald</SelectItem>
+          <SelectItem value="Delvis betald">Delvis betald</SelectItem>
+          <SelectItem value="Förfallen">Förfallen</SelectItem>
+          <SelectItem value="Krediterad">Krediterad</SelectItem>
+          <SelectItem value="Kredit">Kredit</SelectItem>
+          <SelectItem value="Delkrediterad">Delkrediterad</SelectItem>
         </SelectContent>
       </Select>
 
