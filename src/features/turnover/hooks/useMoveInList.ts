@@ -86,6 +86,9 @@ export function useMoveInList() {
         if (status === 'reinspection' && updated.cleaningCount === 0) {
           updated.cleaningCount = 1;
         }
+        if (status === 'approved') {
+          updated.cleaningApprovedDate = new Date().toISOString().split('T')[0];
+        }
         return { ...entry, checklist: updated };
       })
     );
@@ -96,6 +99,16 @@ export function useMoveInList() {
       prev.map(entry =>
         entry.id === entryId
           ? { ...entry, checklist: { ...entry.checklist, cleaningCount: count } }
+          : entry
+      )
+    );
+  };
+
+  const updateCleaningBookedDate = (entryId: string, date: string | undefined) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, checklist: { ...entry.checklist, cleaningBookedDate: date } }
           : entry
       )
     );
@@ -134,6 +147,7 @@ export function useMoveInList() {
     updateChecklist,
     updateCleaningStatus,
     updateCleaningCount,
+    updateCleaningBookedDate,
     updateWelcomeHome,
     availableKvvAreas,
     availableDistricts,

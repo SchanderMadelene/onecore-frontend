@@ -10,9 +10,10 @@ interface MoveOutSectionProps {
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
   onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningCountChange: (entryId: string, count: number) => void;
+  onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
 }
 
-export function MoveOutSection({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange }: MoveOutSectionProps) {
+export function MoveOutSection({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange }: MoveOutSectionProps) {
   const columns = [
     {
       key: 'contractNumber',
@@ -59,8 +60,11 @@ export function MoveOutSection({ entries, onChecklistChange, onCleaningStatusCha
         <CleaningCheckCell
           status={item.checklist.cleaningStatus}
           count={item.checklist.cleaningCount}
+          bookedDate={item.checklist.cleaningBookedDate}
+          approvedDate={item.checklist.cleaningApprovedDate}
           onStatusChange={(s) => onCleaningStatusChange(item.id, s)}
           onCountChange={(c) => onCleaningCountChange(item.id, c)}
+          onBookedDateChange={(d) => onCleaningBookedDateChange(item.id, d)}
         />
       ),
       className: 'w-[160px] text-center',
@@ -85,8 +89,11 @@ export function MoveOutSection({ entries, onChecklistChange, onCleaningStatusCha
         <CleaningCheckCell
           status={item.checklist.cleaningStatus}
           count={item.checklist.cleaningCount}
+          bookedDate={item.checklist.cleaningBookedDate}
+          approvedDate={item.checklist.cleaningApprovedDate}
           onStatusChange={(s) => onCleaningStatusChange(item.id, s)}
           onCountChange={(c) => onCleaningCountChange(item.id, c)}
+          onBookedDateChange={(d) => onCleaningBookedDateChange(item.id, d)}
           showLabel
         />
       </div>

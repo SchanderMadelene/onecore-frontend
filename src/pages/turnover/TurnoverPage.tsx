@@ -22,6 +22,7 @@ export default function TurnoverPage() {
     updateChecklist,
     updateCleaningStatus,
     updateCleaningCount,
+    updateCleaningBookedDate,
     updateWelcomeHome,
     availableKvvAreas,
     availableDistricts,
@@ -63,6 +64,7 @@ export default function TurnoverPage() {
           onChecklistChange={updateChecklist}
           onCleaningStatusChange={updateCleaningStatus}
           onCleaningCountChange={updateCleaningCount}
+          onCleaningBookedDateChange={updateCleaningBookedDate}
           onWelcomeHomeChange={updateWelcomeHome}
         />
       </div>

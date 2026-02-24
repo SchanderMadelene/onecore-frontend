@@ -15,10 +15,11 @@ interface CombinedTurnoverTableProps {
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
   onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningCountChange: (entryId: string, count: number) => void;
+  onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
   onWelcomeHomeChange: (entryId: string, method: WelcomeHomeMethod) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onWelcomeHomeChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
 
   if (entries.length === 0) {
@@ -63,8 +64,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <CleaningCheckCell
                     status={row.moveOut.checklist.cleaningStatus}
                     count={row.moveOut.checklist.cleaningCount}
+                    bookedDate={row.moveOut.checklist.cleaningBookedDate}
+                    approvedDate={row.moveOut.checklist.cleaningApprovedDate}
                     onStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
                     onCountChange={(c) => onCleaningCountChange(row.moveOut!.id, c)}
+                    onBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
                     showLabel
                   />
                 </div>
@@ -191,8 +195,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       <CleaningCheckCell
                         status={row.moveOut.checklist.cleaningStatus}
                         count={row.moveOut.checklist.cleaningCount}
+                        bookedDate={row.moveOut.checklist.cleaningBookedDate}
+                        approvedDate={row.moveOut.checklist.cleaningApprovedDate}
                         onStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
                         onCountChange={(c) => onCleaningCountChange(row.moveOut!.id, c)}
+                        onBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
                       />
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
