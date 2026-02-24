@@ -68,10 +68,7 @@ export function CleaningCheckCell({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className={cn(
-                'h-7 px-2.5 text-xs font-normal gap-1.5',
-                bookedDate && 'border-primary'
-              )}
+              className="h-7 px-2.5 text-xs font-normal gap-1.5"
             >
               <CalendarIcon className="h-3.5 w-3.5" />
               {bookedDate ? format(parseISO(bookedDate), 'd MMM yyyy', { locale: sv }) : 'Välj datum'}
