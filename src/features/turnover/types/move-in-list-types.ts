@@ -1,5 +1,6 @@
 export interface MoveInListChecklist {
   cleaningDone: boolean;
+  cleaningCount: number;
   welcomeCallDone: boolean;
   welcomeVisitDone: boolean;
   nameAndIntercomDone: boolean;

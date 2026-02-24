@@ -1,6 +1,7 @@
 import { TurnoverRow, MoveInListChecklist } from '../types/move-in-list-types';
 import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 import { ChecklistCell } from './ChecklistCell';
+import { CleaningCheckCell } from './CleaningCheckCell';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -11,9 +12,10 @@ import { sv } from 'date-fns/locale';
 interface CombinedTurnoverTableProps {
   entries: TurnoverRow[];
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
+  onCleaningCountChange: (entryId: string, count: number) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningCountChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
 
   if (entries.length === 0) {
@@ -54,13 +56,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                     {row.moveOut.tenantPhone}
                   </a>
                 )}
-                <div className="flex items-center gap-2 pt-1">
-                  <ChecklistCell
+                <div className="pt-1">
+                  <CleaningCheckCell
                     checked={row.moveOut.checklist.cleaningDone}
-                    onChange={(v) => onChecklistChange(row.moveOut!.id, 'cleaningDone', v)}
-                    label="Städkontroll"
+                    count={row.moveOut.checklist.cleaningCount}
+                    onCheckedChange={(v) => onChecklistChange(row.moveOut!.id, 'cleaningDone', v)}
+                    onCountChange={(c) => onCleaningCountChange(row.moveOut!.id, c)}
+                    showLabel
                   />
-                  <span className="text-xs">Städkontroll</span>
                 </div>
               </div>
             ) : (
@@ -174,10 +177,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange }: CombinedTu
                   </TableCell>
                   <TableCell>
                     {row.moveOut ? (
-                      <ChecklistCell
+                      <CleaningCheckCell
                         checked={row.moveOut.checklist.cleaningDone}
-                        onChange={(v) => onChecklistChange(row.moveOut!.id, 'cleaningDone', v)}
-                        label="Städkontroll"
+                        count={row.moveOut.checklist.cleaningCount}
+                        onCheckedChange={(v) => onChecklistChange(row.moveOut!.id, 'cleaningDone', v)}
+                        onCountChange={(c) => onCleaningCountChange(row.moveOut!.id, c)}
                       />
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
