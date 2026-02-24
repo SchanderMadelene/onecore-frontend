@@ -88,14 +88,9 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <div className="font-medium">{invoice.invoiceNumber}</div>
                     <div className="text-sm text-muted-foreground">{invoice.invoiceType}</div>
                   </div>
-                  <div className="flex flex-col items-end gap-0.5">
-                    <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                      {getStatusText(invoice)}
-                    </Badge>
-                    {(invoice.paymentStatus === 'Betald' || invoice.paymentStatus === 'Delvis betald') && getDaysLate(invoice) && (
-                      <span className="text-xs text-destructive">{getDaysLate(invoice)} dagar för sent</span>
-                    )}
-                  </div>
+                  <Badge variant={getStatusVariant(invoice.paymentStatus)}>
+                    {getStatusText(invoice)}{getDaysLate(invoice) ? ` - ${getDaysLate(invoice)}d sen` : ''}
+                  </Badge>
                 </div>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
@@ -397,11 +392,8 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm">{invoice.deferralDate || '–'}</td>
                   <td className="p-3 text-sm">
                     <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                      {getStatusText(invoice)}
+                      {getStatusText(invoice)}{getDaysLate(invoice) ? ` - ${getDaysLate(invoice)}d sen` : ''}
                     </Badge>
-                    {(invoice.paymentStatus === 'Betald' || invoice.paymentStatus === 'Delvis betald') && getDaysLate(invoice) && (
-                      <div className="text-xs text-destructive mt-1">{getDaysLate(invoice)} d för sent</div>
-                    )}
                   </td>
                   <td className="p-3">
                     {isExpanded ? (
