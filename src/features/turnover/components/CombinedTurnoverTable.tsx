@@ -1,4 +1,4 @@
-import { TurnoverRow, MoveInListChecklist } from '../types/move-in-list-types';
+import { TurnoverRow, MoveInListChecklist, CleaningStatus } from '../types/move-in-list-types';
 import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 import { ChecklistCell } from './ChecklistCell';
 import { CleaningCheckCell } from './CleaningCheckCell';
@@ -12,10 +12,11 @@ import { sv } from 'date-fns/locale';
 interface CombinedTurnoverTableProps {
   entries: TurnoverRow[];
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
+  onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningCountChange: (entryId: string, count: number) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningCountChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
 
   if (entries.length === 0) {
@@ -58,9 +59,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningCo
                 )}
                 <div className="pt-1">
                   <CleaningCheckCell
-                    checked={row.moveOut.checklist.cleaningDone}
+                    status={row.moveOut.checklist.cleaningStatus}
                     count={row.moveOut.checklist.cleaningCount}
-                    onCheckedChange={(v) => onChecklistChange(row.moveOut!.id, 'cleaningDone', v)}
+                    onStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
                     onCountChange={(c) => onCleaningCountChange(row.moveOut!.id, c)}
                     showLabel
                   />
@@ -178,9 +179,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningCo
                   <TableCell>
                     {row.moveOut ? (
                       <CleaningCheckCell
-                        checked={row.moveOut.checklist.cleaningDone}
+                        status={row.moveOut.checklist.cleaningStatus}
                         count={row.moveOut.checklist.cleaningCount}
-                        onCheckedChange={(v) => onChecklistChange(row.moveOut!.id, 'cleaningDone', v)}
+                        onStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
                         onCountChange={(c) => onCleaningCountChange(row.moveOut!.id, c)}
                       />
                     ) : <span className="text-center block text-muted-foreground">–</span>}

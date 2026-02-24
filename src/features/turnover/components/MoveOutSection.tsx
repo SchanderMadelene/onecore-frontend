@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveTable } from '@/components/ui/responsive-table';
-import { MoveInListEntry, MoveInListChecklist } from '../types/move-in-list-types';
+import { MoveInListEntry, MoveInListChecklist, CleaningStatus } from '../types/move-in-list-types';
 import { CleaningCheckCell } from './CleaningCheckCell';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -8,10 +8,11 @@ import { sv } from 'date-fns/locale';
 interface MoveOutSectionProps {
   entries: MoveInListEntry[];
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
+  onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningCountChange: (entryId: string, count: number) => void;
 }
 
-export function MoveOutSection({ entries, onChecklistChange, onCleaningCountChange }: MoveOutSectionProps) {
+export function MoveOutSection({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange }: MoveOutSectionProps) {
   const columns = [
     {
       key: 'contractNumber',
@@ -56,13 +57,13 @@ export function MoveOutSection({ entries, onChecklistChange, onCleaningCountChan
       label: 'Städkontroll',
       render: (item: MoveInListEntry) => (
         <CleaningCheckCell
-          checked={item.checklist.cleaningDone}
+          status={item.checklist.cleaningStatus}
           count={item.checklist.cleaningCount}
-          onCheckedChange={(val) => onChecklistChange(item.id, 'cleaningDone', val)}
+          onStatusChange={(s) => onCleaningStatusChange(item.id, s)}
           onCountChange={(c) => onCleaningCountChange(item.id, c)}
         />
       ),
-      className: 'w-[120px] text-center',
+      className: 'w-[160px] text-center',
     },
   ];
 
@@ -82,9 +83,9 @@ export function MoveOutSection({ entries, onChecklistChange, onCleaningCountChan
       </div>
       <div className="pt-1">
         <CleaningCheckCell
-          checked={item.checklist.cleaningDone}
+          status={item.checklist.cleaningStatus}
           count={item.checklist.cleaningCount}
-          onCheckedChange={(val) => onChecklistChange(item.id, 'cleaningDone', val)}
+          onStatusChange={(s) => onCleaningStatusChange(item.id, s)}
           onCountChange={(c) => onCleaningCountChange(item.id, c)}
           showLabel
         />
