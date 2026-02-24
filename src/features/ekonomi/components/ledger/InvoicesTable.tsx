@@ -88,7 +88,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <div className="font-medium">{invoice.invoiceNumber}</div>
                     <div className="text-sm text-muted-foreground">{invoice.invoiceType}</div>
                   </div>
-                  <Badge variant={getStatusVariant(invoice.paymentStatus)} className="flex items-center gap-1">
+                  <Badge variant={getStatusVariant(invoice.paymentStatus)} className="gap-1">
                     {getStatusText(invoice)}
                     {getDaysLate(invoice) && (
                       <Clock className="h-3 w-3" />
@@ -394,7 +394,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm">{invoice.inCollection ? 'Ja' : 'Nej'}</td>
                   <td className="p-3 text-sm">{invoice.deferralDate || '–'}</td>
                   <td className="p-3 text-sm">
-                    <Badge variant={getStatusVariant(invoice.paymentStatus)} className="flex items-center gap-1">
+                    <Badge variant={getStatusVariant(invoice.paymentStatus)} className="gap-1">
                       {getStatusText(invoice)}
                       {getDaysLate(invoice) && (
                         <Clock className="h-3 w-3" />
