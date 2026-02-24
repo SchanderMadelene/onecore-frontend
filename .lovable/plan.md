@@ -1,79 +1,47 @@
 
+## Säkerhetsvarning i ut- & inflyttslistan
 
-# Statusbaserad städkontroll
+Lägga till samma varningsikon (amber triangel) som finns på kundkortet, bredvid hyresgästnamnet i turnover-tabellen -- for both utflyttande och inflyttande hyresgäster.
 
-## Oversikt
+### Vad som ändras
 
-Byt ut checkbox + räknare mot en kompakt **Select-dropdown** med tre statusar. Varje status visas som en färgkodad badge, och vid "Omkontroll" visas även räknaren (antal kontroller).
+**1. Typ-definition** (`move-in-list-types.ts`)
+- Lägg till `hasSecurityWarning?: boolean` på `MoveInListEntry`
 
-## Design
+**2. Mock-data** (`mock-move-in-list.ts`)
+- Sätt `hasSecurityWarning: true` på 2-3 poster (t.ex. "Skyddad Identitet" på utflytt och en inflyttande hyresgäst) för att kunna se ikonen i listan
 
+**3. Desktop-tabell** (`CombinedTurnoverTable.tsx`)
+- I hyresgästkolumnerna (utflytt och inflytt): visa en liten amber `TriangleAlert`-ikon bredvid hyresgästnamnet med en `Tooltip` ("Åk aldrig ensam till kund...")
+- Samma stil som på kundkortet: amber cirkel med triangel-ikon, men i en mindre storlek (w-5 h-5 cirkel, h-3 w-3 ikon) för att passa i tabellcellen
+
+**4. Mobilvy** (`CombinedTurnoverTable.tsx`)
+- Samma ikon bredvid hyresgästnamnet i accordion-vyns utflytt- och inflytt-sektioner
+
+**5. Separata tabeller** (`MoveOutSection.tsx`, `MoveInSection.tsx`)
+- Samma ikon bredvid hyresgästnamnet i dessa vyer också, for konsistens
+
+### Teknisk detalj
+
+Ikonen renderas inline bredvid namnet:
 ```text
-Desktop-kolumn "Städkontr.":
-  [Icke utförd ▼]     -- grå/neutral badge
-  [Godkänd ▼]         -- grön badge  
-  [Omkontroll (2) ▼]  -- gul/orange badge med räknare
-
-Mobil:
-  Städkontroll: [Omkontroll (2) ▼]
+<div className="flex items-center gap-1.5">
+  <span>{tenantName}</span>
+  {hasSecurityWarning && (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className="flex items-center justify-center w-5 h-5 bg-amber-100 rounded-full border border-amber-200">
+            <TriangleAlert className="h-3 w-3 text-amber-600" />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          Åk aldrig ensam till kund. Ta alltid med dig en kollega vid hembesök.
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )}
+</div>
 ```
 
-Statusfärgerna:
-- **Icke utförd** -- `bg-muted text-muted-foreground` (grå)
-- **Godkänd** -- `bg-emerald-100 text-emerald-800` (grön)
-- **Omkontroll** -- `bg-amber-100 text-amber-800` (gul/orange)
-
-Vid "Omkontroll" visas ett litet nummerfält bredvid för att ange antal genomförda kontroller (samma kompakta input som idag).
-
-## Tekniska detaljer
-
-### 1. Uppdatera typer (`move-in-list-types.ts`)
-
-Ersätt `cleaningDone: boolean` med `cleaningStatus`:
-
-```typescript
-export type CleaningStatus = 'not_done' | 'approved' | 'reinspection';
-
-export interface MoveInListChecklist {
-  cleaningStatus: CleaningStatus;
-  cleaningCount: number;
-  welcomeCallDone: boolean;
-  welcomeVisitDone: boolean;
-  nameAndIntercomDone: boolean;
-}
-```
-
-### 2. Uppdatera `CleaningCheckCell.tsx`
-
-Byt ut checkbox+input mot en kompakt Select med tre alternativ. Vid `reinspection` visas räknaren bredvid. Hela komponenten renderas med färgkodad styling baserat på vald status.
-
-### 3. Uppdatera hook (`useMoveInList.ts`)
-
-- Ersätt `cleaningDone`-logik med `cleaningStatus`-hantering.
-- `updateCleaningStatus(entryId, status)` -- ny funktion.
-- Vid byte till `reinspection`: sätt `cleaningCount` till 1 om den är 0.
-- Vid byte från `reinspection`: behåll `cleaningCount` (historik).
-
-### 4. Uppdatera mockdata (`mock-move-in-list.ts`)
-
-Ersätt `cleaningDone: true/false` med `cleaningStatus: 'not_done' | 'approved' | 'reinspection'`.
-
-### 5. Uppdatera `CombinedTurnoverTable.tsx`
-
-Skicka `cleaningStatus` istället för `checked` till `CleaningCheckCell`. Uppdatera callback-props.
-
-### 6. Uppdatera `MoveOutSection.tsx` och `TurnoverPage.tsx`
-
-Anpassa props för ny status-funktion.
-
-### Ändrade filer
-
-| Fil | Ändring |
-|-----|---------|
-| `src/features/turnover/types/move-in-list-types.ts` | Ny `CleaningStatus` typ, ersätt `cleaningDone` |
-| `src/features/turnover/components/CleaningCheckCell.tsx` | Byt till Select + färgkodad badge |
-| `src/features/turnover/hooks/useMoveInList.ts` | Ny `updateCleaningStatus`, ta bort gammal `cleaningDone`-logik |
-| `src/features/turnover/data/mock-move-in-list.ts` | Uppdatera mockdata med `cleaningStatus` |
-| `src/features/turnover/components/CombinedTurnoverTable.tsx` | Anpassa props |
-| `src/features/turnover/components/MoveOutSection.tsx` | Anpassa props |
-| `src/pages/turnover/TurnoverPage.tsx` | Koppla ny statusfunktion |
+Inga nya filer skapas -- bara befintliga filer uppdateras med den etablerade varningsikonen.
