@@ -27,7 +27,6 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Skyddad Identitet',
     tenantPhone: '070-000 00 00',
     date: '2026-01-31',
-    hasSecurityWarning: true,
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false, welcomeHomeMethod: 'none' },
   },
   {
@@ -54,6 +53,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Westin Tomas',
     tenantPhone: '070-345 67 89',
     date: '2026-01-31',
+    hasSecurityWarning: true,
     checklist: { cleaningStatus: 'booked', cleaningCount: 0, cleaningBookedDate: '2026-02-10', welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false, welcomeHomeMethod: 'none' },
   },
   {
