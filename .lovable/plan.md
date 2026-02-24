@@ -1,72 +1,79 @@
 
 
-# Notera antal stadkontroller vid utflytt
+# Statusbaserad städkontroll
 
 ## Oversikt
 
-Lagga till ett numeriskt falt for att registrera hur manga stadkontroller som gjorts pa varje utflytt. Idag ar stadkontroll bara en checkbox (klart/inte klart). Med den har andringen kan anvandaren aven notera antalet kontroller, t.ex. om det kravdes 2-3 kontroller innan stadningen godkandes.
+Byt ut checkbox + räknare mot en kompakt **Select-dropdown** med tre statusar. Varje status visas som en färgkodad badge, och vid "Omkontroll" visas även räknaren (antal kontroller).
 
 ## Design
 
-Pa desktop visas en liten siffra bredvid checkboxen i stadkontroll-kolumnen. Nar checkboxen ar ikryssad syns antalet som en klickbar/andringsbar liten raknare. Pa mobil visas samma raknare intill "Stadkontroll"-texten.
-
 ```text
-Desktop:
-[x] 2
+Desktop-kolumn "Städkontr.":
+  [Icke utförd ▼]     -- grå/neutral badge
+  [Godkänd ▼]         -- grön badge  
+  [Omkontroll (2) ▼]  -- gul/orange badge med räknare
 
 Mobil:
-[x] Stadkontroll (2 kontroller)
+  Städkontroll: [Omkontroll (2) ▼]
 ```
 
-Raknaren visas bara nar checkboxen ar ikryssad (stadkontroll genomford). Standardvarde ar 1 nar man kryssar i.
+Statusfärgerna:
+- **Icke utförd** -- `bg-muted text-muted-foreground` (grå)
+- **Godkänd** -- `bg-emerald-100 text-emerald-800` (grön)
+- **Omkontroll** -- `bg-amber-100 text-amber-800` (gul/orange)
+
+Vid "Omkontroll" visas ett litet nummerfält bredvid för att ange antal genomförda kontroller (samma kompakta input som idag).
 
 ## Tekniska detaljer
 
-### 1. Utoka typer (`move-in-list-types.ts`)
+### 1. Uppdatera typer (`move-in-list-types.ts`)
 
-Lagg till `cleaningCount` i `MoveInListChecklist`:
+Ersätt `cleaningDone: boolean` med `cleaningStatus`:
 
 ```typescript
+export type CleaningStatus = 'not_done' | 'approved' | 'reinspection';
+
 export interface MoveInListChecklist {
-  cleaningDone: boolean;
-  cleaningCount: number;  // Antal genomforda kontroller
+  cleaningStatus: CleaningStatus;
+  cleaningCount: number;
   welcomeCallDone: boolean;
   welcomeVisitDone: boolean;
   nameAndIntercomDone: boolean;
 }
 ```
 
-### 2. Uppdatera hook (`useMoveInList.ts`)
+### 2. Uppdatera `CleaningCheckCell.tsx`
 
-Andra `updateChecklist` sa att nar `cleaningDone` satts till `true` och `cleaningCount` ar 0, satt den automatiskt till 1. Lagg till en ny funktion `updateCleaningCount` for att andra antalet direkt.
+Byt ut checkbox+input mot en kompakt Select med tre alternativ. Vid `reinspection` visas räknaren bredvid. Hela komponenten renderas med färgkodad styling baserat på vald status.
 
-### 3. Uppdatera mockdata (`mock-move-in-list.ts`)
+### 3. Uppdatera hook (`useMoveInList.ts`)
 
-Lagg till `cleaningCount: 0` (eller lampligt varde) i alla befintliga mockposter.
+- Ersätt `cleaningDone`-logik med `cleaningStatus`-hantering.
+- `updateCleaningStatus(entryId, status)` -- ny funktion.
+- Vid byte till `reinspection`: sätt `cleaningCount` till 1 om den är 0.
+- Vid byte från `reinspection`: behåll `cleaningCount` (historik).
 
-### 4. Skapa `CleaningCheckCell`-komponent
+### 4. Uppdatera mockdata (`mock-move-in-list.ts`)
 
-Ny komponent som kombinerar checkbox + raknare. Visar:
-- Checkbox for `cleaningDone`
-- Nar ikryssad: en liten input/stepper (+/-) for antal kontroller
-- Nar ej ikryssad: inget antal visas
+Ersätt `cleaningDone: true/false` med `cleaningStatus: 'not_done' | 'approved' | 'reinspection'`.
 
 ### 5. Uppdatera `CombinedTurnoverTable.tsx`
 
-Byt ut `ChecklistCell` for stadkontroll mot den nya `CleaningCheckCell` i bade desktop- och mobilvyn.
+Skicka `cleaningStatus` istället för `checked` till `CleaningCheckCell`. Uppdatera callback-props.
 
-### 6. Uppdatera `TurnoverPage.tsx` och `MoveOutSection.tsx`
+### 6. Uppdatera `MoveOutSection.tsx` och `TurnoverPage.tsx`
 
-Skicka med `updateCleaningCount` fran hooken och anvand den nya komponenten.
+Anpassa props för ny status-funktion.
 
-### Andrade filer
+### Ändrade filer
 
-| Fil | Andring |
+| Fil | Ändring |
 |-----|---------|
-| `src/features/turnover/types/move-in-list-types.ts` | Lagg till `cleaningCount: number` |
-| `src/features/turnover/hooks/useMoveInList.ts` | Lagg till `updateCleaningCount`, auto-satt count=1 vid check |
-| `src/features/turnover/data/mock-move-in-list.ts` | Lagg till `cleaningCount` i mockdata |
-| `src/features/turnover/components/CleaningCheckCell.tsx` | Ny komponent: checkbox + raknare |
-| `src/features/turnover/components/CombinedTurnoverTable.tsx` | Anvand `CleaningCheckCell` istallet for `ChecklistCell` |
-| `src/features/turnover/components/MoveOutSection.tsx` | Anvand `CleaningCheckCell` |
-
+| `src/features/turnover/types/move-in-list-types.ts` | Ny `CleaningStatus` typ, ersätt `cleaningDone` |
+| `src/features/turnover/components/CleaningCheckCell.tsx` | Byt till Select + färgkodad badge |
+| `src/features/turnover/hooks/useMoveInList.ts` | Ny `updateCleaningStatus`, ta bort gammal `cleaningDone`-logik |
+| `src/features/turnover/data/mock-move-in-list.ts` | Uppdatera mockdata med `cleaningStatus` |
+| `src/features/turnover/components/CombinedTurnoverTable.tsx` | Anpassa props |
+| `src/features/turnover/components/MoveOutSection.tsx` | Anpassa props |
+| `src/pages/turnover/TurnoverPage.tsx` | Koppla ny statusfunktion |
