@@ -44,6 +44,15 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
     setExpandedInvoice(expandedInvoice === invoiceNumber ? null : invoiceNumber);
   };
 
+  const getDaysLate = (invoice: Invoice): number | null => {
+    const payDate = invoice.paymentEvents && invoice.paymentEvents.length > 0
+      ? invoice.paymentEvents[0].date
+      : invoice.paymentDate;
+    if (!payDate) return null;
+    const days = differenceInDays(parseISO(payDate), parseISO(invoice.dueDate));
+    return days > 0 ? days : null;
+  };
+
   const getOverdueDays = (dueDate: string): number => {
     const today = new Date();
     const due = parseISO(dueDate);
@@ -79,9 +88,14 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <div className="font-medium">{invoice.invoiceNumber}</div>
                     <div className="text-sm text-muted-foreground">{invoice.invoiceType}</div>
                   </div>
-                  <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-                    {getStatusText(invoice)}
-                  </Badge>
+                  <div className="flex flex-col items-end gap-0.5">
+                    <Badge variant={getStatusVariant(invoice.paymentStatus)}>
+                      {getStatusText(invoice)}
+                    </Badge>
+                    {(invoice.paymentStatus === 'Betald' || invoice.paymentStatus === 'Delvis betald') && getDaysLate(invoice) && (
+                      <span className="text-xs text-destructive">{getDaysLate(invoice)} dagar för sent</span>
+                    )}
+                  </div>
                 </div>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
@@ -247,6 +261,11 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               </tr>
                             </tbody>
                           </table>
+                          {getDaysLate(invoice) && (
+                            <div className="text-xs text-destructive px-3 py-2">
+                              Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
+                            </div>
+                          )}
                         </div>
                       )}
                       
@@ -285,6 +304,11 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                             </div>
                           </div>
+                          {getDaysLate(invoice) && (
+                            <div className="text-xs text-destructive mt-2">
+                              Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
+                            </div>
+                          )}
                           {invoice.invoiceType === 'Ströfaktura' && (
                             <Button 
                               variant="outline" 
@@ -375,6 +399,9 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                     <Badge variant={getStatusVariant(invoice.paymentStatus)}>
                       {getStatusText(invoice)}
                     </Badge>
+                    {(invoice.paymentStatus === 'Betald' || invoice.paymentStatus === 'Delvis betald') && getDaysLate(invoice) && (
+                      <div className="text-xs text-destructive mt-1">{getDaysLate(invoice)} d för sent</div>
+                    )}
                   </td>
                   <td className="p-3">
                     {isExpanded ? (
@@ -528,6 +555,11 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                   </tr>
                                 </tbody>
                               </table>
+                              {getDaysLate(invoice) && (
+                                <div className="text-xs text-destructive px-3 py-2">
+                                  Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
+                                </div>
+                              )}
                             </div>
                           )}
                           
@@ -566,6 +598,11 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                   <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                                 </div>
                               </div>
+                              {getDaysLate(invoice) && (
+                                <div className="text-xs text-destructive mt-2">
+                                  Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
+                                </div>
+                              )}
                               {invoice.invoiceType === 'Ströfaktura' && (
                                 <Button 
                                   variant="outline" 
