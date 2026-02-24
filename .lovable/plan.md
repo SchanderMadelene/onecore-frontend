@@ -1,83 +1,41 @@
 
 
-# Fas 3: VLU/FLU Statistik och Rapportvyer
+# Favicon med stöd för dark/light mode
 
-## Vad ska byggas
+## Vad som görs
 
-En ny statistik-tab/vy pa sparrsidan (`/barriers`) som ger forvaltare och kvartersvardar overblick over:
-- Fordelning av sparrar per orsakkategori (VLU, FLU, renovering, skada, etc.)
-- Manadsvis utveckling av sparrar over tid
-- Uppfoljning av renoveringar (innan/efter inflytt)
-- VLU-till-FLU-overganger
+Uppdaterar `public/favicon.svg` så att OneCore-logotypen automatiskt anpassar sig till webbläsarens dark/light mode via CSS `prefers-color-scheme` inuti SVG-filen.
 
-Statistikvyn laggs till som en tab/sektion pa befintliga `/barriers`-sidan -- inte som en ny route -- for att halla det samlat.
+## Hur det fungerar
 
-## Oversikt
+SVG-formatet stöder inbäddad CSS med media queries. Genom att lägga till en `<style>`-tagg i SVG-filen kan vi ändra `fill`-färgen beroende på om användaren har ljust eller mörkt läge i sin webbläsare.
 
-Sidan `/barriers` far en tab-struktur med tva flikar:
-1. **Sparrar** (befintlig listvy, default)
-2. **Statistik / VLU/FLU** (ny vy med diagram och nyckeltal)
-
-## Vad som ingår i statistikvyn
-
-### Sammanfattningskort (overst)
-- Totalt antal aktiva sparrar
-- Antal VLU (aktiva)
-- Antal FLU (aktiva)
-- Antal renoveringar (innan + efter inflytt)
-
-### Diagram 1: Sparrar per orsakkategori (Pie/Bar chart)
-Visar fordelning av alla sparrar per `reasonCategory` (VLU, FLU, renovation_before, renovation_after, damage, maintenance, other).
-
-### Diagram 2: Manadsvis utveckling (Line/Bar chart)
-Visar antal sparrar som skapats per manad under senaste 12 manaderna, uppdelat pa VLU/FLU/renovering/ovrigt.
-
-### Tabell: VLU till FLU-overgångar
-Lista over sparrar som har `reasonCategory = 'VLU'` och status `expired` (dvs genomforda overganger), med start- och slutdatum for att se ledtider.
-
-### Tabell: Renoveringar -- uppfoljning
-Lista over sparrar med `reasonCategory = 'renovation_before'` eller `'renovation_after'`, filtrerad pa aktiva, med dagar sedan start.
-
-## Feature toggle
-En ny toggle `showBarrierStatistics` laggs till for att styra synligheten av statistik-tabben. Tabben syns aven nar toggled av (enligt reglerna), men innehallet doljs.
+- **Ljust läge**: Logotypen visas i blått (`#1200FF`) -- som idag
+- **Mörkt läge**: Logotypen visas i vitt (`#FFFFFF`) för synlighet mot mörk bakgrund
 
 ## Tekniska detaljer
 
-### Nya filer
+### Ändrad fil
 
-| Fil | Beskrivning |
-|-----|-------------|
-| `src/features/barriers/components/BarrierStatisticsView.tsx` | Huvudkomponent for statistikvyn med sammanfattningskort och diagram |
-| `src/features/barriers/components/BarrierCategoryChart.tsx` | Cirkel- eller stapeldiagram for fordelning per orsakkategori (Recharts) |
-| `src/features/barriers/components/BarrierMonthlyTrendChart.tsx` | Linjesjagram for manadsvis utveckling (Recharts) |
-| `src/features/barriers/components/VluFluTransitionsTable.tsx` | Tabell med VLU-till-FLU-overganger |
-| `src/features/barriers/components/RenovationTrackingTable.tsx` | Tabell for uppfoljning av renoveringar |
-| `src/features/barriers/hooks/useBarrierStatistics.ts` | Hook som beraknar statistik fran mockBarriers-data |
-
-### Andrade filer
-
-| Fil | Andring |
+| Fil | Ändring |
 |-----|---------|
-| `src/pages/barriers/BarriersPage.tsx` | Lagg till Tabs-komponent med "Sparrar" och "Statistik" flikar |
-| `src/shared/contexts/FeatureTogglesContext.tsx` | Lagg till `showBarrierStatistics: boolean` |
-| `src/features/settings/components/BetaSettings.tsx` | Lagg till toggle for `showBarrierStatistics` under Sparrar-sektionen |
-| `src/features/barriers/data/barriers.ts` | Utoka mockdata med fler VLU/FLU-poster och varierade datum for bra statistik |
+| `public/favicon.svg` | Lägg till `<style>` med `prefers-color-scheme: dark` som byter fill-färg |
 
-### Anvanda bibliotek
-- **Recharts** (redan installerat) for diagram
-- **shadcn Tabs** for fliknavigering pa sparrsidan
-- Befintliga UI-komponenter: Card, CardContent, CardHeader
+### Resultat i SVG-filen
 
-### Hooks-logik (`useBarrierStatistics`)
-Hooken tar in `Barrier[]` och returnerar:
-- `summary`: { total, activeVlu, activeFlu, activeRenovations }
-- `categoryDistribution`: Array med { category, label, count }
-- `monthlyTrend`: Array med { month, vlu, flu, renovation, other }
-- `vluToFluTransitions`: Filtrerade sparrar (VLU + expired)
-- `activeRenovations`: Filtrerade sparrar (renovation_before/after + active)
+```xml
+<svg ...>
+  <style>
+    path { fill: #1200FF; }
+    @media (prefers-color-scheme: dark) {
+      path { fill: #FFFFFF; }
+    }
+  </style>
+  <!-- befintlig path utan fill-attribut -->
+</svg>
+```
 
-### Responsivitet
-- Pa mobil staplas sammanfattningskorten 2x2
-- Diagram skalas automatiskt via Recharts ResponsiveContainer
-- Tabeller anvander befintligt responsivt monster
+### Webbläsarstöd
+
+SVG-favicons med `prefers-color-scheme` stöds av Chrome, Firefox, Edge och Safari (moderna versioner). Ingen ändring behövs i `index.html` -- den befintliga `<link>`-taggen fungerar som den är.
 
