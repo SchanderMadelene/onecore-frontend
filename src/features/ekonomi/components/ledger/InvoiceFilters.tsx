@@ -10,7 +10,7 @@ import {
 import { DateRangeFilter } from "@/components/common/DateRangeFilter";
 import { X } from "lucide-react";
 
-export type InvoiceDateField = "invoiceDate" | "dueDate" | "paymentDate";
+export type InvoiceDateField = "" | "invoiceDate" | "dueDate" | "paymentDate";
 
 interface InvoiceFiltersProps {
   typeFilter: string;
@@ -23,7 +23,7 @@ interface InvoiceFiltersProps {
   onToDateChange: (date: Date | undefined) => void;
 }
 
-const dateFieldLabels: Record<InvoiceDateField, string> = {
+const dateFieldLabels: Record<string, string> = {
   invoiceDate: "Fakturadatum",
   dueDate: "Förfallodatum",
   paymentDate: "Betalningsdatum",
@@ -39,10 +39,11 @@ export function InvoiceFilters({
   onFromDateChange,
   onToDateChange,
 }: InvoiceFiltersProps) {
-  const hasActiveFilters = typeFilter || fromDate || toDate;
+  const hasActiveFilters = typeFilter || dateField || fromDate || toDate;
 
   const clearAll = () => {
     onTypeFilterChange("");
+    onDateFieldChange("" as InvoiceDateField);
     onFromDateChange(undefined);
     onToDateChange(undefined);
   };
@@ -60,24 +61,27 @@ export function InvoiceFilters({
         </SelectContent>
       </Select>
 
-      <Select value={dateField} onValueChange={(v) => onDateFieldChange(v as InvoiceDateField)}>
+      <Select value={dateField || "none"} onValueChange={(v) => onDateFieldChange(v === "none" ? "" as InvoiceDateField : v as InvoiceDateField)}>
         <SelectTrigger className="w-full sm:w-[180px]">
-          <SelectValue />
+          <SelectValue placeholder="Välj datumtyp" />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="none">Välj datumtyp</SelectItem>
           <SelectItem value="invoiceDate">Fakturadatum</SelectItem>
           <SelectItem value="dueDate">Förfallodatum</SelectItem>
           <SelectItem value="paymentDate">Betalningsdatum</SelectItem>
         </SelectContent>
       </Select>
 
-      <DateRangeFilter
-        label={dateFieldLabels[dateField]}
-        fromDate={fromDate}
-        toDate={toDate}
-        onFromDateChange={onFromDateChange}
-        onToDateChange={onToDateChange}
-      />
+      {dateField && (
+        <DateRangeFilter
+          label={dateFieldLabels[dateField]}
+          fromDate={fromDate}
+          toDate={toDate}
+          onFromDateChange={onFromDateChange}
+          onToDateChange={onToDateChange}
+        />
+      )}
 
       {hasActiveFilters && (
         <Button variant="ghost" size="sm" onClick={clearAll} className="gap-1">
