@@ -19,14 +19,14 @@ export const CustomerLedger = ({ ledger, invoices }: CustomerLedgerProps) => {
 
   // Invoice filters state
   const [typeFilter, setTypeFilter] = useState<string>("");
-  const [dateField, setDateField] = useState<InvoiceDateField>("invoiceDate");
+  const [dateField, setDateField] = useState<InvoiceDateField>("");
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
   const [toDate, setToDate] = useState<Date | undefined>(undefined);
 
   const filteredInvoices = useMemo(() => {
     return invoices.filter(inv => {
       if (typeFilter && inv.invoiceType !== typeFilter) return false;
-      if (fromDate || toDate) {
+      if (dateField && (fromDate || toDate)) {
         const dateStr = inv[dateField as keyof Invoice] as string | undefined;
         if (!dateStr) return false;
         const dateValue = parseISO(dateStr);
