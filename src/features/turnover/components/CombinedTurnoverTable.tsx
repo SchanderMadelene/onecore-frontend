@@ -3,6 +3,7 @@ import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 import { ChecklistCell } from './ChecklistCell';
 import { CleaningCheckCell } from './CleaningCheckCell';
 import { WelcomeHomeCell } from './WelcomeHomeCell';
+import { SecurityWarningIcon } from './SecurityWarningIcon';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -52,7 +53,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
             {row.moveOut ? (
               <div className="rounded-md bg-rose-50 p-3 space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
+                    <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                  </div>
                   <span className="text-xs text-muted-foreground">{formatDate(row.moveOut.date)}</span>
                 </div>
                 {row.moveOut.tenantPhone && (
@@ -84,7 +88,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
             {row.moveIn ? (
               <div className="rounded-md bg-emerald-50 p-3 space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
+                    <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                  </div>
                   <span className="text-xs text-muted-foreground">{formatDate(row.moveIn.date)}</span>
                 </div>
                 {row.moveIn.tenantPhone && (
@@ -180,7 +187,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="border-l-2 border-border">
                     {row.moveOut ? (
                       <div>
-                        <span className="text-sm">{row.moveOut.tenantName}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm">{row.moveOut.tenantName}</span>
+                          <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                        </div>
                         {row.moveOut.tenantPhone && (
                           <div className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</div>
                         )}
@@ -207,7 +217,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="border-l-2 border-border">
                     {row.moveIn ? (
                       <div>
-                        <span className="text-sm">{row.moveIn.tenantName}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm">{row.moveIn.tenantName}</span>
+                          <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                        </div>
                         {row.moveIn.tenantPhone && (
                           <div className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</div>
                         )}
