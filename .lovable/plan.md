@@ -1,54 +1,35 @@
 
 
-# Klockikon i den gröna badgen vid sen betalning
+# Fix: Ta bort full-width stretching pa badges
 
-## Vad som ändras
+## Problem
 
-Den separata gula badgen tas bort helt. Istället läggs en liten Clock-ikon till inuti den gröna statusbadgen när betalningen var sen. Ikonen fungerar som en diskret signal -- detaljer finns i den expanderade raden.
+Att lagga till `className="flex items-center gap-1"` pa Badge-komponenten overskriver dess default `inline-flex` fran badgeVariants, vilket gor att badgen tar upp hela radens bredd.
 
-## Design
+## Losning
 
-```text
-Före (nuvarande):
-[Betald] [5d sen]     (två badges, grön + gul)
-
-Efter:
-[Betald ⏱]            (en grön badge med ikon)
-```
-
-Ikonen visas i vitt (samma som badgens textfärg) och är liten nog att inte störa texten.
+Byt `className="flex items-center gap-1"` till bara `className="gap-1"`. Badge har redan `inline-flex items-center` i sin CVA-definition, sa vi behover bara lagga till `gap-1` for att fa mellanrum mellan text och ikon.
 
 ## Tekniska detaljer
 
-### Ändrad fil
+### Andrad fil
 
-| Fil | Ändring |
+| Fil | Andring |
 |-----|---------|
-| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Ta bort extra Badge, lägg Clock-ikon inuti statusbadgen |
+| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Byt `className="flex items-center gap-1"` till `className="gap-1"` pa bada stallen |
 
-### Implementationsdetaljer
+### Andringar
 
-1. **Import** (rad 5): Lägg till `Clock` i lucide-react-importen.
-
-2. **Mobilvy (rad 91-100)**: Ersätt hela flex-containern med en enda Badge som villkorligt visar en Clock-ikon:
+1. **Mobilvy (rad 91)**: Andra fran:
 ```tsx
-<Badge variant={getStatusVariant(invoice.paymentStatus)} className="flex items-center gap-1">
-  {getStatusText(invoice)}
-  {getDaysLate(invoice) && (
-    <Clock className="h-3 w-3" />
-  )}
-</Badge>
+<Badge variant={...} className="flex items-center gap-1">
+```
+till:
+```tsx
+<Badge variant={...} className="gap-1">
 ```
 
-3. **Desktopvy (rad 400-411)**: Samma ändring -- en Badge med villkorlig ikon inuti:
-```tsx
-<Badge variant={getStatusVariant(invoice.paymentStatus)} className="flex items-center gap-1">
-  {getStatusText(invoice)}
-  {getDaysLate(invoice) && (
-    <Clock className="h-3 w-3" />
-  )}
-</Badge>
-```
+2. **Desktopvy (rad 397)**: Samma andring.
 
-4. **Expanderad vy**: Behålls som den är -- visar redan "Betald X dagar efter förfall".
+Badge-komponenten har redan `inline-flex items-center` i sin CVA-bas, sa vi behover inte upprepa det.
 
