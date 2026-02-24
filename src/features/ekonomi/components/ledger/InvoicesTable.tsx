@@ -93,7 +93,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       {getStatusText(invoice)}
                     </Badge>
                     {getDaysLate(invoice) && (
-                      <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200 text-[10px] px-1.5 py-0.5">
+                      <Badge variant="late" className="text-[10px] px-2 py-0.5">
                         {getDaysLate(invoice)}d sen
                       </Badge>
                     )}
@@ -403,7 +403,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                         {getStatusText(invoice)}
                       </Badge>
                       {getDaysLate(invoice) && (
-                        <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200 text-[10px] px-1.5 py-0.5">
+                        <Badge variant="late" className="text-[10px] px-2 py-0.5">
                           {getDaysLate(invoice)}d sen
                         </Badge>
                       )}
