@@ -20,6 +20,7 @@ export default function TurnoverPage() {
     setSelectedDistrict,
     combinedEntries,
     updateChecklist,
+    updateCleaningStatus,
     updateCleaningCount,
     availableKvvAreas,
     availableDistricts,
@@ -56,7 +57,12 @@ export default function TurnoverPage() {
           </CardContent>
         </Card>
 
-        <CombinedTurnoverTable entries={combinedEntries} onChecklistChange={updateChecklist} onCleaningCountChange={updateCleaningCount} />
+        <CombinedTurnoverTable
+          entries={combinedEntries}
+          onChecklistChange={updateChecklist}
+          onCleaningStatusChange={updateCleaningStatus}
+          onCleaningCountChange={updateCleaningCount}
+        />
       </div>
     </PageLayout>
   );

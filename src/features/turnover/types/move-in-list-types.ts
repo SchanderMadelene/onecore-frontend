@@ -1,5 +1,7 @@
+export type CleaningStatus = 'not_done' | 'approved' | 'reinspection';
+
 export interface MoveInListChecklist {
-  cleaningDone: boolean;
+  cleaningStatus: CleaningStatus;
   cleaningCount: number;
   welcomeCallDone: boolean;
   welcomeVisitDone: boolean;
@@ -31,4 +33,3 @@ export interface TurnoverRow {
   moveOut?: MoveInListEntry;
   moveIn?: MoveInListEntry;
 }
-

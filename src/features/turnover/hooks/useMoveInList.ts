@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MoveInListEntry, MoveInListChecklist, TurnoverRow } from '../types/move-in-list-types';
+import { MoveInListEntry, MoveInListChecklist, TurnoverRow, CleaningStatus } from '../types/move-in-list-types';
 import { mockMoveInListEntries } from '../data/mock-move-in-list';
 import { parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 
@@ -73,12 +73,18 @@ export function useMoveInList() {
     setEntries(prev =>
       prev.map(entry => {
         if (entry.id !== entryId) return entry;
-        const updated = { ...entry.checklist, [field]: value };
-        if (field === 'cleaningDone' && value && updated.cleaningCount === 0) {
+        return { ...entry, checklist: { ...entry.checklist, [field]: value } };
+      })
+    );
+  };
+
+  const updateCleaningStatus = (entryId: string, status: CleaningStatus) => {
+    setEntries(prev =>
+      prev.map(entry => {
+        if (entry.id !== entryId) return entry;
+        const updated = { ...entry.checklist, cleaningStatus: status };
+        if (status === 'reinspection' && updated.cleaningCount === 0) {
           updated.cleaningCount = 1;
-        }
-        if (field === 'cleaningDone' && !value) {
-          updated.cleaningCount = 0;
         }
         return { ...entry, checklist: updated };
       })
@@ -116,6 +122,7 @@ export function useMoveInList() {
     moveInEntries,
     combinedEntries,
     updateChecklist,
+    updateCleaningStatus,
     updateCleaningCount,
     availableKvvAreas,
     availableDistricts,
