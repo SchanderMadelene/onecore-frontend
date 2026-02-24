@@ -1,62 +1,54 @@
 
 
-# Separat liten badge foer "sen betalning"
+# Klockikon i den gröna badgen vid sen betalning
 
-## Vad som aendras
+## Vad som ändras
 
-Istallet foer att baaka in foerseningstexten i den groena badgen visas en separat liten badge bredvid. Den groena badgen behaaller sin rena text ("Betald" / "Delvis betald") och en kompakt amber/orange badge visas bredvid med foerseningsinfo.
+Den separata gula badgen tas bort helt. Istället läggs en liten Clock-ikon till inuti den gröna statusbadgen när betalningen var sen. Ikonen fungerar som en diskret signal -- detaljer finns i den expanderade raden.
 
 ## Design
 
 ```text
-Foere (nuvarande):
-[Betald - 5d sen]     (allt i en groen badge)
+Före (nuvarande):
+[Betald] [5d sen]     (två badges, grön + gul)
 
 Efter:
-[Betald] [5d sen]     (groen badge + liten amber badge)
+[Betald ⏱]            (en grön badge med ikon)
 ```
 
-Den separata badgen faar amber-faerger (`bg-amber-100 text-amber-800 border-amber-200`) foer att signalera "anmaerkning" utan att vara roed (fel) eller groen (ok).
+Ikonen visas i vitt (samma som badgens textfärg) och är liten nog att inte störa texten.
 
 ## Tekniska detaljer
 
-### AEndrad fil
+### Ändrad fil
 
-| Fil | AEndring |
+| Fil | Ändring |
 |-----|---------|
-| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Dela upp i tvaa badges i baade mobil- och desktopvy |
+| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Ta bort extra Badge, lägg Clock-ikon inuti statusbadgen |
 
 ### Implementationsdetaljer
 
-1. **Mobilvy (rad 91-93)**: Wrappa i en flex-container med tvaa badges:
+1. **Import** (rad 5): Lägg till `Clock` i lucide-react-importen.
+
+2. **Mobilvy (rad 91-100)**: Ersätt hela flex-containern med en enda Badge som villkorligt visar en Clock-ikon:
 ```tsx
-<div className="flex items-center gap-1">
-  <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-    {getStatusText(invoice)}
-  </Badge>
+<Badge variant={getStatusVariant(invoice.paymentStatus)} className="flex items-center gap-1">
+  {getStatusText(invoice)}
   {getDaysLate(invoice) && (
-    <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200 text-[10px] px-1.5 py-0.5">
-      {getDaysLate(invoice)}d sen
-    </Badge>
+    <Clock className="h-3 w-3" />
   )}
-</div>
+</Badge>
 ```
 
-2. **Desktopvy (rad 393-396)**: Samma princip:
+3. **Desktopvy (rad 400-411)**: Samma ändring -- en Badge med villkorlig ikon inuti:
 ```tsx
-<div className="flex items-center gap-1">
-  <Badge variant={getStatusVariant(invoice.paymentStatus)}>
-    {getStatusText(invoice)}
-  </Badge>
+<Badge variant={getStatusVariant(invoice.paymentStatus)} className="flex items-center gap-1">
+  {getStatusText(invoice)}
   {getDaysLate(invoice) && (
-    <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200 text-[10px] px-1.5 py-0.5">
-      {getDaysLate(invoice)}d sen
-    </Badge>
+    <Clock className="h-3 w-3" />
   )}
-</div>
+</Badge>
 ```
 
-3. **Expanderad vy**: Behaalls som den aer.
-
-Den lilla badgen goers medvetet lite mindre aen statusbadgen (`text-[10px]`, `px-1.5 py-0.5`) saa att den klaenns som en kompletterande detalj snarare aen likvaardig information.
+4. **Expanderad vy**: Behålls som den är -- visar redan "Betald X dagar efter förfall".
 
