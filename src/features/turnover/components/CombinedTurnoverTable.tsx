@@ -1,7 +1,8 @@
-import { TurnoverRow, MoveInListChecklist, CleaningStatus } from '../types/move-in-list-types';
+import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
 import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 import { ChecklistCell } from './ChecklistCell';
 import { CleaningCheckCell } from './CleaningCheckCell';
+import { WelcomeHomeCell } from './WelcomeHomeCell';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -14,9 +15,10 @@ interface CombinedTurnoverTableProps {
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
   onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningCountChange: (entryId: string, count: number) => void;
+  onWelcomeHomeChange: (entryId: string, method: WelcomeHomeMethod) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onWelcomeHomeChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
 
   if (entries.length === 0) {
@@ -102,6 +104,13 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     </div>
                   ))}
                 </div>
+                <div className="pt-1">
+                  <WelcomeHomeCell
+                    value={row.moveIn!.checklist.welcomeHomeMethod}
+                    onChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                    showLabel
+                  />
+                </div>
               </div>
             ) : (
               <p className="text-xs text-muted-foreground italic">Ingen inflytt</p>
@@ -155,6 +164,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableHead className="text-center">Samtal</TableHead>
                 <TableHead className="text-center">Besök</TableHead>
                 <TableHead className="text-center">Namn/Port</TableHead>
+                <TableHead className="text-center">Välkommen hem</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -211,6 +221,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       ) : <span className="text-center block text-muted-foreground">–</span>}
                     </TableCell>
                   ))}
+                  <TableCell>
+                    {row.moveIn ? (
+                      <WelcomeHomeCell
+                        value={row.moveIn.checklist.welcomeHomeMethod}
+                        onChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                      />
+                    ) : <span className="text-center block text-muted-foreground">–</span>}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

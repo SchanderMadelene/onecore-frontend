@@ -22,6 +22,7 @@ export default function TurnoverPage() {
     updateChecklist,
     updateCleaningStatus,
     updateCleaningCount,
+    updateWelcomeHome,
     availableKvvAreas,
     availableDistricts,
   } = useMoveInList();
@@ -62,6 +63,7 @@ export default function TurnoverPage() {
           onChecklistChange={updateChecklist}
           onCleaningStatusChange={updateCleaningStatus}
           onCleaningCountChange={updateCleaningCount}
+          onWelcomeHomeChange={updateWelcomeHome}
         />
       </div>
     </PageLayout>
