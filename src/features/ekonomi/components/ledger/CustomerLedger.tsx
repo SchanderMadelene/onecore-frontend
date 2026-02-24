@@ -1,8 +1,11 @@
+import { useMemo, useState } from "react";
+import { parseISO } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CustomerLedger as CustomerLedgerType } from "@/features/ekonomi/types";
 import type { Invoice } from "@/features/ekonomi/types";
 import { Badge } from "@/components/ui/badge";
 import { InvoicesTable } from "./InvoicesTable";
+import { InvoiceFilters, type InvoiceDateField } from "./InvoiceFilters";
 
 interface CustomerLedgerProps {
   ledger: CustomerLedgerType;
@@ -13,6 +16,26 @@ export const CustomerLedger = ({ ledger, invoices }: CustomerLedgerProps) => {
   const formatCurrency = (amount: number) => {
     return amount.toFixed(2).replace('.', ',') + ' SEK';
   };
+
+  // Invoice filters state
+  const [typeFilter, setTypeFilter] = useState<string>("");
+  const [dateField, setDateField] = useState<InvoiceDateField>("invoiceDate");
+  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
+  const [toDate, setToDate] = useState<Date | undefined>(undefined);
+
+  const filteredInvoices = useMemo(() => {
+    return invoices.filter(inv => {
+      if (typeFilter && inv.invoiceType !== typeFilter) return false;
+      if (fromDate || toDate) {
+        const dateStr = inv[dateField as keyof Invoice] as string | undefined;
+        if (!dateStr) return false;
+        const dateValue = parseISO(dateStr);
+        if (fromDate && dateValue < fromDate) return false;
+        if (toDate && dateValue > toDate) return false;
+      }
+      return true;
+    });
+  }, [invoices, typeFilter, dateField, fromDate, toDate]);
 
   const getInvoiceMethodLabel = () => {
     switch (ledger.invoiceMethod) {
@@ -96,9 +119,19 @@ export const CustomerLedger = ({ ledger, invoices }: CustomerLedgerProps) => {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Fakturor</CardTitle>
+          <InvoiceFilters
+            typeFilter={typeFilter}
+            onTypeFilterChange={setTypeFilter}
+            dateField={dateField}
+            onDateFieldChange={setDateField}
+            fromDate={fromDate}
+            toDate={toDate}
+            onFromDateChange={setFromDate}
+            onToDateChange={setToDate}
+          />
         </CardHeader>
         <CardContent>
-          <InvoicesTable invoices={invoices} />
+          <InvoicesTable invoices={filteredInvoices} />
         </CardContent>
       </Card>
     </div>
