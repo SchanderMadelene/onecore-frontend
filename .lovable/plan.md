@@ -1,82 +1,48 @@
 
 
-# Visa om betald faktura betalades för sent
+# Behall groen badge med integrerad foerseningstext
 
-## Vad som goers
+## Vad som aendras
 
-Laegger till en visuell indikation paa fakturor med status "Betald" eller "Delvis betald" som betalades efter foerfallodatum. Anvaendaren ska snabbt kunna se om en betalning kom in foer sent och hur maanga dagar foer sent.
+Badgen foer "Betald" och "Delvis betald" behaalls groen (success-variant) som vanligt. Foerseningsinformationen integreras direkt i badgetexten istallet foer att visas som separat roed text under badgen.
 
 ## Design
 
-### I fakturalistan (baade mobil och desktop)
-
-Foer betalda fakturor daer `paymentDate > dueDate` visas en liten text under statusbadgen eller bredvid den:
-
 ```text
-[Betald]  3 dagar foer sent
+Foere:
+[Betald]          (groen badge)
+5 d foer sent     (roed separat text -- fult)
+
+Efter:
+[Betald - 5d sen] (groen badge, samma stil som vanligt)
 ```
 
-Texten visas i `text-destructive` (roed) med liten textstorlek (`text-xs`) foer att signalera att det aer en avvikelse utan att ta oever.
-
-### I expanderad vy (haendelser)
-
-I betalningshaendelse-kortet (det groena kortet foer betalda fakturor) laggs en extra rad som visar:
-
-```text
-Betald 3 dagar efter foerfall (foerfall: 2025-07-30)
-```
-
-### Foer delvis betalda
-
-Om den senaste delbetalningen skedde efter foerfallodatum visas samma typ av indikation.
+Badgen behaaller sin groena faerg och variant (`success`). Texten "5d sen" laggs till inuti badgen saa att allt haenger ihop visuellt.
 
 ## Tekniska detaljer
 
-### AEndrade filer
+### AEndrad fil
 
 | Fil | AEndring |
 |-----|---------|
-| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Laegga till hjaelpfunktion `getDaysLate()` och visa sent-betald-indikation paa baade mobil- och desktopvyer |
+| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Ta bort separata foerseningsrader, integrera foerseningstext i badgen |
 
 ### Implementationsdetaljer
 
-1. **Ny hjaelpfunktion** i `InvoicesTable.tsx`:
-
-```typescript
-const getDaysLate = (invoice: Invoice): number | null => {
-  if (!invoice.paymentDate) return null;
-  const days = differenceInDays(parseISO(invoice.paymentDate), parseISO(invoice.dueDate));
-  return days > 0 ? days : null;
-};
-```
-
-`differenceInDays` och `parseISO` importeras redan i filen.
-
-2. **Mobilvy** -- under statusbadgen i fakturakortets header laggs:
+1. **Mobilvy (rad 91-97)**: Ersaett badge + separat span med en enda badge:
 ```tsx
-{daysLate && (
-  <span className="text-xs text-destructive">{daysLate} dagar foer sent</span>
-)}
+<Badge variant={getStatusVariant(invoice.paymentStatus)}>
+  {getStatusText(invoice)}{getDaysLate(invoice) ? ` - ${getDaysLate(invoice)}d sen` : ''}
+</Badge>
 ```
+Ta bort den separata `<span>` paa rad 95-97.
 
-3. **Desktopvy** -- i status-kolumnen i tabellen, under badgen:
+2. **Desktopvy (rad 398-405)**: Samma princip -- ta bort den separata `<div>` paa rad 402-404 och integrera i badgen:
 ```tsx
-{daysLate && (
-  <div className="text-xs text-destructive mt-1">{daysLate} d foer sent</div>
-)}
+<Badge variant={getStatusVariant(invoice.paymentStatus)}>
+  {getStatusText(invoice)}{getDaysLate(invoice) ? ` - ${getDaysLate(invoice)}d sen` : ''}
+</Badge>
 ```
 
-4. **Expanderad vy** -- i det groena betalningshaendelse-kortet laggs en varningsrad:
-```tsx
-{daysLate && (
-  <div className="text-xs text-destructive mt-2">
-    Betald {daysLate} dagar efter foerfall (foerfall: {invoice.dueDate})
-  </div>
-)}
-```
+3. **Expanderad vy**: Behaalls som den aer -- detaljerad text i haendelsekortet fungerar bra i den kontexten.
 
-5. **Delvis betalda** -- foer fakturor med `paymentEvents` jaemfoers den foersta betalningens datum med foerfallodatum. Foer fakturor utan events anvaends `paymentDate`.
-
-### Inget som aendras i datamodellen
-
-All data som behoevs finns redan (`dueDate`, `paymentDate`, `paymentEvents`). Ingen aendring i typer eller mockdata behoevs.
