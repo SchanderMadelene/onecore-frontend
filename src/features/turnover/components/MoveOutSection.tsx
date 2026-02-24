@@ -1,16 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveTable } from '@/components/ui/responsive-table';
 import { MoveInListEntry, MoveInListChecklist } from '../types/move-in-list-types';
-import { ChecklistCell } from './ChecklistCell';
+import { CleaningCheckCell } from './CleaningCheckCell';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
 interface MoveOutSectionProps {
   entries: MoveInListEntry[];
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
+  onCleaningCountChange: (entryId: string, count: number) => void;
 }
 
-export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionProps) {
+export function MoveOutSection({ entries, onChecklistChange, onCleaningCountChange }: MoveOutSectionProps) {
   const columns = [
     {
       key: 'contractNumber',
@@ -54,13 +55,14 @@ export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionPro
       key: 'cleaning',
       label: 'Städkontroll',
       render: (item: MoveInListEntry) => (
-        <ChecklistCell
+        <CleaningCheckCell
           checked={item.checklist.cleaningDone}
-          onChange={(val) => onChecklistChange(item.id, 'cleaningDone', val)}
-          label="Städkontroll utförd"
+          count={item.checklist.cleaningCount}
+          onCheckedChange={(val) => onChecklistChange(item.id, 'cleaningDone', val)}
+          onCountChange={(c) => onCleaningCountChange(item.id, c)}
         />
       ),
-      className: 'w-[100px] text-center',
+      className: 'w-[120px] text-center',
     },
   ];
 
@@ -78,13 +80,14 @@ export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionPro
       <div className="text-sm text-muted-foreground">
         {format(parseISO(item.date), 'd MMM yyyy', { locale: sv })}
       </div>
-      <div className="flex items-center gap-2 pt-1">
-        <ChecklistCell
+      <div className="pt-1">
+        <CleaningCheckCell
           checked={item.checklist.cleaningDone}
-          onChange={(val) => onChecklistChange(item.id, 'cleaningDone', val)}
-          label="Städkontroll utförd"
+          count={item.checklist.cleaningCount}
+          onCheckedChange={(val) => onChecklistChange(item.id, 'cleaningDone', val)}
+          onCountChange={(c) => onCleaningCountChange(item.id, c)}
+          showLabel
         />
-        <span className="text-sm">Städkontroll</span>
       </div>
     </div>
   );

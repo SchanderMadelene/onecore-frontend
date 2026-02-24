@@ -71,9 +71,25 @@ export function useMoveInList() {
 
   const updateChecklist = (entryId: string, field: keyof MoveInListChecklist, value: boolean) => {
     setEntries(prev =>
+      prev.map(entry => {
+        if (entry.id !== entryId) return entry;
+        const updated = { ...entry.checklist, [field]: value };
+        if (field === 'cleaningDone' && value && updated.cleaningCount === 0) {
+          updated.cleaningCount = 1;
+        }
+        if (field === 'cleaningDone' && !value) {
+          updated.cleaningCount = 0;
+        }
+        return { ...entry, checklist: updated };
+      })
+    );
+  };
+
+  const updateCleaningCount = (entryId: string, count: number) => {
+    setEntries(prev =>
       prev.map(entry =>
         entry.id === entryId
-          ? { ...entry, checklist: { ...entry.checklist, [field]: value } }
+          ? { ...entry, checklist: { ...entry.checklist, cleaningCount: count } }
           : entry
       )
     );
@@ -100,6 +116,7 @@ export function useMoveInList() {
     moveInEntries,
     combinedEntries,
     updateChecklist,
+    updateCleaningCount,
     availableKvvAreas,
     availableDistricts,
   };

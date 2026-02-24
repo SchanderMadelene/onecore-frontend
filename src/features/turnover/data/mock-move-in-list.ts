@@ -14,7 +14,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Lindberg Maria',
     tenantPhone: '070-123 45 67',
     date: '2026-01-31',
-    checklist: { cleaningDone: true, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: true, cleaningCount: 2, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-002',
@@ -27,7 +27,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Skyddad Identitet',
     tenantPhone: '070-000 00 00',
     date: '2026-01-31',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-003',
@@ -40,7 +40,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Axelsson André',
     tenantPhone: '070-234 56 78',
     date: '2026-01-31',
-    checklist: { cleaningDone: true, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: true, cleaningCount: 1, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-004',
@@ -53,7 +53,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Westin Tomas',
     tenantPhone: '070-345 67 89',
     date: '2026-01-31',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-005',
@@ -66,7 +66,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Johansson Lars',
     tenantPhone: '070-456 78 90',
     date: '2026-01-31',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-006',
@@ -79,7 +79,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Pettersson Eva',
     tenantPhone: '070-567 89 01',
     date: '2026-02-28',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-007',
@@ -92,7 +92,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Nilsson Fatima',
     tenantPhone: '070-678 90 12',
     date: '2026-02-28',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-008',
@@ -105,7 +105,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Bergström Karin',
     tenantPhone: '070-789 01 23',
     date: '2026-02-28',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-009',
@@ -118,7 +118,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Eriksson Sven',
     tenantPhone: '070-890 12 34',
     date: '2026-02-28',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-010',
@@ -131,7 +131,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Gustafsson Mikael',
     tenantPhone: '070-901 23 45',
     date: '2026-03-01',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-011',
@@ -144,7 +144,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Olsson Henrik',
     tenantPhone: '070-012 34 56',
     date: '2026-03-01',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-012',
@@ -157,7 +157,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Ström Anna',
     tenantPhone: '070-111 22 33',
     date: '2026-03-15',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-013',
@@ -170,7 +170,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Sandberg Lena',
     tenantPhone: '070-222 33 44',
     date: '2026-03-15',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-014',
@@ -183,7 +183,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Dahlin Per',
     tenantPhone: '070-333 44 55',
     date: '2026-03-15',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
 
   // === INFLYTTNINGAR ===
@@ -198,7 +198,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Khalil Mohammed',
     tenantPhone: '070-112 23 34',
     date: '2026-02-01',
-    checklist: { cleaningDone: false, welcomeCallDone: true, welcomeVisitDone: false, nameAndIntercomDone: true },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: true, welcomeVisitDone: false, nameAndIntercomDone: true },
   },
   {
     id: 'mil-021',
@@ -211,7 +211,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Ahmed Sameer',
     tenantPhone: '070-223 34 45',
     date: '2026-02-01',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-022',
@@ -224,7 +224,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Li Meenah',
     tenantPhone: '070-334 45 56',
     date: '2026-02-01',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-023',
@@ -237,7 +237,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Al Hendi Sara',
     tenantPhone: '070-445 56 67',
     date: '2026-02-01',
-    checklist: { cleaningDone: false, welcomeCallDone: true, welcomeVisitDone: true, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: true, welcomeVisitDone: true, nameAndIntercomDone: false },
   },
   {
     id: 'mil-024',
@@ -250,7 +250,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Khawam Rachid',
     tenantPhone: '070-556 67 78',
     date: '2026-02-01',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-025',
@@ -263,7 +263,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Sjögren Lisa',
     tenantPhone: '070-667 78 89',
     date: '2026-03-01',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-026',
@@ -276,7 +276,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Labo Yasmin',
     tenantPhone: '070-778 89 90',
     date: '2026-03-05',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-027',
@@ -289,7 +289,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Andersson Johan',
     tenantPhone: '070-889 90 01',
     date: '2026-03-01',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-028',
@@ -302,7 +302,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Tesfay Kokob',
     tenantPhone: '070-990 01 12',
     date: '2026-03-01',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-029',
@@ -315,7 +315,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Andersson Morgan',
     tenantPhone: '070-101 12 23',
     date: '2026-03-16',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-030',
@@ -328,7 +328,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Mohamed Samira',
     tenantPhone: '070-212 23 34',
     date: '2026-03-15',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-031',
@@ -341,7 +341,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Hemström Billy',
     tenantPhone: '070-323 34 45',
     date: '2026-03-15',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-032',
@@ -354,7 +354,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Berggren David',
     tenantPhone: '070-434 45 56',
     date: '2026-03-16',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
   {
     id: 'mil-033',
@@ -367,6 +367,6 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Mirembe Rebecca',
     tenantPhone: '070-545 56 67',
     date: '2026-03-16',
-    checklist: { cleaningDone: false, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
+    checklist: { cleaningDone: false, cleaningCount: 0, welcomeCallDone: false, welcomeVisitDone: false, nameAndIntercomDone: false },
   },
 ];
