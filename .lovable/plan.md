@@ -1,23 +1,22 @@
 
 
-# Behall groen badge med integrerad foerseningstext
+# Separat liten badge foer "sen betalning"
 
 ## Vad som aendras
 
-Badgen foer "Betald" och "Delvis betald" behaalls groen (success-variant) som vanligt. Foerseningsinformationen integreras direkt i badgetexten istallet foer att visas som separat roed text under badgen.
+Istallet foer att baaka in foerseningstexten i den groena badgen visas en separat liten badge bredvid. Den groena badgen behaaller sin rena text ("Betald" / "Delvis betald") och en kompakt amber/orange badge visas bredvid med foerseningsinfo.
 
 ## Design
 
 ```text
-Foere:
-[Betald]          (groen badge)
-5 d foer sent     (roed separat text -- fult)
+Foere (nuvarande):
+[Betald - 5d sen]     (allt i en groen badge)
 
 Efter:
-[Betald - 5d sen] (groen badge, samma stil som vanligt)
+[Betald] [5d sen]     (groen badge + liten amber badge)
 ```
 
-Badgen behaaller sin groena faerg och variant (`success`). Texten "5d sen" laggs till inuti badgen saa att allt haenger ihop visuellt.
+Den separata badgen faar amber-faerger (`bg-amber-100 text-amber-800 border-amber-200`) foer att signalera "anmaerkning" utan att vara roed (fel) eller groen (ok).
 
 ## Tekniska detaljer
 
@@ -25,24 +24,39 @@ Badgen behaaller sin groena faerg och variant (`success`). Texten "5d sen" laggs
 
 | Fil | AEndring |
 |-----|---------|
-| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Ta bort separata foerseningsrader, integrera foerseningstext i badgen |
+| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Dela upp i tvaa badges i baade mobil- och desktopvy |
 
 ### Implementationsdetaljer
 
-1. **Mobilvy (rad 91-97)**: Ersaett badge + separat span med en enda badge:
+1. **Mobilvy (rad 91-93)**: Wrappa i en flex-container med tvaa badges:
 ```tsx
-<Badge variant={getStatusVariant(invoice.paymentStatus)}>
-  {getStatusText(invoice)}{getDaysLate(invoice) ? ` - ${getDaysLate(invoice)}d sen` : ''}
-</Badge>
+<div className="flex items-center gap-1">
+  <Badge variant={getStatusVariant(invoice.paymentStatus)}>
+    {getStatusText(invoice)}
+  </Badge>
+  {getDaysLate(invoice) && (
+    <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200 text-[10px] px-1.5 py-0.5">
+      {getDaysLate(invoice)}d sen
+    </Badge>
+  )}
+</div>
 ```
-Ta bort den separata `<span>` paa rad 95-97.
 
-2. **Desktopvy (rad 398-405)**: Samma princip -- ta bort den separata `<div>` paa rad 402-404 och integrera i badgen:
+2. **Desktopvy (rad 393-396)**: Samma princip:
 ```tsx
-<Badge variant={getStatusVariant(invoice.paymentStatus)}>
-  {getStatusText(invoice)}{getDaysLate(invoice) ? ` - ${getDaysLate(invoice)}d sen` : ''}
-</Badge>
+<div className="flex items-center gap-1">
+  <Badge variant={getStatusVariant(invoice.paymentStatus)}>
+    {getStatusText(invoice)}
+  </Badge>
+  {getDaysLate(invoice) && (
+    <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200 text-[10px] px-1.5 py-0.5">
+      {getDaysLate(invoice)}d sen
+    </Badge>
+  )}
+</div>
 ```
 
-3. **Expanderad vy**: Behaalls som den aer -- detaljerad text i haendelsekortet fungerar bra i den kontexten.
+3. **Expanderad vy**: Behaalls som den aer.
+
+Den lilla badgen goers medvetet lite mindre aen statusbadgen (`text-[10px]`, `px-1.5 py-0.5`) saa att den klaenns som en kompletterande detalj snarare aen likvaardig information.
 
