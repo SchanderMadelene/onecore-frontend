@@ -14,9 +14,7 @@ export function TurnoverNoteIndicator({ notes }: TurnoverNoteIndicatorProps) {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <button className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-muted hover:bg-muted-foreground/20 transition-colors" title="Har noteringar">
-          <span className="text-[10px] font-medium text-muted-foreground">{notes.length}</span>
-        </button>
+        <span className="inline-block h-2 w-2 rounded-full bg-muted-foreground/40 cursor-default" title={`${notes.length} notering(ar)`} />
       </HoverCardTrigger>
       <HoverCardContent align="start" className="w-72">
         <div className="space-y-3">
