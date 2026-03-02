@@ -4,6 +4,9 @@ import { ChecklistCell } from './ChecklistCell';
 import { CleaningCheckCell } from './CleaningCheckCell';
 import { WelcomeHomeCell } from './WelcomeHomeCell';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
+import { TurnoverRowActions } from './TurnoverRowActions';
+import { TurnoverNoteIndicator } from './TurnoverNoteIndicator';
+import { useTurnoverNotes } from '../hooks/useTurnoverNotes';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -23,6 +26,7 @@ interface CombinedTurnoverTableProps {
 
 export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
+  const { getNotesForEntry, addNote } = useTurnoverNotes();
 
   if (entries.length === 0) {
     return (
@@ -48,6 +52,17 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
       ),
       content: (
         <div className="space-y-4">
+          {/* Åtgärder */}
+          <div className="flex items-center gap-2">
+            <TurnoverNoteIndicator notes={[...getNotesForEntry(row.moveOut?.id ?? ''), ...getNotesForEntry(row.moveIn?.id ?? '')]} />
+            <TurnoverRowActions
+              moveOutName={row.moveOut?.tenantName}
+              moveInName={row.moveIn?.tenantName}
+              moveOutId={row.moveOut?.id}
+              moveInId={row.moveIn?.id}
+              onAddNote={addNote}
+            />
+          </div>
           {/* Utflytt */}
           <div className="space-y-2">
             <h4 className="text-xs font-semibold uppercase tracking-wide text-rose-600">Utflytt</h4>
@@ -183,6 +198,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableHead className="text-center">Besök</TableHead>
                 <TableHead className="text-center">Namn/Port</TableHead>
                 <TableHead className="text-center">Välkommen hem</TableHead>
+                <TableHead className="w-[70px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -265,6 +281,18 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         onChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
                       />
                     ) : <span className="text-center block text-muted-foreground">–</span>}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      <TurnoverNoteIndicator notes={[...getNotesForEntry(row.moveOut?.id ?? ''), ...getNotesForEntry(row.moveIn?.id ?? '')]} />
+                      <TurnoverRowActions
+                        moveOutName={row.moveOut?.tenantName}
+                        moveInName={row.moveIn?.tenantName}
+                        moveOutId={row.moveOut?.id}
+                        moveInId={row.moveIn?.id}
+                        onAddNote={addNote}
+                      />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
