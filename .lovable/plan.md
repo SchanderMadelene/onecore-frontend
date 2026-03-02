@@ -1,32 +1,79 @@
 
+## Noteringar med more-meny i turnover-tabellen
 
-## Byt telefonlänkar till Button-komponenter
+### Oversikt
+Lagg till en "more"-knapp (tre prickar) pa varje rad i turnover-tabellen som oppnar en dropdown-meny. Forsta menyalternativet blir "Lagg till notering". Nar man klickar oppnas en dialog for att skriva en notering. Om en rad har noteringar visas en liten ikon som man kan hovra over for att lasa dem.
 
-Ersätt de vanliga `<a>`-taggarna med `Button`-komponenter, samma mönster som i `LeaseContractActions.tsx` (`variant="ghost"`, `size="icon"`, `h-8 w-8`).
+### Nya filer
 
-### Vad som andras
+**`src/features/turnover/types/turnover-note-types.ts`**
+- Typ `TurnoverNote` med `id`, `entryId`, `content`, `createdAt`, `createdBy`
+
+**`src/features/turnover/hooks/useTurnoverNotes.ts`**
+- Hook som hanterar state for noteringar (lagg till, hamta per entry)
+- Lagrar noteringar i lokal state (mock, redo for API)
+
+**`src/features/turnover/components/TurnoverRowActions.tsx`**
+- `DropdownMenu` med `MoreHorizontal`-ikon (samma monster som `OfferActions.tsx` och `ApplicantActions.tsx`)
+- Menyalternativ: "Lagg till notering"
+- Klick oppnar en `Dialog` med en `Textarea` och Spara/Avbryt-knappar (inspirerat av `Notes.tsx`)
+
+**`src/features/turnover/components/TurnoverNoteIndicator.tsx`**
+- Liten ikon (`MessageSquare` eller `StickyNote`) som visas om det finns noteringar for en rad
+- Wrappas i `HoverCard` (redan finns i projektet) som visar noteringarna nar man hovrar
+
+### Andringar i befintliga filer
 
 **`src/features/turnover/components/CombinedTurnoverTable.tsx`**
+- Desktop: Lagg till en ny kolumn langst till hoger med rubrik tom (eller "")
+  - Innehaller `TurnoverRowActions` (more-menyn)
+  - Bredvid: `TurnoverNoteIndicator` om det finns noteringar
+- Mobil: Lagg till more-menyn och noteringsindikator i varje accordion-items content-sektion
 
-- Importera `Button` fran `@/components/ui/button`
-- **Desktop (4 stallen):** Byt ut `<a href="tel:...">` till en layout med telefonnumret som text + en `Button variant="ghost" size="icon"` bredvid med Phone-ikon
-- **Mobil (2 stallen):** Samma andringar, telefonnummer visas som text med en liten ringknapp bredvid
+### Tekniska detaljer
 
-Monstret som anvands:
+More-menyn foljer exakt samma monster som i systemet:
 ```tsx
-<div className="flex items-center gap-1">
-  <span className="text-xs text-muted-foreground">{phoneNumber}</span>
-  <Button
-    variant="ghost"
-    size="icon"
-    className="h-7 w-7"
-    onClick={() => window.location.href = `tel:${phoneNumber}`}
-    title="Ring"
-  >
-    <Phone className="h-3.5 w-3.5" />
-  </Button>
-</div>
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="ghost" size="icon">
+      <MoreHorizontal className="h-4 w-4" />
+    </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="end" className="bg-background border shadow-md">
+    <DropdownMenuItem onClick={openNoteDialog}>
+      Lagg till notering
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
 ```
 
-Detta matchar hur telefon-knappar ser ut pa ovriga stallen i systemet (t.ex. hyreskontrakt-sidan).
+Noteringsindikatorn med hover:
+```tsx
+<HoverCard>
+  <HoverCardTrigger>
+    <StickyNote className="h-4 w-4 text-amber-500" />
+  </HoverCardTrigger>
+  <HoverCardContent>
+    {/* Lista med noteringar */}
+  </HoverCardContent>
+</HoverCard>
+```
 
+Dialogen for att skriva notering:
+```tsx
+<Dialog>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Notering - {tenantName}</DialogTitle>
+    </DialogHeader>
+    <Textarea placeholder="Skriv din notering har..." />
+    <DialogFooter>
+      <Button variant="outline">Avbryt</Button>
+      <Button><Save /> Spara</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+Noteringarna kopplas till ett `entryId` (move-in eller move-out entry) sa att varje hyresgast pa raden kan ha sina egna noteringar. More-menyn placeras pa radniva, och i dialogen kan man valja om noteringen galler utflytt eller inflytt (om bada finns).
