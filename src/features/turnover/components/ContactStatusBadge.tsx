@@ -14,21 +14,18 @@ interface ContactStatusBadgeProps {
   status: ContactStatus;
   attempts: number;
   visitBookedDate?: string;
-  onClick: () => void;
   showLabel?: boolean;
 }
 
-export function ContactStatusBadge({ status, attempts, visitBookedDate, onClick, showLabel = false }: ContactStatusBadgeProps) {
+export function ContactStatusBadge({ status, attempts, visitBookedDate, showLabel = false }: ContactStatusBadgeProps) {
   const config = STATUS_CONFIG[status];
 
   return (
     <div className="flex items-center gap-1.5">
       {showLabel && <span className="text-xs text-muted-foreground">Kontakt:</span>}
-      <button
-        type="button"
-        onClick={onClick}
+      <span
         className={cn(
-          'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity',
+          'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
           config.className
         )}
       >
@@ -41,7 +38,7 @@ export function ContactStatusBadge({ status, attempts, visitBookedDate, onClick,
             {format(parseISO(visitBookedDate), 'd MMM HH:mm', { locale: sv })}
           </span>
         )}
-      </button>
+      </span>
     </div>
   );
 }

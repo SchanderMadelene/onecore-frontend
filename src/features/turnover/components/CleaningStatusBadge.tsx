@@ -14,11 +14,10 @@ interface CleaningStatusBadgeProps {
   status: CleaningStatus;
   bookedDate?: string;
   approvedDate?: string;
-  onClick: () => void;
   showLabel?: boolean;
 }
 
-export function CleaningStatusBadge({ status, bookedDate, approvedDate, onClick, showLabel = false }: CleaningStatusBadgeProps) {
+export function CleaningStatusBadge({ status, bookedDate, approvedDate, showLabel = false }: CleaningStatusBadgeProps) {
   const config = STATUS_CONFIG[status];
   const showDate = (status === 'booked' || status === 'reinspection') && bookedDate;
   const showApproved = status === 'approved' && approvedDate;
@@ -26,11 +25,9 @@ export function CleaningStatusBadge({ status, bookedDate, approvedDate, onClick,
   return (
     <div className="flex items-center gap-1.5">
       {showLabel && <span className="text-xs text-muted-foreground">Städ:</span>}
-      <button
-        type="button"
-        onClick={onClick}
+      <span
         className={cn(
-          'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity',
+          'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
           config.className
         )}
       >
@@ -41,7 +38,7 @@ export function CleaningStatusBadge({ status, bookedDate, approvedDate, onClick,
         {showApproved && (
           <span className="font-normal">{format(parseISO(approvedDate!), 'd MMM', { locale: sv })}</span>
         )}
-      </button>
+      </span>
     </div>
   );
 }
