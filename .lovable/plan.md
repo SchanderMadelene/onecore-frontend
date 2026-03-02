@@ -1,20 +1,32 @@
 
 
-## Korrigera mock-data: Separera skyddad identitet från säkerhetsvarning
+## Byt telefonlänkar till Button-komponenter
 
-Säkerhetsvarning (amber triangel, "Åk aldrig ensam") ska inte kopplas till "Skyddad Identitet" -- det är två olika saker. Mock-datan behöver uppdateras.
+Ersätt de vanliga `<a>`-taggarna med `Button`-komponenter, samma mönster som i `LeaseContractActions.tsx` (`variant="ghost"`, `size="icon"`, `h-8 w-8`).
 
-### Vad som ändras
+### Vad som andras
 
-**`src/features/turnover/data/mock-move-in-list.ts`**
+**`src/features/turnover/components/CombinedTurnoverTable.tsx`**
 
-- **Ta bort** `hasSecurityWarning: true` från posten "Skyddad Identitet" (mil-002) -- skyddad identitet är inte samma sak som säkerhetsvarning
-- **Behåll** `hasSecurityWarning: true` på Khawam Rachid (mil-024) och Labo Yasmin (mil-026) som exempel på hyresgäster med säkerhetsvarning
-- Eventuellt lägga till varningen på ytterligare en utflyttande hyresgäst (t.ex. Westin Tomas, mil-004) så att det finns exempel i båda listorna
+- Importera `Button` fran `@/components/ui/button`
+- **Desktop (4 stallen):** Byt ut `<a href="tel:...">` till en layout med telefonnumret som text + en `Button variant="ghost" size="icon"` bredvid med Phone-ikon
+- **Mobil (2 stallen):** Samma andringar, telefonnummer visas som text med en liten ringknapp bredvid
 
-### Resultat
+Monstret som anvands:
+```tsx
+<div className="flex items-center gap-1">
+  <span className="text-xs text-muted-foreground">{phoneNumber}</span>
+  <Button
+    variant="ghost"
+    size="icon"
+    className="h-7 w-7"
+    onClick={() => window.location.href = `tel:${phoneNumber}`}
+    title="Ring"
+  >
+    <Phone className="h-3.5 w-3.5" />
+  </Button>
+</div>
+```
 
-- Skyddad identitet och säkerhetsvarning är tydligt separerade i mock-datan
-- Amber-ikonen visas bara för hyresgäster där personal inte ska åka ensam
-- Skyddad identitet kan implementeras separat i framtiden med egen markering
+Detta matchar hur telefon-knappar ser ut pa ovriga stallen i systemet (t.ex. hyreskontrakt-sidan).
 
