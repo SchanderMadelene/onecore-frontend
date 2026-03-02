@@ -1,79 +1,58 @@
 
-## Noteringar med more-meny i turnover-tabellen
 
-### Oversikt
-Lagg till en "more"-knapp (tre prickar) pa varje rad i turnover-tabellen som oppnar en dropdown-meny. Forsta menyalternativet blir "Lagg till notering". Nar man klickar oppnas en dialog for att skriva en notering. Om en rad har noteringar visas en liten ikon som man kan hovra over for att lasa dem.
+## Kontaktstatus-flöde för inflyttande hyresgäst
 
-### Nya filer
+Ersätter de två separata checkboxarna **Samtal** och **Besök** med ett enda statusbaserat kontrollflöde -- samma mönster som städkontrollen (CleaningCheckCell) redan använder.
 
-**`src/features/turnover/types/turnover-note-types.ts`**
-- Typ `TurnoverNote` med `id`, `entryId`, `content`, `createdAt`, `createdBy`
+### Statussteg (framåt, ej bakåt)
 
-**`src/features/turnover/hooks/useTurnoverNotes.ts`**
-- Hook som hanterar state for noteringar (lagg till, hamta per entry)
-- Lagrar noteringar i lokal state (mock, redo for API)
+| Status | Badge-färg | Extra fält |
+|--------|-----------|------------|
+| Ej kontaktad | Grå (`bg-muted`) | -- |
+| Ej nådd | Amber (`bg-amber-100`) | Antal försök (räknare) |
+| Besök bokat | Sky (`bg-sky-100`) | Datum + klockslag |
+| Besök genomfört | Grön (`bg-emerald-100`) | -- |
 
-**`src/features/turnover/components/TurnoverRowActions.tsx`**
-- `DropdownMenu` med `MoreHorizontal`-ikon (samma monster som `OfferActions.tsx` och `ApplicantActions.tsx`)
-- Menyalternativ: "Lagg till notering"
-- Klick oppnar en `Dialog` med en `Textarea` och Spara/Avbryt-knappar (inspirerat av `Notes.tsx`)
+### Tekniska ändringar
 
-**`src/features/turnover/components/TurnoverNoteIndicator.tsx`**
-- Liten ikon (`MessageSquare` eller `StickyNote`) som visas om det finns noteringar for en rad
-- Wrappas i `HoverCard` (redan finns i projektet) som visar noteringarna nar man hovrar
+**1. Typer** (`move-in-list-types.ts`)
+- Ny typ `ContactStatus = 'not_contacted' | 'not_reached' | 'visit_booked' | 'visit_done'`
+- Lägg till i `MoveInListChecklist`:
+  - `contactStatus: ContactStatus`
+  - `contactAttempts: number`
+  - `visitBookedDate?: string` (ISO datetime, inkl. klockslag)
+- Behåll `nameAndIntercomDone` (separat checkbox)
+- `welcomeCallDone` och `welcomeVisitDone` tas bort
 
-### Andringar i befintliga filer
+**2. Ny komponent** (`ContactStatusCell.tsx`)
+- Följer exakt samma pill/badge-mönster som `CleaningCheckCell`
+- Select-dropdown med de fyra statusarna
+- Vid "Ej nådd": visar liten räknare med +/- knappar för antal försök
+- Vid "Besök bokat": visar datum- och tidväljare (kalender + tidsinput `type="time"`)
+- Statusar filtreras så att man bara kan gå framåt (t.ex. från "Besök bokat" visas bara "Besök bokat" och "Besök genomfört")
 
-**`src/features/turnover/components/CombinedTurnoverTable.tsx`**
-- Desktop: Lagg till en ny kolumn langst till hoger med rubrik tom (eller "")
-  - Innehaller `TurnoverRowActions` (more-menyn)
-  - Bredvid: `TurnoverNoteIndicator` om det finns noteringar
-- Mobil: Lagg till more-menyn och noteringsindikator i varje accordion-items content-sektion
+**3. Hook** (`useMoveInList.ts`)
+- Ny funktion `updateContactStatus(entryId, status)`
+- Ny funktion `updateContactAttempts(entryId, count)`
+- Ny funktion `updateVisitBookedDate(entryId, datetime)`
+- Ta bort logik kopplad till `welcomeCallDone` / `welcomeVisitDone`
 
-### Tekniska detaljer
+**4. Tabell** (`CombinedTurnoverTable.tsx`)
+- Ersätt kolumnerna **Samtal** och **Besök** med en enda kolumn **Kontakt**
+- Rendera `ContactStatusCell` i den nya kolumnen
+- Behåll **Namn/Port** som separat checkbox-kolumn
+- Uppdatera mobilvy (MobileAccordion) på samma sätt
 
-More-menyn foljer exakt samma monster som i systemet:
-```tsx
-<DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <Button variant="ghost" size="icon">
-      <MoreHorizontal className="h-4 w-4" />
-    </Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent align="end" className="bg-background border shadow-md">
-    <DropdownMenuItem onClick={openNoteDialog}>
-      Lagg till notering
-    </DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
+**5. Mockdata** (`mock-move-in-list.ts`)
+- Uppdatera inflyttsposter med `contactStatus`, `contactAttempts`, `visitBookedDate` istället för `welcomeCallDone`/`welcomeVisitDone`
+
+### Resultat i tabellen
+
+```text
+| Hyresgäst (in)   | Kontrakt | Kontakt                      | Namn/Port | Välkommen hem |
+| Andersson Kalle  | 1 apr    | [Besök bokat] 15 mar 10:00   |    [x]    |   [Digital]   |
+| Johansson Lisa   | 1 apr    | [Ej nådd] 2 försök           |    [ ]    |   [Ingen]     |
 ```
 
-Noteringsindikatorn med hover:
-```tsx
-<HoverCard>
-  <HoverCardTrigger>
-    <StickyNote className="h-4 w-4 text-amber-500" />
-  </HoverCardTrigger>
-  <HoverCardContent>
-    {/* Lista med noteringar */}
-  </HoverCardContent>
-</HoverCard>
-```
+Två kolumner blir en, och flödet speglar verkligheten: kontakta -> boka besök -> genomför besök.
 
-Dialogen for att skriva notering:
-```tsx
-<Dialog>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Notering - {tenantName}</DialogTitle>
-    </DialogHeader>
-    <Textarea placeholder="Skriv din notering har..." />
-    <DialogFooter>
-      <Button variant="outline">Avbryt</Button>
-      <Button><Save /> Spara</Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
-```
-
-Noteringarna kopplas till ett `entryId` (move-in eller move-out entry) sa att varje hyresgast pa raden kan ha sina egna noteringar. More-menyn placeras pa radniva, och i dialogen kan man valja om noteringen galler utflytt eller inflytt (om bada finns).
