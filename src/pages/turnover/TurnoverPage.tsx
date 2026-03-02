@@ -24,6 +24,9 @@ export default function TurnoverPage() {
     updateCleaningCount,
     updateCleaningBookedDate,
     updateWelcomeHome,
+    updateContactStatus,
+    updateContactAttempts,
+    updateVisitBookedDate,
     availableKvvAreas,
     availableDistricts,
   } = useMoveInList();
@@ -66,6 +69,9 @@ export default function TurnoverPage() {
           onCleaningCountChange={updateCleaningCount}
           onCleaningBookedDateChange={updateCleaningBookedDate}
           onWelcomeHomeChange={updateWelcomeHome}
+          onContactStatusChange={updateContactStatus}
+          onContactAttemptsChange={updateContactAttempts}
+          onVisitBookedDateChange={updateVisitBookedDate}
         />
       </div>
     </PageLayout>

@@ -1,7 +1,8 @@
-import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
+import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
 import { ArrowUpRight, ArrowDownLeft, Phone } from 'lucide-react';
 import { ChecklistCell } from './ChecklistCell';
 import { CleaningCheckCell } from './CleaningCheckCell';
+import { ContactStatusCell } from './ContactStatusCell';
 import { WelcomeHomeCell } from './WelcomeHomeCell';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
 import { TurnoverRowActions } from './TurnoverRowActions';
@@ -22,9 +23,12 @@ interface CombinedTurnoverTableProps {
   onCleaningCountChange: (entryId: string, count: number) => void;
   onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
   onWelcomeHomeChange: (entryId: string, method: WelcomeHomeMethod) => void;
+  onContactStatusChange: (entryId: string, status: ContactStatus) => void;
+  onContactAttemptsChange: (entryId: string, count: number) => void;
+  onVisitBookedDateChange: (entryId: string, datetime: string | undefined) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
   const { getNotesForEntry, addNote } = useTurnoverNotes();
 
@@ -121,21 +125,24 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     </Button>
                   </div>
                 )}
-                <div className="space-y-1 pt-1">
-                  {([
-                    ['welcomeCallDone', 'Samtal'],
-                    ['welcomeVisitDone', 'Besök'],
-                    ['nameAndIntercomDone', 'Namn/Port'],
-                  ] as const).map(([field, label]) => (
-                    <div key={field} className="flex items-center gap-2">
-                      <ChecklistCell
-                        checked={row.moveIn!.checklist[field]}
-                        onChange={(v) => onChecklistChange(row.moveIn!.id, field, v)}
-                        label={label}
-                      />
-                      <span className="text-xs">{label}</span>
-                    </div>
-                  ))}
+                <div className="pt-1">
+                  <ContactStatusCell
+                    status={row.moveIn.checklist.contactStatus}
+                    attempts={row.moveIn.checklist.contactAttempts}
+                    visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                    onStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
+                    onAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
+                    onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
+                    showLabel
+                  />
+                </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <ChecklistCell
+                    checked={row.moveIn!.checklist.nameAndIntercomDone}
+                    onChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
+                    label="Namn/Port"
+                  />
+                  <span className="text-xs">Namn/Port</span>
                 </div>
                 <div className="pt-1">
                   <WelcomeHomeCell
@@ -194,8 +201,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   </div>
                 </TableHead>
                 <TableHead>Kontrakt</TableHead>
-                <TableHead className="text-center">Samtal</TableHead>
-                <TableHead className="text-center">Besök</TableHead>
+                <TableHead>Kontakt</TableHead>
                 <TableHead className="text-center">Namn/Port</TableHead>
                 <TableHead className="text-center">Välkommen hem</TableHead>
                 <TableHead className="w-[70px]"></TableHead>
@@ -265,17 +271,27 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="text-sm whitespace-nowrap">
                     {formatDate(row.moveIn?.date)}
                   </TableCell>
-                  {(['welcomeCallDone', 'welcomeVisitDone', 'nameAndIntercomDone'] as const).map(field => (
-                    <TableCell key={field}>
-                      {row.moveIn ? (
-                        <ChecklistCell
-                          checked={row.moveIn.checklist[field]}
-                          onChange={(v) => onChecklistChange(row.moveIn!.id, field, v)}
-                          label={field}
-                        />
-                      ) : <span className="text-center block text-muted-foreground">–</span>}
-                    </TableCell>
-                  ))}
+                  <TableCell>
+                    {row.moveIn ? (
+                      <ContactStatusCell
+                        status={row.moveIn.checklist.contactStatus}
+                        attempts={row.moveIn.checklist.contactAttempts}
+                        visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                        onStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
+                        onAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
+                        onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
+                      />
+                    ) : <span className="text-center block text-muted-foreground">–</span>}
+                  </TableCell>
+                  <TableCell>
+                    {row.moveIn ? (
+                      <ChecklistCell
+                        checked={row.moveIn.checklist.nameAndIntercomDone}
+                        onChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
+                        label="Namn/Port"
+                      />
+                    ) : <span className="text-center block text-muted-foreground">–</span>}
+                  </TableCell>
                   <TableCell>
                     {row.moveIn ? (
                       <WelcomeHomeCell
