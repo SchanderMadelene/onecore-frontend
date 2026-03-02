@@ -213,6 +213,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm">{row.moveOut.tenantName}</span>
                           <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                          <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
                         </div>
                         {row.moveOut.tenantPhone && (
                           <div className="flex items-center gap-1">
@@ -248,6 +249,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm">{row.moveIn.tenantName}</span>
                           <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                          <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
                         </div>
                         {row.moveIn.tenantPhone && (
                           <div className="flex items-center gap-1">
@@ -283,16 +285,13 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-1">
-                      <TurnoverNoteIndicator notes={[...getNotesForEntry(row.moveOut?.id ?? ''), ...getNotesForEntry(row.moveIn?.id ?? '')]} />
-                      <TurnoverRowActions
-                        moveOutName={row.moveOut?.tenantName}
-                        moveInName={row.moveIn?.tenantName}
-                        moveOutId={row.moveOut?.id}
-                        moveInId={row.moveIn?.id}
-                        onAddNote={addNote}
-                      />
-                    </div>
+                    <TurnoverRowActions
+                      moveOutName={row.moveOut?.tenantName}
+                      moveInName={row.moveIn?.tenantName}
+                      moveOutId={row.moveOut?.id}
+                      moveInId={row.moveIn?.id}
+                      onAddNote={addNote}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
