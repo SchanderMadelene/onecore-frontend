@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MoveInListEntry, MoveInListChecklist, TurnoverRow, CleaningStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
+import { MoveInListEntry, MoveInListChecklist, TurnoverRow, CleaningStatus, ContactStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
 import { mockMoveInListEntries } from '../data/mock-move-in-list';
 import { parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 
@@ -124,6 +124,29 @@ export function useMoveInList() {
     );
   };
 
+  const updateContactStatus = (entryId: string, status: ContactStatus) => {
+    setEntries(prev =>
+      prev.map(entry => {
+        if (entry.id !== entryId) return entry;
+        const updated = { ...entry.checklist, contactStatus: status };
+        if (status === 'not_reached') {
+          updated.contactAttempts = (entry.checklist.contactAttempts || 0) + 1;
+        }
+        return { ...entry, checklist: updated };
+      })
+    );
+  };
+
+  const updateVisitBookedDate = (entryId: string, date: string | undefined) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, checklist: { ...entry.checklist, visitBookedDate: date } }
+          : entry
+      )
+    );
+  };
+
   const availableKvvAreas = useMemo(() => {
     return [...new Set(entries.map(e => e.kvvArea))].sort();
   }, [entries]);
@@ -149,6 +172,8 @@ export function useMoveInList() {
     updateCleaningCount,
     updateCleaningBookedDate,
     updateWelcomeHome,
+    updateContactStatus,
+    updateVisitBookedDate,
     availableKvvAreas,
     availableDistricts,
   };
