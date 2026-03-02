@@ -8,6 +8,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
@@ -60,10 +61,12 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <span className="text-xs text-muted-foreground">{formatDate(row.moveOut.date)}</span>
                 </div>
                 {row.moveOut.tenantPhone && (
-                  <a href={`tel:${row.moveOut.tenantPhone}`} className="flex items-center gap-1 text-xs text-primary underline">
-                    <Phone className="h-3 w-3" />
-                    {row.moveOut.tenantPhone}
-                  </a>
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
+                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
+                      <Phone className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
                 )}
                 <div className="pt-1">
                   <CleaningCheckCell
@@ -96,10 +99,12 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <span className="text-xs text-muted-foreground">{formatDate(row.moveIn.date)}</span>
                 </div>
                 {row.moveIn.tenantPhone && (
-                  <a href={`tel:${row.moveIn.tenantPhone}`} className="flex items-center gap-1 text-xs text-primary underline">
-                    <Phone className="h-3 w-3" />
-                    {row.moveIn.tenantPhone}
-                  </a>
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
+                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
+                      <Phone className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
                 )}
                 <div className="space-y-1 pt-1">
                   {([
@@ -194,10 +199,12 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
                         </div>
                         {row.moveOut.tenantPhone && (
-                          <a href={`tel:${row.moveOut.tenantPhone}`} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors">
-                            <Phone className="h-3 w-3" />
-                            {row.moveOut.tenantPhone}
-                          </a>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
+                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
+                              <Phone className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
@@ -227,10 +234,12 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                         </div>
                         {row.moveIn.tenantPhone && (
-                          <a href={`tel:${row.moveIn.tenantPhone}`} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors">
-                            <Phone className="h-3 w-3" />
-                            {row.moveIn.tenantPhone}
-                          </a>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
+                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
+                              <Phone className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
