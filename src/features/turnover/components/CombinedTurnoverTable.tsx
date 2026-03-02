@@ -213,18 +213,16 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm">{row.moveOut.tenantName}</span>
                           <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
-                        </div>
-                        <div className="flex items-center gap-1 mt-0.5">
-                          {row.moveOut.tenantPhone && (
-                            <>
-                              <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
-                              <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
-                                <Phone className="h-3.5 w-3.5" />
-                              </Button>
-                            </>
-                          )}
                           <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
                         </div>
+                        {row.moveOut.tenantPhone && (
+                          <div className="flex items-center gap-1 mt-0.5">
+                            <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
+                            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
+                              <Phone className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
@@ -251,18 +249,16 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm">{row.moveIn.tenantName}</span>
                           <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
-                        </div>
-                        <div className="flex items-center gap-1 mt-0.5">
-                          {row.moveIn.tenantPhone && (
-                            <>
-                              <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
-                              <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
-                                <Phone className="h-3.5 w-3.5" />
-                              </Button>
-                            </>
-                          )}
                           <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
                         </div>
+                        {row.moveIn.tenantPhone && (
+                          <div className="flex items-center gap-1 mt-0.5">
+                            <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
+                            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
+                              <Phone className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>

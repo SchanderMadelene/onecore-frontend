@@ -9,18 +9,16 @@ interface TurnoverNoteIndicatorProps {
 }
 
 export function TurnoverNoteIndicator({ notes }: TurnoverNoteIndicatorProps) {
-  if (notes.length === 0) {
-    return <span className="inline-flex h-8 w-8" />;
-  }
+  if (notes.length === 0) return null;
 
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <button className="inline-flex items-center justify-center rounded-md h-8 w-8 hover:bg-muted transition-colors">
-          <StickyNote className="h-4 w-4 text-muted-foreground" />
+        <button className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-muted hover:bg-muted-foreground/20 transition-colors" title="Har noteringar">
+          <span className="text-[10px] font-medium text-muted-foreground">{notes.length}</span>
         </button>
       </HoverCardTrigger>
-      <HoverCardContent align="end" className="w-72">
+      <HoverCardContent align="start" className="w-72">
         <div className="space-y-3">
           <h4 className="text-sm font-semibold">Noteringar ({notes.length})</h4>
           <div className="space-y-2 max-h-48 overflow-y-auto">
