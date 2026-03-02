@@ -1,6 +1,5 @@
-import { TurnoverRow, MoveInListChecklist, CleaningStatus, ContactStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
+import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
 import { ArrowUpRight, ArrowDownLeft, Phone } from 'lucide-react';
-import { ContactStatusCell } from './ContactStatusCell';
 import { ChecklistCell } from './ChecklistCell';
 import { CleaningCheckCell } from './CleaningCheckCell';
 import { WelcomeHomeCell } from './WelcomeHomeCell';
@@ -23,11 +22,9 @@ interface CombinedTurnoverTableProps {
   onCleaningCountChange: (entryId: string, count: number) => void;
   onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
   onWelcomeHomeChange: (entryId: string, method: WelcomeHomeMethod) => void;
-  onContactStatusChange: (entryId: string, status: ContactStatus) => void;
-  onVisitBookedDateChange: (entryId: string, date: string | undefined) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onContactStatusChange, onVisitBookedDateChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
   const { getNotesForEntry, addNote } = useTurnoverNotes();
 
@@ -86,15 +83,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     </Button>
                   </div>
                 )}
-                <div className="pt-1 space-y-1.5">
-                  <ContactStatusCell
-                    status={row.moveOut.checklist.contactStatus}
-                    attempts={row.moveOut.checklist.contactAttempts}
-                    visitBookedDate={row.moveOut.checklist.visitBookedDate}
-                    onStatusChange={(s) => onContactStatusChange(row.moveOut!.id, s)}
-                    onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveOut!.id, d)}
-                    showLabel
-                  />
+                <div className="pt-1">
                   <CleaningCheckCell
                     status={row.moveOut.checklist.cleaningStatus}
                     count={row.moveOut.checklist.cleaningCount}
@@ -195,7 +184,6 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   </div>
                 </TableHead>
                 <TableHead>Sista deb.</TableHead>
-                <TableHead className="text-center">Kontakt</TableHead>
                 <TableHead className="text-center">Städkontr.</TableHead>
                 <TableHead className="border-l-2 border-border">
                   <div className="flex items-center gap-2">
@@ -240,17 +228,6 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   </TableCell>
                   <TableCell className="text-sm whitespace-nowrap">
                     {formatDate(row.moveOut?.date)}
-                  </TableCell>
-                  <TableCell>
-                    {row.moveOut ? (
-                      <ContactStatusCell
-                        status={row.moveOut.checklist.contactStatus}
-                        attempts={row.moveOut.checklist.contactAttempts}
-                        visitBookedDate={row.moveOut.checklist.visitBookedDate}
-                        onStatusChange={(s) => onContactStatusChange(row.moveOut!.id, s)}
-                        onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveOut!.id, d)}
-                      />
-                    ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
                   <TableCell>
                     {row.moveOut ? (
