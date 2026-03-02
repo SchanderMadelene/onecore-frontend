@@ -1,5 +1,5 @@
 import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
-import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Phone } from 'lucide-react';
 import { ChecklistCell } from './ChecklistCell';
 import { CleaningCheckCell } from './CleaningCheckCell';
 import { WelcomeHomeCell } from './WelcomeHomeCell';
@@ -60,7 +60,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <span className="text-xs text-muted-foreground">{formatDate(row.moveOut.date)}</span>
                 </div>
                 {row.moveOut.tenantPhone && (
-                  <a href={`tel:${row.moveOut.tenantPhone}`} className="text-xs text-primary underline">
+                  <a href={`tel:${row.moveOut.tenantPhone}`} className="flex items-center gap-1 text-xs text-primary underline">
+                    <Phone className="h-3 w-3" />
                     {row.moveOut.tenantPhone}
                   </a>
                 )}
@@ -95,7 +96,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <span className="text-xs text-muted-foreground">{formatDate(row.moveIn.date)}</span>
                 </div>
                 {row.moveIn.tenantPhone && (
-                  <a href={`tel:${row.moveIn.tenantPhone}`} className="text-xs text-primary underline">
+                  <a href={`tel:${row.moveIn.tenantPhone}`} className="flex items-center gap-1 text-xs text-primary underline">
+                    <Phone className="h-3 w-3" />
                     {row.moveIn.tenantPhone}
                   </a>
                 )}
@@ -192,7 +194,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
                         </div>
                         {row.moveOut.tenantPhone && (
-                          <div className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</div>
+                          <a href={`tel:${row.moveOut.tenantPhone}`} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors">
+                            <Phone className="h-3 w-3" />
+                            {row.moveOut.tenantPhone}
+                          </a>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
@@ -222,7 +227,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                         </div>
                         {row.moveIn.tenantPhone && (
-                          <div className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</div>
+                          <a href={`tel:${row.moveIn.tenantPhone}`} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors">
+                            <Phone className="h-3 w-3" />
+                            {row.moveIn.tenantPhone}
+                          </a>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
