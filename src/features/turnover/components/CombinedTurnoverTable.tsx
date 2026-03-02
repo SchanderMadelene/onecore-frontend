@@ -63,7 +63,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 {row.moveOut.tenantPhone && (
                   <div className="flex items-center gap-1">
                     <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
+                    <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
                       <Phone className="h-3.5 w-3.5" />
                     </Button>
                   </div>
@@ -101,7 +101,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 {row.moveIn.tenantPhone && (
                   <div className="flex items-center gap-1">
                     <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
+                    <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
                       <Phone className="h-3.5 w-3.5" />
                     </Button>
                   </div>
@@ -201,7 +201,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         {row.moveOut.tenantPhone && (
                           <div className="flex items-center gap-1">
                             <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
-                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
+                            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
                               <Phone className="h-3.5 w-3.5" />
                             </Button>
                           </div>
@@ -236,7 +236,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         {row.moveIn.tenantPhone && (
                           <div className="flex items-center gap-1">
                             <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
-                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
+                            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
                               <Phone className="h-3.5 w-3.5" />
                             </Button>
                           </div>
