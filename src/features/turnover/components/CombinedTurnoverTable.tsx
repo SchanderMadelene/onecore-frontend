@@ -45,27 +45,6 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
     return format(parseISO(dateStr), 'd MMM', { locale: sv });
   };
 
-  const renderRowActions = (row: TurnoverRow) => (
-    <TurnoverRowActions
-      moveOutName={row.moveOut?.tenantName}
-      moveInName={row.moveIn?.tenantName}
-      moveOutId={row.moveOut?.id}
-      moveInId={row.moveIn?.id}
-      onAddNote={addNote}
-      cleaningStatus={row.moveOut?.checklist.cleaningStatus}
-      cleaningBookedDate={row.moveOut?.checklist.cleaningBookedDate}
-      cleaningApprovedDate={row.moveOut?.checklist.cleaningApprovedDate}
-      onCleaningStatusChange={row.moveOut ? (s) => onCleaningStatusChange(row.moveOut!.id, s) : undefined}
-      onCleaningBookedDateChange={row.moveOut ? (d) => onCleaningBookedDateChange(row.moveOut!.id, d) : undefined}
-      contactStatus={row.moveIn?.checklist.contactStatus}
-      contactAttempts={row.moveIn?.checklist.contactAttempts}
-      visitBookedDate={row.moveIn?.checklist.visitBookedDate}
-      onContactStatusChange={row.moveIn ? (s) => onContactStatusChange(row.moveIn!.id, s) : undefined}
-      onContactAttemptsChange={row.moveIn ? (c) => onContactAttemptsChange(row.moveIn!.id, c) : undefined}
-      onVisitBookedDateChange={row.moveIn ? (d) => onVisitBookedDateChange(row.moveIn!.id, d) : undefined}
-    />
-  );
-
   if (isMobile) {
     const items: MobileAccordionItem[] = entries.map(row => ({
       id: row.residenceKey,
@@ -77,10 +56,6 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
       ),
       content: (
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <TurnoverNoteIndicator notes={[...getNotesForEntry(row.moveOut?.id ?? ''), ...getNotesForEntry(row.moveIn?.id ?? '')]} />
-            {renderRowActions(row)}
-          </div>
           {/* Utflytt */}
           <div className="space-y-2">
             <h4 className="text-xs font-semibold uppercase tracking-wide text-rose-600">Utflytt</h4>
@@ -90,8 +65,18 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
                     <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                    <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
                   </div>
-                  <span className="text-xs text-muted-foreground">{formatDate(row.moveOut.date)}</span>
+                  <TurnoverRowActions
+                    entryId={row.moveOut.id}
+                    tenantName={row.moveOut.tenantName}
+                    onAddNote={addNote}
+                    cleaningStatus={row.moveOut.checklist.cleaningStatus}
+                    cleaningBookedDate={row.moveOut.checklist.cleaningBookedDate}
+                    cleaningApprovedDate={row.moveOut.checklist.cleaningApprovedDate}
+                    onCleaningStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
+                    onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
+                  />
                 </div>
                 {row.moveOut.tenantPhone && (
                   <div className="flex items-center gap-1">
@@ -124,8 +109,19 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
                     <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                    <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
                   </div>
-                  <span className="text-xs text-muted-foreground">{formatDate(row.moveIn.date)}</span>
+                  <TurnoverRowActions
+                    entryId={row.moveIn.id}
+                    tenantName={row.moveIn.tenantName}
+                    onAddNote={addNote}
+                    contactStatus={row.moveIn.checklist.contactStatus}
+                    contactAttempts={row.moveIn.checklist.contactAttempts}
+                    visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                    onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
+                    onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
+                    onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
+                  />
                 </div>
                 {row.moveIn.tenantPhone && (
                   <div className="flex items-center gap-1">
@@ -199,6 +195,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 </TableHead>
                 <TableHead>Sista deb.</TableHead>
                 <TableHead className="text-center">Städkontr.</TableHead>
+                <TableHead className="w-[50px]"></TableHead>
                 <TableHead className="border-l-2 border-border">
                   <div className="flex items-center gap-2">
                     <span className="inline-flex items-center justify-center h-6 w-6 rounded-md bg-muted">
@@ -211,7 +208,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableHead>Kontakt</TableHead>
                 <TableHead className="text-center">Namn/Port</TableHead>
                 <TableHead className="text-center">Välkommen hem</TableHead>
-                <TableHead className="w-[70px]"></TableHead>
+                <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -219,6 +216,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableRow key={row.residenceKey}>
                   <TableCell className="font-medium text-sm whitespace-nowrap">{row.address}</TableCell>
                   <TableCell className="text-sm">{row.apartmentType}</TableCell>
+                  {/* Move-out tenant */}
                   <TableCell className="border-l-2 border-border">
                     {row.moveOut ? (
                       <div className="py-1">
@@ -250,6 +248,22 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       />
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
+                  {/* Move-out actions */}
+                  <TableCell>
+                    {row.moveOut ? (
+                      <TurnoverRowActions
+                        entryId={row.moveOut.id}
+                        tenantName={row.moveOut.tenantName}
+                        onAddNote={addNote}
+                        cleaningStatus={row.moveOut.checklist.cleaningStatus}
+                        cleaningBookedDate={row.moveOut.checklist.cleaningBookedDate}
+                        cleaningApprovedDate={row.moveOut.checklist.cleaningApprovedDate}
+                        onCleaningStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
+                        onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
+                      />
+                    ) : null}
+                  </TableCell>
+                  {/* Move-in tenant */}
                   <TableCell className="border-l-2 border-border">
                     {row.moveIn ? (
                       <div className="py-1">
@@ -298,8 +312,21 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       />
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
+                  {/* Move-in actions */}
                   <TableCell>
-                    {renderRowActions(row)}
+                    {row.moveIn ? (
+                      <TurnoverRowActions
+                        entryId={row.moveIn.id}
+                        tenantName={row.moveIn.tenantName}
+                        onAddNote={addNote}
+                        contactStatus={row.moveIn.checklist.contactStatus}
+                        contactAttempts={row.moveIn.checklist.contactAttempts}
+                        visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                        onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
+                        onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
+                        onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
+                      />
+                    ) : null}
                   </TableCell>
                 </TableRow>
               ))}

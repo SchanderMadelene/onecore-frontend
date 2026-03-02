@@ -5,7 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -22,10 +21,8 @@ import { ContactEditDialog } from './ContactEditDialog';
 import { CleaningStatus, ContactStatus } from '../types/move-in-list-types';
 
 interface TurnoverRowActionsProps {
-  moveOutName?: string;
-  moveInName?: string;
-  moveOutId?: string;
-  moveInId?: string;
+  entryId: string;
+  tenantName: string;
   onAddNote: (entryId: string, content: string) => void;
   // Cleaning (move-out)
   cleaningStatus?: CleaningStatus;
@@ -42,14 +39,11 @@ interface TurnoverRowActionsProps {
   onVisitBookedDateChange?: (datetime: string | undefined) => void;
 }
 
-type NoteTarget = { id: string; name: string } | null;
-type DialogType = 'note' | 'cleaning' | 'contact' | null;
+type ActiveDialog = 'note' | 'cleaning' | 'contact' | null;
 
 export function TurnoverRowActions({
-  moveOutName,
-  moveInName,
-  moveOutId,
-  moveInId,
+  entryId,
+  tenantName,
   onAddNote,
   cleaningStatus,
   cleaningBookedDate,
@@ -63,24 +57,24 @@ export function TurnoverRowActions({
   onContactAttemptsChange,
   onVisitBookedDateChange,
 }: TurnoverRowActionsProps) {
-  const [noteTarget, setNoteTarget] = useState<NoteTarget>(null);
-  const [content, setContent] = useState('');
-  const [activeDialog, setActiveDialog] = useState<DialogType>(null);
+  const [activeDialog, setActiveDialog] = useState<ActiveDialog>(null);
+  const [noteContent, setNoteContent] = useState('');
 
-  const handleSave = () => {
-    if (noteTarget && content.trim()) {
-      onAddNote(noteTarget.id, content.trim());
-      setContent('');
-      setNoteTarget(null);
+  const handleNoteSave = () => {
+    if (noteContent.trim()) {
+      onAddNote(entryId, noteContent.trim());
+      setNoteContent('');
       setActiveDialog(null);
     }
   };
 
   const handleClose = () => {
-    setContent('');
-    setNoteTarget(null);
+    setNoteContent('');
     setActiveDialog(null);
   };
+
+  const hasCleaning = onCleaningStatusChange !== undefined;
+  const hasContact = onContactStatusChange !== undefined;
 
   return (
     <>
@@ -91,62 +85,40 @@ export function TurnoverRowActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="bg-background border shadow-md">
-          {/* Cleaning action (move-out) */}
-          {moveOutId && onCleaningStatusChange && (
+          {hasCleaning && (
             <DropdownMenuItem onClick={() => setActiveDialog('cleaning')}>
               <SprayCan className="h-4 w-4 mr-2" />
-              Städkontroll{moveOutName ? ` – ${moveOutName}` : ''}
+              Städkontroll
             </DropdownMenuItem>
           )}
-          {/* Contact action (move-in) */}
-          {moveInId && onContactStatusChange && (
+          {hasContact && (
             <DropdownMenuItem onClick={() => setActiveDialog('contact')}>
               <Phone className="h-4 w-4 mr-2" />
-              Kontakt{moveInName ? ` – ${moveInName}` : ''}
+              Kontakt
             </DropdownMenuItem>
           )}
-          {/* Separator if we have both action types and notes */}
-          {(moveOutId || moveInId) && (moveOutId && onCleaningStatusChange || moveInId && onContactStatusChange) && (
-            <DropdownMenuSeparator />
-          )}
-          {/* Notes */}
-          {moveOutId && (
-            <DropdownMenuItem
-              onClick={() => { setNoteTarget({ id: moveOutId, name: moveOutName ?? 'Utflytt' }); setActiveDialog('note'); }}
-            >
-              <StickyNote className="h-4 w-4 mr-2" />
-              Notering utflytt{moveOutName ? ` – ${moveOutName}` : ''}
-            </DropdownMenuItem>
-          )}
-          {moveInId && (
-            <DropdownMenuItem
-              onClick={() => { setNoteTarget({ id: moveInId, name: moveInName ?? 'Inflytt' }); setActiveDialog('note'); }}
-            >
-              <StickyNote className="h-4 w-4 mr-2" />
-              Notering inflytt{moveInName ? ` – ${moveInName}` : ''}
-            </DropdownMenuItem>
-          )}
-          {!moveOutId && !moveInId && (
-            <DropdownMenuItem disabled>Inga åtgärder</DropdownMenuItem>
-          )}
+          <DropdownMenuItem onClick={() => setActiveDialog('note')}>
+            <StickyNote className="h-4 w-4 mr-2" />
+            Notering
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
       {/* Note dialog */}
-      <Dialog open={activeDialog === 'note' && !!noteTarget} onOpenChange={(open) => !open && handleClose()}>
+      <Dialog open={activeDialog === 'note'} onOpenChange={(open) => !open && handleClose()}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Notering – {noteTarget?.name}</DialogTitle>
+            <DialogTitle>Notering — {tenantName}</DialogTitle>
           </DialogHeader>
           <Textarea
             placeholder="Skriv din notering här..."
             className="min-h-[120px]"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={noteContent}
+            onChange={(e) => setNoteContent(e.target.value)}
           />
           <DialogFooter>
             <Button variant="outline" onClick={handleClose}>Avbryt</Button>
-            <Button onClick={handleSave} disabled={!content.trim()} className="flex items-center gap-1">
+            <Button onClick={handleNoteSave} disabled={!noteContent.trim()} className="flex items-center gap-1">
               <Save className="h-4 w-4" />
               Spara
             </Button>
@@ -159,7 +131,7 @@ export function TurnoverRowActions({
         <CleaningEditDialog
           open
           onOpenChange={(o) => !o && setActiveDialog(null)}
-          tenantName={moveOutName ?? 'Utflytt'}
+          tenantName={tenantName}
           status={cleaningStatus}
           bookedDate={cleaningBookedDate}
           approvedDate={cleaningApprovedDate}
@@ -173,7 +145,7 @@ export function TurnoverRowActions({
         <ContactEditDialog
           open
           onOpenChange={(o) => !o && setActiveDialog(null)}
-          tenantName={moveInName ?? 'Inflytt'}
+          tenantName={tenantName}
           status={contactStatus}
           attempts={contactAttempts ?? 0}
           visitBookedDate={visitBookedDate}
