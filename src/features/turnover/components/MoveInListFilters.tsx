@@ -1,13 +1,16 @@
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface MoveInListFiltersProps {
+  searchQuery: string;
+  onSearchQueryChange: (value: string) => void;
   startDate: Date;
   endDate: Date;
   onStartDateChange: (date: Date) => void;
@@ -21,6 +24,8 @@ interface MoveInListFiltersProps {
 }
 
 export function MoveInListFilters({
+  searchQuery,
+  onSearchQueryChange,
   startDate,
   endDate,
   onStartDateChange,
@@ -33,7 +38,17 @@ export function MoveInListFilters({
   onDistrictChange,
 }: MoveInListFiltersProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
+    <div className="space-y-3">
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Sök på adress, hyresgäst, lägenhetskod, kontraktsnummer..."
+          value={searchQuery}
+          onChange={(e) => onSearchQueryChange(e.target.value)}
+          className="pl-10"
+        />
+      </div>
+      <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -103,6 +118,7 @@ export function MoveInListFilters({
           ))}
         </SelectContent>
       </Select>
+    </div>
     </div>
   );
 }
