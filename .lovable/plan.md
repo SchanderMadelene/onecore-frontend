@@ -1,57 +1,45 @@
 
 
-## Byt ⋯-meny till redigerings-ikon med samlad modal
+# Anonymisera mockdata i ut- och inflyttslistan
 
-Ersätt dropdown-menyn (MoreHorizontal) med en penna-ikon (Pencil) som öppnar **en enda modal** med samtliga redigerbara fält för den hyresgästen.
+Ersätter alla `tenantName` och `tenantPhone` i filen `src/features/turnover/data/mock-move-in-list.ts` med tydligt fiktiva värden. Adresser, kontraktsnummer och övrig data behålls som de är (de behövs för att tabellen ska se realistisk ut).
 
-### Nya komponenter
+## Ändringar
 
-**1. `MoveOutEditDialog.tsx`** -- samlad modal for utflyttshyresgäst
-- Rubrik: "Redigera utflytt -- [hyresgästnamn]"
-- Innehall:
-  - **Stadkontroll**: Status-select + datumvaljare (vid bokad/omkontroll) + godkannandedatum (vid godkand)
-  - **Notering**: Textfalt for att lagga till notering
-- Spara-knapp committar allt och stanger
+**Fil:** `src/features/turnover/data/mock-move-in-list.ts`
 
-**2. `MoveInEditDialog.tsx`** -- samlad modal for inflyttshyresgast
-- Rubrik: "Redigera inflytt -- [hyresgastnamn]"
-- Innehall:
-  - **Kontakt**: Status-select (framat-only) + antal forsok (vid ej nadd) + datum+tid (vid besok bokat)
-  - **Namn/Port**: Checkbox
-  - **Valkommen hem**: Select (ingen/digital/manuell)
-  - **Notering**: Textfalt
-- Spara-knapp committar allt och stanger
+Alla 28 poster (14 utflyttningar + 14 inflyttningar) får nya fiktiva namn och telefonnummer:
 
-### Andringar i befintliga filer
+| ID | Nuvarande namn | Nytt namn | Nytt telefonnr |
+|----|----------------|-----------|----------------|
+| mil-001 | Lindberg Maria | Ekberg Maja | 070-111 11 11 |
+| mil-002 | Skyddad Identitet | Skyddad Identitet *(behålls)* | 070-000 00 00 *(behålls)* |
+| mil-003 | Axelsson André | Holmgren Anton | 070-222 22 22 |
+| mil-004 | Westin Tomas | Vikström Tore | 070-333 33 33 |
+| mil-005 | Johansson Lars | Falk Lennart | 070-444 44 44 |
+| mil-006 | Pettersson Eva | Björk Elsa | 070-555 55 55 |
+| mil-007 | Nilsson Fatima | Nordlund Fatou | 070-666 66 66 |
+| mil-008 | Bergström Karin | Dahl Klara | 070-777 77 77 |
+| mil-009 | Eriksson Sven | Hagen Stefan | 070-888 88 88 |
+| mil-010 | Gustafsson Mikael | Eklund Martin | 070-999 99 99 |
+| mil-011 | Olsson Henrik | Rydberg Hugo | 070-121 21 21 |
+| mil-012 | Ström Anna | Lind Astrid | 070-131 31 31 |
+| mil-013 | Sandberg Lena | Kvarnström Lotta | 070-141 41 41 |
+| mil-014 | Dahlin Per | Forsell Patrik | 070-151 51 51 |
+| mil-020 | Khalil Mohammed | Osman Malik | 070-161 61 61 |
+| mil-021 | Ahmed Sameer | Yilmaz Samir | 070-171 71 71 |
+| mil-022 | Li Meenah | Tran Mai | 070-181 81 81 |
+| mil-023 | Al Hendi Sara | Bakir Selma | 070-191 91 91 |
+| mil-024 | Khawam Rachid | Haddad Rami | 070-212 12 12 |
+| mil-025 | Sjögren Lisa | Åberg Linnea | 070-232 32 32 |
+| mil-026 | Labo Yasmin | Abdi Yara | 070-242 42 42 |
+| mil-027 | Andersson Johan | Granberg Joel | 070-252 52 52 |
+| mil-028 | Tesfay Kokob | Tekie Kemal | 070-262 62 62 |
+| mil-029 | Andersson Morgan | Sjöblom Mattias | 070-272 72 72 |
+| mil-030 | Mohamed Samira | Hussein Sabina | 070-282 82 82 |
+| mil-031 | Hemström Billy | Wiklund Björn | 070-292 92 92 |
+| mil-032 | Berggren David | Nyman Daniel | 070-303 03 03 |
+| mil-033 | Mirembe Rebecca | Kamara Rosa | 070-313 13 13 |
 
-**`TurnoverRowActions.tsx`** -- refaktoreras helt:
-- Ta bort DropdownMenu
-- Ersatt med en enkel `Button` med `Pencil`-ikon
-- Klick oppnar ratt dialog baserat pa props (move-out eller move-in)
-- Notering integreras i den samlade modalen istallet for separat dialog
-- Nya props for Namn/Port och Valkommen hem (for move-in)
-
-**`CombinedTurnoverTable.tsx`**:
-- **Desktop**: Ta bort inline `ChecklistCell` (Namn/Port) och `WelcomeHomeCell` -- dessa flyttar in i modalen. Kolumnerna kan antingen tas bort eller visa read-only varden.
-- Skicka Namn/Port- och Valkommen hem-callbacks till `TurnoverRowActions` for move-in
-- **Mobil**: Samma -- ta bort inline-kontroller, visa read-only varden, redigering via penna-ikonen
-
-**`CleaningEditDialog.tsx` och `ContactEditDialog.tsx`**:
-- Behalls som byggstenar -- importeras i de nya samlade dialogerna, eller sa flyttas logiken direkt in i de nya komponenterna.
-
-### Visuellt resultat (desktop)
-
-```text
-| Uppgang | Typ | Hyresgast (ut) | Sista deb. | Stadkontr.    | [pencil] | Hyresgast (in) | Kontrakt | Kontakt          | Namn/Port | Valkommen hem | [pencil] |
-| Storg 1 | 2rk | Svensson Eva   | 31 mar     | [Bokad 20mar] |    ✏     | Andersson K    | 1 apr    | [Besok bokat..] |    ✓      |   Digital     |    ✏     |
-```
-
-Namn/Port och Valkommen hem visas som read-only text/ikon i tabellen. All redigering sker i modalen.
-
-### Teknisk approach
-
-- De samlade dialogerna hanterar temporar local state for samtliga falt
-- Vid "Spara" anropas alla relevanta callbacks pa en gang
-- Pencil-ikonen ersatter MoreHorizontal -- samma storlek (h-8 w-8 ghost button)
-- Inga andringar i typer eller hooks -- enbart UI-lagret
+Inga andra filer eller komponenter behöver ändras -- alla komponenter läser namn och telefonnummer dynamiskt från denna mockdata-fil.
 
