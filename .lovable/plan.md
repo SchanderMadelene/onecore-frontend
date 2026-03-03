@@ -1,43 +1,68 @@
 
 
-# Nyckelkolumn for ut- och inflytt
+# Konsolidera alla statusfärger till Badge-komponenten
 
-Lagger till en smal kolumn pa bade utflytt- och inflyttsidan som visar om nycklar har lamnats in respektive hamtats ut. Kolumnen far en nyckelikon som rubrik och en kompakt badge ("Ja"/"Nej") i varje rad.
+## Problemet
 
-## Datamodell
+Statusfärger (emerald, sky, amber, muted) är hårdkodade i minst 6 olika komponenter:
+- `CleaningStatusBadge.tsx`
+- `ContactStatusBadge.tsx`
+- `KeysHandledBadge.tsx`
+- `CleaningCheckCell.tsx`
+- `ContactStatusCell.tsx`
+- `WelcomeHomeCell.tsx`
 
-**Fil:** `src/features/turnover/types/move-in-list-types.ts`
+Alla använder samma färgpalett men kopierar klasserna lokalt. Badge-komponenten i `shared/ui/badge.tsx` vet inte om dessa färger.
 
-Lagg till ett nytt falt i `MoveInListChecklist`:
+## Lösning
+
+### 1. Lägg till statusvarianter i Badge-komponenten
+
+**Fil:** `src/shared/ui/badge.tsx`
+
+Lägg till fyra nya varianter som matchar det etablerade mönstret:
 
 ```text
-keysHandled: boolean   // true = nycklar inlamnade (utflytt) / uthamtade (inflytt)
+status-neutral:  bg-muted text-muted-foreground (ej påbörjad / ej kontaktad)
+status-info:     bg-sky-100 text-sky-800         (bokad / pågående)
+status-warning:  bg-amber-100 text-amber-800     (omkontroll / ej nådd)
+status-success:  bg-emerald-100 text-emerald-800 (godkänd / genomfört / ja)
 ```
 
-## Mockdata
+Justera även bas-klasserna så att padding och font-weight matchar det som feature-komponenterna redan använder (`px-2.5 py-1 text-xs font-medium`). De befintliga varianterna (`default`, `secondary`, etc.) behåller sin nuvarande styling.
 
-**Fil:** `src/features/turnover/data/mock-move-in-list.ts`
+### 2. Refaktorera CleaningStatusBadge
 
-Lagg till `keysHandled: true/false` i varje posts checklist-objekt. Satt nagra till `true` och resten till `false` for variation.
+Byt ut `<span>` mot `<Badge>` med rätt variant-mappning:
+- `not_done` -> `status-neutral`
+- `booked` -> `status-info`
+- `approved` -> `status-success`
+- `reinspection` -> `status-warning`
 
-## Tabell (desktop)
+### 3. Refaktorera ContactStatusBadge
 
-**Fil:** `src/features/turnover/components/CombinedTurnoverTable.tsx`
+Samma mönster:
+- `not_contacted` -> `status-neutral`
+- `not_reached` -> `status-warning`
+- `visit_booked` -> `status-info`
+- `visit_done` -> `status-success`
 
-Utflyttsidan -- ny kolumn mellan "Stadkontr." och noteringskolumnen:
-- Rubrik: nyckelikon (`Key` fran lucide-react), ingen text, `w-[52px]` och `text-center`
-- Cell: badge med "Ja" (gron/success) eller "Nej" (outline/gra), centrerad
+### 4. Refaktorera KeysHandledBadge
 
-Inflyttsidan -- ny kolumn mellan "Kontakt" och "Namn/Port":
-- Samma rubrik och badge-logik
+Byt ut `<span>` mot `<Badge>`:
+- `handled: true` -> `status-success`
+- `handled: false` -> `status-neutral`
 
-Kolumnerna anvander minimal bredd (`w-[52px]`) och centrerad text for att inte ta onodigt utrymme.
+### 5. Refaktorera CleaningCheckCell och ContactStatusCell
 
-## Mobilvy
+Samma mappning som ovan. Dessa har även `border-*` klasser -- de kan läggas via `className`-prop om de behövs för cellkontexten.
 
-I `MobileAccordion`-innehallet laggs en rad per sektion (utflytt/inflytt) som visar nyckelstatus med badge, liknande hur "Namn/Port" redan visas.
+### 6. Uppdatera BadgeShowcase
 
-## Teknisk detalj
+Lägg till en sektion "Statusbadges" med alla fyra nya varianter så att designsystemet dokumenterar dem.
 
-Importerar `Key` fran `lucide-react` och ateranvander befintlig `Badge` fran `@/shared/ui/badge` med variant `success` for "Ja" och `outline` for "Nej".
+## Resultat
 
+- **En källa till sanning** för statusfärger: `badge.tsx`
+- Alla feature-komponenter använder `<Badge variant="status-success">` istället för hårdkodade Tailwind-klasser
+- Nya features som behöver statusbadges importerar Badge direkt -- inga fler one-off-komponenter med kopierade färger
