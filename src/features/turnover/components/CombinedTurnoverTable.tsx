@@ -244,7 +244,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
     <Card>
       <CardContent className="p-0">
         <div className="rounded-md border-0 overflow-x-auto">
-          <Table>
+          <Table className="[&_th]:px-2 [&_th]:py-1.5 [&_td]:px-2 [&_td]:py-1.5">
             <TableHeader>
               <TableRow>
                 <TableHead className="whitespace-nowrap">Uppgång</TableHead>
@@ -298,23 +298,18 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   {/* Move-out tenant */}
                   <TableCell className="border-l-2 border-border">
                     {row.moveOut ? (
-                      <div className="py-1">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveOut.tenantName}</span>
-                          <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
-                          {row.moveOut.hasTenantNote && (
-                            <Badge variant="muted" size="icon" title="Notering på hyresgäst">
-                              <MessageSquare className="h-3 w-3" />
-                            </Badge>
-                          )}
-                        </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm">{row.moveOut.tenantName}</span>
+                        <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                        {row.moveOut.hasTenantNote && (
+                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
+                            <MessageSquare className="h-3 w-3" />
+                          </Badge>
+                        )}
                         {row.moveOut.tenantPhone && (
-                          <div className="flex items-center gap-1 mt-1.5">
-                            <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
-                            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
-                              <Phone className="h-3.5 w-3.5" />
-                            </Button>
-                          </div>
+                          <a href={`tel:${row.moveOut.tenantPhone}`} className="text-muted-foreground hover:text-primary" title={row.moveOut.tenantPhone}>
+                            <Phone className="h-3 w-3" />
+                          </a>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
@@ -364,23 +359,18 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   {/* Move-in tenant */}
                   <TableCell className="border-l-2 border-border">
                     {row.moveIn ? (
-                      <div className="py-1">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveIn.tenantName}</span>
-                          <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
-                          {row.moveIn.hasTenantNote && (
-                            <Badge variant="muted" size="icon" title="Notering på hyresgäst">
-                              <MessageSquare className="h-3 w-3" />
-                            </Badge>
-                          )}
-                        </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm">{row.moveIn.tenantName}</span>
+                        <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                        {row.moveIn.hasTenantNote && (
+                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
+                            <MessageSquare className="h-3 w-3" />
+                          </Badge>
+                        )}
                         {row.moveIn.tenantPhone && (
-                          <div className="flex items-center gap-1 mt-1.5">
-                            <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
-                            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
-                              <Phone className="h-3.5 w-3.5" />
-                            </Button>
-                          </div>
+                          <a href={`tel:${row.moveIn.tenantPhone}`} className="text-muted-foreground hover:text-primary" title={row.moveIn.tenantPhone}>
+                            <Phone className="h-3 w-3" />
+                          </a>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
