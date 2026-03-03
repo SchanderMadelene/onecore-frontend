@@ -1,41 +1,48 @@
 
 
-# Favicon med stöd för dark/light mode
+# Byt ikon och koppla ihop badge med infotext
 
-## Vad som görs
+## Vad som andras
 
-Uppdaterar `public/favicon.svg` så att OneCore-logotypen automatiskt anpassar sig till webbläsarens dark/light mode via CSS `prefers-color-scheme` inuti SVG-filen.
+1. Byt ut `Clock`-ikonen mot `AlertCircle` (en cirkel med utropstecken) -- mer universellt "anmarkning"-symbol.
+2. Lagg samma `AlertCircle`-ikon bredvid infotexten "Betald X dagar efter forfall..." i den expanderade vyn, sa att man tydligt ser kopplingen mellan ikonen i badgen och forklaringstexten.
 
-## Hur det fungerar
+## Design
 
-SVG-formatet stöder inbäddad CSS med media queries. Genom att lägga till en `<style>`-tagg i SVG-filen kan vi ändra `fill`-färgen beroende på om användaren har ljust eller mörkt läge i sin webbläsare.
+```text
+Badge:
+[Betald ⚠]
 
-- **Ljust läge**: Logotypen visas i blått (`#1200FF`) -- som idag
-- **Mörkt läge**: Logotypen visas i vitt (`#FFFFFF`) för synlighet mot mörk bakgrund
+Expanderad rad:
+⚠ Betald 5 dagar efter forfall (forfall: 2025-05-30)
+```
+
+Ikonen i badgen arver badgens textfarg (vit i success-badge). Ikonen vid infotexten far `text-destructive` som matchar textfargen dar.
 
 ## Tekniska detaljer
 
-### Ändrad fil
+### Andrad fil
 
-| Fil | Ändring |
+| Fil | Andring |
 |-----|---------|
-| `public/favicon.svg` | Lägg till `<style>` med `prefers-color-scheme: dark` som byter fill-färg |
+| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Byt `Clock` till `AlertCircle`, lagg till ikon vid infotexterna |
 
-### Resultat i SVG-filen
+### Andringar
 
-```xml
-<svg ...>
-  <style>
-    path { fill: #1200FF; }
-    @media (prefers-color-scheme: dark) {
-      path { fill: #FFFFFF; }
-    }
-  </style>
-  <!-- befintlig path utan fill-attribut -->
-</svg>
+1. **Import (rad 5)**: Byt `Clock` mot `AlertCircle` i lucide-react-importen.
+
+2. **Badge -- mobilvy (rad 94) och desktopvy (rad 400)**: Byt `Clock` till `AlertCircle`:
+```tsx
+<AlertCircle className="h-3 w-3" />
 ```
 
-### Webbläsarstöd
+3. **Infotext i expanderad vy (4 stallen: rad 263, 306, 557, 600)**: Lagg till ikonen och wrappa i flex-container. Exempel:
+```tsx
+<div className="text-xs text-destructive px-3 py-2 flex items-center gap-1">
+  <AlertCircle className="h-3 w-3 shrink-0" />
+  Betald {getDaysLate(invoice)} dagar efter forfall (forfall: {invoice.dueDate})
+</div>
+```
 
-SVG-favicons med `prefers-color-scheme` stöds av Chrome, Firefox, Edge och Safari (moderna versioner). Ingen ändring behövs i `index.html` -- den befintliga `<link>`-taggen fungerar som den är.
+Samma monster for alla 4 forekomster (2 mobil, 2 desktop), med respektive padding/margin-klasser bevarade.
 

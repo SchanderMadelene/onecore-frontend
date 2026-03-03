@@ -382,6 +382,115 @@ export const getMockInvoicesForCustomer = (customerId: string): Invoice[] => {
           printGroup: "A"
         }
       ]
+    },
+    // Betald för sent – 5 dagar efter förfall
+    {
+      invoiceNumber: "552510354505612",
+      invoiceDate: "2025-05-15",
+      dueDate: "2025-05-30",
+      amount: 7689.47,
+      balance: 0,
+      invoiceType: "Avi",
+      paymentStatus: "Betald",
+      text: "",
+      inCollection: false,
+      paymentDate: "2025-06-04",
+      paidAmount: 7689.47,
+      paymentSource: "OCR",
+      lineItems: [
+        {
+          amount: 0,
+          vat: 0,
+          total: 0,
+          rentalArticle: "",
+          description: "211-002-02-0101/04, STÅNGJÄRNSGATAN 24",
+          printGroup: ""
+        },
+        {
+          amount: 7689.47,
+          vat: 0,
+          total: 7689.47,
+          rentalArticle: "HYRAB_",
+          description: "Hyra bostad",
+          printGroup: "A"
+        }
+      ]
+    },
+    // Betald för sent – 12 dagar efter förfall
+    {
+      invoiceNumber: "552510354400509",
+      invoiceDate: "2025-04-15",
+      dueDate: "2025-04-30",
+      amount: 7967,
+      balance: 0,
+      invoiceType: "Avi",
+      paymentStatus: "Betald",
+      text: "",
+      inCollection: false,
+      paymentDate: "2025-05-12",
+      paidAmount: 7967,
+      paymentSource: "Autogiro",
+      lineItems: [
+        {
+          amount: 0,
+          vat: 0,
+          total: 0,
+          rentalArticle: "",
+          description: "211-002-02-0101/04, STÅNGJÄRNSGATAN 24",
+          printGroup: ""
+        },
+        {
+          amount: 7689.47,
+          vat: 0,
+          total: 7689.47,
+          rentalArticle: "HYRAB_",
+          description: "Hyra bostad",
+          printGroup: "A"
+        },
+        {
+          amount: 277.53,
+          vat: 0,
+          total: 277.53,
+          rentalArticle: "HYRTIL",
+          description: "Tillägg",
+          printGroup: "A"
+        }
+      ]
+    },
+    // Delvis betald – första betalning 3 dagar för sent
+    {
+      invoiceNumber: "552510354300406",
+      invoiceDate: "2025-03-15",
+      dueDate: "2025-03-30",
+      amount: 7689.47,
+      balance: 3689.47,
+      invoiceType: "Avi",
+      paymentStatus: "Delvis betald",
+      text: "",
+      inCollection: false,
+      paidAmount: 4000,
+      paymentEvents: [
+        { date: "2025-04-02", amount: 2500, source: "OCR" },
+        { date: "2025-04-10", amount: 1500, source: "OCR" }
+      ],
+      lineItems: [
+        {
+          amount: 0,
+          vat: 0,
+          total: 0,
+          rentalArticle: "",
+          description: "211-002-02-0101/04, STÅNGJÄRNSGATAN 24",
+          printGroup: ""
+        },
+        {
+          amount: 7689.47,
+          vat: 0,
+          total: 7689.47,
+          rentalArticle: "HYRAB_",
+          description: "Hyra bostad",
+          printGroup: "A"
+        }
+      ]
     }
   ];
 };

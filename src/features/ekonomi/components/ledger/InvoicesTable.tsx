@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, FileText, Link2 } from "lucide-react";
+import { AlertCircle, ChevronDown, ChevronRight, FileText, Link2 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import type { Invoice } from "@/features/ekonomi/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { differenceInDays, parseISO } from "date-fns";
+import { exportToExcel, type ExcelColumn } from "@/shared/utils/excelExport";
+import { ExportButton } from "@/components/ui/export-button";
 
 interface InvoicesTableProps {
   invoices: Invoice[];
@@ -13,7 +16,50 @@ interface InvoicesTableProps {
 
 export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
   const [expandedInvoice, setExpandedInvoice] = useState<string | null>(null);
+  const [selectedInvoices, setSelectedInvoices] = useState<Set<string>>(new Set());
   const isMobile = useIsMobile();
+
+  const toggleSelect = useCallback((invoiceNumber: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setSelectedInvoices(prev => {
+      const next = new Set(prev);
+      if (next.has(invoiceNumber)) next.delete(invoiceNumber);
+      else next.add(invoiceNumber);
+      return next;
+    });
+  }, []);
+
+  const toggleSelectAll = useCallback(() => {
+    setSelectedInvoices(prev =>
+      prev.size === invoices.length
+        ? new Set()
+        : new Set(invoices.map(i => i.invoiceNumber))
+    );
+  }, [invoices]);
+
+  const handleExport = useCallback(() => {
+    const toExport = selectedInvoices.size > 0
+      ? invoices.filter(i => selectedInvoices.has(i.invoiceNumber))
+      : invoices;
+
+    const columns: ExcelColumn<Invoice>[] = [
+      { key: 'invoiceNumber', header: 'Fakturanummer' },
+      { key: 'invoiceDate', header: 'Fakturadatum' },
+      { key: 'dueDate', header: 'Förfallodatum' },
+      { key: 'amount', header: 'Belopp', getValue: i => i.amount },
+      { key: 'balance', header: 'Saldo', getValue: i => i.balance },
+      { key: 'invoiceType', header: 'Fakturatyp' },
+      { key: 'paymentStatus', header: 'Betalstatus' },
+      { key: 'inCollection', header: 'Inkasso', getValue: i => i.inCollection ? 'Ja' : 'Nej' },
+      { key: 'deferralDate', header: 'Anståndsdatum', getValue: i => i.deferralDate || '' },
+      { key: 'paymentDate', header: 'Betalningsdatum', getValue: i => i.paymentDate || '' },
+    ];
+
+    exportToExcel(toExport, columns, {
+      filename: `fakturor-${new Date().toISOString().slice(0, 10)}`,
+      sheetName: 'Fakturor',
+    });
+  }, [invoices, selectedInvoices]);
 
   const formatCurrency = (amount: number) => {
     return amount.toFixed(2).replace('.', ',') + ' SEK';
@@ -44,6 +90,15 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
     setExpandedInvoice(expandedInvoice === invoiceNumber ? null : invoiceNumber);
   };
 
+  const getDaysLate = (invoice: Invoice): number | null => {
+    const payDate = invoice.paymentEvents && invoice.paymentEvents.length > 0
+      ? invoice.paymentEvents[0].date
+      : invoice.paymentDate;
+    if (!payDate) return null;
+    const days = differenceInDays(parseISO(payDate), parseISO(invoice.dueDate));
+    return days > 0 ? days : null;
+  };
+
   const getOverdueDays = (dueDate: string): number => {
     const today = new Date();
     const due = parseISO(dueDate);
@@ -66,6 +121,23 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
   if (isMobile) {
     return (
       <div className="space-y-3">
+        {/* Export bar */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              checked={selectedInvoices.size === invoices.length && invoices.length > 0}
+              onCheckedChange={toggleSelectAll}
+            />
+            <span className="text-sm text-muted-foreground">
+              {selectedInvoices.size > 0 ? `${selectedInvoices.size} valda` : 'Välj alla'}
+            </span>
+          </div>
+          <ExportButton
+            onExport={handleExport}
+            count={selectedInvoices.size > 0 ? selectedInvoices.size : invoices.length}
+            disabled={invoices.length === 0}
+          />
+        </div>
         {invoices.map((invoice) => {
           const isExpanded = expandedInvoice === invoice.invoiceNumber;
           return (
@@ -75,12 +147,23 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 onClick={() => toggleExpand(invoice.invoiceNumber)}
               >
                 <div className="flex items-start justify-between mb-2">
-                  <div className="space-y-1">
-                    <div className="font-medium">{invoice.invoiceNumber}</div>
-                    <div className="text-sm text-muted-foreground">{invoice.invoiceType}</div>
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      checked={selectedInvoices.has(invoice.invoiceNumber)}
+                      onCheckedChange={() => toggleSelect(invoice.invoiceNumber)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="mt-1"
+                    />
+                    <div className="space-y-1">
+                      <div className="font-medium">{invoice.invoiceNumber}</div>
+                      <div className="text-sm text-muted-foreground">{invoice.invoiceType}</div>
+                    </div>
                   </div>
-                  <Badge variant={getStatusVariant(invoice.paymentStatus)}>
+                  <Badge variant={getStatusVariant(invoice.paymentStatus)} className="gap-1">
                     {getStatusText(invoice)}
+                    {getDaysLate(invoice) && (
+                      <AlertCircle className="h-3 w-3" />
+                    )}
                   </Badge>
                 </div>
                 <div className="space-y-1 text-sm">
@@ -247,6 +330,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               </tr>
                             </tbody>
                           </table>
+                          {getDaysLate(invoice) && (
+                            <div className="text-xs text-destructive px-3 py-2 flex items-center gap-1">
+                              <AlertCircle className="h-3 w-3 shrink-0" />
+                              Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
+                            </div>
+                          )}
                         </div>
                       )}
                       
@@ -285,6 +374,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                               <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                             </div>
                           </div>
+                          {getDaysLate(invoice) && (
+                            <div className="text-xs text-destructive mt-2 flex items-center gap-1">
+                              <AlertCircle className="h-3 w-3 shrink-0" />
+                              Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
+                            </div>
+                          )}
                           {invoice.invoiceType === 'Ströfaktura' && (
                             <Button 
                               variant="outline" 
@@ -337,10 +432,34 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
   }
 
   return (
+    <div className="space-y-3">
+      {/* Export bar */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Checkbox
+            checked={selectedInvoices.size === invoices.length && invoices.length > 0}
+            onCheckedChange={toggleSelectAll}
+          />
+          <span className="text-sm text-muted-foreground">
+            {selectedInvoices.size > 0 ? `${selectedInvoices.size} valda` : 'Välj alla'}
+          </span>
+        </div>
+        <ExportButton
+          onExport={handleExport}
+          count={selectedInvoices.size > 0 ? selectedInvoices.size : invoices.length}
+          disabled={invoices.length === 0}
+        />
+      </div>
     <div className="rounded-lg border">
       <table className="w-full">
         <thead>
           <tr className="border-b bg-muted/50">
+            <th className="p-3 w-10">
+              <Checkbox
+                checked={selectedInvoices.size === invoices.length && invoices.length > 0}
+                onCheckedChange={toggleSelectAll}
+              />
+            </th>
             <th className="text-left p-3 text-sm font-medium">Fakturanummer</th>
             <th className="text-left p-3 text-sm font-medium">Fakturadatum</th>
             <th className="text-left p-3 text-sm font-medium">Förfallodatum</th>
@@ -363,6 +482,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   className="border-b hover:bg-muted/30 cursor-pointer"
                   onClick={() => toggleExpand(invoice.invoiceNumber)}
                 >
+                  <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                    <Checkbox
+                      checked={selectedInvoices.has(invoice.invoiceNumber)}
+                      onCheckedChange={() => toggleSelect(invoice.invoiceNumber)}
+                    />
+                  </td>
                   <td className="p-3 text-sm">{invoice.invoiceNumber}</td>
                   <td className="p-3 text-sm">{invoice.invoiceDate}</td>
                   <td className="p-3 text-sm">{invoice.dueDate}</td>
@@ -372,8 +497,11 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                   <td className="p-3 text-sm">{invoice.inCollection ? 'Ja' : 'Nej'}</td>
                   <td className="p-3 text-sm">{invoice.deferralDate || '–'}</td>
                   <td className="p-3 text-sm">
-                    <Badge variant={getStatusVariant(invoice.paymentStatus)}>
+                    <Badge variant={getStatusVariant(invoice.paymentStatus)} className="gap-1">
                       {getStatusText(invoice)}
+                      {getDaysLate(invoice) && (
+                        <AlertCircle className="h-3 w-3" />
+                      )}
                     </Badge>
                   </td>
                   <td className="p-3">
@@ -386,7 +514,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                 </tr>
                 {isExpanded && invoice.lineItems.length > 0 && (
                 <tr>
-                  <td colSpan={10} className="p-0">
+                  <td colSpan={11} className="p-0">
                     <div className="bg-muted/50 border-l-4 border-primary/30 p-4 ml-4 space-y-4">
                       {/* Statisk info */}
                       {((invoice.text && invoice.paymentStatus !== 'Kredit') || 
@@ -528,6 +656,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                   </tr>
                                 </tbody>
                               </table>
+                              {getDaysLate(invoice) && (
+                                <div className="text-xs text-destructive px-3 py-2 flex items-center gap-1">
+                                  <AlertCircle className="h-3 w-3 shrink-0" />
+                                  Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
+                                </div>
+                              )}
                             </div>
                           )}
                           
@@ -566,6 +700,12 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                   <span className="font-semibold text-success">{formatCurrency(invoice.paidAmount)}</span>
                                 </div>
                               </div>
+                              {getDaysLate(invoice) && (
+                              <div className="text-xs text-destructive mt-2 flex items-center gap-1">
+                                  <AlertCircle className="h-3 w-3 shrink-0" />
+                                  Betald {getDaysLate(invoice)} dagar efter förfall (förfall: {invoice.dueDate})
+                                </div>
+                              )}
                               {invoice.invoiceType === 'Ströfaktura' && (
                                 <Button 
                                   variant="outline" 
@@ -622,6 +762,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
           })}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };
