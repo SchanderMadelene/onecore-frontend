@@ -1,5 +1,6 @@
 import { StickyNote } from 'lucide-react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/ui/hover-card';
+import { Badge } from '@/shared/ui/badge';
 import { TurnoverNote } from '../types/turnover-note-types';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -14,8 +15,10 @@ export function TurnoverNoteIndicator({ notes }: TurnoverNoteIndicatorProps) {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <button className="inline-flex items-center justify-center rounded-md h-7 w-7 hover:bg-muted transition-colors" title="Har noteringar">
-          <StickyNote className="h-3.5 w-3.5 text-muted-foreground" />
+        <button className="inline-flex items-center justify-center" title="Har noteringar">
+          <Badge variant="muted" size="icon">
+            <StickyNote className="h-3 w-3" />
+          </Badge>
         </button>
       </HoverCardTrigger>
       <HoverCardContent align="start" className="w-72">
