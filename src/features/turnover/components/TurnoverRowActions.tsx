@@ -28,12 +28,14 @@ interface MoveInProps {
   nameAndIntercomDone: boolean;
   welcomeHomeMethod: WelcomeHomeMethod;
   keysHandled: boolean;
+  hasQuickMoveIn: boolean;
   onContactStatusChange: (status: ContactStatus) => void;
   onContactAttemptsChange: (count: number) => void;
   onVisitBookedDateChange: (datetime: string | undefined) => void;
   onNameAndIntercomChange: (checked: boolean) => void;
   onWelcomeHomeChange: (method: WelcomeHomeMethod) => void;
   onKeysHandledChange: (handled: boolean) => void;
+  onQuickMoveInChange: (value: boolean) => void;
 }
 
 type TurnoverRowActionsProps =
@@ -76,12 +78,14 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           nameAndIntercomDone={props.nameAndIntercomDone}
           welcomeHomeMethod={props.welcomeHomeMethod}
           keysHandled={props.keysHandled}
+          hasQuickMoveIn={props.hasQuickMoveIn}
           onContactStatusChange={props.onContactStatusChange}
           onContactAttemptsChange={props.onContactAttemptsChange}
           onVisitBookedDateChange={props.onVisitBookedDateChange}
           onNameAndIntercomChange={props.onNameAndIntercomChange}
           onWelcomeHomeChange={props.onWelcomeHomeChange}
           onKeysHandledChange={props.onKeysHandledChange}
+          onQuickMoveInChange={props.onQuickMoveInChange}
           onAddNote={(content) => props.onAddNote(props.entryId, content)}
         />
       )}

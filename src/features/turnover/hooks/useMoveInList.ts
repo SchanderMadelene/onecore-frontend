@@ -157,6 +157,16 @@ export function useMoveInList() {
     );
   };
 
+  const updateQuickMoveIn = (entryId: string, value: boolean) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, hasQuickMoveIn: value }
+          : entry
+      )
+    );
+  };
+
   const availableKvvAreas = useMemo(() => {
     return [...new Set(entries.map(e => e.kvvArea))].sort();
   }, [entries]);
@@ -185,6 +195,7 @@ export function useMoveInList() {
     updateContactStatus,
     updateContactAttempts,
     updateVisitBookedDate,
+    updateQuickMoveIn,
     availableKvvAreas,
     availableDistricts,
   };

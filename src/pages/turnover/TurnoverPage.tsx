@@ -27,6 +27,7 @@ export default function TurnoverPage() {
     updateContactStatus,
     updateContactAttempts,
     updateVisitBookedDate,
+    updateQuickMoveIn,
     availableKvvAreas,
     availableDistricts,
   } = useMoveInList();
@@ -72,6 +73,7 @@ export default function TurnoverPage() {
           onContactStatusChange={updateContactStatus}
           onContactAttemptsChange={updateContactAttempts}
           onVisitBookedDateChange={updateVisitBookedDate}
+          onQuickMoveInChange={updateQuickMoveIn}
         />
       </div>
     </PageLayout>

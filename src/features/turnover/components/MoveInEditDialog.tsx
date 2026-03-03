@@ -35,12 +35,14 @@ interface MoveInEditDialogProps {
   nameAndIntercomDone: boolean;
   welcomeHomeMethod: WelcomeHomeMethod;
   keysHandled: boolean;
+  hasQuickMoveIn: boolean;
   onContactStatusChange: (status: ContactStatus) => void;
   onContactAttemptsChange: (count: number) => void;
   onVisitBookedDateChange: (datetime: string | undefined) => void;
   onNameAndIntercomChange: (checked: boolean) => void;
   onWelcomeHomeChange: (method: WelcomeHomeMethod) => void;
   onKeysHandledChange: (handled: boolean) => void;
+  onQuickMoveInChange: (value: boolean) => void;
   onAddNote: (content: string) => void;
 }
 
@@ -49,8 +51,9 @@ export function MoveInEditDialog({
   contactStatus: initialStatus, contactAttempts: initialAttempts, visitBookedDate: initialVisitDate,
   nameAndIntercomDone: initialNamePort, welcomeHomeMethod: initialWelcome,
   keysHandled: initialKeysHandled,
+  hasQuickMoveIn: initialQuickMoveIn,
   onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange,
-  onNameAndIntercomChange, onWelcomeHomeChange, onKeysHandledChange, onAddNote,
+  onNameAndIntercomChange, onWelcomeHomeChange, onKeysHandledChange, onQuickMoveInChange, onAddNote,
 }: MoveInEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [attempts, setAttempts] = useState(initialAttempts);
@@ -59,6 +62,7 @@ export function MoveInEditDialog({
   const [namePort, setNamePort] = useState(initialNamePort);
   const [welcomeHome, setWelcomeHome] = useState(initialWelcome);
   const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
+  const [quickMoveIn, setQuickMoveIn] = useState(initialQuickMoveIn);
   const [noteContent, setNoteContent] = useState('');
 
   const handleOpenChange = (o: boolean) => {
@@ -70,6 +74,7 @@ export function MoveInEditDialog({
       setNamePort(initialNamePort);
       setWelcomeHome(initialWelcome);
       setKeysHandled(initialKeysHandled);
+      setQuickMoveIn(initialQuickMoveIn);
       setNoteContent('');
     }
     onOpenChange(o);
@@ -90,6 +95,7 @@ export function MoveInEditDialog({
     onNameAndIntercomChange(namePort);
     onWelcomeHomeChange(welcomeHome);
     onKeysHandledChange(keysHandled);
+    onQuickMoveInChange(quickMoveIn);
     if (noteContent.trim()) {
       onAddNote(noteContent.trim());
     }
@@ -192,6 +198,12 @@ export function MoveInEditDialog({
           <div className="flex items-center gap-2">
             <Checkbox checked={keysHandled} onCheckedChange={(v) => setKeysHandled(v === true)} id="keysHandledIn" />
             <label htmlFor="keysHandledIn" className="text-sm font-medium cursor-pointer">Nycklar uthämtade</label>
+          </div>
+
+          {/* Quick move-in */}
+          <div className="flex items-center gap-2">
+            <Checkbox checked={quickMoveIn} onCheckedChange={(v) => setQuickMoveIn(v === true)} id="quickMoveIn" />
+            <label htmlFor="quickMoveIn" className="text-sm font-medium cursor-pointer">Snabb inflytt</label>
           </div>
 
           <Separator />
