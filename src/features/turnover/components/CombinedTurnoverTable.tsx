@@ -1,5 +1,5 @@
 import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
-import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare, ExternalLink } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
@@ -39,6 +39,18 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
   const isMobile = useIsMobile();
   const { getNotesForEntry, addNote } = useTurnoverNotes();
 
+  /** Derive residence detail URL from contract number, e.g. "211-080-02-0101/03" → "/properties/211-080/02/0101" */
+  const getResidenceUrl = (row: TurnoverRow): string | null => {
+    const contract = row.moveOut?.contractNumber ?? row.moveIn?.contractNumber;
+    if (!contract) return null;
+    const parts = contract.split('-');
+    if (parts.length < 4) return null;
+    const property = `${parts[0]}-${parts[1]}`;
+    const building = parts[2];
+    const residencePart = parts[3].split('/')[0];
+    return `/properties/${property}/${building}/${residencePart}`;
+  };
+
   if (entries.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
@@ -56,9 +68,18 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
     const items: MobileAccordionItem[] = entries.map(row => ({
       id: row.residenceKey,
       title: (
-        <div className="flex flex-col gap-0.5">
-          <span className="font-medium text-sm">{row.address}</span>
-          <span className="text-xs text-muted-foreground">{row.apartmentType} · {row.residenceCode}</span>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-col gap-0.5">
+            <span className="font-medium text-sm">{row.address}</span>
+            <span className="text-xs text-muted-foreground">{row.apartmentType} · {row.residenceCode}</span>
+          </div>
+          {getResidenceUrl(row) && (
+            <Button variant="outline" size="icon" className="h-8 w-8 shrink-0" asChild>
+              <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            </Button>
+          )}
         </div>
       ),
       content: (
@@ -261,7 +282,18 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
             <TableBody>
               {entries.map(row => (
                 <TableRow key={row.residenceKey}>
-                  <TableCell className="font-medium text-sm whitespace-nowrap">{row.address}</TableCell>
+                  <TableCell className="font-medium text-sm whitespace-nowrap">
+                    <div className="flex items-center gap-1.5">
+                      {row.address}
+                      {getResidenceUrl(row) && (
+                        <Button variant="outline" size="icon" className="h-7 w-7" asChild>
+                          <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
+                            <ExternalLink className="h-3.5 w-3.5" />
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  </TableCell>
                   <TableCell className="text-sm">{row.apartmentType}</TableCell>
                   {/* Move-out tenant */}
                   <TableCell className="border-l-2 border-border">
