@@ -49,7 +49,10 @@ interface RoleProviderProps {
 export const RoleProvider: React.FC<RoleProviderProps> = ({ children }) => {
   const [currentRole, setCurrentRole] = useState<UserRole>(() => {
     const saved = localStorage.getItem('onecore-dev-role');
-    return (saved as UserRole) || 'general';
+    if (saved && Object.prototype.hasOwnProperty.call(roleCardConfig, saved)) {
+      return saved as UserRole;
+    }
+    return 'general';
   });
 
   const [devModeEnabled, setDevModeEnabled] = useState(() => {
@@ -66,7 +69,7 @@ export const RoleProvider: React.FC<RoleProviderProps> = ({ children }) => {
   }, [devModeEnabled]);
 
   const isCardVisibleForRole = (cardId: string): boolean => {
-    const allowedCards = roleCardConfig[currentRole];
+    const allowedCards = roleCardConfig[currentRole] ?? roleCardConfig.general;
     // If allowedCards is empty (general or distriktschef), show all cards
     if (allowedCards.length === 0) return true;
     return allowedCards.includes(cardId);
