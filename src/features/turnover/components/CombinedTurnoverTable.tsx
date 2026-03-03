@@ -105,7 +105,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   />
                 </div>
                 <div className="flex items-center gap-2 pt-1">
-                  <Badge variant={row.moveOut.checklist.keysHandled ? "success" : "outline"} className="text-[10px] px-2 py-0.5">
+                  <Badge variant={row.moveOut.checklist.keysHandled ? "success" : "outline"}>
                     {row.moveOut.checklist.keysHandled ? "Ja" : "Nej"}
                   </Badge>
                   <span className="text-xs">Nycklar</span>
@@ -177,7 +177,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <span className="text-xs font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
                 </div>
                 <div className="flex items-center gap-2 pt-1">
-                  <Badge variant={row.moveIn.checklist.keysHandled ? "success" : "outline"} className="text-[10px] px-2 py-0.5">
+                  <Badge variant={row.moveIn.checklist.keysHandled ? "success" : "outline"}>
                     {row.moveIn.checklist.keysHandled ? "Ja" : "Nej"}
                   </Badge>
                   <span className="text-xs">Nycklar</span>
@@ -282,7 +282,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   {/* Move-out keys */}
                   <TableCell className="text-center">
                     {row.moveOut ? (
-                      <Badge variant={row.moveOut.checklist.keysHandled ? "success" : "outline"} className="text-[10px] px-2 py-0.5">
+                      <Badge variant={row.moveOut.checklist.keysHandled ? "success" : "outline"}>
                         {row.moveOut.checklist.keysHandled ? "Ja" : "Nej"}
                       </Badge>
                     ) : <span className="text-muted-foreground">–</span>}
@@ -361,7 +361,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   {/* Move-in keys */}
                   <TableCell className="text-center">
                     {row.moveIn ? (
-                      <Badge variant={row.moveIn.checklist.keysHandled ? "success" : "outline"} className="text-[10px] px-2 py-0.5">
+                      <Badge variant={row.moveIn.checklist.keysHandled ? "success" : "outline"}>
                         {row.moveIn.checklist.keysHandled ? "Ja" : "Nej"}
                       </Badge>
                     ) : <span className="text-muted-foreground">–</span>}
