@@ -14,6 +14,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Ekberg Maja',
     tenantPhone: '070-111 11 11',
     date: '2026-01-31',
+    hasTenantNote: true,
     checklist: { cleaningStatus: 'reinspection', cleaningCount: 2, cleaningBookedDate: '2026-02-05', contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: true },
   },
   {
@@ -226,6 +227,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Tran Mai',
     tenantPhone: '070-181 81 81',
     date: '2026-02-01',
+    hasTenantNote: true,
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_reached', contactAttempts: 3, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
