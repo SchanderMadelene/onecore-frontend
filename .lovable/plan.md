@@ -1,68 +1,57 @@
 
 
-## Flytta redigering till modaler -- read-only badges i tabellen
+## Byt ⋯-meny till redigerings-ikon med samlad modal
 
-Tabellen visar idag interaktiva dropdowns, datumväljare och räknare inline. Vi ersätter dessa med **klickbara read-only statusbadges** som öppnar redigeringsmodaler. Noteringsfunktionen via more-menyn behålls som den är.
-
-### Vad ändras
-
-**Tabellen (desktop och mobil) visar bara read-only badges:**
-- **Städkontr.** -- en färgad pill med statustext + ev. datum (ej klickbar dropdown, ej datumväljare)
-- **Kontakt** -- en färgad pill med statustext + ev. "2 ggr" eller "15 mar 10:00"
-- **Namn/Port** -- behålls som inline checkbox (snabbåtgärd, en enda toggle)
-- **Välkommen hem** -- behålls som inline dropdown (enkel select, inget extra UI)
-
-Badges blir **klickbara** och öppnar respektive modal direkt -- ingen omväg via more-menyn.
+Ersätt dropdown-menyn (MoreHorizontal) med en penna-ikon (Pencil) som öppnar **en enda modal** med samtliga redigerbara fält för den hyresgästen.
 
 ### Nya komponenter
 
-**1. `CleaningStatusBadge.tsx`** (read-only, klickbar)
-- Visar statusens pill-färg + label
-- Vid "Bokad"/"Omkontroll": visar datum bredvid
-- Vid "Godkänd": visar godkännandedatum
-- `onClick` triggar modal
+**1. `MoveOutEditDialog.tsx`** -- samlad modal for utflyttshyresgäst
+- Rubrik: "Redigera utflytt -- [hyresgästnamn]"
+- Innehall:
+  - **Stadkontroll**: Status-select + datumvaljare (vid bokad/omkontroll) + godkannandedatum (vid godkand)
+  - **Notering**: Textfalt for att lagga till notering
+- Spara-knapp committar allt och stanger
 
-**2. `ContactStatusBadge.tsx`** (read-only, klickbar)
-- Visar statusens pill-färg + label
-- Vid "Ej nådd": visar "X ggr" bredvid
-- Vid "Besök bokat": visar datum + tid
-- `onClick` triggar modal
+**2. `MoveInEditDialog.tsx`** -- samlad modal for inflyttshyresgast
+- Rubrik: "Redigera inflytt -- [hyresgastnamn]"
+- Innehall:
+  - **Kontakt**: Status-select (framat-only) + antal forsok (vid ej nadd) + datum+tid (vid besok bokat)
+  - **Namn/Port**: Checkbox
+  - **Valkommen hem**: Select (ingen/digital/manuell)
+  - **Notering**: Textfalt
+- Spara-knapp committar allt och stanger
 
-**3. `CleaningEditDialog.tsx`** (modal)
-- Rubrik: "Städkontroll -- [hyresgästnamn]"
-- Innehåll: Status-select, datumväljare (vid bokad/omkontroll), godkännandedatum (vid godkänd)
-- Samma logik som nuvarande `CleaningCheckCell` men i dialog-layout
-- Spara-knapp stänger modalen
+### Andringar i befintliga filer
 
-**4. `ContactEditDialog.tsx`** (modal)
-- Rubrik: "Kontakt -- [hyresgästnamn]"  
-- Innehåll: Status-select (framåt-only), antal försök (vid ej nådd), datum + tid (vid besök bokat)
-- Samma logik som nuvarande `ContactStatusCell` men i dialog-layout
-- Spara-knapp stänger modalen
+**`TurnoverRowActions.tsx`** -- refaktoreras helt:
+- Ta bort DropdownMenu
+- Ersatt med en enkel `Button` med `Pencil`-ikon
+- Klick oppnar ratt dialog baserat pa props (move-out eller move-in)
+- Notering integreras i den samlade modalen istallet for separat dialog
+- Nya props for Namn/Port och Valkommen hem (for move-in)
 
-### Ändringar i befintliga filer
+**`CombinedTurnoverTable.tsx`**:
+- **Desktop**: Ta bort inline `ChecklistCell` (Namn/Port) och `WelcomeHomeCell` -- dessa flyttar in i modalen. Kolumnerna kan antingen tas bort eller visa read-only varden.
+- Skicka Namn/Port- och Valkommen hem-callbacks till `TurnoverRowActions` for move-in
+- **Mobil**: Samma -- ta bort inline-kontroller, visa read-only varden, redigering via penna-ikonen
 
-**`CombinedTurnoverTable.tsx`**
-- Ersätt `CleaningCheckCell` med `CleaningStatusBadge` + lokal state för att öppna `CleaningEditDialog`
-- Ersätt `ContactStatusCell` med `ContactStatusBadge` + lokal state för att öppna `ContactEditDialog`
-- Samma i mobilvy (MobileAccordion)
-- Props till tabellen behålls (callbacks för statusändringar), men de skickas vidare till dialog-komponenterna
-
-**`CleaningCheckCell.tsx` och `ContactStatusCell.tsx`**
-- Behålls men används inte längre direkt i tabellen (kan tas bort eller behållas som referens)
+**`CleaningEditDialog.tsx` och `ContactEditDialog.tsx`**:
+- Behalls som byggstenar -- importeras i de nya samlade dialogerna, eller sa flyttas logiken direkt in i de nya komponenterna.
 
 ### Visuellt resultat (desktop)
 
 ```text
-| Hyresgäst (ut) | Sista deb. | Städkontr.          | Hyresgäst (in)  | Kontrakt | Kontakt               | Namn/Port | Välkommen hem |
-| Svensson Eva   | 31 mar     | [Bokad 20 mar] *    | Andersson Kalle | 1 apr    | [Besök bokat 15 mar]* |    [x]    |   [Digital]   |
+| Uppgang | Typ | Hyresgast (ut) | Sista deb. | Stadkontr.    | [pencil] | Hyresgast (in) | Kontrakt | Kontakt          | Namn/Port | Valkommen hem | [pencil] |
+| Storg 1 | 2rk | Svensson Eva   | 31 mar     | [Bokad 20mar] |    ✏     | Andersson K    | 1 apr    | [Besok bokat..] |    ✓      |   Digital     |    ✏     |
 ```
-*klickbar badge som öppnar modal*
+
+Namn/Port och Valkommen hem visas som read-only text/ikon i tabellen. All redigering sker i modalen.
 
 ### Teknisk approach
 
-- Badges och dialogs är separata komponenter for att hålla koden ren
-- Dialogs hanterar sin egen temporära state och committar via callback vid "Spara"
-- `TurnoverRowActions` (more-menu) behålls oförändrad -- enbart för noteringar
-- Inga ändringar i typer eller hooks -- bara i UI-lagret
+- De samlade dialogerna hanterar temporar local state for samtliga falt
+- Vid "Spara" anropas alla relevanta callbacks pa en gang
+- Pencil-ikonen ersatter MoreHorizontal -- samma storlek (h-8 w-8 ghost button)
+- Inga andringar i typer eller hooks -- enbart UI-lagret
 
