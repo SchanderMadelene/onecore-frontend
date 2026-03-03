@@ -72,7 +72,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
       case 'Obetald':
         return 'secondary';
       case 'Delvis betald':
-        return 'priority-medium'; // gul badge för delvis betalda
+        return 'warning';
       case 'Förfallen':
         return 'destructive';
       case 'Krediterad':
@@ -80,7 +80,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
       case 'Kredit':
         return 'outline'; // kreditfaktura (med negativt belopp)
       case 'Delkrediterad':
-        return 'priority-medium'; // gul badge för delkrediterade
+        return 'warning';
       default:
         return 'secondary';
     }
@@ -246,7 +246,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       )}
                       
                       {invoice.paymentStatus === 'Kredit' && invoice.creditBookedDate && (
-                        <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                        <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
                               <span className="text-muted-foreground block mb-1">Datum:</span>
@@ -258,17 +258,17 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </div>
                             <div>
                               <span className="text-muted-foreground block mb-1">Krediterat belopp:</span>
-                              <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount)}</span>
+                              <span className="font-semibold text-warning">{formatCurrency(invoice.amount)}</span>
                             </div>
                           </div>
                         </div>
                       )}
                       
                       {invoice.creditEvents && invoice.creditEvents.length > 0 && (
-                        <div className="bg-priority-medium/10 rounded-lg border-l-4 border-priority-medium overflow-hidden">
+                        <div className="bg-warning/10 rounded-lg border-l-4 border-warning overflow-hidden">
                           <table className="w-full">
                             <thead>
-                              <tr className="border-b border-priority-medium/20">
+                              <tr className="border-b border-warning/20">
                                 <th className="text-left p-3 text-xs font-medium text-muted-foreground">Datum</th>
                                 <th className="text-left p-3 text-xs font-medium text-muted-foreground">Händelse</th>
                                 <th className="text-left p-3 text-xs font-medium text-muted-foreground">Krediterat belopp</th>
@@ -276,10 +276,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </thead>
                             <tbody>
                               {invoice.creditEvents.map((event, index) => (
-                                <tr key={index} className="border-b border-priority-medium/10 last:border-0">
+                                <tr key={index} className="border-b border-warning/10 last:border-0">
                                   <td className="p-3 text-sm font-semibold">{event.date}</td>
                                   <td className="p-3 text-sm font-semibold">Delkrediterad</td>
-                                  <td className="p-3 text-sm font-semibold text-priority-medium">{formatCurrency(event.amount)}</td>
+                                  <td className="p-3 text-sm font-semibold text-warning">{formatCurrency(event.amount)}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -307,10 +307,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       )}
                       
                       {invoice.paymentStatus === 'Delvis betald' && invoice.paymentEvents && invoice.paymentEvents.length > 0 && (
-                        <div className="bg-priority-medium/10 rounded-lg border-l-4 border-priority-medium overflow-hidden">
+                        <div className="bg-warning/10 rounded-lg border-l-4 border-warning overflow-hidden">
                           <table className="w-full">
                             <thead>
-                              <tr className="border-b border-priority-medium/20">
+                              <tr className="border-b border-warning/20">
                                 <th className="text-left p-3 text-xs font-medium text-muted-foreground">Datum</th>
                                 <th className="text-left p-3 text-xs font-medium text-muted-foreground">Källa</th>
                                 <th className="text-left p-3 text-xs font-medium text-muted-foreground">Inbetalt</th>
@@ -318,15 +318,15 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </thead>
                             <tbody>
                               {invoice.paymentEvents.map((event, index) => (
-                                <tr key={index} className="border-b border-priority-medium/10 last:border-0">
+                                <tr key={index} className="border-b border-warning/10 last:border-0">
                                   <td className="p-3 text-sm font-semibold">{event.date}</td>
                                   <td className="p-3 text-sm font-semibold">{event.source}</td>
                                   <td className="p-3 text-sm font-semibold text-success">{formatCurrency(event.amount)}</td>
                                 </tr>
                               ))}
-                              <tr className="bg-priority-medium/10 border-t border-priority-medium/30">
+                              <tr className="bg-warning/10 border-t border-warning/30">
                                 <td colSpan={2} className="p-3 text-sm font-semibold text-muted-foreground">Kvar att betala:</td>
-                                <td className="p-3 text-sm font-semibold text-priority-medium">{formatCurrency(invoice.balance)}</td>
+                                <td className="p-3 text-sm font-semibold text-warning">{formatCurrency(invoice.balance)}</td>
                               </tr>
                             </tbody>
                           </table>
@@ -340,7 +340,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                       )}
                       
                       {invoice.paymentStatus === 'Delvis betald' && (!invoice.paymentEvents || invoice.paymentEvents.length === 0) && invoice.paidAmount !== undefined && (
-                        <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                        <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
                               <span className="text-muted-foreground block mb-1">Datum:</span>
@@ -352,7 +352,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                             </div>
                             <div>
                               <span className="text-muted-foreground block mb-1">Kvar att betala:</span>
-                              <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
+                              <span className="font-semibold text-warning">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
                             </div>
                           </div>
                         </div>
@@ -572,7 +572,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           )}
                           
                           {invoice.paymentStatus === 'Kredit' && invoice.creditBookedDate && (
-                            <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                            <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                               <div className="grid grid-cols-3 gap-4 text-sm">
                                 <div>
                                   <span className="text-muted-foreground block mb-1">Datum:</span>
@@ -584,17 +584,17 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 </div>
                                 <div>
                                   <span className="text-muted-foreground block mb-1">Krediterat belopp:</span>
-                                  <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount)}</span>
+                                  <span className="font-semibold text-warning">{formatCurrency(invoice.amount)}</span>
                                 </div>
                               </div>
                             </div>
                           )}
                           
                           {invoice.creditEvents && invoice.creditEvents.length > 0 && (
-                            <div className="bg-priority-medium/10 rounded-lg border-l-4 border-priority-medium overflow-hidden">
+                            <div className="bg-warning/10 rounded-lg border-l-4 border-warning overflow-hidden">
                               <table className="w-full">
                                 <thead>
-                                  <tr className="border-b border-priority-medium/20">
+                                   <tr className="border-b border-warning/20">
                                     <th className="text-left p-3 text-xs font-medium text-muted-foreground">Datum</th>
                                     <th className="text-left p-3 text-xs font-medium text-muted-foreground">Händelse</th>
                                     <th className="text-left p-3 text-xs font-medium text-muted-foreground">Krediterat belopp</th>
@@ -602,10 +602,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 </thead>
                                 <tbody>
                                   {invoice.creditEvents.map((event, index) => (
-                                    <tr key={index} className="border-b border-priority-medium/10 last:border-0">
+                                    <tr key={index} className="border-b border-warning/10 last:border-0">
                                       <td className="p-3 text-sm font-semibold">{event.date}</td>
                                       <td className="p-3 text-sm font-semibold">Delkrediterad</td>
-                                      <td className="p-3 text-sm font-semibold text-priority-medium">{formatCurrency(event.amount)}</td>
+                                      <td className="p-3 text-sm font-semibold text-warning">{formatCurrency(event.amount)}</td>
                                     </tr>
                                   ))}
                                 </tbody>
@@ -633,10 +633,10 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           )}
                           
                           {invoice.paymentStatus === 'Delvis betald' && invoice.paymentEvents && invoice.paymentEvents.length > 0 && (
-                            <div className="bg-priority-medium/10 rounded-lg border-l-4 border-priority-medium overflow-hidden">
+                            <div className="bg-warning/10 rounded-lg border-l-4 border-warning overflow-hidden">
                               <table className="w-full">
                                 <thead>
-                                  <tr className="border-b border-priority-medium/20">
+                                  <tr className="border-b border-warning/20">
                                     <th className="text-left p-3 text-xs font-medium text-muted-foreground">Datum</th>
                                     <th className="text-left p-3 text-xs font-medium text-muted-foreground">Källa</th>
                                     <th className="text-left p-3 text-xs font-medium text-muted-foreground">Inbetalt</th>
@@ -644,15 +644,15 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 </thead>
                                 <tbody>
                                   {invoice.paymentEvents.map((event, index) => (
-                                    <tr key={index} className="border-b border-priority-medium/10 last:border-0">
+                                    <tr key={index} className="border-b border-warning/10 last:border-0">
                                       <td className="p-3 text-sm font-semibold">{event.date}</td>
                                       <td className="p-3 text-sm font-semibold">{event.source}</td>
                                       <td className="p-3 text-sm font-semibold text-success">{formatCurrency(event.amount)}</td>
                                     </tr>
                                   ))}
-                                  <tr className="bg-priority-medium/10 border-t border-priority-medium/30">
+                                  <tr className="bg-warning/10 border-t border-warning/30">
                                     <td colSpan={2} className="p-3 text-sm font-semibold text-muted-foreground">Kvar att betala:</td>
-                                    <td className="p-3 text-sm font-semibold text-priority-medium">{formatCurrency(invoice.balance)}</td>
+                                    <td className="p-3 text-sm font-semibold text-warning">{formatCurrency(invoice.balance)}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -666,7 +666,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                           )}
                           
                           {invoice.paymentStatus === 'Delvis betald' && (!invoice.paymentEvents || invoice.paymentEvents.length === 0) && invoice.paidAmount !== undefined && (
-                            <div className="bg-priority-medium/10 rounded-lg p-3 border-l-4 border-priority-medium">
+                            <div className="bg-warning/10 rounded-lg p-3 border-l-4 border-warning">
                               <div className="grid grid-cols-3 gap-4 text-sm">
                                 <div>
                                   <span className="text-muted-foreground block mb-1">Datum:</span>
@@ -678,7 +678,7 @@ export const InvoicesTable = ({ invoices }: InvoicesTableProps) => {
                                 </div>
                                 <div>
                                   <span className="text-muted-foreground block mb-1">Kvar att betala:</span>
-                                  <span className="font-semibold text-priority-medium">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
+                                  <span className="font-semibold text-warning">{formatCurrency(invoice.amount - invoice.paidAmount)}</span>
                                 </div>
                               </div>
                             </div>

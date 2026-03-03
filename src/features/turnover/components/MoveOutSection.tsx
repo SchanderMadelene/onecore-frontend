@@ -1,16 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveTable } from '@/components/ui/responsive-table';
-import { MoveInListEntry, MoveInListChecklist } from '../types/move-in-list-types';
-import { ChecklistCell } from './ChecklistCell';
+import { MoveInListEntry, MoveInListChecklist, CleaningStatus } from '../types/move-in-list-types';
+import { CleaningCheckCell } from './CleaningCheckCell';
+import { SecurityWarningIcon } from './SecurityWarningIcon';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
 interface MoveOutSectionProps {
   entries: MoveInListEntry[];
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
+  onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
+  onCleaningCountChange: (entryId: string, count: number) => void;
+  onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
 }
 
-export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionProps) {
+export function MoveOutSection({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange }: MoveOutSectionProps) {
   const columns = [
     {
       key: 'contractNumber',
@@ -36,7 +40,12 @@ export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionPro
     {
       key: 'tenant',
       label: 'Hyresgäst',
-      render: (item: MoveInListEntry) => item.tenantName,
+      render: (item: MoveInListEntry) => (
+        <div className="flex items-center gap-1.5">
+          <span>{item.tenantName}</span>
+          <SecurityWarningIcon show={item.hasSecurityWarning} />
+        </div>
+      ),
     },
     {
       key: 'phone',
@@ -54,13 +63,17 @@ export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionPro
       key: 'cleaning',
       label: 'Städkontroll',
       render: (item: MoveInListEntry) => (
-        <ChecklistCell
-          checked={item.checklist.cleaningDone}
-          onChange={(val) => onChecklistChange(item.id, 'cleaningDone', val)}
-          label="Städkontroll utförd"
+        <CleaningCheckCell
+          status={item.checklist.cleaningStatus}
+          count={item.checklist.cleaningCount}
+          bookedDate={item.checklist.cleaningBookedDate}
+          approvedDate={item.checklist.cleaningApprovedDate}
+          onStatusChange={(s) => onCleaningStatusChange(item.id, s)}
+          onCountChange={(c) => onCleaningCountChange(item.id, c)}
+          onBookedDateChange={(d) => onCleaningBookedDateChange(item.id, d)}
         />
       ),
-      className: 'w-[100px] text-center',
+      className: 'w-[160px] text-center',
     },
   ];
 
@@ -70,7 +83,10 @@ export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionPro
         <span className="font-medium">{item.address}</span>
         <span className="text-xs text-muted-foreground">{item.apartmentType}</span>
       </div>
-      <div className="text-sm text-muted-foreground">{item.tenantName}</div>
+      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+        <span>{item.tenantName}</span>
+        <SecurityWarningIcon show={item.hasSecurityWarning} />
+      </div>
       {item.tenantPhone && (
         <div className="text-sm text-muted-foreground">{item.tenantPhone}</div>
       )}
@@ -78,13 +94,17 @@ export function MoveOutSection({ entries, onChecklistChange }: MoveOutSectionPro
       <div className="text-sm text-muted-foreground">
         {format(parseISO(item.date), 'd MMM yyyy', { locale: sv })}
       </div>
-      <div className="flex items-center gap-2 pt-1">
-        <ChecklistCell
-          checked={item.checklist.cleaningDone}
-          onChange={(val) => onChecklistChange(item.id, 'cleaningDone', val)}
-          label="Städkontroll utförd"
+      <div className="pt-1">
+        <CleaningCheckCell
+          status={item.checklist.cleaningStatus}
+          count={item.checklist.cleaningCount}
+          bookedDate={item.checklist.cleaningBookedDate}
+          approvedDate={item.checklist.cleaningApprovedDate}
+          onStatusChange={(s) => onCleaningStatusChange(item.id, s)}
+          onCountChange={(c) => onCleaningCountChange(item.id, c)}
+          onBookedDateChange={(d) => onCleaningBookedDateChange(item.id, d)}
+          showLabel
         />
-        <span className="text-sm">Städkontroll</span>
       </div>
     </div>
   );

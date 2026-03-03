@@ -1,16 +1,21 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveTable } from '@/components/ui/responsive-table';
-import { MoveInListEntry, MoveInListChecklist } from '../types/move-in-list-types';
+import { MoveInListEntry, MoveInListChecklist, ContactStatus } from '../types/move-in-list-types';
 import { ChecklistCell } from './ChecklistCell';
+import { ContactStatusCell } from './ContactStatusCell';
+import { SecurityWarningIcon } from './SecurityWarningIcon';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
 interface MoveInSectionProps {
   entries: MoveInListEntry[];
   onChecklistChange: (entryId: string, field: keyof MoveInListChecklist, value: boolean) => void;
+  onContactStatusChange: (entryId: string, status: ContactStatus) => void;
+  onContactAttemptsChange: (entryId: string, count: number) => void;
+  onVisitBookedDateChange: (entryId: string, datetime: string | undefined) => void;
 }
 
-export function MoveInSection({ entries, onChecklistChange }: MoveInSectionProps) {
+export function MoveInSection({ entries, onChecklistChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange }: MoveInSectionProps) {
   const columns = [
     {
       key: 'contractNumber',
@@ -36,7 +41,12 @@ export function MoveInSection({ entries, onChecklistChange }: MoveInSectionProps
     {
       key: 'tenant',
       label: 'Hyresgäst',
-      render: (item: MoveInListEntry) => item.tenantName,
+      render: (item: MoveInListEntry) => (
+        <div className="flex items-center gap-1.5">
+          <span>{item.tenantName}</span>
+          <SecurityWarningIcon show={item.hasSecurityWarning} />
+        </div>
+      ),
     },
     {
       key: 'phone',
@@ -51,28 +61,18 @@ export function MoveInSection({ entries, onChecklistChange }: MoveInSectionProps
       hideOnMobile: true,
     },
     {
-      key: 'welcomeCall',
-      label: 'Samtal',
+      key: 'contact',
+      label: 'Kontakt',
       render: (item: MoveInListEntry) => (
-        <ChecklistCell
-          checked={item.checklist.welcomeCallDone}
-          onChange={(val) => onChecklistChange(item.id, 'welcomeCallDone', val)}
-          label="Välkomstsamtal"
+        <ContactStatusCell
+          status={item.checklist.contactStatus}
+          attempts={item.checklist.contactAttempts}
+          visitBookedDate={item.checklist.visitBookedDate}
+          onStatusChange={(s) => onContactStatusChange(item.id, s)}
+          onAttemptsChange={(c) => onContactAttemptsChange(item.id, c)}
+          onVisitBookedDateChange={(d) => onVisitBookedDateChange(item.id, d)}
         />
       ),
-      className: 'w-[80px] text-center',
-    },
-    {
-      key: 'welcomeVisit',
-      label: 'Besök',
-      render: (item: MoveInListEntry) => (
-        <ChecklistCell
-          checked={item.checklist.welcomeVisitDone}
-          onChange={(val) => onChecklistChange(item.id, 'welcomeVisitDone', val)}
-          label="Välkomstbesök"
-        />
-      ),
-      className: 'w-[80px] text-center',
     },
     {
       key: 'nameIntercom',
@@ -94,7 +94,10 @@ export function MoveInSection({ entries, onChecklistChange }: MoveInSectionProps
         <span className="font-medium">{item.address}</span>
         <span className="text-xs text-muted-foreground">{item.apartmentType}</span>
       </div>
-      <div className="text-sm text-muted-foreground">{item.tenantName}</div>
+      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+        <span>{item.tenantName}</span>
+        <SecurityWarningIcon show={item.hasSecurityWarning} />
+      </div>
       {item.tenantPhone && (
         <div className="text-sm text-muted-foreground">{item.tenantPhone}</div>
       )}
@@ -103,22 +106,15 @@ export function MoveInSection({ entries, onChecklistChange }: MoveInSectionProps
         {format(parseISO(item.date), 'd MMM yyyy', { locale: sv })}
       </div>
       <div className="flex flex-col gap-2 pt-1">
-        <div className="flex items-center gap-2">
-          <ChecklistCell
-            checked={item.checklist.welcomeCallDone}
-            onChange={(val) => onChecklistChange(item.id, 'welcomeCallDone', val)}
-            label="Välkomstsamtal"
-          />
-          <span className="text-sm">Välkomstsamtal</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <ChecklistCell
-            checked={item.checklist.welcomeVisitDone}
-            onChange={(val) => onChecklistChange(item.id, 'welcomeVisitDone', val)}
-            label="Välkomstbesök"
-          />
-          <span className="text-sm">Välkomstbesök</span>
-        </div>
+        <ContactStatusCell
+          status={item.checklist.contactStatus}
+          attempts={item.checklist.contactAttempts}
+          visitBookedDate={item.checklist.visitBookedDate}
+          onStatusChange={(s) => onContactStatusChange(item.id, s)}
+          onAttemptsChange={(c) => onContactAttemptsChange(item.id, c)}
+          onVisitBookedDateChange={(d) => onVisitBookedDateChange(item.id, d)}
+          showLabel
+        />
         <div className="flex items-center gap-2">
           <ChecklistCell
             checked={item.checklist.nameAndIntercomDone}

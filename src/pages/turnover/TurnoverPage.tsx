@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { PageLayout } from "@/layouts";
 import { useMoveInList } from "@/features/turnover";
 import { MoveInListFilters } from "@/features/turnover/components/MoveInListFilters";
@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FavoriteParameters } from "@/features/favorites/types/favorite";
 
 export default function TurnoverPage() {
+  const [searchQuery, setSearchQuery] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {
     startDate,
@@ -20,6 +21,14 @@ export default function TurnoverPage() {
     setSelectedDistrict,
     combinedEntries,
     updateChecklist,
+    updateCleaningStatus,
+    updateCleaningCount,
+    updateCleaningBookedDate,
+    updateWelcomeHome,
+    updateContactStatus,
+    updateContactAttempts,
+    updateVisitBookedDate,
+    updateQuickMoveIn,
     availableKvvAreas,
     availableDistricts,
   } = useMoveInList();
@@ -33,6 +42,19 @@ export default function TurnoverPage() {
     return params;
   }, [startDate, endDate, selectedKvvArea, selectedDistrict]);
 
+  const filteredEntries = useMemo(() => {
+    if (!searchQuery.trim()) return combinedEntries;
+    const q = searchQuery.toLowerCase();
+    return combinedEntries.filter(row => {
+      const fields = [
+        row.address, row.residenceCode, row.kvvArea, row.apartmentType,
+        row.moveOut?.tenantName, row.moveOut?.contractNumber, row.moveOut?.tenantPhone,
+        row.moveIn?.tenantName, row.moveIn?.contractNumber, row.moveIn?.tenantPhone,
+      ];
+      return fields.some(f => f?.toLowerCase().includes(q));
+    });
+  }, [combinedEntries, searchQuery]);
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="space-y-6">
@@ -41,6 +63,8 @@ export default function TurnoverPage() {
         <Card>
           <CardContent className="pt-6">
             <MoveInListFilters
+              searchQuery={searchQuery}
+              onSearchQueryChange={setSearchQuery}
               startDate={startDate}
               endDate={endDate}
               onStartDateChange={setStartDate}
@@ -55,7 +79,18 @@ export default function TurnoverPage() {
           </CardContent>
         </Card>
 
-        <CombinedTurnoverTable entries={combinedEntries} onChecklistChange={updateChecklist} />
+        <CombinedTurnoverTable
+          entries={filteredEntries}
+          onChecklistChange={updateChecklist}
+          onCleaningStatusChange={updateCleaningStatus}
+          onCleaningCountChange={updateCleaningCount}
+          onCleaningBookedDateChange={updateCleaningBookedDate}
+          onWelcomeHomeChange={updateWelcomeHome}
+          onContactStatusChange={updateContactStatus}
+          onContactAttemptsChange={updateContactAttempts}
+          onVisitBookedDateChange={updateVisitBookedDate}
+          onQuickMoveInChange={updateQuickMoveIn}
+        />
       </div>
     </PageLayout>
   );

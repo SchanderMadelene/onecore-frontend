@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
+import { Tag } from "@/shared/ui/tag";
 import { Button } from "@/components/ui/button";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Property } from "@/types/api";
@@ -25,9 +25,9 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
       key: "buildingType",
       label: "Typ",
       render: (property: Property) => (
-        <Badge variant="outline" className="bg-slate-100">
+        <Tag>
           {property.buildingType}
-        </Badge>
+        </Tag>
       ),
       hideOnMobile: true
     },
@@ -35,9 +35,9 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
       key: "purpose",
       label: "Användning",
       render: (property: Property) => (
-        <Badge variant="outline" className="bg-slate-100">
+        <Tag>
           {property.purpose}
-        </Badge>
+        </Tag>
       ),
       hideOnMobile: true
     },
@@ -79,9 +79,9 @@ export const PropertiesTable = ({ properties }: PropertiesTableProps) => {
           <p className="text-xs text-muted-foreground">{property.district}</p>
         </div>
         <div className="flex gap-1">
-          <Badge variant="outline" className="bg-slate-100 text-xs">
+          <Tag className="text-xs">
             {property.buildingType}
-          </Badge>
+          </Tag>
         </div>
       </div>
       <div className="flex justify-between items-center pt-1">

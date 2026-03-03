@@ -28,7 +28,7 @@ export function LeaseContractActions({ tenant }: LeaseContractActionsProps) {
   return (
     <div className="flex gap-1">
       <Button 
-        variant="ghost" 
+        variant="outline" 
         size="icon" 
         onClick={handleCall}
         title="Ring"
@@ -37,7 +37,7 @@ export function LeaseContractActions({ tenant }: LeaseContractActionsProps) {
         <Phone className="h-4 w-4" />
       </Button>
       <Button 
-        variant="ghost" 
+        variant="outline" 
         size="icon" 
         onClick={handleSMS}
         title="Skicka SMS"

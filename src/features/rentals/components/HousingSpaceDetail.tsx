@@ -22,7 +22,7 @@ export function HousingSpaceDetail({ space }: HousingSpaceDetailProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="outline" size="icon">
           <ChevronRight className="h-4 w-4" />
         </Button>
       </SheetTrigger>

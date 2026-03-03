@@ -1,7 +1,7 @@
 import React from 'react';
 import { getBuildingTypeStyle } from '../utils/building-type-colors';
 import { getBuildingTypeName } from '../data';
-import { cn } from '@/lib/utils';
+import { Tag } from '@/shared/ui/tag';
 
 interface BuildingTypeBadgeProps {
   type: string | undefined;
@@ -15,15 +15,8 @@ export function BuildingTypeBadge({ type, className }: BuildingTypeBadgeProps) {
   if (!style) return null;
   
   return (
-    <span 
-      className={cn(
-        "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium",
-        style.bg,
-        style.text,
-        className
-      )}
-    >
+    <Tag bg={style.bg} color={style.text} className={className}>
       {getBuildingTypeName(type)}
-    </span>
+    </Tag>
   );
 }

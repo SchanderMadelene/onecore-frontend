@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MoveInListEntry, MoveInListChecklist, TurnoverRow } from '../types/move-in-list-types';
+import { MoveInListEntry, MoveInListChecklist, TurnoverRow, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
 import { mockMoveInListEntries } from '../data/mock-move-in-list';
 import { parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 
@@ -71,9 +71,97 @@ export function useMoveInList() {
 
   const updateChecklist = (entryId: string, field: keyof MoveInListChecklist, value: boolean) => {
     setEntries(prev =>
+      prev.map(entry => {
+        if (entry.id !== entryId) return entry;
+        return { ...entry, checklist: { ...entry.checklist, [field]: value } };
+      })
+    );
+  };
+
+  const updateCleaningStatus = (entryId: string, status: CleaningStatus) => {
+    setEntries(prev =>
+      prev.map(entry => {
+        if (entry.id !== entryId) return entry;
+        const updated = { ...entry.checklist, cleaningStatus: status };
+        if (status === 'reinspection' && updated.cleaningCount === 0) {
+          updated.cleaningCount = 1;
+        }
+        if (status === 'approved') {
+          updated.cleaningApprovedDate = new Date().toISOString().split('T')[0];
+        }
+        return { ...entry, checklist: updated };
+      })
+    );
+  };
+
+  const updateCleaningCount = (entryId: string, count: number) => {
+    setEntries(prev =>
       prev.map(entry =>
         entry.id === entryId
-          ? { ...entry, checklist: { ...entry.checklist, [field]: value } }
+          ? { ...entry, checklist: { ...entry.checklist, cleaningCount: count } }
+          : entry
+      )
+    );
+  };
+
+  const updateCleaningBookedDate = (entryId: string, date: string | undefined) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, checklist: { ...entry.checklist, cleaningBookedDate: date } }
+          : entry
+      )
+    );
+  };
+
+  const updateWelcomeHome = (entryId: string, method: WelcomeHomeMethod) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, checklist: { ...entry.checklist, welcomeHomeMethod: method } }
+          : entry
+      )
+    );
+  };
+
+  const updateContactStatus = (entryId: string, status: ContactStatus) => {
+    setEntries(prev =>
+      prev.map(entry => {
+        if (entry.id !== entryId) return entry;
+        const updated = { ...entry.checklist, contactStatus: status };
+        if (status === 'not_reached' && updated.contactAttempts === 0) {
+          updated.contactAttempts = 1;
+        }
+        return { ...entry, checklist: updated };
+      })
+    );
+  };
+
+  const updateContactAttempts = (entryId: string, count: number) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, checklist: { ...entry.checklist, contactAttempts: count } }
+          : entry
+      )
+    );
+  };
+
+  const updateVisitBookedDate = (entryId: string, datetime: string | undefined) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, checklist: { ...entry.checklist, visitBookedDate: datetime } }
+          : entry
+      )
+    );
+  };
+
+  const updateQuickMoveIn = (entryId: string, value: boolean) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, hasQuickMoveIn: value }
           : entry
       )
     );
@@ -100,6 +188,14 @@ export function useMoveInList() {
     moveInEntries,
     combinedEntries,
     updateChecklist,
+    updateCleaningStatus,
+    updateCleaningCount,
+    updateCleaningBookedDate,
+    updateWelcomeHome,
+    updateContactStatus,
+    updateContactAttempts,
+    updateVisitBookedDate,
+    updateQuickMoveIn,
     availableKvvAreas,
     availableDistricts,
   };

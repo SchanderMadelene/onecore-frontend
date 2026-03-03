@@ -1,48 +1,18 @@
 
 
-# Byt ikon och koppla ihop badge med infotext
+## Plan: Ta bort telefonnummer från tabellvyn + minska padding
 
-## Vad som andras
+### Åtgärd 2 — Ta bort telefonnummer från desktop-tabellen
 
-1. Byt ut `Clock`-ikonen mot `AlertCircle` (en cirkel med utropstecken) -- mer universellt "anmarkning"-symbol.
-2. Lagg samma `AlertCircle`-ikon bredvid infotexten "Betald X dagar efter forfall..." i den expanderade vyn, sa att man tydligt ser kopplingen mellan ikonen i badgen och forklaringstexten.
+Telefonnumret och ringknappen visas idag under hyresgästens namn i både utflytt- och inflyttkolumnen (rad 311-318 och 377-384). Dessa tas bort från desktop-tabellen. Telefonnumret finns redan tillgängligt via redigeringsmodalen (pennikonen). En liten ringikon läggs bredvid namnet istället — tar minimal bredd.
 
-## Design
+### Åtgärd 3 — Minska padding i alla celler
 
-```text
-Badge:
-[Betald ⚠]
+Alla `TableCell` och `TableHead` i desktop-tabellen får tightare padding: `px-2 py-1.5` istället för default `p-4`. Detta appliceras via en className på `<Table>` eller individuellt per cell.
 
-Expanderad rad:
-⚠ Betald 5 dagar efter forfall (forfall: 2025-05-30)
-```
-
-Ikonen i badgen arver badgens textfarg (vit i success-badge). Ikonen vid infotexten far `text-destructive` som matchar textfargen dar.
-
-## Tekniska detaljer
-
-### Andrad fil
-
-| Fil | Andring |
-|-----|---------|
-| `src/features/ekonomi/components/ledger/InvoicesTable.tsx` | Byt `Clock` till `AlertCircle`, lagg till ikon vid infotexterna |
-
-### Andringar
-
-1. **Import (rad 5)**: Byt `Clock` mot `AlertCircle` i lucide-react-importen.
-
-2. **Badge -- mobilvy (rad 94) och desktopvy (rad 400)**: Byt `Clock` till `AlertCircle`:
-```tsx
-<AlertCircle className="h-3 w-3" />
-```
-
-3. **Infotext i expanderad vy (4 stallen: rad 263, 306, 557, 600)**: Lagg till ikonen och wrappa i flex-container. Exempel:
-```tsx
-<div className="text-xs text-destructive px-3 py-2 flex items-center gap-1">
-  <AlertCircle className="h-3 w-3 shrink-0" />
-  Betald {getDaysLate(invoice)} dagar efter forfall (forfall: {invoice.dueDate})
-</div>
-```
-
-Samma monster for alla 4 forekomster (2 mobil, 2 desktop), med respektive padding/margin-klasser bevarade.
+### Fil som ändras
+- **`src/features/turnover/components/CombinedTurnoverTable.tsx`**
+  - Rad 299-320 (utflytt hyresgäst-cell): Ta bort telefonnummer-blocket, lägg en liten Phone-ikon bredvid namnet som `<a href="tel:...">` 
+  - Rad 365-386 (inflytt hyresgäst-cell): Samma ändring
+  - Rad 247: Lägg `className="[&_th]:px-2 [&_th]:py-1.5 [&_td]:px-2 [&_td]:py-1.5"` på `<Table>` för att globalt minska padding
 
