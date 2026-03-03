@@ -12,8 +12,10 @@ interface MoveOutProps {
   cleaningStatus: CleaningStatus;
   cleaningBookedDate?: string;
   cleaningApprovedDate?: string;
+  keysHandled: boolean;
   onCleaningStatusChange: (status: CleaningStatus) => void;
   onCleaningBookedDateChange: (date: string | undefined) => void;
+  onKeysHandledChange: (handled: boolean) => void;
 }
 
 interface MoveInProps {
@@ -25,11 +27,13 @@ interface MoveInProps {
   visitBookedDate?: string;
   nameAndIntercomDone: boolean;
   welcomeHomeMethod: WelcomeHomeMethod;
+  keysHandled: boolean;
   onContactStatusChange: (status: ContactStatus) => void;
   onContactAttemptsChange: (count: number) => void;
   onVisitBookedDateChange: (datetime: string | undefined) => void;
   onNameAndIntercomChange: (checked: boolean) => void;
   onWelcomeHomeChange: (method: WelcomeHomeMethod) => void;
+  onKeysHandledChange: (handled: boolean) => void;
 }
 
 type TurnoverRowActionsProps =
@@ -53,8 +57,10 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           cleaningStatus={props.cleaningStatus}
           cleaningBookedDate={props.cleaningBookedDate}
           cleaningApprovedDate={props.cleaningApprovedDate}
+          keysHandled={props.keysHandled}
           onCleaningStatusChange={props.onCleaningStatusChange}
           onCleaningBookedDateChange={props.onCleaningBookedDateChange}
+          onKeysHandledChange={props.onKeysHandledChange}
           onAddNote={(content) => props.onAddNote(props.entryId, content)}
         />
       )}
@@ -69,11 +75,13 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           visitBookedDate={props.visitBookedDate}
           nameAndIntercomDone={props.nameAndIntercomDone}
           welcomeHomeMethod={props.welcomeHomeMethod}
+          keysHandled={props.keysHandled}
           onContactStatusChange={props.onContactStatusChange}
           onContactAttemptsChange={props.onContactAttemptsChange}
           onVisitBookedDateChange={props.onVisitBookedDateChange}
           onNameAndIntercomChange={props.onNameAndIntercomChange}
           onWelcomeHomeChange={props.onWelcomeHomeChange}
+          onKeysHandledChange={props.onKeysHandledChange}
           onAddNote={(content) => props.onAddNote(props.entryId, content)}
         />
       )}
