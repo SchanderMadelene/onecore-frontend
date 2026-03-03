@@ -1,18 +1,73 @@
 
 
-## Plan: Ta bort telefonnummer från tabellvyn + minska padding
+## Plan: Studentboenden — separat flik på Ut- & inflytt
 
-### Åtgärd 2 — Ta bort telefonnummer från desktop-tabellen
+### Koncept
 
-Telefonnumret och ringknappen visas idag under hyresgästens namn i både utflytt- och inflyttkolumnen (rad 311-318 och 377-384). Dessa tas bort från desktop-tabellen. Telefonnumret finns redan tillgängligt via redigeringsmodalen (pennikonen). En liten ringikon läggs bredvid namnet istället — tar minimal bredd.
+Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
 
-### Åtgärd 3 — Minska padding i alla celler
+### Datamodell
 
-Alla `TableCell` och `TableHead` i desktop-tabellen får tightare padding: `px-2 py-1.5` istället för default `p-4`. Detta appliceras via en className på `<Table>` eller individuellt per cell.
+Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
+- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
+- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
 
-### Fil som ändras
-- **`src/features/turnover/components/CombinedTurnoverTable.tsx`**
-  - Rad 299-320 (utflytt hyresgäst-cell): Ta bort telefonnummer-blocket, lägg en liten Phone-ikon bredvid namnet som `<a href="tel:...">` 
-  - Rad 365-386 (inflytt hyresgäst-cell): Samma ändring
-  - Rad 247: Lägg `className="[&_th]:px-2 [&_th]:py-1.5 [&_td]:px-2 [&_td]:py-1.5"` på `<Table>` för att globalt minska padding
+Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
+
+### Mockdata
+
+Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
+
+### Tabell
+
+Ny komponent `StudentTurnoverTable.tsx`:
+- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
+- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
+- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
+
+### Filter
+
+Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
+- Sökfält (sök på rum, namn, e-post)
+- Datumväljare (start/slut)
+- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
+
+### Hook
+
+Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
+
+### Sidstruktur
+
+`TurnoverPage.tsx` uppdateras med `Tabs`:
+
+```text
+┌─────────────────────────────────────┐
+│ Ut- & inflytt          [⭐ Favorit] │
+│ Operativ checklista...              │
+├──────────────┬──────────────────────┤
+│ Ut- & inflytt│ Studentboenden      │  ← Tabs
+├──────────────┴──────────────────────┤
+│ [Filter + Tabell beroende på flik]  │
+└─────────────────────────────────────┘
+```
+
+### Routing
+
+Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
+
+### Feature toggle
+
+Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
+
+### Filer som skapas/ändras
+
+| Fil | Åtgärd |
+|-----|--------|
+| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
+| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
+| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
+| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
+| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
+| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
+| `src/features/turnover/index.ts` | Exportera nya komponenter |
 
