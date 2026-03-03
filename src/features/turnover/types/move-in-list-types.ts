@@ -14,6 +14,7 @@ export interface MoveInListChecklist {
   visitBookedDate?: string;
   nameAndIntercomDone: boolean;
   welcomeHomeMethod: WelcomeHomeMethod;
+  keysHandled: boolean;
 }
 
 export interface MoveInListEntry {
