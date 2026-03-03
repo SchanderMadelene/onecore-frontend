@@ -16,7 +16,7 @@ export function TurnoverNoteIndicator({ notes }: TurnoverNoteIndicatorProps) {
     <HoverCard>
       <HoverCardTrigger asChild>
         <button className="inline-flex items-center justify-center" title="Har noteringar">
-          <Badge variant="muted" size="icon">
+          <Badge variant="info" size="icon">
             <StickyNote className="h-3 w-3" />
           </Badge>
         </button>
