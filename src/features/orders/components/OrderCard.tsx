@@ -7,16 +7,16 @@ type OrderCardProps = {
 };
 
 export function OrderCard({ orderItem }: OrderCardProps) {
-  const getPriorityVariant = (priority: string): "priority-low" | "priority-medium" | "priority-high" => {
+  const getPriorityVariant = (priority: string): "info" | "warning" | "destructive" => {
     switch (priority) {
       case "low":
-        return "priority-low";
+        return "info";
       case "medium":
-        return "priority-medium";
+        return "warning";
       case "high":
-        return "priority-high";
+        return "destructive";
       default:
-        return "priority-medium";
+        return "warning";
     }
   };
 

@@ -3,11 +3,11 @@ import { Badge } from '@/shared/ui/badge';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
-const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'status-neutral' | 'status-info' | 'status-success' | 'status-warning' }> = {
-  not_contacted: { label: 'Ej kontaktad', variant: 'status-neutral' },
-  not_reached: { label: 'Ej nådd', variant: 'status-warning' },
-  visit_booked: { label: 'Besök bokat', variant: 'status-info' },
-  visit_done: { label: 'Besök genomfört', variant: 'status-success' },
+const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'muted' | 'info' | 'success' | 'warning' }> = {
+  not_contacted: { label: 'Ej kontaktad', variant: 'muted' },
+  not_reached: { label: 'Ej nådd', variant: 'warning' },
+  visit_booked: { label: 'Besök bokat', variant: 'info' },
+  visit_done: { label: 'Besök genomfört', variant: 'success' },
 };
 
 interface ContactStatusBadgeProps {

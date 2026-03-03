@@ -15,11 +15,11 @@ import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 
-const STATUS_CONFIG: Record<CleaningStatus, { label: string; variant: 'status-neutral' | 'status-info' | 'status-success' | 'status-warning' }> = {
-  not_done: { label: 'Ej utförd', variant: 'status-neutral' },
-  booked: { label: 'Bokad', variant: 'status-info' },
-  approved: { label: 'Godkänd', variant: 'status-success' },
-  reinspection: { label: 'Omkontroll', variant: 'status-warning' },
+const STATUS_CONFIG: Record<CleaningStatus, { label: string; variant: 'muted' | 'info' | 'success' | 'warning' }> = {
+  not_done: { label: 'Ej utförd', variant: 'muted' },
+  booked: { label: 'Bokad', variant: 'info' },
+  approved: { label: 'Godkänd', variant: 'success' },
+  reinspection: { label: 'Omkontroll', variant: 'warning' },
 };
 
 interface CleaningCheckCellProps {

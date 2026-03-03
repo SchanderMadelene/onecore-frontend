@@ -6,7 +6,7 @@ interface KeysHandledBadgeProps {
 
 export function KeysHandledBadge({ handled }: KeysHandledBadgeProps) {
   return (
-    <Badge variant={handled ? 'status-success' : 'status-neutral'}>
+    <Badge variant={handled ? 'success' : 'muted'}>
       {handled ? 'Ja' : 'Nej'}
     </Badge>
   );
