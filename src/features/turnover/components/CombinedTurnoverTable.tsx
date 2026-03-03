@@ -1,5 +1,5 @@
 import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
-import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
@@ -11,6 +11,7 @@ import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordi
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { KeysHandledBadge } from './KeysHandledBadge';
+import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -123,6 +124,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
                     <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                    {row.moveIn.hasQuickMoveIn && (
+                      <Badge variant="info" size="icon" title="Snabb inflytt">
+                        <Zap className="h-3 w-3" />
+                      </Badge>
+                    )}
                   </div>
                   <div className="flex items-center gap-1">
                     <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
@@ -325,7 +331,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   <TableCell className="text-sm whitespace-nowrap">
-                    {formatDate(row.moveIn?.date)}
+                    <div className="flex items-center gap-1.5">
+                      {formatDate(row.moveIn?.date)}
+                      {row.moveIn?.hasQuickMoveIn && (
+                        <Badge variant="info" size="icon" title="Snabb inflytt">
+                          <Zap className="h-3 w-3" />
+                        </Badge>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell>
                     {row.moveIn ? (

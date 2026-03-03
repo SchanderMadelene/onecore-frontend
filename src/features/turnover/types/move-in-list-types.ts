@@ -31,6 +31,7 @@ export interface MoveInListEntry {
   date: string;
   contractId?: string;
   hasSecurityWarning?: boolean;
+  hasQuickMoveIn?: boolean;
   checklist: MoveInListChecklist;
 }
 
