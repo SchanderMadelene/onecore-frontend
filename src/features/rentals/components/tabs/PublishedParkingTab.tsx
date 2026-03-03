@@ -181,7 +181,7 @@ export const PublishedParkingTab = () => {
                     <DeleteListingDialog parkingSpace={space} />
                     <ParkingApplicationDialog parkingSpace={space} />
                     <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="outline" size="icon">
                         <ChevronRight className="h-4 w-4" />
                       </Button>
                     </Link>

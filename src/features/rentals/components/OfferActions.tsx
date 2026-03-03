@@ -74,7 +74,7 @@ export const OfferActions = ({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" disabled={disabled}>
+          <Button variant="outline" size="icon" disabled={disabled}>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
