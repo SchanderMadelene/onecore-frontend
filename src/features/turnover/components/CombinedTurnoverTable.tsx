@@ -32,9 +32,10 @@ interface CombinedTurnoverTableProps {
   onContactStatusChange: (entryId: string, status: ContactStatus) => void;
   onContactAttemptsChange: (entryId: string, count: number) => void;
   onVisitBookedDateChange: (entryId: string, datetime: string | undefined) => void;
+  onQuickMoveInChange: (entryId: string, value: boolean) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
   const { getNotesForEntry, addNote } = useTurnoverNotes();
 
@@ -158,7 +159,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
                     onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
                     keysHandled={row.moveIn!.checklist.keysHandled}
+                    hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
                     onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
+                    onQuickMoveInChange={(v) => onQuickMoveInChange(row.moveIn!.id, v)}
                   />
                   </div>
                 </div>
@@ -417,7 +420,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
                         onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
                         keysHandled={row.moveIn!.checklist.keysHandled}
+                        hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
                         onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
+                        onQuickMoveInChange={(v) => onQuickMoveInChange(row.moveIn!.id, v)}
                       />
                     ) : null}
                   </TableCell>
