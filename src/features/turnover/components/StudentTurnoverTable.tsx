@@ -1,7 +1,9 @@
 import { StudentTurnoverRow, CleaningStatus } from '../types/move-in-list-types';
+import { TurnoverNote } from '../types/turnover-note-types';
 import { ArrowUpRight, ArrowDownLeft, Mail, Pencil } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
-import { CleaningEditDialog } from './CleaningEditDialog';
+import { StudentEditDialog } from './StudentEditDialog';
+import { TurnoverNoteIndicator } from './TurnoverNoteIndicator';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -18,11 +20,16 @@ interface StudentTurnoverTableProps {
   entries: StudentTurnoverRow[];
   onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
+  onAddNote: (entryId: string, content: string) => void;
+  getNotesForEntry: (entryId: string) => TurnoverNote[];
 }
 
-export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleaningBookedDateChange }: StudentTurnoverTableProps) {
+export function StudentTurnoverTable({
+  entries, onCleaningStatusChange, onCleaningBookedDateChange,
+  onAddNote, getNotesForEntry,
+}: StudentTurnoverTableProps) {
   const isMobile = useIsMobile();
-  const [cleaningDialog, setCleaningDialog] = useState<{
+  const [editDialog, setEditDialog] = useState<{
     open: boolean;
     entryId: string;
     tenantName: string;
@@ -31,9 +38,9 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
     approvedDate?: string;
   }>({ open: false, entryId: '', tenantName: '', status: 'not_done' });
 
-  const openCleaningDialog = (entry: StudentTurnoverRow['moveOut'] | StudentTurnoverRow['moveIn']) => {
+  const openEditDialog = (entry: StudentTurnoverRow['moveOut'] | StudentTurnoverRow['moveIn']) => {
     if (!entry) return;
-    setCleaningDialog({
+    setEditDialog({
       open: true,
       entryId: entry.id,
       tenantName: entry.studentName,
@@ -81,8 +88,8 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                 <div className="flex justify-between items-start">
                   <span className="text-sm font-medium">{row.moveOut.studentName}</span>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs text-muted-foreground">{formatDate(row.moveOut.date)}</span>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openCleaningDialog(row.moveOut)}>
+                    <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
+                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openEditDialog(row.moveOut)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
                   </div>
@@ -94,6 +101,8 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                   <span>{formatBirthDate(row.moveOut.birthDate)}</span>
                   <span className="text-muted-foreground">E-post:</span>
                   <a href={`mailto:${row.moveOut.email}`} className="text-primary underline truncate max-w-[180px]">{row.moveOut.email}</a>
+                  <span className="text-muted-foreground">Datum:</span>
+                  <span>{formatDate(row.moveOut.date)}</span>
                   <span className="text-muted-foreground">Städ:</span>
                   <CleaningStatusBadge
                     status={row.moveOut.cleaningChecklist.cleaningStatus}
@@ -118,8 +127,8 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                 <div className="flex justify-between items-start">
                   <span className="text-sm font-medium">{row.moveIn.studentName}</span>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs text-muted-foreground">{formatDate(row.moveIn.date)}</span>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openCleaningDialog(row.moveIn)}>
+                    <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
+                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openEditDialog(row.moveIn)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
                   </div>
@@ -131,6 +140,8 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                   <span>{formatBirthDate(row.moveIn.birthDate)}</span>
                   <span className="text-muted-foreground">E-post:</span>
                   <a href={`mailto:${row.moveIn.email}`} className="text-primary underline truncate max-w-[180px]">{row.moveIn.email}</a>
+                  <span className="text-muted-foreground">Datum:</span>
+                  <span>{formatDate(row.moveIn.date)}</span>
                   <span className="text-muted-foreground">Städ:</span>
                   <CleaningStatusBadge
                     status={row.moveIn.cleaningChecklist.cleaningStatus}
@@ -157,15 +168,16 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
             <MobileAccordion items={items} />
           </CardContent>
         </Card>
-        <CleaningEditDialog
-          open={cleaningDialog.open}
-          onOpenChange={(o) => setCleaningDialog(prev => ({ ...prev, open: o }))}
-          tenantName={cleaningDialog.tenantName}
-          status={cleaningDialog.status}
-          bookedDate={cleaningDialog.bookedDate}
-          approvedDate={cleaningDialog.approvedDate}
-          onStatusChange={(s) => onCleaningStatusChange(cleaningDialog.entryId, s)}
-          onBookedDateChange={(d) => onCleaningBookedDateChange(cleaningDialog.entryId, d)}
+        <StudentEditDialog
+          open={editDialog.open}
+          onOpenChange={(o) => setEditDialog(prev => ({ ...prev, open: o }))}
+          tenantName={editDialog.tenantName}
+          cleaningStatus={editDialog.status}
+          cleaningBookedDate={editDialog.bookedDate}
+          cleaningApprovedDate={editDialog.approvedDate}
+          onCleaningStatusChange={(s) => onCleaningStatusChange(editDialog.entryId, s)}
+          onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(editDialog.entryId, d)}
+          onAddNote={(content) => onAddNote(editDialog.entryId, content)}
         />
       </>
     );
@@ -194,6 +206,7 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                   <TableHead className="whitespace-nowrap">Född</TableHead>
                   <TableHead className="whitespace-nowrap">Datum</TableHead>
                   <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
+                  <TableHead className="w-[32px] p-0"></TableHead>
                   <TableHead className="w-10"></TableHead>
                   <TableHead className="border-l-2 border-border">
                     <div className="flex items-center gap-1.5">
@@ -207,6 +220,7 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                   <TableHead className="whitespace-nowrap">Född</TableHead>
                   <TableHead className="whitespace-nowrap">Datum</TableHead>
                   <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
+                  <TableHead className="w-[32px] p-0"></TableHead>
                   <TableHead className="w-10"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -246,9 +260,14 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                         />
                       ) : <span className="text-center block text-muted-foreground">–</span>}
                     </TableCell>
+                    <TableCell className="p-0 text-center">
+                      {row.moveOut ? (
+                        <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
+                      ) : null}
+                    </TableCell>
                     <TableCell>
                       {row.moveOut ? (
-                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openCleaningDialog(row.moveOut)}>
+                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openEditDialog(row.moveOut)}>
                           <Pencil className="h-4 w-4" />
                         </Button>
                       ) : null}
@@ -284,9 +303,14 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                         />
                       ) : <span className="text-center block text-muted-foreground">–</span>}
                     </TableCell>
+                    <TableCell className="p-0 text-center">
+                      {row.moveIn ? (
+                        <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
+                      ) : null}
+                    </TableCell>
                     <TableCell>
                       {row.moveIn ? (
-                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openCleaningDialog(row.moveIn)}>
+                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openEditDialog(row.moveIn)}>
                           <Pencil className="h-4 w-4" />
                         </Button>
                       ) : null}
@@ -298,15 +322,16 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
           </div>
         </CardContent>
       </Card>
-      <CleaningEditDialog
-        open={cleaningDialog.open}
-        onOpenChange={(o) => setCleaningDialog(prev => ({ ...prev, open: o }))}
-        tenantName={cleaningDialog.tenantName}
-        status={cleaningDialog.status}
-        bookedDate={cleaningDialog.bookedDate}
-        approvedDate={cleaningDialog.approvedDate}
-        onStatusChange={(s) => onCleaningStatusChange(cleaningDialog.entryId, s)}
-        onBookedDateChange={(d) => onCleaningBookedDateChange(cleaningDialog.entryId, d)}
+      <StudentEditDialog
+        open={editDialog.open}
+        onOpenChange={(o) => setEditDialog(prev => ({ ...prev, open: o }))}
+        tenantName={editDialog.tenantName}
+        cleaningStatus={editDialog.status}
+        cleaningBookedDate={editDialog.bookedDate}
+        cleaningApprovedDate={editDialog.approvedDate}
+        onCleaningStatusChange={(s) => onCleaningStatusChange(editDialog.entryId, s)}
+        onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(editDialog.entryId, d)}
+        onAddNote={(content) => onAddNote(editDialog.entryId, content)}
       />
     </>
   );

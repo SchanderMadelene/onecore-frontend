@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { PageLayout } from "@/layouts";
 import { useMoveInList, useStudentTurnover } from "@/features/turnover";
+import { useTurnoverNotes } from "@/features/turnover/hooks/useTurnoverNotes";
 import { MoveInListFilters } from "@/features/turnover/components/MoveInListFilters";
 import { CombinedTurnoverTable } from "@/features/turnover/components/CombinedTurnoverTable";
 import { StudentTurnoverFilters } from "@/features/turnover/components/StudentTurnoverFilters";
@@ -57,6 +58,7 @@ export default function TurnoverPage() {
 
   // --- Student turnover ---
   const [studentSearchQuery, setStudentSearchQuery] = useState('');
+  const studentNotes = useTurnoverNotes();
   const student = useStudentTurnover();
 
   const filteredStudentEntries = useMemo(() => {
@@ -138,6 +140,8 @@ export default function TurnoverPage() {
               entries={filteredStudentEntries}
               onCleaningStatusChange={student.updateCleaningStatus}
               onCleaningBookedDateChange={student.updateCleaningBookedDate}
+              onAddNote={studentNotes.addNote}
+              getNotesForEntry={studentNotes.getNotesForEntry}
             />
           </TabsContent>
         </Tabs>
