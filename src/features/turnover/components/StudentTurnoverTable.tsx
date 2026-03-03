@@ -7,7 +7,7 @@ import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordi
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/shared/ui/badge';
+
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useState } from 'react';
@@ -184,6 +184,8 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                       Student
                     </div>
                   </TableHead>
+                  <TableHead className="whitespace-nowrap">Kön</TableHead>
+                  <TableHead className="whitespace-nowrap">Född</TableHead>
                   <TableHead className="whitespace-nowrap">Datum</TableHead>
                   <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
                   <TableHead className="border-l-2 border-border">
@@ -194,6 +196,8 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                       Student
                     </div>
                   </TableHead>
+                  <TableHead className="whitespace-nowrap">Kön</TableHead>
+                  <TableHead className="whitespace-nowrap">Född</TableHead>
                   <TableHead className="whitespace-nowrap">Datum</TableHead>
                   <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
                 </TableRow>
@@ -206,19 +210,21 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                     {/* Move-out student */}
                     <TableCell className="border-l-2 border-border">
                       {row.moveOut ? (
-                        <div className="space-y-0.5">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-sm">{row.moveOut.studentName}</span>
-                            <Badge variant="muted" className="text-[10px] px-1 py-0">{GENDER_LABELS[row.moveOut.gender]}</Badge>
-                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                              <a href={`mailto:${row.moveOut.email}`} title={row.moveOut.email}>
-                                <Mail className="h-3 w-3" />
-                              </a>
-                            </Button>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{formatBirthDate(row.moveOut.birthDate)}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm">{row.moveOut.studentName}</span>
+                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                            <a href={`mailto:${row.moveOut.email}`} title={row.moveOut.email}>
+                              <Mail className="h-3 w-3" />
+                            </a>
+                          </Button>
                         </div>
                       ) : <span className="text-muted-foreground">–</span>}
+                    </TableCell>
+                    <TableCell className="text-sm whitespace-nowrap">
+                      {row.moveOut ? GENDER_LABELS[row.moveOut.gender] : '–'}
+                    </TableCell>
+                    <TableCell className="text-sm whitespace-nowrap">
+                      {row.moveOut ? formatBirthDate(row.moveOut.birthDate) : '–'}
                     </TableCell>
                     <TableCell className="text-sm whitespace-nowrap">
                       {formatDate(row.moveOut?.date)}
@@ -237,19 +243,21 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                     {/* Move-in student */}
                     <TableCell className="border-l-2 border-border">
                       {row.moveIn ? (
-                        <div className="space-y-0.5">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-sm">{row.moveIn.studentName}</span>
-                            <Badge variant="muted" className="text-[10px] px-1 py-0">{GENDER_LABELS[row.moveIn.gender]}</Badge>
-                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                              <a href={`mailto:${row.moveIn.email}`} title={row.moveIn.email}>
-                                <Mail className="h-3 w-3" />
-                              </a>
-                            </Button>
-                          </div>
-                          <span className="text-xs text-muted-foreground">{formatBirthDate(row.moveIn.birthDate)}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm">{row.moveIn.studentName}</span>
+                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                            <a href={`mailto:${row.moveIn.email}`} title={row.moveIn.email}>
+                              <Mail className="h-3 w-3" />
+                            </a>
+                          </Button>
                         </div>
                       ) : <span className="text-muted-foreground">–</span>}
+                    </TableCell>
+                    <TableCell className="text-sm whitespace-nowrap">
+                      {row.moveIn ? GENDER_LABELS[row.moveIn.gender] : '–'}
+                    </TableCell>
+                    <TableCell className="text-sm whitespace-nowrap">
+                      {row.moveIn ? formatBirthDate(row.moveIn.birthDate) : '–'}
                     </TableCell>
                     <TableCell className="text-sm whitespace-nowrap">
                       {formatDate(row.moveIn?.date)}
