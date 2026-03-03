@@ -1,45 +1,43 @@
 
 
-# Anonymisera mockdata i ut- och inflyttslistan
+# Nyckelkolumn for ut- och inflytt
 
-Ersätter alla `tenantName` och `tenantPhone` i filen `src/features/turnover/data/mock-move-in-list.ts` med tydligt fiktiva värden. Adresser, kontraktsnummer och övrig data behålls som de är (de behövs för att tabellen ska se realistisk ut).
+Lagger till en smal kolumn pa bade utflytt- och inflyttsidan som visar om nycklar har lamnats in respektive hamtats ut. Kolumnen far en nyckelikon som rubrik och en kompakt badge ("Ja"/"Nej") i varje rad.
 
-## Ändringar
+## Datamodell
+
+**Fil:** `src/features/turnover/types/move-in-list-types.ts`
+
+Lagg till ett nytt falt i `MoveInListChecklist`:
+
+```text
+keysHandled: boolean   // true = nycklar inlamnade (utflytt) / uthamtade (inflytt)
+```
+
+## Mockdata
 
 **Fil:** `src/features/turnover/data/mock-move-in-list.ts`
 
-Alla 28 poster (14 utflyttningar + 14 inflyttningar) får nya fiktiva namn och telefonnummer:
+Lagg till `keysHandled: true/false` i varje posts checklist-objekt. Satt nagra till `true` och resten till `false` for variation.
 
-| ID | Nuvarande namn | Nytt namn | Nytt telefonnr |
-|----|----------------|-----------|----------------|
-| mil-001 | Lindberg Maria | Ekberg Maja | 070-111 11 11 |
-| mil-002 | Skyddad Identitet | Skyddad Identitet *(behålls)* | 070-000 00 00 *(behålls)* |
-| mil-003 | Axelsson André | Holmgren Anton | 070-222 22 22 |
-| mil-004 | Westin Tomas | Vikström Tore | 070-333 33 33 |
-| mil-005 | Johansson Lars | Falk Lennart | 070-444 44 44 |
-| mil-006 | Pettersson Eva | Björk Elsa | 070-555 55 55 |
-| mil-007 | Nilsson Fatima | Nordlund Fatou | 070-666 66 66 |
-| mil-008 | Bergström Karin | Dahl Klara | 070-777 77 77 |
-| mil-009 | Eriksson Sven | Hagen Stefan | 070-888 88 88 |
-| mil-010 | Gustafsson Mikael | Eklund Martin | 070-999 99 99 |
-| mil-011 | Olsson Henrik | Rydberg Hugo | 070-121 21 21 |
-| mil-012 | Ström Anna | Lind Astrid | 070-131 31 31 |
-| mil-013 | Sandberg Lena | Kvarnström Lotta | 070-141 41 41 |
-| mil-014 | Dahlin Per | Forsell Patrik | 070-151 51 51 |
-| mil-020 | Khalil Mohammed | Osman Malik | 070-161 61 61 |
-| mil-021 | Ahmed Sameer | Yilmaz Samir | 070-171 71 71 |
-| mil-022 | Li Meenah | Tran Mai | 070-181 81 81 |
-| mil-023 | Al Hendi Sara | Bakir Selma | 070-191 91 91 |
-| mil-024 | Khawam Rachid | Haddad Rami | 070-212 12 12 |
-| mil-025 | Sjögren Lisa | Åberg Linnea | 070-232 32 32 |
-| mil-026 | Labo Yasmin | Abdi Yara | 070-242 42 42 |
-| mil-027 | Andersson Johan | Granberg Joel | 070-252 52 52 |
-| mil-028 | Tesfay Kokob | Tekie Kemal | 070-262 62 62 |
-| mil-029 | Andersson Morgan | Sjöblom Mattias | 070-272 72 72 |
-| mil-030 | Mohamed Samira | Hussein Sabina | 070-282 82 82 |
-| mil-031 | Hemström Billy | Wiklund Björn | 070-292 92 92 |
-| mil-032 | Berggren David | Nyman Daniel | 070-303 03 03 |
-| mil-033 | Mirembe Rebecca | Kamara Rosa | 070-313 13 13 |
+## Tabell (desktop)
 
-Inga andra filer eller komponenter behöver ändras -- alla komponenter läser namn och telefonnummer dynamiskt från denna mockdata-fil.
+**Fil:** `src/features/turnover/components/CombinedTurnoverTable.tsx`
+
+Utflyttsidan -- ny kolumn mellan "Stadkontr." och noteringskolumnen:
+- Rubrik: nyckelikon (`Key` fran lucide-react), ingen text, `w-[52px]` och `text-center`
+- Cell: badge med "Ja" (gron/success) eller "Nej" (outline/gra), centrerad
+
+Inflyttsidan -- ny kolumn mellan "Kontakt" och "Namn/Port":
+- Samma rubrik och badge-logik
+
+Kolumnerna anvander minimal bredd (`w-[52px]`) och centrerad text for att inte ta onodigt utrymme.
+
+## Mobilvy
+
+I `MobileAccordion`-innehallet laggs en rad per sektion (utflytt/inflytt) som visar nyckelstatus med badge, liknande hur "Namn/Port" redan visas.
+
+## Teknisk detalj
+
+Importerar `Key` fran `lucide-react` och ateranvander befintlig `Badge` fran `@/shared/ui/badge` med variant `success` for "Ja" och `outline` for "Nej".
 
