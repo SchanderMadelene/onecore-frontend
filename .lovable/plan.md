@@ -1,64 +1,18 @@
 
 
-# Rensa upp Badge-varianter till generiska, återanvändbara namn
+## Plan: Ta bort telefonnummer från tabellvyn + minska padding
 
-## Problemet
+### Åtgärd 2 — Ta bort telefonnummer från desktop-tabellen
 
-Varianterna har use-case-specifika namn (`priority-low`, `status-info`) som borde vara generiska färgvarianter. En lila variant saknas helt och hårdkodas i `WelcomeHomeCell`.
+Telefonnumret och ringknappen visas idag under hyresgästens namn i både utflytt- och inflyttkolumnen (rad 311-318 och 377-384). Dessa tas bort från desktop-tabellen. Telefonnumret finns redan tillgängligt via redigeringsmodalen (pennikonen). En liten ringikon läggs bredvid namnet istället — tar minimal bredd.
 
-## Ny variantstruktur i `badge.tsx`
+### Åtgärd 3 — Minska padding i alla celler
 
-Ersätt alla `priority-*` och `status-*` varianter med:
+Alla `TableCell` och `TableHead` i desktop-tabellen får tightare padding: `px-2 py-1.5` istället för default `p-4`. Detta appliceras via en className på `<Table>` eller individuellt per cell.
 
-```text
-Behåll som de är:
-  default     (mörk/primary)
-  secondary   (ljusgrå)
-  destructive (röd)
-  success     (grön -- redan finns)
-  outline     (transparent med border)
-
-Byt namn:
-  status-neutral  →  muted       (bg-muted text-muted-foreground)
-  status-info     →  info        (bg-sky-100 text-sky-800)
-  status-warning  →  warning     (bg-amber-100 text-amber-800)
-  status-success  →  (tas bort, "success" finns redan -- konsolidera till emerald-färg)
-  priority-low    →  (tas bort, ersätts av "info")
-  priority-medium →  (tas bort, ersätts av "warning")
-  priority-high   →  (tas bort, ersätts av "destructive")
-
-Lägg till:
-  purple      (bg-violet-100 text-violet-800)
-```
-
-Slutresultat -- 8 varianter:
-- `default` -- primärfärg, fyllda knappar/taggar
-- `secondary` -- ljusgrå, subtil
-- `destructive` -- röd, fel/kritiskt
-- `success` -- grön (ändra till emerald-100/800 för konsistens med övriga pasteller)
-- `outline` -- transparent med kant
-- `muted` -- grå, inaktivt/ej påbörjat
-- `info` -- blå, information/pågående
-- `warning` -- gul/amber, varning/uppmärksamhet
-- `purple` -- lila, specialstatus
-
-## Filer som uppdateras
-
-1. **`src/shared/ui/badge.tsx`** -- Ny variantlista enligt ovan
-2. **`CleaningStatusBadge.tsx`** -- `status-neutral` → `muted`, `status-info` → `info`, `status-success` → `success`, `status-warning` → `warning`
-3. **`ContactStatusBadge.tsx`** -- Samma mappning
-4. **`KeysHandledBadge.tsx`** -- `status-success` → `success`, `status-neutral` → `muted`
-5. **`CleaningCheckCell.tsx`** -- Samma mappning + uppdatera type-annotations
-6. **`ContactStatusCell.tsx`** -- Samma mappning
-7. **`WelcomeHomeCell.tsx`** -- Byt `status-info` + `extraClass` override till `purple` variant för "Manuell", `info` för "Digital", `muted` för "none"
-8. **`OrderCard.tsx`** -- `priority-low` → `info`, `priority-medium` → `warning`, `priority-high` → `destructive`
-9. **`BadgeShowcase.tsx`** -- Visa alla varianter med generiska etiketter (inte "Omkontroll"/"Bokad" utan t.ex. "Info", "Warning", "Success")
-
-## Showcasen efteråt
-
-Två sektioner:
-- **Grundvarianter**: Default, Secondary, Outline, Destructive, Success
-- **Statusfärger**: Muted, Info, Warning, Purple
-
-Generiska etiketter som visar färgen/syftet, inte domänspecifika ord.
+### Fil som ändras
+- **`src/features/turnover/components/CombinedTurnoverTable.tsx`**
+  - Rad 299-320 (utflytt hyresgäst-cell): Ta bort telefonnummer-blocket, lägg en liten Phone-ikon bredvid namnet som `<a href="tel:...">` 
+  - Rad 365-386 (inflytt hyresgäst-cell): Samma ändring
+  - Rad 247: Lägg `className="[&_th]:px-2 [&_th]:py-1.5 [&_td]:px-2 [&_td]:py-1.5"` på `<Table>` för att globalt minska padding
 
