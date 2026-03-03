@@ -1,13 +1,13 @@
 import { ContactStatus } from '../types/move-in-list-types';
-import { cn } from '@/lib/utils';
+import { Badge } from '@/shared/ui/badge';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
-const STATUS_CONFIG: Record<ContactStatus, { label: string; className: string }> = {
-  not_contacted: { label: 'Ej kontaktad', className: 'bg-muted text-muted-foreground' },
-  not_reached: { label: 'Ej nådd', className: 'bg-amber-100 text-amber-800' },
-  visit_booked: { label: 'Besök bokat', className: 'bg-sky-100 text-sky-800' },
-  visit_done: { label: 'Besök genomfört', className: 'bg-emerald-100 text-emerald-800' },
+const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'status-neutral' | 'status-info' | 'status-success' | 'status-warning' }> = {
+  not_contacted: { label: 'Ej kontaktad', variant: 'status-neutral' },
+  not_reached: { label: 'Ej nådd', variant: 'status-warning' },
+  visit_booked: { label: 'Besök bokat', variant: 'status-info' },
+  visit_done: { label: 'Besök genomfört', variant: 'status-success' },
 };
 
 interface ContactStatusBadgeProps {
@@ -23,12 +23,7 @@ export function ContactStatusBadge({ status, attempts, visitBookedDate, showLabe
   return (
     <div className="flex items-center gap-1.5">
       {showLabel && <span className="text-xs text-muted-foreground">Kontakt:</span>}
-      <span
-        className={cn(
-          'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
-          config.className
-        )}
-      >
+      <Badge variant={config.variant} className="gap-1.5">
         {config.label}
         {status === 'not_reached' && attempts > 0 && (
           <span className="font-normal">{attempts} ggr</span>
@@ -38,7 +33,7 @@ export function ContactStatusBadge({ status, attempts, visitBookedDate, showLabe
             {format(parseISO(visitBookedDate), 'd MMM HH:mm', { locale: sv })}
           </span>
         )}
-      </span>
+      </Badge>
     </div>
   );
 }

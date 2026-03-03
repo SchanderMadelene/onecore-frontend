@@ -24,6 +24,18 @@ export const BadgeShowcase = () => {
         <Separator />
         
         <div>
+          <h3 className="text-sm font-medium mb-3">Statusbadges</h3>
+          <div className="flex flex-wrap gap-4">
+            <Badge variant="status-neutral">Ej påbörjad</Badge>
+            <Badge variant="status-info">Bokad</Badge>
+            <Badge variant="status-warning">Omkontroll</Badge>
+            <Badge variant="status-success">Godkänd</Badge>
+          </div>
+        </div>
+        
+        <Separator />
+        
+        <div>
           <h3 className="text-sm font-medium mb-3">Use Cases</h3>
           <div className="flex flex-wrap gap-4">
             <Badge variant="success">Aktiv</Badge>
