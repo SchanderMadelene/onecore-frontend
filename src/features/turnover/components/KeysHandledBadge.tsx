@@ -9,7 +9,7 @@ export function KeysHandledBadge({ handled }: KeysHandledBadgeProps) {
     <span
       className={cn(
         'inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium',
-        handled ? 'bg-success text-success-foreground' : 'bg-muted text-muted-foreground'
+        handled ? 'bg-emerald-100 text-emerald-800' : 'bg-muted text-muted-foreground'
       )}
     >
       {handled ? 'Ja' : 'Nej'}
