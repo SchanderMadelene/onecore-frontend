@@ -163,7 +163,11 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
   });
 
   useEffect(() => {
-    localStorage.setItem('featureToggles', JSON.stringify(features));
+    try {
+      localStorage.setItem('featureToggles', JSON.stringify(features));
+    } catch (error) {
+      console.warn('Error saving feature toggles to localStorage:', error);
+    }
   }, [features]);
 
   const handleFeatureToggle = (feature: keyof FeatureToggles) => {

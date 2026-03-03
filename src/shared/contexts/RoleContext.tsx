@@ -47,25 +47,43 @@ interface RoleProviderProps {
 }
 
 export const RoleProvider: React.FC<RoleProviderProps> = ({ children }) => {
-  const [currentRole, setCurrentRole] = useState<UserRole>(() => {
-    const saved = localStorage.getItem('onecore-dev-role');
-    if (saved && Object.prototype.hasOwnProperty.call(roleCardConfig, saved)) {
-      return saved as UserRole;
+  const getStoredRole = (): UserRole => {
+    try {
+      const saved = window.localStorage.getItem('onecore-dev-role');
+      if (saved && Object.prototype.hasOwnProperty.call(roleCardConfig, saved)) {
+        return saved as UserRole;
+      }
+    } catch {
+      // Ignore storage access issues in embedded/locked-down contexts
     }
     return 'general';
-  });
+  };
 
-  const [devModeEnabled, setDevModeEnabled] = useState(() => {
-    const saved = localStorage.getItem('onecore-dev-mode');
-    return saved === 'true';
-  });
+  const getStoredDevMode = (): boolean => {
+    try {
+      return window.localStorage.getItem('onecore-dev-mode') === 'true';
+    } catch {
+      return false;
+    }
+  };
+
+  const [currentRole, setCurrentRole] = useState<UserRole>(getStoredRole);
+  const [devModeEnabled, setDevModeEnabled] = useState<boolean>(getStoredDevMode);
 
   useEffect(() => {
-    localStorage.setItem('onecore-dev-role', currentRole);
+    try {
+      window.localStorage.setItem('onecore-dev-role', currentRole);
+    } catch {
+      // Ignore storage access issues in embedded/locked-down contexts
+    }
   }, [currentRole]);
 
   useEffect(() => {
-    localStorage.setItem('onecore-dev-mode', String(devModeEnabled));
+    try {
+      window.localStorage.setItem('onecore-dev-mode', String(devModeEnabled));
+    } catch {
+      // Ignore storage access issues in embedded/locked-down contexts
+    }
   }, [devModeEnabled]);
 
   const isCardVisibleForRole = (cardId: string): boolean => {
