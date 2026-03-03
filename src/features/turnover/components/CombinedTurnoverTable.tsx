@@ -83,14 +83,17 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
         </div>
       ),
       content: (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Utflytt */}
           <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-rose-600">Utflytt</h4>
+            <div className="flex items-center gap-1.5">
+              <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground" />
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Utflytt</h4>
+            </div>
             {row.moveOut ? (
-              <div className="rounded-md bg-rose-50 p-3 space-y-2">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-1.5">
+              <div className="rounded-lg border bg-card p-3 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
                     <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
                     {row.moveOut.hasTenantNote && (
@@ -99,56 +102,61 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       </Badge>
                     )}
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 shrink-0">
                     <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
                     <TurnoverRowActions
-                    type="move_out"
-                    entryId={row.moveOut.id}
-                    tenantName={row.moveOut.tenantName}
-                    onAddNote={addNote}
-                    cleaningStatus={row.moveOut.checklist.cleaningStatus}
-                    cleaningBookedDate={row.moveOut.checklist.cleaningBookedDate}
-                    cleaningApprovedDate={row.moveOut.checklist.cleaningApprovedDate}
-                    onCleaningStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
-                    onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
-                    keysHandled={row.moveOut!.checklist.keysHandled}
-                    onKeysHandledChange={(v) => onChecklistChange(row.moveOut!.id, 'keysHandled', v)}
-                  />
+                      type="move_out"
+                      entryId={row.moveOut.id}
+                      tenantName={row.moveOut.tenantName}
+                      onAddNote={addNote}
+                      cleaningStatus={row.moveOut.checklist.cleaningStatus}
+                      cleaningBookedDate={row.moveOut.checklist.cleaningBookedDate}
+                      cleaningApprovedDate={row.moveOut.checklist.cleaningApprovedDate}
+                      onCleaningStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
+                      onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
+                      keysHandled={row.moveOut!.checklist.keysHandled}
+                      onKeysHandledChange={(v) => onChecklistChange(row.moveOut!.id, 'keysHandled', v)}
+                    />
                   </div>
                 </div>
                 {row.moveOut.tenantPhone && (
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
                     <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
                       <Phone className="h-4 w-4" />
                     </Button>
                   </div>
                 )}
-                <div className="pt-1">
-                  <CleaningStatusBadge
-                    status={row.moveOut.checklist.cleaningStatus}
-                    bookedDate={row.moveOut.checklist.cleaningBookedDate}
-                    approvedDate={row.moveOut.checklist.cleaningApprovedDate}
-                    showLabel
-                  />
-                </div>
-                <div className="flex items-center gap-2 pt-1">
-                  <KeysHandledBadge handled={row.moveOut.checklist.keysHandled} />
-                  <span className="text-xs">Nycklar</span>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Städ:</span>
+                    <CleaningStatusBadge
+                      status={row.moveOut.checklist.cleaningStatus}
+                      bookedDate={row.moveOut.checklist.cleaningBookedDate}
+                      approvedDate={row.moveOut.checklist.cleaningApprovedDate}
+                    />
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <KeysHandledBadge handled={row.moveOut.checklist.keysHandled} />
+                    <span>Nycklar</span>
+                  </div>
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground italic">Ingen utflytt</p>
+              <p className="text-xs text-muted-foreground italic pl-5">Ingen utflytt</p>
             )}
           </div>
 
           {/* Inflytt */}
           <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-emerald-600">Inflytt</h4>
+            <div className="flex items-center gap-1.5">
+              <ArrowDownLeft className="h-3.5 w-3.5 text-muted-foreground" />
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Inflytt</h4>
+            </div>
             {row.moveIn ? (
-              <div className="rounded-md bg-emerald-50 p-3 space-y-2">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-1.5">
+              <div className="rounded-lg border bg-card p-3 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
                     <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                     {row.moveIn.hasTenantNote && (
@@ -162,65 +170,69 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       </Badge>
                     )}
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 shrink-0">
                     <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
                     <TurnoverRowActions
-                    type="move_in"
-                    entryId={row.moveIn.id}
-                    tenantName={row.moveIn.tenantName}
-                    onAddNote={addNote}
-                    contactStatus={row.moveIn.checklist.contactStatus}
-                    contactAttempts={row.moveIn.checklist.contactAttempts}
-                    visitBookedDate={row.moveIn.checklist.visitBookedDate}
-                    nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
-                    welcomeHomeMethod={row.moveIn.checklist.welcomeHomeMethod}
-                    onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
-                    onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
-                    onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
-                    onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
-                    onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
-                    keysHandled={row.moveIn!.checklist.keysHandled}
-                    hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
-                    onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
-                    onQuickMoveInChange={(v) => onQuickMoveInChange(row.moveIn!.id, v)}
-                  />
+                      type="move_in"
+                      entryId={row.moveIn.id}
+                      tenantName={row.moveIn.tenantName}
+                      onAddNote={addNote}
+                      contactStatus={row.moveIn.checklist.contactStatus}
+                      contactAttempts={row.moveIn.checklist.contactAttempts}
+                      visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                      nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
+                      welcomeHomeMethod={row.moveIn.checklist.welcomeHomeMethod}
+                      onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
+                      onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
+                      onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
+                      onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
+                      onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                      keysHandled={row.moveIn!.checklist.keysHandled}
+                      hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
+                      onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
+                      onQuickMoveInChange={(v) => onQuickMoveInChange(row.moveIn!.id, v)}
+                    />
                   </div>
                 </div>
                 {row.moveIn.tenantPhone && (
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
                     <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
                       <Phone className="h-4 w-4" />
                     </Button>
                   </div>
                 )}
-                <div className="pt-1">
-                  <ContactStatusBadge
-                    status={row.moveIn.checklist.contactStatus}
-                    attempts={row.moveIn.checklist.contactAttempts}
-                    visitBookedDate={row.moveIn.checklist.visitBookedDate}
-                    showLabel
-                  />
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Kontakt:</span>
+                    <ContactStatusBadge
+                      status={row.moveIn.checklist.contactStatus}
+                      attempts={row.moveIn.checklist.contactAttempts}
+                      visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                    />
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    {row.moveIn.checklist.nameAndIntercomDone ? (
+                      <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    ) : (
+                      <span className="text-muted-foreground">–</span>
+                    )}
+                    <span>Namn/Port</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 pt-1">
-                  {row.moveIn.checklist.nameAndIntercomDone ? (
-                    <Check className="h-4 w-4 text-emerald-600" />
-                  ) : (
-                    <span className="h-4 w-4 text-muted-foreground">–</span>
-                  )}
-                  <span className="text-xs">Namn/Port</span>
-                </div>
-                <div className="pt-1">
-                  <span className="text-xs text-muted-foreground">Välkommen hem: </span>
-                  <span className="text-xs font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
-                </div>
-                <div className="flex items-center gap-2 pt-1">
-                  <KeysHandledBadge handled={row.moveIn.checklist.keysHandled} />
-                  <span className="text-xs">Nycklar</span>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-muted-foreground">Välkommen hem:</span>
+                    <span className="font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <KeysHandledBadge handled={row.moveIn.checklist.keysHandled} />
+                    <span>Nycklar</span>
+                  </div>
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground italic">Ingen inflytt</p>
+              <p className="text-xs text-muted-foreground italic pl-5">Ingen inflytt</p>
             )}
           </div>
         </div>
