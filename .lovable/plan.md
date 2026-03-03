@@ -1,68 +1,64 @@
 
 
-# Konsolidera alla statusfärger till Badge-komponenten
+# Rensa upp Badge-varianter till generiska, återanvändbara namn
 
 ## Problemet
 
-Statusfärger (emerald, sky, amber, muted) är hårdkodade i minst 6 olika komponenter:
-- `CleaningStatusBadge.tsx`
-- `ContactStatusBadge.tsx`
-- `KeysHandledBadge.tsx`
-- `CleaningCheckCell.tsx`
-- `ContactStatusCell.tsx`
-- `WelcomeHomeCell.tsx`
+Varianterna har use-case-specifika namn (`priority-low`, `status-info`) som borde vara generiska färgvarianter. En lila variant saknas helt och hårdkodas i `WelcomeHomeCell`.
 
-Alla använder samma färgpalett men kopierar klasserna lokalt. Badge-komponenten i `shared/ui/badge.tsx` vet inte om dessa färger.
+## Ny variantstruktur i `badge.tsx`
 
-## Lösning
-
-### 1. Lägg till statusvarianter i Badge-komponenten
-
-**Fil:** `src/shared/ui/badge.tsx`
-
-Lägg till fyra nya varianter som matchar det etablerade mönstret:
+Ersätt alla `priority-*` och `status-*` varianter med:
 
 ```text
-status-neutral:  bg-muted text-muted-foreground (ej påbörjad / ej kontaktad)
-status-info:     bg-sky-100 text-sky-800         (bokad / pågående)
-status-warning:  bg-amber-100 text-amber-800     (omkontroll / ej nådd)
-status-success:  bg-emerald-100 text-emerald-800 (godkänd / genomfört / ja)
+Behåll som de är:
+  default     (mörk/primary)
+  secondary   (ljusgrå)
+  destructive (röd)
+  success     (grön -- redan finns)
+  outline     (transparent med border)
+
+Byt namn:
+  status-neutral  →  muted       (bg-muted text-muted-foreground)
+  status-info     →  info        (bg-sky-100 text-sky-800)
+  status-warning  →  warning     (bg-amber-100 text-amber-800)
+  status-success  →  (tas bort, "success" finns redan -- konsolidera till emerald-färg)
+  priority-low    →  (tas bort, ersätts av "info")
+  priority-medium →  (tas bort, ersätts av "warning")
+  priority-high   →  (tas bort, ersätts av "destructive")
+
+Lägg till:
+  purple      (bg-violet-100 text-violet-800)
 ```
 
-Justera även bas-klasserna så att padding och font-weight matchar det som feature-komponenterna redan använder (`px-2.5 py-1 text-xs font-medium`). De befintliga varianterna (`default`, `secondary`, etc.) behåller sin nuvarande styling.
+Slutresultat -- 8 varianter:
+- `default` -- primärfärg, fyllda knappar/taggar
+- `secondary` -- ljusgrå, subtil
+- `destructive` -- röd, fel/kritiskt
+- `success` -- grön (ändra till emerald-100/800 för konsistens med övriga pasteller)
+- `outline` -- transparent med kant
+- `muted` -- grå, inaktivt/ej påbörjat
+- `info` -- blå, information/pågående
+- `warning` -- gul/amber, varning/uppmärksamhet
+- `purple` -- lila, specialstatus
 
-### 2. Refaktorera CleaningStatusBadge
+## Filer som uppdateras
 
-Byt ut `<span>` mot `<Badge>` med rätt variant-mappning:
-- `not_done` -> `status-neutral`
-- `booked` -> `status-info`
-- `approved` -> `status-success`
-- `reinspection` -> `status-warning`
+1. **`src/shared/ui/badge.tsx`** -- Ny variantlista enligt ovan
+2. **`CleaningStatusBadge.tsx`** -- `status-neutral` → `muted`, `status-info` → `info`, `status-success` → `success`, `status-warning` → `warning`
+3. **`ContactStatusBadge.tsx`** -- Samma mappning
+4. **`KeysHandledBadge.tsx`** -- `status-success` → `success`, `status-neutral` → `muted`
+5. **`CleaningCheckCell.tsx`** -- Samma mappning + uppdatera type-annotations
+6. **`ContactStatusCell.tsx`** -- Samma mappning
+7. **`WelcomeHomeCell.tsx`** -- Byt `status-info` + `extraClass` override till `purple` variant för "Manuell", `info` för "Digital", `muted` för "none"
+8. **`OrderCard.tsx`** -- `priority-low` → `info`, `priority-medium` → `warning`, `priority-high` → `destructive`
+9. **`BadgeShowcase.tsx`** -- Visa alla varianter med generiska etiketter (inte "Omkontroll"/"Bokad" utan t.ex. "Info", "Warning", "Success")
 
-### 3. Refaktorera ContactStatusBadge
+## Showcasen efteråt
 
-Samma mönster:
-- `not_contacted` -> `status-neutral`
-- `not_reached` -> `status-warning`
-- `visit_booked` -> `status-info`
-- `visit_done` -> `status-success`
+Två sektioner:
+- **Grundvarianter**: Default, Secondary, Outline, Destructive, Success
+- **Statusfärger**: Muted, Info, Warning, Purple
 
-### 4. Refaktorera KeysHandledBadge
+Generiska etiketter som visar färgen/syftet, inte domänspecifika ord.
 
-Byt ut `<span>` mot `<Badge>`:
-- `handled: true` -> `status-success`
-- `handled: false` -> `status-neutral`
-
-### 5. Refaktorera CleaningCheckCell och ContactStatusCell
-
-Samma mappning som ovan. Dessa har även `border-*` klasser -- de kan läggas via `className`-prop om de behövs för cellkontexten.
-
-### 6. Uppdatera BadgeShowcase
-
-Lägg till en sektion "Statusbadges" med alla fyra nya varianter så att designsystemet dokumenterar dem.
-
-## Resultat
-
-- **En källa till sanning** för statusfärger: `badge.tsx`
-- Alla feature-komponenter använder `<Badge variant="status-success">` istället för hårdkodade Tailwind-klasser
-- Nya features som behöver statusbadges importerar Badge direkt -- inga fler one-off-komponenter med kopierade färger
