@@ -1,5 +1,5 @@
 import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
-import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
@@ -71,6 +71,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
                     <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                    {row.moveOut.hasTenantNote && (
+                      <Badge variant="warning" size="icon" title="Notering på hyresgäst">
+                        <MessageSquare className="h-3 w-3" />
+                      </Badge>
+                    )}
                   </div>
                   <div className="flex items-center gap-1">
                     <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
@@ -124,6 +129,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
                     <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                    {row.moveIn.hasTenantNote && (
+                      <Badge variant="warning" size="icon" title="Notering på hyresgäst">
+                        <MessageSquare className="h-3 w-3" />
+                      </Badge>
+                    )}
                     {row.moveIn.hasQuickMoveIn && (
                       <Badge variant="info" size="icon" title="Snabb inflytt">
                         <Zap className="h-3 w-3" />
@@ -257,6 +267,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm">{row.moveOut.tenantName}</span>
                           <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                          {row.moveOut.hasTenantNote && (
+                            <Badge variant="warning" size="icon" title="Notering på hyresgäst">
+                              <MessageSquare className="h-3 w-3" />
+                            </Badge>
+                          )}
                         </div>
                         {row.moveOut.tenantPhone && (
                           <div className="flex items-center gap-1 mt-1.5">
@@ -318,6 +333,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm">{row.moveIn.tenantName}</span>
                           <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                          {row.moveIn.hasTenantNote && (
+                            <Badge variant="warning" size="icon" title="Notering på hyresgäst">
+                              <MessageSquare className="h-3 w-3" />
+                            </Badge>
+                          )}
                         </div>
                         {row.moveIn.tenantPhone && (
                           <div className="flex items-center gap-1 mt-1.5">
