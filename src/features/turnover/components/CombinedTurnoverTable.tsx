@@ -311,9 +311,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           </Badge>
                         )}
                         {row.moveOut.tenantPhone && (
-                          <a href={`tel:${row.moveOut.tenantPhone}`} className="text-muted-foreground hover:text-primary" title={row.moveOut.tenantPhone}>
-                            <Phone className="h-3 w-3" />
-                          </a>
+                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                            <a href={`tel:${row.moveOut.tenantPhone}`} title={row.moveOut.tenantPhone}>
+                              <Phone className="h-3 w-3" />
+                            </a>
+                          </Button>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
@@ -372,9 +374,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           </Badge>
                         )}
                         {row.moveIn.tenantPhone && (
-                          <a href={`tel:${row.moveIn.tenantPhone}`} className="text-muted-foreground hover:text-primary" title={row.moveIn.tenantPhone}>
-                            <Phone className="h-3 w-3" />
-                          </a>
+                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                            <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
+                              <Phone className="h-3 w-3" />
+                            </a>
+                          </Button>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
