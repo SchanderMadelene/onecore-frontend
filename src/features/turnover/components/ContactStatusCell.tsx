@@ -18,7 +18,7 @@ import { CalendarIcon, Minus, Plus } from 'lucide-react';
 const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'muted' | 'info' | 'success' | 'warning'; order: number }> = {
   not_contacted: { label: 'Ej kontaktad', variant: 'muted', order: 0 },
   not_reached: { label: 'Ej nådd', variant: 'warning', order: 1 },
-  visit_booked: { label: 'Besök bokat', variant: 'info', order: 2 },
+  visit_booked: { label: 'Besök', variant: 'info', order: 2 },
   visit_done: { label: 'Besök genomfört', variant: 'success', order: 3 },
 };
 

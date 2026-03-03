@@ -6,7 +6,7 @@ import { sv } from 'date-fns/locale';
 const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'muted' | 'info' | 'success' | 'warning' }> = {
   not_contacted: { label: 'Ej kontaktad', variant: 'muted' },
   not_reached: { label: 'Ej nådd', variant: 'warning' },
-  visit_booked: { label: 'Besök bokat', variant: 'info' },
+  visit_booked: { label: 'Besök', variant: 'info' },
   visit_done: { label: 'Besök genomfört', variant: 'success' },
 };
 
