@@ -1,5 +1,5 @@
 import { StudentTurnoverRow, CleaningStatus } from '../types/move-in-list-types';
-import { ArrowUpRight, ArrowDownLeft, Mail } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Mail, Pencil } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { CleaningEditDialog } from './CleaningEditDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -80,7 +80,12 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
               <div className="rounded-lg border bg-card p-3 space-y-2.5">
                 <div className="flex justify-between items-start">
                   <span className="text-sm font-medium">{row.moveOut.studentName}</span>
-                  <span className="text-xs text-muted-foreground">{formatDate(row.moveOut.date)}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-muted-foreground">{formatDate(row.moveOut.date)}</span>
+                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openCleaningDialog(row.moveOut)}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
                 <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
                   <span className="text-muted-foreground">Kön:</span>
@@ -90,13 +95,11 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                   <span className="text-muted-foreground">E-post:</span>
                   <a href={`mailto:${row.moveOut.email}`} className="text-primary underline truncate max-w-[180px]">{row.moveOut.email}</a>
                   <span className="text-muted-foreground">Städ:</span>
-                  <button onClick={() => openCleaningDialog(row.moveOut)} className="text-left">
-                    <CleaningStatusBadge
-                      status={row.moveOut.cleaningChecklist.cleaningStatus}
-                      bookedDate={row.moveOut.cleaningChecklist.cleaningBookedDate}
-                      approvedDate={row.moveOut.cleaningChecklist.cleaningApprovedDate}
-                    />
-                  </button>
+                  <CleaningStatusBadge
+                    status={row.moveOut.cleaningChecklist.cleaningStatus}
+                    bookedDate={row.moveOut.cleaningChecklist.cleaningBookedDate}
+                    approvedDate={row.moveOut.cleaningChecklist.cleaningApprovedDate}
+                  />
                 </div>
               </div>
             ) : (
@@ -114,7 +117,12 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
               <div className="rounded-lg border bg-card p-3 space-y-2.5">
                 <div className="flex justify-between items-start">
                   <span className="text-sm font-medium">{row.moveIn.studentName}</span>
-                  <span className="text-xs text-muted-foreground">{formatDate(row.moveIn.date)}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-muted-foreground">{formatDate(row.moveIn.date)}</span>
+                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openCleaningDialog(row.moveIn)}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
                 <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
                   <span className="text-muted-foreground">Kön:</span>
@@ -124,13 +132,11 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                   <span className="text-muted-foreground">E-post:</span>
                   <a href={`mailto:${row.moveIn.email}`} className="text-primary underline truncate max-w-[180px]">{row.moveIn.email}</a>
                   <span className="text-muted-foreground">Städ:</span>
-                  <button onClick={() => openCleaningDialog(row.moveIn)} className="text-left">
-                    <CleaningStatusBadge
-                      status={row.moveIn.cleaningChecklist.cleaningStatus}
-                      bookedDate={row.moveIn.cleaningChecklist.cleaningBookedDate}
-                      approvedDate={row.moveIn.cleaningChecklist.cleaningApprovedDate}
-                    />
-                  </button>
+                  <CleaningStatusBadge
+                    status={row.moveIn.cleaningChecklist.cleaningStatus}
+                    bookedDate={row.moveIn.cleaningChecklist.cleaningBookedDate}
+                    approvedDate={row.moveIn.cleaningChecklist.cleaningApprovedDate}
+                  />
                 </div>
               </div>
             ) : (
@@ -188,6 +194,7 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                   <TableHead className="whitespace-nowrap">Född</TableHead>
                   <TableHead className="whitespace-nowrap">Datum</TableHead>
                   <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
+                  <TableHead className="w-10"></TableHead>
                   <TableHead className="border-l-2 border-border">
                     <div className="flex items-center gap-1.5">
                       <span className="inline-flex items-center justify-center h-5 w-5 rounded bg-muted">
@@ -200,6 +207,7 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                   <TableHead className="whitespace-nowrap">Född</TableHead>
                   <TableHead className="whitespace-nowrap">Datum</TableHead>
                   <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
+                  <TableHead className="w-10"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -231,14 +239,19 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                     </TableCell>
                     <TableCell>
                       {row.moveOut ? (
-                        <button onClick={() => openCleaningDialog(row.moveOut)} className="text-left">
-                          <CleaningStatusBadge
-                            status={row.moveOut.cleaningChecklist.cleaningStatus}
-                            bookedDate={row.moveOut.cleaningChecklist.cleaningBookedDate}
-                            approvedDate={row.moveOut.cleaningChecklist.cleaningApprovedDate}
-                          />
-                        </button>
+                        <CleaningStatusBadge
+                          status={row.moveOut.cleaningChecklist.cleaningStatus}
+                          bookedDate={row.moveOut.cleaningChecklist.cleaningBookedDate}
+                          approvedDate={row.moveOut.cleaningChecklist.cleaningApprovedDate}
+                        />
                       ) : <span className="text-center block text-muted-foreground">–</span>}
+                    </TableCell>
+                    <TableCell>
+                      {row.moveOut ? (
+                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openCleaningDialog(row.moveOut)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      ) : null}
                     </TableCell>
                     {/* Move-in student */}
                     <TableCell className="border-l-2 border-border">
@@ -264,14 +277,19 @@ export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleani
                     </TableCell>
                     <TableCell>
                       {row.moveIn ? (
-                        <button onClick={() => openCleaningDialog(row.moveIn)} className="text-left">
-                          <CleaningStatusBadge
-                            status={row.moveIn.cleaningChecklist.cleaningStatus}
-                            bookedDate={row.moveIn.cleaningChecklist.cleaningBookedDate}
-                            approvedDate={row.moveIn.cleaningChecklist.cleaningApprovedDate}
-                          />
-                        </button>
+                        <CleaningStatusBadge
+                          status={row.moveIn.cleaningChecklist.cleaningStatus}
+                          bookedDate={row.moveIn.cleaningChecklist.cleaningBookedDate}
+                          approvedDate={row.moveIn.cleaningChecklist.cleaningApprovedDate}
+                        />
                       ) : <span className="text-center block text-muted-foreground">–</span>}
+                    </TableCell>
+                    <TableCell>
+                      {row.moveIn ? (
+                        <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => openCleaningDialog(row.moveIn)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      ) : null}
                     </TableCell>
                   </TableRow>
                 ))}
