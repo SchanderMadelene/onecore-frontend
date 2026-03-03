@@ -7,11 +7,11 @@ export const BadgeShowcase = () => {
     <Card>
       <CardHeader>
         <CardTitle>Badges</CardTitle>
-        <CardDescription>Various badge styles used throughout the application</CardDescription>
+        <CardDescription>Alla badge-varianter som används i systemet</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
-          <h3 className="text-sm font-medium mb-3">Standard Variants</h3>
+          <h3 className="text-sm font-medium mb-3">Grundvarianter</h3>
           <div className="flex flex-wrap gap-4">
             <Badge variant="default">Default</Badge>
             <Badge variant="secondary">Secondary</Badge>
@@ -24,7 +24,7 @@ export const BadgeShowcase = () => {
         <Separator />
         
         <div>
-          <h3 className="text-sm font-medium mb-3">Statusbadges</h3>
+          <h3 className="text-sm font-medium mb-3">Status</h3>
           <div className="flex flex-wrap gap-4">
             <Badge variant="status-neutral">Ej påbörjad</Badge>
             <Badge variant="status-info">Bokad</Badge>
@@ -36,19 +36,7 @@ export const BadgeShowcase = () => {
         <Separator />
         
         <div>
-          <h3 className="text-sm font-medium mb-3">Use Cases</h3>
-          <div className="flex flex-wrap gap-4">
-            <Badge variant="success">Aktiv</Badge>
-            <Badge variant="destructive">Avslagen</Badge>
-            <Badge variant="secondary">Väntande</Badge>
-            <Badge variant="outline">Utkast</Badge>
-          </div>
-        </div>
-        
-        <Separator />
-        
-        <div>
-          <h3 className="text-sm font-medium mb-3">Priority Badges</h3>
+          <h3 className="text-sm font-medium mb-3">Prioritet</h3>
           <div className="flex flex-wrap gap-4">
             <Badge variant="priority-low">Låg</Badge>
             <Badge variant="priority-medium">Medium</Badge>
