@@ -15,11 +15,11 @@ import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { CalendarIcon, Minus, Plus } from 'lucide-react';
 
-const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'status-neutral' | 'status-info' | 'status-success' | 'status-warning'; order: number }> = {
-  not_contacted: { label: 'Ej kontaktad', variant: 'status-neutral', order: 0 },
-  not_reached: { label: 'Ej nådd', variant: 'status-warning', order: 1 },
-  visit_booked: { label: 'Besök bokat', variant: 'status-info', order: 2 },
-  visit_done: { label: 'Besök genomfört', variant: 'status-success', order: 3 },
+const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'muted' | 'info' | 'success' | 'warning'; order: number }> = {
+  not_contacted: { label: 'Ej kontaktad', variant: 'muted', order: 0 },
+  not_reached: { label: 'Ej nådd', variant: 'warning', order: 1 },
+  visit_booked: { label: 'Besök bokat', variant: 'info', order: 2 },
+  visit_done: { label: 'Besök genomfört', variant: 'success', order: 3 },
 };
 
 interface ContactStatusCellProps {

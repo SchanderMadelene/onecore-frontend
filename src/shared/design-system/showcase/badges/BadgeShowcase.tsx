@@ -24,23 +24,12 @@ export const BadgeShowcase = () => {
         <Separator />
         
         <div>
-          <h3 className="text-sm font-medium mb-3">Status</h3>
+          <h3 className="text-sm font-medium mb-3">Statusfärger</h3>
           <div className="flex flex-wrap gap-4">
-            <Badge variant="status-neutral">Ej påbörjad</Badge>
-            <Badge variant="status-info">Bokad</Badge>
-            <Badge variant="status-warning">Omkontroll</Badge>
-            <Badge variant="status-success">Godkänd</Badge>
-          </div>
-        </div>
-        
-        <Separator />
-        
-        <div>
-          <h3 className="text-sm font-medium mb-3">Prioritet</h3>
-          <div className="flex flex-wrap gap-4">
-            <Badge variant="priority-low">Låg</Badge>
-            <Badge variant="priority-medium">Medium</Badge>
-            <Badge variant="priority-high">Hög</Badge>
+            <Badge variant="muted">Muted</Badge>
+            <Badge variant="info">Info</Badge>
+            <Badge variant="warning">Warning</Badge>
+            <Badge variant="purple">Purple</Badge>
           </div>
         </div>
       </CardContent>

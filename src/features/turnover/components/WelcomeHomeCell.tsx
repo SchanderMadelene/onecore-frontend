@@ -9,10 +9,10 @@ import {
 import { cn } from '@/lib/utils';
 import { badgeVariants } from '@/shared/ui/badge';
 
-const METHOD_CONFIG: Record<WelcomeHomeMethod, { label: string; variant: 'status-neutral' | 'status-info'; extraClass?: string }> = {
-  none: { label: '–', variant: 'status-neutral' },
-  digital: { label: 'Digital', variant: 'status-info' },
-  manual: { label: 'Manuell', variant: 'status-info', extraClass: 'bg-violet-100 text-violet-800 border-violet-200' },
+const METHOD_CONFIG: Record<WelcomeHomeMethod, { label: string; variant: 'muted' | 'info' | 'purple' }> = {
+  none: { label: '–', variant: 'muted' },
+  digital: { label: 'Digital', variant: 'info' },
+  manual: { label: 'Manuell', variant: 'purple' },
 };
 
 interface WelcomeHomeCellProps {
@@ -31,8 +31,7 @@ export function WelcomeHomeCell({ value, onChange, showLabel = false }: WelcomeH
         <SelectTrigger
           className={cn(
             badgeVariants({ variant: config.variant }),
-            'h-7 w-auto min-w-[80px] py-0 border',
-            config.extraClass
+            'h-7 w-auto min-w-[80px] py-0 border'
           )}
         >
           <SelectValue />
