@@ -72,7 +72,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
                     <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
                     {row.moveOut.hasTenantNote && (
-                      <Badge variant="info" size="icon" title="Notering på hyresgäst">
+                      <Badge variant="muted" size="icon" title="Notering på hyresgäst">
                         <MessageSquare className="h-3 w-3" />
                       </Badge>
                     )}
@@ -130,7 +130,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
                     <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                     {row.moveIn.hasTenantNote && (
-                      <Badge variant="info" size="icon" title="Notering på hyresgäst">
+                      <Badge variant="muted" size="icon" title="Notering på hyresgäst">
                         <MessageSquare className="h-3 w-3" />
                       </Badge>
                     )}
@@ -268,7 +268,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           <span className="text-sm">{row.moveOut.tenantName}</span>
                           <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
                           {row.moveOut.hasTenantNote && (
-                            <Badge variant="info" size="icon" title="Notering på hyresgäst">
+                            <Badge variant="muted" size="icon" title="Notering på hyresgäst">
                               <MessageSquare className="h-3 w-3" />
                             </Badge>
                           )}
@@ -334,7 +334,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           <span className="text-sm">{row.moveIn.tenantName}</span>
                           <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                           {row.moveIn.hasTenantNote && (
-                            <Badge variant="info" size="icon" title="Notering på hyresgäst">
+                            <Badge variant="muted" size="icon" title="Notering på hyresgäst">
                               <MessageSquare className="h-3 w-3" />
                             </Badge>
                           )}
