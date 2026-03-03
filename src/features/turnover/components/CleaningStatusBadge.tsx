@@ -1,13 +1,13 @@
 import { CleaningStatus } from '../types/move-in-list-types';
-import { cn } from '@/lib/utils';
+import { Badge } from '@/shared/ui/badge';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
-const STATUS_CONFIG: Record<CleaningStatus, { label: string; className: string }> = {
-  not_done: { label: 'Ej utförd', className: 'bg-muted text-muted-foreground' },
-  booked: { label: 'Bokad', className: 'bg-sky-100 text-sky-800' },
-  approved: { label: 'Godkänd', className: 'bg-emerald-100 text-emerald-800' },
-  reinspection: { label: 'Omkontroll', className: 'bg-amber-100 text-amber-800' },
+const STATUS_CONFIG: Record<CleaningStatus, { label: string; variant: 'status-neutral' | 'status-info' | 'status-success' | 'status-warning' }> = {
+  not_done: { label: 'Ej utförd', variant: 'status-neutral' },
+  booked: { label: 'Bokad', variant: 'status-info' },
+  approved: { label: 'Godkänd', variant: 'status-success' },
+  reinspection: { label: 'Omkontroll', variant: 'status-warning' },
 };
 
 interface CleaningStatusBadgeProps {
@@ -25,12 +25,7 @@ export function CleaningStatusBadge({ status, bookedDate, approvedDate, showLabe
   return (
     <div className="flex items-center gap-1.5">
       {showLabel && <span className="text-xs text-muted-foreground">Städ:</span>}
-      <span
-        className={cn(
-          'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
-          config.className
-        )}
-      >
+      <Badge variant={config.variant} className="gap-1.5">
         {config.label}
         {showDate && (
           <span className="font-normal">{format(parseISO(bookedDate!), 'd MMM', { locale: sv })}</span>
@@ -38,7 +33,7 @@ export function CleaningStatusBadge({ status, bookedDate, approvedDate, showLabe
         {showApproved && (
           <span className="font-normal">{format(parseISO(approvedDate!), 'd MMM', { locale: sv })}</span>
         )}
-      </span>
+      </Badge>
     </div>
   );
 }

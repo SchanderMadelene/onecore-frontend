@@ -7,11 +7,12 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 import { cn } from '@/lib/utils';
+import { badgeVariants } from '@/shared/ui/badge';
 
-const METHOD_CONFIG: Record<WelcomeHomeMethod, { label: string; className: string }> = {
-  none: { label: '–', className: 'bg-muted text-muted-foreground border-muted' },
-  digital: { label: 'Digital', className: 'bg-sky-100 text-sky-800 border-sky-200' },
-  manual: { label: 'Manuell', className: 'bg-violet-100 text-violet-800 border-violet-200' },
+const METHOD_CONFIG: Record<WelcomeHomeMethod, { label: string; variant: 'status-neutral' | 'status-info'; extraClass?: string }> = {
+  none: { label: '–', variant: 'status-neutral' },
+  digital: { label: 'Digital', variant: 'status-info' },
+  manual: { label: 'Manuell', variant: 'status-info', extraClass: 'bg-violet-100 text-violet-800 border-violet-200' },
 };
 
 interface WelcomeHomeCellProps {
@@ -29,8 +30,9 @@ export function WelcomeHomeCell({ value, onChange, showLabel = false }: WelcomeH
       <Select value={value} onValueChange={(v) => onChange(v as WelcomeHomeMethod)}>
         <SelectTrigger
           className={cn(
-            'h-7 w-auto min-w-[80px] rounded-full px-2.5 py-0 text-xs font-medium border',
-            config.className
+            badgeVariants({ variant: config.variant }),
+            'h-7 w-auto min-w-[80px] py-0 border',
+            config.extraClass
           )}
         >
           <SelectValue />

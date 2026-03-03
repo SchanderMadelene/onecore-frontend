@@ -10,15 +10,16 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
+import { badgeVariants } from '@/shared/ui/badge';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { CalendarIcon, Minus, Plus } from 'lucide-react';
 
-const STATUS_CONFIG: Record<ContactStatus, { label: string; className: string; order: number }> = {
-  not_contacted: { label: 'Ej kontaktad', className: 'bg-muted text-muted-foreground border-muted', order: 0 },
-  not_reached: { label: 'Ej nådd', className: 'bg-amber-100 text-amber-800 border-amber-200', order: 1 },
-  visit_booked: { label: 'Besök bokat', className: 'bg-sky-100 text-sky-800 border-sky-200', order: 2 },
-  visit_done: { label: 'Besök genomfört', className: 'bg-emerald-100 text-emerald-800 border-emerald-200', order: 3 },
+const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'status-neutral' | 'status-info' | 'status-success' | 'status-warning'; order: number }> = {
+  not_contacted: { label: 'Ej kontaktad', variant: 'status-neutral', order: 0 },
+  not_reached: { label: 'Ej nådd', variant: 'status-warning', order: 1 },
+  visit_booked: { label: 'Besök bokat', variant: 'status-info', order: 2 },
+  visit_done: { label: 'Besök genomfört', variant: 'status-success', order: 3 },
 };
 
 interface ContactStatusCellProps {
@@ -43,7 +44,6 @@ export function ContactStatusCell({
   const config = STATUS_CONFIG[status];
   const currentOrder = config.order;
 
-  // Only allow forward progression
   const availableStatuses = Object.entries(STATUS_CONFIG).filter(
     ([, cfg]) => cfg.order >= currentOrder
   );
@@ -53,7 +53,6 @@ export function ContactStatusCell({
       onVisitBookedDateChange(undefined);
       return;
     }
-    // Preserve existing time if set, otherwise default to 10:00
     const existingTime = visitBookedDate ? visitBookedDate.substring(11, 16) : '10:00';
     const dateStr = format(date, 'yyyy-MM-dd');
     onVisitBookedDateChange(`${dateStr}T${existingTime}`);
@@ -70,8 +69,8 @@ export function ContactStatusCell({
       <Select value={status} onValueChange={(v) => onStatusChange(v as ContactStatus)}>
         <SelectTrigger
           className={cn(
-            'h-7 w-auto min-w-[100px] rounded-full px-2.5 py-0 text-xs font-medium border',
-            config.className
+            badgeVariants({ variant: config.variant }),
+            'h-7 w-auto min-w-[100px] py-0 border'
           )}
         >
           <SelectValue />

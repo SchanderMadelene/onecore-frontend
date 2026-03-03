@@ -10,15 +10,16 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
+import { badgeVariants } from '@/shared/ui/badge';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 
-const STATUS_CONFIG: Record<CleaningStatus, { label: string; className: string }> = {
-  not_done: { label: 'Ej utförd', className: 'bg-muted text-muted-foreground border-muted' },
-  booked: { label: 'Bokad', className: 'bg-sky-100 text-sky-800 border-sky-200' },
-  approved: { label: 'Godkänd', className: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
-  reinspection: { label: 'Omkontroll', className: 'bg-amber-100 text-amber-800 border-amber-200' },
+const STATUS_CONFIG: Record<CleaningStatus, { label: string; variant: 'status-neutral' | 'status-info' | 'status-success' | 'status-warning' }> = {
+  not_done: { label: 'Ej utförd', variant: 'status-neutral' },
+  booked: { label: 'Bokad', variant: 'status-info' },
+  approved: { label: 'Godkänd', variant: 'status-success' },
+  reinspection: { label: 'Omkontroll', variant: 'status-warning' },
 };
 
 interface CleaningCheckCellProps {
@@ -49,8 +50,8 @@ export function CleaningCheckCell({
       <Select value={status} onValueChange={(v) => onStatusChange(v as CleaningStatus)}>
         <SelectTrigger
           className={cn(
-            'h-7 w-auto min-w-[90px] rounded-full px-2.5 py-0 text-xs font-medium border',
-            config.className
+            badgeVariants({ variant: config.variant }),
+            'h-7 w-auto min-w-[90px] py-0 border'
           )}
         >
           <SelectValue />

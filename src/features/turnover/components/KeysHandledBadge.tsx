@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { Badge } from '@/shared/ui/badge';
 
 interface KeysHandledBadgeProps {
   handled: boolean;
@@ -6,13 +6,8 @@ interface KeysHandledBadgeProps {
 
 export function KeysHandledBadge({ handled }: KeysHandledBadgeProps) {
   return (
-    <span
-      className={cn(
-        'inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium',
-        handled ? 'bg-emerald-100 text-emerald-800' : 'bg-muted text-muted-foreground'
-      )}
-    >
+    <Badge variant={handled ? 'status-success' : 'status-neutral'}>
       {handled ? 'Ja' : 'Nej'}
-    </span>
+    </Badge>
   );
 }
