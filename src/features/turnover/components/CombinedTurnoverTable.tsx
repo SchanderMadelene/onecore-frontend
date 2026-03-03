@@ -91,7 +91,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
               <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Utflytt</h4>
             </div>
             {row.moveOut ? (
-              <div className="rounded-lg border bg-card p-3 space-y-3">
+              <div className="rounded-lg border bg-card p-3 space-y-2.5">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
@@ -122,24 +122,20 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 {row.moveOut.tenantPhone && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
-                      <Phone className="h-4 w-4" />
-                    </Button>
+                    <a href={`tel:${row.moveOut.tenantPhone}`} className="text-muted-foreground hover:text-primary" title="Ring">
+                      <Phone className="h-3.5 w-3.5" />
+                    </a>
                   </div>
                 )}
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-muted-foreground">Städ:</span>
-                    <CleaningStatusBadge
-                      status={row.moveOut.checklist.cleaningStatus}
-                      bookedDate={row.moveOut.checklist.cleaningBookedDate}
-                      approvedDate={row.moveOut.checklist.cleaningApprovedDate}
-                    />
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <KeysHandledBadge handled={row.moveOut.checklist.keysHandled} />
-                    <span>Nycklar</span>
-                  </div>
+                <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-xs items-center">
+                  <span className="text-muted-foreground">Städ:</span>
+                  <CleaningStatusBadge
+                    status={row.moveOut.checklist.cleaningStatus}
+                    bookedDate={row.moveOut.checklist.cleaningBookedDate}
+                    approvedDate={row.moveOut.checklist.cleaningApprovedDate}
+                  />
+                  <span className="text-muted-foreground">Nycklar:</span>
+                  <KeysHandledBadge handled={row.moveOut.checklist.keysHandled} />
                 </div>
               </div>
             ) : (
@@ -154,7 +150,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
               <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Inflytt</h4>
             </div>
             {row.moveIn ? (
-              <div className="rounded-lg border bg-card p-3 space-y-3">
+              <div className="rounded-lg border bg-card p-3 space-y-2.5">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
@@ -197,38 +193,30 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 {row.moveIn.tenantPhone && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
-                      <Phone className="h-4 w-4" />
-                    </Button>
+                    <a href={`tel:${row.moveIn.tenantPhone}`} className="text-muted-foreground hover:text-primary" title="Ring">
+                      <Phone className="h-3.5 w-3.5" />
+                    </a>
                   </div>
                 )}
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-muted-foreground">Kontakt:</span>
-                    <ContactStatusBadge
-                      status={row.moveIn.checklist.contactStatus}
-                      attempts={row.moveIn.checklist.contactAttempts}
-                      visitBookedDate={row.moveIn.checklist.visitBookedDate}
-                    />
-                  </div>
-                  <div className="flex items-center gap-1.5">
+                <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-xs items-center">
+                  <span className="text-muted-foreground">Kontakt:</span>
+                  <ContactStatusBadge
+                    status={row.moveIn.checklist.contactStatus}
+                    attempts={row.moveIn.checklist.contactAttempts}
+                    visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                  />
+                  <span className="text-muted-foreground">Namn/Port:</span>
+                  <div>
                     {row.moveIn.checklist.nameAndIntercomDone ? (
                       <Check className="h-3.5 w-3.5 text-emerald-600" />
                     ) : (
                       <span className="text-muted-foreground">–</span>
                     )}
-                    <span>Namn/Port</span>
                   </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-muted-foreground">Välkommen hem:</span>
-                    <span className="font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <KeysHandledBadge handled={row.moveIn.checklist.keysHandled} />
-                    <span>Nycklar</span>
-                  </div>
+                  <span className="text-muted-foreground">Välk. hem:</span>
+                  <span className="font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
+                  <span className="text-muted-foreground">Nycklar:</span>
+                  <KeysHandledBadge handled={row.moveIn.checklist.keysHandled} />
                 </div>
               </div>
             ) : (
