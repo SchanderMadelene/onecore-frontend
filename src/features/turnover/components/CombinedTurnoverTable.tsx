@@ -127,7 +127,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     </a>
                   </div>
                 )}
-                <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-xs items-center">
+                <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
                   <span className="text-muted-foreground">Städ:</span>
                   <CleaningStatusBadge
                     status={row.moveOut.checklist.cleaningStatus}
@@ -198,7 +198,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     </a>
                   </div>
                 )}
-                <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-xs items-center">
+                <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
                   <span className="text-muted-foreground">Kontakt:</span>
                   <ContactStatusBadge
                     status={row.moveIn.checklist.contactStatus}
