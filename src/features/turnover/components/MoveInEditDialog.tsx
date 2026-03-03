@@ -34,11 +34,13 @@ interface MoveInEditDialogProps {
   visitBookedDate?: string;
   nameAndIntercomDone: boolean;
   welcomeHomeMethod: WelcomeHomeMethod;
+  keysHandled: boolean;
   onContactStatusChange: (status: ContactStatus) => void;
   onContactAttemptsChange: (count: number) => void;
   onVisitBookedDateChange: (datetime: string | undefined) => void;
   onNameAndIntercomChange: (checked: boolean) => void;
   onWelcomeHomeChange: (method: WelcomeHomeMethod) => void;
+  onKeysHandledChange: (handled: boolean) => void;
   onAddNote: (content: string) => void;
 }
 
@@ -46,8 +48,9 @@ export function MoveInEditDialog({
   open, onOpenChange, tenantName,
   contactStatus: initialStatus, contactAttempts: initialAttempts, visitBookedDate: initialVisitDate,
   nameAndIntercomDone: initialNamePort, welcomeHomeMethod: initialWelcome,
+  keysHandled: initialKeysHandled,
   onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange,
-  onNameAndIntercomChange, onWelcomeHomeChange, onAddNote,
+  onNameAndIntercomChange, onWelcomeHomeChange, onKeysHandledChange, onAddNote,
 }: MoveInEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [attempts, setAttempts] = useState(initialAttempts);
@@ -55,6 +58,7 @@ export function MoveInEditDialog({
   const [visitTime, setVisitTime] = useState(initialVisitDate?.substring(11, 16) ?? '10:00');
   const [namePort, setNamePort] = useState(initialNamePort);
   const [welcomeHome, setWelcomeHome] = useState(initialWelcome);
+  const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
   const [noteContent, setNoteContent] = useState('');
 
   const handleOpenChange = (o: boolean) => {
@@ -65,6 +69,7 @@ export function MoveInEditDialog({
       setVisitTime(initialVisitDate?.substring(11, 16) ?? '10:00');
       setNamePort(initialNamePort);
       setWelcomeHome(initialWelcome);
+      setKeysHandled(initialKeysHandled);
       setNoteContent('');
     }
     onOpenChange(o);
@@ -84,6 +89,7 @@ export function MoveInEditDialog({
     }
     onNameAndIntercomChange(namePort);
     onWelcomeHomeChange(welcomeHome);
+    onKeysHandledChange(keysHandled);
     if (noteContent.trim()) {
       onAddNote(noteContent.trim());
     }
@@ -180,6 +186,12 @@ export function MoveInEditDialog({
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Keys */}
+          <div className="flex items-center gap-2">
+            <Checkbox checked={keysHandled} onCheckedChange={(v) => setKeysHandled(v === true)} id="keysHandledIn" />
+            <label htmlFor="keysHandledIn" className="text-sm font-medium cursor-pointer">Nycklar uthämtade</label>
           </div>
 
           <Separator />

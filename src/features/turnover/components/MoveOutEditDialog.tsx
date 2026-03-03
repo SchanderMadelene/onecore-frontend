@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/shared/ui/textarea';
 import { CalendarIcon, Save } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
@@ -25,24 +26,29 @@ interface MoveOutEditDialogProps {
   cleaningStatus: CleaningStatus;
   cleaningBookedDate?: string;
   cleaningApprovedDate?: string;
+  keysHandled: boolean;
   onCleaningStatusChange: (status: CleaningStatus) => void;
   onCleaningBookedDateChange: (date: string | undefined) => void;
+  onKeysHandledChange: (handled: boolean) => void;
   onAddNote: (content: string) => void;
 }
 
 export function MoveOutEditDialog({
   open, onOpenChange, tenantName,
   cleaningStatus: initialStatus, cleaningBookedDate: initialBookedDate, cleaningApprovedDate,
-  onCleaningStatusChange, onCleaningBookedDateChange, onAddNote,
+  keysHandled: initialKeysHandled,
+  onCleaningStatusChange, onCleaningBookedDateChange, onKeysHandledChange, onAddNote,
 }: MoveOutEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [bookedDate, setBookedDate] = useState(initialBookedDate);
+  const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
   const [noteContent, setNoteContent] = useState('');
 
   const handleOpenChange = (o: boolean) => {
     if (o) {
       setStatus(initialStatus);
       setBookedDate(initialBookedDate);
+      setKeysHandled(initialKeysHandled);
       setNoteContent('');
     }
     onOpenChange(o);
@@ -55,6 +61,7 @@ export function MoveOutEditDialog({
     if (showDatePicker) {
       onCleaningBookedDateChange(bookedDate);
     }
+    onKeysHandledChange(keysHandled);
     if (noteContent.trim()) {
       onAddNote(noteContent.trim());
     }
@@ -114,6 +121,14 @@ export function MoveOutEditDialog({
               </p>
             </div>
           )}
+
+          <Separator />
+
+          {/* Keys */}
+          <div className="flex items-center gap-2">
+            <Checkbox checked={keysHandled} onCheckedChange={(v) => setKeysHandled(v === true)} id="keysHandled" />
+            <label htmlFor="keysHandled" className="text-sm font-medium cursor-pointer">Nycklar inlämnade</label>
+          </div>
 
           <Separator />
 

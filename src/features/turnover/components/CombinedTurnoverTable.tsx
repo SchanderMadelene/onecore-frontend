@@ -83,6 +83,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     cleaningApprovedDate={row.moveOut.checklist.cleaningApprovedDate}
                     onCleaningStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
                     onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
+                    keysHandled={row.moveOut!.checklist.keysHandled}
+                    onKeysHandledChange={(v) => onChecklistChange(row.moveOut!.id, 'keysHandled', v)}
                   />
                   </div>
                 </div>
@@ -141,6 +143,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
                     onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
                     onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                    keysHandled={row.moveIn!.checklist.keysHandled}
+                    onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
                   />
                   </div>
                 </div>
@@ -302,6 +306,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         cleaningApprovedDate={row.moveOut.checklist.cleaningApprovedDate}
                         onCleaningStatusChange={(s) => onCleaningStatusChange(row.moveOut!.id, s)}
                         onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
+                        keysHandled={row.moveOut!.checklist.keysHandled}
+                        onKeysHandledChange={(v) => onChecklistChange(row.moveOut!.id, 'keysHandled', v)}
                       />
                     ) : null}
                   </TableCell>
@@ -385,6 +391,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
                         onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
                         onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                        keysHandled={row.moveIn!.checklist.keysHandled}
+                        onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
                       />
                     ) : null}
                   </TableCell>
