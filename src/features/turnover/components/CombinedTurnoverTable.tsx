@@ -247,36 +247,36 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Uppgång</TableHead>
-                <TableHead>Typ</TableHead>
+                <TableHead className="whitespace-nowrap">Uppgång</TableHead>
+                <TableHead className="w-[48px]">Typ</TableHead>
                 <TableHead className="border-l-2 border-border">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-md bg-muted">
-                      <ArrowUpRight className="h-3.5 w-3.5 text-foreground" />
+                  <div className="flex items-center gap-1.5">
+                    <span className="inline-flex items-center justify-center h-5 w-5 rounded bg-muted">
+                      <ArrowUpRight className="h-3 w-3 text-foreground" />
                     </span>
                     Hyresgäst
                   </div>
                 </TableHead>
-                <TableHead>Sista deb.</TableHead>
-                <TableHead className="text-center">Städkontr.</TableHead>
-                <TableHead className="w-[52px] text-center"><Key className="h-4 w-4 mx-auto" /></TableHead>
-                <TableHead className="w-[32px] p-0"></TableHead>
-                <TableHead className="w-[50px]"></TableHead>
+                <TableHead className="whitespace-nowrap">Sista deb.</TableHead>
+                <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
+                <TableHead className="w-[40px] text-center p-1"><Key className="h-3.5 w-3.5 mx-auto" /></TableHead>
+                <TableHead className="w-[28px] p-0"></TableHead>
+                <TableHead className="w-[40px] p-1"></TableHead>
                 <TableHead className="border-l-2 border-border">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-md bg-muted">
-                      <ArrowDownLeft className="h-3.5 w-3.5 text-foreground" />
+                  <div className="flex items-center gap-1.5">
+                    <span className="inline-flex items-center justify-center h-5 w-5 rounded bg-muted">
+                      <ArrowDownLeft className="h-3 w-3 text-foreground" />
                     </span>
                     Hyresgäst
                   </div>
                 </TableHead>
-                <TableHead>Kontrakt</TableHead>
+                <TableHead className="whitespace-nowrap">Kontrakt</TableHead>
                 <TableHead>Kontakt</TableHead>
-                <TableHead className="text-center">Namn/Port</TableHead>
-                <TableHead className="text-center">Välkommen hem</TableHead>
-                <TableHead className="w-[52px] text-center"><Key className="h-4 w-4 mx-auto" /></TableHead>
-                <TableHead className="w-[32px] p-0"></TableHead>
-                <TableHead className="w-[50px]"></TableHead>
+                <TableHead className="text-center whitespace-nowrap">Namn/Port</TableHead>
+                <TableHead className="text-center whitespace-nowrap">Välk. hem</TableHead>
+                <TableHead className="w-[40px] text-center p-1"><Key className="h-3.5 w-3.5 mx-auto" /></TableHead>
+                <TableHead className="w-[28px] p-0"></TableHead>
+                <TableHead className="w-[40px] p-1"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -286,9 +286,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     <div className="flex items-center gap-1.5">
                       {row.address}
                       {getResidenceUrl(row) && (
-                        <Button variant="outline" size="icon" className="h-7 w-7" asChild>
+                        <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                           <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
-                            <ExternalLink className="h-3.5 w-3.5" />
+                            <ExternalLink className="h-3 w-3" />
                           </a>
                         </Button>
                       )}
@@ -311,8 +311,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         {row.moveOut.tenantPhone && (
                           <div className="flex items-center gap-1 mt-1.5">
                             <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
-                            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
-                              <Phone className="h-4 w-4" />
+                            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveOut.tenantPhone}`} title="Ring">
+                              <Phone className="h-3.5 w-3.5" />
                             </Button>
                           </div>
                         )}
@@ -377,8 +377,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         {row.moveIn.tenantPhone && (
                           <div className="flex items-center gap-1 mt-1.5">
                             <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
-                            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
-                              <Phone className="h-4 w-4" />
+                            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => window.location.href = `tel:${row.moveIn.tenantPhone}`} title="Ring">
+                              <Phone className="h-3.5 w-3.5" />
                             </Button>
                           </div>
                         )}
