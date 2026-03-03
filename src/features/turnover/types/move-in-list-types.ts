@@ -45,3 +45,35 @@ export interface TurnoverRow {
   moveOut?: MoveInListEntry;
   moveIn?: MoveInListEntry;
 }
+
+// --- Student housing types ---
+
+export interface StudentCleaningChecklist {
+  cleaningStatus: CleaningStatus;
+  cleaningCount: number;
+  cleaningBookedDate?: string;
+  cleaningApprovedDate?: string;
+}
+
+export interface StudentTurnoverEntry {
+  id: string;
+  type: 'move_in' | 'move_out';
+  roomCode: string;
+  propertyName: string;
+  kvvArea: string;
+  studentName: string;
+  gender: 'M' | 'F' | 'O';
+  birthDate: string;
+  email: string;
+  date: string;
+  cleaningChecklist: StudentCleaningChecklist;
+}
+
+export interface StudentTurnoverRow {
+  roomKey: string;
+  roomCode: string;
+  propertyName: string;
+  kvvArea: string;
+  moveOut?: StudentTurnoverEntry;
+  moveIn?: StudentTurnoverEntry;
+}

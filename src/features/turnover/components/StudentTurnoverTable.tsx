@@ -1,0 +1,287 @@
+import { StudentTurnoverRow, CleaningStatus } from '../types/move-in-list-types';
+import { ArrowUpRight, ArrowDownLeft, Mail } from 'lucide-react';
+import { CleaningStatusBadge } from './CleaningStatusBadge';
+import { CleaningEditDialog } from './CleaningEditDialog';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/shared/ui/badge';
+import { format, parseISO } from 'date-fns';
+import { sv } from 'date-fns/locale';
+import { useState } from 'react';
+
+const GENDER_LABELS: Record<string, string> = { M: 'Man', F: 'Kvinna', O: 'Annat' };
+
+interface StudentTurnoverTableProps {
+  entries: StudentTurnoverRow[];
+  onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
+  onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
+}
+
+export function StudentTurnoverTable({ entries, onCleaningStatusChange, onCleaningBookedDateChange }: StudentTurnoverTableProps) {
+  const isMobile = useIsMobile();
+  const [cleaningDialog, setCleaningDialog] = useState<{
+    open: boolean;
+    entryId: string;
+    tenantName: string;
+    status: CleaningStatus;
+    bookedDate?: string;
+    approvedDate?: string;
+  }>({ open: false, entryId: '', tenantName: '', status: 'not_done' });
+
+  const openCleaningDialog = (entry: StudentTurnoverRow['moveOut'] | StudentTurnoverRow['moveIn']) => {
+    if (!entry) return;
+    setCleaningDialog({
+      open: true,
+      entryId: entry.id,
+      tenantName: entry.studentName,
+      status: entry.cleaningChecklist.cleaningStatus,
+      bookedDate: entry.cleaningChecklist.cleaningBookedDate,
+      approvedDate: entry.cleaningChecklist.cleaningApprovedDate,
+    });
+  };
+
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return '–';
+    return format(parseISO(dateStr), 'd MMM', { locale: sv });
+  };
+
+  const formatBirthDate = (dateStr: string) => {
+    return format(parseISO(dateStr), 'yyyy-MM-dd');
+  };
+
+  if (entries.length === 0) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        Inga studentposter hittades för valt datumintervall
+      </div>
+    );
+  }
+
+  if (isMobile) {
+    const items: MobileAccordionItem[] = entries.map(row => ({
+      id: row.roomKey,
+      title: (
+        <div className="flex flex-col gap-0.5">
+          <span className="font-medium text-sm">{row.propertyName} · {row.roomCode}</span>
+        </div>
+      ),
+      content: (
+        <div className="space-y-5">
+          {/* Utflytt */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-1.5">
+              <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground" />
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Utflytt</h4>
+            </div>
+            {row.moveOut ? (
+              <div className="rounded-lg border bg-card p-3 space-y-2.5">
+                <div className="flex justify-between items-start">
+                  <span className="text-sm font-medium">{row.moveOut.studentName}</span>
+                  <span className="text-xs text-muted-foreground">{formatDate(row.moveOut.date)}</span>
+                </div>
+                <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
+                  <span className="text-muted-foreground">Kön:</span>
+                  <span>{GENDER_LABELS[row.moveOut.gender]}</span>
+                  <span className="text-muted-foreground">Född:</span>
+                  <span>{formatBirthDate(row.moveOut.birthDate)}</span>
+                  <span className="text-muted-foreground">E-post:</span>
+                  <a href={`mailto:${row.moveOut.email}`} className="text-primary underline truncate max-w-[180px]">{row.moveOut.email}</a>
+                  <span className="text-muted-foreground">Städ:</span>
+                  <button onClick={() => openCleaningDialog(row.moveOut)} className="text-left">
+                    <CleaningStatusBadge
+                      status={row.moveOut.cleaningChecklist.cleaningStatus}
+                      bookedDate={row.moveOut.cleaningChecklist.cleaningBookedDate}
+                      approvedDate={row.moveOut.cleaningChecklist.cleaningApprovedDate}
+                    />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground italic pl-5">Ingen utflytt</p>
+            )}
+          </div>
+
+          {/* Inflytt */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-1.5">
+              <ArrowDownLeft className="h-3.5 w-3.5 text-muted-foreground" />
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Inflytt</h4>
+            </div>
+            {row.moveIn ? (
+              <div className="rounded-lg border bg-card p-3 space-y-2.5">
+                <div className="flex justify-between items-start">
+                  <span className="text-sm font-medium">{row.moveIn.studentName}</span>
+                  <span className="text-xs text-muted-foreground">{formatDate(row.moveIn.date)}</span>
+                </div>
+                <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
+                  <span className="text-muted-foreground">Kön:</span>
+                  <span>{GENDER_LABELS[row.moveIn.gender]}</span>
+                  <span className="text-muted-foreground">Född:</span>
+                  <span>{formatBirthDate(row.moveIn.birthDate)}</span>
+                  <span className="text-muted-foreground">E-post:</span>
+                  <a href={`mailto:${row.moveIn.email}`} className="text-primary underline truncate max-w-[180px]">{row.moveIn.email}</a>
+                  <span className="text-muted-foreground">Städ:</span>
+                  <button onClick={() => openCleaningDialog(row.moveIn)} className="text-left">
+                    <CleaningStatusBadge
+                      status={row.moveIn.cleaningChecklist.cleaningStatus}
+                      bookedDate={row.moveIn.cleaningChecklist.cleaningBookedDate}
+                      approvedDate={row.moveIn.cleaningChecklist.cleaningApprovedDate}
+                    />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground italic pl-5">Ingen inflytt</p>
+            )}
+          </div>
+        </div>
+      ),
+    }));
+
+    return (
+      <>
+        <Card>
+          <CardHeader>
+            <CardTitle>Studentboenden ({entries.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <MobileAccordion items={items} />
+          </CardContent>
+        </Card>
+        <CleaningEditDialog
+          open={cleaningDialog.open}
+          onOpenChange={(o) => setCleaningDialog(prev => ({ ...prev, open: o }))}
+          tenantName={cleaningDialog.tenantName}
+          status={cleaningDialog.status}
+          bookedDate={cleaningDialog.bookedDate}
+          approvedDate={cleaningDialog.approvedDate}
+          onStatusChange={(s) => onCleaningStatusChange(cleaningDialog.entryId, s)}
+          onBookedDateChange={(d) => onCleaningBookedDateChange(cleaningDialog.entryId, d)}
+        />
+      </>
+    );
+  }
+
+  // Desktop table
+  return (
+    <>
+      <Card>
+        <CardContent className="p-0">
+          <div className="rounded-md border-0 overflow-x-auto">
+            <Table className="[&_th]:px-2 [&_th]:py-1.5 [&_td]:px-2 [&_td]:py-1.5">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="whitespace-nowrap">Fastighet</TableHead>
+                  <TableHead className="whitespace-nowrap">Rum</TableHead>
+                  <TableHead className="border-l-2 border-border">
+                    <div className="flex items-center gap-1.5">
+                      <span className="inline-flex items-center justify-center h-5 w-5 rounded bg-muted">
+                        <ArrowUpRight className="h-3 w-3 text-foreground" />
+                      </span>
+                      Student
+                    </div>
+                  </TableHead>
+                  <TableHead className="whitespace-nowrap">Datum</TableHead>
+                  <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
+                  <TableHead className="border-l-2 border-border">
+                    <div className="flex items-center gap-1.5">
+                      <span className="inline-flex items-center justify-center h-5 w-5 rounded bg-muted">
+                        <ArrowDownLeft className="h-3 w-3 text-foreground" />
+                      </span>
+                      Student
+                    </div>
+                  </TableHead>
+                  <TableHead className="whitespace-nowrap">Datum</TableHead>
+                  <TableHead className="text-center whitespace-nowrap">Städkontr.</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {entries.map(row => (
+                  <TableRow key={row.roomKey}>
+                    <TableCell className="font-medium text-sm whitespace-nowrap">{row.propertyName}</TableCell>
+                    <TableCell className="text-sm whitespace-nowrap">{row.roomCode}</TableCell>
+                    {/* Move-out student */}
+                    <TableCell className="border-l-2 border-border">
+                      {row.moveOut ? (
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-sm">{row.moveOut.studentName}</span>
+                            <Badge variant="muted" className="text-[10px] px-1 py-0">{GENDER_LABELS[row.moveOut.gender]}</Badge>
+                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                              <a href={`mailto:${row.moveOut.email}`} title={row.moveOut.email}>
+                                <Mail className="h-3 w-3" />
+                              </a>
+                            </Button>
+                          </div>
+                          <span className="text-xs text-muted-foreground">{formatBirthDate(row.moveOut.birthDate)}</span>
+                        </div>
+                      ) : <span className="text-muted-foreground">–</span>}
+                    </TableCell>
+                    <TableCell className="text-sm whitespace-nowrap">
+                      {formatDate(row.moveOut?.date)}
+                    </TableCell>
+                    <TableCell>
+                      {row.moveOut ? (
+                        <button onClick={() => openCleaningDialog(row.moveOut)} className="text-left">
+                          <CleaningStatusBadge
+                            status={row.moveOut.cleaningChecklist.cleaningStatus}
+                            bookedDate={row.moveOut.cleaningChecklist.cleaningBookedDate}
+                            approvedDate={row.moveOut.cleaningChecklist.cleaningApprovedDate}
+                          />
+                        </button>
+                      ) : <span className="text-center block text-muted-foreground">–</span>}
+                    </TableCell>
+                    {/* Move-in student */}
+                    <TableCell className="border-l-2 border-border">
+                      {row.moveIn ? (
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-sm">{row.moveIn.studentName}</span>
+                            <Badge variant="muted" className="text-[10px] px-1 py-0">{GENDER_LABELS[row.moveIn.gender]}</Badge>
+                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                              <a href={`mailto:${row.moveIn.email}`} title={row.moveIn.email}>
+                                <Mail className="h-3 w-3" />
+                              </a>
+                            </Button>
+                          </div>
+                          <span className="text-xs text-muted-foreground">{formatBirthDate(row.moveIn.birthDate)}</span>
+                        </div>
+                      ) : <span className="text-muted-foreground">–</span>}
+                    </TableCell>
+                    <TableCell className="text-sm whitespace-nowrap">
+                      {formatDate(row.moveIn?.date)}
+                    </TableCell>
+                    <TableCell>
+                      {row.moveIn ? (
+                        <button onClick={() => openCleaningDialog(row.moveIn)} className="text-left">
+                          <CleaningStatusBadge
+                            status={row.moveIn.cleaningChecklist.cleaningStatus}
+                            bookedDate={row.moveIn.cleaningChecklist.cleaningBookedDate}
+                            approvedDate={row.moveIn.cleaningChecklist.cleaningApprovedDate}
+                          />
+                        </button>
+                      ) : <span className="text-center block text-muted-foreground">–</span>}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+      <CleaningEditDialog
+        open={cleaningDialog.open}
+        onOpenChange={(o) => setCleaningDialog(prev => ({ ...prev, open: o }))}
+        tenantName={cleaningDialog.tenantName}
+        status={cleaningDialog.status}
+        bookedDate={cleaningDialog.bookedDate}
+        approvedDate={cleaningDialog.approvedDate}
+        onStatusChange={(s) => onCleaningStatusChange(cleaningDialog.entryId, s)}
+        onBookedDateChange={(d) => onCleaningBookedDateChange(cleaningDialog.entryId, d)}
+      />
+    </>
+  );
+}
