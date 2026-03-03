@@ -1,5 +1,5 @@
 import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
-import { ArrowUpRight, ArrowDownLeft, Phone, Check } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
@@ -10,6 +10,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -101,6 +102,12 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     showLabel
                   />
                 </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <Badge variant={row.moveOut.checklist.keysHandled ? "success" : "outline"} className="text-[10px] px-2 py-0.5">
+                    {row.moveOut.checklist.keysHandled ? "Ja" : "Nej"}
+                  </Badge>
+                  <span className="text-xs">Nycklar</span>
+                </div>
               </div>
             ) : (
               <p className="text-xs text-muted-foreground italic">Ingen utflytt</p>
@@ -165,6 +172,12 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <span className="text-xs text-muted-foreground">Välkommen hem: </span>
                   <span className="text-xs font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
                 </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <Badge variant={row.moveIn.checklist.keysHandled ? "success" : "outline"} className="text-[10px] px-2 py-0.5">
+                    {row.moveIn.checklist.keysHandled ? "Ja" : "Nej"}
+                  </Badge>
+                  <span className="text-xs">Nycklar</span>
+                </div>
               </div>
             ) : (
               <p className="text-xs text-muted-foreground italic">Ingen inflytt</p>
@@ -206,6 +219,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 </TableHead>
                 <TableHead>Sista deb.</TableHead>
                 <TableHead className="text-center">Städkontr.</TableHead>
+                <TableHead className="w-[52px] text-center"><Key className="h-4 w-4 mx-auto" /></TableHead>
                 <TableHead className="w-[32px] p-0"></TableHead>
                 <TableHead className="w-[50px]"></TableHead>
                 <TableHead className="border-l-2 border-border">
@@ -220,6 +234,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableHead>Kontakt</TableHead>
                 <TableHead className="text-center">Namn/Port</TableHead>
                 <TableHead className="text-center">Välkommen hem</TableHead>
+                <TableHead className="w-[52px] text-center"><Key className="h-4 w-4 mx-auto" /></TableHead>
                 <TableHead className="w-[32px] p-0"></TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
@@ -259,6 +274,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         approvedDate={row.moveOut.checklist.cleaningApprovedDate}
                       />
                     ) : <span className="text-center block text-muted-foreground">–</span>}
+                  </TableCell>
+                  {/* Move-out keys */}
+                  <TableCell className="text-center">
+                    {row.moveOut ? (
+                      <Badge variant={row.moveOut.checklist.keysHandled ? "success" : "outline"} className="text-[10px] px-2 py-0.5">
+                        {row.moveOut.checklist.keysHandled ? "Ja" : "Nej"}
+                      </Badge>
+                    ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-out notes */}
                   <TableCell className="p-0 text-center">
@@ -327,6 +350,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="text-center text-sm">
                     {row.moveIn ? (
                       <span>{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
+                    ) : <span className="text-muted-foreground">–</span>}
+                  </TableCell>
+                  {/* Move-in keys */}
+                  <TableCell className="text-center">
+                    {row.moveIn ? (
+                      <Badge variant={row.moveIn.checklist.keysHandled ? "success" : "outline"} className="text-[10px] px-2 py-0.5">
+                        {row.moveIn.checklist.keysHandled ? "Ja" : "Nej"}
+                      </Badge>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in actions */}
