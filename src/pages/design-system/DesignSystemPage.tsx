@@ -11,7 +11,7 @@ import {
   GridSystem, 
   IconsShowcase,
   LogosShowcase 
-} from "@/components/design-system";
+} from "@/shared/design-system";
 
 const DesignSystemPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
