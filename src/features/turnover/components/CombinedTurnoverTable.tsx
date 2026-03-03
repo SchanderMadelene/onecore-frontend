@@ -122,9 +122,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 {row.moveOut.tenantPhone && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
-                    <a href={`tel:${row.moveOut.tenantPhone}`} className="text-muted-foreground hover:text-primary" title="Ring">
-                      <Phone className="h-3.5 w-3.5" />
-                    </a>
+                    <Button variant="outline" size="icon" className="h-7 w-7" asChild>
+                      <a href={`tel:${row.moveOut.tenantPhone}`} title="Ring">
+                        <Phone className="h-3.5 w-3.5" />
+                      </a>
+                    </Button>
                   </div>
                 )}
                 <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
@@ -193,9 +195,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 {row.moveIn.tenantPhone && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
-                    <a href={`tel:${row.moveIn.tenantPhone}`} className="text-muted-foreground hover:text-primary" title="Ring">
-                      <Phone className="h-3.5 w-3.5" />
-                    </a>
+                    <Button variant="outline" size="icon" className="h-7 w-7" asChild>
+                      <a href={`tel:${row.moveIn.tenantPhone}`} title="Ring">
+                        <Phone className="h-3.5 w-3.5" />
+                      </a>
+                    </Button>
                   </div>
                 )}
                 <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
