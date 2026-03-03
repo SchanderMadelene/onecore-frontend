@@ -1,9 +1,7 @@
 import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
-import { ArrowUpRight, ArrowDownLeft, Phone } from 'lucide-react';
-import { ChecklistCell } from './ChecklistCell';
+import { ArrowUpRight, ArrowDownLeft, Phone, Check } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
-import { WelcomeHomeCell } from './WelcomeHomeCell';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
 import { TurnoverRowActions } from './TurnoverRowActions';
 import { TurnoverNoteIndicator } from './TurnoverNoteIndicator';
@@ -15,6 +13,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
+
+const WELCOME_LABELS: Record<WelcomeHomeMethod, string> = {
+  none: '–',
+  digital: 'Digital',
+  manual: 'Manuell',
+};
 
 interface CombinedTurnoverTableProps {
   entries: TurnoverRow[];
@@ -68,6 +72,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
                   </div>
                   <TurnoverRowActions
+                    type="move_out"
                     entryId={row.moveOut.id}
                     tenantName={row.moveOut.tenantName}
                     onAddNote={addNote}
@@ -112,15 +117,20 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
                   </div>
                   <TurnoverRowActions
+                    type="move_in"
                     entryId={row.moveIn.id}
                     tenantName={row.moveIn.tenantName}
                     onAddNote={addNote}
                     contactStatus={row.moveIn.checklist.contactStatus}
                     contactAttempts={row.moveIn.checklist.contactAttempts}
                     visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                    nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
+                    welcomeHomeMethod={row.moveIn.checklist.welcomeHomeMethod}
                     onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
                     onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
                     onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
+                    onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
+                    onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
                   />
                 </div>
                 {row.moveIn.tenantPhone && (
@@ -140,19 +150,16 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   />
                 </div>
                 <div className="flex items-center gap-2 pt-1">
-                  <ChecklistCell
-                    checked={row.moveIn!.checklist.nameAndIntercomDone}
-                    onChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
-                    label="Namn/Port"
-                  />
+                  {row.moveIn.checklist.nameAndIntercomDone ? (
+                    <Check className="h-4 w-4 text-emerald-600" />
+                  ) : (
+                    <span className="h-4 w-4 text-muted-foreground">–</span>
+                  )}
                   <span className="text-xs">Namn/Port</span>
                 </div>
                 <div className="pt-1">
-                  <WelcomeHomeCell
-                    value={row.moveIn!.checklist.welcomeHomeMethod}
-                    onChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
-                    showLabel
-                  />
+                  <span className="text-xs text-muted-foreground">Välkommen hem: </span>
+                  <span className="text-xs font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
                 </div>
               </div>
             ) : (
@@ -252,6 +259,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell>
                     {row.moveOut ? (
                       <TurnoverRowActions
+                        type="move_out"
                         entryId={row.moveOut.id}
                         tenantName={row.moveOut.tenantName}
                         onAddNote={addNote}
@@ -295,36 +303,40 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       />
                     ) : <span className="text-center block text-muted-foreground">–</span>}
                   </TableCell>
-                  <TableCell>
+                  {/* Read-only Namn/Port */}
+                  <TableCell className="text-center">
                     {row.moveIn ? (
-                      <ChecklistCell
-                        checked={row.moveIn.checklist.nameAndIntercomDone}
-                        onChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
-                        label="Namn/Port"
-                      />
-                    ) : <span className="text-center block text-muted-foreground">–</span>}
+                      row.moveIn.checklist.nameAndIntercomDone ? (
+                        <Check className="h-4 w-4 text-emerald-600 mx-auto" />
+                      ) : (
+                        <span className="text-muted-foreground">–</span>
+                      )
+                    ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
-                  <TableCell>
+                  {/* Read-only Välkommen hem */}
+                  <TableCell className="text-center text-sm">
                     {row.moveIn ? (
-                      <WelcomeHomeCell
-                        value={row.moveIn.checklist.welcomeHomeMethod}
-                        onChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
-                      />
-                    ) : <span className="text-center block text-muted-foreground">–</span>}
+                      <span>{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
+                    ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in actions */}
                   <TableCell>
                     {row.moveIn ? (
                       <TurnoverRowActions
+                        type="move_in"
                         entryId={row.moveIn.id}
                         tenantName={row.moveIn.tenantName}
                         onAddNote={addNote}
                         contactStatus={row.moveIn.checklist.contactStatus}
                         contactAttempts={row.moveIn.checklist.contactAttempts}
                         visitBookedDate={row.moveIn.checklist.visitBookedDate}
+                        nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
+                        welcomeHomeMethod={row.moveIn.checklist.welcomeHomeMethod}
                         onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
                         onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
                         onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
+                        onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
+                        onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
                       />
                     ) : null}
                   </TableCell>

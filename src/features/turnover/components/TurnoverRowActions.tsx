@@ -1,157 +1,80 @@
 import { useState } from 'react';
-import { MoreHorizontal, StickyNote, SprayCan, Phone } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/shared/ui/dialog';
-import { Textarea } from '@/shared/ui/textarea';
-import { Save } from 'lucide-react';
-import { CleaningEditDialog } from './CleaningEditDialog';
-import { ContactEditDialog } from './ContactEditDialog';
-import { CleaningStatus, ContactStatus } from '../types/move-in-list-types';
+import { MoveOutEditDialog } from './MoveOutEditDialog';
+import { MoveInEditDialog } from './MoveInEditDialog';
+import { CleaningStatus, ContactStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
 
-interface TurnoverRowActionsProps {
+interface MoveOutProps {
   entryId: string;
   tenantName: string;
   onAddNote: (entryId: string, content: string) => void;
-  // Cleaning (move-out)
-  cleaningStatus?: CleaningStatus;
+  cleaningStatus: CleaningStatus;
   cleaningBookedDate?: string;
   cleaningApprovedDate?: string;
-  onCleaningStatusChange?: (status: CleaningStatus) => void;
-  onCleaningBookedDateChange?: (date: string | undefined) => void;
-  // Contact (move-in)
-  contactStatus?: ContactStatus;
-  contactAttempts?: number;
-  visitBookedDate?: string;
-  onContactStatusChange?: (status: ContactStatus) => void;
-  onContactAttemptsChange?: (count: number) => void;
-  onVisitBookedDateChange?: (datetime: string | undefined) => void;
+  onCleaningStatusChange: (status: CleaningStatus) => void;
+  onCleaningBookedDateChange: (date: string | undefined) => void;
 }
 
-type ActiveDialog = 'note' | 'cleaning' | 'contact' | null;
+interface MoveInProps {
+  entryId: string;
+  tenantName: string;
+  onAddNote: (entryId: string, content: string) => void;
+  contactStatus: ContactStatus;
+  contactAttempts: number;
+  visitBookedDate?: string;
+  nameAndIntercomDone: boolean;
+  welcomeHomeMethod: WelcomeHomeMethod;
+  onContactStatusChange: (status: ContactStatus) => void;
+  onContactAttemptsChange: (count: number) => void;
+  onVisitBookedDateChange: (datetime: string | undefined) => void;
+  onNameAndIntercomChange: (checked: boolean) => void;
+  onWelcomeHomeChange: (method: WelcomeHomeMethod) => void;
+}
 
-export function TurnoverRowActions({
-  entryId,
-  tenantName,
-  onAddNote,
-  cleaningStatus,
-  cleaningBookedDate,
-  cleaningApprovedDate,
-  onCleaningStatusChange,
-  onCleaningBookedDateChange,
-  contactStatus,
-  contactAttempts,
-  visitBookedDate,
-  onContactStatusChange,
-  onContactAttemptsChange,
-  onVisitBookedDateChange,
-}: TurnoverRowActionsProps) {
-  const [activeDialog, setActiveDialog] = useState<ActiveDialog>(null);
-  const [noteContent, setNoteContent] = useState('');
+type TurnoverRowActionsProps =
+  | ({ type: 'move_out' } & MoveOutProps)
+  | ({ type: 'move_in' } & MoveInProps);
 
-  const handleNoteSave = () => {
-    if (noteContent.trim()) {
-      onAddNote(entryId, noteContent.trim());
-      setNoteContent('');
-      setActiveDialog(null);
-    }
-  };
-
-  const handleClose = () => {
-    setNoteContent('');
-    setActiveDialog(null);
-  };
-
-  const hasCleaning = onCleaningStatusChange !== undefined;
-  const hasContact = onContactStatusChange !== undefined;
+export function TurnoverRowActions(props: TurnoverRowActionsProps) {
+  const [open, setOpen] = useState(false);
 
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="bg-background border shadow-md">
-          {hasCleaning && (
-            <DropdownMenuItem onClick={() => setActiveDialog('cleaning')}>
-              <SprayCan className="h-4 w-4 mr-2" />
-              Städkontroll
-            </DropdownMenuItem>
-          )}
-          {hasContact && (
-            <DropdownMenuItem onClick={() => setActiveDialog('contact')}>
-              <Phone className="h-4 w-4 mr-2" />
-              Kontakt
-            </DropdownMenuItem>
-          )}
-          <DropdownMenuItem onClick={() => setActiveDialog('note')}>
-            <StickyNote className="h-4 w-4 mr-2" />
-            Notering
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setOpen(true)}>
+        <Pencil className="h-4 w-4" />
+      </Button>
 
-      {/* Note dialog */}
-      <Dialog open={activeDialog === 'note'} onOpenChange={(open) => !open && handleClose()}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Notering — {tenantName}</DialogTitle>
-          </DialogHeader>
-          <Textarea
-            placeholder="Skriv din notering här..."
-            className="min-h-[120px]"
-            value={noteContent}
-            onChange={(e) => setNoteContent(e.target.value)}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={handleClose}>Avbryt</Button>
-            <Button onClick={handleNoteSave} disabled={!noteContent.trim()} className="flex items-center gap-1">
-              <Save className="h-4 w-4" />
-              Spara
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Cleaning dialog */}
-      {activeDialog === 'cleaning' && cleaningStatus !== undefined && onCleaningStatusChange && onCleaningBookedDateChange && (
-        <CleaningEditDialog
-          open
-          onOpenChange={(o) => !o && setActiveDialog(null)}
-          tenantName={tenantName}
-          status={cleaningStatus}
-          bookedDate={cleaningBookedDate}
-          approvedDate={cleaningApprovedDate}
-          onStatusChange={onCleaningStatusChange}
-          onBookedDateChange={onCleaningBookedDateChange}
+      {props.type === 'move_out' && (
+        <MoveOutEditDialog
+          open={open}
+          onOpenChange={setOpen}
+          tenantName={props.tenantName}
+          cleaningStatus={props.cleaningStatus}
+          cleaningBookedDate={props.cleaningBookedDate}
+          cleaningApprovedDate={props.cleaningApprovedDate}
+          onCleaningStatusChange={props.onCleaningStatusChange}
+          onCleaningBookedDateChange={props.onCleaningBookedDateChange}
+          onAddNote={(content) => props.onAddNote(props.entryId, content)}
         />
       )}
 
-      {/* Contact dialog */}
-      {activeDialog === 'contact' && contactStatus !== undefined && onContactStatusChange && onContactAttemptsChange && onVisitBookedDateChange && (
-        <ContactEditDialog
-          open
-          onOpenChange={(o) => !o && setActiveDialog(null)}
-          tenantName={tenantName}
-          status={contactStatus}
-          attempts={contactAttempts ?? 0}
-          visitBookedDate={visitBookedDate}
-          onStatusChange={onContactStatusChange}
-          onAttemptsChange={onContactAttemptsChange}
-          onVisitBookedDateChange={onVisitBookedDateChange}
+      {props.type === 'move_in' && (
+        <MoveInEditDialog
+          open={open}
+          onOpenChange={setOpen}
+          tenantName={props.tenantName}
+          contactStatus={props.contactStatus}
+          contactAttempts={props.contactAttempts}
+          visitBookedDate={props.visitBookedDate}
+          nameAndIntercomDone={props.nameAndIntercomDone}
+          welcomeHomeMethod={props.welcomeHomeMethod}
+          onContactStatusChange={props.onContactStatusChange}
+          onContactAttemptsChange={props.onContactAttemptsChange}
+          onVisitBookedDateChange={props.onVisitBookedDateChange}
+          onNameAndIntercomChange={props.onNameAndIntercomChange}
+          onWelcomeHomeChange={props.onWelcomeHomeChange}
+          onAddNote={(content) => props.onAddNote(props.entryId, content)}
         />
       )}
     </>
