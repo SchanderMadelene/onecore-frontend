@@ -1,5 +1,5 @@
 import { ComponentViewer } from "./viewer";
-import { buttonDefinition, badgeDefinition } from "./definitions";
+import { buttonDefinition, badgeDefinition, switchDefinition, inputDefinition, selectDefinition } from "./definitions";
 
 export const InteractiveShowcase = () => {
   return (
@@ -12,6 +12,9 @@ export const InteractiveShowcase = () => {
       </div>
       <ComponentViewer definition={buttonDefinition} />
       <ComponentViewer definition={badgeDefinition} />
+      <ComponentViewer definition={switchDefinition} />
+      <ComponentViewer definition={inputDefinition} />
+      <ComponentViewer definition={selectDefinition} />
     </div>
   );
 };
