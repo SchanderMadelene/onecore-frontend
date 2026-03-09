@@ -1,4 +1,4 @@
-import React from "react";
+import type { ComponentType } from "react";
 
 export type ControlType = 'select' | 'boolean' | 'text' | 'number' | 'radio';
 
@@ -17,7 +17,7 @@ export interface PropDefinition {
 export interface ComponentDefinition {
   name: string;
   description: string;
-  component: React.ComponentType<any>;
+  component: ComponentType<any>;
   props: PropDefinition[];
   defaultCode: string;
 }
