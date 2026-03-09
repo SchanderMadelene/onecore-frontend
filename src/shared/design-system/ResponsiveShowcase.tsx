@@ -540,6 +540,80 @@ export const ResponsiveShowcase = () => {
       >
         <FilterableTableDemo />
       </DemoWrapper>
+
+      <DemoWrapper
+        title="Table / Selectable"
+        description="Tabell med checkboxar för rad-selektion. Kombineras med BulkActionBar för bulk-åtgärder."
+        code={`const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+
+<ResponsiveTable
+  data={data}
+  columns={columns}
+  keyExtractor={(item) => item.id}
+  selectable
+  selectedKeys={selectedKeys}
+  onSelectionChange={setSelectedKeys}
+/>
+{selectedKeys.length > 0 && (
+  <BulkActionBar
+    selectedCount={selectedKeys.length}
+    onClear={() => setSelectedKeys([])}
+  />
+)}`}
+      >
+        <SelectableTableDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="Table / Expandable Rows"
+        description="Parent-rader med chevron-toggle som expanderar child-rader. På mobil används MobileAccordion istället."
+        code={`// Desktop: rå <Table> med chevron-toggle
+<TableRow onClick={() => toggleGroup(id)}>
+  <TableCell>
+    <ChevronDown className={expanded ? "" : "-rotate-90"} />
+  </TableCell>
+  <TableCell>{group.name}</TableCell>
+</TableRow>
+{expanded && children.map(child => (
+  <TableRow className="bg-muted/30">...</TableRow>
+))}
+
+// Mobil: MobileAccordion
+<MobileAccordion items={groups.map(g => ({
+  id: g.id,
+  title: g.name,
+  content: <div>...</div>,
+}))} />`}
+      >
+        <ExpandableTableDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="Table / Split Layout"
+        description="Tabell med visuellt separerade kolumngrupper via border-l-2. På mobil visas grupperna vertikalt i MobileAccordion."
+        code={`// Desktop: border-l-2 separerar kolumngrupper
+<TableHead className="border-l-2 border-l-primary/20">
+  Inkommande
+</TableHead>
+...
+<TableCell className="border-l-2 border-l-primary/20">
+  {row.inName}
+</TableCell>
+
+// Mobil: MobileAccordion med grupperade fält
+<MobileAccordion items={data.map(row => ({
+  id: row.id,
+  title: row.label,
+  content: (
+    <div>
+      <div>Utgående: {row.outName}</div>
+      <div>Inkommande: {row.inName}</div>
+    </div>
+  ),
+}))} />`}
+      >
+        <SplitLayoutTableDemo />
+      </DemoWrapper>
     </div>
   );
 };
