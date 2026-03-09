@@ -184,7 +184,7 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
                     {listing.offers.map((offer, index) => (
                       <TabsContent key={offer.id} value={`offer-${offer.id}`}>
                         <section>
-                          <div className="border rounded-lg overflow-hidden">
+                          <div className="border rounded-lg overflow-hidden bg-card">
                             <Table>
                               <TableHeader>
                                  <TableRow>
