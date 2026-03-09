@@ -153,7 +153,7 @@ export function BarriersTable({ barriers, onBarrierUpdated }: BarriersTableProps
             <span className="text-muted-foreground">Skapad av: {barrier.createdBy}</span>
             <div className="flex items-center gap-1">
               <Button 
-                variant="ghost" 
+                variant="outline" 
                 size="sm" 
                 className="h-8 w-8 p-0"
                 onClick={() => handleEditClick(barrier)}
