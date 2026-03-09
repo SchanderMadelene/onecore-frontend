@@ -48,7 +48,7 @@ export function SearchableMultiSelect({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-full sm:w-[280px] justify-between h-auto min-h-10 font-normal",
+            "w-full sm:w-[280px] justify-between h-auto min-h-10 font-normal hover:bg-background",
             className
           )}
         >
