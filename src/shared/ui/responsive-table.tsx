@@ -12,6 +12,7 @@ interface ResponsiveTableColumn {
   render: (item: any) => ReactNode;
   className?: string;
   hideOnMobile?: boolean;
+  headerRender?: () => ReactNode;
 }
 
 interface ResponsiveTableProps {
@@ -175,9 +176,15 @@ export function ResponsiveTable({
               </TableHead>
             )}
             {columns.map((column) => (
-              <TableHead key={column.key} className={column.className}>
-                {column.label}
-              </TableHead>
+              column.headerRender ? (
+                <TableHead key={column.key} className={column.className}>
+                  {column.headerRender()}
+                </TableHead>
+              ) : (
+                <TableHead key={column.key} className={column.className}>
+                  {column.label}
+                </TableHead>
+              )
             ))}
           </TableRow>
         </TableHeader>

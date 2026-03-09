@@ -1,66 +1,73 @@
 
 
-## Nuläge: Kvarvarande avvikelser
+## Plan: Studentboenden — separat flik på Ut- & inflytt
 
-Migreringen har gjort mycket men systemet har **inte** full konsekvens ännu. Här är en sammanfattning:
+### Koncept
 
-### Tabeller som redan använder `ResponsiveTable` (21 st) — OK
-PropertiesTable, SearchResultsTable, BarriersTable, OrdersTable, TenantContracts, TenantKeys, LeaseContractsPage, AllInspectionsPage, MoveOutSection, MoveInSection, TenantsList, PublishedHousingTable, ReadyForOfferHousingTable, OfferedHousingTable, UnpublishedHousingTable, InspectionHistory, InspectionsList, VluFluTransitionsTable, RenovationTrackingTable, AllTenantsPage, ResponsiveShowcase.
+Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
 
-### Tabeller som FORTFARANDE använder rå `<Table>` (8 st)
+### Datamodell
 
-| Fil | Anledning / Komplexitet |
-|-----|------------------------|
-| **PublishedParkingTab** | `FilterableTableHead` (kolumnfilter) |
-| **ReadyForOfferTab** | `FilterableTableHead` |
-| **OfferedTab** | Rå tabell, inga speciella behov |
-| **HistoryTab** | Rå tabell, inga speciella behov |
-| **NeedsRepublishTab** | Rå tabell, inga speciella behov |
-| **ParkingSpaceDetail** | Sökande-tabeller inuti Sheet (2 st), `font-semibold` headers |
-| **HousingSpaceDetail** | Sökande-tabell inuti Sheet |
-| **ApplicantsTable** | `font-semibold` headers |
-| **HousingApplicantsTable** | Expanderbara rader, komplex |
-| **PropertyAreasTable** | Expanderbara rader |
-| **StudentTurnoverTable** | Eget mobilläge med MobileAccordion, komplex layout med border-delning |
-| **CombinedTurnoverTable** | Eget mobilläge med MobileAccordion, komplex layout |
-| **ParkingSpacesTable (publish-dialog)** | Selektionstabellen i publiceringsdialogrutan |
+Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
+- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
+- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
 
-### Kvarvarande stilavvikelser
+Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
 
-1. **`font-semibold` på TableHead** — ParkingSpaceDetail, ApplicantsTable, HousingApplicantsTable (standard: ingen extra font-weight)
-2. **`hover:bg-secondary/50` på TableRow** — ApplicantsTable, HousingApplicantsTable, ParkingSpaceDetail, HousingSpaceDetail (standard: hanteras av ResponsiveTable)
-3. **`variant="ghost"` knappar** — FilterableTableHead (intern, OK), PropertyDocumentsTab, BuildingDocumentsTab (dokument-knappar, ej tabell-kontext i strikt mening)
+### Mockdata
 
-### Vad som behöver göras för full konsekvens
+Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
 
-**Grupp 1 — Enkla migreringar** (HistoryTab, OfferedTab, NeedsRepublishTab — inga speciella features):
-- Byt till `ResponsiveTable` med `mobileCardRenderer`
+### Tabell
 
-**Grupp 2 — FilterableTableHead-tabeller** (PublishedParkingTab, ReadyForOfferTab):
-- Kräver att `ResponsiveTable` utökas med stöd för custom header-rendering (t.ex. en `headerRender`-prop per kolumn), ELLER att filtreringen flyttas utanför tabellen
-- Alternativ: behåll rå `<Table>` men standardisera wrapper/header-stil
+Ny komponent `StudentTurnoverTable.tsx`:
+- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
+- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
+- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
 
-**Grupp 3 — Detail-sheets** (ParkingSpaceDetail, HousingSpaceDetail):
-- Ta bort `font-semibold` från headers
-- Migrera till `ResponsiveTable` eller åtminstone standardisera stil
+### Filter
 
-**Grupp 4 — Expanderbara tabeller** (HousingApplicantsTable, PropertyAreasTable):
-- Kräver att `ResponsiveTable` utökas med stöd för expanderbara rader, ELLER behåll rå `<Table>` men standardisera stil
+Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
+- Sökfält (sök på rum, namn, e-post)
+- Datumväljare (start/slut)
+- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
 
-**Grupp 5 — Turnover-tabeller** (StudentTurnoverTable, CombinedTurnoverTable):
-- Dessa har medvetet en specialdesign med ut/in-kolumner separerade av border. De hanterar redan mobilläge via `MobileAccordion`. Rekommendation: undanta dessa från `ResponsiveTable`-migrering men standardisera header-stil.
+### Hook
 
-**Grupp 6 — Stilstädning** (alla kvarvarande):
-- Ta bort `font-semibold` från TableHead överallt
-- Ta bort `hover:bg-transparent` från TableRow i headers (standardbeteende)
-- Säkerställ `bg-card` på wrapper
+Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
 
-### Rekommendation
+### Sidstruktur
 
-Genomför i denna ordning:
-1. **Grupp 1** — Enkla migreringar (3 filer, snabbt)
-2. **Grupp 6** — Stilstädning i alla kvarvarande rå-tabeller (ta bort font-semibold, standardisera wrappers)
-3. **Grupp 3** — Detail-sheet-tabeller
-4. **Grupp 2** — Utöka `ResponsiveTable` med `headerRender`-prop för FilterableTableHead-stöd
-5. **Grupp 4+5** — Komplex migrering (expanderbara rader, turnover) — kan skjutas upp
+`TurnoverPage.tsx` uppdateras med `Tabs`:
+
+```text
+┌─────────────────────────────────────┐
+│ Ut- & inflytt          [⭐ Favorit] │
+│ Operativ checklista...              │
+├──────────────┬──────────────────────┤
+│ Ut- & inflytt│ Studentboenden      │  ← Tabs
+├──────────────┴──────────────────────┤
+│ [Filter + Tabell beroende på flik]  │
+└─────────────────────────────────────┘
+```
+
+### Routing
+
+Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
+
+### Feature toggle
+
+Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
+
+### Filer som skapas/ändras
+
+| Fil | Åtgärd |
+|-----|--------|
+| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
+| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
+| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
+| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
+| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
+| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
+| `src/features/turnover/index.ts` | Exportera nya komponenter |
 

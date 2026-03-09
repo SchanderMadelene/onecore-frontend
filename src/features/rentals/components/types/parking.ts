@@ -9,6 +9,9 @@ export interface ParkingSpace {
   seekers: number;
   publishedFrom: string;
   publishedTo: string;
+  offer?: {
+    expiresAt: string;
+  };
 }
 
 export interface ParkingApplication {
