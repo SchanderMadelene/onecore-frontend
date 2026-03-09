@@ -1,21 +1,49 @@
-import { InteractiveShowcase } from "./InteractiveShowcase";
+import { ComponentViewer } from "./viewer";
+import { 
+  buttonDefinition, 
+  badgeDefinition, 
+  switchDefinition, 
+  inputDefinition, 
+  selectDefinition,
+  tagDefinition,
+  filterChipDefinition,
+  emptyStateDefinition,
+} from "./definitions";
 import { ResponsiveShowcase } from "./ResponsiveShowcase";
 
 export const ComponentsShowcase = () => {
   return (
     <div className="space-y-10">
+      {/* Knappar & Inmatning */}
       <section>
-        <h2 className="text-xl font-semibold mb-1">Interaktiva</h2>
+        <h2 className="text-xl font-semibold mb-1">Knappar & Inmatning</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Utforska komponenter genom att ändra props i realtid.
+          Interaktiva kontroller för användarinput och åtgärder.
         </p>
-        <InteractiveShowcase />
+        <div className="space-y-6">
+          <ComponentViewer definition={buttonDefinition} />
+          <ComponentViewer definition={inputDefinition} />
+          <ComponentViewer definition={selectDefinition} />
+          <ComponentViewer definition={switchDefinition} />
+          <ComponentViewer definition={filterChipDefinition} />
+        </div>
       </section>
+
+      {/* Indikatorer & Etiketter */}
       <section>
-        <h2 className="text-xl font-semibold mb-1">Responsiva</h2>
+        <h2 className="text-xl font-semibold mb-1">Indikatorer & Etiketter</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Komponenter med viewport-beroende beteende. Växla mellan desktop och mobil.
+          Visuella markörer för status, kategorisering och tomma tillstånd.
         </p>
+        <div className="space-y-6">
+          <ComponentViewer definition={badgeDefinition} />
+          <ComponentViewer definition={tagDefinition} />
+          <ComponentViewer definition={emptyStateDefinition} />
+        </div>
+      </section>
+
+      {/* Tabeller & Layout (responsiva) */}
+      <section>
         <ResponsiveShowcase />
       </section>
     </div>
