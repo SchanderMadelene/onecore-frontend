@@ -27,6 +27,11 @@ export const ComponentViewer = ({ definition }: ComponentViewerProps) => {
     setValues((prev) => ({ ...prev, [propName]: value }));
   };
 
+  const hasChildrenProp = useMemo(
+    () => propDefs.some((prop) => prop.name === "children"),
+    [propDefs]
+  );
+
   const generatedCode = useMemo(() => {
     const propsStr = Object.entries(values)
       .filter(([key, val]) => {
@@ -41,10 +46,15 @@ export const ComponentViewer = ({ definition }: ComponentViewerProps) => {
       .filter(Boolean)
       .join(" ");
 
-    const children = values.children ?? name;
     const space = propsStr ? " " : "";
+
+    if (!hasChildrenProp) {
+      return `<${name}${space}${propsStr} />`;
+    }
+
+    const children = values.children ?? name;
     return `<${name}${space}${propsStr}>${children}</${name}>`;
-  }, [values, propDefs, name]);
+  }, [values, propDefs, name, hasChildrenProp]);
 
   // Build component props, filtering out 'children'
   const componentProps = useMemo(() => {
