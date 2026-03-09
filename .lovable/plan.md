@@ -1,73 +1,42 @@
 
 
-## Plan: Studentboenden — separat flik på Ut- & inflytt
+## Ny sub-tab: "Filter & Sök" i Komponenter
 
-### Koncept
+### Vad
 
-Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
+Lägga till en femte sub-tab **"Filter & Sök"** i Komponenter-sektionen som dokumenterar alla filter- och sökkomponenter som används på samlingssidor.
 
-### Datamodell
+### Innehåll
 
-Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
-- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
-- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
+Sub-taben visar följande komponenter med interaktiva demos:
 
-Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
+| Komponent | Typ | Beskrivning |
+|---|---|---|
+| **Sökfält** | Demo | `Input` med sökikon (PropertySearch-mönstret) |
+| **Select-filter** | Demo | Standard `Select` med `w-[180px]`, placeholder som etikett |
+| **DateRangeFilter** | Demo | Kalender-popover med från/till-datum och rensa-knapp |
+| **FilterContent** | Demo | Inline kolumnfilter med Command/popover (hover-reveal) |
+| **FilterChip** | Flytt | Redan har ComponentViewer-definition — flyttas hit från "Knappar & Inmatning" |
 
-### Mockdata
+Varje komponent visas med en rubrik, kort beskrivning, och en live-demo (interaktiv state).
 
-Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
+Längst ned: ett sammansatt exempel som visar standardmönstret för samlingssidor (sökfält + flex-wrap Select-filter + DateRangeFilter + rensa-knapp).
 
-### Tabell
+### Filändringar
 
-Ny komponent `StudentTurnoverTable.tsx`:
-- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
-- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
-- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
+1. **Ny fil `src/shared/design-system/FilterSearchShowcase.tsx`**
+   - Interaktiva demos för varje filterkomponent med lokal state
+   - `ComponentViewer` för FilterChip (redan definierad)
+   - Sammansatt demo i slutet
 
-### Filter
+2. **`ComponentsShowcase.tsx`**
+   - Lägg till sub-tab `<TabsTrigger value="filters">Filter & Sök</TabsTrigger>`
+   - Ta bort `filterChipDefinition` från "Knappar & Inmatning" (flyttas)
+   - Importera och rendera `FilterSearchShowcase` i ny `TabsContent`
 
-Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
-- Sökfält (sök på rum, namn, e-post)
-- Datumväljare (start/slut)
-- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
+### Noteringar
 
-### Hook
-
-Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
-
-### Sidstruktur
-
-`TurnoverPage.tsx` uppdateras med `Tabs`:
-
-```text
-┌─────────────────────────────────────┐
-│ Ut- & inflytt          [⭐ Favorit] │
-│ Operativ checklista...              │
-├──────────────┬──────────────────────┤
-│ Ut- & inflytt│ Studentboenden      │  ← Tabs
-├──────────────┴──────────────────────┤
-│ [Filter + Tabell beroende på flik]  │
-└─────────────────────────────────────┘
-```
-
-### Routing
-
-Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
-
-### Feature toggle
-
-Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
-
-### Filer som skapas/ändras
-
-| Fil | Åtgärd |
-|-----|--------|
-| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
-| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
-| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
-| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
-| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
-| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
-| `src/features/turnover/index.ts` | Exportera nya komponenter |
+- FilterChip har redan en `ComponentDefinition` — återanvänds direkt
+- DateRangeFilter, FilterContent och sökfältet saknar definitions — visas som fristående demos med lokal state
+- Det sammansatta exemplet i slutet visar det standardiserade mönstret från `ui/collection-page-standard-layout`
 
