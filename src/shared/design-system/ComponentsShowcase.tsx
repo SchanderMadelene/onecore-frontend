@@ -32,7 +32,7 @@ export const ComponentsShowcase = () => {
           </div>
           <ComponentViewer definition={buttonDefinition} />
           <ComponentViewer definition={inputDefinition} />
-          <ComponentViewer definition={selectDefinition} />
+          
           <ComponentViewer definition={switchDefinition} />
         </div>
       </TabsContent>
