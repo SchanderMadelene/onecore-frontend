@@ -112,7 +112,7 @@ const BulkActionBarDemo = () => (
       onSendSms={() => {}}
       onSendEmail={() => {}}
       onClear={() => {}}
-      className="!fixed-none !relative border rounded-md shadow-none"
+      className="!static border rounded-md shadow-none"
     />
     <p className="text-xs text-muted-foreground mt-2">
       Normalt visas denna fixed längst ner på skärmen. Här renderas den inline för demo.
