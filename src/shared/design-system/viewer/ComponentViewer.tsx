@@ -11,7 +11,7 @@ interface ComponentViewerProps {
 }
 
 export const ComponentViewer = ({ definition }: ComponentViewerProps) => {
-  const { name, description, component: Component, props: propDefs, defaultCode } = definition;
+  const { name, description, component: Component, props: propDefs } = definition;
 
   const initialValues = useMemo(() => {
     const v: Record<string, any> = {};
