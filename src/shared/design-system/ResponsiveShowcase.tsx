@@ -8,22 +8,44 @@ import { MobileTabs } from "@/shared/ui/mobile-tabs";
 import { CollapsibleInfoCard } from "@/shared/ui/collapsible-info-card";
 import { TabLayout } from "@/shared/ui/tab-layout";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
+import { MobileOverrideProvider } from "@/shared/hooks/use-mobile";
+import { ToggleGroup, ToggleGroupItem } from "@/shared/ui/toggle-group";
+import { Monitor, Smartphone } from "lucide-react";
 
-const DemoWrapper = ({ title, description, code, children }: { title: string; description: string; code: string; children: React.ReactNode }) => (
-  <Card>
-    <CardHeader>
-      <div className="flex items-center gap-2 flex-wrap">
-        <CardTitle className="text-lg">{title}</CardTitle>
-        <Badge variant="info">Responsiv — testa i mobil/desktop-vy</Badge>
-      </div>
-      <p className="text-sm text-muted-foreground">{description}</p>
-    </CardHeader>
-    <CardContent className="space-y-4">
-      <div className="rounded-md border p-4">{children}</div>
-      <CodeBlock code={code} />
-    </CardContent>
-  </Card>
-);
+const DemoWrapper = ({ title, description, code, children }: { title: string; description: string; code: string; children: React.ReactNode }) => {
+  const [viewMode, setViewMode] = useState<string>("desktop");
+  const isMobileOverride = viewMode === "mobile";
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
+            <CardTitle className="text-lg">{title}</CardTitle>
+            <Badge variant="info">Responsiv</Badge>
+          </div>
+          <ToggleGroup type="single" value={viewMode} onValueChange={(v) => v && setViewMode(v)} size="sm" variant="outline">
+            <ToggleGroupItem value="desktop" aria-label="Desktop-vy">
+              <Monitor className="h-4 w-4" />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="mobile" aria-label="Mobil-vy">
+              <Smartphone className="h-4 w-4" />
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className={`rounded-md border p-4 mx-auto ${isMobileOverride ? "max-w-[375px]" : ""}`}>
+          <MobileOverrideProvider isMobile={isMobileOverride}>
+            {children}
+          </MobileOverrideProvider>
+        </div>
+        <CodeBlock code={code} />
+      </CardContent>
+    </Card>
+  );
+};
 
 // --- ResponsiveTable Demo ---
 const tableData = [
