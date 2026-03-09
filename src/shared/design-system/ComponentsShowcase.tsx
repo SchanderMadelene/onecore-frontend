@@ -5,7 +5,6 @@ import {
   badgeDefinition, 
   switchDefinition, 
   inputDefinition, 
-  selectDefinition,
   tagDefinition,
   emptyStateDefinition,
 } from "./definitions";
