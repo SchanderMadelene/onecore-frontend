@@ -185,21 +185,21 @@ export function HousingApplicantsTable({
 
   return (
     <>
-      <div className="border rounded-lg overflow-hidden">
+      <div className="border rounded-lg overflow-hidden bg-card">
         <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            {showSelectionColumn && <TableHead className="w-12 font-semibold">Val</TableHead>}
-            <TableHead className="whitespace-nowrap font-semibold">Namn</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Kundnummer</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Köpoäng</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Boendereferens</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Kreditupplysning</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Betalningshistorik</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Erbjudande</TableHead>
-            {!showSelectionColumn && <TableHead className="whitespace-nowrap font-semibold">Visning bokad</TableHead>}
-            {!showSelectionColumn && <TableHead className="whitespace-nowrap font-semibold">Svar på erbjudande</TableHead>}
+          <TableRow>
+            {showSelectionColumn && <TableHead className="w-12">Val</TableHead>}
+            <TableHead className="whitespace-nowrap">Namn</TableHead>
+            <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
+            <TableHead className="whitespace-nowrap">Köpoäng</TableHead>
+            <TableHead className="whitespace-nowrap">Anmälan</TableHead>
+            <TableHead className="whitespace-nowrap">Boendereferens</TableHead>
+            <TableHead className="whitespace-nowrap">Kreditupplysning</TableHead>
+            <TableHead className="whitespace-nowrap">Betalningshistorik</TableHead>
+            <TableHead className="whitespace-nowrap">Erbjudande</TableHead>
+            {!showSelectionColumn && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
+            {!showSelectionColumn && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
