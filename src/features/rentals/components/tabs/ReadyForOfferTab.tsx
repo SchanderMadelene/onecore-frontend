@@ -110,6 +110,7 @@ export const ReadyForOfferTab = () => {
       hideOnMobile: true,
       headerRender: () => (
         <FilterableTableHead
+          inline
           onFilter={handleFilterChange('area')}
           filterValue={filters.area}
           filterOptions={filterOptions.areas}
