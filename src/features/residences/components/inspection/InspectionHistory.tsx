@@ -25,7 +25,7 @@ export const InspectionHistory = ({ inspections }: InspectionHistoryProps) => {
       <ResponsiveTable
         data={inspections || []}
         columns={columns}
-        keyExtractor={(_, index) => String(index)}
+        keyExtractor={(inspection: Inspection) => inspection?.date || String(Math.random())}
         emptyMessage="Inga besiktningar registrerade ännu"
         mobileCardRenderer={mobileCardRenderer}
       />
