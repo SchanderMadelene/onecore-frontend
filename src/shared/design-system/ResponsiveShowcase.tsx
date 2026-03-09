@@ -413,20 +413,13 @@ const BulkActionBarDemo = () => (
   </div>
 );
 
-export const ResponsiveShowcase = () => {
+export const TablesShowcase = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-1">Responsiva komponenter</h2>
-        <p className="text-sm text-muted-foreground">
-          Dessa komponenter anpassar sig automatiskt efter viewport-storlek. Testa genom att ändra fönsterstorlek eller använda preview-lägets viewport-switcher.
-        </p>
-      </div>
-
-      <div className="pt-2">
-        <h3 className="text-lg font-semibold mb-1">Tabeller</h3>
+        <h2 className="text-xl font-semibold mb-1">Tabeller</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Baskomponenten ResponsiveTable och dess varianter.
+          Baskomponenten ResponsiveTable och dess varianter. Växla mellan desktop och mobil.
         </p>
       </div>
 
@@ -547,9 +540,15 @@ export const ResponsiveShowcase = () => {
       >
         <SplitLayoutTableDemo />
       </DemoWrapper>
+    </div>
+  );
+};
 
-      <div className="pt-2">
-        <h3 className="text-lg font-semibold mb-1">Övriga responsiva komponenter</h3>
+export const LayoutShowcase = () => {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-semibold mb-1">Layout & Navigation</h2>
         <p className="text-sm text-muted-foreground mb-4">
           Komponenter som anpassar sitt beteende efter viewport.
         </p>
@@ -621,6 +620,16 @@ export const ResponsiveShowcase = () => {
       >
         <BulkActionBarDemo />
       </DemoWrapper>
+    </div>
+  );
+};
+
+/** @deprecated Use TablesShowcase and LayoutShowcase instead */
+export const ResponsiveShowcase = () => {
+  return (
+    <div className="space-y-6">
+      <TablesShowcase />
+      <LayoutShowcase />
     </div>
   );
 };
