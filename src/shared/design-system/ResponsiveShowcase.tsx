@@ -10,7 +10,9 @@ import { TabLayout } from "@/shared/ui/tab-layout";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { MobileOverrideProvider } from "@/shared/hooks/use-mobile";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/ui/toggle-group";
-import { Monitor, Smartphone } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Monitor, Smartphone, ChevronDown } from "lucide-react";
 
 const DemoWrapper = ({ title, description, code, children }: { title: string; description: string; code: string; children: React.ReactNode }) => {
   const [viewMode, setViewMode] = useState<string>("desktop");
