@@ -1,73 +1,46 @@
 
 
-## Plan: Studentboenden — separat flik på Ut- & inflytt
+## Omstrukturering av designsystemet
 
-### Koncept
+### Problem
 
-Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
+8 platta flikar på samma nivå blandar helt olika abstraktionsnivåer — färger och typografi (fundament) ligger bredvid tabeller och formulär (mönster). Det skalar inte: varje ny komponent eller kategori lägger till ytterligare en flik.
 
-### Datamodell
-
-Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
-- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
-- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
-
-Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
-
-### Mockdata
-
-Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
-
-### Tabell
-
-Ny komponent `StudentTurnoverTable.tsx`:
-- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
-- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
-- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
-
-### Filter
-
-Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
-- Sökfält (sök på rum, namn, e-post)
-- Datumväljare (start/slut)
-- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
-
-### Hook
-
-Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
-
-### Sidstruktur
-
-`TurnoverPage.tsx` uppdateras med `Tabs`:
+### Förslag: 3 huvudsektioner
 
 ```text
-┌─────────────────────────────────────┐
-│ Ut- & inflytt          [⭐ Favorit] │
-│ Operativ checklista...              │
-├──────────────┬──────────────────────┤
-│ Ut- & inflytt│ Studentboenden      │  ← Tabs
-├──────────────┴──────────────────────┤
-│ [Filter + Tabell beroende på flik]  │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────────────┐
+│  Fundament  │  Komponenter  │  Mönster          │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  (innehåll baserat på vald sektion)             │
+│                                                 │
+└─────────────────────────────────────────────────┘
 ```
 
-### Routing
+| Sektion | Innehåll | Beskrivning |
+|---------|----------|-------------|
+| **Fundament** | Colors, Typography, Grid, Icons, Logos | Visuella byggstenar som inte är komponenter |
+| **Komponenter** | Interaktiv viewer (Button, Badge, Tag, Input, Select, Switch, FilterChip, EmptyState) + Responsiva (alla tabellvarianter, MobileAccordion, MobileTabs, CollapsibleInfoCard, TabLayout, BulkActionBar) | Alla återanvändbara UI-komponenter |
+| **Mönster** | Forms (StandardizedForm, FormControls), Orders, Accordions, ComponentCard, UpdateComponentModal | Sammansatta kompositioner och arbetsflöden |
 
-Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
+### Implementation
 
-### Feature toggle
+1. **`DesignSystemPage.tsx`** — Byt ut 8 flikar mot 3 top-level tabs (Fundament, Komponenter, Mönster). Varje tab renderar sin sektion.
 
-Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
+2. **Fundament-sektionen** — Samla Colors, Typography, Grid, Icons, Logos som sub-sektioner med rubriker inuti en scrollbar vy (inga sub-tabs, bara vertikalt flöde med ankarlänkar eller rubriker). Alternativt: behåll sub-tabs om mängden innehåll motiverar det.
 
-### Filer som skapas/ändras
+3. **Komponenter-sektionen** — Slå ihop InteractiveShowcase och ResponsiveShowcase till en gemensam vy. Gruppera med rubriker: "Interaktiva" (prop-viewer) och "Responsiva" (desktop/mobil-toggle). Alla tabellvarianter hamnar under "Responsiva > Tabeller".
 
-| Fil | Åtgärd |
-|-----|--------|
-| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
-| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
-| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
-| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
-| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
-| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
-| `src/features/turnover/index.ts` | Exportera nya komponenter |
+4. **Mönster-sektionen** — Flytta det som idag ligger i ComponentShowcase (forms, orders, accordions, modals) hit.
+
+### Filändringar
+
+- **`DesignSystemPage.tsx`** — 3 tabs istället för 8
+- **Skapa `FoundationsShowcase.tsx`** — Wrapper som renderar ColorPalette + Typography + GridSystem + IconsShowcase + LogosShowcase med sektionsrubriker
+- **Skapa `PatternsShowcase.tsx`** — Wrapper som renderar det som idag ligger i ComponentShowcase (forms, orders, etc)
+- **Skapa `ComponentsShowcase.tsx`** — Wrapper som kombinerar InteractiveShowcase + ResponsiveShowcase under gemensamma rubriker
+- **Barrel-fil `index.tsx`** — Uppdatera exports
+
+Befintliga showcase-filer (InteractiveShowcase, ResponsiveShowcase, ColorPalette etc) behålls oförändrade — de nya filerna importerar och komponerar dem.
 
