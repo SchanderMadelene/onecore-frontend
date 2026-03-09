@@ -1,54 +1,48 @@
 import { publishedHousingSpaces } from "../data/published-housing";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
 import { useHousingStatus } from "../hooks/useHousingStatus";
+import { ResponsiveTable } from "@/shared/ui/responsive-table";
 
 export function PublishedHousingTable() {
   const navigate = useNavigate();
   const { filterHousingByStatus } = useHousingStatus();
 
-  const handleRowClick = (housingId: string) => {
-    navigate(`/rentals/housing/${housingId}`, {
-      state: { activeHousingTab: "publicerade" }
-    });
-  };
-
   const publishedHousings = filterHousingByStatus(publishedHousingSpaces, 'published');
 
-  return (
-    <div className="border rounded-lg overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-transparent bg-secondary">
-            <TableHead className="whitespace-nowrap font-semibold">Adress</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Område</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Rum</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Yta</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Hyra</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Sökande</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Publicerad till</TableHead>
-            <TableHead className="whitespace-nowrap font-semibold">Ledig från</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {publishedHousings.map((housing) => (
-            <TableRow 
-              key={housing.id} 
-              className="hover:bg-secondary/50 cursor-pointer"
-              onClick={() => handleRowClick(housing.id)}
-            >
-              <TableCell className="font-medium">{housing.address}</TableCell>
-              <TableCell>{housing.area}</TableCell>
-              <TableCell>{housing.rooms}</TableCell>
-              <TableCell>{housing.size}</TableCell>
-              <TableCell>{housing.rent}</TableCell>
-              <TableCell>{housing.seekers}</TableCell>
-              <TableCell>{new Date(housing.publishedTo).toLocaleDateString('sv-SE')}</TableCell>
-              <TableCell>{new Date(housing.availableFrom).toLocaleDateString('sv-SE')}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+  const columns = [
+    { key: "address", label: "Adress", render: (h: any) => <span className="font-medium">{h.address}</span> },
+    { key: "area", label: "Område", render: (h: any) => h.area, hideOnMobile: true },
+    { key: "rooms", label: "Rum", render: (h: any) => h.rooms, hideOnMobile: true },
+    { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
+    { key: "rent", label: "Hyra", render: (h: any) => h.rent },
+    { key: "seekers", label: "Sökande", render: (h: any) => h.seekers },
+    { key: "publishedTo", label: "Publicerad till", render: (h: any) => new Date(h.publishedTo).toLocaleDateString('sv-SE'), hideOnMobile: true },
+    { key: "availableFrom", label: "Ledig från", render: (h: any) => new Date(h.availableFrom).toLocaleDateString('sv-SE'), hideOnMobile: true },
+  ];
+
+  const mobileCardRenderer = (housing: any) => (
+    <div>
+      <div className="font-medium">{housing.address}</div>
+      <div className="text-sm text-muted-foreground">{housing.area}</div>
+      <div className="grid grid-cols-[auto_auto] gap-x-4 gap-y-1 mt-2 justify-start">
+        <span className="text-sm text-muted-foreground">Rum:</span>
+        <span className="text-sm">{housing.rooms}</span>
+        <span className="text-sm text-muted-foreground">Hyra:</span>
+        <span className="text-sm">{housing.rent}</span>
+        <span className="text-sm text-muted-foreground">Sökande:</span>
+        <span className="text-sm">{housing.seekers}</span>
+      </div>
     </div>
+  );
+
+  return (
+    <ResponsiveTable
+      data={publishedHousings}
+      columns={columns}
+      keyExtractor={(h) => h.id}
+      emptyMessage="Inga publicerade bostäder"
+      mobileCardRenderer={mobileCardRenderer}
+      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "publicerade" } })}
+    />
   );
 }

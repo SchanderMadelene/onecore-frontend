@@ -1,43 +1,34 @@
-
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { Inspection } from "./types";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ResponsiveTable } from "@/shared/ui/responsive-table";
 
 interface InspectionHistoryProps {
   inspections: Inspection[];
 }
 
 export const InspectionHistory = ({ inspections }: InspectionHistoryProps) => {
-  const hasInspections = inspections && inspections.length > 0;
-  
+  const columns = [
+    { key: "date", label: "Datum", render: (i: Inspection) => i?.date || 'N/A' },
+    { key: "inspectedBy", label: "Besiktningsman", render: (i: Inspection) => i?.inspectedBy || 'N/A' },
+    { key: "status", label: "Status", render: (i: Inspection) => i?.isCompleted ? 'Slutförd' : 'Pågående' },
+  ];
+
+  const mobileCardRenderer = (inspection: Inspection) => (
+    <div>
+      <div className="font-medium">{inspection?.date || 'N/A'}</div>
+      <div className="text-sm text-muted-foreground">{inspection?.inspectedBy || 'N/A'}</div>
+      <div className="text-sm mt-1">{inspection?.isCompleted ? 'Slutförd' : 'Pågående'}</div>
+    </div>
+  );
+
   return (
     <div className="space-y-4">
-      {hasInspections ? (
-        <div className="border rounded-lg overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Datum</TableHead>
-                <TableHead>Besiktningsman</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {inspections.map((inspection, index) => (
-                <TableRow key={index}>
-                  <TableCell>{inspection?.date || 'N/A'}</TableCell>
-                  <TableCell>{inspection?.inspectedBy || 'N/A'}</TableCell>
-                  <TableCell>{inspection?.isCompleted ? 'Slutförd' : 'Pågående'}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      ) : (
-        <div className="text-center py-8 bg-muted/30 rounded-lg border">
-          <p className="text-muted-foreground">Inga besiktningar registrerade ännu</p>
-        </div>
-      )}
+      <ResponsiveTable
+        data={inspections || []}
+        columns={columns}
+        keyExtractor={(_, index) => String(index)}
+        emptyMessage="Inga besiktningar registrerade ännu"
+        mobileCardRenderer={mobileCardRenderer}
+      />
     </div>
   );
 };

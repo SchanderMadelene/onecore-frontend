@@ -1,11 +1,10 @@
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Eye, Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
 import { EditHousingDialog } from "./EditHousingDialog";
+import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 
 const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
@@ -23,56 +22,66 @@ const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
 
 export function UnpublishedHousingTable() {
   const navigate = useNavigate();
-  
-  const handleRowClick = (housingId: string) => {
-    navigate(`/rentals/housing/${housingId}`, {
-      state: { activeHousingTab: "behovAvPublicering" }
-    });
-  };
-  return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Adress</TableHead>
-            <TableHead>Område</TableHead>
-            <TableHead>Rum</TableHead>
-            <TableHead>Yta</TableHead>
-            <TableHead>Hyra</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Senast ändrad</TableHead>
-            <TableHead>Skapad av</TableHead>
-            <TableHead className="text-right">Åtgärder</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {unpublishedHousingSpaces.map((space) => (
-            <TableRow key={space.id} className="cursor-pointer hover:bg-muted/50" onClick={() => handleRowClick(space.id)}>
-              <TableCell className="font-medium">{space.address}</TableCell>
-              <TableCell>{space.area}</TableCell>
-              <TableCell>{space.rooms}</TableCell>
-              <TableCell>{space.size}</TableCell>
-              <TableCell>{space.rent}</TableCell>
-              <TableCell>{getStatusBadge(space.status)}</TableCell>
-              <TableCell>{space.lastModified}</TableCell>
-              <TableCell>{space.createdBy}</TableCell>
-              <TableCell className="text-right">
-                <div className="flex items-center justify-end gap-2">
-                  <Button variant="ghost" size="sm" onClick={(e) => e.stopPropagation()}>
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                  <div onClick={(e) => e.stopPropagation()}>
-                    <EditHousingDialog housingSpace={space} />
-                  </div>
-                  <Button variant="ghost" size="sm" onClick={(e) => e.stopPropagation()}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+
+  const columns = [
+    { key: "address", label: "Adress", render: (s: any) => <span className="font-medium">{s.address}</span> },
+    { key: "area", label: "Område", render: (s: any) => s.area, hideOnMobile: true },
+    { key: "rooms", label: "Rum", render: (s: any) => s.rooms, hideOnMobile: true },
+    { key: "size", label: "Yta", render: (s: any) => s.size, hideOnMobile: true },
+    { key: "rent", label: "Hyra", render: (s: any) => s.rent },
+    { key: "status", label: "Status", render: (s: any) => getStatusBadge(s.status) },
+    { key: "lastModified", label: "Senast ändrad", render: (s: any) => s.lastModified, hideOnMobile: true },
+    { key: "createdBy", label: "Skapad av", render: (s: any) => s.createdBy, hideOnMobile: true },
+    { 
+      key: "actions", 
+      label: "", 
+      className: "text-right",
+      render: (s: any) => (
+        <div className="flex items-center justify-end gap-2">
+          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
+            <Eye className="h-4 w-4" />
+          </Button>
+          <div onClick={(e) => e.stopPropagation()}>
+            <EditHousingDialog housingSpace={s} />
+          </div>
+          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      )
+    },
+  ];
+
+  const mobileCardRenderer = (space: any) => (
+    <div>
+      <div className="font-medium">{space.address}</div>
+      <div className="text-sm text-muted-foreground">{space.area}</div>
+      <div className="flex items-center gap-2 mt-2">
+        {getStatusBadge(space.status)}
+        <span className="text-sm text-muted-foreground">{space.rent}</span>
+      </div>
+      <div className="flex items-center gap-2 mt-3">
+        <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
+          <Eye className="h-4 w-4" />
+        </Button>
+        <div onClick={(e) => e.stopPropagation()}>
+          <EditHousingDialog housingSpace={space} />
+        </div>
+        <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
+  );
+
+  return (
+    <ResponsiveTable
+      data={unpublishedHousingSpaces}
+      columns={columns}
+      keyExtractor={(s) => s.id}
+      emptyMessage="Inga opublicerade bostäder"
+      mobileCardRenderer={mobileCardRenderer}
+      onRowClick={(s) => navigate(`/rentals/housing/${s.id}`, { state: { activeHousingTab: "behovAvPublicering" } })}
+    />
   );
 }
