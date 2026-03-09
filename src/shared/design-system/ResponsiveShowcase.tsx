@@ -77,6 +77,59 @@ const ResponsiveTableDemo = () => (
   />
 );
 
+// --- Table / Filterable Demo ---
+const filterableData = [
+  { id: "1", name: "Objekt A", category: "Typ 1", status: "Aktiv" },
+  { id: "2", name: "Objekt B", category: "Typ 2", status: "Inaktiv" },
+  { id: "3", name: "Objekt C", category: "Typ 1", status: "Aktiv" },
+  { id: "4", name: "Objekt D", category: "Typ 3", status: "Pausad" },
+];
+
+const FilterableTableDemo = () => {
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+
+  const filtered = filterableData.filter(item => {
+    const matchCategory = !categoryFilter || item.category === categoryFilter;
+    const matchStatus = !statusFilter || item.status === statusFilter;
+    return matchCategory && matchStatus;
+  });
+
+  const columns = [
+    { key: "name", label: "Namn", render: (item: any) => <span className="font-medium">{item.name}</span> },
+    {
+      key: "category",
+      label: "Kategori",
+      filterOptions: [...new Set(filterableData.map(d => d.category))].sort(),
+      filterValue: categoryFilter,
+      onFilter: setCategoryFilter,
+      filterPlaceholder: "Filtrera kategori...",
+      render: (item: any) => item.category,
+    },
+    {
+      key: "status",
+      label: "Status",
+      filterOptions: [...new Set(filterableData.map(d => d.status))].sort(),
+      filterValue: statusFilter,
+      onFilter: setStatusFilter,
+      filterPlaceholder: "Filtrera status...",
+      render: (item: any) => (
+        <Badge variant={item.status === "Aktiv" ? "success" : item.status === "Pausad" ? "warning" : "secondary"}>
+          {item.status}
+        </Badge>
+      ),
+    },
+  ];
+
+  return (
+    <ResponsiveTable
+      data={filtered}
+      columns={columns}
+      keyExtractor={(item) => item.id}
+    />
+  );
+};
+
 // --- MobileAccordion Demo ---
 const MobileAccordionDemo = () => (
   <MobileAccordion
