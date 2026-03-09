@@ -73,7 +73,7 @@ export function HousingSpaceDetail({ space }: HousingSpaceDetailProps) {
                       </TableHeader>
                       <TableBody>
                         {demoApplicants.map((applicant, index) => (
-                          <TableRow key={index} className="hover:bg-secondary/50">
+                          <TableRow key={index}>
                             <TableCell className="font-medium">{applicant.name}</TableCell>
                             <TableCell>{applicant.customerNumber}</TableCell>
                             <TableCell>{applicant.points}</TableCell>

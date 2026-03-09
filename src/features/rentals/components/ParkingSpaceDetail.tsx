@@ -260,7 +260,7 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
                 ) : (
                   <section>
                     <h3 className="text-lg font-semibold mb-4">Intresseanmälningar</h3>
-                    <div className="border rounded-lg overflow-hidden">
+                    <div className="border rounded-lg overflow-hidden bg-card">
                       <Table>
                         <TableHeader>
                           <TableRow>

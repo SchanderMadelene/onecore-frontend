@@ -116,7 +116,7 @@ export function ApplicantsTable({
         </TableHeader>
         <TableBody>
           {applicants.length > 0 ? applicants.map((applicant) => (
-            <TableRow key={applicant.id} className="hover:bg-secondary/50">
+            <TableRow key={applicant.id}>
               <TableCell className="font-medium">
                 <div>
                   <div>{applicant.name}</div>
