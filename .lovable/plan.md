@@ -1,73 +1,39 @@
 
 
-## Plan: Studentboenden — separat flik på Ut- & inflytt
+## Problem
 
-### Koncept
+Button, Badge och Tag finns på **två ställen**: dels i Komponenter-fliken (interaktiv ComponentViewer) och dels i Mönster-fliken (statiska showcases som ButtonShowcase, BadgeShowcase, TagShowcase). Det är dubbletter — inte mönster.
 
-Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
+Grundproblemet: vid omstruktureringen kopierades gamla ComponentShowcase rakt in i PatternsShowcase utan att separera enskilda komponenter från sammansatta mönster.
 
-### Datamodell
+## Förslag: Underkategorier i Komponenter + rensat Mönster
 
-Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
-- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
-- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
+### Komponenter-fliken — grupperad med rubriker
 
-Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
+| Underkategori | Innehåll |
+|---|---|
+| **Knappar & Inmatning** | Button, Input, Select, Switch, FilterChip |
+| **Indikatorer & Etiketter** | Badge, Tag, EmptyState |
+| **Tabeller** | Table/Base, Table/Filterable, Table/Selectable, Table/Expandable, Table/Split |
+| **Layout & Navigation** | MobileAccordion, MobileTabs, CollapsibleInfoCard, TabLayout, BulkActionBar |
 
-### Mockdata
+Varje komponent visas **en gång** — via ComponentViewer (interaktiv) där det finns en definition, via DemoWrapper (responsiv) för tabeller/layout.
 
-Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
+### Mönster-fliken — bara sammansatta kompositioner
 
-### Tabell
+Ta bort ButtonShowcase, BadgeShowcase, TagShowcase (dubbletter). Behåll:
+- StandardizedFormShowcase
+- FormControlsShowcase  
+- OrdersShowcase
+- AccordionShowcase (som mönster för collapsible content)
+- UpdateComponentModalShowcase
+- ComponentsAndCategoriesShowcase
 
-Ny komponent `StudentTurnoverTable.tsx`:
-- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
-- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
-- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
+### Filändringar
 
-### Filter
+1. **`ComponentsShowcase.tsx`** — Ersätt "Interaktiva"/"Responsiva"-uppdelningen med semantiska underkategorier. Gruppera ComponentViewer-instanser under rubriker (Knappar & Inmatning, Indikatorer, etc.) och infoga tabeller/layout-demos efter.
 
-Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
-- Sökfält (sök på rum, namn, e-post)
-- Datumväljare (start/slut)
-- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
+2. **`PatternsShowcase.tsx`** — Ta bort ButtonShowcase, BadgeShowcase, TagShowcase.
 
-### Hook
-
-Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
-
-### Sidstruktur
-
-`TurnoverPage.tsx` uppdateras med `Tabs`:
-
-```text
-┌─────────────────────────────────────┐
-│ Ut- & inflytt          [⭐ Favorit] │
-│ Operativ checklista...              │
-├──────────────┬──────────────────────┤
-│ Ut- & inflytt│ Studentboenden      │  ← Tabs
-├──────────────┴──────────────────────┤
-│ [Filter + Tabell beroende på flik]  │
-└─────────────────────────────────────┘
-```
-
-### Routing
-
-Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
-
-### Feature toggle
-
-Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
-
-### Filer som skapas/ändras
-
-| Fil | Åtgärd |
-|-----|--------|
-| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
-| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
-| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
-| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
-| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
-| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
-| `src/features/turnover/index.ts` | Exportera nya komponenter |
+3. **`InteractiveShowcase.tsx`** — Tas bort som separat wrapper, dess innehåll (ComponentViewer-instanserna) flyttas direkt in i ComponentsShowcase under respektive underkategori.
 
