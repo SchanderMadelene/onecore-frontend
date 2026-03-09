@@ -301,6 +301,7 @@ export const FilterSearchShowcase = () => {
       <SelectFilterDemo />
       <DateRangeFilterDemo />
       <FilterContentDemo />
+      <DateFieldSelectorDemo />
       <ComponentViewer definition={filterChipDefinition} />
 
       <div className="pt-4 border-t">
