@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import { FilterContent } from "./filter-content";
 
 interface ResponsiveTableColumn {
   key: string;
@@ -13,6 +14,14 @@ interface ResponsiveTableColumn {
   className?: string;
   hideOnMobile?: boolean;
   headerRender?: () => ReactNode;
+  /** Filter options — activates a filter dropdown in the column header */
+  filterOptions?: string[];
+  /** Current filter value */
+  filterValue?: string;
+  /** Callback when filter changes */
+  onFilter?: (value: string) => void;
+  /** Placeholder text for the filter search input */
+  filterPlaceholder?: string;
 }
 
 interface ResponsiveTableProps {
@@ -176,15 +185,22 @@ export function ResponsiveTable({
               </TableHead>
             )}
             {columns.map((column) => (
-              column.headerRender ? (
-                <TableHead key={column.key} className={column.className}>
-                  {column.headerRender()}
-                </TableHead>
-              ) : (
-                <TableHead key={column.key} className={column.className}>
-                  {column.label}
-                </TableHead>
-              )
+              <TableHead key={column.key} className={column.className}>
+                {column.headerRender ? (
+                  column.headerRender()
+                ) : column.filterOptions ? (
+                  <FilterContent
+                    onFilter={column.onFilter}
+                    filterValue={column.filterValue}
+                    filterOptions={column.filterOptions}
+                    placeholder={column.filterPlaceholder}
+                  >
+                    {column.label}
+                  </FilterContent>
+                ) : (
+                  column.label
+                )}
+              </TableHead>
             ))}
           </TableRow>
         </TableHeader>

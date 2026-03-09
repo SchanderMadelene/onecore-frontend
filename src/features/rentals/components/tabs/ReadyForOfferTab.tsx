@@ -6,7 +6,6 @@ import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { DeleteListingDialog } from "../DeleteListingDialog";
 import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
 import { Link } from "react-router-dom";
-import { FilterableTableHead } from "../FilterableTableHead";
 import { useState, useMemo } from "react";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import type { ParkingSpace } from "../types/parking";
@@ -85,17 +84,10 @@ export const ReadyForOfferTab = () => {
       key: "address",
       label: "Bilplats",
       className: "w-[250px] whitespace-nowrap",
-      headerRender: () => (
-        <FilterableTableHead
-          inline
-          onFilter={handleFilterChange('address')}
-          filterValue={filters.address}
-          filterOptions={filterOptions.addresses}
-          placeholder="Sök adress..."
-        >
-          Bilplats
-        </FilterableTableHead>
-      ),
+      filterOptions: filterOptions.addresses,
+      filterValue: filters.address,
+      onFilter: handleFilterChange('address'),
+      filterPlaceholder: "Sök adress...",
       render: (space: ParkingSpace) => (
         <div>
           <div className="font-medium">{space.address}</div>
@@ -108,17 +100,10 @@ export const ReadyForOfferTab = () => {
       label: "Område",
       className: "whitespace-nowrap",
       hideOnMobile: true,
-      headerRender: () => (
-        <FilterableTableHead
-          inline
-          onFilter={handleFilterChange('area')}
-          filterValue={filters.area}
-          filterOptions={filterOptions.areas}
-          placeholder="Sök område..."
-        >
-          Område
-        </FilterableTableHead>
-      ),
+      filterOptions: filterOptions.areas,
+      filterValue: filters.area,
+      onFilter: handleFilterChange('area'),
+      filterPlaceholder: "Sök område...",
       render: (space: ParkingSpace) => space.area,
     },
     {
@@ -126,17 +111,10 @@ export const ReadyForOfferTab = () => {
       label: "Bilplatstyp",
       className: "whitespace-nowrap",
       hideOnMobile: true,
-      headerRender: () => (
-        <FilterableTableHead
-          inline
-          onFilter={handleFilterChange('type')}
-          filterValue={filters.type}
-          filterOptions={filterOptions.types}
-          placeholder="Sök typ..."
-        >
-          Bilplatstyp
-        </FilterableTableHead>
-      ),
+      filterOptions: filterOptions.types,
+      filterValue: filters.type,
+      onFilter: handleFilterChange('type'),
+      filterPlaceholder: "Sök typ...",
       render: (space: ParkingSpace) => space.type,
     },
     {
@@ -144,17 +122,10 @@ export const ReadyForOfferTab = () => {
       label: "Kötyp",
       className: "whitespace-nowrap",
       hideOnMobile: true,
-      headerRender: () => (
-        <FilterableTableHead
-          inline
-          onFilter={handleFilterChange('queueType')}
-          filterValue={filters.queueType}
-          filterOptions={filterOptions.queueTypes}
-          placeholder="Sök kötyp..."
-        >
-          Kötyp
-        </FilterableTableHead>
-      ),
+      filterOptions: filterOptions.queueTypes,
+      filterValue: filters.queueType,
+      onFilter: handleFilterChange('queueType'),
+      filterPlaceholder: "Sök kötyp...",
       render: (space: ParkingSpace) => space.queueType,
     },
     { key: "rent", label: "Hyra", className: "whitespace-nowrap", render: (space: ParkingSpace) => <div className="font-medium">{space.rent}</div> },
