@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ComponentDefinition, ViewMode } from "./types";
+import { ComponentDefinition } from "./types";
 import { ControlsPanel } from "./ControlsPanel";
 import { CodeBlock } from "./CodeBlock";
 import { PropsTable } from "./PropsTable";
