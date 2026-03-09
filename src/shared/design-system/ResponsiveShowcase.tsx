@@ -292,6 +292,36 @@ export const ResponsiveShowcase = () => {
       >
         <BulkActionBarDemo />
       </DemoWrapper>
+
+      <div className="pt-4">
+        <h3 className="text-lg font-semibold mb-1">Tabellvarianter</h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Varianter av ResponsiveTable med inbyggda beteenden.
+        </p>
+      </div>
+
+      <DemoWrapper
+        title="Table / Filterable"
+        description="Kolumner med filterOptions får automatiskt en filterikon i headern. Hover för att visa, klicka för att filtrera."
+        code={`<ResponsiveTable
+  data={data}
+  columns={[
+    { key: "name", label: "Namn", render: (item) => item.name },
+    {
+      key: "category",
+      label: "Kategori",
+      filterOptions: ["Typ 1", "Typ 2", "Typ 3"],
+      filterValue: categoryFilter,
+      onFilter: setCategoryFilter,
+      filterPlaceholder: "Filtrera kategori...",
+      render: (item) => item.category,
+    },
+  ]}
+  keyExtractor={(item) => item.id}
+/>`}
+      >
+        <FilterableTableDemo />
+      </DemoWrapper>
     </div>
   );
 };
