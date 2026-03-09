@@ -111,7 +111,7 @@ export const PublishedParkingTab = () => {
         </div>
       </div>
 
-      <div className="rounded-md border bg-card">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
