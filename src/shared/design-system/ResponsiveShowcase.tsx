@@ -423,9 +423,16 @@ export const ResponsiveShowcase = () => {
         </p>
       </div>
 
+      <div className="pt-2">
+        <h3 className="text-lg font-semibold mb-1">Tabeller</h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Baskomponenten ResponsiveTable och dess varianter.
+        </p>
+      </div>
+
       <DemoWrapper
-        title="ResponsiveTable"
-        description="Renderar en tabell på desktop och kort på mobil. Stöder selektion, mobileCardRenderer och hideOnMobile."
+        title="Table / Base"
+        description="Grundtabell som renderar en tabell på desktop och kort på mobil. Stöder mobileCardRenderer och hideOnMobile."
         code={`<ResponsiveTable
   data={data}
   columns={[
@@ -443,80 +450,6 @@ export const ResponsiveShowcase = () => {
       >
         <ResponsiveTableDemo />
       </DemoWrapper>
-
-      <DemoWrapper
-        title="MobileAccordion"
-        description="Accordion med primärfärgad vänsterkant vid öppning. Standard för att visa sektioner på mobila detaljsidor."
-        code={`<MobileAccordion
-  items={[
-    { id: "info", title: "Grundinformation", content: <div>...</div> },
-    { id: "history", title: "Historik", content: <div>...</div> },
-  ]}
-  defaultOpen={["info"]}
-/>`}
-      >
-        <MobileAccordionDemo />
-      </DemoWrapper>
-
-      <DemoWrapper
-        title="MobileTabs"
-        description="Renderar tabs på desktop och en Select-dropdown på mobil. Hanterar value/onValueChange externt."
-        code={`const [tab, setTab] = useState("overview");
-
-<MobileTabs
-  value={tab}
-  onValueChange={setTab}
-  tabs={[
-    { value: "overview", label: "Översikt", content: <div>...</div> },
-    { value: "details", label: "Detaljer", content: <div>...</div> },
-  ]}
-/>`}
-      >
-        <MobileTabsDemo />
-      </DemoWrapper>
-
-      <DemoWrapper
-        title="CollapsibleInfoCard"
-        description="Card på desktop, collapsible med preview-innehåll på mobil. Används för informationskort som behöver sparas utrymme på mobil."
-        code={`<CollapsibleInfoCard
-  title="Fastighetsinformation"
-  previewContent={<p>Kvarngatan 5, Västerås</p>}
->
-  <div>Expanderat innehåll...</div>
-</CollapsibleInfoCard>`}
-      >
-        <CollapsibleInfoCardDemo />
-      </DemoWrapper>
-
-      <DemoWrapper
-        title="TabLayout"
-        description="Wrappar innehåll i ett Card med rubrik och valfritt antal. På mobil döljs CardHeader."
-        code={`<TabLayout title="Lägenheter" count={24}>
-  <div>Tabb-innehåll här</div>
-</TabLayout>`}
-      >
-        <TabLayoutDemo />
-      </DemoWrapper>
-
-      <DemoWrapper
-        title="BulkActionBar"
-        description="Fixed bar längst ner på skärmen vid markering av objekt. Visar antal valda och åtgärdsknappar för SMS/mejl."
-        code={`<BulkActionBar
-  selectedCount={3}
-  onSendSms={() => {}}
-  onSendEmail={() => {}}
-  onClear={() => {}}
-/>`}
-      >
-        <BulkActionBarDemo />
-      </DemoWrapper>
-
-      <div className="pt-4">
-        <h3 className="text-lg font-semibold mb-1">Tabellvarianter</h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          Varianter av ResponsiveTable med inbyggda beteenden.
-        </p>
-      </div>
 
       <DemoWrapper
         title="Table / Filterable"
@@ -613,6 +546,80 @@ export const ResponsiveShowcase = () => {
 }))} />`}
       >
         <SplitLayoutTableDemo />
+      </DemoWrapper>
+
+      <div className="pt-2">
+        <h3 className="text-lg font-semibold mb-1">Övriga responsiva komponenter</h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Komponenter som anpassar sitt beteende efter viewport.
+        </p>
+      </div>
+
+      <DemoWrapper
+        title="MobileAccordion"
+        description="Accordion med primärfärgad vänsterkant vid öppning. Standard för att visa sektioner på mobila detaljsidor."
+        code={`<MobileAccordion
+  items={[
+    { id: "info", title: "Grundinformation", content: <div>...</div> },
+    { id: "history", title: "Historik", content: <div>...</div> },
+  ]}
+  defaultOpen={["info"]}
+/>`}
+      >
+        <MobileAccordionDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="MobileTabs"
+        description="Renderar tabs på desktop och en Select-dropdown på mobil. Hanterar value/onValueChange externt."
+        code={`const [tab, setTab] = useState("overview");
+
+<MobileTabs
+  value={tab}
+  onValueChange={setTab}
+  tabs={[
+    { value: "overview", label: "Översikt", content: <div>...</div> },
+    { value: "details", label: "Detaljer", content: <div>...</div> },
+  ]}
+/>`}
+      >
+        <MobileTabsDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="CollapsibleInfoCard"
+        description="Card på desktop, collapsible med preview-innehåll på mobil. Används för informationskort som behöver sparas utrymme på mobil."
+        code={`<CollapsibleInfoCard
+  title="Fastighetsinformation"
+  previewContent={<p>Kvarngatan 5, Västerås</p>}
+>
+  <div>Expanderat innehåll...</div>
+</CollapsibleInfoCard>`}
+      >
+        <CollapsibleInfoCardDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="TabLayout"
+        description="Wrappar innehåll i ett Card med rubrik och valfritt antal. På mobil döljs CardHeader."
+        code={`<TabLayout title="Lägenheter" count={24}>
+  <div>Tabb-innehåll här</div>
+</TabLayout>`}
+      >
+        <TabLayoutDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="BulkActionBar"
+        description="Fixed bar längst ner på skärmen vid markering av objekt. Visar antal valda och åtgärdsknappar för SMS/mejl."
+        code={`<BulkActionBar
+  selectedCount={3}
+  onSendSms={() => {}}
+  onSendEmail={() => {}}
+  onClear={() => {}}
+/>`}
+      >
+        <BulkActionBarDemo />
       </DemoWrapper>
     </div>
   );
