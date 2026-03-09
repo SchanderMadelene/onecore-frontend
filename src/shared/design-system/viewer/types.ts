@@ -1,5 +1,3 @@
-import React from "react";
-
 export type ControlType = 'select' | 'boolean' | 'text' | 'number' | 'radio';
 
 export type ViewMode = 'canvas' | 'code' | 'props';
