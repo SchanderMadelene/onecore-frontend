@@ -18,6 +18,7 @@ export const ComponentsShowcase = () => {
       <TabsList className="mb-6 flex-wrap h-auto gap-1">
         <TabsTrigger value="buttons" className="text-xs">Knappar & Inmatning</TabsTrigger>
         <TabsTrigger value="indicators" className="text-xs">Indikatorer & Etiketter</TabsTrigger>
+        <TabsTrigger value="filters" className="text-xs">Filter & Sök</TabsTrigger>
         <TabsTrigger value="tables" className="text-xs">Tabeller</TabsTrigger>
         <TabsTrigger value="layout" className="text-xs">Layout & Navigation</TabsTrigger>
       </TabsList>
@@ -34,7 +35,6 @@ export const ComponentsShowcase = () => {
           <ComponentViewer definition={inputDefinition} />
           <ComponentViewer definition={selectDefinition} />
           <ComponentViewer definition={switchDefinition} />
-          <ComponentViewer definition={filterChipDefinition} />
         </div>
       </TabsContent>
 
