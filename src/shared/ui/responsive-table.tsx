@@ -158,7 +158,7 @@ export function ResponsiveTable({
   }
 
   return (
-    <div className="rounded-md border overflow-x-auto">
+    <div className="rounded-md border bg-card overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
