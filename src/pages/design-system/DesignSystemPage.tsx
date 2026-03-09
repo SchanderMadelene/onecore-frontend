@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { PageLayout } from "@/layouts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon } from "lucide-react";
+import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon, Play } from "lucide-react";
 
-// Import components from the new global location
 import { 
   ColorPalette, 
   Typography, 
   ComponentShowcase, 
   GridSystem, 
   IconsShowcase,
-  LogosShowcase 
+  LogosShowcase,
+  InteractiveShowcase,
 } from "@/shared/design-system";
 
 const DesignSystemPage = () => {
@@ -26,8 +26,12 @@ const DesignSystemPage = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="logos" className="w-full">
+        <Tabs defaultValue="interactive" className="w-full">
           <TabsList className="flex-wrap h-auto gap-1">
+            <TabsTrigger value="interactive" className="flex items-center gap-2">
+              <Play className="h-4 w-4" />
+              <span className="hidden sm:inline">Interaktiv</span>
+            </TabsTrigger>
             <TabsTrigger value="logos" className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4" />
               <span className="hidden sm:inline">Logos</span>
@@ -53,6 +57,10 @@ const DesignSystemPage = () => {
               <span className="hidden sm:inline">Icons</span>
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="interactive" className="mt-6">
+            <InteractiveShowcase />
+          </TabsContent>
           
           <TabsContent value="logos" className="mt-6">
             <LogosShowcase />
