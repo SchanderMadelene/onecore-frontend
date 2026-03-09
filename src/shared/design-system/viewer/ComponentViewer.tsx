@@ -83,7 +83,7 @@ export const ComponentViewer = ({ definition }: ComponentViewerProps) => {
             <div className="grid grid-cols-1 md:grid-cols-[1fr_250px] gap-4">
               <div className="flex items-center justify-center min-h-[120px] rounded-md border border-dashed bg-background p-6">
                 <Component {...componentProps}>
-                  {values.children ?? name}
+                  {hasChildrenProp ? values.children ?? name : undefined}
                 </Component>
               </div>
               <ControlsPanel props={propDefs} values={values} onChange={handleChange} />
