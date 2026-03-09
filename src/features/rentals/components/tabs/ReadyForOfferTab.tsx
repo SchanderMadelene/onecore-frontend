@@ -128,6 +128,7 @@ export const ReadyForOfferTab = () => {
       hideOnMobile: true,
       headerRender: () => (
         <FilterableTableHead
+          inline
           onFilter={handleFilterChange('type')}
           filterValue={filters.type}
           filterOptions={filterOptions.types}
