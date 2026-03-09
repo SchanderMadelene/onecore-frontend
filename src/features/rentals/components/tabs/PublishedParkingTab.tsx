@@ -1,7 +1,6 @@
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Search, ChevronRight } from "lucide-react";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { PublishParkingSpacesDialog } from "../PublishParkingSpacesDialog";
@@ -12,6 +11,8 @@ import { Loader2, Car } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FilterableTableHead } from "../FilterableTableHead";
 import { useState, useMemo } from "react";
+import { ResponsiveTable } from "@/shared/ui/responsive-table";
+import type { ParkingSpace } from "../types/parking";
 
 export const PublishedParkingTab = () => {
   const { data: publishedSpaces, isLoading, error } = useParkingSpaceListingsByType('published');
@@ -98,6 +99,128 @@ export const PublishedParkingTab = () => {
     );
   }
 
+  const columns = [
+    {
+      key: "address",
+      label: "Bilplats",
+      className: "w-[250px] whitespace-nowrap",
+      headerRender: () => (
+        <FilterableTableHead
+          onFilter={handleFilterChange('address')}
+          filterValue={filters.address}
+          filterOptions={filterOptions.addresses}
+          placeholder="Sök adress..."
+        >
+          Bilplats
+        </FilterableTableHead>
+      ),
+      render: (space: ParkingSpace) => (
+        <div>
+          <div className="font-medium">{space.address}</div>
+          <div className="text-sm text-muted-foreground">{space.id}</div>
+        </div>
+      ),
+    },
+    {
+      key: "area",
+      label: "Område",
+      className: "whitespace-nowrap",
+      hideOnMobile: true,
+      headerRender: () => (
+        <FilterableTableHead
+          onFilter={handleFilterChange('area')}
+          filterValue={filters.area}
+          filterOptions={filterOptions.areas}
+          placeholder="Sök område..."
+        >
+          Område
+        </FilterableTableHead>
+      ),
+      render: (space: ParkingSpace) => space.area,
+    },
+    {
+      key: "type",
+      label: "Bilplatstyp",
+      className: "whitespace-nowrap",
+      hideOnMobile: true,
+      headerRender: () => (
+        <FilterableTableHead
+          onFilter={handleFilterChange('type')}
+          filterValue={filters.type}
+          filterOptions={filterOptions.types}
+          placeholder="Sök typ..."
+        >
+          Bilplatstyp
+        </FilterableTableHead>
+      ),
+      render: (space: ParkingSpace) => space.type,
+    },
+    {
+      key: "queueType",
+      label: "Kötyp",
+      className: "whitespace-nowrap",
+      hideOnMobile: true,
+      headerRender: () => (
+        <FilterableTableHead
+          onFilter={handleFilterChange('queueType')}
+          filterValue={filters.queueType}
+          filterOptions={filterOptions.queueTypes}
+          placeholder="Sök kötyp..."
+        >
+          Kötyp
+        </FilterableTableHead>
+      ),
+      render: (space: ParkingSpace) => space.queueType,
+    },
+    { key: "rent", label: "Hyra", className: "whitespace-nowrap", render: (space: ParkingSpace) => <div className="font-medium">{space.rent}</div> },
+    { key: "seekers", label: "Sökande", className: "whitespace-nowrap", hideOnMobile: true, render: (space: ParkingSpace) => <div className="font-medium">{space.seekers}</div> },
+    { key: "publishedTo", label: "Publicerad t.om", className: "whitespace-nowrap", hideOnMobile: true, render: (space: ParkingSpace) => space.publishedTo },
+    { key: "publishedFrom", label: "Publicerad fr.o.m", className: "whitespace-nowrap", hideOnMobile: true, render: (space: ParkingSpace) => space.publishedFrom },
+    {
+      key: "actions",
+      label: "Åtgärder",
+      className: "text-right whitespace-nowrap",
+      hideOnMobile: true,
+      render: (space: ParkingSpace) => (
+        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <DeleteListingDialog parkingSpace={space} />
+          <ParkingApplicationDialog parkingSpace={space} />
+          <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
+            <Button variant="outline" size="icon">
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+      ),
+    },
+  ];
+
+  const mobileCardRenderer = (space: ParkingSpace) => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="font-medium">{space.address}</div>
+          <div className="text-sm text-muted-foreground">{space.id}</div>
+        </div>
+        <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
+          <Button variant="outline" size="icon">
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </Link>
+      </div>
+      <div className="grid grid-cols-[auto_auto] gap-x-4 gap-y-1 justify-start text-sm">
+        <span className="text-muted-foreground">Område:</span>
+        <span>{space.area}</span>
+        <span className="text-muted-foreground">Typ:</span>
+        <span>{space.type}</span>
+        <span className="text-muted-foreground">Hyra:</span>
+        <span className="font-medium">{space.rent}</span>
+        <span className="text-muted-foreground">Sökande:</span>
+        <span>{space.seekers}</span>
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -111,87 +234,13 @@ export const PublishedParkingTab = () => {
         </div>
       </div>
 
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <FilterableTableHead 
-                className="w-[250px] whitespace-nowrap"
-                onFilter={handleFilterChange('address')}
-                filterValue={filters.address}
-                filterOptions={filterOptions.addresses}
-                placeholder="Sök adress..."
-              >
-                Bilplats
-              </FilterableTableHead>
-              <FilterableTableHead 
-                className="whitespace-nowrap"
-                onFilter={handleFilterChange('area')}
-                filterValue={filters.area}
-                filterOptions={filterOptions.areas}
-                placeholder="Sök område..."
-              >
-                Område
-              </FilterableTableHead>
-              <FilterableTableHead 
-                className="whitespace-nowrap"
-                onFilter={handleFilterChange('type')}
-                filterValue={filters.type}
-                filterOptions={filterOptions.types}
-                placeholder="Sök typ..."
-              >
-                Bilplatstyp
-              </FilterableTableHead>
-              <FilterableTableHead 
-                className="whitespace-nowrap"
-                onFilter={handleFilterChange('queueType')}
-                filterValue={filters.queueType}
-                filterOptions={filterOptions.queueTypes}
-                placeholder="Sök kötyp..."
-              >
-                Kötyp
-              </FilterableTableHead>
-              <TableHead className="whitespace-nowrap">Hyra</TableHead>
-              <TableHead className="whitespace-nowrap">Sökande</TableHead>
-              <TableHead className="whitespace-nowrap">Publicerad t.om</TableHead>
-              <TableHead className="whitespace-nowrap">Publicerad fr.o.m</TableHead>
-              <TableHead className="text-right whitespace-nowrap">Åtgärder</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredSpaces.map(space => (
-              <TableRow key={space.id} className="group">
-                <TableCell>
-                  <div className="font-medium">{space.address}</div>
-                  <div className="text-sm text-muted-foreground">{space.id}</div>
-                </TableCell>
-                <TableCell>{space.area}</TableCell>
-                <TableCell>{space.type}</TableCell>
-                <TableCell>{space.queueType}</TableCell>
-                <TableCell>
-                  <div className="font-medium">{space.rent}</div>
-                </TableCell>
-                <TableCell>
-                  <div className="font-medium">{space.seekers}</div>
-                </TableCell>
-                <TableCell>{space.publishedTo}</TableCell>
-                <TableCell>{space.publishedFrom}</TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <DeleteListingDialog parkingSpace={space} />
-                    <ParkingApplicationDialog parkingSpace={space} />
-                    <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
-                      <Button variant="outline" size="icon">
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      <ResponsiveTable
+        data={filteredSpaces}
+        columns={columns}
+        keyExtractor={(space) => space.id}
+        mobileCardRenderer={mobileCardRenderer}
+        rowClassName="group"
+      />
     </div>
   );
 };
