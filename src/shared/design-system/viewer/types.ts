@@ -17,7 +17,7 @@ export interface PropDefinition {
 export interface ComponentDefinition {
   name: string;
   description: string;
-  component: React.ComponentType<any>;
+  component: ComponentType<any>;
   props: PropDefinition[];
   defaultCode: string;
 }
