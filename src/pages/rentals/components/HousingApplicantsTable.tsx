@@ -224,7 +224,7 @@ export function HousingApplicantsTable({
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
                         onClick={() => handleToggleExpand(applicant)}
                         className="p-1 h-auto"
