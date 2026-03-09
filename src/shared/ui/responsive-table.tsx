@@ -185,15 +185,22 @@ export function ResponsiveTable({
               </TableHead>
             )}
             {columns.map((column) => (
-              column.headerRender ? (
-                <TableHead key={column.key} className={column.className}>
-                  {column.headerRender()}
-                </TableHead>
-              ) : (
-                <TableHead key={column.key} className={column.className}>
-                  {column.label}
-                </TableHead>
-              )
+              <TableHead key={column.key} className={column.className}>
+                {column.headerRender ? (
+                  column.headerRender()
+                ) : column.filterOptions ? (
+                  <FilterContent
+                    onFilter={column.onFilter}
+                    filterValue={column.filterValue}
+                    filterOptions={column.filterOptions}
+                    placeholder={column.filterPlaceholder}
+                  >
+                    {column.label}
+                  </FilterContent>
+                ) : (
+                  column.label
+                )}
+              </TableHead>
             ))}
           </TableRow>
         </TableHeader>
