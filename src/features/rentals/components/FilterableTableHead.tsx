@@ -13,16 +13,17 @@ interface FilterableTableHeadProps {
   filterOptions?: string[];
   placeholder?: string;
   className?: string;
+  /** When true, renders without TableHead wrapper (for use inside ResponsiveTable headerRender) */
+  inline?: boolean;
 }
 
-export const FilterableTableHead = ({ 
+const FilterContent = ({ 
   children, 
   onFilter, 
   filterValue = "", 
   filterOptions = [],
   placeholder = "Filtrera...",
-  className 
-}: FilterableTableHeadProps) => {
+}: Omit<FilterableTableHeadProps, 'className' | 'inline'>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = (value: string) => {
@@ -36,61 +37,95 @@ export const FilterableTableHead = ({
   };
 
   return (
-    <TableHead className={className}>
-      <div className="flex items-center justify-between group">
-        <span>{children}</span>
-        {onFilter && (
-          <Popover open={isOpen} onOpenChange={setIsOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity ${
-                  filterValue ? 'opacity-100 text-primary' : ''
-                }`}
-              >
-                <Filter className="h-3 w-3" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64 p-0" align="start">
-              <Command>
-                <CommandInput placeholder={placeholder} />
-                <CommandList>
-                  <CommandEmpty>Inga alternativ hittades.</CommandEmpty>
-                  <CommandGroup>
-                    {filterOptions.map((option) => (
-                      <CommandItem
-                        key={option}
-                        value={option}
-                        onSelect={() => handleSelect(option)}
-                        className="flex items-center justify-between"
-                      >
-                        <span>{option}</span>
-                        {filterValue === option && (
-                          <Check className="h-4 w-4" />
-                        )}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-                {filterValue && (
-                  <div className="border-t p-2">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      onClick={handleClear}
-                      className="w-full"
+    <div className="flex items-center justify-between group">
+      <span>{children}</span>
+      {onFilter && (
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity ${
+                filterValue ? 'opacity-100 text-primary' : ''
+              }`}
+            >
+              <Filter className="h-3 w-3" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-64 p-0" align="start">
+            <Command>
+              <CommandInput placeholder={placeholder} />
+              <CommandList>
+                <CommandEmpty>Inga alternativ hittades.</CommandEmpty>
+                <CommandGroup>
+                  {filterOptions.map((option) => (
+                    <CommandItem
+                      key={option}
+                      value={option}
+                      onSelect={() => handleSelect(option)}
+                      className="flex items-center justify-between"
                     >
-                      <X className="h-3 w-3 mr-1" />
-                      Rensa filter
-                    </Button>
-                  </div>
-                )}
-              </Command>
-            </PopoverContent>
-          </Popover>
-        )}
-      </div>
+                      <span>{option}</span>
+                      {filterValue === option && (
+                        <Check className="h-4 w-4" />
+                      )}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+              {filterValue && (
+                <div className="border-t p-2">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={handleClear}
+                    className="w-full"
+                  >
+                    <X className="h-3 w-3 mr-1" />
+                    Rensa filter
+                  </Button>
+                </div>
+              )}
+            </Command>
+          </PopoverContent>
+        </Popover>
+      )}
+    </div>
+  );
+};
+
+export const FilterableTableHead = ({ 
+  children, 
+  onFilter, 
+  filterValue = "", 
+  filterOptions = [],
+  placeholder = "Filtrera...",
+  className,
+  inline = false
+}: FilterableTableHeadProps) => {
+  if (inline) {
+    return (
+      <FilterContent
+        onFilter={onFilter}
+        filterValue={filterValue}
+        filterOptions={filterOptions}
+        placeholder={placeholder}
+      >
+        {children}
+      </FilterContent>
+    );
+  }
+
+  return (
+    <TableHead className={className}>
+      <FilterContent
+        onFilter={onFilter}
+        filterValue={filterValue}
+        filterOptions={filterOptions}
+        placeholder={placeholder}
+      >
+        {children}
+      </FilterContent>
     </TableHead>
   );
 };
