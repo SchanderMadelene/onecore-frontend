@@ -1,73 +1,73 @@
 
 
-## Plan: Studentboenden — separat flik på Ut- & inflytt
+## Plan: Lägg till skräddarsydda komponenter i Design System Showcase
 
-### Koncept
+### Komponenter att lägga till
 
-Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
+**Grupp 1 — Enkla (interactive props via ComponentViewer):**
+- **Tag** — bg, color, children
+- **FilterChip** — selected, children
+- **Badge (utökade varianter)** — redan i showcase men behöver uppdateras med alla varianter (success, info, warning, purple, muted)
 
-### Datamodell
+**Grupp 2 — Komplexa/responsiva (statisk demo, ej ComponentViewer):**
+- **ResponsiveTable** — tabell på desktop, kort på mobil
+- **MobileAccordion** — accordion med primärfärgad vänsterkant
+- **MobileTabs** — tabs på desktop, select-dropdown på mobil
+- **CollapsibleInfoCard** — card på desktop, collapsible på mobil
+- **EmptyState** — ikon + titel + beskrivning
+- **TabLayout** — card-wrapper med titel/count
+- **BulkActionBar** — fixed bottom bar vid selektion
 
-Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
-- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
-- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
+### Hantering av responsiva komponenter
 
-Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
+Komponenter som `ResponsiveTable`, `MobileTabs`, `MobileAccordion` och `CollapsibleInfoCard` använder `useIsMobile()` internt och renderar helt olika UI beroende på viewport. Dessa kan **inte** drivas av `ComponentViewer` med props-kontroller på ett meningsfullt sätt.
 
-### Mockdata
+**Lösning:** Skapa en ny **`StaticShowcase`**-komponent som visar dessa med:
+- En kort beskrivning av komponenten
+- En live-rendererad instans med exempeldata (användaren ser desktop- eller mobilversionen beroende på sin viewport)
+- En text-notis som förklarar att komponenten beter sig annorlunda på mobil/desktop, med uppmaning att testa i preview-lägets viewport-switcher
+- Kodexempel i en `CodeBlock`
 
-Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
+### Tekniska ändringar
 
-### Tabell
+1. **Uppdatera `badgeDefinition.ts`** — Lägg till varianterna `success`, `info`, `warning`, `purple`, `muted` i options-arrayen.
 
-Ny komponent `StudentTurnoverTable.tsx`:
-- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
-- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
-- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
+2. **Skapa `tagDefinition.ts`** — ComponentDefinition med props: `bg` (select med vanliga Tailwind-färger), `color` (select), `children` (text).
 
-### Filter
+3. **Skapa `filterChipDefinition.ts`** — ComponentDefinition med props: `selected` (boolean), `children` (text).
 
-Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
-- Sökfält (sök på rum, namn, e-post)
-- Datumväljare (start/slut)
-- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
+4. **Skapa `emptyStateDefinition.tsx`** — Wrapper-komponent som mappar en string-prop till en Lucide-ikon, plus title/description som text-kontroller.
 
-### Hook
+5. **Skapa `src/shared/design-system/ResponsiveShowcase.tsx`** — Ny showcase-sektion med statiska demos för:
+   - `ResponsiveTable` (med 3-4 rader exempeldata + mobileCardRenderer)
+   - `MobileAccordion` (med 2-3 items)
+   - `MobileTabs` (med 2-3 tabs)
+   - `CollapsibleInfoCard` (med preview + expanderat innehåll)
+   - `TabLayout` (med titel och count)
+   - `BulkActionBar` (renderad inline, ej fixed, via className-override)
 
-Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
+   Varje demo wrappas i ett Card med titel, beskrivning, en info-badge "Responsiv — testa i mobil/desktop-vy", live-rendering, och kodexempel.
 
-### Sidstruktur
+6. **Uppdatera `InteractiveShowcase.tsx`** — Importera och lägg till `tagDefinition`, `filterChipDefinition`, `emptyStateDefinition`.
 
-`TurnoverPage.tsx` uppdateras med `Tabs`:
+7. **Uppdatera `DesignSystemPage.tsx`** — Lägg till en ny tab "Responsiva" med `ResponsiveShowcase`.
+
+8. **Uppdatera barrel-exports** i `definitions/index.ts` och `design-system/index.tsx`.
+
+### Filstruktur
 
 ```text
-┌─────────────────────────────────────┐
-│ Ut- & inflytt          [⭐ Favorit] │
-│ Operativ checklista...              │
-├──────────────┬──────────────────────┤
-│ Ut- & inflytt│ Studentboenden      │  ← Tabs
-├──────────────┴──────────────────────┤
-│ [Filter + Tabell beroende på flik]  │
-└─────────────────────────────────────┘
+src/shared/design-system/
+├── definitions/
+│   ├── index.ts           (uppdatera)
+│   ├── badgeDefinition.ts (uppdatera)
+│   ├── tagDefinition.ts   (ny)
+│   ├── filterChipDefinition.ts (ny)
+│   └── emptyStateDefinition.tsx (ny)
+├── InteractiveShowcase.tsx (uppdatera)
+├── ResponsiveShowcase.tsx  (ny)
+└── index.tsx               (uppdatera)
+
+src/pages/design-system/DesignSystemPage.tsx (uppdatera — ny tab)
 ```
-
-### Routing
-
-Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
-
-### Feature toggle
-
-Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
-
-### Filer som skapas/ändras
-
-| Fil | Åtgärd |
-|-----|--------|
-| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
-| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
-| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
-| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
-| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
-| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
-| `src/features/turnover/index.ts` | Exportera nya komponenter |
 
