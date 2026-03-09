@@ -5,12 +5,12 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InspectionFormDialog } from "./InspectionFormDialog";
 import { InspectionReadOnly } from "./InspectionReadOnly";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import type { Room, Residence } from "@/types/api";
 import type { Inspection, InspectionRoom as InspectionRoomType, InspectionSubmitData, ResidenceInfo, TenantSnapshot } from "./types";
 import { toast } from "@/hooks/use-toast";
+import { ResponsiveTable } from "@/shared/ui/responsive-table";
 
 interface InspectionsListProps {
   rooms: Room[];
@@ -81,16 +81,11 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
       rooms: roomsData,
       status: status,
       isCompleted: status === 'completed',
-      
-      // Auto-hämtad residence-info
       residence: createResidenceInfo(residence),
-      
-      // Data från formuläret
       needsMasterKey: additionalData.needsMasterKey,
       tenant: additionalData.tenant
     };
 
-    // Spara till localStorage
     const existingInspections = JSON.parse(localStorage.getItem("inspections") || "[]");
     localStorage.setItem("inspections", JSON.stringify([...existingInspections, newInspection]));
 
@@ -108,54 +103,73 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
     setIsDialogOpen(false);
   };
 
-  const renderInspectionsTable = (inspectionsData: Inspection[]) => (
-    <div className="rounded-lg border border-slate-200 bg-white overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead>Nr</TableHead>
-            <TableHead>Datum</TableHead>
-            <TableHead>Besiktningsman</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Antal rum</TableHead>
-            <TableHead className="text-right">Åtgärder</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {inspectionsData.map((inspection) => (
-            <TableRow key={inspection.id} className="group">
-              <TableCell className="font-mono text-sm">
-                {inspection.inspectionNumber || '-'}
-              </TableCell>
-              <TableCell>{format(new Date(inspection.date), "yyyy-MM-dd")}</TableCell>
-              <TableCell>
-                <div className="flex flex-col gap-1">
-                  <span>{inspection.inspectedBy}</span>
-                  {inspection.status === 'draft' && (
-                    <Badge variant="secondary" className="w-fit">Utkast</Badge>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>
-                {inspection.status === 'completed' || inspection.isCompleted || Object.values(inspection.rooms).every(room => room.isHandled)
-                  ? "Slutförd"
-                  : inspection.status === 'draft' ? "Utkast" : "Pågående"}
-              </TableCell>
-              <TableCell>{Object.keys(inspection.rooms).length}</TableCell>
-              <TableCell className="text-right">
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => handleOpenInspection(inspection)}
-                >
-                  Visa detaljer
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+  const columns = [
+    { key: "nr", label: "Nr", render: (i: Inspection) => <span className="font-mono text-sm">{i.inspectionNumber || '-'}</span> },
+    { key: "date", label: "Datum", render: (i: Inspection) => format(new Date(i.date), "yyyy-MM-dd") },
+    { 
+      key: "inspector", 
+      label: "Besiktningsman", 
+      render: (i: Inspection) => (
+        <div className="flex flex-col gap-1">
+          <span>{i.inspectedBy}</span>
+          {i.status === 'draft' && <Badge variant="secondary" className="w-fit">Utkast</Badge>}
+        </div>
+      )
+    },
+    { 
+      key: "status", 
+      label: "Status", 
+      render: (i: Inspection) => (
+        i.status === 'completed' || i.isCompleted || Object.values(i.rooms).every(room => room.isHandled)
+          ? "Slutförd"
+          : i.status === 'draft' ? "Utkast" : "Pågående"
+      ),
+      hideOnMobile: true 
+    },
+    { key: "rooms", label: "Antal rum", render: (i: Inspection) => Object.keys(i.rooms).length, hideOnMobile: true },
+    { 
+      key: "actions", 
+      label: "", 
+      className: "text-right",
+      render: (i: Inspection) => (
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={(e) => { e.stopPropagation(); handleOpenInspection(i); }}
+        >
+          Visa detaljer
+        </Button>
+      )
+    },
+  ];
+
+  const mobileCardRenderer = (inspection: Inspection) => (
+    <div>
+      <div className="flex items-center gap-2">
+        <span className="font-mono text-sm font-medium">{inspection.inspectionNumber || '-'}</span>
+        {inspection.status === 'draft' && <Badge variant="secondary">Utkast</Badge>}
+      </div>
+      <div className="text-sm text-muted-foreground">{format(new Date(inspection.date), "yyyy-MM-dd")} • {inspection.inspectedBy}</div>
+      <div className="mt-2">
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={(e) => { e.stopPropagation(); handleOpenInspection(inspection); }}
+        >
+          Visa detaljer
+        </Button>
+      </div>
     </div>
+  );
+
+  const renderInspectionsTable = (inspectionsData: Inspection[]) => (
+    <ResponsiveTable
+      data={inspectionsData}
+      columns={columns}
+      keyExtractor={(i) => i.id}
+      emptyMessage="Inga besiktningar"
+      mobileCardRenderer={mobileCardRenderer}
+    />
   );
 
   return (
@@ -184,7 +198,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
       </div>
       
       <Tabs defaultValue="active" className="space-y-6">
-        <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
+        <TabsList className="bg-muted/70 p-1 rounded-lg overflow-x-auto">
           <TabsTrigger value="active">Pågående</TabsTrigger>
           <TabsTrigger value="history">Historik</TabsTrigger>
         </TabsList>
@@ -193,7 +207,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
           {activeInspection ? (
             renderInspectionsTable([activeInspection])
           ) : (
-            <p className="text-slate-500 p-2">Ingen aktiv besiktning för denna lägenhet.</p>
+            <p className="text-muted-foreground p-2">Ingen aktiv besiktning för denna lägenhet.</p>
           )}
         </TabsContent>
         
@@ -201,7 +215,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
           {completedInspections.length > 0 ? (
             renderInspectionsTable(completedInspections)
           ) : (
-            <p className="text-slate-500 p-2">Ingen besiktningshistorik för denna lägenhet.</p>
+            <p className="text-muted-foreground p-2">Ingen besiktningshistorik för denna lägenhet.</p>
           )}
         </TabsContent>
       </Tabs>
