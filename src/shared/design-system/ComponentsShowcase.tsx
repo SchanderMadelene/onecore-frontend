@@ -52,6 +52,10 @@ export const ComponentsShowcase = () => {
         </div>
       </TabsContent>
 
+      <TabsContent value="filters">
+        <FilterSearchShowcase />
+      </TabsContent>
+
       <TabsContent value="tables">
         <TablesShowcase />
       </TabsContent>
