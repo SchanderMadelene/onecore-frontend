@@ -54,21 +54,21 @@ export function HousingSpaceDetail({ space }: HousingSpaceDetailProps) {
                   <h3 className="text-lg font-semibold mb-4">
                     Intresseanmälningar
                   </h3>
-                  <div className="border rounded-lg overflow-hidden">
+                  <div className="border rounded-lg overflow-hidden bg-card">
                     <Table>
                       <TableHeader>
-                        <TableRow className="hover:bg-transparent">
-                          <TableHead className="whitespace-nowrap font-semibold">Namn</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Kundnummer</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Köpoäng</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Boendeadress</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Status boendekontrakt</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Anmälan</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Har bostad</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Status sökande</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Svar erbjudande</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Svara senast</TableHead>
-                          <TableHead className="whitespace-nowrap font-semibold">Priogrupp</TableHead>
+                        <TableRow>
+                          <TableHead className="whitespace-nowrap">Namn</TableHead>
+                          <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
+                          <TableHead className="whitespace-nowrap">Köpoäng</TableHead>
+                          <TableHead className="whitespace-nowrap">Boendeadress</TableHead>
+                          <TableHead className="whitespace-nowrap">Status boendekontrakt</TableHead>
+                          <TableHead className="whitespace-nowrap">Anmälan</TableHead>
+                          <TableHead className="whitespace-nowrap">Har bostad</TableHead>
+                          <TableHead className="whitespace-nowrap">Status sökande</TableHead>
+                          <TableHead className="whitespace-nowrap">Svar erbjudande</TableHead>
+                          <TableHead className="whitespace-nowrap">Svara senast</TableHead>
+                          <TableHead className="whitespace-nowrap">Priogrupp</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
