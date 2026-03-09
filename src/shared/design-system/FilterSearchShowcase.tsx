@@ -136,6 +136,60 @@ const FilterContentDemo = () => {
   );
 };
 
+// --- Date Field Selector Demo ---
+const DateFieldSelectorDemo = () => {
+  const [dateField, setDateField] = useState("");
+  const [fromDate, setFromDate] = useState<Date | undefined>();
+  const [toDate, setToDate] = useState<Date | undefined>();
+
+  const dateFieldLabels: Record<string, string> = {
+    created: "Skapad",
+    updated: "Uppdaterad",
+    closed: "Avslutad",
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">Datumfältsväljare</CardTitle>
+        <CardDescription>
+          Select som styr vilken datumtyp som filtreras. DateRangeFilter är <code className="text-xs bg-muted px-1 rounded">disabled</code> tills en datumtyp valts. Används t.ex. i kundreskontran.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-start">
+          <Select value={dateField || "none"} onValueChange={(v) => {
+            setDateField(v === "none" ? "" : v);
+            if (v === "none") {
+              setFromDate(undefined);
+              setToDate(undefined);
+            }
+          }}>
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Välj datumtyp" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">Välj datumtyp</SelectItem>
+              <SelectItem value="created">Skapad</SelectItem>
+              <SelectItem value="updated">Uppdaterad</SelectItem>
+              <SelectItem value="closed">Avslutad</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <DateRangeFilter
+            label={dateField ? dateFieldLabels[dateField] : "Välj datumtyp först"}
+            fromDate={fromDate}
+            toDate={toDate}
+            onFromDateChange={setFromDate}
+            onToDateChange={setToDate}
+            disabled={!dateField}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 // --- Composite Pattern Demo ---
 const CompositePatternDemo = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -247,6 +301,7 @@ export const FilterSearchShowcase = () => {
       <SelectFilterDemo />
       <DateRangeFilterDemo />
       <FilterContentDemo />
+      <DateFieldSelectorDemo />
       <ComponentViewer definition={filterChipDefinition} />
 
       <div className="pt-4 border-t">
