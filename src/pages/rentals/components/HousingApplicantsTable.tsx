@@ -188,7 +188,7 @@ export function HousingApplicantsTable({
       <div className="border rounded-lg overflow-hidden">
         <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent bg-secondary">
+          <TableRow className="hover:bg-transparent">
             {showSelectionColumn && <TableHead className="w-12 font-semibold">Val</TableHead>}
             <TableHead className="whitespace-nowrap font-semibold">Namn</TableHead>
             <TableHead className="whitespace-nowrap font-semibold">Kundnummer</TableHead>
