@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { DateRangeFilter } from "@/shared/common/DateRangeFilter";
 import { FilterContent } from "@/shared/ui/filter-content";
+import { SearchableMultiSelect } from "@/shared/ui/searchable-multi-select";
 import { ComponentViewer } from "./viewer";
 import { filterChipDefinition } from "./definitions";
 
