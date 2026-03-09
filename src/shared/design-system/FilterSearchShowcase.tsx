@@ -303,6 +303,7 @@ export const FilterSearchShowcase = () => {
       <DateRangeFilterDemo />
       <FilterContentDemo />
       <DateFieldSelectorDemo />
+      <SearchableMultiSelectDemo />
       <ComponentViewer definition={filterChipDefinition} />
 
       <div className="pt-4 border-t">
