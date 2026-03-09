@@ -10,7 +10,9 @@ import { TabLayout } from "@/shared/ui/tab-layout";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { MobileOverrideProvider } from "@/shared/hooks/use-mobile";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/ui/toggle-group";
-import { Monitor, Smartphone } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Monitor, Smartphone, ChevronDown } from "lucide-react";
 
 const DemoWrapper = ({ title, description, code, children }: { title: string; description: string; code: string; children: React.ReactNode }) => {
   const [viewMode, setViewMode] = useState<string>("desktop");
@@ -127,6 +129,222 @@ const FilterableTableDemo = () => {
       columns={columns}
       keyExtractor={(item) => item.id}
     />
+  );
+};
+
+// --- Table / Selectable Demo ---
+const selectableData = [
+  { id: "1", name: "Objekt A", category: "Grupp 1", status: "Aktiv" },
+  { id: "2", name: "Objekt B", category: "Grupp 2", status: "Inaktiv" },
+  { id: "3", name: "Objekt C", category: "Grupp 1", status: "Aktiv" },
+  { id: "4", name: "Objekt D", category: "Grupp 3", status: "Pausad" },
+];
+
+const SelectableTableDemo = () => {
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+
+  return (
+    <div className="space-y-3">
+      <ResponsiveTable
+        data={selectableData}
+        columns={[
+          { key: "name", label: "Namn", render: (item: any) => <span className="font-medium">{item.name}</span> },
+          { key: "category", label: "Kategori", render: (item: any) => item.category },
+          {
+            key: "status", label: "Status", render: (item: any) => (
+              <Badge variant={item.status === "Aktiv" ? "success" : item.status === "Pausad" ? "warning" : "secondary"}>
+                {item.status}
+              </Badge>
+            ),
+          },
+        ]}
+        keyExtractor={(item) => item.id}
+        selectable
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+      />
+      {selectedKeys.length > 0 && (
+        <BulkActionBar
+          selectedCount={selectedKeys.length}
+          onSendSms={() => {}}
+          onSendEmail={() => {}}
+          onClear={() => setSelectedKeys([])}
+          className="!static border rounded-md shadow-none"
+        />
+      )}
+    </div>
+  );
+};
+
+// --- Table / Expandable Rows Demo ---
+const expandableGroups = [
+  {
+    id: "g1",
+    name: "Kategori 1",
+    count: 3,
+    children: [
+      { id: "g1-1", name: "Objekt A-1", status: "Aktiv", value: "120" },
+      { id: "g1-2", name: "Objekt A-2", status: "Inaktiv", value: "85" },
+      { id: "g1-3", name: "Objekt A-3", status: "Aktiv", value: "200" },
+    ],
+  },
+  {
+    id: "g2",
+    name: "Kategori 2",
+    count: 2,
+    children: [
+      { id: "g2-1", name: "Objekt B-1", status: "Pausad", value: "150" },
+      { id: "g2-2", name: "Objekt B-2", status: "Aktiv", value: "90" },
+    ],
+  },
+];
+
+const ExpandableTableDemo = () => {
+  const isMobile = useIsMobile();
+  const [expanded, setExpanded] = useState<string[]>([]);
+
+  const toggleGroup = (id: string) => {
+    setExpanded(prev => prev.includes(id) ? prev.filter(e => e !== id) : [...prev, id]);
+  };
+
+  if (isMobile) {
+    return (
+      <MobileAccordion
+        items={expandableGroups.map(group => ({
+          id: group.id,
+          title: `${group.name} (${group.count})`,
+          content: (
+            <div className="space-y-2">
+              {group.children.map(child => (
+                <div key={child.id} className="flex justify-between items-center py-1.5 text-sm">
+                  <span className="font-medium">{child.name}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground">{child.value}</span>
+                    <Badge variant={child.status === "Aktiv" ? "success" : child.status === "Pausad" ? "warning" : "secondary"} className="text-xs">
+                      {child.status}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ),
+        }))}
+        defaultOpen={[]}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-md border bg-card">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-8" />
+            <TableHead>Namn</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="text-right">Värde</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {expandableGroups.map(group => (
+            <>
+              <TableRow
+                key={group.id}
+                className="cursor-pointer hover:bg-muted/50 font-medium"
+                onClick={() => toggleGroup(group.id)}
+              >
+                <TableCell className="w-8 py-3">
+                  <ChevronDown className={`h-4 w-4 transition-transform ${expanded.includes(group.id) ? "" : "-rotate-90"}`} />
+                </TableCell>
+                <TableCell className="py-3">{group.name}</TableCell>
+                <TableCell className="py-3 text-muted-foreground">{group.count} objekt</TableCell>
+                <TableCell className="py-3" />
+              </TableRow>
+              {expanded.includes(group.id) && group.children.map(child => (
+                <TableRow key={child.id} className="bg-muted/30">
+                  <TableCell className="w-8 py-2" />
+                  <TableCell className="py-2 pl-8 text-sm">{child.name}</TableCell>
+                  <TableCell className="py-2">
+                    <Badge variant={child.status === "Aktiv" ? "success" : child.status === "Pausad" ? "warning" : "secondary"} className="text-xs">
+                      {child.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="py-2 text-right text-sm">{child.value}</TableCell>
+                </TableRow>
+              ))}
+            </>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
+// --- Table / Split Layout Demo ---
+const splitData = [
+  { id: "1", label: "Period 1", outName: "Person A", outDate: "2025-03-01", inName: "Person D", inDate: "2025-03-15" },
+  { id: "2", label: "Period 2", outName: "Person B", outDate: "2025-04-01", inName: "Person E", inDate: "2025-04-10" },
+  { id: "3", label: "Period 3", outName: "Person C", outDate: "2025-05-01", inName: "—", inDate: "—" },
+];
+
+const SplitLayoutTableDemo = () => {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <MobileAccordion
+        items={splitData.map(row => ({
+          id: row.id,
+          title: row.label,
+          content: (
+            <div className="space-y-3 text-sm">
+              <div>
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Utgående</span>
+                <div className="mt-1 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
+                  <span className="text-muted-foreground">Namn:</span><span>{row.outName}</span>
+                  <span className="text-muted-foreground">Datum:</span><span>{row.outDate}</span>
+                </div>
+              </div>
+              <div>
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Inkommande</span>
+                <div className="mt-1 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
+                  <span className="text-muted-foreground">Namn:</span><span>{row.inName}</span>
+                  <span className="text-muted-foreground">Datum:</span><span>{row.inDate}</span>
+                </div>
+              </div>
+            </div>
+          ),
+        }))}
+        defaultOpen={["1"]}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-md border bg-card">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Objekt</TableHead>
+            <TableHead>Utgående</TableHead>
+            <TableHead>Datum</TableHead>
+            <TableHead className="border-l-2 border-l-primary/20">Inkommande</TableHead>
+            <TableHead>Datum</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {splitData.map(row => (
+            <TableRow key={row.id}>
+              <TableCell className="py-3 font-medium">{row.label}</TableCell>
+              <TableCell className="py-3">{row.outName}</TableCell>
+              <TableCell className="py-3 text-muted-foreground">{row.outDate}</TableCell>
+              <TableCell className="py-3 border-l-2 border-l-primary/20">{row.inName}</TableCell>
+              <TableCell className="py-3 text-muted-foreground">{row.inDate}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 
@@ -321,6 +539,80 @@ export const ResponsiveShowcase = () => {
 />`}
       >
         <FilterableTableDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="Table / Selectable"
+        description="Tabell med checkboxar för rad-selektion. Kombineras med BulkActionBar för bulk-åtgärder."
+        code={`const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+
+<ResponsiveTable
+  data={data}
+  columns={columns}
+  keyExtractor={(item) => item.id}
+  selectable
+  selectedKeys={selectedKeys}
+  onSelectionChange={setSelectedKeys}
+/>
+{selectedKeys.length > 0 && (
+  <BulkActionBar
+    selectedCount={selectedKeys.length}
+    onClear={() => setSelectedKeys([])}
+  />
+)}`}
+      >
+        <SelectableTableDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="Table / Expandable Rows"
+        description="Parent-rader med chevron-toggle som expanderar child-rader. På mobil används MobileAccordion istället."
+        code={`// Desktop: rå <Table> med chevron-toggle
+<TableRow onClick={() => toggleGroup(id)}>
+  <TableCell>
+    <ChevronDown className={expanded ? "" : "-rotate-90"} />
+  </TableCell>
+  <TableCell>{group.name}</TableCell>
+</TableRow>
+{expanded && children.map(child => (
+  <TableRow className="bg-muted/30">...</TableRow>
+))}
+
+// Mobil: MobileAccordion
+<MobileAccordion items={groups.map(g => ({
+  id: g.id,
+  title: g.name,
+  content: <div>...</div>,
+}))} />`}
+      >
+        <ExpandableTableDemo />
+      </DemoWrapper>
+
+      <DemoWrapper
+        title="Table / Split Layout"
+        description="Tabell med visuellt separerade kolumngrupper via border-l-2. På mobil visas grupperna vertikalt i MobileAccordion."
+        code={`// Desktop: border-l-2 separerar kolumngrupper
+<TableHead className="border-l-2 border-l-primary/20">
+  Inkommande
+</TableHead>
+...
+<TableCell className="border-l-2 border-l-primary/20">
+  {row.inName}
+</TableCell>
+
+// Mobil: MobileAccordion med grupperade fält
+<MobileAccordion items={data.map(row => ({
+  id: row.id,
+  title: row.label,
+  content: (
+    <div>
+      <div>Utgående: {row.outName}</div>
+      <div>Inkommande: {row.inName}</div>
+    </div>
+  ),
+}))} />`}
+      >
+        <SplitLayoutTableDemo />
       </DemoWrapper>
     </div>
   );
