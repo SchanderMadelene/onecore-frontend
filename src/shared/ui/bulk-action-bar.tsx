@@ -26,7 +26,7 @@ export function BulkActionBar({
       className
     )}>
       <div className="container max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">
               {selectedCount} {selectedCount === 1 ? "kund vald" : "kunder valda"}
@@ -41,12 +41,12 @@ export function BulkActionBar({
               Rensa
             </Button>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <Button
               variant="outline"
               size="sm"
               onClick={onSendSms}
-              className="h-9"
+              className="h-9 flex-1 sm:flex-none"
             >
               <MessageSquare className="h-4 w-4 mr-2" />
               Skicka SMS
@@ -55,7 +55,7 @@ export function BulkActionBar({
               variant="default"
               size="sm"
               onClick={onSendEmail}
-              className="h-9"
+              className="h-9 flex-1 sm:flex-none"
             >
               <Mail className="h-4 w-4 mr-2" />
               Skicka mejl
