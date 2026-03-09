@@ -263,7 +263,7 @@ export function ParkingSpaceDetail({ space }: ParkingSpaceDetailProps) {
                     <div className="border rounded-lg overflow-hidden">
                       <Table>
                         <TableHeader>
-                          <TableRow className="hover:bg-transparent bg-secondary">
+                          <TableRow className="hover:bg-transparent">
                             <TableHead className="whitespace-nowrap font-semibold">Namn</TableHead>
                             <TableHead className="whitespace-nowrap font-semibold">Kundnummer</TableHead>
                             <TableHead className="whitespace-nowrap font-semibold">Köpoäng</TableHead>
