@@ -1,5 +1,14 @@
 import { ComponentViewer } from "./viewer";
-import { buttonDefinition, badgeDefinition, switchDefinition, inputDefinition, selectDefinition } from "./definitions";
+import { 
+  buttonDefinition, 
+  badgeDefinition, 
+  switchDefinition, 
+  inputDefinition, 
+  selectDefinition,
+  tagDefinition,
+  filterChipDefinition,
+  emptyStateDefinition,
+} from "./definitions";
 
 export const InteractiveShowcase = () => {
   return (
@@ -12,6 +21,9 @@ export const InteractiveShowcase = () => {
       </div>
       <ComponentViewer definition={buttonDefinition} />
       <ComponentViewer definition={badgeDefinition} />
+      <ComponentViewer definition={tagDefinition} />
+      <ComponentViewer definition={filterChipDefinition} />
+      <ComponentViewer definition={emptyStateDefinition} />
       <ComponentViewer definition={switchDefinition} />
       <ComponentViewer definition={inputDefinition} />
       <ComponentViewer definition={selectDefinition} />
