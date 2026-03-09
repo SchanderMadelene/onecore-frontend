@@ -106,6 +106,7 @@ export const PublishedParkingTab = () => {
       className: "w-[250px] whitespace-nowrap",
       headerRender: () => (
         <FilterableTableHead
+          inline
           onFilter={handleFilterChange('address')}
           filterValue={filters.address}
           filterOptions={filterOptions.addresses}
