@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { DateRangeFilter } from "@/shared/common/DateRangeFilter";
 import { FilterContent } from "@/shared/ui/filter-content";
+import { SearchableMultiSelect } from "@/shared/ui/searchable-multi-select";
 import { ComponentViewer } from "./viewer";
 import { filterChipDefinition } from "./definitions";
 
@@ -190,6 +191,41 @@ const DateFieldSelectorDemo = () => {
   );
 };
 
+// --- Searchable MultiSelect Demo ---
+const SearchableMultiSelectDemo = () => {
+  const [selected, setSelected] = useState<string[]>([]);
+  const addresses = [
+    "Kopparbergsvägen 1", "Kopparbergsvägen 3", "Sigurdsgatan 25",
+    "Erikslund 12", "Vasagatan 4", "Björnövägen 8", "Stallhagen 15",
+    "Oxbacksgatan 2", "Pilgatan 10", "Skallbergsvägen 7",
+    "Vallbyleden 22", "Hässlögatan 14", "Cityringen 5",
+  ];
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">Sökbar multiselect</CardTitle>
+        <CardDescription>
+          Inline dropdown med sök och flerval. Byggd på Popover + Command. Visar valda som badges i triggern (max 2 + räknare). Lämplig för stora listor som adresser, områden etc.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <SearchableMultiSelect
+          options={addresses}
+          selected={selected}
+          onSelectionChange={setSelected}
+          placeholder="Välj adresser..."
+          searchPlaceholder="Sök adress..."
+        />
+        {selected.length > 0 && (
+          <p className="text-sm text-muted-foreground">
+            Valda: <span className="font-medium text-foreground">{selected.join(", ")}</span>
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
 // --- Composite Pattern Demo ---
 const CompositePatternDemo = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -302,6 +338,7 @@ export const FilterSearchShowcase = () => {
       <DateRangeFilterDemo />
       <FilterContentDemo />
       <DateFieldSelectorDemo />
+      <SearchableMultiSelectDemo />
       <ComponentViewer definition={filterChipDefinition} />
 
       <div className="pt-4 border-t">
