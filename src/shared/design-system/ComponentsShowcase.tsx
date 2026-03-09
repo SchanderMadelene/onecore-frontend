@@ -7,10 +7,10 @@ import {
   inputDefinition, 
   selectDefinition,
   tagDefinition,
-  filterChipDefinition,
   emptyStateDefinition,
 } from "./definitions";
 import { TablesShowcase, LayoutShowcase } from "./ResponsiveShowcase";
+import { FilterSearchShowcase } from "./FilterSearchShowcase";
 
 export const ComponentsShowcase = () => {
   return (
