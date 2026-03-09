@@ -94,15 +94,16 @@ export function SearchableMultiSelect({
             </CommandGroup>
           </CommandList>
           {selected.length > 0 && (
-            <div className="border-t p-1.5">
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-1 rounded-sm px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            <div className="border-t p-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full text-xs gap-1"
                 onClick={() => onSelectionChange([])}
               >
                 <X className="h-3 w-3" />
                 Rensa alla
-              </button>
+              </Button>
             </div>
           )}
         </Command>
