@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import { FilterContent } from "./filter-content";
 
 interface ResponsiveTableColumn {
   key: string;
@@ -13,6 +14,14 @@ interface ResponsiveTableColumn {
   className?: string;
   hideOnMobile?: boolean;
   headerRender?: () => ReactNode;
+  /** Filter options — activates a filter dropdown in the column header */
+  filterOptions?: string[];
+  /** Current filter value */
+  filterValue?: string;
+  /** Callback when filter changes */
+  onFilter?: (value: string) => void;
+  /** Placeholder text for the filter search input */
+  filterPlaceholder?: string;
 }
 
 interface ResponsiveTableProps {
