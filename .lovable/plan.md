@@ -1,73 +1,46 @@
 
 
-## Plan: Studentboenden — separat flik på Ut- & inflytt
+## Plan: Inbyggt filterstöd i ResponsiveTable
 
-### Koncept
+### Idé
 
-Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
+Istället för att `FilterableTableHead` är en separat komponent som kopplas via `headerRender`, byggs filtrering in direkt i `ResponsiveTableColumn`-interfacet. Varje kolumn som har `filterOptions` får automatiskt en filterikon i headern.
 
-### Datamodell
+### Nytt kolumn-API
 
-Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
-- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
-- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
-
-Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
-
-### Mockdata
-
-Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
-
-### Tabell
-
-Ny komponent `StudentTurnoverTable.tsx`:
-- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
-- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
-- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
-
-### Filter
-
-Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
-- Sökfält (sök på rum, namn, e-post)
-- Datumväljare (start/slut)
-- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
-
-### Hook
-
-Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
-
-### Sidstruktur
-
-`TurnoverPage.tsx` uppdateras med `Tabs`:
-
-```text
-┌─────────────────────────────────────┐
-│ Ut- & inflytt          [⭐ Favorit] │
-│ Operativ checklista...              │
-├──────────────┬──────────────────────┤
-│ Ut- & inflytt│ Studentboenden      │  ← Tabs
-├──────────────┴──────────────────────┤
-│ [Filter + Tabell beroende på flik]  │
-└─────────────────────────────────────┘
+```typescript
+interface ResponsiveTableColumn {
+  key: string;
+  label: string;
+  render: (item: any) => ReactNode;
+  className?: string;
+  hideOnMobile?: boolean;
+  headerRender?: () => ReactNode;       // behålls för andra custom headers
+  // NYA props:
+  filterOptions?: string[];             // aktiverar filter på kolumnen
+  filterValue?: string;                 // aktuellt filtervärde
+  onFilter?: (value: string) => void;   // callback vid filterändring
+  filterPlaceholder?: string;           // placeholder i sökfältet
+}
 ```
 
-### Routing
+### Ändringar
 
-Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
+1. **`responsive-table.tsx`** — Importera `FilterContent` från `FilterableTableHead`. I header-renderingen: om kolumnen har `filterOptions`, wrappa labeln i `FilterContent` automatiskt. Prioritetsordning: `headerRender` > `filterOptions` > plain label.
 
-### Feature toggle
+2. **Flytta `FilterContent`** från `features/rentals/` till `shared/ui/` (eller exportera den) så att `ResponsiveTable` kan använda den utan att importera från en feature-mapp.
 
-Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
+3. **Uppdatera befintliga tabeller** (PublishedParkingTab, ReadyForOfferTab) — ta bort `headerRender` + `FilterableTableHead inline`, använd istället de nya kolumn-propsen direkt.
 
-### Filer som skapas/ändras
+4. **Showcase** — Lägg till en demo "Table / Filterable" i `ResponsiveShowcase.tsx` som visar en `ResponsiveTable` med `filterOptions` på en kolumn, med generisk mockdata.
 
-| Fil | Åtgärd |
-|-----|--------|
-| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
-| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
-| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
-| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
-| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
-| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
-| `src/features/turnover/index.ts` | Exportera nya komponenter |
+### Filstruktur
+
+- `FilterableTableHead.tsx` behålls i `features/rentals/` för bakåtkompatibilitet men `FilterContent` exporteras även från `shared/ui/` (eller flyttas dit helt)
+- Alternativt: flytta hela filterlogiken till `responsive-table.tsx` internt, så att det inte behövs någon extern import alls
+
+### Avgränsning
+
+- `headerRender` behålls för andra custom headers (t.ex. ikoner, tooltips)
+- Filterstöd gäller bara desktop-tabellvyn (på mobil visas kort utan kolumnheaders)
 
