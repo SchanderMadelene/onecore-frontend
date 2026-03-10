@@ -1,7 +1,7 @@
 
 import { Building } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CollapsibleInfoCard } from "@/components/ui/collapsible-info-card";
+import { CollapsibleInfoCard } from "@/shared/ui/collapsible-info-card";
 
 interface BuildingBasicInfoProps {
   building: Building;

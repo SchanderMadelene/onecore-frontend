@@ -7,7 +7,7 @@ import { BuildingParkingTab } from "@/features/buildings/components/tabs/Buildin
 import { BuildingDocumentsTab } from "@/features/buildings/components/tabs/BuildingDocumentsTab";
 import { BuildingOrdersTab } from "@/features/buildings/components/tabs/BuildingOrdersTab";
 import { Notes } from "@/components/common";
-import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
+import { MobileAccordion, MobileAccordionItem } from "@/shared/ui/mobile-accordion";
 import { FeatureGatedContent } from "@/features/residences/components/tabs/FeatureGatedContent";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import type { Building as BuildingType } from "@/types/api";
