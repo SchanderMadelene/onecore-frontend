@@ -5,10 +5,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/shared/ui/textarea';
-import { Minus, Plus, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
+import { CounterInput } from '@/shared/common/CounterInput';
 import { Separator } from '@/components/ui/separator';
 
 const CONTACT_STATUS_CONFIG: Record<ContactStatus, { label: string; order: number }> = {
@@ -124,18 +125,12 @@ export function MoveInEditDialog({
           </div>
 
           {status === 'not_reached' && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Antal försök</label>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setAttempts(Math.max(1, attempts - 1))} disabled={attempts <= 1}>
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <span className="text-sm font-medium min-w-[3ch] text-center">{attempts}</span>
-                <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setAttempts(attempts + 1)}>
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
+            <CounterInput
+              label="Antal försök"
+              value={attempts}
+              onChange={setAttempts}
+              min={1}
+            />
           )}
 
           {status === 'visit_booked' && (
