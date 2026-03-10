@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Calendar, Filter, Search, User, Clock, ChevronDown, ChevronRight, CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { Filter, Search, User, Clock, ChevronDown, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
