@@ -9,6 +9,7 @@ import {
   filterChipDefinition,
   emptyStateDefinition,
   confirmDialogDefinition,
+  counterInputDefinition,
 } from "./definitions";
 
 export const InteractiveShowcase = () => {
@@ -29,6 +30,7 @@ export const InteractiveShowcase = () => {
       <ComponentViewer definition={inputDefinition} />
       <ComponentViewer definition={selectDefinition} />
       <ComponentViewer definition={confirmDialogDefinition} />
+      <ComponentViewer definition={counterInputDefinition} />
     </div>
   );
 };

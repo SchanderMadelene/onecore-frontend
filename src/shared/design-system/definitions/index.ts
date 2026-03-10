@@ -7,3 +7,4 @@ export { tagDefinition } from "./tagDefinition";
 export { filterChipDefinition } from "./filterChipDefinition";
 export { emptyStateDefinition } from "./emptyStateDefinition";
 export { confirmDialogDefinition } from "./confirmDialogDefinition";
+export { counterInputDefinition } from "./counterInputDefinition";
