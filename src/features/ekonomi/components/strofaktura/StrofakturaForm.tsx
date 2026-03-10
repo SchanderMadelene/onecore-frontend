@@ -1,18 +1,11 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
 import { z } from "zod";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { DatePicker } from '@/shared/common/DatePicker';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
