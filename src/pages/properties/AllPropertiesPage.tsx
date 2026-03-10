@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import { PageLayout } from "@/layouts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { ClearFiltersButton } from "@/shared/common";
 import { 
   PropertySearch, 
   PropertyTypeFilters, 

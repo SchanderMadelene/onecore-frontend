@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DateRangeFilter } from "@/components/common/DateRangeFilter";
-import { X } from "lucide-react";
+import { ClearFiltersButton } from "@/shared/common";
 
 export type InvoiceDateField = "" | "invoiceDate" | "dueDate" | "paymentDate";
 

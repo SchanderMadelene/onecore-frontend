@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
+import { ClearFiltersButton } from "@/shared/common";
 import { DateRangeFilter } from "@/shared/common/DateRangeFilter";
 import { DatePicker } from "@/shared/common/DatePicker";
 import { FilterContent } from "@/shared/ui/filter-content";
