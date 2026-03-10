@@ -3,13 +3,9 @@ import { UseFormReturn } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Clock, Phone, Shield, CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { CheckCircle, XCircle, Clock, Phone, Shield } from "lucide-react";
 import { sv } from "date-fns/locale";
-import { cn } from "@/lib/utils";
+import { DatePicker } from '@/shared/common/DatePicker';
 import type { ProfileFormData, ReviewStatus, RejectedReason } from "../types";
 import { housingFieldMatrix } from "../model/conditional";
 
