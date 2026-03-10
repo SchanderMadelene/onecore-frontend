@@ -116,58 +116,25 @@ export function EditBarrierDialog({
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Startdatum *</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !startDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {startDate ? format(startDate, 'PPP') : "Välj datum"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={startDate}
-                      onSelect={setStartDate}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <DatePicker
+                  value={startDate}
+                  onChange={setStartDate}
+                  dateFormat="PPP"
+                />
               </div>
 
               <div className="space-y-2">
                 <Label>
                   Slutdatum {focusEndDate && <span className="text-primary">(Fokus)</span>}
                 </Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !endDate && "text-muted-foreground",
-                        focusEndDate && "border-primary ring-2 ring-primary/20"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {endDate ? format(endDate, 'PPP') : "Välj datum (valfritt)"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={endDate}
-                      onSelect={setEndDate}
-                      initialFocus={focusEndDate}
-                      disabled={(date) => startDate ? date < startDate : false}
-                    />
-                  </PopoverContent>
-                </Popover>
+                <DatePicker
+                  value={endDate}
+                  onChange={setEndDate}
+                  placeholder="Välj datum (valfritt)"
+                  dateFormat="PPP"
+                  disabled={(date) => startDate ? date < startDate : false}
+                  className={cn(focusEndDate && "border-primary ring-2 ring-primary/20")}
+                />
               </div>
             </div>
 

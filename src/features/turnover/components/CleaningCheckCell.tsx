@@ -62,26 +62,13 @@ export function CleaningCheckCell({
         </SelectContent>
       </Select>
       {showDatePicker && (
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="h-7 px-2.5 text-xs font-normal gap-1.5"
-            >
-              <CalendarIcon className="h-3.5 w-3.5" />
-              {bookedDate ? format(parseISO(bookedDate), 'd MMM yyyy', { locale: sv }) : 'Välj datum'}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
-            <Calendar
-              mode="single"
-              selected={bookedDate ? parseISO(bookedDate) : undefined}
-              onSelect={(d) => onBookedDateChange(d ? format(d, 'yyyy-MM-dd') : undefined)}
-              initialFocus
-              className="p-3 pointer-events-auto"
-            />
-          </PopoverContent>
-        </Popover>
+        <DatePicker
+          value={bookedDate ? parseISO(bookedDate) : undefined}
+          onChange={(d) => onBookedDateChange(d ? format(d, 'yyyy-MM-dd') : undefined)}
+          dateFormat="d MMM yyyy"
+          locale={sv}
+          className="h-7 w-auto px-2.5 text-xs"
+        />
       )}
       {status === 'approved' && approvedDate && (
         <span className="text-xs text-muted-foreground whitespace-nowrap">

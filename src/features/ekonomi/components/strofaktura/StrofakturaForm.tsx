@@ -212,29 +212,12 @@ export function StrofakturaForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-3">
               <Label>Datum</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !datum && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {datum ? format(datum, "PPP", { locale: sv }) : <span>Välj datum</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={datum}
-                    onSelect={(date) => date && setDatum(date)}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
+              <DatePicker
+                value={datum}
+                onChange={(date) => date && setDatum(date)}
+                dateFormat="PPP"
+                locale={sv}
+              />
             </div>
 
             <div className="space-y-3">

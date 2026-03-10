@@ -45,47 +45,21 @@ export function MoveInListFilters({
         />
       </div>
       <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className={cn("w-full sm:w-[180px] justify-start text-left font-normal")}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {format(startDate, 'd MMM yyyy', { locale: sv })}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={startDate}
-            onSelect={(date) => date && onStartDateChange(date)}
-            initialFocus
-            className={cn("p-3 pointer-events-auto")}
-          />
-        </PopoverContent>
-      </Popover>
+      <DatePicker
+        value={startDate}
+        onChange={(date) => date && onStartDateChange(date)}
+        dateFormat="d MMM yyyy"
+        locale={sv}
+        className="w-full sm:w-[180px]"
+      />
 
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className={cn("w-full sm:w-[180px] justify-start text-left font-normal")}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {format(endDate, 'd MMM yyyy', { locale: sv })}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={endDate}
-            onSelect={(date) => date && onEndDateChange(date)}
-            initialFocus
-            className={cn("p-3 pointer-events-auto")}
-          />
-        </PopoverContent>
-      </Popover>
+      <DatePicker
+        value={endDate}
+        onChange={(date) => date && onEndDateChange(date)}
+        dateFormat="d MMM yyyy"
+        locale={sv}
+        className="w-full sm:w-[180px]"
+      />
 
       <Select value={selectedDistrict} onValueChange={onDistrictChange}>
         <SelectTrigger className="w-full sm:w-[180px]">

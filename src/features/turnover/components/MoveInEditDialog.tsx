@@ -142,26 +142,15 @@ export function MoveInEditDialog({
             <>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Datum</label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal gap-2">
-                      <CalendarIcon className="h-4 w-4" />
-                      {visitDate ? format(parseISO(visitDate), 'd MMMM yyyy', { locale: sv }) : 'Välj datum'}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={visitDate ? parseISO(visitDate) : undefined}
-                      onSelect={(d) => {
-                        if (d) setVisitDate(`${format(d, 'yyyy-MM-dd')}T${visitTime}`);
-                        else setVisitDate(undefined);
-                      }}
-                      initialFocus
-                      className="p-3 pointer-events-auto"
-                    />
-                  </PopoverContent>
-                </Popover>
+                <DatePicker
+                  value={visitDate ? parseISO(visitDate) : undefined}
+                  onChange={(d) => {
+                    if (d) setVisitDate(`${format(d, 'yyyy-MM-dd')}T${visitTime}`);
+                    else setVisitDate(undefined);
+                  }}
+                  dateFormat="d MMMM yyyy"
+                  locale={sv}
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Tid</label>
