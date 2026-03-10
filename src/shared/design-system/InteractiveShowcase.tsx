@@ -8,6 +8,7 @@ import {
   tagDefinition,
   filterChipDefinition,
   emptyStateDefinition,
+  confirmDialogDefinition,
 } from "./definitions";
 
 export const InteractiveShowcase = () => {
@@ -27,6 +28,7 @@ export const InteractiveShowcase = () => {
       <ComponentViewer definition={switchDefinition} />
       <ComponentViewer definition={inputDefinition} />
       <ComponentViewer definition={selectDefinition} />
+      <ComponentViewer definition={confirmDialogDefinition} />
     </div>
   );
 };

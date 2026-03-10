@@ -11,3 +11,5 @@ export { Notes } from './Notes';
 export type { Note, NotesProps, NotesState } from './Notes/types';
 export { DatePicker } from './DatePicker';
 export type { DatePickerProps } from './DatePicker';
+export { ConfirmDialog } from './ConfirmDialog';
+export type { ConfirmDialogProps } from './ConfirmDialog';

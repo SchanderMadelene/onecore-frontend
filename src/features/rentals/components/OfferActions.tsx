@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { MoreHorizontal } from "lucide-react";
 import { useAcceptOffer, useDenyOffer } from "../hooks/useOfferActions";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog } from "@/shared/common";
 
 interface OfferActionsProps {
   offerId: number;
@@ -88,45 +88,25 @@ export const OfferActions = ({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <AlertDialog open={showAcceptDialog} onOpenChange={setShowAcceptDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Svara på erbjudande</AlertDialogTitle>
-            <AlertDialogDescription>
-              Tacka ja åt {applicantName}?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Avbryt</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleAccept}
-              disabled={acceptOffer.isPending}
-            >
-              {acceptOffer.isPending ? "Bekräftar..." : "Bekräfta tacka ja"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={showAcceptDialog}
+        onOpenChange={setShowAcceptDialog}
+        title="Svara på erbjudande"
+        description={`Tacka ja åt ${applicantName}?`}
+        onConfirm={handleAccept}
+        confirmLabel="Bekräfta tacka ja"
+        isPending={acceptOffer.isPending}
+      />
 
-      <AlertDialog open={showDenyDialog} onOpenChange={setShowDenyDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Svara på erbjudande</AlertDialogTitle>
-            <AlertDialogDescription>
-              Tacka nej åt {applicantName}?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Avbryt</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleDeny}
-              disabled={denyOffer.isPending}
-            >
-              {denyOffer.isPending ? "Bekräftar..." : "Bekräfta tacka nej"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={showDenyDialog}
+        onOpenChange={setShowDenyDialog}
+        title="Svara på erbjudande"
+        description={`Tacka nej åt ${applicantName}?`}
+        onConfirm={handleDeny}
+        confirmLabel="Bekräfta tacka nej"
+        isPending={denyOffer.isPending}
+      />
     </>
   );
 };

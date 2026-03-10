@@ -4,17 +4,8 @@ import { PageLayout } from '@/layouts';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import { ArrowLeft, Save, X } from 'lucide-react';
+import { ConfirmDialog } from '@/shared/common';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
@@ -165,42 +156,24 @@ const StewardAdminPage = () => {
         )}
       </div>
       
-      {/* Cancel confirmation dialog */}
-      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Avbryta ändringar?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Du har {pendingChanges.length} osparade {pendingChanges.length === 1 ? 'ändring' : 'ändringar'}. 
-              Är du säker på att du vill avbryta?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Fortsätt redigera</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmCancel}>
-              Ja, avbryt
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={showCancelDialog}
+        onOpenChange={setShowCancelDialog}
+        title="Avbryta ändringar?"
+        description={`Du har ${pendingChanges.length} osparade ${pendingChanges.length === 1 ? 'ändring' : 'ändringar'}. Är du säker på att du vill avbryta?`}
+        onConfirm={handleConfirmCancel}
+        confirmLabel="Ja, avbryt"
+        cancelLabel="Fortsätt redigera"
+      />
       
-      {/* Save confirmation dialog */}
-      <AlertDialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Spara ändringar?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Du är på väg att spara {pendingChanges.length} {pendingChanges.length === 1 ? 'ändring' : 'ändringar'}.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Avbryt</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmSave}>
-              Spara
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={showSaveDialog}
+        onOpenChange={setShowSaveDialog}
+        title="Spara ändringar?"
+        description={`Du är på väg att spara ${pendingChanges.length} ${pendingChanges.length === 1 ? 'ändring' : 'ändringar'}.`}
+        onConfirm={handleConfirmSave}
+        confirmLabel="Spara"
+      />
     </PageLayout>
   );
 };
