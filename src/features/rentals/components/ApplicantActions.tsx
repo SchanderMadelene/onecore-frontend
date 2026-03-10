@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { MoreHorizontal } from "lucide-react";
 import { useRemoveApplicant } from "../hooks/useOfferActions";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog } from "@/shared/common";
 
 interface ApplicantActionsProps {
   applicantId: number;
@@ -66,26 +66,17 @@ export const ApplicantActions = ({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Ta bort intresseanmälan</AlertDialogTitle>
-            <AlertDialogDescription>
-              Vill du ta bort {applicantName} som intressent för {listingAddress}?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Avbryt</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleRemove}
-              disabled={removeApplicant.isPending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {removeApplicant.isPending ? "Tar bort..." : "Ja, ta bort"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        title="Ta bort intresseanmälan"
+        description={`Vill du ta bort ${applicantName} som intressent för ${listingAddress}?`}
+        onConfirm={handleRemove}
+        confirmLabel="Ja, ta bort"
+        variant="destructive"
+        isPending={removeApplicant.isPending}
+        pendingLabel="Tar bort..."
+      />
     </>
   );
 };
