@@ -1,73 +1,44 @@
 
 
-## Plan: Studentboenden — separat flik på Ut- & inflytt
+## Plan: Konsolidera datumkomponenter
 
-### Koncept
+### Nuläge
+- **DateRangeFilter** — delad komponent i `shared/common/`, används på 3 ställen (LeaseContracts, Invoices, designsystem)
+- **Inline Calendar+Popover** — samma mönster copy-pastat på 5 ställen utan delad komponent:
+  - `StudentTurnoverFilters.tsx` (×2)
+  - `orders/form/DateSelectionSection.tsx` (×2)
+  - `orders/form-rhf/DateSelectionSection.tsx` (×2)
+  - `CleaningEditDialog.tsx` (×1)
+- **DateCell** — specialiserad datum+tid för besiktningar, behålls separat
 
-Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
-
-### Datamodell
-
-Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
-- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
-- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
-
-Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
-
-### Mockdata
-
-Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
-
-### Tabell
-
-Ny komponent `StudentTurnoverTable.tsx`:
-- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
-- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
-- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
-
-### Filter
-
-Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
-- Sökfält (sök på rum, namn, e-post)
-- Datumväljare (start/slut)
-- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
-
-### Hook
-
-Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
-
-### Sidstruktur
-
-`TurnoverPage.tsx` uppdateras med `Tabs`:
+### Steg 1: Skapa `DatePicker` i `src/shared/common/`
+En enkel, återanvändbar single-date-komponent som wrappar Calendar+Popover-mönstret:
 
 ```text
-┌─────────────────────────────────────┐
-│ Ut- & inflytt          [⭐ Favorit] │
-│ Operativ checklista...              │
-├──────────────┬──────────────────────┤
-│ Ut- & inflytt│ Studentboenden      │  ← Tabs
-├──────────────┴──────────────────────┤
-│ [Filter + Tabell beroende på flik]  │
-└─────────────────────────────────────┘
+Props:
+  - value: Date | undefined
+  - onChange: (date: Date | undefined) => void
+  - placeholder?: string (default "Välj datum...")
+  - format?: string (default "yyyy-MM-dd")
+  - locale?: Locale
+  - disabled?: boolean | ((date: Date) => boolean)
+  - className?: string
 ```
 
-### Routing
+### Steg 2: Refaktorera alla inline-användningar
+Ersätt de 7 inline Calendar+Popover-instanserna med `<DatePicker />`:
+- `StudentTurnoverFilters.tsx` — 2 st
+- `orders/form/DateSelectionSection.tsx` — 2 st
+- `orders/form-rhf/DateSelectionSection.tsx` — 2 st (med FormControl-wrapper)
+- `CleaningEditDialog.tsx` — 1 st
 
-Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
+### Steg 3: Uppdatera designsystemet
+I `FilterSearchShowcase.tsx`:
+- Slå ihop **DateRangeFilter** och **Datumfältsväljare** till en gemensam sektion med underrubriker (variant utan/med fältsväljare)
+- Lägg till en ny demo-sektion för **DatePicker** (single date)
 
-### Feature toggle
-
-Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
-
-### Filer som skapas/ändras
-
-| Fil | Åtgärd |
-|-----|--------|
-| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
-| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
-| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
-| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
-| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
-| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
-| `src/features/turnover/index.ts` | Exportera nya komponenter |
+### Påverkan
+- 4 feature-filer förenklas
+- 1 ny delad komponent (`DatePicker`)
+- Designsystemet får tydligare struktur med färre, men bättre dokumenterade datumkomponenter
 
