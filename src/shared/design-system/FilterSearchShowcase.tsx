@@ -80,6 +80,30 @@ const SelectFilterDemo = () => {
   );
 };
 
+// --- DatePicker (single date) Demo ---
+const DatePickerDemo = () => {
+  const [date, setDate] = useState<Date | undefined>();
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">DatePicker</CardTitle>
+        <CardDescription>
+          Kalender-popover för enstaka datum. Wrappar Calendar + Popover-mönstret i en delad komponent.
+          Stöder anpassat format, locale och <code className="text-xs bg-muted px-1 rounded">disabled</code>.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <DatePicker value={date} onChange={setDate} className="sm:w-[240px]" />
+        {date && (
+          <p className="text-sm text-muted-foreground">
+            Valt datum: <span className="font-medium text-foreground">{date.toLocaleDateString("sv-SE")}</span>
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
 // --- DateRangeFilter Demo ---
 const DateRangeFilterDemo = () => {
   const [fromDate, setFromDate] = useState<Date | undefined>();
