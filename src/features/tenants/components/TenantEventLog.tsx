@@ -6,9 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
+import { DatePicker } from '@/shared/common/DatePicker';
 import { getTenantEvents, type TenantEvent } from "@/features/tenants/data/tenant-events";
 
 interface TenantEventLogProps {
