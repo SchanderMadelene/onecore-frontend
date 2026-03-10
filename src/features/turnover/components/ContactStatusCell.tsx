@@ -6,14 +6,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { badgeVariants } from '@/shared/ui/badge';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { CalendarIcon, Minus, Plus } from 'lucide-react';
+import { Minus, Plus } from 'lucide-react';
+import { DatePicker } from '@/shared/common/DatePicker';
 
 const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'muted' | 'info' | 'success' | 'warning'; order: number }> = {
   not_contacted: { label: 'Ej kontaktad', variant: 'muted', order: 0 },
