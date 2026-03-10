@@ -1,41 +1,73 @@
 
 
-## Plan: Konsolidera expanderbara element
+## Plan: Studentboenden — separat flik på Ut- & inflytt
 
-### Steg 1 — Utöka CollapsibleInfoCard
+### Koncept
 
-Ändra `title`-prop från `string` till `string | ReactNode` så att komponenter som TenantInformationCard kan skicka in en titel med Badge bredvid. Lägg även till en valfri `desktopTitleVariant`-prop (eller `titleClassName`) för att stödja TenantCommunicationLogs avvikande desktop-titelstil (`text-sm text-muted-foreground`).
+Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
 
-### Steg 2 — ResidenceMobileAccordion → MobileAccordion
+### Datamodell
 
-Ersätt den interna `Accordion`-renderingen i `src/features/residences/components/MobileAccordion.tsx` med den delade `MobileAccordion` från `@/shared/ui/mobile-accordion`. All affärslogik (feature toggles, tenant-val, rooms) behålls oförändrad — bara renderingslagret byts ut. `defaultOpen={["info"]}` mappas till `defaultOpen`-propen.
+Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
+- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
+- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
 
-Inget innehåll förloras.
+Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
 
-### Steg 3 — TenantCommunicationLog → CollapsibleInfoCard
+### Mockdata
 
-Ersätt den manuella `Collapsible`/`Card`-kombinationen med `CollapsibleInfoCard`. Desktop-layouten (horisontell meddelandelista) passeras som `children`. Mobil-layouten (vertikal stack) kan passeras som `previewContent` om vi vill visa en sammanfattning i collapsed-state, annars sätts `previewContent` till null/tom och allt visas i `children`.
+Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
 
-Skillnad att hantera: desktop-titeln är idag `text-sm font-medium text-muted-foreground` istället för standard `CardTitle`. Löses genom den nya `titleClassName`-propen.
+### Tabell
 
-Inget innehåll förloras.
+Ny komponent `StudentTurnoverTable.tsx`:
+- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
+- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
+- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
 
-### Steg 4 — TenantInformationCard → CollapsibleInfoCard
+### Filter
 
-Ersätt `Accordion` med single `AccordionItem` med `CollapsibleInfoCard`. Titeln blir ett `ReactNode` med "Hyresgästinformation" + optional Badge. Tabs-strukturen (Information/Noteringar) passeras som `children`.
+Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
+- Sökfält (sök på rum, namn, e-post)
+- Datumväljare (start/slut)
+- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
 
-`previewContent` kan visa en kort sammanfattning (namn + kontraktstatus) i collapsed-state på mobil.
+### Hook
 
-Inget innehåll förloras.
+Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
 
-### Steg 5 — Fixa importvägar
+### Sidstruktur
 
-Säkerställ att alla importer av `MobileAccordion` och `CollapsibleInfoCard` pekar på `@/shared/ui/` istället för `@/components/ui/`.
+`TurnoverPage.tsx` uppdateras med `Tabs`:
 
-### Påverkan
+```text
+┌─────────────────────────────────────┐
+│ Ut- & inflytt          [⭐ Favorit] │
+│ Operativ checklista...              │
+├──────────────┬──────────────────────┤
+│ Ut- & inflytt│ Studentboenden      │  ← Tabs
+├──────────────┴──────────────────────┤
+│ [Filter + Tabell beroende på flik]  │
+└─────────────────────────────────────┘
+```
 
-- 0 data/innehåll förloras
-- `CollapsibleInfoCard` utökas med `ReactNode`-titel + `titleClassName`
-- 3 komponenter förenklas genom att använda befintliga grundkomponenter
-- Importvägar standardiseras
+### Routing
+
+Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
+
+### Feature toggle
+
+Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
+
+### Filer som skapas/ändras
+
+| Fil | Åtgärd |
+|-----|--------|
+| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
+| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
+| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
+| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
+| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
+| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
+| `src/features/turnover/index.ts` | Exportera nya komponenter |
 

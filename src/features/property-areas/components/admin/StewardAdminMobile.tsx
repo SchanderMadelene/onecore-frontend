@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MobileAccordion, MobileAccordionItem } from '@/components/ui/mobile-accordion';
+import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';

@@ -5,7 +5,7 @@ import { TenantOrders } from "./TenantOrders";
 import { TenantEventLog } from "./TenantEventLog";
 import { CustomerLedger, getMockLedgerForCustomer, getMockInvoicesForCustomer } from "@/features/ekonomi";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
-import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
+import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/shared/ui/mobile-accordion";
 
 interface TenantMobileAccordionProps {
   contracts: any[];
