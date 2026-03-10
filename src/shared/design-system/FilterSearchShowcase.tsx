@@ -360,9 +360,21 @@ export const FilterSearchShowcase = () => {
 
       <SearchFieldDemo />
       <SelectFilterDemo />
-      <DateRangeFilterDemo />
+
+      <div className="pt-4 border-t">
+        <h3 className="text-lg font-semibold mb-1">Datumkomponenter</h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Två delade datumkomponenter: <strong>DatePicker</strong> för enstaka datum och <strong>DateRangeFilter</strong> för datumintervall.
+          Datumfältsväljaren är ett sammansatt mönster som kombinerar en Select med DateRangeFilter.
+        </p>
+        <div className="space-y-6">
+          <DatePickerDemo />
+          <DateRangeFilterDemo />
+          <DateFieldSelectorDemo />
+        </div>
+      </div>
+
       <FilterContentDemo />
-      <DateFieldSelectorDemo />
       <SearchableMultiSelectDemo />
       <ComponentViewer definition={filterChipDefinition} />
 
