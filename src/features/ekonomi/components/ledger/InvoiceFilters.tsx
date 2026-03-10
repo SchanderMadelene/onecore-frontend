@@ -104,10 +104,7 @@ export function InvoiceFilters({
       />
 
       {hasActiveFilters && (
-        <Button variant="ghost" size="sm" onClick={clearAll} className="gap-1">
-          <X className="h-4 w-4" />
-          Rensa filter
-        </Button>
+        <ClearFiltersButton onClick={clearAll} />
       )}
     </div>
   );

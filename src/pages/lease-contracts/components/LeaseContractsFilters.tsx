@@ -337,10 +337,7 @@ export function LeaseContractsFilters(props: LeaseContractsFiltersProps) {
 
         {/* Clear filters */}
         {hasActiveFilters && (
-          <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-            <X className="h-4 w-4" />
-            Rensa filter
-          </Button>
+          <ClearFiltersButton onClick={clearFilters} />
         )}
       </div>
     </div>
