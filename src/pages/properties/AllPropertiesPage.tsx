@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import { PageLayout } from "@/layouts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { ClearFiltersButton } from "@/shared/common";
 import { 
   PropertySearch, 
   PropertyTypeFilters, 
@@ -224,10 +224,7 @@ const AllPropertiesPage = () => {
                 />
               )}
               {activeFilterCount > 0 && (
-                <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1 w-fit">
-                  <X className="h-4 w-4" />
-                  Rensa filter
-                </Button>
+                <ClearFiltersButton onClick={clearAllFilters} className="w-fit" />
               )}
             </div>
           </CardContent>
