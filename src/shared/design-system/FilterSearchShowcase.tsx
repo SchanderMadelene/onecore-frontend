@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { DateRangeFilter } from "@/shared/common/DateRangeFilter";
+import { DatePicker } from "@/shared/common/DatePicker";
 import { FilterContent } from "@/shared/ui/filter-content";
 import { SearchableMultiSelect } from "@/shared/ui/searchable-multi-select";
 import { ComponentViewer } from "./viewer";
