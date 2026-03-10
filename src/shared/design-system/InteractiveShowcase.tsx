@@ -8,6 +8,7 @@ import {
   tagDefinition,
   filterChipDefinition,
   emptyStateDefinition,
+  confirmDialogDefinition,
 } from "./definitions";
 
 export const InteractiveShowcase = () => {
