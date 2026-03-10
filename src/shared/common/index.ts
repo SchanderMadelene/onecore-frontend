@@ -17,3 +17,5 @@ export { CounterInput } from './CounterInput';
 export type { CounterInputProps } from './CounterInput';
 export { ConfirmDialog } from './ConfirmDialog';
 export type { ConfirmDialogProps } from './ConfirmDialog';
+export { ClearFiltersButton } from './ClearFiltersButton';
+export type { ClearFiltersButtonProps } from './ClearFiltersButton';
