@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { CleaningStatus } from '../types/move-in-list-types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/shared/ui/textarea';
-import { CalendarIcon, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { DatePicker } from '@/shared/common/DatePicker';
 import { Separator } from '@/components/ui/separator';
 
 const STATUS_CONFIG: Record<CleaningStatus, { label: string }> = {
