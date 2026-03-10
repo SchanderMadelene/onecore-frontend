@@ -6,14 +6,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { badgeVariants } from '@/shared/ui/badge';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { CalendarIcon } from 'lucide-react';
+import { DatePicker } from '@/shared/common/DatePicker';
 
 const STATUS_CONFIG: Record<CleaningStatus, { label: string; variant: 'muted' | 'info' | 'success' | 'warning' }> = {
   not_done: { label: 'Ej utförd', variant: 'muted' },
