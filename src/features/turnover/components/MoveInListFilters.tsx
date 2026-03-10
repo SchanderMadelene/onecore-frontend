@@ -1,12 +1,8 @@
-import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { CalendarIcon, Search } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DatePicker } from '@/shared/common/DatePicker';
 
 interface MoveInListFiltersProps {
   searchQuery: string;
