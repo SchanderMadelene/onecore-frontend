@@ -3,13 +3,9 @@ import { UseFormReturn } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Clock, Phone, Shield, CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { CheckCircle, XCircle, Clock, Phone, Shield } from "lucide-react";
 import { sv } from "date-fns/locale";
-import { cn } from "@/lib/utils";
+import { DatePicker } from '@/shared/common/DatePicker';
 import type { ProfileFormData, ReviewStatus, RejectedReason } from "../types";
 import { housingFieldMatrix } from "../model/conditional";
 
@@ -118,37 +114,15 @@ export function ReviewStatusSection({ form }: ReviewStatusSectionProps) {
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Ej godkänd till och med *</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP", { locale: sv })
-                          ) : (
-                            <span>Välj datum</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date() || date < new Date("1900-01-01")
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <DatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    dateFormat="PPP"
+                    locale={sv}
+                    disabled={(date) =>
+                      date < new Date() || date < new Date("1900-01-01")
+                    }
+                  />
                   <FormMessage />
                 </FormItem>
               )}

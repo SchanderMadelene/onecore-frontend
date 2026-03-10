@@ -1,15 +1,12 @@
 import { useState } from "react";
-import { Calendar, Filter, Search, User, Clock, ChevronDown, ChevronRight, CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { Filter, Search, User, Clock, ChevronDown, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
+import { DatePicker } from '@/shared/common/DatePicker';
 import { getTenantEvents, type TenantEvent } from "@/features/tenants/data/tenant-events";
 
 interface TenantEventLogProps {
@@ -143,56 +140,22 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
                 <label className="text-sm font-medium mb-2 block">Från datum</label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !dateFrom && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {dateFrom ? format(dateFrom, "PPP") : <span>Välj startdatum</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <CalendarComponent
-                      mode="single"
-                      selected={dateFrom}
-                      onSelect={setDateFrom}
-                      initialFocus
-                      className={cn("p-3 pointer-events-auto")}
-                    />
-                  </PopoverContent>
-                </Popover>
+                <DatePicker
+                  value={dateFrom}
+                  onChange={setDateFrom}
+                  placeholder="Välj startdatum"
+                  dateFormat="PPP"
+                />
               </div>
               
               <div className="flex-1">
                 <label className="text-sm font-medium mb-2 block">Till datum</label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !dateTo && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {dateTo ? format(dateTo, "PPP") : <span>Välj slutdatum</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <CalendarComponent
-                      mode="single"
-                      selected={dateTo}
-                      onSelect={setDateTo}
-                      initialFocus
-                      className={cn("p-3 pointer-events-auto")}
-                    />
-                  </PopoverContent>
-                </Popover>
+                <DatePicker
+                  value={dateTo}
+                  onChange={setDateTo}
+                  placeholder="Välj slutdatum"
+                  dateFormat="PPP"
+                />
               </div>
 
               {/* Rensa datumfilter */}

@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { ContactStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/shared/ui/textarea';
-import { CalendarIcon, Minus, Plus, Save } from 'lucide-react';
+import { Minus, Plus, Save } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { DatePicker } from '@/shared/common/DatePicker';
 import { Separator } from '@/components/ui/separator';
 
 const CONTACT_STATUS_CONFIG: Record<ContactStatus, { label: string; order: number }> = {
@@ -143,26 +142,15 @@ export function MoveInEditDialog({
             <>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Datum</label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal gap-2">
-                      <CalendarIcon className="h-4 w-4" />
-                      {visitDate ? format(parseISO(visitDate), 'd MMMM yyyy', { locale: sv }) : 'Välj datum'}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={visitDate ? parseISO(visitDate) : undefined}
-                      onSelect={(d) => {
-                        if (d) setVisitDate(`${format(d, 'yyyy-MM-dd')}T${visitTime}`);
-                        else setVisitDate(undefined);
-                      }}
-                      initialFocus
-                      className="p-3 pointer-events-auto"
-                    />
-                  </PopoverContent>
-                </Popover>
+                <DatePicker
+                  value={visitDate ? parseISO(visitDate) : undefined}
+                  onChange={(d) => {
+                    if (d) setVisitDate(`${format(d, 'yyyy-MM-dd')}T${visitTime}`);
+                    else setVisitDate(undefined);
+                  }}
+                  dateFormat="d MMMM yyyy"
+                  locale={sv}
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Tid</label>
