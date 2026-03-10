@@ -1,38 +1,27 @@
-import { ChevronDown, Mail, MessageSquare, Phone, FileText, StickyNote } from "lucide-react";
+import { Mail, MessageSquare, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { Notes } from "@/components/common";
+import { CollapsibleInfoCard } from "@/shared/ui/collapsible-info-card";
+
+interface TenantData {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  contractStatus: "permanent" | "temporary" | "terminated";
+  moveInDate: string;
+  moveOutDate?: string;
+  personalNumber?: string;
+  isPrimaryTenant?: boolean;
+  relationshipType?: string;
+}
 
 interface TenantInformationCardProps {
-  tenant: {
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    contractStatus: "permanent" | "temporary" | "terminated";
-    moveInDate: string;
-    moveOutDate?: string;
-    personalNumber?: string;
-    isPrimaryTenant?: boolean;
-    relationshipType?: string;
-  } | Array<{
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    contractStatus: "permanent" | "temporary" | "terminated";
-    moveInDate: string;
-    moveOutDate?: string;
-    personalNumber?: string;
-    isPrimaryTenant?: boolean;
-    relationshipType?: string;
-  }>;
+  tenant: TenantData | TenantData[];
   displayMode?: "full" | "compact";
 }
 
@@ -49,7 +38,6 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
     window.location.href = `mailto:${email}`;
   };
 
-  // Format contract status in Swedish
   const getContractStatus = (status: string) => {
     switch (status) {
       case "permanent": return "Tillsvidare";
@@ -59,33 +47,34 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
     }
   };
 
-  // Get status badge variant
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case "permanent": 
-        return "outline";
-      case "temporary": 
-        return "outline";
-      case "terminated": 
-        return "destructive";
-      default: 
-        return "outline";
-    }
-  };
-
-  // Check if we have multiple tenants
   const isMultipleTenants = Array.isArray(tenant);
   const tenants = isMultipleTenants ? tenant : [tenant];
-
-  // Check if this is actually a second-hand rental (has temporary contract status)
   const isSecondHandRental = tenants.some(t => t.contractStatus === "temporary");
 
-  // For compact mode, show all tenants but with limited info for secondary tenant
-  const tenantsToShow = tenants;
+  const titleContent = (
+    <div className="flex items-center gap-3">
+      <span>Hyresgästinformation</span>
+      {isSecondHandRental && (
+        <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">
+          Andrahandsuthyrning
+        </Badge>
+      )}
+    </div>
+  );
 
-  const renderTenantInfo = (tenantData: typeof tenants[0], index: number) => {
+  const previewContent = (
+    <div className="space-y-1">
+      {tenants.map((t, i) => (
+        <div key={i} className="flex items-center justify-between text-sm">
+          <span className="font-medium">{t.firstName} {t.lastName}</span>
+          <span className="text-muted-foreground">{getContractStatus(t.contractStatus)}</span>
+        </div>
+      ))}
+    </div>
+  );
+
+  const renderTenantInfo = (tenantData: TenantData, index: number) => {
     const isSecondaryTenant = tenantData.contractStatus === "temporary";
-    const showCompactInfo = displayMode === "compact";
     
     return (
       <div key={index} className="space-y-4">
@@ -110,7 +99,6 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
           <p className="font-medium">{getContractStatus(tenantData.contractStatus)}</p>
         </div>
         
-        {/* Show personal number only for primary tenants (not second-hand tenants) */}
         {tenantData.personalNumber && !isSecondaryTenant && (
           <div>
             <p className="text-sm text-muted-foreground">Personnummer</p>
@@ -118,7 +106,6 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
           </div>
         )}
         
-        {/* Contact information */}
         <div>
           <p className="text-sm text-muted-foreground">Telefon</p>
           <div className="flex items-center gap-2">
@@ -144,7 +131,6 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
           </div>
         </div>
         
-        {/* Contract information */}
         <div>
           <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
           <p className="font-medium">{new Date(tenantData.moveInDate).toLocaleDateString('sv-SE')}</p>
@@ -161,66 +147,40 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
   };
 
   return (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="tenant-info">
-        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
-          <div className="flex items-center gap-3">
-            <h3 className="font-medium text-lg">Hyresgästinformation</h3>
-            {isSecondHandRental && (
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">
-                Andrahandsuthyrning
-              </Badge>
-            )}
-          </div>
-        </AccordionTrigger>
-        
-        <AccordionContent>
-          <div className="px-4 pb-4">
-            <Tabs defaultValue="info" className="space-y-6">
-              <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
-                <TabsTrigger value="info">
-                  Information
-                </TabsTrigger>
-                <TabsTrigger value="notes">
-                  Noteringar
-                </TabsTrigger>
-              </TabsList>
+    <CollapsibleInfoCard
+      title={titleContent}
+      previewContent={previewContent}
+    >
+      <Tabs defaultValue="info" className="space-y-6">
+        <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
+          <TabsTrigger value="info">Information</TabsTrigger>
+          <TabsTrigger value="notes">Noteringar</TabsTrigger>
+        </TabsList>
 
-              <TabsContent value="info">
-                <TabLayout 
-                  title="Information" 
-                  showCard={true}
-                >
-                  <div className="space-y-6">
-                    {tenantsToShow.map((tenantData, index) => (
-                      <div key={index}>
-                        {renderTenantInfo(tenantData, index)}
-                        {index < tenantsToShow.length - 1 && (
-                          <Separator className="my-6" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </TabLayout>
-              </TabsContent>
-              
-              <TabsContent value="notes">
-                <TabLayout 
-                  title="Noteringar" 
-                  showCard={true}
-                >
-                  <Notes
-                    entityType="tenant"
-                    entityId="current-tenant"
-                    placeholder="Skriv din notering här..."
-                    emptyMessage="Inga noteringar har lagts till för denna hyresgäst ännu."
-                  />
-                </TabLayout>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+        <TabsContent value="info">
+          <TabLayout title="Information" showCard={true}>
+            <div className="space-y-6">
+              {tenants.map((tenantData, index) => (
+                <div key={index}>
+                  {renderTenantInfo(tenantData, index)}
+                  {index < tenants.length - 1 && <Separator className="my-6" />}
+                </div>
+              ))}
+            </div>
+          </TabLayout>
+        </TabsContent>
+        
+        <TabsContent value="notes">
+          <TabLayout title="Noteringar" showCard={true}>
+            <Notes
+              entityType="tenant"
+              entityId="current-tenant"
+              placeholder="Skriv din notering här..."
+              emptyMessage="Inga noteringar har lagts till för denna hyresgäst ännu."
+            />
+          </TabLayout>
+        </TabsContent>
+      </Tabs>
+    </CollapsibleInfoCard>
   );
 }
