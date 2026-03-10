@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { CleaningStatus } from '../types/move-in-list-types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { DatePicker } from '@/shared/common';
 
 const STATUS_CONFIG: Record<CleaningStatus, { label: string }> = {
   not_done: { label: 'Ej utförd' },
@@ -35,7 +33,6 @@ export function CleaningEditDialog({
   const [status, setStatus] = useState(initialStatus);
   const [bookedDate, setBookedDate] = useState(initialBookedDate);
 
-  // Sync when dialog opens with new props
   const handleOpenChange = (o: boolean) => {
     if (o) {
       setStatus(initialStatus);
@@ -78,23 +75,13 @@ export function CleaningEditDialog({
           {showDatePicker && (
             <div className="space-y-2">
               <label className="text-sm font-medium">Datum</label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full justify-start text-left font-normal gap-2">
-                    <CalendarIcon className="h-4 w-4" />
-                    {bookedDate ? format(parseISO(bookedDate), 'd MMMM yyyy', { locale: sv }) : 'Välj datum'}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={bookedDate ? parseISO(bookedDate) : undefined}
-                    onSelect={(d) => setBookedDate(d ? format(d, 'yyyy-MM-dd') : undefined)}
-                    initialFocus
-                    className="p-3 pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
+              <DatePicker
+                value={bookedDate ? parseISO(bookedDate) : undefined}
+                onChange={(d) => setBookedDate(d ? format(d, 'yyyy-MM-dd') : undefined)}
+                placeholder="Välj datum"
+                dateFormat="d MMMM yyyy"
+                locale={sv}
+              />
             </div>
           )}
 

@@ -9,3 +9,5 @@ export { SaveAsFavoriteButton } from './SaveAsFavoriteButton';
 export { UpdateFavoriteDialog } from './UpdateFavoriteDialog';
 export { Notes } from './Notes';
 export type { Note, NotesProps, NotesState } from './Notes/types';
+export { DatePicker } from './DatePicker';
+export type { DatePickerProps } from './DatePicker';

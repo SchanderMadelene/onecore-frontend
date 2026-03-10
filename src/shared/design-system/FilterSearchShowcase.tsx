@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { DateRangeFilter } from "@/shared/common/DateRangeFilter";
+import { DatePicker } from "@/shared/common/DatePicker";
 import { FilterContent } from "@/shared/ui/filter-content";
 import { SearchableMultiSelect } from "@/shared/ui/searchable-multi-select";
 import { ComponentViewer } from "./viewer";
@@ -74,6 +75,30 @@ const SelectFilterDemo = () => {
             </SelectContent>
           </Select>
         </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// --- DatePicker (single date) Demo ---
+const DatePickerDemo = () => {
+  const [date, setDate] = useState<Date | undefined>();
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">DatePicker</CardTitle>
+        <CardDescription>
+          Kalender-popover för enstaka datum. Wrappar Calendar + Popover-mönstret i en delad komponent.
+          Stöder anpassat format, locale och <code className="text-xs bg-muted px-1 rounded">disabled</code>.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <DatePicker value={date} onChange={setDate} className="sm:w-[240px]" />
+        {date && (
+          <p className="text-sm text-muted-foreground">
+            Valt datum: <span className="font-medium text-foreground">{date.toLocaleDateString("sv-SE")}</span>
+          </p>
+        )}
       </CardContent>
     </Card>
   );
@@ -335,9 +360,21 @@ export const FilterSearchShowcase = () => {
 
       <SearchFieldDemo />
       <SelectFilterDemo />
-      <DateRangeFilterDemo />
+
+      <div className="pt-4 border-t">
+        <h3 className="text-lg font-semibold mb-1">Datumkomponenter</h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Två delade datumkomponenter: <strong>DatePicker</strong> för enstaka datum och <strong>DateRangeFilter</strong> för datumintervall.
+          Datumfältsväljaren är ett sammansatt mönster som kombinerar en Select med DateRangeFilter.
+        </p>
+        <div className="space-y-6">
+          <DatePickerDemo />
+          <DateRangeFilterDemo />
+          <DateFieldSelectorDemo />
+        </div>
+      </div>
+
       <FilterContentDemo />
-      <DateFieldSelectorDemo />
       <SearchableMultiSelectDemo />
       <ComponentViewer definition={filterChipDefinition} />
 
