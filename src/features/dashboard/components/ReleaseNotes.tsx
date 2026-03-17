@@ -64,21 +64,17 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
         <button
           onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
           className={`
-            inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full
-            border text-xs font-medium transition-all duration-150
-            touch-manipulation active:scale-95
-            ${isOpen 
-              ? "bg-primary text-primary-foreground border-primary shadow-sm" 
-              : "border-border text-foreground bg-background hover:bg-accent hover:border-accent-foreground/20 hover:shadow-sm"
-            }
+            inline-flex items-center gap-2 px-4 py-2 rounded-full
+            text-xs font-medium transition-all duration-200 ease-out
+            touch-manipulation active:scale-[0.97]
+            bg-foreground text-background
+            hover:shadow-lg hover:shadow-foreground/20 hover:-translate-y-0.5
+            ${isOpen ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}
           `}
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           Release notes
-          <span className={`
-            inline-flex items-center justify-center h-4 min-w-[16px] px-1 rounded-full text-[10px] font-semibold leading-none
-            ${isOpen ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary text-primary-foreground"}
-          `}>
+          <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-[11px] font-bold leading-none bg-background/20 text-background">
             {releaseNotes.length}
           </span>
         </button>
