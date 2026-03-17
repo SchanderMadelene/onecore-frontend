@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Newspaper, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { releaseNotes, type ReleaseCategory } from "@/data/releaseNotes";
+import { useUnreadReleaseNotes } from "@/features/dashboard/hooks/useUnreadReleaseNotes";
 
 const categoryConfig: Record<ReleaseCategory, { label: string; variant: "warning" | "muted" | "info" }> = {
   information: { label: "Information", variant: "warning" },
