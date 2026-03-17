@@ -64,7 +64,11 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
       <div className="relative z-[80]" ref={panelRef}>
         {/* Trigger – icon button style to match navbar */}
         <button
-          onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
+          onClick={() => {
+            if (!isOpen) markAllAsRead();
+            setIsOpen(!isOpen);
+            if (isOpen) setPage(0);
+          }}
           className={`
             inline-flex items-center gap-2 px-4 py-2 rounded-full
             text-xs font-medium transition-all duration-200 ease-out
@@ -76,9 +80,11 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           Release notes
-          <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-[11px] font-bold leading-none bg-background/20 text-background">
-            {releaseNotes.length}
-          </span>
+          {unreadCount > 0 && (
+            <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-[11px] font-bold leading-none bg-destructive text-destructive-foreground">
+              {unreadCount}
+            </span>
+          )}
         </button>
 
         {/* Dropdown panel */}
