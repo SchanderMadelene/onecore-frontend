@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Newspaper, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, Wrench, Sparkles } from "lucide-react";
+import { Newspaper, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, Settings2, Sparkles } from "lucide-react";
 import { releaseNotes, type ReleaseCategory } from "@/data/releaseNotes";
 
 const categoryConfig: Record<ReleaseCategory, { label: string; variant: "warning" | "muted" | "info"; icon: typeof AlertTriangle }> = {
   information: { label: "Information", variant: "warning", icon: AlertTriangle },
-  buggfix: { label: "Buggfix", variant: "muted", icon: Wrench },
+  buggfix: { label: "Buggfix", variant: "muted", icon: Settings2 },
   "ny-funktion": { label: "Ny funktion", variant: "info", icon: Sparkles },
 };
 
