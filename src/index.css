@@ -43,6 +43,10 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
     
+    /* Highlight - Logotypens blå, för notiser & framhävningar */
+    --highlight: 240 100% 50%;
+    --highlight-foreground: 0 0% 100%;
+    
     /* Gränssnittsfärger */
     --border: 214 32% 91%;
     --input: 214 32% 91%;
