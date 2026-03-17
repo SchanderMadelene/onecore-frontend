@@ -59,25 +59,25 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
 
   if (floating) {
     return (
-      <div className="relative" ref={panelRef}>
-        {/* Trigger bubble */}
+      <div className="relative z-[80]" ref={panelRef}>
+        {/* Trigger – icon button style to match navbar */}
         <button
           onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
           className={`
-            relative flex items-center gap-2 px-3 py-2 rounded-full
-            bg-card border shadow-md
-            transition-all duration-200 ease-out
-            hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]
-            ${isOpen ? "shadow-lg ring-1 ring-primary/10" : ""}
+            flex items-center justify-center h-[44px] w-[44px] rounded-md
+            transition-colors duration-150
+            hover:bg-accent hover:text-accent-foreground
+            active:scale-95 touch-manipulation
+            ${isOpen ? "bg-accent text-accent-foreground" : "text-foreground"}
           `}
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          <div className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 shrink-0">
-            <Newspaper className="h-3 w-3 text-primary" />
+          <div className="relative">
+            <Newspaper className="h-5 w-5" />
+            <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center h-4 min-w-[16px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-medium leading-none">
+              {releaseNotes.length}
+            </span>
           </div>
-          <span className="text-sm font-medium text-foreground hidden sm:inline">Nyheter</span>
-          <Badge variant="secondary" className="text-[10px] px-1.5 py-0 shrink-0 tabular-nums">
-            {releaseNotes.length}
-          </Badge>
         </button>
 
         {/* Dropdown panel */}
