@@ -114,7 +114,7 @@ export function BarriersTable({ barriers, onBarrierUpdated }: BarriersTableProps
           render: (barrier) => (
             <div className="flex items-center gap-1">
               <Button 
-                variant="ghost" 
+                variant="outline" 
                 size="sm" 
                 className="h-8 w-8 p-0"
                 onClick={() => handleEditClick(barrier)}
@@ -122,7 +122,7 @@ export function BarriersTable({ barriers, onBarrierUpdated }: BarriersTableProps
                 <Pencil className="h-4 w-4" />
               </Button>
               <Button 
-                variant="ghost" 
+                variant="outline" 
                 size="sm" 
                 className="h-8 w-8 p-0"
                 onClick={() => handleDeleteClick(barrier)}
@@ -153,7 +153,7 @@ export function BarriersTable({ barriers, onBarrierUpdated }: BarriersTableProps
             <span className="text-muted-foreground">Skapad av: {barrier.createdBy}</span>
             <div className="flex items-center gap-1">
               <Button 
-                variant="ghost" 
+                variant="outline" 
                 size="sm" 
                 className="h-8 w-8 p-0"
                 onClick={() => handleEditClick(barrier)}
@@ -161,7 +161,7 @@ export function BarriersTable({ barriers, onBarrierUpdated }: BarriersTableProps
                 <Pencil className="h-4 w-4" />
               </Button>
               <Button 
-                variant="ghost" 
+                variant="outline" 
                 size="sm" 
                 className="h-8 w-8 p-0"
                 onClick={() => handleDeleteClick(barrier)}

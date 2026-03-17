@@ -19,7 +19,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ExportButton } from "@/components/ui/export-button";
-import { Search, X, Settings } from "lucide-react";
+import { Search, Settings } from "lucide-react";
+import { ClearFiltersButton } from "@/shared/common";
 import { exportToExcel, ExcelColumn } from "@/utils/excelExport";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -187,10 +188,7 @@ const PropertyAreasPage = () => {
               </Select>
               
               {hasActiveFilters && (
-                <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-                  <X className="h-4 w-4" />
-                  Rensa filter
-                </Button>
+                <ClearFiltersButton onClick={clearFilters} />
               )}
 
               <div className="sm:ml-auto flex gap-2">

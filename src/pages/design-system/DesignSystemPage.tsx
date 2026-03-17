@@ -1,16 +1,12 @@
 import { useState } from "react";
 import { PageLayout } from "@/layouts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Palette, Type, Component, Grid, LibraryIcon, ImageIcon } from "lucide-react";
+import { Layers, Component, Workflow } from "lucide-react";
 
-// Import components from the new global location
 import { 
-  ColorPalette, 
-  Typography, 
-  ComponentShowcase, 
-  GridSystem, 
-  IconsShowcase,
-  LogosShowcase 
+  FoundationsShowcase, 
+  ComponentsShowcase, 
+  PatternsShowcase,
 } from "@/shared/design-system";
 
 const DesignSystemPage = () => {
@@ -26,56 +22,32 @@ const DesignSystemPage = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="logos" className="w-full">
-          <TabsList className="flex-wrap h-auto gap-1">
-            <TabsTrigger value="logos" className="flex items-center gap-2">
-              <ImageIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Logos</span>
-            </TabsTrigger>
-            <TabsTrigger value="colors" className="flex items-center gap-2">
-              <Palette className="h-4 w-4" />
-              <span className="hidden sm:inline">Colors</span>
-            </TabsTrigger>
-            <TabsTrigger value="typography" className="flex items-center gap-2">
-              <Type className="h-4 w-4" />
-              <span className="hidden sm:inline">Typography</span>
+        <Tabs defaultValue="foundations" className="w-full">
+          <TabsList>
+            <TabsTrigger value="foundations" className="flex items-center gap-2">
+              <Layers className="h-4 w-4" />
+              Fundament
             </TabsTrigger>
             <TabsTrigger value="components" className="flex items-center gap-2">
               <Component className="h-4 w-4" />
-              <span className="hidden sm:inline">Components</span>
+              Komponenter
             </TabsTrigger>
-            <TabsTrigger value="grid" className="flex items-center gap-2">
-              <Grid className="h-4 w-4" />
-              <span className="hidden sm:inline">Grid</span>
-            </TabsTrigger>
-            <TabsTrigger value="icons" className="flex items-center gap-2">
-              <LibraryIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Icons</span>
+            <TabsTrigger value="patterns" className="flex items-center gap-2">
+              <Workflow className="h-4 w-4" />
+              Mönster
             </TabsTrigger>
           </TabsList>
-          
-          <TabsContent value="logos" className="mt-6">
-            <LogosShowcase />
+
+          <TabsContent value="foundations" className="mt-6">
+            <FoundationsShowcase />
           </TabsContent>
-          
-          <TabsContent value="colors" className="mt-6">
-            <ColorPalette />
-          </TabsContent>
-          
-          <TabsContent value="typography" className="mt-6">
-            <Typography />
-          </TabsContent>
-          
+
           <TabsContent value="components" className="mt-6">
-            <ComponentShowcase />
+            <ComponentsShowcase />
           </TabsContent>
-          
-          <TabsContent value="grid" className="mt-6">
-            <GridSystem />
-          </TabsContent>
-          
-          <TabsContent value="icons" className="mt-6">
-            <IconsShowcase />
+
+          <TabsContent value="patterns" className="mt-6">
+            <PatternsShowcase />
           </TabsContent>
         </Tabs>
       </div>

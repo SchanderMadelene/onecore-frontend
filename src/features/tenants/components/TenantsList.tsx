@@ -1,11 +1,10 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { getAllCustomers } from "../data/tenants";
 
 // Get all customers (tenants and applicants) and create display data
@@ -29,6 +28,7 @@ function getPropertyForTenant(personalNumber: string) {
 
 export function TenantsList() {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   
   const filteredCustomers = customers.filter(customer => {
     return (
@@ -38,6 +38,50 @@ export function TenantsList() {
       customer.property.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
+
+  const columns = [
+    {
+      key: "name",
+      label: "Namn",
+      render: (customer: any) => (
+        <span className="font-medium">{customer.firstName} {customer.lastName}</span>
+      ),
+    },
+    {
+      key: "personalNumber",
+      label: "Personnummer",
+      render: (customer: any) => customer.id,
+      hideOnMobile: true,
+    },
+    {
+      key: "type",
+      label: "Typ",
+      render: (customer: any) => (
+        <Badge variant={customer.customerType === "tenant" ? "default" : "secondary"}>
+          {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+        </Badge>
+      ),
+    },
+    {
+      key: "property",
+      label: "Fastighet",
+      render: (customer: any) => customer.property,
+      hideOnMobile: true,
+    },
+  ];
+
+  const mobileCardRenderer = (customer: any) => (
+    <div>
+      <div className="font-medium">{customer.firstName} {customer.lastName}</div>
+      <div className="text-sm text-muted-foreground">{customer.id}</div>
+      <div className="flex items-center gap-2 mt-2">
+        <Badge variant={customer.customerType === "tenant" ? "default" : "secondary"}>
+          {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+        </Badge>
+        <span className="text-sm text-muted-foreground">{customer.property}</span>
+      </div>
+    </div>
+  );
 
   return (
     <Card>
@@ -56,51 +100,14 @@ export function TenantsList() {
           </div>
         </div>
 
-        <div className="border rounded-md">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Namn</TableHead>
-                <TableHead>Personnummer</TableHead>
-                <TableHead>Typ</TableHead>
-                <TableHead>Fastighet</TableHead>
-                <TableHead className="text-right">Åtgärd</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredCustomers.map((customer) => (
-                <TableRow key={customer.id}>
-                  <TableCell className="font-medium">
-                    {customer.firstName} {customer.lastName}
-                  </TableCell>
-                  <TableCell>{customer.id}</TableCell>
-                  <TableCell>
-                    <Badge 
-                      variant={customer.customerType === "tenant" ? "default" : "secondary"}
-                    >
-                      {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{customer.property}</TableCell>
-                  <TableCell className="text-right">
-                    <Button asChild variant="link" size="sm">
-                      <Link to={`/tenants/detail/${customer.id}`}>
-                        Visa detaljer
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {filteredCustomers.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8">
-                    Inga kunder hittades med angivna sökkriterier
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+        <ResponsiveTable
+          data={filteredCustomers}
+          columns={columns}
+          keyExtractor={(customer) => customer.id}
+          emptyMessage="Inga kunder hittades med angivna sökkriterier"
+          mobileCardRenderer={mobileCardRenderer}
+          onRowClick={(customer) => navigate(`/tenants/detail/${customer.id}`)}
+        />
       </CardContent>
     </Card>
   );

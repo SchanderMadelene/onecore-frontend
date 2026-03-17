@@ -1,12 +1,8 @@
-import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { CalendarIcon, Search } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DatePicker } from '@/shared/common';
 
 interface StudentTurnoverFiltersProps {
   searchQuery: string;
@@ -43,29 +39,21 @@ export function StudentTurnoverFilters({
         />
       </div>
       <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className={cn("w-full sm:w-[180px] justify-start text-left font-normal")}>
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {format(startDate, 'd MMM yyyy', { locale: sv })}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar mode="single" selected={startDate} onSelect={(d) => d && onStartDateChange(d)} initialFocus className={cn("p-3 pointer-events-auto")} />
-          </PopoverContent>
-        </Popover>
+        <DatePicker
+          value={startDate}
+          onChange={(d) => d && onStartDateChange(d)}
+          dateFormat="d MMM yyyy"
+          locale={sv}
+          className="w-full sm:w-[180px]"
+        />
 
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className={cn("w-full sm:w-[180px] justify-start text-left font-normal")}>
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {format(endDate, 'd MMM yyyy', { locale: sv })}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar mode="single" selected={endDate} onSelect={(d) => d && onEndDateChange(d)} initialFocus className={cn("p-3 pointer-events-auto")} />
-          </PopoverContent>
-        </Popover>
+        <DatePicker
+          value={endDate}
+          onChange={(d) => d && onEndDateChange(d)}
+          dateFormat="d MMM yyyy"
+          locale={sv}
+          className="w-full sm:w-[180px]"
+        />
 
         <Select value={selectedProperty} onValueChange={onPropertyChange}>
           <SelectTrigger className="w-full sm:w-[180px]">

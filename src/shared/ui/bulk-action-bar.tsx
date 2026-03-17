@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Mail, MessageSquare, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/shared/hooks/use-mobile";
 
 interface BulkActionBarProps {
   selectedCount: number;
@@ -17,6 +18,8 @@ export function BulkActionBar({
   onClear,
   className
 }: BulkActionBarProps) {
+  const isMobile = useIsMobile();
+
   if (selectedCount === 0) return null;
 
   return (
@@ -26,27 +29,38 @@ export function BulkActionBar({
       className
     )}>
       <div className="container max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">
+        <div
+          className={cn(
+            "flex justify-between",
+            isMobile ? "flex-col items-stretch gap-3" : "flex-row items-center gap-4"
+          )}
+        >
+          <div
+            className={cn(
+              "flex gap-2",
+              isMobile ? "w-full items-start justify-between" : "items-center"
+            )}
+          >
+            <span className="text-sm font-medium leading-tight">
               {selectedCount} {selectedCount === 1 ? "kund vald" : "kunder valda"}
             </span>
             <Button
               variant="ghost"
               size="sm"
               onClick={onClear}
-              className="h-8 px-2"
+              className="h-8 px-2 shrink-0"
             >
               <X className="h-4 w-4 mr-1" />
               Rensa
             </Button>
           </div>
-          <div className="flex items-center gap-2">
+
+          <div className={cn("flex items-center gap-2", isMobile && "w-full")}>
             <Button
               variant="outline"
               size="sm"
               onClick={onSendSms}
-              className="h-9"
+              className={cn("h-9", isMobile ? "flex-1" : "flex-none")}
             >
               <MessageSquare className="h-4 w-4 mr-2" />
               Skicka SMS
@@ -55,7 +69,7 @@ export function BulkActionBar({
               variant="default"
               size="sm"
               onClick={onSendEmail}
-              className="h-9"
+              className={cn("h-9", isMobile ? "flex-1" : "flex-none")}
             >
               <Mail className="h-4 w-4 mr-2" />
               Skicka mejl
@@ -66,3 +80,4 @@ export function BulkActionBar({
     </div>
   );
 }
+

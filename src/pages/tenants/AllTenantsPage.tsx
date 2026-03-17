@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { BulkActionBar } from "@/components/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
-import { X, Search } from "lucide-react";
+import { Search } from "lucide-react";
+import { ClearFiltersButton } from "@/shared/common";
 import { TenantsHeader } from "./components/TenantsHeader";
 import { TenantSelectionFilters, getAllCustomers } from "@/features/tenants";
 import { mockProperties } from "@/features/properties";
@@ -176,10 +177,7 @@ const AllTenantsPage = () => {
                 setDistrictFilter={setDistrictFilter}
               />
               {activeFilterCount > 0 && (
-                <Button variant="ghost" size="sm" onClick={clearAllFilters} className="gap-1">
-                  <X className="h-4 w-4" />
-                  Rensa filter
-                </Button>
+                <ClearFiltersButton onClick={clearAllFilters} />
               )}
             </div>
           </CardContent>

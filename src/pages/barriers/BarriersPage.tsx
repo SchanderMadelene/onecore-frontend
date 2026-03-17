@@ -10,7 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { ExportButton } from "@/components/ui/export-button";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
+import { ClearFiltersButton } from "@/shared/common";
 import { exportToExcel, formatDateForExcel, ExcelColumn } from "@/utils/excelExport";
 import { useToast } from "@/hooks/use-toast";
 import { FavoriteParameters } from "@/features/favorites/types/favorite";
@@ -248,10 +249,7 @@ const BarriersPage = () => {
                   </Select>
                   
                   {hasActiveFilters && (
-                    <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-                      <X className="h-4 w-4" />
-                      Rensa filter
-                    </Button>
+                    <ClearFiltersButton onClick={clearFilters} />
                   )}
 
                   <div className="sm:ml-auto">

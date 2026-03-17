@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog } from "@/shared/common";
 import { Barrier } from "../types";
 
 interface DeleteBarrierDialogProps {
@@ -49,33 +49,26 @@ export function DeleteBarrierDialog({
   // If in confirmation state, show delete confirmation
   if (showConfirmDelete) {
     return (
-      <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Bekräfta radering</AlertDialogTitle>
-            <AlertDialogDescription>
-              Är du säker på att spärren för <strong>{barrier.object}</strong> är felaktig och ska raderas permanent?
-              <br /><br />
-              Denna åtgärd kan inte ångras.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowConfirmDelete(false)}>
-              Avbryt
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Radera spärr
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={isOpen}
+        onOpenChange={onOpenChange}
+        title="Bekräfta radering"
+        description={
+          <>
+            Är du säker på att spärren för <strong>{barrier.object}</strong> är felaktig och ska raderas permanent?
+            <br /><br />
+            Denna åtgärd kan inte ångras.
+          </>
+        }
+        onConfirm={handleDelete}
+        confirmLabel="Radera spärr"
+        cancelLabel="Avbryt"
+        variant="destructive"
+      />
     );
   }
 
-  // Initial dialog - different content based on status
+  // Active barrier - 3 buttons, keep as custom AlertDialog
   if (barrier.status === 'active') {
     return (
       <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
@@ -113,28 +106,22 @@ export function DeleteBarrierDialog({
     );
   }
 
-  // For inactive/expired barriers - direct delete confirmation
+  // Inactive/expired - simple confirm
   return (
-    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Radera spärr</AlertDialogTitle>
-          <AlertDialogDescription>
-            Är du säker på att du vill radera spärren för <strong>{barrier.object}</strong>?
-            <br /><br />
-            Denna åtgärd kan inte ångras.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Avbryt</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={handleDelete}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-          >
-            Radera
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <ConfirmDialog
+      open={isOpen}
+      onOpenChange={onOpenChange}
+      title="Radera spärr"
+      description={
+        <>
+          Är du säker på att du vill radera spärren för <strong>{barrier.object}</strong>?
+          <br /><br />
+          Denna åtgärd kan inte ångras.
+        </>
+      }
+      onConfirm={handleDelete}
+      confirmLabel="Radera"
+      variant="destructive"
+    />
   );
 }

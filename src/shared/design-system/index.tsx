@@ -5,3 +5,8 @@ export * from "./ComponentShowcase";
 export * from "./GridSystem";
 export * from "./IconsShowcase";
 export * from "./LogosShowcase";
+export * from "./InteractiveShowcase";
+export * from "./ResponsiveShowcase";
+export * from "./FoundationsShowcase";
+export * from "./ComponentsShowcase";
+export * from "./PatternsShowcase";

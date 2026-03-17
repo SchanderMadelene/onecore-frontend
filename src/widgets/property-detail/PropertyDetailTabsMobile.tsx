@@ -9,7 +9,7 @@ import { PropertyStatisticsTab } from "@/features/properties/components/tabs/Pro
 import { PropertyMaintenanceUnitsTab } from "@/features/properties/components/tabs/PropertyMaintenanceUnitsTab";
 import { PropertyOrdersTab } from "@/features/properties/components/tabs/PropertyOrdersTab";
 import { PropertyAccessTab } from "@/features/properties/components/tabs/PropertyAccessTab";
-import { MobileAccordion, MobileAccordionItem } from "@/components/ui/mobile-accordion";
+import { MobileAccordion, MobileAccordionItem } from "@/shared/ui/mobile-accordion";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import type { PropertyDetail } from "@/types/api";
 

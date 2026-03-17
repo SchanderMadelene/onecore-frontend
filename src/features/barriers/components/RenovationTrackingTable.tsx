@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { BARRIER_REASON_CATEGORY_LABELS, type BarrierReasonCategory } from '@/entities/barrier/types';
+import { ResponsiveTable } from '@/shared/ui/responsive-table';
 import type { Barrier } from '../types/barrier';
 
 interface RenovationBarrier extends Barrier {
@@ -13,18 +12,34 @@ interface Props {
 }
 
 export function RenovationTrackingTable({ renovations }: Props) {
-  if (renovations.length === 0) {
-    return (
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">Renoveringar – uppföljning</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">Inga aktiva renoveringar hittades.</p>
-        </CardContent>
-      </Card>
-    );
-  }
+  const columns = [
+    { key: "object", label: "Objekt", render: (r: RenovationBarrier) => <span className="font-medium">{r.object}</span> },
+    { key: "address", label: "Adress", render: (r: RenovationBarrier) => r.address, hideOnMobile: true },
+    { 
+      key: "type", 
+      label: "Typ", 
+      render: (r: RenovationBarrier) => (
+        <Badge variant="outline" className="text-xs">
+          {r.reasonCategory === 'renovation_before' ? 'Innan inflytt' : 'Efter inflytt'}
+        </Badge>
+      )
+    },
+    { key: "startDate", label: "Startdatum", render: (r: RenovationBarrier) => r.startDate },
+    { key: "daysSinceStart", label: "Dagar sedan start", className: "text-right", render: (r: RenovationBarrier) => <span className="font-medium">{r.daysSinceStart}</span> },
+  ];
+
+  const mobileCardRenderer = (r: RenovationBarrier) => (
+    <div>
+      <div className="font-medium">{r.object}</div>
+      <div className="text-sm text-muted-foreground">{r.address}</div>
+      <div className="flex items-center gap-2 mt-2">
+        <Badge variant="outline" className="text-xs">
+          {r.reasonCategory === 'renovation_before' ? 'Innan inflytt' : 'Efter inflytt'}
+        </Badge>
+        <span className="text-sm text-muted-foreground">{r.daysSinceStart} dagar</span>
+      </div>
+    </div>
+  );
 
   return (
     <Card>
@@ -32,32 +47,13 @@ export function RenovationTrackingTable({ renovations }: Props) {
         <CardTitle className="text-base">Renoveringar – uppföljning</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Objekt</TableHead>
-              <TableHead className="hidden sm:table-cell">Adress</TableHead>
-              <TableHead>Typ</TableHead>
-              <TableHead>Startdatum</TableHead>
-              <TableHead className="text-right">Dagar sedan start</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {renovations.map(r => (
-              <TableRow key={r.id}>
-                <TableCell className="font-medium">{r.object}</TableCell>
-                <TableCell className="hidden sm:table-cell">{r.address}</TableCell>
-                <TableCell>
-                  <Badge variant="outline" className="text-xs">
-                    {r.reasonCategory === 'renovation_before' ? 'Innan inflytt' : 'Efter inflytt'}
-                  </Badge>
-                </TableCell>
-                <TableCell>{r.startDate}</TableCell>
-                <TableCell className="text-right font-medium">{r.daysSinceStart}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <ResponsiveTable
+          data={renovations}
+          columns={columns}
+          keyExtractor={(r) => r.id}
+          emptyMessage="Inga aktiva renoveringar hittades."
+          mobileCardRenderer={mobileCardRenderer}
+        />
       </CardContent>
     </Card>
   );

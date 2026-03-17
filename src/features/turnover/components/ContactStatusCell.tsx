@@ -6,14 +6,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { badgeVariants } from '@/shared/ui/badge';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { CalendarIcon, Minus, Plus } from 'lucide-react';
+import { Minus, Plus } from 'lucide-react';
+import { DatePicker } from '@/shared/common/DatePicker';
 
 const STATUS_CONFIG: Record<ContactStatus, { label: string; variant: 'muted' | 'info' | 'success' | 'warning'; order: number }> = {
   not_contacted: { label: 'Ej kontaktad', variant: 'muted', order: 0 },
@@ -109,28 +108,14 @@ export function ContactStatusCell({
 
       {status === 'visit_booked' && (
         <div className="flex items-center gap-1">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="h-7 px-2.5 text-xs font-normal gap-1.5"
-              >
-                <CalendarIcon className="h-3.5 w-3.5" />
-                {visitBookedDate
-                  ? format(parseISO(visitBookedDate), 'd MMM', { locale: sv })
-                  : 'Datum'}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 bg-background z-50" align="start">
-              <Calendar
-                mode="single"
-                selected={visitBookedDate ? parseISO(visitBookedDate) : undefined}
-                onSelect={handleDateSelect}
-                initialFocus
-                className="p-3 pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
+          <DatePicker
+            value={visitBookedDate ? parseISO(visitBookedDate) : undefined}
+            onChange={handleDateSelect}
+            dateFormat="d MMM"
+            locale={sv}
+            placeholder="Datum"
+            className="h-7 w-auto px-2.5 text-xs"
+          />
           <input
             type="time"
             className="h-7 px-2 text-xs border rounded-md bg-background"

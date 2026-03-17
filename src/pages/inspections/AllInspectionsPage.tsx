@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Eye, ChevronUp, ChevronDown, X, Play, PlayCircle, Search } from "lucide-react";
+import { Eye, ChevronUp, ChevronDown, Play, PlayCircle, Search } from "lucide-react";
+import { ClearFiltersButton } from "@/shared/common";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { InspectionReadOnly, InspectionFormDialog } from "@/features/residences";
 import { PageLayout } from "@/layouts";
@@ -396,10 +397,7 @@ export default function AllInspectionsPage() {
               </Select>
 
               {hasActiveFilters && (
-                <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-                  <X className="h-4 w-4" />
-                  Rensa filter
-                </Button>
+                <ClearFiltersButton onClick={clearFilters} />
               )}
             </div>
           </CardContent>

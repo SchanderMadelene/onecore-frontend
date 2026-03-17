@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import { FilterContent } from "./filter-content";
 
 interface ResponsiveTableColumn {
   key: string;
@@ -12,6 +13,15 @@ interface ResponsiveTableColumn {
   render: (item: any) => ReactNode;
   className?: string;
   hideOnMobile?: boolean;
+  headerRender?: () => ReactNode;
+  /** Filter options — activates a filter dropdown in the column header */
+  filterOptions?: string[];
+  /** Current filter value */
+  filterValue?: string;
+  /** Callback when filter changes */
+  onFilter?: (value: string) => void;
+  /** Placeholder text for the filter search input */
+  filterPlaceholder?: string;
 }
 
 interface ResponsiveTableProps {
@@ -23,6 +33,8 @@ interface ResponsiveTableProps {
   selectable?: boolean;
   selectedKeys?: string[];
   onSelectionChange?: (keys: string[]) => void;
+  onRowClick?: (item: any) => void;
+  rowClassName?: string | ((item: any) => string);
 }
 
 export function ResponsiveTable({ 
@@ -33,7 +45,9 @@ export function ResponsiveTable({
   mobileCardRenderer,
   selectable = false,
   selectedKeys = [],
-  onSelectionChange
+  onSelectionChange,
+  onRowClick,
+  rowClassName
 }: ResponsiveTableProps) {
   const isMobile = useIsMobile();
 
@@ -58,6 +72,12 @@ export function ResponsiveTable({
     }
   };
 
+  const getRowClassName = (item: any) => {
+    if (!rowClassName) return "";
+    if (typeof rowClassName === "function") return rowClassName(item);
+    return rowClassName;
+  };
+
   if (data.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
@@ -73,12 +93,21 @@ export function ResponsiveTable({
           const key = keyExtractor(item);
           const isSelected = selectedKeys.includes(key);
           return (
-            <Card key={key} className={cn("overflow-hidden", isSelected && "ring-2 ring-primary")}>
+            <Card 
+              key={key} 
+              className={cn(
+                "overflow-hidden", 
+                isSelected && "ring-2 ring-primary",
+                onRowClick && "cursor-pointer"
+              )}
+              onClick={() => onRowClick?.(item)}
+            >
               <CardContent className="p-4 min-h-[44px] flex items-center gap-3">
                 {selectable && (
                   <Checkbox
                     checked={isSelected}
                     onCheckedChange={() => handleSelectItem(key)}
+                    onClick={(e) => e.stopPropagation()}
                     aria-label="Välj rad"
                   />
                 )}
@@ -102,12 +131,21 @@ export function ResponsiveTable({
           const key = keyExtractor(item);
           const isSelected = selectedKeys.includes(key);
           return (
-            <Card key={key} className={cn("overflow-hidden", isSelected && "ring-2 ring-primary")}>
+            <Card 
+              key={key} 
+              className={cn(
+                "overflow-hidden", 
+                isSelected && "ring-2 ring-primary",
+                onRowClick && "cursor-pointer"
+              )}
+              onClick={() => onRowClick?.(item)}
+            >
               <CardContent className="p-4 space-y-3 min-h-[44px]">
                 {selectable && (
                   <Checkbox
                     checked={isSelected}
                     onCheckedChange={() => handleSelectItem(key)}
+                    onClick={(e) => e.stopPropagation()}
                     aria-label="Välj rad"
                   />
                 )}
@@ -130,7 +168,7 @@ export function ResponsiveTable({
   }
 
   return (
-    <div className="rounded-md border overflow-x-auto">
+    <div className="rounded-md border bg-card overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -148,7 +186,20 @@ export function ResponsiveTable({
             )}
             {columns.map((column) => (
               <TableHead key={column.key} className={column.className}>
-                {column.label}
+                {column.headerRender ? (
+                  column.headerRender()
+                ) : column.filterOptions ? (
+                  <FilterContent
+                    onFilter={column.onFilter}
+                    filterValue={column.filterValue}
+                    filterOptions={column.filterOptions}
+                    placeholder={column.filterPlaceholder}
+                  >
+                    {column.label}
+                  </FilterContent>
+                ) : (
+                  column.label
+                )}
               </TableHead>
             ))}
           </TableRow>
@@ -158,12 +209,22 @@ export function ResponsiveTable({
             const key = keyExtractor(item);
             const isSelected = selectedKeys.includes(key);
             return (
-              <TableRow key={key} className={cn("min-h-[44px]", isSelected && "bg-primary/5")}>
+              <TableRow 
+                key={key} 
+                className={cn(
+                  "min-h-[44px]", 
+                  isSelected && "bg-primary/5",
+                  onRowClick && "cursor-pointer hover:bg-muted/50",
+                  getRowClassName(item)
+                )}
+                onClick={() => onRowClick?.(item)}
+              >
                 {selectable && (
                   <TableCell className="w-12">
                     <Checkbox
                       checked={isSelected}
                       onCheckedChange={() => handleSelectItem(key)}
+                      onClick={(e) => e.stopPropagation()}
                       aria-label="Välj rad"
                     />
                   </TableCell>

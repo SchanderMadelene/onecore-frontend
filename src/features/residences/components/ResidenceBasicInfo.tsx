@@ -1,4 +1,4 @@
-import { CollapsibleInfoCard } from "@/components/ui/collapsible-info-card";
+import { CollapsibleInfoCard } from "@/shared/ui/collapsible-info-card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { TriangleAlert, Bug } from "lucide-react";
