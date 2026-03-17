@@ -73,7 +73,7 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           <Newspaper className="h-4 w-4" />
-          <span className="hidden sm:inline">Nyheter</span>
+          <span className="hidden sm:inline">Release notes</span>
           <Badge variant="info" className="text-[10px] px-1.5 py-0 h-5 leading-none">
             {releaseNotes.length}
           </Badge>
