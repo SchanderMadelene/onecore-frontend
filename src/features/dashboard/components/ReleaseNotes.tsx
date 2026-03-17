@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Newspaper, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, Sparkles } from "lucide-react";
+import { Newspaper, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { releaseNotes, type ReleaseCategory } from "@/data/releaseNotes";
 
 const categoryConfig: Record<ReleaseCategory, { label: string; variant: "warning" | "muted" | "info" }> = {
