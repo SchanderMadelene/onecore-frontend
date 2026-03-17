@@ -15,14 +15,10 @@ const ITEMS_PER_PAGE = 3;
 
 const ReleaseNoteItem = ({ note }: { note: typeof releaseNotes[0] }) => {
   const config = categoryConfig[note.category];
-  const Icon = config.icon;
 
   return (
-    <div className="flex gap-4 py-4 first:pt-0 last:pb-0">
-      <div className="mt-1 shrink-0 h-8 w-8 rounded-full bg-muted/50 flex items-center justify-center">
-        <Icon className={`h-4 w-4 ${config.iconColor}`} />
-      </div>
-      <div className="flex-1 min-w-0 space-y-1">
+    <div className="py-4 first:pt-0 last:pb-0">
+      <div className="space-y-1">
         <div className="flex items-center gap-2 flex-wrap">
           <Badge variant={config.variant}>
             {config.label}
