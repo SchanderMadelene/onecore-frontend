@@ -38,18 +38,15 @@ export const ReleaseNotes = () => {
 
   const latestNote = releaseNotes[0];
 
-  // When collapsed: show only latest note
-  // When expanded: show paginated list (which includes the latest)
-  const remainingNotes = releaseNotes.slice(1);
-  const totalPages = Math.ceil(remainingNotes.length / ITEMS_PER_PAGE);
-  const paginatedRemaining = remainingNotes.slice(
+  const totalPages = Math.ceil(releaseNotes.length / ITEMS_PER_PAGE);
+  const paginatedNotes = releaseNotes.slice(
     page * ITEMS_PER_PAGE,
     (page + 1) * ITEMS_PER_PAGE
   );
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Collapsible open={isOpen} onOpenChange={(open) => { setIsOpen(open); setPage(0); }}>
         <div className="rounded-lg border bg-card shadow-sm">
           <CollapsibleTrigger className="w-full text-left">
             <div className="px-4 py-3 flex items-center justify-between gap-3">
@@ -66,21 +63,19 @@ export const ReleaseNotes = () => {
             </div>
           </CollapsibleTrigger>
 
-          {/* Latest note always visible */}
-          {latestNote && (
+          {/* Preview: only when collapsed */}
+          {!isOpen && latestNote && (
             <div className="px-4 pb-3 border-t pt-3 mx-4">
               <ReleaseNoteItem note={latestNote} />
             </div>
           )}
 
           <CollapsibleContent>
-            {paginatedRemaining.length > 0 && (
-              <div className="px-4 pb-3 divide-y divide-border">
-                {paginatedRemaining.map((note) => (
-                  <ReleaseNoteItem key={note.id} note={note} />
-                ))}
-              </div>
-            )}
+            <div className="px-4 pb-3 border-t pt-3 mx-4 divide-y divide-border">
+              {paginatedNotes.map((note) => (
+                <ReleaseNoteItem key={note.id} note={note} />
+              ))}
+            </div>
 
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-2 px-4 pb-3">
