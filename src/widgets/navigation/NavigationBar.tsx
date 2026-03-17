@@ -5,6 +5,7 @@ import { GlobalSearchBar } from "@/features/search";
 import { Link } from "react-router-dom";
 import { Settings, Menu, Search } from "lucide-react";
 import onecoreLogo from "@/assets/logos/full/onecore_logo_black.svg";
+import { ReleaseNotes } from "@/features/dashboard/components/ReleaseNotes";
 
 export function NavigationBar({
   onMenuClick
