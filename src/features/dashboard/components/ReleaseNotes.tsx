@@ -26,7 +26,7 @@ const ReleaseNoteItem = ({ note }: { note: typeof releaseNotes[0] }) => {
   return (
     <div className="flex gap-3 py-3 first:pt-0 last:pb-0">
       <div className="mt-0.5 shrink-0">
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <Icon className={`h-5 w-5 ${config.iconColor}`} />
       </div>
       <div className="flex-1 min-w-0 space-y-1">
         <div className="flex items-center gap-2 flex-wrap">
