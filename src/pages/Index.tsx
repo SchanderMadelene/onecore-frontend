@@ -178,7 +178,7 @@ const Index = () => {
           </Tooltip>
         </div>
 
-        <ReleaseNotes />
+        <ReleaseNotes floating />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {cardConfigs.map(config => {

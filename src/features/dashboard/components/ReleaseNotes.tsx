@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Newspaper, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { Newspaper, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { releaseNotes, type ReleaseCategory } from "@/data/releaseNotes";
 
 const categoryConfig: Record<ReleaseCategory, { label: string; variant: "warning" | "muted" | "info" }> = {
@@ -16,12 +16,10 @@ const ReleaseNoteItem = ({ note, isFirst = false }: { note: typeof releaseNotes[
   const config = categoryConfig[note.category];
 
   return (
-    <div className={`py-4 ${isFirst ? "" : "border-t border-border"}`}>
-      <div className="space-y-1.5">
+    <div className={`py-3.5 ${isFirst ? "" : "border-t border-border"}`}>
+      <div className="space-y-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <Badge variant={config.variant}>
-            {config.label}
-          </Badge>
+          <Badge variant={config.variant}>{config.label}</Badge>
           <span className="text-xs text-muted-foreground">{note.date}</span>
         </div>
         <p className="text-sm font-semibold text-foreground">{note.title}</p>
@@ -31,97 +29,97 @@ const ReleaseNoteItem = ({ note, isFirst = false }: { note: typeof releaseNotes[
   );
 };
 
-export const ReleaseNotes = () => {
+interface ReleaseNotesProps {
+  floating?: boolean;
+}
+
+export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(0);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState(0);
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  const latestNote = releaseNotes[0];
   const totalPages = Math.ceil(releaseNotes.length / ITEMS_PER_PAGE);
   const paginatedNotes = releaseNotes.slice(
     page * ITEMS_PER_PAGE,
     (page + 1) * ITEMS_PER_PAGE
   );
 
+  // Close on outside click
   useEffect(() => {
-    if (contentRef.current) {
-      setContentHeight(contentRef.current.scrollHeight);
-    }
-  }, [isOpen, page]);
+    if (!isOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+        setPage(0);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [isOpen]);
 
-  const handleToggle = () => {
-    setIsOpen((prev) => {
-      if (prev) setPage(0);
-      return !prev;
-    });
-  };
-
-  return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div
-        className={`
-          rounded-xl border bg-card shadow-sm
-          transition-all duration-300 ease-out
-          ${isOpen ? "shadow-md ring-1 ring-primary/5" : "hover:shadow-md"}
-        `}
-      >
-        {/* Header bar – toast-style */}
+  if (floating) {
+    return (
+      <div className="fixed top-4 right-4 z-50" ref={panelRef}>
+        {/* Trigger bubble */}
         <button
-          onClick={handleToggle}
-          className="w-full text-left px-4 py-3 flex items-center justify-between gap-3 group"
+          onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
+          className={`
+            relative flex items-center gap-2 px-3 py-2 rounded-full
+            bg-card border shadow-md
+            transition-all duration-200 ease-out
+            hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]
+            ${isOpen ? "shadow-lg ring-1 ring-primary/10" : ""}
+          `}
         >
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex items-center justify-center h-7 w-7 rounded-lg bg-primary/10 shrink-0">
-              <Newspaper className="h-3.5 w-3.5 text-primary" />
-            </div>
-            <span className="text-sm font-medium text-foreground truncate">
-              Nyheter & uppdateringar
-            </span>
-            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 shrink-0 tabular-nums">
-              {releaseNotes.length}
-            </Badge>
+          <div className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 shrink-0">
+            <Newspaper className="h-3 w-3 text-primary" />
           </div>
-          <ChevronDown
-            className={`
-              h-4 w-4 text-muted-foreground shrink-0 
-              transition-transform duration-300 ease-out
-              group-hover:text-foreground
-              ${isOpen ? "rotate-180" : ""}
-            `}
-          />
+          <span className="text-sm font-medium text-foreground hidden sm:inline">Nyheter</span>
+          <Badge variant="secondary" className="text-[10px] px-1.5 py-0 shrink-0 tabular-nums">
+            {releaseNotes.length}
+          </Badge>
         </button>
 
-        {/* Preview when collapsed */}
-        {!isOpen && latestNote && (
-          <div className="px-5 pb-4 pt-0">
-            <div className="border-t border-border pt-3">
-              <ReleaseNoteItem note={latestNote} isFirst />
-            </div>
-          </div>
-        )}
-
-        {/* Expandable content with smooth height animation */}
-        <div
-          className="overflow-hidden transition-all duration-300 ease-out"
-          style={{ maxHeight: isOpen ? `${contentHeight + 32}px` : "0px" }}
-        >
-          <div ref={contentRef}>
-            <div className="px-5 pb-2 pt-0">
-              <div className="border-t border-border pt-1">
-                {paginatedNotes.map((note, index) => (
-                  <ReleaseNoteItem key={note.id} note={note} isFirst={index === 0} />
-                ))}
+        {/* Dropdown panel */}
+        {isOpen && (
+          <div
+            className={`
+              absolute top-full right-0 mt-2
+              w-[380px] max-w-[calc(100vw-2rem)]
+              rounded-xl border bg-card shadow-xl
+              animate-fade-in
+              overflow-hidden
+            `}
+          >
+            {/* Panel header */}
+            <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Newspaper className="h-4 w-4 text-primary" />
+                <span className="text-sm font-semibold text-foreground">Nyheter & uppdateringar</span>
               </div>
+              <button
+                onClick={() => { setIsOpen(false); setPage(0); }}
+                className="h-6 w-6 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
             </div>
 
+            {/* Notes list */}
+            <div className="px-4 max-h-[60vh] overflow-y-auto">
+              {paginatedNotes.map((note, index) => (
+                <ReleaseNoteItem key={note.id} note={note} isFirst={index === 0} />
+              ))}
+            </div>
+
+            {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-1.5 px-4 pb-3">
+              <div className="flex items-center justify-center gap-1.5 px-4 py-2.5 border-t border-border">
                 <Button
                   variant="ghost"
                   size="icon"
                   className="h-7 w-7 min-h-0 min-w-0 rounded-lg"
-                  onClick={(e) => { e.stopPropagation(); setPage((p) => Math.max(0, p - 1)); }}
+                  onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
                 >
                   <ChevronLeft className="h-3.5 w-3.5" />
@@ -133,7 +131,7 @@ export const ReleaseNotes = () => {
                   variant="ghost"
                   size="icon"
                   className="h-7 w-7 min-h-0 min-w-0 rounded-lg"
-                  onClick={(e) => { e.stopPropagation(); setPage((p) => Math.min(totalPages - 1, p + 1)); }}
+                  onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                   disabled={page === totalPages - 1}
                 >
                   <ChevronRight className="h-3.5 w-3.5" />
@@ -141,8 +139,11 @@ export const ReleaseNotes = () => {
               </div>
             )}
           </div>
-        </div>
+        )}
       </div>
-    </div>
-  );
+    );
+  }
+
+  // Inline fallback (non-floating)
+  return null;
 };
