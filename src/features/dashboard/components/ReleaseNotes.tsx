@@ -37,11 +37,6 @@ export const ReleaseNotes = () => {
   const [page, setPage] = useState(0);
 
   const latestNote = releaseNotes[0];
-  const totalPages = Math.ceil(releaseNotes.length / ITEMS_PER_PAGE);
-  const paginatedNotes = releaseNotes.slice(
-    page * ITEMS_PER_PAGE,
-    (page + 1) * ITEMS_PER_PAGE
-  );
 
   // When collapsed: show only latest note
   // When expanded: show paginated list (which includes the latest)
