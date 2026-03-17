@@ -59,7 +59,7 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
 
   if (floating) {
     return (
-      <div className="fixed top-4 right-4 z-50" ref={panelRef}>
+      <div className="relative" ref={panelRef}>
         {/* Trigger bubble */}
         <button
           onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
