@@ -163,35 +163,18 @@ const Index = () => {
             </div>}
         </header>
         
-        <div className="max-w-3xl mx-auto">
-          <Card className="animate-fade-in hover-scale border-2">
-            <CardContent className="p-8 md:p-10 text-center space-y-6">
-              <div className="space-y-4">
-                <p className="text-xl md:text-2xl font-medium leading-relaxed">
-                  Vi är glada att ha dig här!
-                </p>
-                <p className="text-base md:text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto">
-                  ONECore är din digitala arbetsplats där allt du behöver för att 
-                  göra ditt bästa arbete finns samlat på ett ställe. Ta det i din egen takt och utforska 
-                  systemet - du kommer att märka hur enkelt det är att navigera mellan olika funktioner.
-                </p>
-              </div>
-              
-              <div className="pt-4 border-t">
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Har du frågor eller behöver hjälp? Tveka inte att höra av dig till
-                </p>
-                <div className="flex items-center justify-center gap-2 mt-2 text-base md:text-lg font-semibold">
-                  <span className="text-primary">David</span>
-                  <span className="text-muted-foreground">eller</span>
-                  <span className="text-primary">Lina</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Vi finns här för att stötta dig!
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="flex justify-center">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <HelpCircle className="h-4 w-4" />
+                Behöver du hjälp?
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" className="max-w-xs text-center">
+              <p>Kontakta <span className="font-semibold">David</span> eller <span className="font-semibold">Lina</span> om du behöver hjälp!</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
