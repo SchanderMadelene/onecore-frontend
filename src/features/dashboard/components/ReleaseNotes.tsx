@@ -64,20 +64,19 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
         <button
           onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
           className={`
-            flex items-center justify-center h-[44px] w-[44px] rounded-md
+            flex items-center gap-2 h-[44px] px-3 rounded-md
             transition-colors duration-150
             hover:bg-accent hover:text-accent-foreground
-            active:scale-95 touch-manipulation
+            active:scale-95 touch-manipulation text-sm font-medium
             ${isOpen ? "bg-accent text-accent-foreground" : "text-foreground"}
           `}
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          <div className="relative">
-            <Newspaper className="h-5 w-5" />
-            <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center h-4 min-w-[16px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-medium leading-none">
-              {releaseNotes.length}
-            </span>
-          </div>
+          <Newspaper className="h-4 w-4" />
+          <span className="hidden sm:inline">Nyheter</span>
+          <Badge variant="info" className="text-[10px] px-1.5 py-0 h-5 leading-none">
+            {releaseNotes.length}
+          </Badge>
         </button>
 
         {/* Dropdown panel */}
