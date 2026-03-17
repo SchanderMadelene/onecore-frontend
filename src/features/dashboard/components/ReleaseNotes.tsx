@@ -43,6 +43,15 @@ export const ReleaseNotes = () => {
     (page + 1) * ITEMS_PER_PAGE
   );
 
+  // When collapsed: show only latest note
+  // When expanded: show paginated list (which includes the latest)
+  const remainingNotes = releaseNotes.slice(1);
+  const totalPages = Math.ceil(remainingNotes.length / ITEMS_PER_PAGE);
+  const paginatedRemaining = remainingNotes.slice(
+    page * ITEMS_PER_PAGE,
+    (page + 1) * ITEMS_PER_PAGE
+  );
+
   return (
     <div className="w-full max-w-2xl mx-auto">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -60,20 +69,23 @@ export const ReleaseNotes = () => {
                 className={`h-4 w-4 text-muted-foreground shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
               />
             </div>
-            {!isOpen && latestNote && (
-              <div className="px-4 pb-3 border-t pt-3 mx-4 -mt-0.5">
-                <ReleaseNoteItem note={latestNote} />
-              </div>
-            )}
           </CollapsibleTrigger>
 
-          <CollapsibleContent>
-            <div className="border-t mx-4" />
-            <div className="px-4 py-3 divide-y divide-border">
-              {paginatedNotes.map((note) => (
-                <ReleaseNoteItem key={note.id} note={note} />
-              ))}
+          {/* Latest note always visible */}
+          {latestNote && (
+            <div className="px-4 pb-3 border-t pt-3 mx-4">
+              <ReleaseNoteItem note={latestNote} />
             </div>
+          )}
+
+          <CollapsibleContent>
+            {paginatedRemaining.length > 0 && (
+              <div className="px-4 pb-3 divide-y divide-border">
+                {paginatedRemaining.map((note) => (
+                  <ReleaseNoteItem key={note.id} note={note} />
+                ))}
+              </div>
+            )}
 
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-2 px-4 pb-3">
