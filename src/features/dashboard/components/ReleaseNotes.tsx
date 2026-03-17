@@ -81,7 +81,7 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
         >
           Release notes
           {unreadCount > 0 && (
-            <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-[11px] font-bold leading-none bg-primary text-primary-foreground">
+            <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-[11px] font-bold leading-none bg-highlight text-highlight-foreground">
               {unreadCount}
             </span>
           )}
