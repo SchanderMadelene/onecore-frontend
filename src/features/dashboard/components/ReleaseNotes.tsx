@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Newspaper, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { releaseNotes, type ReleaseCategory } from "@/data/releaseNotes";
+import { useUnreadReleaseNotes } from "@/features/dashboard/hooks/useUnreadReleaseNotes";
 
 const categoryConfig: Record<ReleaseCategory, { label: string; variant: "warning" | "muted" | "info" }> = {
   information: { label: "Information", variant: "warning" },
@@ -37,6 +38,7 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
+  const { unreadCount, markAllAsRead } = useUnreadReleaseNotes();
 
   const totalPages = Math.ceil(releaseNotes.length / ITEMS_PER_PAGE);
   const paginatedNotes = releaseNotes.slice(
@@ -62,7 +64,11 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
       <div className="relative z-[80]" ref={panelRef}>
         {/* Trigger – icon button style to match navbar */}
         <button
-          onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
+          onClick={() => {
+            if (!isOpen) markAllAsRead();
+            setIsOpen(!isOpen);
+            if (isOpen) setPage(0);
+          }}
           className={`
             inline-flex items-center gap-2 px-4 py-2 rounded-full
             text-xs font-medium transition-all duration-200 ease-out
@@ -74,9 +80,11 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           Release notes
-          <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-[11px] font-bold leading-none bg-background/20 text-background">
-            {releaseNotes.length}
-          </span>
+          {unreadCount > 0 && (
+            <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-[11px] font-bold leading-none bg-destructive text-destructive-foreground">
+              {unreadCount}
+            </span>
+          )}
         </button>
 
         {/* Dropdown panel */}
