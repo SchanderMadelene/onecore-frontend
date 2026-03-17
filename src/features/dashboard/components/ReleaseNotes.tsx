@@ -38,6 +38,7 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
+  const { unreadCount, markAllAsRead } = useUnreadReleaseNotes();
 
   const totalPages = Math.ceil(releaseNotes.length / ITEMS_PER_PAGE);
   const paginatedNotes = releaseNotes.slice(
