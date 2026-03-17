@@ -7,7 +7,7 @@ import { releaseNotes, type ReleaseCategory } from "@/data/releaseNotes";
 
 const categoryConfig: Record<ReleaseCategory, { label: string; variant: "warning" | "muted" | "info"; icon: typeof AlertTriangle }> = {
   information: { label: "Information", variant: "warning", icon: AlertTriangle },
-  buggfix: { label: "Buggfix", variant: "muted", icon: Wrench },
+  buggfix: { label: "Buggfix", variant: "muted", icon: Settings2 },
   "ny-funktion": { label: "Ny funktion", variant: "info", icon: Sparkles },
 };
 
