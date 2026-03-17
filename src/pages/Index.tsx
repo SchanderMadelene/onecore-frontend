@@ -9,6 +9,7 @@ import { useRole, roleLabels, UserRole } from "@/contexts/RoleContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import onecoreLogo from "@/assets/logos/stacked/onecore_logo_stacked_black.svg";
+import { ReleaseNotes } from "@/features/dashboard/components/ReleaseNotes";
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
@@ -176,6 +177,8 @@ const Index = () => {
             </TooltipContent>
           </Tooltip>
         </div>
+
+        <ReleaseNotes />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {cardConfigs.map(config => {

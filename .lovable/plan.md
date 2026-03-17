@@ -1,45 +1,73 @@
 
 
-## Plan: Release Notes-modul på dashboarden
+## Plan: Studentboenden — separat flik på Ut- & inflytt
 
-En kompakt, expanderbar "Nyheter och uppdateringar"-sektion på startsidan som visar en preview (senaste 1-2 poster) och kan expanderas för att visa fler.
+### Koncept
 
-### Design
-
-- Placeras mellan "Behöver du hjälp?"-tooltipsen och kortkatalogen
-- **Collapsed (default)**: Visar rubrik med ikon, antal nyheter, och senaste posten i en kompakt rad
-- **Expanded**: Visar alla poster med kategori-badges (färgkodade: Information/gul, Buggfix/grå, Ny funktion/blå), datum och beskrivning
-- Paginering med "< 1/7 >" som i referensbilden, eller en enkel "Visa alla" / "Visa färre"
-- Max-bredd begränsad (t.ex. `max-w-2xl`, centrerad) så den inte tar hela bredden
+Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
 
 ### Datamodell
 
-Hårdkodade release notes i en separat fil `src/data/releaseNotes.ts`:
+Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
+- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
+- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
 
-```ts
-type ReleaseCategory = 'information' | 'buggfix' | 'ny-funktion';
+Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
 
-interface ReleaseNote {
-  id: string;
-  category: ReleaseCategory;
-  title: string;
-  description: string;
-  date: string; // "3 feb. 2026"
-}
+### Mockdata
+
+Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
+
+### Tabell
+
+Ny komponent `StudentTurnoverTable.tsx`:
+- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
+- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
+- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
+
+### Filter
+
+Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
+- Sökfält (sök på rum, namn, e-post)
+- Datumväljare (start/slut)
+- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
+
+### Hook
+
+Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
+
+### Sidstruktur
+
+`TurnoverPage.tsx` uppdateras med `Tabs`:
+
+```text
+┌─────────────────────────────────────┐
+│ Ut- & inflytt          [⭐ Favorit] │
+│ Operativ checklista...              │
+├──────────────┬──────────────────────┤
+│ Ut- & inflytt│ Studentboenden      │  ← Tabs
+├──────────────┴──────────────────────┤
+│ [Filter + Tabell beroende på flik]  │
+└─────────────────────────────────────┘
 ```
 
-### Filer
+### Routing
 
-1. **`src/data/releaseNotes.ts`** — Data-array med release notes
-2. **`src/features/dashboard/components/ReleaseNotes.tsx`** — Komponenten:
-   - Använder `Collapsible` från radix för expand/collapse
-   - Kategori-badges med färgkodning (gul för Information, grå för Buggfix, blå/lila för Ny funktion)
-   - Ikoner per kategori (AlertTriangle, Wrench, Sparkles)
-   - Visar 1 post i collapsed-läge, resten vid expand
-   - Paginering om listan blir lång (visa 3-5 åt gången)
-3. **`src/pages/Index.tsx`** — Importerar och placerar `ReleaseNotes` mellan hjälp-tooltipsen och kortgridet
+Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
 
-### Visuell stil
+### Feature toggle
 
-Följer referensbildens mönster men i kompakt form: tunn border, vit bakgrund, diskret men informativ. Smälter in med dashboardens befintliga design.
+Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
+
+### Filer som skapas/ändras
+
+| Fil | Åtgärd |
+|-----|--------|
+| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
+| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
+| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
+| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
+| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
+| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
+| `src/features/turnover/index.ts` | Exportera nya komponenter |
 
