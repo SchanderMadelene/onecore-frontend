@@ -78,11 +78,12 @@ export function NavigationBar({
             <Search className="h-5 w-5" />
             <span className="sr-only">Toggle Search</span>
           </Button>
+          <ReleaseNotes floating />
           <Link to="/settings">
             <Button 
               variant="ghost" 
               size="icon" 
-              className="ml-2 min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform"
+              className="min-h-[44px] min-w-[44px] relative z-[71] touch-manipulation active:scale-95 transition-transform"
               style={{ WebkitTapHighlightColor: 'transparent' }}
             >
               <Settings className="h-5 w-5" />
