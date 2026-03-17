@@ -63,15 +63,24 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
         {/* Trigger – icon button style to match navbar */}
         <button
           onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
-          className="touch-manipulation active:scale-95 transition-transform"
+          className={`
+            inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full
+            border text-xs font-medium transition-all duration-150
+            touch-manipulation active:scale-95
+            ${isOpen 
+              ? "bg-primary text-primary-foreground border-primary shadow-sm" 
+              : "border-border text-foreground bg-background hover:bg-accent hover:border-accent-foreground/20 hover:shadow-sm"
+            }
+          `}
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          <Badge variant="info" className="cursor-pointer hover:opacity-80 transition-opacity gap-1.5 px-2.5 py-1">
-            Release notes
-            <span className="bg-background/20 text-inherit rounded-full px-1.5 text-[10px] font-semibold leading-none py-0.5">
-              {releaseNotes.length}
-            </span>
-          </Badge>
+          Release notes
+          <span className={`
+            inline-flex items-center justify-center h-4 min-w-[16px] px-1 rounded-full text-[10px] font-semibold leading-none
+            ${isOpen ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary text-primary-foreground"}
+          `}>
+            {releaseNotes.length}
+          </span>
         </button>
 
         {/* Dropdown panel */}
