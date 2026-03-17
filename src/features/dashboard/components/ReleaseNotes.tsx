@@ -5,16 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Newspaper, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, Sparkles } from "lucide-react";
 import { releaseNotes, type ReleaseCategory } from "@/data/releaseNotes";
 
-const BuggfixIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M12 3v4m0 10v4M3 12h4m10 0h4M5.6 5.6l2.8 2.8m7.2 7.2l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" />
-  </svg>
-);
-
-const categoryConfig: Record<ReleaseCategory, { label: string; variant: "warning" | "muted" | "info"; iconColor: string; icon: React.FC<{ className?: string }> }> = {
-  information: { label: "Information", variant: "warning", iconColor: "text-amber-500", icon: AlertTriangle },
-  buggfix: { label: "Buggfix", variant: "muted", iconColor: "text-muted-foreground", icon: BuggfixIcon },
-  "ny-funktion": { label: "Ny funktion", variant: "info", iconColor: "text-sky-500", icon: Sparkles },
+const categoryConfig: Record<ReleaseCategory, { label: string; variant: "warning" | "muted" | "info" }> = {
+  information: { label: "Information", variant: "warning" },
+  buggfix: { label: "Buggfix", variant: "muted" },
+  "ny-funktion": { label: "Ny funktion", variant: "info" },
 };
 
 const ITEMS_PER_PAGE = 3;
