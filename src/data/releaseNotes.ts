@@ -10,6 +10,20 @@ export interface ReleaseNote {
 
 export const releaseNotes: ReleaseNote[] = [
   {
+    id: "9",
+    category: "ny-funktion",
+    title: "Förbättrad sökfunktion",
+    description: "Sökfunktionen i fastighetsregistret har optimerats för snabbare och mer relevanta resultat.",
+    date: "17 mar. 2026",
+  },
+  {
+    id: "8",
+    category: "buggfix",
+    title: "Fix av notifieringar på mobil",
+    description: "Push-notiser visas nu korrekt på alla mobilenheter.",
+    date: "17 mar. 2026",
+  },
+  {
     id: "7",
     category: "ny-funktion",
     title: "Release Notes på startsidan",
