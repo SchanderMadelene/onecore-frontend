@@ -24,19 +24,19 @@ const ReleaseNoteItem = ({ note }: { note: typeof releaseNotes[0] }) => {
   const Icon = config.icon;
 
   return (
-    <div className="flex gap-3 py-3 first:pt-0 last:pb-0">
-      <div className="mt-0.5 shrink-0">
-        <Icon className={`h-5 w-5 ${config.iconColor}`} />
+    <div className="flex gap-4 py-4 first:pt-0 last:pb-0">
+      <div className="mt-1 shrink-0 h-8 w-8 rounded-full bg-muted/50 flex items-center justify-center">
+        <Icon className={`h-4 w-4 ${config.iconColor}`} />
       </div>
       <div className="flex-1 min-w-0 space-y-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm font-medium">{note.title}</span>
-          <Badge variant={config.variant} className="text-[10px] px-1.5 py-0">
+          <Badge variant={config.variant}>
             {config.label}
           </Badge>
+          <span className="text-xs text-muted-foreground">{note.date}</span>
         </div>
-        <p className="text-xs text-muted-foreground">{note.description}</p>
-        <p className="text-[10px] text-muted-foreground/60">{note.date}</p>
+        <p className="text-sm font-semibold">{note.title}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{note.description}</p>
       </div>
     </div>
   );
