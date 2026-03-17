@@ -63,19 +63,14 @@ export const ReleaseNotes = ({ floating = false }: ReleaseNotesProps) => {
         {/* Trigger – icon button style to match navbar */}
         <button
           onClick={() => { setIsOpen(!isOpen); if (isOpen) setPage(0); }}
-          className={`
-            flex items-center gap-2 h-[44px] px-3 rounded-md
-            transition-colors duration-150
-            hover:bg-accent hover:text-accent-foreground
-            active:scale-95 touch-manipulation text-sm font-medium
-            ${isOpen ? "bg-accent text-accent-foreground" : "text-foreground"}
-          `}
+          className="touch-manipulation active:scale-95 transition-transform"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          <Newspaper className="h-4 w-4" />
-          <span className="hidden sm:inline">Release notes</span>
-          <Badge variant="info" className="text-[10px] px-1.5 py-0 h-5 leading-none">
-            {releaseNotes.length}
+          <Badge variant="info" className="cursor-pointer hover:opacity-80 transition-opacity gap-1.5 px-2.5 py-1">
+            Release notes
+            <span className="bg-background/20 text-inherit rounded-full px-1.5 text-[10px] font-semibold leading-none py-0.5">
+              {releaseNotes.length}
+            </span>
           </Badge>
         </button>
 
