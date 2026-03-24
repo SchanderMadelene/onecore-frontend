@@ -54,7 +54,6 @@ export function RoomInspectionMobile({
       id: `${type}-${Date.now()}`,
       type,
       label: typeInfo.label,
-      cost: null,
     };
 
     onCustomComponentsUpdate([...inspectionData.customComponents, newComponent]);
@@ -63,15 +62,6 @@ export function RoomInspectionMobile({
   const handleRemoveCustomComponent = (id: string) => {
     if (!onCustomComponentsUpdate) return;
     onCustomComponentsUpdate(inspectionData.customComponents.filter(c => c.id !== id));
-  };
-
-  const handleCustomCostChange = (id: string, cost: number | null) => {
-    if (!onCustomComponentsUpdate) return;
-    onCustomComponentsUpdate(
-      inspectionData.customComponents.map(c =>
-        c.id === id ? { ...c, cost } : c
-      )
-    );
   };
 
   return (
@@ -117,7 +107,6 @@ export function RoomInspectionMobile({
             components={inspectionData.customComponents}
             onAdd={handleAddCustomComponent}
             onRemove={handleRemoveCustomComponent}
-            onCostChange={handleCustomCostChange}
           />
         </div>
 

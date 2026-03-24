@@ -22,7 +22,6 @@ export interface CustomInspectionComponent {
   id: string;
   type: CustomComponentType;
   label: string;
-  cost: number | null; // Kostnad i kronor
 }
 
 export interface InspectionRoom {
