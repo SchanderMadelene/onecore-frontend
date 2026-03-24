@@ -245,6 +245,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handlePhotoRemove,
     handleApproveRoom,
     handleCostResponsibilityUpdate,
-    handleCustomComponentsUpdate
+    handleCustomComponentsUpdate,
+    handleCostUpdate
   };
 }
