@@ -106,7 +106,6 @@ export function RoomInspectionMobile({
         <div className="mt-2">
           <Separator className="mb-4" />
           <div className="flex items-center gap-2 mb-3">
-            <ClipboardList className="h-4.5 w-4.5 text-muted-foreground" />
             <h4 className="font-medium text-base">Detaljer</h4>
             {inspectionData.customComponents.length > 0 && (
               <span className="text-xs text-muted-foreground">
