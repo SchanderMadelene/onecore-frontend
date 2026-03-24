@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ClipboardList } from "lucide-react";
+
 import type { Room } from "@/types/api";
 import type { InspectionRoom, CostResponsibility, CustomComponentType, CustomInspectionComponent } from "../types";
 import { CUSTOM_COMPONENT_TYPES } from "../types";
