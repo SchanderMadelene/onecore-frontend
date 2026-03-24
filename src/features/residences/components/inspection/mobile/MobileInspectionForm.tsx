@@ -11,6 +11,7 @@ import { InspectionProgressIndicator } from "./InspectionProgressIndicator";
 import { RoomInspectionMobile } from "./RoomInspectionMobile";
 import { InspectorSelectionCard } from "./InspectorSelectionCard";
 import { InspectionSummary } from "../InspectionSummary";
+import { FloorplanOverlay } from "../FloorplanOverlay";
 
 interface MobileInspectionFormProps {
   rooms: Room[];
