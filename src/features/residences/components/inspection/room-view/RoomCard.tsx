@@ -4,6 +4,7 @@ import { RoomView } from "./RoomView";
 import { EmptyInspectionState } from "./EmptyInspectionState";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType } from "../types";
+import { initialRoomData } from "../form/initialData";
 import {
   Accordion,
   AccordionContent,
@@ -32,56 +33,9 @@ export const RoomCard = ({
   onSave
 }: RoomCardProps) => {
   
-  const inspectionData = currentInspection?.rooms[room.id] || {
+  const inspectionData: InspectionRoomType = currentInspection?.rooms[room.id] || {
+    ...initialRoomData,
     roomId: room.id,
-    conditions: {
-      wall1: "",
-      wall2: "",
-      wall3: "",
-      wall4: "",
-      floor: "",
-      ceiling: "",
-      details: ""
-    },
-    actions: {
-      wall1: [],
-      wall2: [],
-      wall3: [],
-      wall4: [],
-      floor: [],
-      ceiling: [],
-      details: []
-    },
-    componentNotes: {
-      wall1: "",
-      wall2: "",
-      wall3: "",
-      wall4: "",
-      floor: "",
-      ceiling: "",
-      details: ""
-    },
-    componentPhotos: {
-      wall1: [],
-      wall2: [],
-      wall3: [],
-      wall4: [],
-      floor: [],
-      ceiling: [],
-      details: []
-    },
-    costResponsibility: {
-      wall1: null,
-      wall2: null,
-      wall3: null,
-      wall4: null,
-      floor: null,
-      ceiling: null,
-      details: null
-    },
-    photos: [],
-    isApproved: false,
-    isHandled: false
   };
 
   return (
