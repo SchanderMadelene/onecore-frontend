@@ -105,7 +105,7 @@ export function MobileInspectionForm({
 
   const canComplete = inspectorName && inspectionTime && completedRooms === rooms.length;
 
-  // Reset scroll position when room changes
+  // Reset scroll position when room or view changes
   useEffect(() => {
     if (scrollAreaRef.current) {
       const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
@@ -113,7 +113,7 @@ export function MobileInspectionForm({
         viewport.scrollTop = 0;
       }
     }
-  }, [currentRoomIndex]);
+  }, [currentRoomIndex, showSummary]);
 
   if (showInspectorSelection) {
     return (
