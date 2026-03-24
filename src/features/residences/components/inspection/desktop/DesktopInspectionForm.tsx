@@ -51,6 +51,8 @@ export function DesktopInspectionForm({
     handleCostUpdate
   } = useInspectionForm(rooms, existingInspection);
 
+  const [showSummary, setShowSummary] = useState(false);
+
   useEffect(() => {
     if (!inspectorName && currentUser && !existingInspection) {
       setInspectorName(currentUser);
