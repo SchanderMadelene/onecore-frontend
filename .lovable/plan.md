@@ -1,73 +1,41 @@
 
 
-## Plan: Studentboenden — separat flik på Ut- & inflytt
+## Plan: Ändra rumskomponenter i besiktningen
 
-### Koncept
+### Vad ändras
 
-Sidan `/turnover` får två flikar högst upp: **Ut- & inflytt** (nuvarande vy) och **Studentboenden**. Flikarna implementeras med `Tabs` från shadcn. Studentfliken visar en förenklad tabell med andra kolumner och en minimal checklist (bara städkontroll).
+Nuvarande komponenter per rum: Vägg 1, Vägg 2, Vägg 3, Vägg 4, Golv, Tak, Detaljer
 
-### Datamodell
+Nya komponenter per rum: **Väggar** (en samlad), **Golv**, **Tak**, **Vitvaror**, **Köksluckor**
 
-Ny typ `StudentTurnoverEntry` i `move-in-list-types.ts`:
-- `id`, `type` ('move_in' | 'move_out'), `roomCode` (t.ex. "302-10-1101A"), `propertyName` (t.ex. "Kata"), `gender`, `birthDate`, `email`, `date`
-- `cleaningChecklist`: bara `cleaningStatus`, `cleaningCount`, `cleaningBookedDate`, `cleaningApprovedDate` (samma typer som befintligt)
+### Tekniska ändringar
 
-Ny typ `StudentTurnoverRow` som grupperar in/ut per rum.
+**1. Uppdatera datamodellen** (`types.ts`)
+- Ta bort `wall2`, `wall3`, `wall4` från alla objekt (conditions, actions, componentNotes, componentPhotos, costResponsibility)
+- Byt namn på `wall1` → `walls`
+- Byt `details` → `appliances` (vitvaror) och lägg till `kitchenDoors` (köksluckor)
 
-### Mockdata
+**2. Uppdatera initial data** (`form/initialData.ts`)
+- Spegla den nya strukturen med `walls`, `floor`, `ceiling`, `appliances`, `kitchenDoors`
 
-Ny fil `mock-student-turnover.ts` med ~10 poster fördelade på 2 fastigheter (Kata, Locus) i KVV-prefix 615.
+**3. Uppdatera komponentlistan** (`mobile/RoomInspectionMobile.tsx`)
+- Ändra COMPONENTS-arrayen till de 5 nya komponenterna med rätt labels och typer
 
-### Tabell
+**4. Uppdatera labels och utils** (`inspection-utils.ts`)
+- Uppdatera `COMPONENT_LABELS` med nya nycklar och svenska namn
 
-Ny komponent `StudentTurnoverTable.tsx`:
-- **Kolumner (desktop):** Fastighet, Rum, Utflytt (namn, kön, födelsedatum, e-post), Städkontroll, Inflytt (namn, kön, födelsedatum, e-post), Städkontroll
-- **Mobilvy:** MobileAccordion med samma mönster som befintlig, men anpassade fält
-- Återanvänder `CleaningStatusBadge`, `CleaningEditDialog` etc.
+**5. Uppdatera ActionChecklist** (`ActionChecklist.tsx`)
+- Lägg till actiontyper för `appliances` (Reparation, Byte, Justering) och `kitchenDoors` (Reparation, Byte, Justering, Målning)
 
-### Filter
+**6. Uppdatera ConditionSelect** (`ConditionSelect.tsx`)
+- Lägg till `appliances` och `kitchenDoors` som giltiga typer
 
-Ny komponent `StudentTurnoverFilters.tsx` — samma layout som `MoveInListFilters` men med:
-- Sökfält (sök på rum, namn, e-post)
-- Datumväljare (start/slut)
-- **Fastighetsfilter** (Select med "Alla fastigheter", "Kata", "Locus" etc.) — ny kolumn i tabellen också
+**7. Uppdatera alla övriga filer som refererar gamla nycklar:**
+- `InspectionRoom.tsx` — uppdatera completion-check
+- `InspectionAccordion.tsx` — uppdatera accordion-sektioner
+- `RoomCard.tsx` — uppdatera default-data
+- `pdf/generateInspectionPdf.ts` och `pdf/types.ts` — uppdatera komponentlistor och labels
+- Mockdata som refererar `wall1`–`wall4` eller `details`
 
-### Hook
-
-Ny hook `useStudentTurnover.ts` — liknande `useMoveInList` men för studentdata, med fastighetsfilter.
-
-### Sidstruktur
-
-`TurnoverPage.tsx` uppdateras med `Tabs`:
-
-```text
-┌─────────────────────────────────────┐
-│ Ut- & inflytt          [⭐ Favorit] │
-│ Operativ checklista...              │
-├──────────────┬──────────────────────┤
-│ Ut- & inflytt│ Studentboenden      │  ← Tabs
-├──────────────┴──────────────────────┤
-│ [Filter + Tabell beroende på flik]  │
-└─────────────────────────────────────┘
-```
-
-### Routing
-
-Flikarna styrs via URL-parameter (`?tab=students`) eller Tabs-state. Ingen ny route behövs.
-
-### Feature toggle
-
-Studentfliken visas alltid (flikens label syns) men innehållet kan vara tomt om inga studentposter finns — i linje med regeln att labels inte ska döljas.
-
-### Filer som skapas/ändras
-
-| Fil | Åtgärd |
-|-----|--------|
-| `src/features/turnover/types/move-in-list-types.ts` | Lägg till `StudentTurnoverEntry`, `StudentTurnoverRow` |
-| `src/features/turnover/data/mock-student-turnover.ts` | Ny mockdata |
-| `src/features/turnover/hooks/useStudentTurnover.ts` | Ny hook med fastighetsfilter |
-| `src/features/turnover/components/StudentTurnoverTable.tsx` | Ny tabell |
-| `src/features/turnover/components/StudentTurnoverFilters.tsx` | Nya filter (med fastighetsval) |
-| `src/pages/turnover/TurnoverPage.tsx` | Tabs-wrapper runt befintligt + studentflik |
-| `src/features/turnover/index.ts` | Exportera nya komponenter |
+**8. Rensa localStorage** — Befintliga sparade besiktningar med gammal struktur kommer inte matcha. Vi lägger till en versionscheck eller rensar vid inkompatibilitet.
 
