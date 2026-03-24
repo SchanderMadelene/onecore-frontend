@@ -170,7 +170,11 @@ export function MobileInspectionForm({
       {/* Sticky Header with Room Navigation */}
       <div className="sticky top-0 z-10 bg-background shadow-sm">
         <div className="border-b">
-          {!showSummary && (
+          {showSummary ? (
+            <div className="px-4 pt-8 pb-4">
+              <span className="font-medium text-sm">Sammanställning</span>
+            </div>
+          ) : (
             <InspectionProgressIndicator 
               current={completedRooms} 
               total={rooms.length} 
