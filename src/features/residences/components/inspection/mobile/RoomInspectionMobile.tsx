@@ -65,15 +65,6 @@ export function RoomInspectionMobile({
     onCustomComponentsUpdate(inspectionData.customComponents.filter(c => c.id !== id));
   };
 
-  const handleCustomCostChange = (id: string, cost: number | null) => {
-    if (!onCustomComponentsUpdate) return;
-    onCustomComponentsUpdate(
-      inspectionData.customComponents.map(c =>
-        c.id === id ? { ...c, cost } : c
-      )
-    );
-  };
-
   return (
     <Card>
       <CardContent className="p-4">
