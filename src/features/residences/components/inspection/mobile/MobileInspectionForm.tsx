@@ -240,11 +240,24 @@ export function MobileInspectionForm({
         <ScrollArea ref={scrollAreaRef} className="h-full">
           <div className="px-4 pb-4">
             {showSummary ? (
-              <InspectionSummary
-                rooms={rooms}
-                inspectionData={inspectionData}
-                onCostUpdate={handleCostUpdate}
-              />
+              <div className="space-y-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium">Möblerad bostad</p>
+                        <p className="text-xs text-muted-foreground">Är bostaden möblerad vid besiktningstillfället?</p>
+                      </div>
+                      <Switch checked={isFurnished} onCheckedChange={setIsFurnished} />
+                    </div>
+                  </CardContent>
+                </Card>
+                <InspectionSummary
+                  rooms={rooms}
+                  inspectionData={inspectionData}
+                  onCostUpdate={handleCostUpdate}
+                />
+              </div>
             ) : (
               <RoomInspectionMobile 
                 room={currentRoom} 
