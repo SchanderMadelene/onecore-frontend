@@ -33,6 +33,7 @@ export function MobileInspectionForm({
   existingInspection
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
+  const [showSummary, setShowSummary] = useState(false);
   // If we have existing inspection data, skip inspector selection
   const [showInspectorSelection, setShowInspectorSelection] = useState(!existingInspection);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -50,7 +51,8 @@ export function MobileInspectionForm({
     handleComponentPhotoAdd,
     handleComponentPhotoRemove,
     handleCostResponsibilityUpdate,
-    handleCustomComponentsUpdate
+    handleCustomComponentsUpdate,
+    handleCostUpdate
   } = useInspectionForm(rooms, existingInspection);
 
   const currentRoom = rooms[currentRoomIndex];
