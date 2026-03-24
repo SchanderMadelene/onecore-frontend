@@ -54,11 +54,7 @@ export function RoomInspectionMobile({
       id: `${type}-${Date.now()}`,
       type,
       label: typeInfo.label,
-      condition: "",
-      actions: [],
-      note: "",
-      photos: [],
-      costResponsibility: null,
+      cost: null,
     };
 
     onCustomComponentsUpdate([...inspectionData.customComponents, newComponent]);
@@ -69,34 +65,11 @@ export function RoomInspectionMobile({
     onCustomComponentsUpdate(inspectionData.customComponents.filter(c => c.id !== id));
   };
 
-  const handleCustomConditionChange = (id: string, condition: string) => {
-    if (!onCustomComponentsUpdate) return;
-    onCustomComponentsUpdate(
-      inspectionData.customComponents.map(c => c.id === id ? { ...c, condition } : c)
-    );
-  };
-
-  const handleCustomNoteChange = (id: string, note: string) => {
-    if (!onCustomComponentsUpdate) return;
-    onCustomComponentsUpdate(
-      inspectionData.customComponents.map(c => c.id === id ? { ...c, note } : c)
-    );
-  };
-
-  const handleCustomPhotoAdd = (id: string, photoDataUrl: string) => {
+  const handleCustomCostChange = (id: string, cost: number | null) => {
     if (!onCustomComponentsUpdate) return;
     onCustomComponentsUpdate(
       inspectionData.customComponents.map(c =>
-        c.id === id ? { ...c, photos: [...c.photos, photoDataUrl] } : c
-      )
-    );
-  };
-
-  const handleCustomCostChange = (id: string, value: CostResponsibility) => {
-    if (!onCustomComponentsUpdate) return;
-    onCustomComponentsUpdate(
-      inspectionData.customComponents.map(c =>
-        c.id === id ? { ...c, costResponsibility: value } : c
+        c.id === id ? { ...c, cost } : c
       )
     );
   };
@@ -145,10 +118,7 @@ export function RoomInspectionMobile({
             components={inspectionData.customComponents}
             onAdd={handleAddCustomComponent}
             onRemove={handleRemoveCustomComponent}
-            onConditionChange={handleCustomConditionChange}
-            onNoteChange={handleCustomNoteChange}
-            onPhotoAdd={handleCustomPhotoAdd}
-            onCostResponsibilityChange={handleCustomCostChange}
+            onCostChange={handleCustomCostChange}
           />
         </div>
 
