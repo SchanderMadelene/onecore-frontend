@@ -97,7 +97,7 @@ export function DesktopInspectionForm({
   };
 
   return (
-    <div className="flex flex-col min-w-0 min-h-0 flex-1 overflow-hidden">
+    <div className="flex flex-col min-w-0 min-h-0 flex-1 overflow-hidden relative">
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto min-h-0 space-y-6 pr-1">
         {showSummary ? (
