@@ -72,11 +72,15 @@ export function MobileInspectionForm({
   const handleNext = () => {
     if (currentRoomIndex < rooms.length - 1) {
       setCurrentRoomIndex(currentRoomIndex + 1);
+    } else {
+      setShowSummary(true);
     }
   };
 
   const handlePrevious = () => {
-    if (currentRoomIndex > 0) {
+    if (showSummary) {
+      setShowSummary(false);
+    } else if (currentRoomIndex > 0) {
       setCurrentRoomIndex(currentRoomIndex - 1);
     }
   };
