@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Switch } from "@/shared/ui/switch";
 import { RoomInspectionMobile } from "../mobile/RoomInspectionMobile";
 import { InspectorSelectionCard } from "../mobile/InspectorSelectionCard";
 import { useInspectionForm } from "@/features/residences/hooks/useInspectionForm";
@@ -43,6 +45,8 @@ export function DesktopInspectionForm({
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    isFurnished,
+    setIsFurnished,
     inspectionData,
     handleConditionUpdate,
     handleActionUpdate,
@@ -82,6 +86,7 @@ export function DesktopInspectionForm({
     if (canComplete) {
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
+        isFurnished,
         tenant: createTenantSnapshot()
       });
     }
@@ -91,6 +96,7 @@ export function DesktopInspectionForm({
     if (inspectorName.trim()) {
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
+        isFurnished,
         tenant: createTenantSnapshot()
       });
     }
@@ -108,6 +114,17 @@ export function DesktopInspectionForm({
                 Tillbaka till rum
               </Button>
             </div>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium">Möblerad bostad</p>
+                    <p className="text-xs text-muted-foreground">Är bostaden möblerad vid besiktningstillfället?</p>
+                  </div>
+                  <Switch checked={isFurnished} onCheckedChange={setIsFurnished} />
+                </div>
+              </CardContent>
+            </Card>
             <InspectionSummary
               rooms={rooms}
               inspectionData={inspectionData}

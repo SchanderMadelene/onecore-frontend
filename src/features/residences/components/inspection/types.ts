@@ -104,11 +104,13 @@ export interface Inspection {
   // Från formuläret
   needsMasterKey: boolean;
   
+  isFurnished?: boolean;
   isCompleted?: boolean; // Deprecated, use status instead
 }
 
 // Data som skickas från formulär till sparfunktion
 export interface InspectionSubmitData {
   needsMasterKey: boolean;
+  isFurnished: boolean;
   tenant?: TenantSnapshot;
 }

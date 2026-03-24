@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Switch } from "@/shared/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft, ChevronRight, User, ClipboardList } from "lucide-react";
@@ -47,6 +48,8 @@ export function MobileInspectionForm({
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    isFurnished,
+    setIsFurnished,
     inspectionData,
     handleConditionUpdate,
     handleActionUpdate,
@@ -92,6 +95,7 @@ export function MobileInspectionForm({
     if (canComplete) {
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
+        isFurnished,
         tenant: createTenantSnapshot()
       });
     }
@@ -101,6 +105,7 @@ export function MobileInspectionForm({
     if (inspectorName.trim()) {
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
+        isFurnished,
         tenant: createTenantSnapshot()
       });
     }
@@ -235,11 +240,24 @@ export function MobileInspectionForm({
         <ScrollArea ref={scrollAreaRef} className="h-full">
           <div className="px-4 pb-4">
             {showSummary ? (
-              <InspectionSummary
-                rooms={rooms}
-                inspectionData={inspectionData}
-                onCostUpdate={handleCostUpdate}
-              />
+              <div className="space-y-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium">Möblerad bostad</p>
+                        <p className="text-xs text-muted-foreground">Är bostaden möblerad vid besiktningstillfället?</p>
+                      </div>
+                      <Switch checked={isFurnished} onCheckedChange={setIsFurnished} />
+                    </div>
+                  </CardContent>
+                </Card>
+                <InspectionSummary
+                  rooms={rooms}
+                  inspectionData={inspectionData}
+                  onCostUpdate={handleCostUpdate}
+                />
+              </div>
             ) : (
               <RoomInspectionMobile 
                 room={currentRoom} 
