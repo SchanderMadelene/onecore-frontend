@@ -1,20 +1,29 @@
 
 
-## Plan: Förenkla Detaljer-sektionen (ta bort kostnad)
+## Plan: Planritning i besiktningsformuläret
 
-Kostnader ska istället fyllas i på en sammanfattningssida i ett senare steg. Nu tar vi bara bort kostnadsinput från detaljerna.
+### Koncept
+En liten flytande knapp (FAB-stil) med en planritnings-ikon som alltid syns under besiktningen. Vid klick öppnas planritningen i en dialog (desktop) eller bottom sheet (mobil) som enkelt stängs med klick utanför eller stäng-knapp. Snabb att öppna, snabb att stänga — stör inte arbetsflödet.
 
 ### Ändringar
 
-**1. `CustomComponentsSection.tsx`** — Förenkla tabellen:
-- Ta bort `onCostChange` från props
-- Ändra grid från 3 kolumner (`[1fr_120px_36px]`) till 2 kolumner (`[1fr_36px]`)
-- Ta bort kostnad-kolumnheader, kostnad-input och totalraden
+**1. Ny komponent `FloorplanOverlay.tsx`**
+- En knapp med `FileImage`-ikon, positionerad som flytande element (fixed/absolute)
+- Öppnar en `Dialog` med planritningsbilden (eller placeholder om ingen finns)
+- Stödjer både mobil och desktop
 
-**2. `types.ts`** — Ta bort `cost` från `CustomInspectionComponent`:
-- Ta bort `cost: number | null`
+**2. `MobileInspectionForm.tsx`**
+- Lägg till `FloorplanOverlay` i formuläret, placerad ovanför bottom navigation (t.ex. `bottom-24 right-4`)
 
-**3. `RoomInspectionMobile.tsx`** — Ta bort `handleCostChange` och sluta skicka `onCostChange`-prop
+**3. `DesktopInspectionForm.tsx`**
+- Lägg till `FloorplanOverlay` i formuläret, placerad i nedre högra hörnet av scrollområdet
 
-**4. Mockdata** (`inspections.ts`, `OrdersShowcase.tsx`) — Ta bort `cost`-fält från eventuella customComponents
+**4. Props**
+- Komponenten tar emot en valfri `floorplanImage?: string` (URL) — om ingen finns visas en placeholder
+- Besiktningsformulären behöver ta emot denna prop från förälder (kan vara `undefined` initialt och byggas ut senare)
+
+### UX-detaljer
+- Knappen är semi-transparent, rundad, med tooltip "Planritning"
+- Dialogen har ingen extra chrome — bara bilden och en stäng-knapp
+- Klick utanför stänger automatiskt
 
