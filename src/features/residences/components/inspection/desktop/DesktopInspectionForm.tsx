@@ -95,91 +95,101 @@ export function DesktopInspectionForm({
     <div className="flex flex-col min-w-0 min-h-0 flex-1 overflow-hidden">
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto min-h-0 space-y-6 pr-1">
-        {/* Reuse the same card component with horizontal layout for desktop */}
-        <InspectorSelectionCard
-          inspectorName={inspectorName}
-          setInspectorName={setInspectorName}
-          inspectionTime={inspectionTime}
-          setInspectionTime={setInspectionTime}
-          needsMasterKey={needsMasterKey}
-          setNeedsMasterKey={setNeedsMasterKey}
-          tenant={tenant}
-          layout="horizontal"
-        />
+        {showSummary ? (
+          <>
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="sm" onClick={() => setShowSummary(false)}>
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Tillbaka till rum
+              </Button>
+            </div>
+            <InspectionSummary
+              rooms={rooms}
+              inspectionData={inspectionData}
+              onCostUpdate={handleCostUpdate}
+            />
+          </>
+        ) : (
+          <>
+            {/* Reuse the same card component with horizontal layout for desktop */}
+            <InspectorSelectionCard
+              inspectorName={inspectorName}
+              setInspectorName={setInspectorName}
+              inspectionTime={inspectionTime}
+              setInspectionTime={setInspectionTime}
+              needsMasterKey={needsMasterKey}
+              setNeedsMasterKey={setNeedsMasterKey}
+              tenant={tenant}
+              layout="horizontal"
+            />
 
-        {/* Progress counter */}
-        <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-          <span className="text-sm font-medium">Besiktningsframsteg</span>
-          <span className="text-sm text-muted-foreground">
-            {completedRooms}/{rooms.length} rum klara
-          </span>
-        </div>
+            {/* Progress counter */}
+            <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+              <span className="text-sm font-medium">Besiktningsframsteg</span>
+              <span className="text-sm text-muted-foreground">
+                {completedRooms}/{rooms.length} rum klara
+              </span>
+            </div>
 
-        {/* Room accordion */}
-        <Accordion type="multiple" className="space-y-2">
-          {rooms.map(room => {
-            const roomData = inspectionData[room.id];
-            const isCompleted = roomData?.isHandled;
-            
-            return (
-              <AccordionItem 
-                key={room.id} 
-                value={room.id}
-                className="border rounded-lg"
-              >
-                <AccordionTrigger className="hover:no-underline sticky top-0 bg-background z-10">
-                  <div className="flex items-center justify-between w-full pr-4">
-                    <div className="flex items-center gap-3">
-                      <span className="font-medium">{room.name}</span>
-                      <span className="text-sm text-muted-foreground">{room.size}</span>
-                    </div>
-                    {isCompleted && (
-                      <Badge variant="default" className="gap-1">
-                        <CheckCircle2 className="h-3 w-3" />
-                        Klar
-                      </Badge>
-                    )}
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="pr-4 min-w-0">
-                  <RoomInspectionMobile
-                    room={room}
-                    inspectionData={roomData}
-                    onConditionUpdate={(field, value) => 
-                      handleConditionUpdate(room.id, field, value)
-                    }
-                    onActionUpdate={(field, action) => 
-                      handleActionUpdate(room.id, field, action)
-                    }
-                    onComponentNoteUpdate={(field, note) => 
-                      handleComponentNoteUpdate(room.id, field, note)
-                    }
-                    onComponentPhotoAdd={(field, photoDataUrl) => 
-                      handleComponentPhotoAdd(room.id, field, photoDataUrl)
-                    }
-                    onComponentPhotoRemove={(field, index) => 
-                      handleComponentPhotoRemove(room.id, field, index)
-                    }
-                    onCostResponsibilityUpdate={(field, value) =>
-                      handleCostResponsibilityUpdate(room.id, field, value)
-                    }
-                    onCustomComponentsUpdate={(components) =>
-                      handleCustomComponentsUpdate(room.id, components)
-                    }
-                  />
-                </AccordionContent>
-              </AccordionItem>
-            );
-          })}
-        </Accordion>
-
-        {/* Summary section */}
-        <Separator />
-        <InspectionSummary
-          rooms={rooms}
-          inspectionData={inspectionData}
-          onCostUpdate={handleCostUpdate}
-        />
+            {/* Room accordion */}
+            <Accordion type="multiple" className="space-y-2">
+              {rooms.map(room => {
+                const roomData = inspectionData[room.id];
+                const isCompleted = roomData?.isHandled;
+                
+                return (
+                  <AccordionItem 
+                    key={room.id} 
+                    value={room.id}
+                    className="border rounded-lg"
+                  >
+                    <AccordionTrigger className="hover:no-underline sticky top-0 bg-background z-10">
+                      <div className="flex items-center justify-between w-full pr-4">
+                        <div className="flex items-center gap-3">
+                          <span className="font-medium">{room.name}</span>
+                          <span className="text-sm text-muted-foreground">{room.size}</span>
+                        </div>
+                        {isCompleted && (
+                          <Badge variant="default" className="gap-1">
+                            <CheckCircle2 className="h-3 w-3" />
+                            Klar
+                          </Badge>
+                        )}
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pr-4 min-w-0">
+                      <RoomInspectionMobile
+                        room={room}
+                        inspectionData={roomData}
+                        onConditionUpdate={(field, value) => 
+                          handleConditionUpdate(room.id, field, value)
+                        }
+                        onActionUpdate={(field, action) => 
+                          handleActionUpdate(room.id, field, action)
+                        }
+                        onComponentNoteUpdate={(field, note) => 
+                          handleComponentNoteUpdate(room.id, field, note)
+                        }
+                        onComponentPhotoAdd={(field, photoDataUrl) => 
+                          handleComponentPhotoAdd(room.id, field, photoDataUrl)
+                        }
+                        onComponentPhotoRemove={(field, index) => 
+                          handleComponentPhotoRemove(room.id, field, index)
+                        }
+                        onCostResponsibilityUpdate={(field, value) =>
+                          handleCostResponsibilityUpdate(room.id, field, value)
+                        }
+                        onCustomComponentsUpdate={(components) =>
+                          handleCustomComponentsUpdate(room.id, components)
+                        }
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          </>
+        )}
       </div>
 
       {/* Footer buttons - sticky at bottom */}
@@ -194,9 +204,16 @@ export function DesktopInspectionForm({
         >
           Spara utkast
         </Button>
-        <Button onClick={handleSubmit} disabled={!canComplete}>
-          Slutför besiktning
-        </Button>
+        {showSummary ? (
+          <Button onClick={handleSubmit} disabled={!canComplete}>
+            Slutför besiktning
+          </Button>
+        ) : (
+          <Button onClick={() => setShowSummary(true)}>
+            <ClipboardList className="h-4 w-4 mr-1" />
+            Sammanställning
+          </Button>
+        )}
       </div>
     </div>
   );
