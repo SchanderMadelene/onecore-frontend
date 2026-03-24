@@ -171,7 +171,7 @@ export function MobileInspectionForm({
       <div className="sticky top-0 z-10 bg-background shadow-sm">
         <div className="border-b">
           {showSummary ? (
-            <div className="px-4 pt-8 pb-4">
+            <div className="px-4 pt-8 pb-[34px]">
               <span className="font-medium text-sm">Sammanställning</span>
             </div>
           ) : (
