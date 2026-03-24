@@ -19,7 +19,6 @@ export function CustomComponentsSection({
   components,
   onAdd,
   onRemove,
-  onCostChange,
 }: CustomComponentsSectionProps) {
   const [open, setOpen] = useState(false);
 
