@@ -47,6 +47,8 @@ export function MobileInspectionForm({
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    isFurnished,
+    setIsFurnished,
     inspectionData,
     handleConditionUpdate,
     handleActionUpdate,

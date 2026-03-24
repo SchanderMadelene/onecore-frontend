@@ -43,6 +43,8 @@ export function DesktopInspectionForm({
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    isFurnished,
+    setIsFurnished,
     inspectionData,
     handleConditionUpdate,
     handleActionUpdate,
