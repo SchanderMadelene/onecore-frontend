@@ -78,6 +78,7 @@ const exampleInspection: Inspection = {
         kitchenDoors: "tenant",
       },
       photos: [],
+      costs: {},
       customComponents: [],
       isApproved: true,
       isHandled: true,
