@@ -257,6 +257,9 @@ export function MobileInspectionForm({
         </ScrollArea>
       </div>
 
+      {/* Floorplan FAB */}
+      <FloorplanOverlay floorplanImage={floorplanImage} className="fixed bottom-28 right-4 z-20" />
+
       {/* Bottom Navigation */}
       <div className="sticky bottom-0 bg-background border-t p-4">
         <div className="flex flex-col gap-2">

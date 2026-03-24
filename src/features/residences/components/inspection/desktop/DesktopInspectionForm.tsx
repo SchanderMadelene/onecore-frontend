@@ -197,6 +197,9 @@ export function DesktopInspectionForm({
         )}
       </div>
 
+      {/* Floorplan FAB */}
+      <FloorplanOverlay floorplanImage={floorplanImage} className="absolute bottom-20 right-4 z-20" />
+
       {/* Footer buttons - sticky at bottom */}
       <div className="flex gap-3 justify-end pt-4 border-t mt-4 shrink-0">
         <Button variant="outline" onClick={onCancel}>
