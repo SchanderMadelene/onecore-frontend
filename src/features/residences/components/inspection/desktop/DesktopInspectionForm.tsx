@@ -112,6 +112,17 @@ export function DesktopInspectionForm({
                 Tillbaka till rum
               </Button>
             </div>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium">Möblerad bostad</p>
+                    <p className="text-xs text-muted-foreground">Är bostaden möblerad vid besiktningstillfället?</p>
+                  </div>
+                  <Switch checked={isFurnished} onCheckedChange={setIsFurnished} />
+                </div>
+              </CardContent>
+            </Card>
             <InspectionSummary
               rooms={rooms}
               inspectionData={inspectionData}
