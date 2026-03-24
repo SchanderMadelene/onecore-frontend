@@ -121,6 +121,7 @@ const exampleInspection: Inspection = {
         kitchenDoors: null,
       },
       photos: [],
+      costs: {},
       customComponents: [],
       isApproved: true,
       isHandled: true,
