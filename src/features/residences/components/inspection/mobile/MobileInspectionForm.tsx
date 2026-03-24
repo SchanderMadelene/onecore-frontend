@@ -92,6 +92,7 @@ export function MobileInspectionForm({
     if (canComplete) {
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
+        isFurnished,
         tenant: createTenantSnapshot()
       });
     }
