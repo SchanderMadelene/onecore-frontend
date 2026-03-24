@@ -22,6 +22,7 @@ export interface CustomInspectionComponent {
   id: string;
   type: CustomComponentType;
   label: string;
+  note?: string;
 }
 
 export interface InspectionRoom {

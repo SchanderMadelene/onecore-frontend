@@ -64,6 +64,13 @@ export function RoomInspectionMobile({
     onCustomComponentsUpdate(inspectionData.customComponents.filter(c => c.id !== id));
   };
 
+  const handleCustomComponentNoteUpdate = (id: string, note: string) => {
+    if (!onCustomComponentsUpdate) return;
+    onCustomComponentsUpdate(
+      inspectionData.customComponents.map(c => c.id === id ? { ...c, note } : c)
+    );
+  };
+
   return (
     <Card>
       <CardContent className="p-4">
@@ -107,6 +114,7 @@ export function RoomInspectionMobile({
             components={inspectionData.customComponents}
             onAdd={handleAddCustomComponent}
             onRemove={handleRemoveCustomComponent}
+            onNoteUpdate={handleCustomComponentNoteUpdate}
           />
         </div>
 
