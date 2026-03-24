@@ -257,9 +257,6 @@ export function MobileInspectionForm({
         </ScrollArea>
       </div>
 
-      {/* Floorplan FAB */}
-      <FloorplanOverlay floorplanImage={floorplanImage} className="fixed bottom-28 right-4 z-20" />
-
       {/* Bottom Navigation */}
       <div className="sticky bottom-0 bg-background border-t p-4">
         <div className="flex flex-col gap-2">
@@ -290,14 +287,17 @@ export function MobileInspectionForm({
               </Button>
             )}
           </div>
-          <Button 
-            variant="secondary" 
-            onClick={handleSaveDraft} 
-            disabled={!inspectorName.trim()} 
-            className="w-full"
-          >
-            Spara utkast
-          </Button>
+          <div className="flex gap-2">
+            <FloorplanOverlay floorplanImage={floorplanImage} />
+            <Button 
+              variant="secondary" 
+              onClick={handleSaveDraft} 
+              disabled={!inspectorName.trim()} 
+              className="flex-1"
+            >
+              Spara utkast
+            </Button>
+          </div>
         </div>
       </div>
     </div>
