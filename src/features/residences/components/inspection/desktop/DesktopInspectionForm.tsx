@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { InspectionSummary } from "../InspectionSummary";
+import { FloorplanOverlay } from "../FloorplanOverlay";
 
 interface DesktopInspectionFormProps {
   rooms: Room[];
