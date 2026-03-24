@@ -38,6 +38,7 @@ export const initialRoomData: InspectionRoom = {
     appliances: null,
     kitchenDoors: null
   },
+  customComponents: [],
   photos: [],
   isApproved: false,
   isHandled: false
