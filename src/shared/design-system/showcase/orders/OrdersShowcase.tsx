@@ -120,6 +120,7 @@ const exampleInspection: Inspection = {
         kitchenDoors: null,
       },
       photos: [],
+      customComponents: [],
       isApproved: true,
       isHandled: true,
     },
