@@ -92,29 +92,30 @@ export function DesktopInspectionForm({
   };
 
   return (
-    <div className="space-y-6 min-w-0">
-      {/* Reuse the same card component with horizontal layout for desktop */}
-      <InspectorSelectionCard
-        inspectorName={inspectorName}
-        setInspectorName={setInspectorName}
-        inspectionTime={inspectionTime}
-        setInspectionTime={setInspectionTime}
-        needsMasterKey={needsMasterKey}
-        setNeedsMasterKey={setNeedsMasterKey}
-        tenant={tenant}
-        layout="horizontal"
-      />
+    <div className="flex flex-col min-w-0 min-h-0 flex-1 overflow-hidden">
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto min-h-0 space-y-6 pr-1">
+        {/* Reuse the same card component with horizontal layout for desktop */}
+        <InspectorSelectionCard
+          inspectorName={inspectorName}
+          setInspectorName={setInspectorName}
+          inspectionTime={inspectionTime}
+          setInspectionTime={setInspectionTime}
+          needsMasterKey={needsMasterKey}
+          setNeedsMasterKey={setNeedsMasterKey}
+          tenant={tenant}
+          layout="horizontal"
+        />
 
-      {/* Progress counter */}
-      <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-        <span className="text-sm font-medium">Besiktningsframsteg</span>
-        <span className="text-sm text-muted-foreground">
-          {completedRooms}/{rooms.length} rum klara
-        </span>
-      </div>
+        {/* Progress counter */}
+        <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+          <span className="text-sm font-medium">Besiktningsframsteg</span>
+          <span className="text-sm text-muted-foreground">
+            {completedRooms}/{rooms.length} rum klara
+          </span>
+        </div>
 
-      {/* Room accordion */}
-      <div className="max-h-[70vh] overflow-y-auto pr-2 pb-24 min-w-0">
+        {/* Room accordion */}
         <Accordion type="multiple" className="space-y-2">
           {rooms.map(room => {
             const roomData = inspectionData[room.id];
@@ -171,18 +172,18 @@ export function DesktopInspectionForm({
             );
           })}
         </Accordion>
+
+        {/* Summary section */}
+        <Separator />
+        <InspectionSummary
+          rooms={rooms}
+          inspectionData={inspectionData}
+          onCostUpdate={handleCostUpdate}
+        />
       </div>
 
-      {/* Summary section */}
-      <Separator />
-      <InspectionSummary
-        rooms={rooms}
-        inspectionData={inspectionData}
-        onCostUpdate={handleCostUpdate}
-      />
-
-      {/* Footer buttons */}
-      <div className="flex gap-3 justify-end pt-4 border-t">
+      {/* Footer buttons - sticky at bottom */}
+      <div className="flex gap-3 justify-end pt-4 border-t mt-4 shrink-0">
         <Button variant="outline" onClick={onCancel}>
           Avbryt
         </Button>
