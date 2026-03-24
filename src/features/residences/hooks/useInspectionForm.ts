@@ -16,6 +16,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     return `${hours}:${minutes}`;
   });
   const [needsMasterKey, setNeedsMasterKey] = useState(existingInspection?.needsMasterKey || false);
+  const [isFurnished, setIsFurnished] = useState(existingInspection?.isFurnished || false);
   const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean }>({
     address: existingInspection?.residence?.address || "Odenplan 5, lägenhet 1001",
     hasMainKey: existingInspection?.needsMasterKey || true
