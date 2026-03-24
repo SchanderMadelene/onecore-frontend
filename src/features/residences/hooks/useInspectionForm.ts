@@ -206,6 +206,23 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     }));
   }, []);
 
+  const handleCostUpdate = useCallback((
+    roomId: string,
+    costKey: string,
+    value: number | null
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        costs: {
+          ...prev[roomId].costs,
+          [costKey]: value
+        }
+      }
+    }));
+  }, []);
+
   return {
     inspectorName,
     setInspectorName,
