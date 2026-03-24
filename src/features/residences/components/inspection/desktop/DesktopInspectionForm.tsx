@@ -44,7 +44,8 @@ export function DesktopInspectionForm({
     handleComponentNoteUpdate,
     handleComponentPhotoAdd,
     handleComponentPhotoRemove,
-    handleCostResponsibilityUpdate
+    handleCostResponsibilityUpdate,
+    handleCustomComponentsUpdate
   } = useInspectionForm(rooms, existingInspection);
 
   useEffect(() => {
@@ -157,6 +158,9 @@ export function DesktopInspectionForm({
                     }
                     onCostResponsibilityUpdate={(field, value) =>
                       handleCostResponsibilityUpdate(room.id, field, value)
+                    }
+                    onCustomComponentsUpdate={(components) =>
+                      handleCustomComponentsUpdate(room.id, components)
                     }
                   />
                 </AccordionContent>

@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { InspectionRoom, Inspection, CostResponsibility } from "@/features/residences/components/inspection/types";
+import type { InspectionRoom, Inspection, CostResponsibility, CustomInspectionComponent } from "@/features/residences/components/inspection/types";
 import type { Room } from "@/types/api";
 import { initializeInspectionData } from "@/features/residences/components/inspection/form/initialData";
 
@@ -193,6 +193,19 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     }));
   }, []);
 
+  const handleCustomComponentsUpdate = useCallback((
+    roomId: string,
+    components: CustomInspectionComponent[]
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        customComponents: components
+      }
+    }));
+  }, []);
+
   return {
     inspectorName,
     setInspectorName,
@@ -214,6 +227,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handlePhotoAdd,
     handlePhotoRemove,
     handleApproveRoom,
-    handleCostResponsibilityUpdate
+    handleCostResponsibilityUpdate,
+    handleCustomComponentsUpdate
   };
 }
