@@ -6,10 +6,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 interface FloorplanOverlayProps {
   floorplanImage?: string;
-  className?: string;
 }
 
-export function FloorplanOverlay({ floorplanImage, className }: FloorplanOverlayProps) {
+export function FloorplanOverlay({ floorplanImage }: FloorplanOverlayProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -18,16 +17,15 @@ export function FloorplanOverlay({ floorplanImage, className }: FloorplanOverlay
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="secondary"
+              variant="outline"
               size="icon"
-              className={`h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur-sm border hover:bg-accent transition-all ${className ?? ""}`}
               onClick={() => setOpen(true)}
             >
-              <FileImage className="h-5 w-5" />
+              <FileImage className="h-4 w-4" />
               <span className="sr-only">Planritning</span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="left">
+          <TooltipContent>
             <p>Planritning</p>
           </TooltipContent>
         </Tooltip>
