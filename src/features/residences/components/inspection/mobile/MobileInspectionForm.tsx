@@ -239,7 +239,7 @@ export function MobileInspectionForm({
       {/* Content Area */}
       <div className="flex-1 min-h-0">
         <ScrollArea ref={scrollAreaRef} className="h-full">
-          <div className="px-4 pb-4">
+          <div className="px-4 pb-4 pt-4">
             {showSummary ? (
               <div className="space-y-4">
                 <Card>
