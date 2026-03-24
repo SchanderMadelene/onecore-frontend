@@ -7,7 +7,9 @@ import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, Tenant
 import { CheckCircle2 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { useEffect } from "react";
+import { InspectionSummary } from "../InspectionSummary";
 
 interface DesktopInspectionFormProps {
   rooms: Room[];
@@ -45,7 +47,8 @@ export function DesktopInspectionForm({
     handleComponentPhotoAdd,
     handleComponentPhotoRemove,
     handleCostResponsibilityUpdate,
-    handleCustomComponentsUpdate
+    handleCustomComponentsUpdate,
+    handleCostUpdate
   } = useInspectionForm(rooms, existingInspection);
 
   useEffect(() => {
@@ -169,6 +172,14 @@ export function DesktopInspectionForm({
           })}
         </Accordion>
       </div>
+
+      {/* Summary section */}
+      <Separator />
+      <InspectionSummary
+        rooms={rooms}
+        inspectionData={inspectionData}
+        onCostUpdate={handleCostUpdate}
+      />
 
       {/* Footer buttons */}
       <div className="flex gap-3 justify-end pt-4 border-t">

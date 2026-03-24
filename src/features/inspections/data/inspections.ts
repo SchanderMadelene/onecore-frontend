@@ -60,6 +60,7 @@ const createEmptyRoomData = (roomId: string) => ({
     appliances: null as null,
     kitchenDoors: null as null
   },
+  costs: {} as Record<string, number | null>,
   customComponents: [] as any[],
   photos: [] as string[],
   isApproved: false,

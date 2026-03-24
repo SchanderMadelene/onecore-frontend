@@ -61,6 +61,7 @@ export interface InspectionRoom {
     appliances: CostResponsibility;
     kitchenDoors: CostResponsibility;
   };
+  costs: Record<string, number | null>; // key = component key or custom component id
   customComponents: CustomInspectionComponent[];
   photos: string[];
   isApproved: boolean;
