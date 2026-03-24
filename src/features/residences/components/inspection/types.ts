@@ -3,49 +3,39 @@ export type CostResponsibility = 'tenant' | 'landlord' | null;
 export interface InspectionRoom {
   roomId: string;
   conditions: {
-    wall1: string;
-    wall2: string;
-    wall3: string;
-    wall4: string;
+    walls: string;
     floor: string;
     ceiling: string;
-    details: string;
+    appliances: string;
+    kitchenDoors: string;
   };
   actions: {
-    wall1: string[];
-    wall2: string[];
-    wall3: string[];
-    wall4: string[];
+    walls: string[];
     floor: string[];
     ceiling: string[];
-    details: string[];
+    appliances: string[];
+    kitchenDoors: string[];
   };
   componentNotes: {
-    wall1: string;
-    wall2: string;
-    wall3: string;
-    wall4: string;
+    walls: string;
     floor: string;
     ceiling: string;
-    details: string;
+    appliances: string;
+    kitchenDoors: string;
   };
   componentPhotos: {
-    wall1: string[];
-    wall2: string[];
-    wall3: string[];
-    wall4: string[];
+    walls: string[];
     floor: string[];
     ceiling: string[];
-    details: string[];
+    appliances: string[];
+    kitchenDoors: string[];
   };
   costResponsibility: {
-    wall1: CostResponsibility;
-    wall2: CostResponsibility;
-    wall3: CostResponsibility;
-    wall4: CostResponsibility;
+    walls: CostResponsibility;
     floor: CostResponsibility;
     ceiling: CostResponsibility;
-    details: CostResponsibility;
+    appliances: CostResponsibility;
+    kitchenDoors: CostResponsibility;
   };
   photos: string[];
   isApproved: boolean;
