@@ -193,6 +193,19 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     }));
   }, []);
 
+  const handleCustomComponentsUpdate = useCallback((
+    roomId: string,
+    components: CustomInspectionComponent[]
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        customComponents: components
+      }
+    }));
+  }, []);
+
   return {
     inspectorName,
     setInspectorName,
@@ -214,6 +227,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handlePhotoAdd,
     handlePhotoRemove,
     handleApproveRoom,
-    handleCostResponsibilityUpdate
+    handleCostResponsibilityUpdate,
+    handleCustomComponentsUpdate
   };
 }
