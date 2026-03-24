@@ -82,6 +82,7 @@ export function DesktopInspectionForm({
     if (canComplete) {
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
+        isFurnished,
         tenant: createTenantSnapshot()
       });
     }
