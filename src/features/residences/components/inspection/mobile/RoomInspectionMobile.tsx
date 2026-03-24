@@ -54,7 +54,6 @@ export function RoomInspectionMobile({
       id: `${type}-${Date.now()}`,
       type,
       label: typeInfo.label,
-      cost: null,
     };
 
     onCustomComponentsUpdate([...inspectionData.customComponents, newComponent]);
