@@ -24,6 +24,7 @@ interface MobileInspectionFormProps {
   onCancel: () => void;
   tenant?: any;
   existingInspection?: Inspection;
+  floorplanImage?: string;
 }
 
 export function MobileInspectionForm({
