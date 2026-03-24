@@ -11,6 +11,7 @@ import { InspectionProgressIndicator } from "./InspectionProgressIndicator";
 import { RoomInspectionMobile } from "./RoomInspectionMobile";
 import { InspectorSelectionCard } from "./InspectorSelectionCard";
 import { InspectionSummary } from "../InspectionSummary";
+import { FloorplanOverlay } from "../FloorplanOverlay";
 
 interface MobileInspectionFormProps {
   rooms: Room[];
@@ -23,6 +24,7 @@ interface MobileInspectionFormProps {
   onCancel: () => void;
   tenant?: any;
   existingInspection?: Inspection;
+  floorplanImage?: string;
 }
 
 export function MobileInspectionForm({
@@ -30,7 +32,8 @@ export function MobileInspectionForm({
   onSave,
   onCancel,
   tenant,
-  existingInspection
+  existingInspection,
+  floorplanImage
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
@@ -253,6 +256,9 @@ export function MobileInspectionForm({
           </div>
         </ScrollArea>
       </div>
+
+      {/* Floorplan FAB */}
+      <FloorplanOverlay floorplanImage={floorplanImage} className="fixed bottom-28 right-4 z-20" />
 
       {/* Bottom Navigation */}
       <div className="sticky bottom-0 bg-background border-t p-4">

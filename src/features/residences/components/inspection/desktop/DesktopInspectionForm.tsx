@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { InspectionSummary } from "../InspectionSummary";
+import { FloorplanOverlay } from "../FloorplanOverlay";
 
 interface DesktopInspectionFormProps {
   rooms: Room[];
@@ -22,6 +23,7 @@ interface DesktopInspectionFormProps {
   onCancel: () => void;
   tenant?: any;
   existingInspection?: Inspection;
+  floorplanImage?: string;
 }
 
 const currentUser = "Anna Andersson";
@@ -31,7 +33,8 @@ export function DesktopInspectionForm({
   onSave, 
   onCancel, 
   tenant,
-  existingInspection
+  existingInspection,
+  floorplanImage
 }: DesktopInspectionFormProps) {
   const {
     inspectorName,
@@ -94,7 +97,7 @@ export function DesktopInspectionForm({
   };
 
   return (
-    <div className="flex flex-col min-w-0 min-h-0 flex-1 overflow-hidden">
+    <div className="flex flex-col min-w-0 min-h-0 flex-1 overflow-hidden relative">
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto min-h-0 space-y-6 pr-1">
         {showSummary ? (
@@ -193,6 +196,9 @@ export function DesktopInspectionForm({
           </>
         )}
       </div>
+
+      {/* Floorplan FAB */}
+      <FloorplanOverlay floorplanImage={floorplanImage} className="absolute bottom-20 right-4 z-20" />
 
       {/* Footer buttons - sticky at bottom */}
       <div className="flex gap-3 justify-end pt-4 border-t mt-4 shrink-0">
