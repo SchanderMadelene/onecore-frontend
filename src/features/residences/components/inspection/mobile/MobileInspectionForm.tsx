@@ -127,7 +127,7 @@ export function MobileInspectionForm({
   if (showInspectorSelection) {
     return (
       <div className="h-full bg-background flex flex-col">
-        <div className="sticky top-0 z-10 bg-background border-b px-4 py-3">
+        <div className="sticky top-0 z-10 bg-background border-b px-4 pt-8 pb-4">
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" onClick={onCancel}>
               Avbryt
