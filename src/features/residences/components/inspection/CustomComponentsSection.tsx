@@ -70,31 +70,19 @@ export function CustomComponentsSection({
       {components.length > 0 && (
         <div className="rounded-md border border-border overflow-hidden">
           {/* Header */}
-          <div className="grid grid-cols-[1fr_120px_36px] items-center px-3 py-2 bg-muted/50 text-sm text-muted-foreground">
+          <div className="grid grid-cols-[1fr_36px] items-center px-3 py-2 bg-muted/50 text-sm text-muted-foreground">
             <span>Komponent</span>
-            <span className="text-right">Kostnad (kr)</span>
             <span></span>
           </div>
           {/* Rows */}
           {components.map((comp, index) => (
             <div
               key={comp.id}
-              className={`grid grid-cols-[1fr_120px_36px] items-center px-3 py-2 ${
+              className={`grid grid-cols-[1fr_36px] items-center px-3 py-2 ${
                 index < components.length - 1 ? 'border-b border-border' : ''
               }`}
             >
               <span className="text-sm font-medium">{comp.label}</span>
-              <Input
-                type="number"
-                min={0}
-                placeholder="0"
-                value={comp.cost ?? ""}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  onCostChange(comp.id, val === "" ? null : Number(val));
-                }}
-                className="h-8 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              />
               <Button
                 type="button"
                 variant="ghost"
@@ -106,16 +94,6 @@ export function CustomComponentsSection({
               </Button>
             </div>
           ))}
-          {/* Total row */}
-          {components.some(c => c.cost !== null && c.cost > 0) && (
-            <div className="grid grid-cols-[1fr_120px_36px] items-center px-3 py-2 border-t border-border bg-muted/30">
-              <span className="text-sm font-medium">Totalt</span>
-              <span className="text-sm font-semibold text-right pr-3">
-                {components.reduce((sum, c) => sum + (c.cost || 0), 0).toLocaleString('sv-SE')} kr
-              </span>
-              <span></span>
-            </div>
-          )}
         </div>
       )}
     </div>
