@@ -104,6 +104,7 @@ export interface Inspection {
   // Från formuläret
   needsMasterKey: boolean;
   
+  isFurnished?: boolean;
   isCompleted?: boolean; // Deprecated, use status instead
 }
 
