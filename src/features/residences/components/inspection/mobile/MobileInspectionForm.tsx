@@ -48,7 +48,8 @@ export function MobileInspectionForm({
     handleComponentNoteUpdate,
     handleComponentPhotoAdd,
     handleComponentPhotoRemove,
-    handleCostResponsibilityUpdate
+    handleCostResponsibilityUpdate,
+    handleCustomComponentsUpdate
   } = useInspectionForm(rooms, existingInspection);
 
   const currentRoom = rooms[currentRoomIndex];

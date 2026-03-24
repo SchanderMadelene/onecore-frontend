@@ -44,7 +44,8 @@ export function DesktopInspectionForm({
     handleComponentNoteUpdate,
     handleComponentPhotoAdd,
     handleComponentPhotoRemove,
-    handleCostResponsibilityUpdate
+    handleCostResponsibilityUpdate,
+    handleCustomComponentsUpdate
   } = useInspectionForm(rooms, existingInspection);
 
   useEffect(() => {
