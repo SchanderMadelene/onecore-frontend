@@ -23,6 +23,7 @@ interface DesktopInspectionFormProps {
   onCancel: () => void;
   tenant?: any;
   existingInspection?: Inspection;
+  floorplanImage?: string;
 }
 
 const currentUser = "Anna Andersson";
