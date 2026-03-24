@@ -158,6 +158,9 @@ export function DesktopInspectionForm({
                     onCostResponsibilityUpdate={(field, value) =>
                       handleCostResponsibilityUpdate(room.id, field, value)
                     }
+                    onCustomComponentsUpdate={(components) =>
+                      handleCustomComponentsUpdate(room.id, components)
+                    }
                   />
                 </AccordionContent>
               </AccordionItem>

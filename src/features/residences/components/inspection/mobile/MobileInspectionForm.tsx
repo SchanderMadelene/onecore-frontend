@@ -224,6 +224,7 @@ export function MobileInspectionForm({
               onComponentPhotoAdd={(field, photoDataUrl) => handleComponentPhotoAdd(currentRoom.id, field, photoDataUrl)} 
               onComponentPhotoRemove={(field, index) => handleComponentPhotoRemove(currentRoom.id, field, index)}
               onCostResponsibilityUpdate={(field, value) => handleCostResponsibilityUpdate(currentRoom.id, field, value)}
+              onCustomComponentsUpdate={(components) => handleCustomComponentsUpdate(currentRoom.id, components)}
             />
           </div>
         </ScrollArea>
