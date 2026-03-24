@@ -1,150 +1,125 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2 } from "lucide-react";
-import { PhotoCapture } from "./PhotoCapture";
-import type { CustomInspectionComponent, CostResponsibility, CustomComponentType } from "./types";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Separator } from "@/components/ui/separator";
+import { Plus, X, ClipboardList, Check } from "lucide-react";
+import type { CustomInspectionComponent, CustomComponentType } from "./types";
 import { CUSTOM_COMPONENT_TYPES } from "./types";
 
 interface CustomComponentsSectionProps {
   components: CustomInspectionComponent[];
   onAdd: (type: CustomComponentType) => void;
   onRemove: (id: string) => void;
-  onConditionChange: (id: string, condition: string) => void;
-  onNoteChange: (id: string, note: string) => void;
-  onPhotoAdd: (id: string, photoDataUrl: string) => void;
-  onCostResponsibilityChange: (id: string, value: CostResponsibility) => void;
+  onCostChange: (id: string, cost: number | null) => void;
 }
-
-const CONDITION_OPTIONS = [
-  { value: "God", label: "God", className: "bg-green-500 hover:bg-green-600 text-white border-green-600" },
-  { value: "Acceptabel", label: "Acceptabel", className: "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600" },
-  { value: "Skadad", label: "Skadad", className: "bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive" }
-];
 
 export function CustomComponentsSection({
   components,
   onAdd,
   onRemove,
-  onConditionChange,
-  onNoteChange,
-  onPhotoAdd,
-  onCostResponsibilityChange
+  onCostChange,
 }: CustomComponentsSectionProps) {
-  const [selectedType, setSelectedType] = useState<CustomComponentType | "">("");
+  const [open, setOpen] = useState(false);
 
-  const handleAdd = () => {
-    if (selectedType) {
-      onAdd(selectedType);
-      setSelectedType("");
-    }
+  // Filter out already added types
+  const addedTypes = new Set(components.map(c => c.type));
+  const availableTypes = CUSTOM_COMPONENT_TYPES.filter(t => !addedTypes.has(t.value));
+
+  const handleSelect = (type: CustomComponentType) => {
+    onAdd(type);
   };
 
   return (
-    <div className="space-y-4">
-      {components.map((comp) => {
-        const showCostResponsibility = comp.condition === "Skadad" || comp.condition === "Acceptabel";
-        return (
-          <div key={comp.id} className="border-b border-border last:border-0 py-4">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="text-base font-medium">{comp.label}</h4>
+    <div className="space-y-3">
+      {/* Multiselect dropdown */}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full justify-start text-muted-foreground font-normal"
+            disabled={availableTypes.length === 0}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            {availableTypes.length === 0 ? "Alla komponenter tillagda" : "Lägg till komponent..."}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[280px] p-0" align="start">
+          <Command>
+            <CommandInput placeholder="Sök komponent..." />
+            <CommandList>
+              <CommandEmpty>Inga komponenter hittades.</CommandEmpty>
+              <CommandGroup>
+                {availableTypes.map((type) => (
+                  <CommandItem
+                    key={type.value}
+                    value={type.label}
+                    onSelect={() => handleSelect(type.value)}
+                  >
+                    {type.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+
+      {/* Table of added components */}
+      {components.length > 0 && (
+        <div className="rounded-md border border-border overflow-hidden">
+          {/* Header */}
+          <div className="grid grid-cols-[1fr_120px_36px] items-center px-3 py-2 bg-muted/50 text-sm text-muted-foreground">
+            <span>Komponent</span>
+            <span className="text-right">Kostnad (kr)</span>
+            <span></span>
+          </div>
+          {/* Rows */}
+          {components.map((comp, index) => (
+            <div
+              key={comp.id}
+              className={`grid grid-cols-[1fr_120px_36px] items-center px-3 py-2 ${
+                index < components.length - 1 ? 'border-b border-border' : ''
+              }`}
+            >
+              <span className="text-sm font-medium">{comp.label}</span>
+              <Input
+                type="number"
+                min={0}
+                placeholder="0"
+                value={comp.cost ?? ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  onCostChange(comp.id, val === "" ? null : Number(val));
+                }}
+                className="h-8 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 onClick={() => onRemove(comp.id)}
-                className="text-muted-foreground hover:text-destructive h-8 w-8 p-0"
+                className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
               >
-                <Trash2 className="h-4 w-4" />
+                <X className="h-3.5 w-3.5" />
               </Button>
             </div>
-
-            <div className="grid grid-cols-3 gap-2 mb-3">
-              {CONDITION_OPTIONS.map((option) => (
-                <Button
-                  key={option.value}
-                  type="button"
-                  variant={comp.condition === option.value ? "default" : "outline"}
-                  size="default"
-                  className={`h-10 text-sm font-medium ${comp.condition === option.value ? option.className : ""}`}
-                  onClick={() => onConditionChange(comp.id, option.value)}
-                >
-                  {option.label}
-                </Button>
-              ))}
+          ))}
+          {/* Total row */}
+          {components.some(c => c.cost !== null && c.cost > 0) && (
+            <div className="grid grid-cols-[1fr_120px_36px] items-center px-3 py-2 border-t border-border bg-muted/30">
+              <span className="text-sm font-medium">Totalt</span>
+              <span className="text-sm font-semibold text-right pr-3">
+                {components.reduce((sum, c) => sum + (c.cost || 0), 0).toLocaleString('sv-SE')} kr
+              </span>
+              <span></span>
             </div>
-
-            {showCostResponsibility && (
-              <div className="mb-3">
-                <span className="text-sm text-muted-foreground mb-2 block">Kostnadsansvar</span>
-                <RadioGroup
-                  value={comp.costResponsibility || ""}
-                  onValueChange={(value) => onCostResponsibilityChange(comp.id, value as CostResponsibility)}
-                  className="flex gap-4"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="tenant" id={`${comp.id}-tenant`} />
-                    <Label htmlFor={`${comp.id}-tenant`} className="text-sm font-normal cursor-pointer">
-                      Hyresgäst
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="landlord" id={`${comp.id}-landlord`} />
-                    <Label htmlFor={`${comp.id}-landlord`} className="text-sm font-normal cursor-pointer">
-                      Hyresvärd
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </div>
-            )}
-
-            <div className="flex gap-2 items-start">
-              <Textarea
-                value={comp.note}
-                onChange={(e) => onNoteChange(comp.id, e.target.value)}
-                placeholder="Anteckning..."
-                className="flex-1 text-sm resize-none min-h-[40px] h-[40px]"
-              />
-              <PhotoCapture
-                onPhotoCapture={(photoDataUrl) => onPhotoAdd(comp.id, photoDataUrl)}
-                photoCount={comp.photos.length}
-              />
-            </div>
-          </div>
-        );
-      })}
-
-      <div className="flex gap-2 items-end pt-2">
-        <div className="flex-1">
-          <Label className="text-sm text-muted-foreground mb-1.5 block">Lägg till komponent</Label>
-          <Select value={selectedType} onValueChange={(val) => setSelectedType(val as CustomComponentType)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Välj komponenttyp..." />
-            </SelectTrigger>
-            <SelectContent>
-              {CUSTOM_COMPONENT_TYPES.map((type) => (
-                <SelectItem key={type.value} value={type.value}>
-                  {type.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          )}
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="default"
-          onClick={handleAdd}
-          disabled={!selectedType}
-          className="h-10"
-        >
-          <Plus className="h-4 w-4 mr-1" />
-          Lägg till
-        </Button>
-      </div>
+      )}
     </div>
   );
 }
