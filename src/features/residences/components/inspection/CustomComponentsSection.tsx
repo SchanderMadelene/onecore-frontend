@@ -13,7 +13,6 @@ interface CustomComponentsSectionProps {
   components: CustomInspectionComponent[];
   onAdd: (type: CustomComponentType) => void;
   onRemove: (id: string) => void;
-  onCostChange: (id: string, cost: number | null) => void;
 }
 
 export function CustomComponentsSection({
