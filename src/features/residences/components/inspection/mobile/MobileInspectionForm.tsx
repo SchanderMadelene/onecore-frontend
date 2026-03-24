@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Switch } from "@/shared/ui/switch";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft, ChevronRight, User, ClipboardList } from "lucide-react";
@@ -243,13 +244,21 @@ export function MobileInspectionForm({
               <div className="space-y-4">
                 <Card>
                   <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium">Möblerad bostad</p>
-                        <p className="text-xs text-muted-foreground">Är bostaden möblerad vid besiktningstillfället?</p>
+                    <p className="text-sm font-medium mb-2">Är bostaden möblerad vid besiktningstillfället?</p>
+                    <RadioGroup
+                      value={isFurnished ? "yes" : "no"}
+                      onValueChange={(v) => setIsFurnished(v === "yes")}
+                      className="flex gap-4"
+                    >
+                      <div className="flex items-center gap-2">
+                        <RadioGroupItem value="no" id="furnished-no-mobile" />
+                        <Label htmlFor="furnished-no-mobile" className="text-sm">Nej</Label>
                       </div>
-                      <Switch checked={isFurnished} onCheckedChange={setIsFurnished} />
-                    </div>
+                      <div className="flex items-center gap-2">
+                        <RadioGroupItem value="yes" id="furnished-yes-mobile" />
+                        <Label htmlFor="furnished-yes-mobile" className="text-sm">Ja</Label>
+                      </div>
+                    </RadioGroup>
                   </CardContent>
                 </Card>
                 <InspectionSummary
