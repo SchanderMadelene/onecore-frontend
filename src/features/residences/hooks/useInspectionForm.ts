@@ -231,6 +231,8 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    isFurnished,
+    setIsFurnished,
     apartmentInfo,
     setApartmentInfo,
     expandedRoomIds,

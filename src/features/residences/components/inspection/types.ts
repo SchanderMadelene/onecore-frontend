@@ -111,5 +111,6 @@ export interface Inspection {
 // Data som skickas från formulär till sparfunktion
 export interface InspectionSubmitData {
   needsMasterKey: boolean;
+  isFurnished: boolean;
   tenant?: TenantSnapshot;
 }
