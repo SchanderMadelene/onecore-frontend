@@ -32,7 +32,8 @@ export function MobileInspectionForm({
   onSave,
   onCancel,
   tenant,
-  existingInspection
+  existingInspection,
+  floorplanImage
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
