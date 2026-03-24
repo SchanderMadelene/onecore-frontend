@@ -63,7 +63,7 @@ function collectRemarks(rooms: Room[], inspectionData: Record<string, Inspection
         label: comp.label,
         condition: "",
         actions: [],
-        note: "",
+        note: comp.note || "",
         costResponsibility: null,
         costKey: comp.id,
         cost: data.costs[comp.id] ?? null,
