@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { ClipboardList } from "lucide-react";
 import type { Room } from "@/types/api";
-import type { InspectionRoom, CostResponsibility } from "../types";
+import type { InspectionRoom, CostResponsibility, CustomComponentType, CustomInspectionComponent } from "../types";
+import { CUSTOM_COMPONENT_TYPES } from "../types";
 import { ComponentInspectionCard } from "../ComponentInspectionCard";
 import { ComponentDetailSheet } from "../ComponentDetailSheet";
+import { CustomComponentsSection } from "../CustomComponentsSection";
 
 interface RoomInspectionMobileProps {
   room: Room;
@@ -14,6 +18,7 @@ interface RoomInspectionMobileProps {
   onComponentPhotoAdd: (field: keyof InspectionRoom["componentPhotos"], photoDataUrl: string) => void;
   onComponentPhotoRemove: (field: keyof InspectionRoom["componentPhotos"], index: number) => void;
   onCostResponsibilityUpdate: (field: keyof InspectionRoom["costResponsibility"], value: CostResponsibility) => void;
+  onCustomComponentsUpdate?: (components: CustomInspectionComponent[]) => void;
 }
 
 const COMPONENTS: Array<{
@@ -36,9 +41,65 @@ export function RoomInspectionMobile({
   onComponentNoteUpdate,
   onComponentPhotoAdd,
   onComponentPhotoRemove,
-  onCostResponsibilityUpdate
+  onCostResponsibilityUpdate,
+  onCustomComponentsUpdate
 }: RoomInspectionMobileProps) {
   const [openDetailComponent, setOpenDetailComponent] = useState<keyof InspectionRoom["conditions"] | null>(null);
+
+  const handleAddCustomComponent = (type: CustomComponentType) => {
+    const typeInfo = CUSTOM_COMPONENT_TYPES.find(t => t.value === type);
+    if (!typeInfo || !onCustomComponentsUpdate) return;
+
+    const newComponent: CustomInspectionComponent = {
+      id: `${type}-${Date.now()}`,
+      type,
+      label: typeInfo.label,
+      condition: "",
+      actions: [],
+      note: "",
+      photos: [],
+      costResponsibility: null,
+    };
+
+    onCustomComponentsUpdate([...inspectionData.customComponents, newComponent]);
+  };
+
+  const handleRemoveCustomComponent = (id: string) => {
+    if (!onCustomComponentsUpdate) return;
+    onCustomComponentsUpdate(inspectionData.customComponents.filter(c => c.id !== id));
+  };
+
+  const handleCustomConditionChange = (id: string, condition: string) => {
+    if (!onCustomComponentsUpdate) return;
+    onCustomComponentsUpdate(
+      inspectionData.customComponents.map(c => c.id === id ? { ...c, condition } : c)
+    );
+  };
+
+  const handleCustomNoteChange = (id: string, note: string) => {
+    if (!onCustomComponentsUpdate) return;
+    onCustomComponentsUpdate(
+      inspectionData.customComponents.map(c => c.id === id ? { ...c, note } : c)
+    );
+  };
+
+  const handleCustomPhotoAdd = (id: string, photoDataUrl: string) => {
+    if (!onCustomComponentsUpdate) return;
+    onCustomComponentsUpdate(
+      inspectionData.customComponents.map(c =>
+        c.id === id ? { ...c, photos: [...c.photos, photoDataUrl] } : c
+      )
+    );
+  };
+
+  const handleCustomCostChange = (id: string, value: CostResponsibility) => {
+    if (!onCustomComponentsUpdate) return;
+    onCustomComponentsUpdate(
+      inspectionData.customComponents.map(c =>
+        c.id === id ? { ...c, costResponsibility: value } : c
+      )
+    );
+  };
 
   return (
     <Card>
@@ -66,6 +127,29 @@ export function RoomInspectionMobile({
               onCostResponsibilityChange={(value) => onCostResponsibilityUpdate(component.key, value)}
             />
           ))}
+        </div>
+
+        {/* Detaljer - tillägg av extra komponenter */}
+        <div className="mt-2">
+          <Separator className="mb-4" />
+          <div className="flex items-center gap-2 mb-3">
+            <ClipboardList className="h-4.5 w-4.5 text-muted-foreground" />
+            <h4 className="font-medium text-base">Detaljer</h4>
+            {inspectionData.customComponents.length > 0 && (
+              <span className="text-xs text-muted-foreground">
+                ({inspectionData.customComponents.length})
+              </span>
+            )}
+          </div>
+          <CustomComponentsSection
+            components={inspectionData.customComponents}
+            onAdd={handleAddCustomComponent}
+            onRemove={handleRemoveCustomComponent}
+            onConditionChange={handleCustomConditionChange}
+            onNoteChange={handleCustomNoteChange}
+            onPhotoAdd={handleCustomPhotoAdd}
+            onCostResponsibilityChange={handleCustomCostChange}
+          />
         </div>
 
         {/* Detail sheets for each component */}

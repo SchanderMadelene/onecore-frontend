@@ -1,5 +1,34 @@
 export type CostResponsibility = 'tenant' | 'landlord' | null;
 
+// Typer av tilläggskomponenter som kan läggas till under "Detaljer"
+export const CUSTOM_COMPONENT_TYPES = [
+  { value: 'baseboards', label: 'Golvsocklar' },
+  { value: 'interiorDoors', label: 'Innerdörrar' },
+  { value: 'outlets', label: 'Eluttag' },
+  { value: 'switches', label: 'Strömbrytare' },
+  { value: 'windowSills', label: 'Fönsterbänkar' },
+  { value: 'windowFrames', label: 'Fönsterkarmar' },
+  { value: 'radiators', label: 'Radiatorer' },
+  { value: 'ventilation', label: 'Ventilation' },
+  { value: 'shelving', label: 'Hyllor/skåp' },
+  { value: 'curtainRods', label: 'Gardinstänger' },
+  { value: 'lighting', label: 'Belysning' },
+  { value: 'other', label: 'Övrigt' },
+] as const;
+
+export type CustomComponentType = typeof CUSTOM_COMPONENT_TYPES[number]['value'];
+
+export interface CustomInspectionComponent {
+  id: string;
+  type: CustomComponentType;
+  label: string; // Visningsnamn (från CUSTOM_COMPONENT_TYPES)
+  condition: string;
+  actions: string[];
+  note: string;
+  photos: string[];
+  costResponsibility: CostResponsibility;
+}
+
 export interface InspectionRoom {
   roomId: string;
   conditions: {
@@ -37,6 +66,7 @@ export interface InspectionRoom {
     appliances: CostResponsibility;
     kitchenDoors: CostResponsibility;
   };
+  customComponents: CustomInspectionComponent[];
   photos: string[];
   isApproved: boolean;
   isHandled: boolean;
