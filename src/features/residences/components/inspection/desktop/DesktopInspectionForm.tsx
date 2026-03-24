@@ -33,7 +33,8 @@ export function DesktopInspectionForm({
   onSave, 
   onCancel, 
   tenant,
-  existingInspection
+  existingInspection,
+  floorplanImage
 }: DesktopInspectionFormProps) {
   const {
     inspectorName,
