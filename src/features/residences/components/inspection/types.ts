@@ -21,12 +21,8 @@ export type CustomComponentType = typeof CUSTOM_COMPONENT_TYPES[number]['value']
 export interface CustomInspectionComponent {
   id: string;
   type: CustomComponentType;
-  label: string; // Visningsnamn (från CUSTOM_COMPONENT_TYPES)
-  condition: string;
-  actions: string[];
-  note: string;
-  photos: string[];
-  costResponsibility: CostResponsibility;
+  label: string;
+  cost: number | null; // Kostnad i kronor
 }
 
 export interface InspectionRoom {
