@@ -173,6 +173,14 @@ export function DesktopInspectionForm({
         </Accordion>
       </div>
 
+      {/* Summary section */}
+      <Separator />
+      <InspectionSummary
+        rooms={rooms}
+        inspectionData={inspectionData}
+        onCostUpdate={handleCostUpdate}
+      />
+
       {/* Footer buttons */}
       <div className="flex gap-3 justify-end pt-4 border-t">
         <Button variant="outline" onClick={onCancel}>
