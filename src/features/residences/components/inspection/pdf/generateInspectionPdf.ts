@@ -136,15 +136,13 @@ export function generateInspectionPdf(options: PdfOptions): jsPDF {
     doc.text(roomName, MARGIN, yPos);
     yPos += LINE_HEIGHT;
 
-    const components = ['wall1', 'wall2', 'wall3', 'wall4', 'floor', 'ceiling', 'details'] as const;
+    const components = ['walls', 'floor', 'ceiling', 'appliances', 'kitchenDoors'] as const;
     const componentLabels: Record<string, string> = {
-      wall1: 'Vägg 1',
-      wall2: 'Vägg 2',
-      wall3: 'Vägg 3',
-      wall4: 'Vägg 4',
+      walls: 'Väggar',
       floor: 'Golv',
       ceiling: 'Tak',
-      details: 'Detaljer',
+      appliances: 'Vitvaror',
+      kitchenDoors: 'Köksluckor',
     };
 
     components.forEach(component => {

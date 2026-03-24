@@ -19,15 +19,13 @@ interface RoomInspectionMobileProps {
 const COMPONENTS: Array<{
   key: keyof InspectionRoom["conditions"];
   label: string;
-  type: "walls" | "floor" | "ceiling" | "details";
+  type: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
 }> = [
-  { key: "wall1", label: "Vägg 1", type: "walls" },
-  { key: "wall2", label: "Vägg 2", type: "walls" },
-  { key: "wall3", label: "Vägg 3", type: "walls" },
-  { key: "wall4", label: "Vägg 4", type: "walls" },
+  { key: "walls", label: "Väggar", type: "walls" },
   { key: "floor", label: "Golv", type: "floor" },
   { key: "ceiling", label: "Tak", type: "ceiling" },
-  { key: "details", label: "Detaljer", type: "details" }
+  { key: "appliances", label: "Vitvaror", type: "appliances" },
+  { key: "kitchenDoors", label: "Köksluckor", type: "kitchenDoors" }
 ];
 
 export function RoomInspectionMobile({

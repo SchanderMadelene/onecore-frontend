@@ -1,13 +1,11 @@
 import { CheckCircle, AlertTriangle, XCircle, LucideIcon } from "lucide-react";
 
 export const COMPONENT_LABELS: Record<string, string> = {
-  wall1: 'Vägg 1',
-  wall2: 'Vägg 2',
-  wall3: 'Vägg 3',
-  wall4: 'Vägg 4',
+  walls: 'Väggar',
   floor: 'Golv',
   ceiling: 'Tak',
-  details: 'Detaljer',
+  appliances: 'Vitvaror',
+  kitchenDoors: 'Köksluckor',
 };
 
 export const getComponentLabel = (component: string): string => {

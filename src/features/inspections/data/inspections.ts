@@ -26,51 +26,41 @@ const createMockResidence = (address: string, id: string): ResidenceInfo => ({
 const createEmptyRoomData = (roomId: string) => ({
   roomId,
   conditions: {
-    wall1: "",
-    wall2: "",
-    wall3: "",
-    wall4: "",
+    walls: "",
     floor: "",
     ceiling: "",
-    details: ""
+    appliances: "",
+    kitchenDoors: ""
   },
   actions: {
-    wall1: [],
-    wall2: [],
-    wall3: [],
-    wall4: [],
-    floor: [],
-    ceiling: [],
-    details: []
+    walls: [] as string[],
+    floor: [] as string[],
+    ceiling: [] as string[],
+    appliances: [] as string[],
+    kitchenDoors: [] as string[]
   },
   componentNotes: {
-    wall1: "",
-    wall2: "",
-    wall3: "",
-    wall4: "",
+    walls: "",
     floor: "",
     ceiling: "",
-    details: ""
+    appliances: "",
+    kitchenDoors: ""
   },
   componentPhotos: {
-    wall1: [],
-    wall2: [],
-    wall3: [],
-    wall4: [],
-    floor: [],
-    ceiling: [],
-    details: []
+    walls: [] as string[],
+    floor: [] as string[],
+    ceiling: [] as string[],
+    appliances: [] as string[],
+    kitchenDoors: [] as string[]
   },
   costResponsibility: {
-    wall1: null,
-    wall2: null,
-    wall3: null,
-    wall4: null,
-    floor: null,
-    ceiling: null,
-    details: null
+    walls: null as null,
+    floor: null as null,
+    ceiling: null as null,
+    appliances: null as null,
+    kitchenDoors: null as null
   },
-  photos: [],
+  photos: [] as string[],
   isApproved: false,
   isHandled: false
 });
@@ -79,15 +69,13 @@ const createEmptyRoomData = (roomId: string) => ({
 const createPartialRoomData = (roomId: string, conditions: Partial<Record<string, string>>) => ({
   ...createEmptyRoomData(roomId),
   conditions: {
-    wall1: conditions.wall1 || "",
-    wall2: conditions.wall2 || "",
-    wall3: conditions.wall3 || "",
-    wall4: conditions.wall4 || "",
+    walls: conditions.walls || "",
     floor: conditions.floor || "",
     ceiling: conditions.ceiling || "",
-    details: conditions.details || ""
+    appliances: conditions.appliances || "",
+    kitchenDoors: conditions.kitchenDoors || ""
   },
-  isHandled: Object.values(conditions).filter(v => v && v.trim() !== "").length >= 7
+  isHandled: Object.values(conditions).filter(v => v && v.trim() !== "").length >= 5
 });
 
 export const getAllInspections = (): ExtendedInspection[] => {
@@ -100,12 +88,10 @@ export const getAllInspections = (): ExtendedInspection[] => {
       inspectedBy: "Anna Lindström",
       rooms: {
         "room-hall": createPartialRoomData("room-hall", { 
-          wall1: "God", wall2: "God", wall3: "God", wall4: "God", 
-          floor: "God", ceiling: "God", details: "God" 
+          walls: "God", floor: "God", ceiling: "God", appliances: "God", kitchenDoors: "God" 
         }),
         "room-kok": createPartialRoomData("room-kok", { 
-          wall1: "Acceptabel", wall2: "Acceptabel", wall3: "God", wall4: "God", 
-          floor: "Acceptabel", ceiling: "God", details: "God" 
+          walls: "Acceptabel", floor: "Acceptabel", ceiling: "God", appliances: "God", kitchenDoors: "God" 
         }),
       },
       status: 'completed',
@@ -130,8 +116,7 @@ export const getAllInspections = (): ExtendedInspection[] => {
       inspectedBy: "Maria Andersson",
       rooms: {
         "room-hall": createPartialRoomData("room-hall", { 
-          wall1: "God", wall2: "God", wall3: "God", wall4: "God", 
-          floor: "God", ceiling: "God", details: "God" 
+          walls: "God", floor: "God", ceiling: "God", appliances: "God", kitchenDoors: "God" 
         }),
       },
       status: 'completed',
@@ -150,15 +135,15 @@ export const getAllInspections = (): ExtendedInspection[] => {
       masterKey: false
     },
 
-    // === IN PROGRESS (2 st) - har påbörjad rumsdata ===
+    // === IN PROGRESS (2 st) ===
     {
       id: "inspection-inprogress-1",
       inspectionNumber: "BES-2024-003",
       date: "2024-09-20",
       inspectedBy: "Anna Lindström",
       rooms: {
-        "room-hall": createPartialRoomData("room-hall", { wall1: "God", wall2: "God", floor: "Acceptabel", ceiling: "God" }),
-        "room-kok": createPartialRoomData("room-kok", { wall1: "Skadad", floor: "Acceptabel" }),
+        "room-hall": createPartialRoomData("room-hall", { walls: "God", floor: "Acceptabel", ceiling: "God" }),
+        "room-kok": createPartialRoomData("room-kok", { walls: "Skadad", floor: "Acceptabel" }),
       },
       status: 'in_progress',
       isCompleted: false,
@@ -181,7 +166,7 @@ export const getAllInspections = (): ExtendedInspection[] => {
       date: "2024-09-30",
       inspectedBy: "Johanna Svensson",
       rooms: {
-        "room-badrum": createPartialRoomData("room-badrum", { wall1: "Skadad", floor: "Skadad" }),
+        "room-badrum": createPartialRoomData("room-badrum", { walls: "Skadad", floor: "Skadad" }),
       },
       status: 'in_progress',
       isCompleted: false,
@@ -199,7 +184,7 @@ export const getAllInspections = (): ExtendedInspection[] => {
       masterKey: true
     },
 
-    // === DRAFT (2 st) - sparad men inte färdig ===
+    // === DRAFT (2 st) ===
     {
       id: "inspection-draft-1",
       inspectionNumber: "BES-2024-005",
@@ -207,10 +192,9 @@ export const getAllInspections = (): ExtendedInspection[] => {
       inspectedBy: "Maria Andersson",
       rooms: {
         "room-hall": createPartialRoomData("room-hall", { 
-          wall1: "God", wall2: "God", wall3: "God", wall4: "God", 
-          floor: "God", ceiling: "God", details: "God" 
+          walls: "God", floor: "God", ceiling: "God", appliances: "God", kitchenDoors: "God" 
         }),
-        "room-vardagsrum": createPartialRoomData("room-vardagsrum", { wall1: "Acceptabel" }),
+        "room-vardagsrum": createPartialRoomData("room-vardagsrum", { walls: "Acceptabel" }),
       },
       status: 'draft',
       isCompleted: false,
@@ -233,7 +217,7 @@ export const getAllInspections = (): ExtendedInspection[] => {
       date: "2024-10-01",
       inspectedBy: "Erik Johansson",
       rooms: {
-        "room-sovrum": createPartialRoomData("room-sovrum", { wall1: "God", floor: "God" }),
+        "room-sovrum": createPartialRoomData("room-sovrum", { walls: "God", floor: "God" }),
       },
       status: 'draft',
       isCompleted: false,
@@ -251,7 +235,7 @@ export const getAllInspections = (): ExtendedInspection[] => {
       masterKey: false
     },
 
-    // === EJ PÅBÖRJAD (4 st) - inga rum, ingen rumsdata ===
+    // === EJ PÅBÖRJAD (4 st) ===
     {
       id: "inspection-notstarted-1", 
       inspectionNumber: "BES-2024-007",

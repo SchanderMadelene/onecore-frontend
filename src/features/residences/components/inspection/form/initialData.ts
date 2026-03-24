@@ -4,49 +4,39 @@ import type { InspectionRoom } from "../types";
 export const initialRoomData: InspectionRoom = {
   roomId: "",
   conditions: {
-    wall1: "",
-    wall2: "",
-    wall3: "",
-    wall4: "",
+    walls: "",
     floor: "",
     ceiling: "",
-    details: ""
+    appliances: "",
+    kitchenDoors: ""
   },
   actions: {
-    wall1: [],
-    wall2: [],
-    wall3: [],
-    wall4: [],
+    walls: [],
     floor: [],
     ceiling: [],
-    details: []
+    appliances: [],
+    kitchenDoors: []
   },
   componentNotes: {
-    wall1: "",
-    wall2: "",
-    wall3: "",
-    wall4: "",
+    walls: "",
     floor: "",
     ceiling: "",
-    details: ""
+    appliances: "",
+    kitchenDoors: ""
   },
   componentPhotos: {
-    wall1: [],
-    wall2: [],
-    wall3: [],
-    wall4: [],
+    walls: [],
     floor: [],
     ceiling: [],
-    details: []
+    appliances: [],
+    kitchenDoors: []
   },
   costResponsibility: {
-    wall1: null,
-    wall2: null,
-    wall3: null,
-    wall4: null,
+    walls: null,
     floor: null,
     ceiling: null,
-    details: null
+    appliances: null,
+    kitchenDoors: null
   },
   photos: [],
   isApproved: false,

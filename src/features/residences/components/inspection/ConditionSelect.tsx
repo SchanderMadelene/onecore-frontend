@@ -9,7 +9,7 @@ interface ConditionSelectProps {
   onChange: (value: string) => void;
   actions: string[];
   onActionUpdate: (action: string) => void;
-  type: "walls" | "floor" | "ceiling" | "details";
+  type: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
   note: string;
   onNoteChange: (note: string) => void;
 }
@@ -59,7 +59,28 @@ export const ConditionSelect = ({
           </>
         );
       case "floor":
-      case "details":
+        return (
+          <>
+            <Button
+              size="sm"
+              variant={actions.includes("repair") ? "default" : "outline"}
+              onClick={(e) => handleActionClick(e, "repair")}
+            >
+              <Wrench className="h-4 w-4 mr-1" />
+              Reparation
+            </Button>
+            <Button
+              size="sm"
+              variant={actions.includes("replacement") ? "default" : "outline"}
+              onClick={(e) => handleActionClick(e, "replacement")}
+            >
+              <Hammer className="h-4 w-4 mr-1" />
+              Byte
+            </Button>
+          </>
+        );
+      case "appliances":
+      case "kitchenDoors":
         return (
           <>
             <Button
