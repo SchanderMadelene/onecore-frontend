@@ -3,8 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { CompactProfileForm } from "@/features/rentals/components/residence-profile/CompactProfileForm";
+import { CreateContractDialog } from "@/features/rentals/components/CreateContractDialog";
+import { useHousingOffers } from "@/shared/contexts/HousingOffersContext";
 import { useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, FileText } from "lucide-react";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
 
 

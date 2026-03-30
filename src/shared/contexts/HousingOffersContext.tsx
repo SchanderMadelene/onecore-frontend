@@ -26,6 +26,7 @@ const HousingOffersContext = createContext<HousingOffersContextType | undefined>
 
 export function HousingOffersProvider({ children }: { children: ReactNode }) {
   const [offers, setOffers] = useState<HousingOffer[]>([]);
+  const [assignedApplicants, setAssignedApplicants] = useState<Record<string, number[]>>({});
 
   const createOffer = (listingId: string, selectedApplicants: number[]) => {
     const newOffer: HousingOffer = {
@@ -46,12 +47,26 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
     return offers.some(offer => offer.listingId === listingId);
   };
 
+  const markApplicantAssigned = (listingId: string, applicantId: number) => {
+    setAssignedApplicants(prev => ({
+      ...prev,
+      [listingId]: [...(prev[listingId] || []), applicantId]
+    }));
+  };
+
+  const isApplicantAssigned = (listingId: string, applicantId: number) => {
+    return (assignedApplicants[listingId] || []).includes(applicantId);
+  };
+
   return (
     <HousingOffersContext.Provider value={{
       offers,
       createOffer,
       getOfferForListing,
-      isListingOffered
+      isListingOffered,
+      assignedApplicants,
+      markApplicantAssigned,
+      isApplicantAssigned
     }}>
       {children}
     </HousingOffersContext.Provider>
