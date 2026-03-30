@@ -107,8 +107,7 @@ const AppRoutes = () => {
       <Route path="/properties" element={<AllPropertiesPage />} />
       <Route path="/properties/:property" element={<PropertyDetailPage />} />
       <Route path="/properties/:property/:building" element={<BuildingDetailPage />} />
-      <Route path="/properties/:property/:building/:entrance" element={<EntranceDetailPage />} />
-      <Route path="/properties/:property/:building/:id" element={<ResidencePage />} />
+      <Route path="/properties/:property/:building/:id" element={<PropertySubPage />} />
       
       <Route 
         path="/tenants/all" 
