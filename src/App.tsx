@@ -59,6 +59,7 @@ const LeaseContractsPage = lazyWithRetry(() => import("./pages/lease-contracts/L
 const StrofakturaUnderlagPage = lazyWithRetry(() => import("./pages/strofaktura/StrofakturaUnderlagPage"));
 const PropertyAreasPage = lazyWithRetry(() => import("./pages/property-areas/PropertyAreasPage"));
 const StewardAdminPage = lazyWithRetry(() => import("./pages/property-areas/StewardAdminPage"));
+const IconComparisonPage = lazyWithRetry(() => import("./pages/IconComparisonPage"));
 
 type AppErrorBoundaryProps = { children: React.ReactNode };
 type AppErrorBoundaryState = { hasError: boolean };
@@ -240,6 +241,7 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
+      <Route path="/icon-test" element={<IconComparisonPage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
