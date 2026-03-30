@@ -172,8 +172,8 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Lägenheter */}
-        <ToggleSection title="Lägenheter" icon={Home} toggleKeys={['showApartments', 'showRoomInformation', 'showFloorplan', 'showDocuments', 'showInspections', 'showApartmentIssues', 'showResidenceNotes', 'showTenantInfo', 'showResidenceAccess']}>
-          <ToggleItem id="apartments" icon={Home} label="Lägenheter" description="Visa lägenhetskort" checked={features.showApartments} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showApartments')} />
+        <ToggleSection title="Lägenheter" icon={DoorOpen} toggleKeys={['showApartments', 'showRoomInformation', 'showFloorplan', 'showDocuments', 'showInspections', 'showApartmentIssues', 'showResidenceNotes', 'showTenantInfo', 'showResidenceAccess']}>
+          <ToggleItem id="apartments" icon={DoorOpen} label="Lägenheter" description="Visa lägenhetskort" checked={features.showApartments} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showApartments')} />
           <div className="pl-4 border-l space-y-1">
             <ToggleItem id="room-information" icon={LayoutDashboard} label="Rumsinformation" description="Visa rumsinformation på lägenhetskortet" checked={features.showRoomInformation} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showRoomInformation')} />
             <ToggleItem id="floorplan" icon={FileImage} label="Planritning" description="Visa planritningsflik" checked={features.showFloorplan} disabled={!features.showApartments || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showFloorplan')} />
