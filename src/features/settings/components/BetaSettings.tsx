@@ -154,17 +154,21 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Byggnader */}
-        <ToggleSection title="Byggnader" icon={Building2} toggleKeys={['showBuildings', 'showEntrances', 'showBuildingEntrances', 'showBuildingParts', 'showBuildingSpaces', 'showBuildingInstallations', 'showBuildingParking', 'showBuildingDocuments']}>
+        <ToggleSection title="Byggnader" icon={Building2} toggleKeys={['showBuildings', 'showBuildingParts', 'showBuildingSpaces', 'showBuildingInstallations', 'showBuildingParking', 'showBuildingDocuments']}>
           <ToggleItem id="buildings" icon={Building} label="Byggnader" description="Visa byggnadskort" checked={features.showBuildings} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildings')} />
           <div className="pl-4 border-l space-y-1">
-            <ToggleItem id="entrances" icon={DoorOpen} label="Uppgångar (trädvy)" description="Visa uppgångar som egen nivå i trädvyn" checked={features.showEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showEntrances')} />
-            <ToggleItem id="building-entrances" icon={Home} label="Uppgångar" description="Visa uppgångsflik på byggnadskort" checked={features.showBuildingEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingEntrances')} />
             <ToggleItem id="building-parts" icon={Building2} label="Byggnadsdelar" description="Visa byggnadsdelarflik" checked={features.showBuildingParts} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingParts')} />
             <ToggleItem id="building-spaces" icon={Box} label="Utrymmen" description="Visa utrymmenflik" checked={features.showBuildingSpaces} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingSpaces')} />
             <ToggleItem id="building-installations" icon={Settings} label="Installationer" description="Visa installationerflik" checked={features.showBuildingInstallations} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingInstallations')} />
             <ToggleItem id="building-parking" icon={Car} label="Parkering" description="Visa parkeringflik" checked={features.showBuildingParking} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingParking')} />
             <ToggleItem id="building-documents" icon={FileText} label="Dokument" description="Visa dokumentflik" checked={features.showBuildingDocuments} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingDocuments')} />
           </div>
+        </ToggleSection>
+
+        {/* Uppgångar */}
+        <ToggleSection title="Uppgångar" icon={DoorOpen} toggleKeys={['showEntrances', 'showBuildingEntrances']}>
+          <ToggleItem id="entrances" icon={DoorOpen} label="Uppgångar (trädvy)" description="Visa uppgångar som egen nivå i trädvyn" checked={features.showEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showEntrances')} />
+          <ToggleItem id="building-entrances" icon={Home} label="Uppgångar (byggnadsflik)" description="Visa uppgångsflik på byggnadskort" checked={features.showBuildingEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingEntrances')} />
         </ToggleSection>
 
         {/* Lägenheter */}
