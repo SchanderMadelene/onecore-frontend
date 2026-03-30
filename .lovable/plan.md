@@ -1,69 +1,44 @@
 
 
-## Plan: Lägg till Uppgångar som egen nod i trädstrukturen
+## Plan: Uppdatera ikoner för fastighetshierarkin enligt produktion
 
 ### Bakgrund
-Idag går trädstrukturen: Fastighet → Byggnad → Lägenhet. Vi lägger till en mellannivå: Fastighet → Byggnad → **Uppgång** → Lägenhet. Uppgångar får en egen sida och styrs av en ny feature toggle `showEntrances`.
+Ikonerna ska matcha produktionssystemet. Nuvarande mappning är felaktig -- flera nivåer delar samma ikon.
 
-### Ny hierarki
+### Ny ikonmappning
 
-```text
-Fastigheter
-└── Älgen 1
-    └── Bellmansgatan 1A - 2C
-        ├── Uppgång A          ← NY NOD (icon: "door-open")
-        │   ├── LGH-001
-        │   ├── LGH-002
-        │   └── LGH-003
-        ├── Uppgång B
-        │   ├── LGH-004
-        │   └── ...
-```
+| Nivå | Ikon-namn i data | Lucide-komponent | Nuvarande |
+|------|------------------|-----------------|-----------|
+| Företag | `"landmark"` | `Landmark` | Finns ej ännu |
+| Fastighet | `"building2"` | `Building2` | `"building"` → `Building` |
+| Byggnad | `"hotel"` | `Hotel` | `"building"` → `Building` |
+| Uppgång | `"home"` | `Home` | `"door-open"` → `DoorOpen` |
+| Lägenhet | `"door-open"` | `DoorOpen` | `"home"` → `Home` |
+
+Uppgång och Lägenhet byter alltså ikon med varandra, och Fastighet/Byggnad får nya unika ikoner.
 
 ### Ändringar
 
-**1. Feature toggle** (`FeatureTogglesContext.tsx`)
-- Lägg till `showEntrances: boolean` i `FeatureToggles` (default: `false`)
-- Koppla till `showBuildings` (stängs av om buildings stängs av)
+**1. `treeViewUtils.tsx`** -- Lägg till `"hotel"` och `"landmark"` i switch-satsen med rätt Lucide-import (`Hotel`, `Landmark`).
 
-**2. Beta-inställningar** (`BetaSettings.tsx`)
-- Ny ToggleItem "Uppgångar" under Byggnader-sektionen, med description "Visa uppgångar som egen nivå i trädvyn"
+**2. Träddata-filer** -- Uppdatera `icon`-värden:
+- `properties/index.ts`: Rotnoden "Fastigheter" behåller `"building"` eller uppdateras
+- Varje fastighet (Älgen 1, Lindaren 2, etc.): `icon: "building2"`
+- Varje byggnad (Bellmansgatan, Kontorsbyggnad, etc.): `icon: "hotel"`
+- Varje uppgång: `icon: "home"` (var `"door-open"`)
+- Varje lägenhet: `icon: "door-open"` (var `"home"`)
 
-**3. Uppdatera trädnoderna** (alla filer i `src/widgets/navigation/treeview/data/properties/`)
-- Lägg till uppgångsnoder mellan byggnad och lägenheter
-- Varje uppgång får `icon: "door-open"` och path `/properties/{property}/{building}/{entrance}`
-- Lägenheter flyttas ner som barn till uppgångarna
-- Exempel för Älgen 1: Bellmansgatan får "Uppgång 1A", "Uppgång 1B", etc.
+Berörda filer:
+- `algen1.ts`, `lindaren2.ts`, `bjornen4.ts`, `otherProperties.ts`, `properties/index.ts`
 
-**4. TreeView-filtrering** (`TreeView.tsx` + `types.ts`)
-- Lägg till `showEntrances` i `TreeViewProps`
-- I filtreringslogiken: om `showEntrances` är true, visa uppgångsnoder; annars platta ut och visa lägenheter direkt under byggnad (nuvarande beteende)
+**3. `BetaSettings.tsx`** -- Uppdatera ikoner i toggle-sektionerna så de matchar (t.ex. Uppgångar-sektionen bör använda `Home` istället för `DoorOpen`).
 
-**5. Ny rutt och sida**
-- Ny rutt: `/properties/:property/:building/:entrance` i `App.tsx`
-- Flytta nuvarande residence-rutt till `/properties/:property/:building/:entrance/:id`
-- Ny sidkomponent `EntranceDetailPage.tsx` i `src/pages/properties/`
-- Sidan visar uppgångens namn, adress och listar tillhörande lägenheter
-
-**6. EntranceDetailPage-komponent**
-- Återanvänder befintliga mönster (TabLayout, Card)
-- Visar lista på lägenheter med klickbara kort som navigerar till respektive lägenhet
-- Responsiv med `useIsMobile()`
-
-**7. TreeItem-ikon**
-- Lägg till stöd för `"door-open"` ikon i TreeItem-komponenten (mappar till lucide `DoorOpen`)
-
-### Filer som ändras/skapas
-- `src/shared/contexts/FeatureTogglesContext.tsx` — ny toggle
-- `src/features/settings/components/BetaSettings.tsx` — ny toggle-rad
-- `src/widgets/navigation/treeview/types.ts` — ny prop
-- `src/widgets/navigation/treeview/TreeView.tsx` — filtreringslogik
-- `src/widgets/navigation/treeview/TreeItem.tsx` — ny ikon
-- `src/widgets/navigation/treeview/data/properties/algen1.ts` — uppgångsnoder
-- `src/widgets/navigation/treeview/data/properties/lindaren2.ts` — uppgångsnoder
-- `src/widgets/navigation/treeview/data/properties/bjornen4.ts` — uppgångsnoder
-- `src/widgets/navigation/treeview/data/properties/otherProperties.ts` — uppgångsnoder
-- `src/widgets/navigation/NavigationBar.tsx` — skicka showEntrances
-- `src/App.tsx` — nya rutter
-- **Ny:** `src/pages/properties/EntranceDetailPage.tsx`
+### Filer som ändras
+- `src/widgets/navigation/treeview/treeViewUtils.tsx`
+- `src/widgets/navigation/treeview/data/properties/algen1.ts`
+- `src/widgets/navigation/treeview/data/properties/lindaren2.ts`
+- `src/widgets/navigation/treeview/data/properties/bjornen4.ts`
+- `src/widgets/navigation/treeview/data/properties/otherProperties.ts`
+- `src/widgets/navigation/treeview/data/properties/index.ts`
+- `src/features/settings/components/BetaSettings.tsx`
 
