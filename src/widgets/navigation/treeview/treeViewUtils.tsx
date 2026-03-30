@@ -7,6 +7,8 @@ import {
   MapPin, 
   LayoutGrid, 
   Home, 
+  Hotel,
+  Landmark,
   User, 
   Users, 
   FileText, 
