@@ -9,6 +9,7 @@ import { treeData } from "@/widgets/navigation/treeview/treeData";
 const EntranceDetailPage = () => {
   const { property, building, entrance } = useParams();
   const isMobile = useIsMobile();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Find property, building, and entrance from tree data
   const propertiesNode = treeData.find(n => n.id === "properties");
