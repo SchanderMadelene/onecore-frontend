@@ -4,10 +4,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { CompactProfileForm } from "@/features/rentals/components/residence-profile/CompactProfileForm";
 import { CreateContractDialog } from "@/features/rentals/components/CreateContractDialog";
+import { OfferActions } from "@/features/rentals/components/OfferActions";
 import { useHousingOffers } from "@/shared/contexts/HousingOffersContext";
 import { useState } from "react";
-import { ChevronDown, ChevronRight, FileText, Check, X } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { ChevronDown, ChevronRight, FileText } from "lucide-react";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
 
 
@@ -35,7 +35,7 @@ export function HousingApplicantsTable({
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
   const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
-  const { markApplicantAssigned, isApplicantAssigned, setOfferResponse, getOfferResponseOverride } = useHousingOffers();
+  const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
 
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
@@ -294,66 +294,21 @@ export function HousingApplicantsTable({
                   )}
                   {!showSelectionColumn && applicant.offerResponse && (
                     <TableCell>
-                      {(() => {
-                        const override = getOfferResponseOverride(listingId, applicant.id);
-                        const effectiveStatus = override?.response || applicant.offerResponse.status;
-                        const effectiveDate = override?.respondedAt 
-                          ? new Date(override.respondedAt).toLocaleDateString('sv-SE')
-                          : applicant.offerResponse.date;
-                        
-                        if (effectiveStatus === "Accepterat" || effectiveStatus === "Nekat") {
-                          return (
-                            <div className="space-y-1">
-                              <div>{getOfferResponseBadge(effectiveStatus)}</div>
-                              {effectiveDate && (
-                                <div className="text-xs text-muted-foreground">{effectiveDate}</div>
-                              )}
-                            </div>
-                          );
-                        }
-                        
-                        // "Väntar på svar" — show action buttons
-                        return (
-                          <div className="flex items-center gap-1">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-7 px-2 text-green-700 border-green-300 hover:bg-green-50"
-                              onClick={() => {
-                                setOfferResponse(listingId, applicant.id, 'Accepterat');
-                                toast({ title: "Svar registrerat", description: `${applicant.name} har registrerats som accepterat.` });
-                              }}
-                            >
-                              <Check className="h-3 w-3 mr-1" />
-                              Ja
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-7 px-2 text-red-700 border-red-300 hover:bg-red-50"
-                              onClick={() => {
-                                setOfferResponse(listingId, applicant.id, 'Nekat');
-                                toast({ title: "Svar registrerat", description: `${applicant.name} har registrerats som nekat.` });
-                              }}
-                            >
-                              <X className="h-3 w-3 mr-1" />
-                              Nej
-                            </Button>
-                          </div>
-                        );
-                      })()}
+                      <div className="space-y-1">
+                        <div>{getOfferResponseBadge(applicant.offerResponse.status)}</div>
+                        {applicant.offerResponse.date && (
+                          <div className="text-xs text-muted-foreground">{applicant.offerResponse.date}</div>
+                        )}
+                      </div>
                     </TableCell>
                   )}
                   {!showSelectionColumn && (
                     <TableCell>
                       {(() => {
-                        const override = getOfferResponseOverride(listingId, applicant.id);
-                        const effectiveStatus = override?.response || applicant.offerResponse?.status;
-                        
                         if (isApplicantAssigned(listingId, applicant.id)) {
                           return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Tilldelad</Badge>;
                         }
-                        if (effectiveStatus === "Accepterat") {
+                        if (applicant.offerResponse?.status === "Accepterat") {
                           return (
                             <Button
                               variant="outline"
@@ -363,6 +318,15 @@ export function HousingApplicantsTable({
                               <FileText className="h-4 w-4 mr-1" />
                               Koppla kontrakt
                             </Button>
+                          );
+                        }
+                        if (applicant.offerResponse?.status === "Väntar på svar") {
+                          return (
+                            <OfferActions
+                              offerId={applicant.id}
+                              listingId={Number(listingId)}
+                              applicantName={applicant.name}
+                            />
                           );
                         }
                         return null;
