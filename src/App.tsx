@@ -36,6 +36,7 @@ const Index = lazyWithRetry(() => import("./pages/Index"));
 const PropertyDetailPage = lazyWithRetry(() => import("./pages/properties/PropertyDetailPage"));
 const BuildingDetailPage = lazyWithRetry(() => import("./pages/properties/BuildingDetailPage"));
 const ResidencePage = lazyWithRetry(() => import("./pages/properties/ResidencePage"));
+const EntranceDetailPage = lazyWithRetry(() => import("./pages/properties/EntranceDetailPage"));
 const TenantDetailPage = lazyWithRetry(() => import("./pages/tenants/TenantDetailPage"));
 const AllTenantsPage = lazyWithRetry(() => import("./pages/tenants/AllTenantsPage"));
 const DesignSystemPage = lazyWithRetry(() => import("./pages/design-system/DesignSystemPage"));
