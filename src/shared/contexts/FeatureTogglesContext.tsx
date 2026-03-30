@@ -199,6 +199,7 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
         newFeatures.showBuildings = true;
       } else if (feature === 'showBuildings' && prev.showBuildings) {
         newFeatures.showBuildings = false;
+        newFeatures.showEntrances = false;
         newFeatures.showBuildingEntrances = false;
         newFeatures.showBuildingParts = false;
         newFeatures.showBuildingSpaces = false;

@@ -16,16 +16,24 @@ export const otherProperties: TreeNode[] = [
         path: "/properties/pipan-1/flerfamiljshus-pipan",
         children: [
           {
-            id: "lgh-4001",
-            label: "4001",
-            icon: "home",
-            path: "/properties/pipan-1/flerfamiljshus-pipan/lgh-4001"
-          },
-          {
-            id: "lgh-4002",
-            label: "4002",
-            icon: "home",
-            path: "/properties/pipan-1/flerfamiljshus-pipan/lgh-4002"
+            id: "uppgang-a-pipan",
+            label: "Uppgång A",
+            icon: "door-open",
+            path: "/properties/pipan-1/flerfamiljshus-pipan/uppgang-a",
+            children: [
+              {
+                id: "lgh-4001",
+                label: "4001",
+                icon: "home",
+                path: "/properties/pipan-1/flerfamiljshus-pipan/lgh-4001"
+              },
+              {
+                id: "lgh-4002",
+                label: "4002",
+                icon: "home",
+                path: "/properties/pipan-1/flerfamiljshus-pipan/lgh-4002"
+              }
+            ]
           }
         ]
       }
@@ -45,16 +53,24 @@ export const otherProperties: TreeNode[] = [
         path: "/properties/oskaria-1/kontorsbyggnad-oskaria",
         children: [
           {
-            id: "kontor-201",
-            label: "201",
-            icon: "home",
-            path: "/properties/oskaria-1/kontorsbyggnad-oskaria/kontor-201"
-          },
-          {
-            id: "kontor-202",
-            label: "202",
-            icon: "home",
-            path: "/properties/oskaria-1/kontorsbyggnad-oskaria/kontor-202"
+            id: "uppgang-a-oskaria",
+            label: "Uppgång A",
+            icon: "door-open",
+            path: "/properties/oskaria-1/kontorsbyggnad-oskaria/uppgang-a",
+            children: [
+              {
+                id: "kontor-201",
+                label: "201",
+                icon: "home",
+                path: "/properties/oskaria-1/kontorsbyggnad-oskaria/kontor-201"
+              },
+              {
+                id: "kontor-202",
+                label: "202",
+                icon: "home",
+                path: "/properties/oskaria-1/kontorsbyggnad-oskaria/kontor-202"
+              }
+            ]
           }
         ]
       }
@@ -74,16 +90,24 @@ export const otherProperties: TreeNode[] = [
         path: "/properties/styrhylsan-9/radhus-styrhylsan",
         children: [
           {
-            id: "lgh-5001",
-            label: "5001",
-            icon: "home",
-            path: "/properties/styrhylsan-9/radhus-styrhylsan/lgh-5001"
-          },
-          {
-            id: "lgh-5002",
-            label: "5002",
-            icon: "home",
-            path: "/properties/styrhylsan-9/radhus-styrhylsan/lgh-5002"
+            id: "uppgang-a-styrhylsan",
+            label: "Uppgång A",
+            icon: "door-open",
+            path: "/properties/styrhylsan-9/radhus-styrhylsan/uppgang-a",
+            children: [
+              {
+                id: "lgh-5001",
+                label: "5001",
+                icon: "home",
+                path: "/properties/styrhylsan-9/radhus-styrhylsan/lgh-5001"
+              },
+              {
+                id: "lgh-5002",
+                label: "5002",
+                icon: "home",
+                path: "/properties/styrhylsan-9/radhus-styrhylsan/lgh-5002"
+              }
+            ]
           }
         ]
       }
@@ -103,16 +127,24 @@ export const otherProperties: TreeNode[] = [
         path: "/properties/bavern-1/kontorskomplex-bavern",
         children: [
           {
-            id: "kontor-301",
-            label: "301",
-            icon: "home",
-            path: "/properties/bavern-1/kontorskomplex-bavern/kontor-301"
-          },
-          {
-            id: "kontor-302",
-            label: "302",
-            icon: "home",
-            path: "/properties/bavern-1/kontorskomplex-bavern/kontor-302"
+            id: "uppgang-a-bavern",
+            label: "Uppgång A",
+            icon: "door-open",
+            path: "/properties/bavern-1/kontorskomplex-bavern/uppgang-a",
+            children: [
+              {
+                id: "kontor-301",
+                label: "301",
+                icon: "home",
+                path: "/properties/bavern-1/kontorskomplex-bavern/kontor-301"
+              },
+              {
+                id: "kontor-302",
+                label: "302",
+                icon: "home",
+                path: "/properties/bavern-1/kontorskomplex-bavern/kontor-302"
+              }
+            ]
           }
         ]
       }

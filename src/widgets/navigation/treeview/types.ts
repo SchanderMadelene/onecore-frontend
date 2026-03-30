@@ -28,4 +28,5 @@ export interface TreeViewProps {
   showFavorites: boolean;
   showBuildings: boolean;
   showApartments: boolean;
+  showEntrances: boolean;
 }
