@@ -138,8 +138,8 @@ export function BetaSettings() {
         </div>
 
         {/* Fastigheter */}
-        <ToggleSection title="Fastigheter" icon={Building} defaultOpen={false} toggleKeys={['showProperties', 'showPropertyInfo', 'showPropertyStatistics', 'showPropertyDocuments', 'showPropertyPlanning', 'showPropertyBuildings', 'showPropertyMaintenance', 'showPropertyOrders', 'showPropertyAccess', 'showPropertyMap']}>
-          <ToggleItem id="properties" icon={Building} label="Fastigheter" description="Visa fastighetsfunktioner" checked={features.showProperties} disabled={navDisabled} onToggle={() => handleFeatureToggle('showProperties')} />
+        <ToggleSection title="Fastigheter" icon={Building2} defaultOpen={false} toggleKeys={['showProperties', 'showPropertyInfo', 'showPropertyStatistics', 'showPropertyDocuments', 'showPropertyPlanning', 'showPropertyBuildings', 'showPropertyMaintenance', 'showPropertyOrders', 'showPropertyAccess', 'showPropertyMap']}>
+          <ToggleItem id="properties" icon={Building2} label="Fastigheter" description="Visa fastighetsfunktioner" checked={features.showProperties} disabled={navDisabled} onToggle={() => handleFeatureToggle('showProperties')} />
           <div className="pl-4 border-l space-y-1">
             <ToggleItem id="property-info" icon={Building} label="Information" description="Visa informationsflik" checked={features.showPropertyInfo} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyInfo')} />
             <ToggleItem id="property-statistics" icon={TrendingUp} label="Statistik" description="Visa statistikflik" checked={features.showPropertyStatistics} disabled={!features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showPropertyStatistics')} />
