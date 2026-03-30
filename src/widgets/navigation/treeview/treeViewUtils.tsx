@@ -7,6 +7,8 @@ import {
   MapPin, 
   LayoutGrid, 
   Home, 
+  Hotel,
+  Landmark,
   User, 
   Users, 
   FileText, 
@@ -34,6 +36,10 @@ export const getNodeIcon = (iconName?: string): ReactNode => {
       return <Building className="h-4 w-4 text-muted-foreground" />;
     case "building2":
       return <Building2 className="h-4 w-4 text-muted-foreground" />;
+    case "hotel":
+      return <Hotel className="h-4 w-4 text-muted-foreground" />;
+    case "landmark":
+      return <Landmark className="h-4 w-4 text-muted-foreground" />;
     case "home":
       return <Home className="h-4 w-4 text-muted-foreground" />;
     case "user":
