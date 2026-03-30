@@ -36,6 +36,10 @@ const Index = lazyWithRetry(() => import("./pages/Index"));
 const PropertyDetailPage = lazyWithRetry(() => import("./pages/properties/PropertyDetailPage"));
 const BuildingDetailPage = lazyWithRetry(() => import("./pages/properties/BuildingDetailPage"));
 const ResidencePage = lazyWithRetry(() => import("./pages/properties/ResidencePage"));
+const EntranceDetailPage = lazyWithRetry(() => import("./pages/properties/EntranceDetailPage"));
+
+// Wrapper that decides between EntranceDetailPage and ResidencePage based on the :id param
+const PropertySubPage = lazyWithRetry(() => import("./pages/properties/PropertySubPage"));
 const TenantDetailPage = lazyWithRetry(() => import("./pages/tenants/TenantDetailPage"));
 const AllTenantsPage = lazyWithRetry(() => import("./pages/tenants/AllTenantsPage"));
 const DesignSystemPage = lazyWithRetry(() => import("./pages/design-system/DesignSystemPage"));
@@ -55,6 +59,7 @@ const LeaseContractsPage = lazyWithRetry(() => import("./pages/lease-contracts/L
 const StrofakturaUnderlagPage = lazyWithRetry(() => import("./pages/strofaktura/StrofakturaUnderlagPage"));
 const PropertyAreasPage = lazyWithRetry(() => import("./pages/property-areas/PropertyAreasPage"));
 const StewardAdminPage = lazyWithRetry(() => import("./pages/property-areas/StewardAdminPage"));
+const IconComparisonPage = lazyWithRetry(() => import("./pages/IconComparisonPage"));
 
 type AppErrorBoundaryProps = { children: React.ReactNode };
 type AppErrorBoundaryState = { hasError: boolean };
@@ -106,7 +111,7 @@ const AppRoutes = () => {
       <Route path="/properties" element={<AllPropertiesPage />} />
       <Route path="/properties/:property" element={<PropertyDetailPage />} />
       <Route path="/properties/:property/:building" element={<BuildingDetailPage />} />
-      <Route path="/properties/:property/:building/:id" element={<ResidencePage />} />
+      <Route path="/properties/:property/:building/:id" element={<PropertySubPage />} />
       
       <Route 
         path="/tenants/all" 
@@ -236,6 +241,7 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
+      <Route path="/icon-test" element={<IconComparisonPage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

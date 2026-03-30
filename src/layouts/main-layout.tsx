@@ -93,6 +93,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
               showFavorites={features.showFavorites}
               showBuildings={features.showBuildings}
               showApartments={features.showApartments}
+              showEntrances={features.showEntrances}
             />
           </aside>
         )}

@@ -16,10 +16,25 @@ export function TreeView({
   showAllInspections,
   showFavorites,
   showBuildings,
-  showApartments 
+  showApartments,
+  showEntrances
 }: TreeViewProps) {
   const isMobile = useIsMobile();
   
+  // Helper: flatten entrance nodes, moving their children up to the building level
+  const flattenEntrances = (buildingNode: any) => {
+    if (!buildingNode.children) return buildingNode;
+    const flatChildren: any[] = [];
+    for (const child of buildingNode.children) {
+      if (child.icon === "home" && child.children) {
+        flatChildren.push(...child.children);
+      } else {
+        flatChildren.push(child);
+      }
+    }
+    return { ...buildingNode, children: flatChildren };
+  };
+
   const filteredData = useMemo(() => {
     return treeData.filter(node => {
       if (node.id === "properties") return showProperties;
@@ -37,16 +52,20 @@ export function TreeView({
           ...node,
           children: node.children.map(propertyNode => ({
             ...propertyNode,
-            children: showBuildings ? propertyNode.children?.map(buildingNode => ({
-              ...buildingNode,
-              children: showApartments ? buildingNode.children : []
-            })) : []
+            children: showBuildings ? propertyNode.children?.map(buildingNode => {
+              // If entrances are hidden, flatten entrance children up to building level
+              const processedBuilding = showEntrances ? buildingNode : flattenEntrances(buildingNode);
+              return {
+                ...processedBuilding,
+                children: showApartments ? processedBuilding.children : []
+              };
+            }) : []
           }))
         };
       }
       return node;
     });
-  }, [showRentals, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showAllInspections, showFavorites, showBuildings, showApartments]);
+  }, [showRentals, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showAllInspections, showFavorites, showBuildings, showApartments, showEntrances]);
 
   return (
     <div className={`${isMobile ? 'p-2' : 'p-4'} h-full overflow-y-auto bg-white`}>
