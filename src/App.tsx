@@ -36,6 +36,10 @@ const Index = lazyWithRetry(() => import("./pages/Index"));
 const PropertyDetailPage = lazyWithRetry(() => import("./pages/properties/PropertyDetailPage"));
 const BuildingDetailPage = lazyWithRetry(() => import("./pages/properties/BuildingDetailPage"));
 const ResidencePage = lazyWithRetry(() => import("./pages/properties/ResidencePage"));
+const EntranceDetailPage = lazyWithRetry(() => import("./pages/properties/EntranceDetailPage"));
+
+// Wrapper that decides between EntranceDetailPage and ResidencePage based on the :id param
+const PropertySubPage = lazyWithRetry(() => import("./pages/properties/PropertySubPage"));
 const TenantDetailPage = lazyWithRetry(() => import("./pages/tenants/TenantDetailPage"));
 const AllTenantsPage = lazyWithRetry(() => import("./pages/tenants/AllTenantsPage"));
 const DesignSystemPage = lazyWithRetry(() => import("./pages/design-system/DesignSystemPage"));
@@ -106,7 +110,7 @@ const AppRoutes = () => {
       <Route path="/properties" element={<AllPropertiesPage />} />
       <Route path="/properties/:property" element={<PropertyDetailPage />} />
       <Route path="/properties/:property/:building" element={<BuildingDetailPage />} />
-      <Route path="/properties/:property/:building/:id" element={<ResidencePage />} />
+      <Route path="/properties/:property/:building/:id" element={<PropertySubPage />} />
       
       <Route 
         path="/tenants/all" 

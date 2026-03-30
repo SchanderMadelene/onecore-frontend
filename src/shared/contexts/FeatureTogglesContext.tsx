@@ -8,6 +8,7 @@ interface FeatureToggles {
   showTenants: boolean;
   showBuildings: boolean;
   showApartments: boolean;
+  showEntrances: boolean;
   showRoomInformation: boolean;
   showInspections: boolean;
   showApartmentIssues: boolean;
@@ -83,6 +84,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenants: false,
   showBuildings: true,
   showApartments: true,
+  showEntrances: false,
   showRoomInformation: false,
   showInspections: true,
   showApartmentIssues: false,
@@ -197,6 +199,7 @@ export function FeatureTogglesProvider({ children }: { children: React.ReactNode
         newFeatures.showBuildings = true;
       } else if (feature === 'showBuildings' && prev.showBuildings) {
         newFeatures.showBuildings = false;
+        newFeatures.showEntrances = false;
         newFeatures.showBuildingEntrances = false;
         newFeatures.showBuildingParts = false;
         newFeatures.showBuildingSpaces = false;
