@@ -35,7 +35,7 @@ export function HousingApplicantsTable({
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
   const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
-  const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
+  const { markApplicantAssigned, isApplicantAssigned, setOfferResponse, getOfferResponseOverride } = useHousingOffers();
 
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
