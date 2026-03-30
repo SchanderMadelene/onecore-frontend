@@ -21,7 +21,7 @@ const EntranceDetailPage = () => {
   const units = entranceNode?.children ?? [];
 
   return (
-    <PageLayout>
+    <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className={isMobile ? "p-4 space-y-4" : "p-6 space-y-6"}>
         {/* Breadcrumb */}
         <div className="flex items-center gap-1 text-sm text-muted-foreground flex-wrap">
