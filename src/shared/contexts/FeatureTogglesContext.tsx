@@ -8,6 +8,7 @@ interface FeatureToggles {
   showTenants: boolean;
   showBuildings: boolean;
   showApartments: boolean;
+  showEntrances: boolean;
   showRoomInformation: boolean;
   showInspections: boolean;
   showApartmentIssues: boolean;
