@@ -8,7 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { treeData } from "@/widgets/navigation/treeview/treeData";
 
 const EntranceDetailPage = () => {
-  const { property, building, entrance } = useParams();
+  const { property, building, id: entrance } = useParams();
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
