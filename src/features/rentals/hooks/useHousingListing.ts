@@ -93,7 +93,8 @@ export const useHousingListing = (id: string) => {
               date: "2024-02-05"
             },
             offerResponse: {
-              status: "Väntar på svar" as const
+              status: "Accepterat" as const,
+              date: "2024-02-10"
             }
           },
           {
