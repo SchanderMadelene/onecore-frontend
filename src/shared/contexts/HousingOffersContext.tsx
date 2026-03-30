@@ -12,13 +12,6 @@ export interface HousingOffer {
   }>;
 }
 
-export interface OfferResponseOverride {
-  applicantId: number;
-  listingId: string;
-  response: 'Accepterat' | 'Nekat';
-  respondedAt: string;
-}
-
 interface HousingOffersContextType {
   offers: HousingOffer[];
   createOffer: (listingId: string, selectedApplicants: number[]) => void;
@@ -27,9 +20,6 @@ interface HousingOffersContextType {
   assignedApplicants: Record<string, number[]>;
   markApplicantAssigned: (listingId: string, applicantId: number) => void;
   isApplicantAssigned: (listingId: string, applicantId: number) => boolean;
-  offerResponseOverrides: OfferResponseOverride[];
-  setOfferResponse: (listingId: string, applicantId: number, response: 'Accepterat' | 'Nekat') => void;
-  getOfferResponseOverride: (listingId: string, applicantId: number) => OfferResponseOverride | undefined;
 }
 
 const HousingOffersContext = createContext<HousingOffersContextType | undefined>(undefined);
