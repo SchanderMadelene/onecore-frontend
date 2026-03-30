@@ -8,7 +8,7 @@ import {
   LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, 
   StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, 
   Lock, Eye, TrendingUp, Code, Star, RotateCcw, MapPin, ChevronDown,
-  LucideIcon
+  DoorOpen, LucideIcon
 } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole } from "@/contexts/RoleContext";
