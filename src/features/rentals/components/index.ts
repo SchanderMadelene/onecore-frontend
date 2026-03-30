@@ -6,6 +6,7 @@ export * from './CustomerInfoLoading';
 export * from './ApplicantProfileModal';
 export * from './ApplicantActions';
 export * from './OfferActions';
+export * from './CreateContractDialog';
 export * from './ParkingSpaceDetail';
 export * from './HousingSpaceDetail';
 export * from './SubHeadingsSection';

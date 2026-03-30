@@ -3,14 +3,17 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { CompactProfileForm } from "@/features/rentals/components/residence-profile/CompactProfileForm";
+import { CreateContractDialog } from "@/features/rentals/components/CreateContractDialog";
+import { useHousingOffers } from "@/shared/contexts/HousingOffersContext";
 import { useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, FileText } from "lucide-react";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
 
 
 interface HousingApplicantsTableProps {
   applicants: HousingApplicant[];
   housingAddress: string;
+  housingRent?: string;
   listingId: string;
   showOfferColumns?: boolean;
   showSelectionColumn?: boolean;
@@ -20,7 +23,8 @@ interface HousingApplicantsTableProps {
 
 export function HousingApplicantsTable({ 
   applicants, 
-  housingAddress, 
+  housingAddress,
+  housingRent,
   listingId, 
   showOfferColumns = false,
   showSelectionColumn = true,
@@ -29,7 +33,8 @@ export function HousingApplicantsTable({
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
-  
+  const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
+  const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
 
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
@@ -200,6 +205,7 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap">Erbjudande</TableHead>
             {!showSelectionColumn && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
             {!showSelectionColumn && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
+            {!showSelectionColumn && <TableHead className="whitespace-nowrap">Åtgärd</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -297,10 +303,26 @@ export function HousingApplicantsTable({
                       </div>
                     </TableCell>
                   )}
+                  {!showSelectionColumn && (
+                    <TableCell>
+                      {isApplicantAssigned(listingId, applicant.id) ? (
+                        <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Tilldelad</Badge>
+                      ) : applicant.offerResponse?.status === "Accepterat" ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setContractDialogApplicant(applicant)}
+                        >
+                          <FileText className="h-4 w-4 mr-1" />
+                          Koppla kontrakt
+                        </Button>
+                      ) : null}
+                    </TableCell>
+                  )}
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={showSelectionColumn ? 9 : 11} className="p-0">
+                    <TableCell colSpan={showSelectionColumn ? 9 : 12} className="p-0">
                       <div className="border-t">
                         <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
@@ -310,7 +332,7 @@ export function HousingApplicantsTable({
               </>
             )) : (
               <TableRow>
-                <TableCell colSpan={showSelectionColumn ? 9 : 11} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={showSelectionColumn ? 9 : 12} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>
@@ -318,6 +340,20 @@ export function HousingApplicantsTable({
         </TableBody>
       </Table>
     </div>
+
+    <CreateContractDialog
+      open={!!contractDialogApplicant}
+      onOpenChange={(open) => !open && setContractDialogApplicant(null)}
+      applicantName={contractDialogApplicant?.name || ""}
+      applicantNationalId={contractDialogApplicant?.nationalRegistrationNumber || ""}
+      housingAddress={housingAddress}
+      rent={housingRent}
+      onConfirm={() => {
+        if (contractDialogApplicant) {
+          markApplicantAssigned(listingId, contractDialogApplicant.id);
+        }
+      }}
+    />
   </>
   );
 }
