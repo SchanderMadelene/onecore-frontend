@@ -84,6 +84,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenants: false,
   showBuildings: true,
   showApartments: true,
+  showEntrances: false,
   showRoomInformation: false,
   showInspections: true,
   showApartmentIssues: false,
