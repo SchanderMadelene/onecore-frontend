@@ -1,33 +1,40 @@
 
 
-## Plan: Visa ikon-alternativ för Uppgång i preview
+## Plan: Koppla erbjudande-flödet till kontraktsskapande
 
-Skapa en tillfällig visuell jämförelse som visar kandidat-ikoner för "Uppgång" sida vid sida, så du kan välja.
+### Bakgrund
+När en sökande accepterar ett erbjudande ("Erbjudande accepterat" / `OfferAccepted`) ska systemet visa en tydlig väg till att skapa ett hyreskontrakt. Eftersom Tenfast är ett externt system kan vi inte skapa kontraktet direkt — istället visar vi en "Koppla kontrakt"-åtgärd som i detta skede öppnar en bekräftelsedialog med relevant information, redo att i framtiden integreras mot Tenfast.
 
-### Vad som visas
+### Vad byggs
 
-En enkel panel med dessa ikoner renderade i samma storlek och stil som trädvyn:
+**1. Nytt steg i erbjudandeflödet: "Koppla kontrakt"**
+- När en sökande har status `OfferAccepted` visas en knapp/åtgärd "Koppla kontrakt" i applicant-tabellen
+- Knappen öppnar en dialog som sammanfattar: sökandes namn, personnummer, bostadsadress, hyra
+- Dialogen har en "Skapa kontrakt i Tenfast"-knapp som i nuläget visar en toast med info om att kontraktet ska skapas i det externa systemet
+- Efter bekräftelse uppdateras sökandes status till `Assigned`
 
-| Ikon | Lucide-komponent | Beskrivning |
-|------|-----------------|-------------|
-| Home (nuvarande) | `Home` | Hus — kan förväxlas med lägenhet |
-| Layers | `Layers` | Lager/nivåer |
-| ArrowUpFromLine | `ArrowUpFromLine` | Pil uppåt — "uppgång" |
-| Columns2 | `Columns2` | Vertikala sektioner |
-| LayoutList | `LayoutList` | Listelement |
-| Hash | `Hash` | Numrering |
-| GitBranch | `GitBranch` | Förgreningspunkt |
-| Stairs | `Stairs` | Trappa — bokstavlig uppgång |
+**2. Ny komponent: `CreateContractDialog`**
+- Placeras i `src/features/rentals/components/CreateContractDialog.tsx`
+- Tar emot sökande-info och bostadsinfo som props
+- Visar en sammanfattning av kontraktsuppgifterna
+- Innehåller en informationsruta som förklarar att kontraktet skapas via Tenfast
+- Bekräftelseknapp som triggar statusändring och visar toast
 
-### Genomförande
+**3. Uppdatering av `HousingApplicantsTable`**
+- Lägg till en kolumn/knapp "Åtgärd" som visar "Koppla kontrakt" för sökande med `OfferAccepted`-status (via `offerResponse.status === "Accepterat"`)
+- Integrera `CreateContractDialog`
 
-**1 fil ändras:** `src/pages/properties/BuildingDetailPage.tsx` (eller liknande synlig sida)
+**4. Uppdatering av `HousingOffersContext`**
+- Lägg till en `markApplicantAssigned`-funktion som uppdaterar status
+- Spara kontraktskopplingen i context-state
 
-Lägg till en tillfällig sektion längst ner som renderar alla ikoner med namn och beskrivning i ett grid, liknande IconsShowcase-formatet. Sektionen tas bort efter beslut.
+### Filer som ändras/skapas
+- **Ny:** `src/features/rentals/components/CreateContractDialog.tsx`
+- **Ändras:** `src/pages/rentals/components/HousingApplicantsTable.tsx` — ny åtgärdskolumn
+- **Ändras:** `src/shared/contexts/HousingOffersContext.tsx` — `markApplicantAssigned`
+- **Ändras:** `src/features/rentals/index.ts` — export
 
-Alternativt skapas en ny tillfällig route `/icon-test` med en minimal komponent som visar jämförelsen.
-
-### Filer
-- **Ny:** `src/pages/IconComparisonPage.tsx` — tillfällig sida med ikonjämförelse
-- `src/App.tsx` — lägg till route `/icon-test`
+### Avgränsning
+- Ingen faktisk integration mot Tenfast — enbart UI-flöde med tydlig placeholder
+- Informationstext i dialogen förklarar att "kontraktet skapas i Tenfast" som nästa steg
 
