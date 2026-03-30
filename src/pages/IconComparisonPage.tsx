@@ -1,6 +1,6 @@
 
-import { Home, Layers, ArrowUpFromLine, Columns2, LayoutList, Hash, GitBranch, Stairs } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Home, Layers, ArrowUpFromLine, Columns2, LayoutList, Hash, GitBranch, ArrowUpToLine } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const candidates = [
   { name: "Home", Icon: Home, desc: "Nuvarande — kan förväxlas med lägenhet" },
