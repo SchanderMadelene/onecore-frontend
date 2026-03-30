@@ -241,6 +241,7 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
+      <Route path="/icon-test" element={<IconComparisonPage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
