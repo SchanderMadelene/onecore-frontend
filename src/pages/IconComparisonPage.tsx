@@ -10,7 +10,7 @@ const candidates = [
   { name: "LayoutList", Icon: LayoutList, desc: "Listelement" },
   { name: "Hash", Icon: Hash, desc: "Numrering" },
   { name: "GitBranch", Icon: GitBranch, desc: "Förgreningspunkt" },
-  { name: "Stairs", Icon: Stairs, desc: "Trappa — bokstavlig uppgång" },
+  { name: "ArrowUpToLine", Icon: ArrowUpToLine, desc: "Pil uppåt till linje" },
 ];
 
 const IconComparisonPage = () => (
