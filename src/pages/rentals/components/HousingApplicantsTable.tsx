@@ -23,7 +23,8 @@ interface HousingApplicantsTableProps {
 
 export function HousingApplicantsTable({ 
   applicants, 
-  housingAddress, 
+  housingAddress,
+  housingRent,
   listingId, 
   showOfferColumns = false,
   showSelectionColumn = true,
@@ -32,7 +33,8 @@ export function HousingApplicantsTable({
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
-  
+  const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
+  const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
 
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
