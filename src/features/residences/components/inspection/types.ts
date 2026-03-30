@@ -1,52 +1,69 @@
 export type CostResponsibility = 'tenant' | 'landlord' | null;
 
+// Typer av tilläggskomponenter som kan läggas till under "Detaljer"
+export const CUSTOM_COMPONENT_TYPES = [
+  { value: 'baseboards', label: 'Golvsocklar' },
+  { value: 'interiorDoors', label: 'Innerdörrar' },
+  { value: 'outlets', label: 'Eluttag' },
+  { value: 'switches', label: 'Strömbrytare' },
+  { value: 'windowSills', label: 'Fönsterbänkar' },
+  { value: 'windowFrames', label: 'Fönsterkarmar' },
+  { value: 'radiators', label: 'Radiatorer' },
+  { value: 'ventilation', label: 'Ventilation' },
+  { value: 'shelving', label: 'Hyllor/skåp' },
+  { value: 'curtainRods', label: 'Gardinstänger' },
+  { value: 'lighting', label: 'Belysning' },
+  { value: 'other', label: 'Övrigt' },
+] as const;
+
+export type CustomComponentType = typeof CUSTOM_COMPONENT_TYPES[number]['value'];
+
+export interface CustomInspectionComponent {
+  id: string;
+  type: CustomComponentType;
+  label: string;
+  note?: string;
+}
+
 export interface InspectionRoom {
   roomId: string;
   conditions: {
-    wall1: string;
-    wall2: string;
-    wall3: string;
-    wall4: string;
+    walls: string;
     floor: string;
     ceiling: string;
-    details: string;
+    appliances: string;
+    kitchenDoors: string;
   };
   actions: {
-    wall1: string[];
-    wall2: string[];
-    wall3: string[];
-    wall4: string[];
+    walls: string[];
     floor: string[];
     ceiling: string[];
-    details: string[];
+    appliances: string[];
+    kitchenDoors: string[];
   };
   componentNotes: {
-    wall1: string;
-    wall2: string;
-    wall3: string;
-    wall4: string;
+    walls: string;
     floor: string;
     ceiling: string;
-    details: string;
+    appliances: string;
+    kitchenDoors: string;
   };
   componentPhotos: {
-    wall1: string[];
-    wall2: string[];
-    wall3: string[];
-    wall4: string[];
+    walls: string[];
     floor: string[];
     ceiling: string[];
-    details: string[];
+    appliances: string[];
+    kitchenDoors: string[];
   };
   costResponsibility: {
-    wall1: CostResponsibility;
-    wall2: CostResponsibility;
-    wall3: CostResponsibility;
-    wall4: CostResponsibility;
+    walls: CostResponsibility;
     floor: CostResponsibility;
     ceiling: CostResponsibility;
-    details: CostResponsibility;
+    appliances: CostResponsibility;
+    kitchenDoors: CostResponsibility;
   };
+  costs: Record<string, number | null>; // key = component key or custom component id
+  customComponents: CustomInspectionComponent[];
   photos: string[];
   isApproved: boolean;
   isHandled: boolean;
@@ -88,11 +105,13 @@ export interface Inspection {
   // Från formuläret
   needsMasterKey: boolean;
   
+  isFurnished?: boolean;
   isCompleted?: boolean; // Deprecated, use status instead
 }
 
 // Data som skickas från formulär till sparfunktion
 export interface InspectionSubmitData {
   needsMasterKey: boolean;
+  isFurnished: boolean;
   tenant?: TenantSnapshot;
 }

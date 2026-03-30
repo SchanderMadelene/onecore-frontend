@@ -16,7 +16,7 @@ interface ComponentDetailSheetProps {
   note: string;
   photos: string[];
   actions: string[];
-  componentType: "walls" | "floor" | "ceiling" | "details";
+  componentType: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
   onNoteChange: (note: string) => void;
   onPhotoAdd: (photoDataUrl: string) => void;
   onPhotoRemove: (index: number) => void;

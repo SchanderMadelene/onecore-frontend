@@ -145,14 +145,7 @@ export function InspectorSelectionCard({
               <SelectContent>
                 {inspectors.map((inspector) => (
                   <SelectItem key={inspector} value={inspector}>
-                    <div className="flex items-center gap-2">
-                      <Avatar className="h-5 w-5">
-                        <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
-                          {inspector.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
-                      {inspector}
-                    </div>
+                    {inspector}
                   </SelectItem>
                 ))}
               </SelectContent>

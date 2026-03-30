@@ -36,11 +36,11 @@ export const InspectionRoom = ({
   };
 
   const wallDirections = {
-    wall1: "Vägg",
+    walls: "Väggar",
   };
 
   const isWallsComplete = () => {
-    return inspectionData.conditions.wall1 !== "";
+    return inspectionData.conditions.walls !== "";
   };
 
   const isSingleComponentComplete = (component: keyof InspectionRoomType["conditions"]) => {
@@ -49,10 +49,11 @@ export const InspectionRoom = ({
 
   // Kontrollera om alla komponenter har fyllts i
   const isAllComponentsHandled = [
-    inspectionData.conditions.wall1,
+    inspectionData.conditions.walls,
     inspectionData.conditions.floor,
     inspectionData.conditions.ceiling,
-    inspectionData.conditions.details
+    inspectionData.conditions.appliances,
+    inspectionData.conditions.kitchenDoors
   ].every(condition => condition !== "");
 
   // Uppdatera isHandled automatiskt när alla komponenter är ifyllda

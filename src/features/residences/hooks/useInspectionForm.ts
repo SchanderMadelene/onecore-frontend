@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { InspectionRoom, Inspection, CostResponsibility } from "@/features/residences/components/inspection/types";
+import type { InspectionRoom, Inspection, CostResponsibility, CustomInspectionComponent } from "@/features/residences/components/inspection/types";
 import type { Room } from "@/types/api";
 import { initializeInspectionData } from "@/features/residences/components/inspection/form/initialData";
 
@@ -16,6 +16,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     return `${hours}:${minutes}`;
   });
   const [needsMasterKey, setNeedsMasterKey] = useState(existingInspection?.needsMasterKey || false);
+  const [isFurnished, setIsFurnished] = useState(existingInspection?.isFurnished || false);
   const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean }>({
     address: existingInspection?.residence?.address || "Odenplan 5, lägenhet 1001",
     hasMainKey: existingInspection?.needsMasterKey || true
@@ -193,6 +194,36 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     }));
   }, []);
 
+  const handleCustomComponentsUpdate = useCallback((
+    roomId: string,
+    components: CustomInspectionComponent[]
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        customComponents: components
+      }
+    }));
+  }, []);
+
+  const handleCostUpdate = useCallback((
+    roomId: string,
+    costKey: string,
+    value: number | null
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        costs: {
+          ...prev[roomId].costs,
+          [costKey]: value
+        }
+      }
+    }));
+  }, []);
+
   return {
     inspectorName,
     setInspectorName,
@@ -200,6 +231,8 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    isFurnished,
+    setIsFurnished,
     apartmentInfo,
     setApartmentInfo,
     expandedRoomIds,
@@ -214,6 +247,8 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handlePhotoAdd,
     handlePhotoRemove,
     handleApproveRoom,
-    handleCostResponsibilityUpdate
+    handleCostResponsibilityUpdate,
+    handleCustomComponentsUpdate,
+    handleCostUpdate
   };
 }

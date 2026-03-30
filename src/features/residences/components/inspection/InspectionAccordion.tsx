@@ -9,7 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Check, MapPin, Home, PanelTop, Grid3X3 } from "lucide-react";
+import { Check, MapPin, Grid3X3, PanelTop, Refrigerator, DoorOpen } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface InspectionAccordionProps {
@@ -51,44 +51,15 @@ export const InspectionAccordion = ({
         <AccordionContent>
           <div className="space-y-4 px-4 pb-4 pt-1">
             <ConditionSelect
-              key="wall1"
-              label="Vägg"
-              value={inspectionData.conditions.wall1}
-              onChange={(value) => onConditionUpdate("wall1", value)}
-              actions={inspectionData.actions.wall1}
-              onActionUpdate={(action) => onActionUpdate("wall1", action)}
+              key="walls"
+              label="Väggar"
+              value={inspectionData.conditions.walls}
+              onChange={(value) => onConditionUpdate("walls", value)}
+              actions={inspectionData.actions.walls}
+              onActionUpdate={(action) => onActionUpdate("walls", action)}
               type="walls"
-              note={inspectionData.componentNotes.wall1}
-              onNoteChange={(note) => onComponentNoteUpdate("wall1", note)}
-            />
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem 
-        value="ceiling"
-        className="rounded-lg border border-slate-200 bg-white"
-      >
-        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
-          <div className="flex items-center gap-2.5">
-            <PanelTop className="h-4.5 w-4.5 text-slate-500" />
-            <span className="font-medium text-base">Tak</span>
-            {isSingleComponentComplete("ceiling") && (
-              <Check className="ml-1.5 h-4 w-4 text-green-500" />
-            )}
-          </div>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className="px-4 pb-4 pt-1">
-            <ConditionSelect
-              label="Tak"
-              value={inspectionData.conditions.ceiling}
-              onChange={(value) => onConditionUpdate("ceiling", value)}
-              actions={inspectionData.actions.ceiling}
-              onActionUpdate={(action) => onActionUpdate("ceiling", action)}
-              type="ceiling"
-              note={inspectionData.componentNotes.ceiling}
-              onNoteChange={(note) => onComponentNoteUpdate("ceiling", note)}
+              note={inspectionData.componentNotes.walls}
+              onNoteChange={(note) => onComponentNoteUpdate("walls", note)}
             />
           </div>
         </AccordionContent>
@@ -124,14 +95,14 @@ export const InspectionAccordion = ({
       </AccordionItem>
 
       <AccordionItem 
-        value="details"
+        value="ceiling"
         className="rounded-lg border border-slate-200 bg-white"
       >
         <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
           <div className="flex items-center gap-2.5">
-            <Home className="h-4.5 w-4.5 text-slate-500" />
-            <span className="font-medium text-base">Detaljer</span>
-            {isSingleComponentComplete("details") && (
+            <PanelTop className="h-4.5 w-4.5 text-slate-500" />
+            <span className="font-medium text-base">Tak</span>
+            {isSingleComponentComplete("ceiling") && (
               <Check className="ml-1.5 h-4 w-4 text-green-500" />
             )}
           </div>
@@ -139,14 +110,72 @@ export const InspectionAccordion = ({
         <AccordionContent>
           <div className="px-4 pb-4 pt-1">
             <ConditionSelect
-              label="Detaljer"
-              value={inspectionData.conditions.details}
-              onChange={(value) => onConditionUpdate("details", value)}
-              actions={inspectionData.actions.details}
-              onActionUpdate={(action) => onActionUpdate("details", action)}
-              type="details"
-              note={inspectionData.componentNotes.details}
-              onNoteChange={(note) => onComponentNoteUpdate("details", note)}
+              label="Tak"
+              value={inspectionData.conditions.ceiling}
+              onChange={(value) => onConditionUpdate("ceiling", value)}
+              actions={inspectionData.actions.ceiling}
+              onActionUpdate={(action) => onActionUpdate("ceiling", action)}
+              type="ceiling"
+              note={inspectionData.componentNotes.ceiling}
+              onNoteChange={(note) => onComponentNoteUpdate("ceiling", note)}
+            />
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem 
+        value="appliances"
+        className="rounded-lg border border-slate-200 bg-white"
+      >
+        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
+          <div className="flex items-center gap-2.5">
+            <Refrigerator className="h-4.5 w-4.5 text-slate-500" />
+            <span className="font-medium text-base">Vitvaror</span>
+            {isSingleComponentComplete("appliances") && (
+              <Check className="ml-1.5 h-4 w-4 text-green-500" />
+            )}
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="px-4 pb-4 pt-1">
+            <ConditionSelect
+              label="Vitvaror"
+              value={inspectionData.conditions.appliances}
+              onChange={(value) => onConditionUpdate("appliances", value)}
+              actions={inspectionData.actions.appliances}
+              onActionUpdate={(action) => onActionUpdate("appliances", action)}
+              type="appliances"
+              note={inspectionData.componentNotes.appliances}
+              onNoteChange={(note) => onComponentNoteUpdate("appliances", note)}
+            />
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem 
+        value="kitchenDoors"
+        className="rounded-lg border border-slate-200 bg-white"
+      >
+        <AccordionTrigger className="px-3 sm:px-4 py-3 hover:bg-accent/50">
+          <div className="flex items-center gap-2.5">
+            <DoorOpen className="h-4.5 w-4.5 text-slate-500" />
+            <span className="font-medium text-base">Köksluckor</span>
+            {isSingleComponentComplete("kitchenDoors") && (
+              <Check className="ml-1.5 h-4 w-4 text-green-500" />
+            )}
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="px-4 pb-4 pt-1">
+            <ConditionSelect
+              label="Köksluckor"
+              value={inspectionData.conditions.kitchenDoors}
+              onChange={(value) => onConditionUpdate("kitchenDoors", value)}
+              actions={inspectionData.actions.kitchenDoors}
+              onActionUpdate={(action) => onActionUpdate("kitchenDoors", action)}
+              type="kitchenDoors"
+              note={inspectionData.componentNotes.kitchenDoors}
+              onNoteChange={(note) => onComponentNoteUpdate("kitchenDoors", note)}
             />
           </div>
         </AccordionContent>

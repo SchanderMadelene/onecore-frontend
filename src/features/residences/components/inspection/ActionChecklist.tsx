@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
 interface ActionChecklistProps {
-  componentType: "walls" | "floor" | "ceiling" | "details";
+  componentType: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
   selectedActions: string[];
   onActionToggle: (action: string) => void;
 }
@@ -26,7 +26,13 @@ const ACTION_OPTIONS = {
     { value: "sanding", label: "Slipning" },
     { value: "varnishing", label: "Lackering" }
   ],
-  details: [
+  appliances: [
+    { value: "repair", label: "Reparation" },
+    { value: "replacement", label: "Byte" },
+    { value: "adjustment", label: "Justering" }
+  ],
+  kitchenDoors: [
+    { value: "painting", label: "Målning" },
     { value: "repair", label: "Reparation" },
     { value: "replacement", label: "Byte" },
     { value: "adjustment", label: "Justering" }
