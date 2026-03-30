@@ -26,7 +26,7 @@ export function TreeView({
     if (!buildingNode.children) return buildingNode;
     const flatChildren: any[] = [];
     for (const child of buildingNode.children) {
-      if (child.icon === "door-open" && child.children) {
+      if (child.icon === "home" && child.children) {
         flatChildren.push(...child.children);
       } else {
         flatChildren.push(child);
