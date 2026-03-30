@@ -166,8 +166,8 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Uppgångar */}
-        <ToggleSection title="Uppgångar" icon={DoorOpen} toggleKeys={['showEntrances', 'showBuildingEntrances']}>
-          <ToggleItem id="entrances" icon={DoorOpen} label="Uppgångar (trädvy)" description="Visa uppgångar som egen nivå i trädvyn" checked={features.showEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showEntrances')} />
+        <ToggleSection title="Uppgångar" icon={Home} toggleKeys={['showEntrances', 'showBuildingEntrances']}>
+          <ToggleItem id="entrances" icon={Home} label="Uppgångar (trädvy)" description="Visa uppgångar som egen nivå i trädvyn" checked={features.showEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showEntrances')} />
           <ToggleItem id="building-entrances" icon={Home} label="Uppgångar (byggnadsflik)" description="Visa uppgångsflik på byggnadskort" checked={features.showBuildingEntrances} disabled={!features.showBuildings || !features.showProperties || navDisabled} onToggle={() => handleFeatureToggle('showBuildingEntrances')} />
         </ToggleSection>
 
