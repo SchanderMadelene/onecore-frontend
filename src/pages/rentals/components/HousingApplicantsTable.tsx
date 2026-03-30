@@ -6,7 +6,8 @@ import { CompactProfileForm } from "@/features/rentals/components/residence-prof
 import { CreateContractDialog } from "@/features/rentals/components/CreateContractDialog";
 import { useHousingOffers } from "@/shared/contexts/HousingOffersContext";
 import { useState } from "react";
-import { ChevronDown, ChevronRight, FileText } from "lucide-react";
+import { ChevronDown, ChevronRight, FileText, Check, X } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
 
 

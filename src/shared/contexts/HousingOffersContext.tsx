@@ -12,6 +12,13 @@ export interface HousingOffer {
   }>;
 }
 
+export interface OfferResponseOverride {
+  applicantId: number;
+  listingId: string;
+  response: 'Accepterat' | 'Nekat';
+  respondedAt: string;
+}
+
 interface HousingOffersContextType {
   offers: HousingOffer[];
   createOffer: (listingId: string, selectedApplicants: number[]) => void;
@@ -20,6 +27,9 @@ interface HousingOffersContextType {
   assignedApplicants: Record<string, number[]>;
   markApplicantAssigned: (listingId: string, applicantId: number) => void;
   isApplicantAssigned: (listingId: string, applicantId: number) => boolean;
+  offerResponseOverrides: OfferResponseOverride[];
+  setOfferResponse: (listingId: string, applicantId: number, response: 'Accepterat' | 'Nekat') => void;
+  getOfferResponseOverride: (listingId: string, applicantId: number) => OfferResponseOverride | undefined;
 }
 
 const HousingOffersContext = createContext<HousingOffersContextType | undefined>(undefined);
@@ -27,6 +37,7 @@ const HousingOffersContext = createContext<HousingOffersContextType | undefined>
 export function HousingOffersProvider({ children }: { children: ReactNode }) {
   const [offers, setOffers] = useState<HousingOffer[]>([]);
   const [assignedApplicants, setAssignedApplicants] = useState<Record<string, number[]>>({});
+  const [offerResponseOverrides, setOfferResponseOverrides] = useState<OfferResponseOverride[]>([]);
 
   const createOffer = (listingId: string, selectedApplicants: number[]) => {
     const newOffer: HousingOffer = {
@@ -58,6 +69,17 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
     return (assignedApplicants[listingId] || []).includes(applicantId);
   };
 
+  const setOfferResponse = (listingId: string, applicantId: number, response: 'Accepterat' | 'Nekat') => {
+    setOfferResponseOverrides(prev => {
+      const filtered = prev.filter(o => !(o.listingId === listingId && o.applicantId === applicantId));
+      return [...filtered, { listingId, applicantId, response, respondedAt: new Date().toISOString() }];
+    });
+  };
+
+  const getOfferResponseOverride = (listingId: string, applicantId: number) => {
+    return offerResponseOverrides.find(o => o.listingId === listingId && o.applicantId === applicantId);
+  };
+
   return (
     <HousingOffersContext.Provider value={{
       offers,
@@ -66,7 +88,10 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
       isListingOffered,
       assignedApplicants,
       markApplicantAssigned,
-      isApplicantAssigned
+      isApplicantAssigned,
+      offerResponseOverrides,
+      setOfferResponse,
+      getOfferResponseOverride
     }}>
       {children}
     </HousingOffersContext.Provider>
