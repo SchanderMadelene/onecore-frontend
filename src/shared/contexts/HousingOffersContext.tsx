@@ -17,6 +17,9 @@ interface HousingOffersContextType {
   createOffer: (listingId: string, selectedApplicants: number[]) => void;
   getOfferForListing: (listingId: string) => HousingOffer | undefined;
   isListingOffered: (listingId: string) => boolean;
+  assignedApplicants: Record<string, number[]>;
+  markApplicantAssigned: (listingId: string, applicantId: number) => void;
+  isApplicantAssigned: (listingId: string, applicantId: number) => boolean;
 }
 
 const HousingOffersContext = createContext<HousingOffersContextType | undefined>(undefined);
