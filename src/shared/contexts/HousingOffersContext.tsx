@@ -59,17 +59,6 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
     return (assignedApplicants[listingId] || []).includes(applicantId);
   };
 
-  const setOfferResponse = (listingId: string, applicantId: number, response: 'Accepterat' | 'Nekat') => {
-    setOfferResponseOverrides(prev => {
-      const filtered = prev.filter(o => !(o.listingId === listingId && o.applicantId === applicantId));
-      return [...filtered, { listingId, applicantId, response, respondedAt: new Date().toISOString() }];
-    });
-  };
-
-  const getOfferResponseOverride = (listingId: string, applicantId: number) => {
-    return offerResponseOverrides.find(o => o.listingId === listingId && o.applicantId === applicantId);
-  };
-
   return (
     <HousingOffersContext.Provider value={{
       offers,
@@ -79,9 +68,6 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
       assignedApplicants,
       markApplicantAssigned,
       isApplicantAssigned,
-      offerResponseOverrides,
-      setOfferResponse,
-      getOfferResponseOverride
     }}>
       {children}
     </HousingOffersContext.Provider>
