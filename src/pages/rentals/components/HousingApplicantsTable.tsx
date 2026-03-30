@@ -6,7 +6,8 @@ import { CompactProfileForm } from "@/features/rentals/components/residence-prof
 import { CreateContractDialog } from "@/features/rentals/components/CreateContractDialog";
 import { useHousingOffers } from "@/shared/contexts/HousingOffersContext";
 import { useState } from "react";
-import { ChevronDown, ChevronRight, FileText } from "lucide-react";
+import { ChevronDown, ChevronRight, FileText, Check, X } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
 
 
@@ -34,7 +35,7 @@ export function HousingApplicantsTable({
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
   const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
-  const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
+  const { markApplicantAssigned, isApplicantAssigned, setOfferResponse, getOfferResponseOverride } = useHousingOffers();
 
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
@@ -293,30 +294,79 @@ export function HousingApplicantsTable({
                   )}
                   {!showSelectionColumn && applicant.offerResponse && (
                     <TableCell>
-                      <div className="space-y-1">
-                        <div>{getOfferResponseBadge(applicant.offerResponse.status)}</div>
-                        {applicant.offerResponse.date && (
-                          <div className="text-xs text-muted-foreground">
-                            {applicant.offerResponse.date}
+                      {(() => {
+                        const override = getOfferResponseOverride(listingId, applicant.id);
+                        const effectiveStatus = override?.response || applicant.offerResponse.status;
+                        const effectiveDate = override?.respondedAt 
+                          ? new Date(override.respondedAt).toLocaleDateString('sv-SE')
+                          : applicant.offerResponse.date;
+                        
+                        if (effectiveStatus === "Accepterat" || effectiveStatus === "Nekat") {
+                          return (
+                            <div className="space-y-1">
+                              <div>{getOfferResponseBadge(effectiveStatus)}</div>
+                              {effectiveDate && (
+                                <div className="text-xs text-muted-foreground">{effectiveDate}</div>
+                              )}
+                            </div>
+                          );
+                        }
+                        
+                        // "Väntar på svar" — show action buttons
+                        return (
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-7 px-2 text-green-700 border-green-300 hover:bg-green-50"
+                              onClick={() => {
+                                setOfferResponse(listingId, applicant.id, 'Accepterat');
+                                toast({ title: "Svar registrerat", description: `${applicant.name} har registrerats som accepterat.` });
+                              }}
+                            >
+                              <Check className="h-3 w-3 mr-1" />
+                              Ja
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-7 px-2 text-red-700 border-red-300 hover:bg-red-50"
+                              onClick={() => {
+                                setOfferResponse(listingId, applicant.id, 'Nekat');
+                                toast({ title: "Svar registrerat", description: `${applicant.name} har registrerats som nekat.` });
+                              }}
+                            >
+                              <X className="h-3 w-3 mr-1" />
+                              Nej
+                            </Button>
                           </div>
-                        )}
-                      </div>
+                        );
+                      })()}
                     </TableCell>
                   )}
                   {!showSelectionColumn && (
                     <TableCell>
-                      {isApplicantAssigned(listingId, applicant.id) ? (
-                        <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Tilldelad</Badge>
-                      ) : applicant.offerResponse?.status === "Accepterat" ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setContractDialogApplicant(applicant)}
-                        >
-                          <FileText className="h-4 w-4 mr-1" />
-                          Koppla kontrakt
-                        </Button>
-                      ) : null}
+                      {(() => {
+                        const override = getOfferResponseOverride(listingId, applicant.id);
+                        const effectiveStatus = override?.response || applicant.offerResponse?.status;
+                        
+                        if (isApplicantAssigned(listingId, applicant.id)) {
+                          return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Tilldelad</Badge>;
+                        }
+                        if (effectiveStatus === "Accepterat") {
+                          return (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setContractDialogApplicant(applicant)}
+                            >
+                              <FileText className="h-4 w-4 mr-1" />
+                              Koppla kontrakt
+                            </Button>
+                          );
+                        }
+                        return null;
+                      })()}
                     </TableCell>
                   )}
                 </TableRow>
