@@ -303,10 +303,26 @@ export function HousingApplicantsTable({
                       </div>
                     </TableCell>
                   )}
+                  {!showSelectionColumn && (
+                    <TableCell>
+                      {isApplicantAssigned(listingId, applicant.id) ? (
+                        <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Tilldelad</Badge>
+                      ) : applicant.offerResponse?.status === "Accepterat" ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setContractDialogApplicant(applicant)}
+                        >
+                          <FileText className="h-4 w-4 mr-1" />
+                          Koppla kontrakt
+                        </Button>
+                      ) : null}
+                    </TableCell>
+                  )}
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={showSelectionColumn ? 9 : 11} className="p-0">
+                    <TableCell colSpan={showSelectionColumn ? 9 : 12} className="p-0">
                       <div className="border-t">
                         <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
@@ -316,7 +332,7 @@ export function HousingApplicantsTable({
               </>
             )) : (
               <TableRow>
-                <TableCell colSpan={showSelectionColumn ? 9 : 11} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={showSelectionColumn ? 9 : 12} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>
@@ -324,6 +340,20 @@ export function HousingApplicantsTable({
         </TableBody>
       </Table>
     </div>
+
+    <CreateContractDialog
+      open={!!contractDialogApplicant}
+      onOpenChange={(open) => !open && setContractDialogApplicant(null)}
+      applicantName={contractDialogApplicant?.name || ""}
+      applicantNationalId={contractDialogApplicant?.nationalRegistrationNumber || ""}
+      housingAddress={housingAddress}
+      rent={housingRent}
+      onConfirm={() => {
+        if (contractDialogApplicant) {
+          markApplicantAssigned(listingId, contractDialogApplicant.id);
+        }
+      }}
+    />
   </>
   );
 }
