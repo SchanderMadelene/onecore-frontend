@@ -294,14 +294,54 @@ export function HousingApplicantsTable({
                   )}
                   {!showSelectionColumn && applicant.offerResponse && (
                     <TableCell>
-                      <div className="space-y-1">
-                        <div>{getOfferResponseBadge(applicant.offerResponse.status)}</div>
-                        {applicant.offerResponse.date && (
-                          <div className="text-xs text-muted-foreground">
-                            {applicant.offerResponse.date}
+                      {(() => {
+                        const override = getOfferResponseOverride(listingId, applicant.id);
+                        const effectiveStatus = override?.response || applicant.offerResponse.status;
+                        const effectiveDate = override?.respondedAt 
+                          ? new Date(override.respondedAt).toLocaleDateString('sv-SE')
+                          : applicant.offerResponse.date;
+                        
+                        if (effectiveStatus === "Accepterat" || effectiveStatus === "Nekat") {
+                          return (
+                            <div className="space-y-1">
+                              <div>{getOfferResponseBadge(effectiveStatus)}</div>
+                              {effectiveDate && (
+                                <div className="text-xs text-muted-foreground">{effectiveDate}</div>
+                              )}
+                            </div>
+                          );
+                        }
+                        
+                        // "Väntar på svar" — show action buttons
+                        return (
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-7 px-2 text-green-700 border-green-300 hover:bg-green-50"
+                              onClick={() => {
+                                setOfferResponse(listingId, applicant.id, 'Accepterat');
+                                toast({ title: "Svar registrerat", description: `${applicant.name} har registrerats som accepterat.` });
+                              }}
+                            >
+                              <Check className="h-3 w-3 mr-1" />
+                              Ja
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-7 px-2 text-red-700 border-red-300 hover:bg-red-50"
+                              onClick={() => {
+                                setOfferResponse(listingId, applicant.id, 'Nekat');
+                                toast({ title: "Svar registrerat", description: `${applicant.name} har registrerats som nekat.` });
+                              }}
+                            >
+                              <X className="h-3 w-3 mr-1" />
+                              Nej
+                            </Button>
                           </div>
-                        )}
-                      </div>
+                        );
+                      })()}
                     </TableCell>
                   )}
                   {!showSelectionColumn && (
