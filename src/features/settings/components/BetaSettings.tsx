@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { 
-  Beaker, Building, Home, FileText, Users, Key, Palette, ClipboardList, 
+  Beaker, Building, Home, Hotel, FileText, Users, Key, Palette, ClipboardList, 
   LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, 
   StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, 
   Lock, Eye, TrendingUp, Code, Star, RotateCcw, MapPin, ChevronDown,
