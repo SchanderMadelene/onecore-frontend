@@ -13,6 +13,7 @@ import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListin
 interface HousingApplicantsTableProps {
   applicants: HousingApplicant[];
   housingAddress: string;
+  housingRent?: string;
   listingId: string;
   showOfferColumns?: boolean;
   showSelectionColumn?: boolean;
