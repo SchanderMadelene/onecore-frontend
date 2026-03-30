@@ -27,7 +27,7 @@ const HousingOffersContext = createContext<HousingOffersContextType | undefined>
 export function HousingOffersProvider({ children }: { children: ReactNode }) {
   const [offers, setOffers] = useState<HousingOffer[]>([]);
   const [assignedApplicants, setAssignedApplicants] = useState<Record<string, number[]>>({});
-  const [offerResponseOverrides, setOfferResponseOverrides] = useState<OfferResponseOverride[]>([]);
+
 
   const createOffer = (listingId: string, selectedApplicants: number[]) => {
     const newOffer: HousingOffer = {
