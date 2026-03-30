@@ -346,18 +346,27 @@ export function HousingApplicantsTable({
                   )}
                   {!showSelectionColumn && (
                     <TableCell>
-                      {isApplicantAssigned(listingId, applicant.id) ? (
-                        <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Tilldelad</Badge>
-                      ) : applicant.offerResponse?.status === "Accepterat" ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setContractDialogApplicant(applicant)}
-                        >
-                          <FileText className="h-4 w-4 mr-1" />
-                          Koppla kontrakt
-                        </Button>
-                      ) : null}
+                      {(() => {
+                        const override = getOfferResponseOverride(listingId, applicant.id);
+                        const effectiveStatus = override?.response || applicant.offerResponse?.status;
+                        
+                        if (isApplicantAssigned(listingId, applicant.id)) {
+                          return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Tilldelad</Badge>;
+                        }
+                        if (effectiveStatus === "Accepterat") {
+                          return (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setContractDialogApplicant(applicant)}
+                            >
+                              <FileText className="h-4 w-4 mr-1" />
+                              Koppla kontrakt
+                            </Button>
+                          );
+                        }
+                        return null;
+                      })()}
                     </TableCell>
                   )}
                 </TableRow>
