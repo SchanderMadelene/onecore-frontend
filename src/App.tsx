@@ -37,6 +37,9 @@ const PropertyDetailPage = lazyWithRetry(() => import("./pages/properties/Proper
 const BuildingDetailPage = lazyWithRetry(() => import("./pages/properties/BuildingDetailPage"));
 const ResidencePage = lazyWithRetry(() => import("./pages/properties/ResidencePage"));
 const EntranceDetailPage = lazyWithRetry(() => import("./pages/properties/EntranceDetailPage"));
+
+// Wrapper that decides between EntranceDetailPage and ResidencePage based on the :id param
+const PropertySubPage = lazyWithRetry(() => import("./pages/properties/PropertySubPage"));
 const TenantDetailPage = lazyWithRetry(() => import("./pages/tenants/TenantDetailPage"));
 const AllTenantsPage = lazyWithRetry(() => import("./pages/tenants/AllTenantsPage"));
 const DesignSystemPage = lazyWithRetry(() => import("./pages/design-system/DesignSystemPage"));
