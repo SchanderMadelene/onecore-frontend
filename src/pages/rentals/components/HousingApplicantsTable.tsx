@@ -205,6 +205,7 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap">Erbjudande</TableHead>
             {!showSelectionColumn && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
             {!showSelectionColumn && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
+            {!showSelectionColumn && <TableHead className="whitespace-nowrap">Åtgärd</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
