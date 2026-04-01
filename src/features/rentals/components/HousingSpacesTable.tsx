@@ -5,6 +5,7 @@ import { Search, UserPlus } from "lucide-react";
 import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
 import { PublishedHousingTable } from "./PublishedHousingTable";
 import { OfferedHousingTable } from "./OfferedHousingTable";
+import { HistoricalHousingTable } from "./HistoricalHousingTable";
 import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { ApplicantProfileModal } from "./ApplicantProfileModal";
 import { useNavigate, useLocation } from "react-router-dom";
