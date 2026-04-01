@@ -118,8 +118,66 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
         />
       </div>
 
-      <FormField
-        control={control}
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          control={control}
+          name="publishedFrom"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-medium">Publicerad från</FormLabel>
+              <FormControl>
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Välj datum..."
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={control}
+          name="publishedTo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-medium">Publicerad till</FormLabel>
+              <FormControl>
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Välj datum..."
+                  disabled={publishedToIndefinite}
+                />
+              </FormControl>
+              <FormField
+                control={control}
+                name="publishedToIndefinite"
+                render={({ field: checkboxField }) => (
+                  <div className="flex items-center gap-2 mt-2">
+                    <Checkbox
+                      id="publishedToIndefinite"
+                      checked={checkboxField.value}
+                      onCheckedChange={(checked) => {
+                        checkboxField.onChange(checked);
+                        if (checked) {
+                          field.onChange(undefined);
+                        }
+                      }}
+                    />
+                    <label htmlFor="publishedToIndefinite" className="text-sm text-muted-foreground cursor-pointer">
+                      Tillsvidare
+                    </label>
+                  </div>
+                )}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
         name="queue"
         render={({ field }) => (
           <FormItem>
