@@ -178,6 +178,8 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
         />
       </div>
 
+      <FormField
+        control={control}
         name="queue"
         render={({ field }) => (
           <FormItem>
