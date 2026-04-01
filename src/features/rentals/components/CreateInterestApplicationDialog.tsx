@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { FormWrapper } from "@/components/ui/form-wrapper";
 import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useTenantValidation } from "@/features/tenants/hooks/useTenantValidation";
 import { useCreateInterestApplication } from "../hooks/useCreateInterestApplication";
