@@ -7,6 +7,7 @@ import { useHousingStatus } from "../hooks/useHousingStatus";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { ConfirmDialog } from "@/shared/common/ConfirmDialog";
 import { useToast } from "@/hooks/use-toast";
+import { CreateInterestApplicationDialog } from "./CreateInterestApplicationDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
