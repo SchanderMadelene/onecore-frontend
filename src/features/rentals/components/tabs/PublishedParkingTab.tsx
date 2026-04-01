@@ -1,26 +1,37 @@
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, ChevronRight } from "lucide-react";
+import { Search, ChevronRight, MoreHorizontal, EyeOff, Trash2 } from "lucide-react";
 import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
 import { PublishParkingSpacesDialog } from "../PublishParkingSpacesDialog";
 import { SyncParkingSpacesDialog } from "../SyncParkingSpacesDialog";
-import { DeleteListingDialog } from "../DeleteListingDialog";
 import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
 import { Loader2, Car } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
+import { ConfirmDialog } from "@/shared/common/ConfirmDialog";
+import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { ParkingSpace } from "../types/parking";
 
 export const PublishedParkingTab = () => {
   const { data: publishedSpaces, isLoading, error } = useParkingSpaceListingsByType('published');
+  const { toast } = useToast();
   const [filters, setFilters] = useState({
     address: "",
     area: "",
     type: "",
     queueType: ""
   });
+  const [confirmUnpublish, setConfirmUnpublish] = useState<{ id: string; open: boolean }>({ id: "", open: false });
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; open: boolean }>({ id: "", open: false });
 
   const filteredSpaces = useMemo(() => {
     if (!publishedSpaces) return [];
@@ -52,6 +63,16 @@ export const PublishedParkingTab = () => {
 
   const handleFilterChange = (field: keyof typeof filters) => (value: string) => {
     setFilters(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleUnpublishConfirm = () => {
+    setConfirmUnpublish({ id: "", open: false });
+    toast({ title: "Bilplatsannons avpublicerad" });
+  };
+
+  const handleDeleteConfirm = () => {
+    setConfirmDelete({ id: "", open: false });
+    toast({ title: "Bilplatsannons borttagen" });
   };
 
   if (isLoading) {
@@ -97,6 +118,40 @@ export const PublishedParkingTab = () => {
       </div>
     );
   }
+
+  const renderActions = (space: ParkingSpace) => (
+    <div className="flex items-center justify-end gap-2">
+      <div onClick={(e) => e.stopPropagation()}>
+        <ParkingApplicationDialog parkingSpace={space} />
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+          <Button variant="outline" size="sm">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+          <DropdownMenuItem onClick={() => setConfirmUnpublish({ id: space.id, open: true })}>
+            <EyeOff className="h-4 w-4 mr-2" />
+            Avpublicera
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="text-destructive focus:text-destructive"
+            onClick={() => setConfirmDelete({ id: space.id, open: true })}
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Ta bort
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }} onClick={(e) => e.stopPropagation()}>
+        <Button variant="outline" size="sm">
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </Link>
+    </div>
+  );
 
   const columns = [
     {
@@ -153,35 +208,17 @@ export const PublishedParkingTab = () => {
     { key: "publishedFrom", label: "Publicerad fr.o.m", className: "whitespace-nowrap", hideOnMobile: true, render: (space: ParkingSpace) => space.publishedFrom },
     {
       key: "actions",
-      label: "Åtgärder",
+      label: "",
       className: "text-right whitespace-nowrap",
-      hideOnMobile: true,
-      render: (space: ParkingSpace) => (
-        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <DeleteListingDialog parkingSpace={space} />
-          <ParkingApplicationDialog parkingSpace={space} />
-          <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
-            <Button variant="outline" size="icon">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      ),
+      render: (space: ParkingSpace) => renderActions(space),
     },
   ];
 
   const mobileCardRenderer = (space: ParkingSpace) => (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="font-medium">{space.address}</div>
-          <div className="text-sm text-muted-foreground">{space.id}</div>
-        </div>
-        <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
-          <Button variant="outline" size="icon">
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </Link>
+      <div>
+        <div className="font-medium">{space.address}</div>
+        <div className="text-sm text-muted-foreground">{space.id}</div>
       </div>
       <div className="grid grid-cols-[auto_auto] gap-x-4 gap-y-1 justify-start text-sm">
         <span className="text-muted-foreground">Område:</span>
@@ -192,6 +229,9 @@ export const PublishedParkingTab = () => {
         <span className="font-medium">{space.rent}</span>
         <span className="text-muted-foreground">Sökande:</span>
         <span>{space.seekers}</span>
+      </div>
+      <div className="flex items-center gap-2 mt-3">
+        {renderActions(space)}
       </div>
     </div>
   );
@@ -215,6 +255,25 @@ export const PublishedParkingTab = () => {
         keyExtractor={(space) => space.id}
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
+      />
+
+      <ConfirmDialog
+        open={confirmUnpublish.open}
+        onOpenChange={(open) => !open && setConfirmUnpublish({ id: "", open: false })}
+        title="Avpublicera bilplats"
+        description="Är du säker på att du vill avpublicera denna bilplatsannons?"
+        confirmLabel="Avpublicera"
+        onConfirm={handleUnpublishConfirm}
+      />
+
+      <ConfirmDialog
+        open={confirmDelete.open}
+        onOpenChange={(open) => !open && setConfirmDelete({ id: "", open: false })}
+        title="Ta bort bilplatsannons"
+        description="Är du säker på att du vill ta bort denna bilplatsannons? Detta kan inte ångras."
+        confirmLabel="Ta bort"
+        variant="destructive"
+        onConfirm={handleDeleteConfirm}
       />
     </div>
   );
