@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, EyeOff, MoreHorizontal, Trash2, UserPlus } from "lucide-react";
+import { ChevronRight, EyeOff, MoreHorizontal, PlusCircle, Trash2 } from "lucide-react";
 import { publishedHousingSpaces } from "../data/published-housing";
 import { useNavigate } from "react-router-dom";
 import { useHousingStatus } from "../hooks/useHousingStatus";
