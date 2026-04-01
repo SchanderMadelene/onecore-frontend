@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Eye, Send, Trash2 } from "lucide-react";
+import { Eye, MoreHorizontal, Pencil, Send, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
 import { EditHousingDialog } from "./EditHousingDialog";
@@ -8,6 +8,13 @@ import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { PublishActionBar } from "@/shared/ui/publish-action-bar";
 import { ConfirmDialog } from "@/shared/common/ConfirmDialog";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 
 export function UnpublishedHousingTable() {
@@ -27,6 +34,40 @@ export function UnpublishedHousingTable() {
     });
   };
 
+  const renderActions = (s: UnpublishedHousingSpace) => (
+    <div className="flex items-center justify-end gap-2">
+      <Button
+        variant="default"
+        size="sm"
+        onClick={(e) => { e.stopPropagation(); setConfirmPublish({ ids: [s.id], open: true }); }}
+      >
+        <Send className="h-4 w-4 mr-1" />
+        Publicera
+      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+          <Button variant="outline" size="sm">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+          <DropdownMenuItem onClick={() => {}}>
+            <Eye className="h-4 w-4 mr-2" />
+            Visa
+          </DropdownMenuItem>
+          <div onClick={(e) => e.stopPropagation()}>
+            <EditHousingDialog housingSpace={s} />
+          </div>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="text-destructive focus:text-destructive">
+            <Trash2 className="h-4 w-4 mr-2" />
+            Ta bort
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+
   const columns = [
     { key: "address", label: "Adress", render: (s: any) => <span className="font-medium">{s.address}</span> },
     { key: "area", label: "Område", render: (s: any) => s.area, hideOnMobile: true },
@@ -39,22 +80,7 @@ export function UnpublishedHousingTable() {
       key: "actions",
       label: "",
       className: "text-right",
-      render: (s: any) => (
-        <div className="flex items-center justify-end gap-2">
-          <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); setConfirmPublish({ ids: [s.id], open: true }); }}>
-            <Send className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-            <Eye className="h-4 w-4" />
-          </Button>
-          <div onClick={(e) => e.stopPropagation()}>
-            <EditHousingDialog housingSpace={s} />
-          </div>
-          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      )
+      render: (s: any) => renderActions(s),
     },
   ];
 
@@ -64,18 +90,7 @@ export function UnpublishedHousingTable() {
       <div className="text-sm text-muted-foreground">{space.area}</div>
       <div className="text-sm text-muted-foreground mt-1">{space.rent}</div>
       <div className="flex items-center gap-2 mt-3">
-        <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); setConfirmPublish({ ids: [space.id], open: true }); }}>
-          <Send className="h-4 w-4" />
-        </Button>
-        <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-          <Eye className="h-4 w-4" />
-        </Button>
-        <div onClick={(e) => e.stopPropagation()}>
-          <EditHousingDialog housingSpace={space} />
-        </div>
-        <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-          <Trash2 className="h-4 w-4" />
-        </Button>
+        {renderActions(space)}
       </div>
     </div>
   );
