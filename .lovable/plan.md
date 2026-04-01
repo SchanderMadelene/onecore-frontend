@@ -1,34 +1,29 @@
 
 
-## Plan: Publicera bostadsannonser — enskilt och i bulk
+## Plan: Primär publicera-knapp + dropdown för övriga åtgärder
 
-### Vad byggs
+### Vad ändras
 
-Möjlighet att publicera bostadsannonser från "Behov av publicering"-fliken, antingen en i taget via en knapp per rad, eller flera samtidigt via checkboxar och en bulk-bar i botten.
+Varje rad i "Behov av publicering" får en tydlig primär "Publicera"-knapp och en `MoreHorizontal`-ikonknapp som öppnar en dropdown med resterande åtgärder (Visa, Redigera, Ta bort).
 
 ### Ändringar
 
-**1. `src/features/rentals/components/UnpublishedHousingTable.tsx`**
-- Lägg till `useState` för `selectedKeys` (string[])
-- Aktivera `selectable` på `ResponsiveTable` med `selectedKeys` och `onSelectionChange`
-- Lägg till en "Publicera"-knapp (Send/Upload-ikon) per rad i actions-kolumnen
-- Klick på enskild "Publicera" öppnar `ConfirmDialog` med bekräftelse
-- Visa en bulk-bar i botten (ny komponent, se nedan) när `selectedKeys.length > 0`
-- Mock-publicering: visa toast vid bekräftelse, ta bort från listan (lokal state)
+**`src/features/rentals/components/UnpublishedHousingTable.tsx`**
 
-**2. `src/shared/ui/publish-action-bar.tsx`** — Ny komponent
-- Återanvänder layoutmönstret från `BulkActionBar` (fixed bottom, responsiv med `useIsMobile`)
-- Props: `selectedCount`, `onPublish`, `onClear`
-- Visar "{N} annons(er) valda", "Rensa"-knapp, "Publicera"-knapp
-- Generisk nog att kunna användas även för bilplatser framöver
+Desktop actions-kolumn:
+- Primär `Button` (variant="default", size="sm") med Send-ikon + texten "Publicera"
+- `DropdownMenu` med `MoreHorizontal`-trigger (variant="outline", size="sm") innehållande:
+  - Visa (Eye-ikon)
+  - Redigera (Pencil-ikon) — öppnar `EditHousingDialog`
+  - Separator
+  - Ta bort (Trash2-ikon, destructive styling)
 
-**3. Mobilkort i `UnpublishedHousingTable.tsx`**
-- Lägg till "Publicera"-knapp i mobilkortet
+Mobilkort: samma mönster — primär publicera-knapp + dropdown.
 
 ### Tekniska detaljer
 
-- `ConfirmDialog` (redan finns i `src/shared/common/`) används för bekräftelse vid enskild och bulk-publicering
-- Toast via `useToast` vid lyckad publicering
-- Lokal state-hantering med `useState` för mockad data (filtrera bort publicerade från listan)
-- `ResponsiveTable` har redan inbyggt stöd för `selectable`, `selectedKeys`, `onSelectionChange`
+- Importerar `DropdownMenu`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuSeparator`, `DropdownMenuTrigger` från `@/components/ui/dropdown-menu`
+- Importerar `MoreHorizontal` från `lucide-react`
+- Alla dropdown-triggers använder `variant="outline"` per standard
+- `e.stopPropagation()` på triggers och items för att inte trigga `onRowClick`
 
