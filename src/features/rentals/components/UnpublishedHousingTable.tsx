@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Eye, MoreHorizontal, Pencil, Send, Trash2 } from "lucide-react";
+import { EyeOff, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
 import { EditHousingDialog } from "./EditHousingDialog";
