@@ -14,6 +14,7 @@ interface EditableFormSectionProps {
 }
 
 export function EditableFormSection({ control }: EditableFormSectionProps) {
+  const publishedToIndefinite = useWatch({ control, name: "publishedToIndefinite" });
   return (
     <div className="space-y-6">
       <FormField
