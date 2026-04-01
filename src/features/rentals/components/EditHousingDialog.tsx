@@ -38,6 +38,9 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
       moveInDate: "dd-mm-yy",
       availableFrom: "dd-mm-yy",
       eventuallyAvailableFrom: "dd-mm-yy",
+      publishedFrom: undefined,
+      publishedTo: undefined,
+      publishedToIndefinite: false,
       queue: "Ingen spärr",
       standardNote: "Ej visningsbar pga renovering fram till dd-mm-yy",
       // Detailed description defaults
