@@ -41,7 +41,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
+    <div className="min-h-screen bg-background">
       <NavigationBar 
         onMenuClick={handleSidebarToggle}
       />
