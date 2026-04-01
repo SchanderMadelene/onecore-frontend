@@ -81,8 +81,7 @@ export const CreateHousingApplicationDialog = ({
     if (!isOpen) resetForm();
   }}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-1">
-          <PlusCircle className="h-4 w-4" />
+        <Button size="sm">
           <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>

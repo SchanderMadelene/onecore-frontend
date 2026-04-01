@@ -37,22 +37,10 @@ export function PublishedHousingTable() {
     toast({ title: "Annons borttagen" });
   };
 
-  const toParkingSpaceShape = (h: any) => ({
-    id: h.id,
-    address: h.address,
-    area: h.area,
-    type: h.type || "Lägenhet",
-    queueType: "-",
-    rent: h.rent,
-    seekers: h.seekers,
-    publishedFrom: h.publishedFrom,
-    publishedTo: h.publishedTo,
-  });
-
   const renderActions = (h: any) => (
     <div className="flex items-center justify-end gap-2">
       <div onClick={(e) => e.stopPropagation()}>
-        <CreateInterestApplicationDialog parkingSpace={toParkingSpaceShape(h)} />
+        <CreateHousingApplicationDialog housing={h} />
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
