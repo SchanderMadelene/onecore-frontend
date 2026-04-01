@@ -7,18 +7,6 @@ import { EditHousingDialog } from "./EditHousingDialog";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 
-const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
-  switch (status) {
-    case "draft":
-      return <Badge variant="secondary">Utkast</Badge>;
-    case "needs_review":
-      return <Badge variant="outline">Behöver granskning</Badge>;
-    case "ready_to_publish":
-      return <Badge variant="default">Redo att publicera</Badge>;
-    default:
-      return <Badge variant="secondary">{status}</Badge>;
-  }
-};
 
 export function UnpublishedHousingTable() {
   const navigate = useNavigate();
