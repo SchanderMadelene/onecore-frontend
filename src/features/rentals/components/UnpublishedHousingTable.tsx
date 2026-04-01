@@ -17,7 +17,7 @@ export function UnpublishedHousingTable() {
     { key: "rooms", label: "Rum", render: (s: any) => s.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (s: any) => s.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (s: any) => s.rent },
-    { key: "status", label: "Status", render: (s: any) => getStatusBadge(s.status) },
+    
     { key: "lastModified", label: "Senast ändrad", render: (s: any) => s.lastModified, hideOnMobile: true },
     { key: "createdBy", label: "Skapad av", render: (s: any) => s.createdBy, hideOnMobile: true },
     { 
