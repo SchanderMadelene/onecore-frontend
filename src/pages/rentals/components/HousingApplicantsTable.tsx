@@ -44,7 +44,8 @@ export function HousingApplicantsTable({
   }, [sortedApplicants, showSelectionColumn]);
 
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(defaultSelected);
-  
+  const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
+
   const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
   const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
 
