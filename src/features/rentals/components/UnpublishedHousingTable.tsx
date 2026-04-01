@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { Eye, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
