@@ -40,7 +40,7 @@ export function PublishedHousingTable() {
   const renderActions = (h: any) => (
     <div className="flex items-center justify-end gap-2">
       <div onClick={(e) => e.stopPropagation()}>
-        <CreateHousingApplicationDialog housing={h} />
+        <CreateHousingApplicationDialog housingSpace={h} />
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
