@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+
 import { FormWrapper } from "@/components/ui/form-wrapper";
 import { useTenantValidation } from "@/features/tenants/hooks/useTenantValidation";
 import { useCreateHousingApplication } from "../hooks/useCreateHousingApplication";
@@ -81,8 +81,7 @@ export const CreateHousingApplicationDialog = ({
     if (!isOpen) resetForm();
   }}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-1">
-          <PlusCircle className="h-4 w-4" />
+        <Button size="sm">
           <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>
