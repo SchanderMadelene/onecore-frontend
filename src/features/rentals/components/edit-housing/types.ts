@@ -5,6 +5,9 @@ export interface EditHousingFormData {
   moveInDate: string;
   availableFrom: string;
   eventuallyAvailableFrom: string;
+  publishedFrom: Date | undefined;
+  publishedTo: Date | undefined;
+  publishedToIndefinite: boolean;
   queue: string;
   standardNote: string;
   // Detailed description fields

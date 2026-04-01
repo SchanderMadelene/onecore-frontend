@@ -27,6 +27,9 @@ export default function CreateHousingAdPage() {
       moveInDate: "",
       availableFrom: "",
       eventuallyAvailableFrom: "",
+      publishedFrom: undefined,
+      publishedTo: undefined,
+      publishedToIndefinite: false,
       queue: "Ingen spärr",
       standardNote: "",
       // Detailed description defaults

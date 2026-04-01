@@ -3,8 +3,10 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon } from "lucide-react";
-import { Control } from "react-hook-form";
+import { Control, useWatch } from "react-hook-form";
+import { DatePicker } from "@/shared/common/DatePicker";
 import type { EditHousingFormData } from "./types";
 
 interface EditableFormSectionProps {
@@ -12,6 +14,7 @@ interface EditableFormSectionProps {
 }
 
 export function EditableFormSection({ control }: EditableFormSectionProps) {
+  const publishedToIndefinite = useWatch({ control, name: "publishedToIndefinite" });
   return (
     <div className="space-y-6">
       <FormField
@@ -109,6 +112,66 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
                   <CalendarIcon className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
                 </div>
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          control={control}
+          name="publishedFrom"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-medium">Publicerad från</FormLabel>
+              <FormControl>
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Välj datum..."
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={control}
+          name="publishedTo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-medium">Publicerad till</FormLabel>
+              <FormControl>
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Välj datum..."
+                  disabled={publishedToIndefinite}
+                />
+              </FormControl>
+              <FormField
+                control={control}
+                name="publishedToIndefinite"
+                render={({ field: checkboxField }) => (
+                  <div className="flex items-center gap-2 mt-2">
+                    <Checkbox
+                      id="publishedToIndefinite"
+                      checked={checkboxField.value}
+                      onCheckedChange={(checked) => {
+                        checkboxField.onChange(checked);
+                        if (checked) {
+                          field.onChange(undefined);
+                        }
+                      }}
+                    />
+                    <label htmlFor="publishedToIndefinite" className="text-sm text-muted-foreground cursor-pointer">
+                      Tillsvidare
+                    </label>
+                  </div>
+                )}
+              />
               <FormMessage />
             </FormItem>
           )}
