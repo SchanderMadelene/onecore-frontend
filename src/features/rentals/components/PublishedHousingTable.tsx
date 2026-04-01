@@ -44,7 +44,6 @@ export function PublishedHousingTable() {
         onClick={(e) => { e.stopPropagation(); toast({ title: "Intresseanmälan", description: "Funktionen kommer snart" }); }}
       >
         Ny anmälan
-        Ny anmälan
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
