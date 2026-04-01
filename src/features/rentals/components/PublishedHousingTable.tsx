@@ -37,15 +37,23 @@ export function PublishedHousingTable() {
     toast({ title: "Annons borttagen" });
   };
 
+  const toParkingSpaceShape = (h: any) => ({
+    id: h.id,
+    address: h.address,
+    area: h.area,
+    type: h.type || "Lägenhet",
+    queueType: "-",
+    rent: h.rent,
+    seekers: h.seekers,
+    publishedFrom: h.publishedFrom,
+    publishedTo: h.publishedTo,
+  });
+
   const renderActions = (h: any) => (
     <div className="flex items-center justify-end gap-2">
-      <Button
-        variant="default"
-        size="sm"
-        onClick={(e) => { e.stopPropagation(); toast({ title: "Intresseanmälan", description: "Funktionen kommer snart" }); }}
-      >
-        Ny anmälan
-      </Button>
+      <div onClick={(e) => e.stopPropagation()}>
+        <CreateInterestApplicationDialog parkingSpace={toParkingSpaceShape(h)} />
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
           <Button variant="outline" size="sm">
