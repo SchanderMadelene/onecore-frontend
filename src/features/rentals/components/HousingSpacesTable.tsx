@@ -5,6 +5,7 @@ import { Search, UserPlus } from "lucide-react";
 import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
 import { PublishedHousingTable } from "./PublishedHousingTable";
 import { OfferedHousingTable } from "./OfferedHousingTable";
+import { HistoricalHousingTable } from "./HistoricalHousingTable";
 import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { ApplicantProfileModal } from "./ApplicantProfileModal";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -116,11 +117,7 @@ export function HousingSpacesTable() {
               <ApplicantProfileModal />
             </div>
           </div>
-          <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
-            <div className="text-center">
-              <p>Ingen historik</p>
-            </div>
-          </div>
+          <HistoricalHousingTable />
         </div>
       )
     },
