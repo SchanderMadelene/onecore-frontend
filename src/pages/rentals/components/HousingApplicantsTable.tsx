@@ -49,6 +49,11 @@ export function HousingApplicantsTable({
   const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
   const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
 
+  useEffect(() => {
+    if (showSelectionColumn && defaultSelected.size > 0) {
+      onSelectionChange?.(Array.from(defaultSelected));
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
     const newSelected = new Set(selectedApplicants);
