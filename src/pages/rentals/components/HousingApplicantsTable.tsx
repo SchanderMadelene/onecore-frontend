@@ -227,8 +227,7 @@ export function HousingApplicantsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {applicants.length > 0 ? applicants
-            .sort((a, b) => b.queuePoints - a.queuePoints)
+          {sortedApplicants.length > 0 ? sortedApplicants
             .map((applicant) => (
               <>
                 <TableRow key={applicant.id}>
