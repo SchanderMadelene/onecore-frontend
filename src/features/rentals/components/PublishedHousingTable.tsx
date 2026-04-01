@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Eye, MoreHorizontal, Trash2, UserPlus, EyeOff } from "lucide-react";
+import { ChevronRight, EyeOff, MoreHorizontal, Trash2, UserPlus } from "lucide-react";
 import { publishedHousingSpaces } from "../data/published-housing";
 import { useNavigate } from "react-router-dom";
 import { useHousingStatus } from "../hooks/useHousingStatus";
@@ -41,10 +41,10 @@ export function PublishedHousingTable() {
       <Button
         variant="default"
         size="sm"
-        onClick={(e) => { e.stopPropagation(); navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "publicerade" } }); }}
+        onClick={(e) => { e.stopPropagation(); toast({ title: "Intresseanmälan", description: "Funktionen kommer snart" }); }}
       >
-        <Eye className="h-4 w-4 mr-1" />
-        Visa
+        <UserPlus className="h-4 w-4 mr-1" />
+        Ny anmälan
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -53,10 +53,6 @@ export function PublishedHousingTable() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-          <DropdownMenuItem onClick={() => toast({ title: "Intresseanmälan", description: "Funktionen kommer snart" })}>
-            <UserPlus className="h-4 w-4 mr-2" />
-            Lägg till intresseanmälan
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setConfirmUnpublish({ id: h.id, open: true })}>
             <EyeOff className="h-4 w-4 mr-2" />
             Avpublicera
@@ -71,6 +67,13 @@ export function PublishedHousingTable() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={(e) => { e.stopPropagation(); navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "publicerade" } }); }}
+      >
+        <ChevronRight className="h-4 w-4" />
+      </Button>
     </div>
   );
 
