@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Eye, MoreHorizontal, Pencil, Send, Trash2 } from "lucide-react";
+import { EyeOff, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
 import { EditHousingDialog } from "./EditHousingDialog";
@@ -41,7 +41,7 @@ export function UnpublishedHousingTable() {
         size="sm"
         onClick={(e) => { e.stopPropagation(); setConfirmPublish({ ids: [s.id], open: true }); }}
       >
-        <Send className="h-4 w-4 mr-1" />
+        Publicera
         Publicera
       </Button>
       <DropdownMenu>
@@ -52,7 +52,7 @@ export function UnpublishedHousingTable() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem onClick={() => {}}>
-            <Eye className="h-4 w-4 mr-2" />
+            Visa
             Visa
           </DropdownMenuItem>
           <div onClick={(e) => e.stopPropagation()}>

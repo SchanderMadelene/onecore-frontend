@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, EyeOff, MoreHorizontal, PlusCircle, Trash2 } from "lucide-react";
+import { ChevronRight, EyeOff, MoreHorizontal, Trash2 } from "lucide-react";
 import { publishedHousingSpaces } from "../data/published-housing";
 import { useNavigate } from "react-router-dom";
 import { useHousingStatus } from "../hooks/useHousingStatus";
@@ -43,7 +43,7 @@ export function PublishedHousingTable() {
         size="sm"
         onClick={(e) => { e.stopPropagation(); toast({ title: "Intresseanmälan", description: "Funktionen kommer snart" }); }}
       >
-        <PlusCircle className="h-4 w-4" />
+        Ny anmälan
         Ny anmälan
       </Button>
       <DropdownMenu>
