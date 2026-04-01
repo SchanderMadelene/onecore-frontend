@@ -25,7 +25,20 @@ interface HousingOffersContextType {
 const HousingOffersContext = createContext<HousingOffersContextType | undefined>(undefined);
 
 export function HousingOffersProvider({ children }: { children: ReactNode }) {
-  const [offers, setOffers] = useState<HousingOffer[]>([]);
+  const [offers, setOffers] = useState<HousingOffer[]>([
+    {
+      listingId: "234-234-234-1004",
+      selectedApplicants: [1, 2, 3],
+      sentAt: "2026-03-22T10:30:00.000Z",
+      status: 'active'
+    },
+    {
+      listingId: "234-234-234-1005",
+      selectedApplicants: [1, 2],
+      sentAt: "2026-03-18T14:15:00.000Z",
+      status: 'active'
+    }
+  ]);
   const [assignedApplicants, setAssignedApplicants] = useState<Record<string, number[]>>({});
 
 
