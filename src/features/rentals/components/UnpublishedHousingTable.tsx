@@ -44,10 +44,7 @@ export function UnpublishedHousingTable() {
     <div>
       <div className="font-medium">{space.address}</div>
       <div className="text-sm text-muted-foreground">{space.area}</div>
-      <div className="flex items-center gap-2 mt-2">
-        {getStatusBadge(space.status)}
-        <span className="text-sm text-muted-foreground">{space.rent}</span>
-      </div>
+      <div className="text-sm text-muted-foreground mt-1">{space.rent}</div>
       <div className="flex items-center gap-2 mt-3">
         <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
           <Eye className="h-4 w-4" />
