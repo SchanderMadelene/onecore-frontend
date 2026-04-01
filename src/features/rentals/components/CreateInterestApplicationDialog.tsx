@@ -100,7 +100,6 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
     }}>
       <DialogTrigger asChild>
         <Button size="sm" className="flex items-center gap-1">
-          <PlusCircle className="h-4 w-4" />
           <span>Ny anmälan</span>
         </Button>
       </DialogTrigger>

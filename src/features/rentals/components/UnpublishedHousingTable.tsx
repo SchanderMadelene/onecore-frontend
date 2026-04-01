@@ -41,7 +41,7 @@ export function UnpublishedHousingTable() {
         size="sm"
         onClick={(e) => { e.stopPropagation(); setConfirmPublish({ ids: [s.id], open: true }); }}
       >
-        <Send className="h-4 w-4 mr-1" />
+        Publicera
         Publicera
       </Button>
       <DropdownMenu>
