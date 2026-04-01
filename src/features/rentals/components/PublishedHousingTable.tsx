@@ -43,7 +43,7 @@ export function PublishedHousingTable() {
         size="sm"
         onClick={(e) => { e.stopPropagation(); toast({ title: "Intresseanmälan", description: "Funktionen kommer snart" }); }}
       >
-        <PlusCircle className="h-4 w-4" />
+        Ny anmälan
         Ny anmälan
       </Button>
       <DropdownMenu>
