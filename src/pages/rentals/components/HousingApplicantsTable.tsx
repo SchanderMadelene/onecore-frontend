@@ -6,7 +6,7 @@ import { CompactProfileForm } from "@/features/rentals/components/residence-prof
 import { CreateContractDialog } from "@/features/rentals/components/CreateContractDialog";
 import { OfferActions } from "@/features/rentals/components/OfferActions";
 import { useHousingOffers } from "@/shared/contexts/HousingOffersContext";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ChevronDown, ChevronRight, FileText } from "lucide-react";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
 
@@ -32,11 +32,28 @@ export function HousingApplicantsTable({
   onSelectionChange,
   offeredApplicantIds = []
 }: HousingApplicantsTableProps) {
-  const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
+  const sortedApplicants = useMemo(() => 
+    [...applicants].sort((a, b) => b.queuePoints - a.queuePoints), 
+    [applicants]
+  );
+
+  const defaultSelected = useMemo(() => {
+    if (!showSelectionColumn) return new Set<string>();
+    const top10 = sortedApplicants.slice(0, 10).map(a => String(a.id));
+    return new Set(top10);
+  }, [sortedApplicants, showSelectionColumn]);
+
+  const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(defaultSelected);
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
+
   const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
   const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
 
+  useEffect(() => {
+    if (showSelectionColumn && defaultSelected.size > 0) {
+      onSelectionChange?.(Array.from(defaultSelected));
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
     const newSelected = new Set(selectedApplicants);
@@ -210,8 +227,7 @@ export function HousingApplicantsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {applicants.length > 0 ? applicants
-            .sort((a, b) => b.queuePoints - a.queuePoints)
+          {sortedApplicants.length > 0 ? sortedApplicants
             .map((applicant) => (
               <>
                 <TableRow key={applicant.id}>
