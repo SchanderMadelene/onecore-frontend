@@ -32,8 +32,19 @@ export function HousingApplicantsTable({
   onSelectionChange,
   offeredApplicantIds = []
 }: HousingApplicantsTableProps) {
-  const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
-  const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
+  const sortedApplicants = useMemo(() => 
+    [...applicants].sort((a, b) => b.queuePoints - a.queuePoints), 
+    [applicants]
+  );
+
+  const defaultSelected = useMemo(() => {
+    if (!showSelectionColumn) return new Set<string>();
+    const top10 = sortedApplicants.slice(0, 10).map(a => String(a.id));
+    return new Set(top10);
+  }, [sortedApplicants, showSelectionColumn]);
+
+  const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(defaultSelected);
+  
   const [contractDialogApplicant, setContractDialogApplicant] = useState<HousingApplicant | null>(null);
   const { markApplicantAssigned, isApplicantAssigned } = useHousingOffers();
 
