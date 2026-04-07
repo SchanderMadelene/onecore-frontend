@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, PlusCircle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { HousingApplicationDialog } from "@/features/rentals/components/HousingApplicationDialog";
+import { SendHousingOfferDialog } from "./SendHousingOfferDialog";
 import type { HousingSpace } from "@/features/rentals/components/types/housing";
 
 interface HousingHeaderProps {
