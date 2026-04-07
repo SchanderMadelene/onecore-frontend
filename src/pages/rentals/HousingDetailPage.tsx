@@ -29,7 +29,12 @@ const HousingDetailPage = () => {
     });
   };
 
-  const handleCreateOffer = () => {
+  const handleCreateOffer = (options: {
+    responseDeadline: Date;
+    viewingHost: "mimer" | "tenant";
+    viewingDate: Date | undefined;
+    templateId: string | undefined;
+  }) => {
     if (!housingId || selectedApplicants.length === 0) return;
     
     const applicantIds = selectedApplicants.map(id => parseInt(id));
