@@ -129,6 +129,7 @@ const HousingDetailPage = () => {
           housing={listing}
           hasOffers={listing.offers.length > 0 || isListingOffered(housingId)}
           hasSelectedApplicants={selectedApplicants.length > 0}
+          selectedApplicantCount={selectedApplicants.length}
           onBack={handleBack}
           onCreateOffer={handleCreateOffer}
           isCreatingOffer={false}
