@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, PlusCircle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { HousingApplicationDialog } from "@/features/rentals/components/HousingApplicationDialog";
+import { SendHousingOfferDialog } from "./SendHousingOfferDialog";
 import type { HousingSpace } from "@/features/rentals/components/types/housing";
 
 interface HousingHeaderProps {
@@ -10,8 +11,14 @@ interface HousingHeaderProps {
   housing?: HousingSpace;
   hasOffers: boolean;
   hasSelectedApplicants?: boolean;
+  selectedApplicantCount?: number;
   onBack: () => void;
-  onCreateOffer: () => void;
+  onCreateOffer: (options: {
+    responseDeadline: Date;
+    viewingHost: "mimer" | "tenant";
+    viewingDate: Date | undefined;
+    templateId: string | undefined;
+  }) => void;
   isCreatingOffer: boolean;
 }
 
@@ -21,6 +28,7 @@ export function HousingHeader({
   housing,
   hasOffers,
   hasSelectedApplicants = false,
+  selectedApplicantCount = 0,
   onBack,
   onCreateOffer,
   isCreatingOffer
@@ -45,14 +53,12 @@ export function HousingHeader({
           <div className="flex items-center gap-2">
             {housing && offerStatus === "Publicerad" && <HousingApplicationDialog housingSpace={housing} />}
             {!hasOffers && (
-              <Button 
-                onClick={onCreateOffer}
-                disabled={isCreatingOffer || !hasSelectedApplicants}
-                className="flex items-center gap-1"
-              >
-                <PlusCircle className="h-4 w-4" />
-                <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
-              </Button>
+              <SendHousingOfferDialog
+                selectedCount={selectedApplicantCount}
+                disabled={!hasSelectedApplicants}
+                onConfirm={onCreateOffer}
+                isPending={isCreatingOffer}
+              />
             )}
           </div>
         </div>
