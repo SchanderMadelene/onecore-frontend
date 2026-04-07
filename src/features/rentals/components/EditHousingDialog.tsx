@@ -13,7 +13,14 @@ import {
 import { Form } from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useForm } from "react-hook-form";
-import { Edit } from "lucide-react";
+import { toast } from "sonner";
+import { BasicInfoSection } from "./edit-housing/BasicInfoSection";
+import { EditableFormSection } from "./edit-housing/EditableFormSection";
+import { DetailedDescriptionTab } from "./edit-housing/DetailedDescriptionTab";
+import { PlanritningTab } from "./edit-housing/PlanritningTab";
+import { useIsMobile } from "@/hooks/use-mobile";
+import type { EditHousingFormData } from "./edit-housing/types";
+
 interface HousingSpaceBase {
   id: string;
   address: string;
