@@ -11,8 +11,14 @@ interface HousingHeaderProps {
   housing?: HousingSpace;
   hasOffers: boolean;
   hasSelectedApplicants?: boolean;
+  selectedApplicantCount?: number;
   onBack: () => void;
-  onCreateOffer: () => void;
+  onCreateOffer: (options: {
+    responseDeadline: Date;
+    viewingHost: "mimer" | "tenant";
+    viewingDate: Date | undefined;
+    templateId: string | undefined;
+  }) => void;
   isCreatingOffer: boolean;
 }
 
