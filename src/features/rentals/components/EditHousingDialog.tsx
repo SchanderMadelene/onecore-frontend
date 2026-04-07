@@ -122,7 +122,7 @@ export function EditHousingDialog({ housingSpace, trigger }: EditHousingDialogPr
 
           <TabsContent value="grundlaggande" className={`mt-4 ${isMobile ? 'mt-3' : 'mt-6'}`}>
             <div className={`space-y-4 ${isMobile ? 'space-y-4' : 'space-y-6'}`}>
-              <BasicInfoSection housingSpace={housingSpace} />
+              <BasicInfoSection housingSpace={housingSpace as any} />
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                   <EditableFormSection control={form.control} />
