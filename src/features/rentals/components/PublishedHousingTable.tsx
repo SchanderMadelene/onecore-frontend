@@ -8,6 +8,7 @@ import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { ConfirmDialog } from "@/shared/common/ConfirmDialog";
 import { useToast } from "@/hooks/use-toast";
 import { CreateHousingApplicationDialog } from "./CreateHousingApplicationDialog";
+import { EditHousingDialog } from "./EditHousingDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,8 +50,17 @@ export function PublishedHousingTable() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <EditHousingDialog
+              housingSpace={h}
+              trigger={
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  Redigera annons
+                </DropdownMenuItem>
+              }
+            />
+          </div>
           <DropdownMenuItem onClick={() => setConfirmUnpublish({ id: h.id, open: true })}>
-            <EyeOff className="h-4 w-4 mr-2" />
             Avpublicera
           </DropdownMenuItem>
           <DropdownMenuSeparator />

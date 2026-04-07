@@ -1,9 +1,14 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { UnpublishedHousingSpace } from "../types/unpublished-housing";
 
 interface BasicInfoSectionProps {
-  housingSpace: UnpublishedHousingSpace;
+  housingSpace: {
+    address: string;
+    area: string;
+    rooms: number;
+    size: string;
+    rent: string;
+  };
 }
 
 export function BasicInfoSection({ housingSpace }: BasicInfoSectionProps) {
