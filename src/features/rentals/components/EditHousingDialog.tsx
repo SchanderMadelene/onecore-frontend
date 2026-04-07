@@ -14,23 +14,26 @@ import { Form } from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useForm } from "react-hook-form";
 import { Edit } from "lucide-react";
-import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
-import { toast } from "sonner";
-import { BasicInfoSection } from "./edit-housing/BasicInfoSection";
-import { EditableFormSection } from "./edit-housing/EditableFormSection";
-import { DetailedDescriptionTab } from "./edit-housing/DetailedDescriptionTab";
-import { PlanritningTab } from "./edit-housing/PlanritningTab";
-import { useIsMobile } from "@/hooks/use-mobile";
-import type { EditHousingFormData } from "./edit-housing/types";
-
-interface EditHousingDialogProps {
-  housingSpace: UnpublishedHousingSpace;
+interface HousingSpaceBase {
+  id: string;
+  address: string;
+  area: string;
+  type: string;
+  size: string;
+  rent: string;
+  rooms: number;
+  floor: string;
 }
 
-export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
+interface EditHousingDialogProps {
+  housingSpace: HousingSpaceBase;
+  trigger?: React.ReactNode;
+}
+
+export function EditHousingDialog({ housingSpace, trigger }: EditHousingDialogProps) {
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
-  
+
   const form = useForm<EditHousingFormData>({
     defaultValues: {
       housingObjectType: "Standard, Poängfri, Korttidskontrakt, Lätt att ...",
@@ -81,10 +84,11 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
-          <Edit className="h-4 w-4" />
-          {isMobile ? "Redigera" : "Redigera"}
-        </Button>
+        {trigger || (
+          <Button variant="outline" size="sm" className="flex items-center gap-1">
+            Redigera
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className={`${isMobile ? 'max-w-[95vw] max-h-[95vh] m-2' : 'max-w-4xl max-h-[90vh]'} overflow-y-auto`}>
         <DialogHeader className={isMobile ? "pb-4" : ""}>
