@@ -68,7 +68,6 @@ export function PublishedHousingTable() {
             className="text-destructive focus:text-destructive"
             onClick={() => setConfirmDelete({ id: h.id, open: true })}
           >
-            <Trash2 className="h-4 w-4 mr-2" />
             Ta bort
           </DropdownMenuItem>
         </DropdownMenuContent>
