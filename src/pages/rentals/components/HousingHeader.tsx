@@ -28,6 +28,7 @@ export function HousingHeader({
   housing,
   hasOffers,
   hasSelectedApplicants = false,
+  selectedApplicantCount = 0,
   onBack,
   onCreateOffer,
   isCreatingOffer
@@ -52,14 +53,12 @@ export function HousingHeader({
           <div className="flex items-center gap-2">
             {housing && offerStatus === "Publicerad" && <HousingApplicationDialog housingSpace={housing} />}
             {!hasOffers && (
-              <Button 
-                onClick={onCreateOffer}
-                disabled={isCreatingOffer || !hasSelectedApplicants}
-                className="flex items-center gap-1"
-              >
-                <PlusCircle className="h-4 w-4" />
-                <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
-              </Button>
+              <SendHousingOfferDialog
+                selectedCount={selectedApplicantCount}
+                disabled={!hasSelectedApplicants}
+                onConfirm={onCreateOffer}
+                isPending={isCreatingOffer}
+              />
             )}
           </div>
         </div>
