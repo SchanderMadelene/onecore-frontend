@@ -17,6 +17,7 @@ const exampleInspection: Inspection = {
   inspectedBy: "Anna Johansson",
   status: "completed",
   needsMasterKey: false,
+  inspectionType: 'moveout_maintenance',
   residence: {
     id: "res-001",
     objectNumber: "LGH-3204",

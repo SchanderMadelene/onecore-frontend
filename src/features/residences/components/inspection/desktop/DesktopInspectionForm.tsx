@@ -46,6 +46,8 @@ export function DesktopInspectionForm({
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    inspectionType,
+    setInspectionType,
     isFurnished,
     setIsFurnished,
     inspectionData,
@@ -88,6 +90,7 @@ export function DesktopInspectionForm({
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -98,6 +101,7 @@ export function DesktopInspectionForm({
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -150,6 +154,8 @@ export function DesktopInspectionForm({
               setInspectionTime={setInspectionTime}
               needsMasterKey={needsMasterKey}
               setNeedsMasterKey={setNeedsMasterKey}
+              inspectionType={inspectionType}
+              setInspectionType={setInspectionType}
               tenant={tenant}
               layout="horizontal"
             />

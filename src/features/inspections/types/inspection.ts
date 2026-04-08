@@ -19,6 +19,7 @@ export type {
   Inspection,
   InspectionRoom,
   InspectionStatus,
+  InspectionType,
   TenantSnapshot,
   ResidenceInfo,
   InspectionSubmitData,

@@ -49,6 +49,8 @@ export function MobileInspectionForm({
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    inspectionType,
+    setInspectionType,
     isFurnished,
     setIsFurnished,
     inspectionData,
@@ -97,6 +99,7 @@ export function MobileInspectionForm({
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -107,6 +110,7 @@ export function MobileInspectionForm({
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -145,7 +149,9 @@ export function MobileInspectionForm({
               inspectionTime={inspectionTime} 
               setInspectionTime={setInspectionTime} 
               needsMasterKey={needsMasterKey} 
-              setNeedsMasterKey={setNeedsMasterKey} 
+              setNeedsMasterKey={setNeedsMasterKey}
+              inspectionType={inspectionType}
+              setInspectionType={setInspectionType}
               tenant={tenant} 
             />
 
