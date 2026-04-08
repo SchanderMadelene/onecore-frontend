@@ -149,7 +149,9 @@ export function MobileInspectionForm({
               inspectionTime={inspectionTime} 
               setInspectionTime={setInspectionTime} 
               needsMasterKey={needsMasterKey} 
-              setNeedsMasterKey={setNeedsMasterKey} 
+              setNeedsMasterKey={setNeedsMasterKey}
+              inspectionType={inspectionType}
+              setInspectionType={setInspectionType}
               tenant={tenant} 
             />
 

@@ -154,6 +154,8 @@ export function DesktopInspectionForm({
               setInspectionTime={setInspectionTime}
               needsMasterKey={needsMasterKey}
               setNeedsMasterKey={setNeedsMasterKey}
+              inspectionType={inspectionType}
+              setInspectionType={setInspectionType}
               tenant={tenant}
               layout="horizontal"
             />
