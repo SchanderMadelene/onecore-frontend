@@ -88,6 +88,7 @@ export function DesktopInspectionForm({
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -98,6 +99,7 @@ export function DesktopInspectionForm({
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }

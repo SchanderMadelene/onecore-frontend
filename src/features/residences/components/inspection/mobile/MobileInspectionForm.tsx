@@ -97,6 +97,7 @@ export function MobileInspectionForm({
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -107,6 +108,7 @@ export function MobileInspectionForm({
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
