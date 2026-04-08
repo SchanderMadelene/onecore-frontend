@@ -184,6 +184,23 @@ export function InspectorSelectionCard({
               </SelectContent>
             </Select>
           </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Typ av besiktning</Label>
+            <RadioGroup 
+              value={inspectionType} 
+              onValueChange={(val) => setInspectionType(val as InspectionType)}
+              className="space-y-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="moveout_maintenance" id="moveout_maintenance" />
+                <Label htmlFor="moveout_maintenance" className="font-normal cursor-pointer">Avflytt + underhåll</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="maintenance" id="maintenance" />
+                <Label htmlFor="maintenance" className="font-normal cursor-pointer">Underhåll</Label>
+              </div>
+            </RadioGroup>
+          </div>
         </CardContent>
       </Card>
     </div>
