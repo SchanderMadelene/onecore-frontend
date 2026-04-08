@@ -1,33 +1,30 @@
 
 
-## Plan: Visa ikon-alternativ för Uppgång i preview
+## Lägg till besiktningstyp i InspectorSelectionCard
 
-Skapa en tillfällig visuell jämförelse som visar kandidat-ikoner för "Uppgång" sida vid sida, så du kan välja.
+### Bakgrund
+Användaren vill kunna välja besiktningstyp ("Avflytt + underhåll" eller "Underhåll") på förstasidan i besiktningsformuläret, innan själva besiktningen startas. Alternativ 1 valdes: lägga till fältet direkt i "Info om besiktning"-kortet i `InspectorSelectionCard`.
 
-### Vad som visas
+### Ändringar
 
-En enkel panel med dessa ikoner renderade i samma storlek och stil som trädvyn:
+**1. Utöka typsystemet** (`src/features/residences/components/inspection/types.ts`)
+- Lägg till `inspectionType: 'moveout_maintenance' | 'maintenance'` som ny typ.
+- Lägg till fältet i `Inspection`-interfacet och `InspectionSubmitData`.
 
-| Ikon | Lucide-komponent | Beskrivning |
-|------|-----------------|-------------|
-| Home (nuvarande) | `Home` | Hus — kan förväxlas med lägenhet |
-| Layers | `Layers` | Lager/nivåer |
-| ArrowUpFromLine | `ArrowUpFromLine` | Pil uppåt — "uppgång" |
-| Columns2 | `Columns2` | Vertikala sektioner |
-| LayoutList | `LayoutList` | Listelement |
-| Hash | `Hash` | Numrering |
-| GitBranch | `GitBranch` | Förgreningspunkt |
-| Stairs | `Stairs` | Trappa — bokstavlig uppgång |
+**2. Lägg till RadioGroup i InspectorSelectionCard** (`src/features/residences/components/inspection/mobile/InspectorSelectionCard.tsx`)
+- Lägg till ny prop `inspectionType` + `setInspectionType`.
+- Rendera en `RadioGroup` med två alternativ ("Avflytt + underhåll", "Underhåll") under klockslaget i "Info om besiktning"-kortet.
+- Default: `'moveout_maintenance'`.
 
-### Genomförande
+**3. Koppla state i useInspectionForm** (`src/features/residences/hooks/useInspectionForm.ts`)
+- Lägg till `inspectionType` state med default `'moveout_maintenance'`.
+- Exponera `inspectionType` och `setInspectionType`.
 
-**1 fil ändras:** `src/pages/properties/BuildingDetailPage.tsx` (eller liknande synlig sida)
+**4. Koppla ihop i Desktop- och Mobile-formulären**
+- `DesktopInspectionForm.tsx`: Skicka `inspectionType`/`setInspectionType` till `InspectorSelectionCard` och inkludera i submit-data.
+- `MobileInspectionForm.tsx` (eller motsvarande): Samma koppling.
+- Inkludera `inspectionType` i `InspectionSubmitData` vid sparning.
 
-Lägg till en tillfällig sektion längst ner som renderar alla ikoner med namn och beskrivning i ett grid, liknande IconsShowcase-formatet. Sektionen tas bort efter beslut.
-
-Alternativt skapas en ny tillfällig route `/icon-test` med en minimal komponent som visar jämförelsen.
-
-### Filer
-- **Ny:** `src/pages/IconComparisonPage.tsx` — tillfällig sida med ikonjämförelse
-- `src/App.tsx` — lägg till route `/icon-test`
+### Visuell placering
+Fältet placeras som sista element i "Info om besiktning"-kortet, under klockslaget, med en `Label` och `RadioGroup` i samma stil som övriga fält.
 
