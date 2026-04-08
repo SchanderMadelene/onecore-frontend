@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { InspectionRoom, Inspection, CostResponsibility, CustomInspectionComponent } from "@/features/residences/components/inspection/types";
+import type { InspectionRoom, Inspection, CostResponsibility, CustomInspectionComponent, InspectionType } from "@/features/residences/components/inspection/types";
 import type { Room } from "@/types/api";
 import { initializeInspectionData } from "@/features/residences/components/inspection/form/initialData";
 
@@ -16,6 +16,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     return `${hours}:${minutes}`;
   });
   const [needsMasterKey, setNeedsMasterKey] = useState(existingInspection?.needsMasterKey || false);
+  const [inspectionType, setInspectionType] = useState<InspectionType>(existingInspection?.inspectionType || 'moveout_maintenance');
   const [isFurnished, setIsFurnished] = useState(existingInspection?.isFurnished || false);
   const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean }>({
     address: existingInspection?.residence?.address || "Odenplan 5, lägenhet 1001",
@@ -231,6 +232,8 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    inspectionType,
+    setInspectionType,
     isFurnished,
     setIsFurnished,
     apartmentInfo,
