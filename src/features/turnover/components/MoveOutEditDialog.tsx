@@ -40,6 +40,18 @@ export function MoveOutEditDialog({
 }: MoveOutEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [bookedDate, setBookedDate] = useState(initialBookedDate);
+  const [bookedHour, setBookedHour] = useState(() => {
+    if (initialBookedDate && initialBookedDate.includes('T')) {
+      return initialBookedDate.split('T')[1]?.split(':')[0] || '09';
+    }
+    return '09';
+  });
+  const [bookedMinute, setBookedMinute] = useState(() => {
+    if (initialBookedDate && initialBookedDate.includes('T')) {
+      return initialBookedDate.split('T')[1]?.split(':')[1] || '00';
+    }
+    return '00';
+  });
   const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
   const [noteContent, setNoteContent] = useState('');
 
@@ -47,6 +59,8 @@ export function MoveOutEditDialog({
     if (o) {
       setStatus(initialStatus);
       setBookedDate(initialBookedDate);
+      setBookedHour(initialBookedDate?.includes('T') ? initialBookedDate.split('T')[1]?.split(':')[0] || '09' : '09');
+      setBookedMinute(initialBookedDate?.includes('T') ? initialBookedDate.split('T')[1]?.split(':')[1] || '00' : '00');
       setKeysHandled(initialKeysHandled);
       setNoteContent('');
     }
@@ -57,8 +71,11 @@ export function MoveOutEditDialog({
 
   const handleSave = () => {
     onCleaningStatusChange(status);
-    if (showDatePicker) {
-      onCleaningBookedDateChange(bookedDate);
+    if (showDatePicker && bookedDate) {
+      const dateOnly = bookedDate.split('T')[0] || bookedDate;
+      onCleaningBookedDateChange(`${dateOnly}T${bookedHour}:${bookedMinute}`);
+    } else if (showDatePicker) {
+      onCleaningBookedDateChange(undefined);
     }
     onKeysHandledChange(keysHandled);
     if (noteContent.trim()) {
@@ -93,11 +110,42 @@ export function MoveOutEditDialog({
             <div className="space-y-2">
               <label className="text-sm font-medium">Datum</label>
               <DatePicker
-                value={bookedDate ? parseISO(bookedDate) : undefined}
+                value={bookedDate ? parseISO(bookedDate.split('T')[0]) : undefined}
                 onChange={(d) => setBookedDate(d ? format(d, 'yyyy-MM-dd') : undefined)}
                 dateFormat="d MMMM yyyy"
                 locale={sv}
               />
+            </div>
+          )}
+
+          {showDatePicker && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Klockslag</label>
+              <div className="flex gap-2 items-center">
+                <Select value={bookedHour} onValueChange={setBookedHour}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Timme" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 24 }, (_, i) => {
+                      const hour = i.toString().padStart(2, '0');
+                      return <SelectItem key={hour} value={hour}>{hour}</SelectItem>;
+                    })}
+                  </SelectContent>
+                </Select>
+                <span className="text-muted-foreground font-medium">:</span>
+                <Select value={bookedMinute} onValueChange={setBookedMinute}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Minut" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 12 }, (_, i) => {
+                      const minute = (i * 5).toString().padStart(2, '0');
+                      return <SelectItem key={minute} value={minute}>{minute}</SelectItem>;
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           )}
 
