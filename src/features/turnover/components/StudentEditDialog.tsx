@@ -117,6 +117,17 @@ export function StudentEditDialog({
               value={noteContent}
               onChange={(e) => setNoteContent(e.target.value)}
             />
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={noteImportant}
+                onCheckedChange={(v) => setNoteImportant(v === true)}
+                id="studentNoteImportant"
+              />
+              <label htmlFor="studentNoteImportant" className="text-sm font-medium cursor-pointer flex items-center gap-1.5">
+                <AlertTriangle className="h-3.5 w-3.5 text-destructive" />
+                Markera som viktig
+              </label>
+            </div>
           </div>
         </div>
         <DialogFooter>
