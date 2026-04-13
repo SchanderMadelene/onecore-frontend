@@ -40,6 +40,18 @@ export function MoveOutEditDialog({
 }: MoveOutEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [bookedDate, setBookedDate] = useState(initialBookedDate);
+  const [bookedHour, setBookedHour] = useState(() => {
+    if (initialBookedDate && initialBookedDate.includes('T')) {
+      return initialBookedDate.split('T')[1]?.split(':')[0] || '09';
+    }
+    return '09';
+  });
+  const [bookedMinute, setBookedMinute] = useState(() => {
+    if (initialBookedDate && initialBookedDate.includes('T')) {
+      return initialBookedDate.split('T')[1]?.split(':')[1] || '00';
+    }
+    return '00';
+  });
   const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
   const [noteContent, setNoteContent] = useState('');
 
