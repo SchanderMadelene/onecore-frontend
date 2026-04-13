@@ -324,19 +324,19 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="border-l-2 border-border">
                     {row.moveOut ? (
                       <div className="flex items-center gap-1.5">
-                        <span className="text-sm">{row.moveOut.tenantName}</span>
-                        <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
-                        {row.moveOut.hasTenantNote && (
-                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
-                            <MessageSquare className="h-3 w-3" />
-                          </Badge>
-                        )}
                         {row.moveOut.tenantPhone && (
                           <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                             <a href={`tel:${row.moveOut.tenantPhone}`} title={row.moveOut.tenantPhone}>
                               <Phone className="h-3 w-3" />
                             </a>
                           </Button>
+                        )}
+                        <span className="text-sm">{row.moveOut.tenantName}</span>
+                        <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                        {row.moveOut.hasTenantNote && (
+                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
+                            <MessageSquare className="h-3 w-3" />
+                          </Badge>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
@@ -396,19 +396,19 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="border-l-2 border-border">
                     {row.moveIn ? (
                       <div className="flex items-center gap-1.5">
-                        <span className="text-sm">{row.moveIn.tenantName}</span>
-                        <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
-                        {row.moveIn.hasTenantNote && (
-                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
-                            <MessageSquare className="h-3 w-3" />
-                          </Badge>
-                        )}
                         {row.moveIn.tenantPhone && (
                           <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                             <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
                               <Phone className="h-3 w-3" />
                             </a>
                           </Button>
+                        )}
+                        <span className="text-sm">{row.moveIn.tenantName}</span>
+                        <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                        {row.moveIn.hasTenantNote && (
+                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
+                            <MessageSquare className="h-3 w-3" />
+                          </Badge>
                         )}
                       </div>
                     ) : <span className="text-muted-foreground">–</span>}
