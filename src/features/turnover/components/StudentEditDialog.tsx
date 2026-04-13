@@ -4,8 +4,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { Save } from 'lucide-react';
+import { Save, AlertTriangle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
@@ -26,7 +27,7 @@ interface StudentEditDialogProps {
   cleaningApprovedDate?: string;
   onCleaningStatusChange: (status: CleaningStatus) => void;
   onCleaningBookedDateChange: (date: string | undefined) => void;
-  onAddNote: (content: string) => void;
+  onAddNote: (content: string, isImportant?: boolean) => void;
 }
 
 export function StudentEditDialog({
@@ -37,12 +38,14 @@ export function StudentEditDialog({
   const [status, setStatus] = useState(initialStatus);
   const [bookedDate, setBookedDate] = useState(initialBookedDate);
   const [noteContent, setNoteContent] = useState('');
+  const [noteImportant, setNoteImportant] = useState(false);
 
   const handleOpenChange = (o: boolean) => {
     if (o) {
       setStatus(initialStatus);
       setBookedDate(initialBookedDate);
       setNoteContent('');
+      setNoteImportant(false);
     }
     onOpenChange(o);
   };
@@ -55,7 +58,7 @@ export function StudentEditDialog({
       onCleaningBookedDateChange(bookedDate);
     }
     if (noteContent.trim()) {
-      onAddNote(noteContent.trim());
+      onAddNote(noteContent.trim(), noteImportant);
     }
     onOpenChange(false);
   };
