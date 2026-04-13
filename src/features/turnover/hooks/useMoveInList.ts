@@ -7,8 +7,8 @@ import { parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 export function useMoveInList() {
   const [searchParams] = useSearchParams();
   const now = new Date();
-  const defaultStart = new Date(now.getFullYear(), now.getMonth(), 16);
-  const defaultEnd = new Date(now.getFullYear(), now.getMonth() + 1, 15);
+  const defaultStart = new Date(now.getFullYear(), now.getMonth() - 1, 16);
+  const defaultEnd = new Date(now.getFullYear(), now.getMonth(), 15);
 
   const parseDate = (key: string, fallback: Date): Date => {
     const val = searchParams.get(key);
