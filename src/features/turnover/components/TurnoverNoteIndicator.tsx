@@ -23,7 +23,7 @@ export function TurnoverNoteIndicator({ notes }: TurnoverNoteIndicatorProps) {
           </Badge>
         </button>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-72">
+      <HoverCardContent align="start" className="w-72 text-left">
         <div className="space-y-3">
           <h4 className="text-sm font-semibold">Noteringar ({notes.length})</h4>
           <div className="space-y-2 max-h-48 overflow-y-auto">
