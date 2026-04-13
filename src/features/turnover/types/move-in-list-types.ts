@@ -4,6 +4,8 @@ export type WelcomeHomeMethod = 'none' | 'digital' | 'manual';
 
 export type ContactStatus = 'not_contacted' | 'not_reached' | 'visit_booked' | 'visit_done';
 
+export type ContractStatus = 'upcoming' | 'active' | 'expired';
+
 export interface MoveInListChecklist {
   cleaningStatus: CleaningStatus;
   cleaningCount: number;
@@ -33,6 +35,7 @@ export interface MoveInListEntry {
   hasSecurityWarning?: boolean;
   hasQuickMoveIn?: boolean;
   hasTenantNote?: boolean;
+  contractStatus?: ContractStatus;
   checklist: MoveInListChecklist;
 }
 
