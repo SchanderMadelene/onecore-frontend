@@ -208,6 +208,18 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     }));
   }, []);
 
+  const addCustomRoom = useCallback((name: string) => {
+    const id = `custom-${Date.now()}`;
+    setInspectionData(prev => ({
+      ...prev,
+      [id]: {
+        ...initialRoomData,
+        roomId: id,
+      }
+    }));
+    return { id, name };
+  }, []);
+
   const handleCostUpdate = useCallback((
     roomId: string,
     costKey: string,
