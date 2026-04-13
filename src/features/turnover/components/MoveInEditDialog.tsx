@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/shared/ui/textarea';
-import { Save } from 'lucide-react';
+import { Save, AlertTriangle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
@@ -43,7 +43,7 @@ interface MoveInEditDialogProps {
   onWelcomeHomeChange: (method: WelcomeHomeMethod) => void;
   onKeysHandledChange: (handled: boolean) => void;
   onQuickMoveInChange: (value: boolean) => void;
-  onAddNote: (content: string) => void;
+  onAddNote: (content: string, isImportant?: boolean) => void;
 }
 
 export function MoveInEditDialog({
@@ -64,6 +64,7 @@ export function MoveInEditDialog({
   const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
   const [quickMoveIn, setQuickMoveIn] = useState(initialQuickMoveIn);
   const [noteContent, setNoteContent] = useState('');
+  const [noteImportant, setNoteImportant] = useState(false);
 
   const handleOpenChange = (o: boolean) => {
     if (o) {
@@ -76,6 +77,7 @@ export function MoveInEditDialog({
       setKeysHandled(initialKeysHandled);
       setQuickMoveIn(initialQuickMoveIn);
       setNoteContent('');
+      setNoteImportant(false);
     }
     onOpenChange(o);
   };
@@ -97,7 +99,7 @@ export function MoveInEditDialog({
     onKeysHandledChange(keysHandled);
     onQuickMoveInChange(quickMoveIn);
     if (noteContent.trim()) {
-      onAddNote(noteContent.trim());
+      onAddNote(noteContent.trim(), noteImportant);
     }
     onOpenChange(false);
   };
