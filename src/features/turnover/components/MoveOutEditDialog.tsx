@@ -59,6 +59,8 @@ export function MoveOutEditDialog({
     if (o) {
       setStatus(initialStatus);
       setBookedDate(initialBookedDate);
+      setBookedHour(initialBookedDate?.includes('T') ? initialBookedDate.split('T')[1]?.split(':')[0] || '09' : '09');
+      setBookedMinute(initialBookedDate?.includes('T') ? initialBookedDate.split('T')[1]?.split(':')[1] || '00' : '00');
       setKeysHandled(initialKeysHandled);
       setNoteContent('');
     }
