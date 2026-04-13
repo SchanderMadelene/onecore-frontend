@@ -8,7 +8,7 @@ import { CleaningStatus, ContactStatus, WelcomeHomeMethod } from '../types/move-
 interface MoveOutProps {
   entryId: string;
   tenantName: string;
-  onAddNote: (entryId: string, content: string) => void;
+  onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
   cleaningStatus: CleaningStatus;
   cleaningBookedDate?: string;
   cleaningApprovedDate?: string;
@@ -21,7 +21,7 @@ interface MoveOutProps {
 interface MoveInProps {
   entryId: string;
   tenantName: string;
-  onAddNote: (entryId: string, content: string) => void;
+  onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
   contactStatus: ContactStatus;
   contactAttempts: number;
   visitBookedDate?: string;
