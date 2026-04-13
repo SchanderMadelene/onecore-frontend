@@ -300,54 +300,48 @@ export function MobileInspectionForm({
       </div>
 
       {/* Bottom Navigation */}
-      <div className="sticky bottom-0 bg-background border-t p-4">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="icon"
-              onClick={handlePrevious} 
-              disabled={currentRoomIndex === 0 && !showSummary} 
-            >
-              <ChevronLeft className="h-4 w-4" />
-              <span className="sr-only">Föregående</span>
-            </Button>
-            
-            {showSummary ? (
-              <Button onClick={handleSubmit} disabled={!canComplete} className="flex-1">
-                Slutför besiktning
-              </Button>
-            ) : currentRoomIndex === allRooms.length - 1 ? (
-              <Button onClick={() => setShowSummary(true)} className="flex-1">
-                Sammanställning
-              </Button>
-            ) : (
-              <Button onClick={handleNext} className="flex-1 invisible">
-                {/* Spacer to keep layout balanced */}
-              </Button>
-            )}
+      <div className="sticky bottom-0 bg-background border-t px-4 py-3">
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={handlePrevious} 
+            disabled={currentRoomIndex === 0 && !showSummary} 
+          >
+            <ChevronLeft className="h-4 w-4" />
+            <span className="sr-only">Föregående</span>
+          </Button>
 
-            <Button 
-              variant="outline"
-              size="icon"
-              onClick={handleNext} 
-              disabled={currentRoomIndex >= allRooms.length - 1 && !showSummary || showSummary}
-            >
-              <ChevronRight className="h-4 w-4" />
-              <span className="sr-only">Nästa</span>
+          <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} />
+
+          {showSummary ? (
+            <Button onClick={handleSubmit} disabled={!canComplete} className="flex-1">
+              Slutför besiktning
             </Button>
-          </div>
-          <div className="flex gap-2">
-            <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} />
+          ) : currentRoomIndex === allRooms.length - 1 ? (
+            <Button onClick={() => setShowSummary(true)} className="flex-1">
+              Sammanställning
+            </Button>
+          ) : (
             <Button 
-              variant="secondary" 
+              variant="secondary"
               onClick={handleSaveDraft} 
               disabled={!inspectorName.trim()} 
               className="flex-1"
             >
               Spara utkast
             </Button>
-          </div>
+          )}
+
+          <Button 
+            variant="outline"
+            size="icon"
+            onClick={handleNext} 
+            disabled={(currentRoomIndex >= allRooms.length - 1 && !showSummary) || showSummary}
+          >
+            <ChevronRight className="h-4 w-4" />
+            <span className="sr-only">Nästa</span>
+          </Button>
         </div>
       </div>
     </div>
