@@ -87,7 +87,7 @@ export function MobileInspectionForm({
   };
 
   const handleNext = () => {
-    if (currentRoomIndex < rooms.length - 1) {
+    if (currentRoomIndex < allRooms.length - 1) {
       setCurrentRoomIndex(currentRoomIndex + 1);
     } else {
       setShowSummary(true);
@@ -170,7 +170,7 @@ export function MobileInspectionForm({
                 className="w-full" 
                 size="lg"
               >
-                Börja besiktning ({rooms.length} rum)
+                Börja besiktning ({allRooms.length} rum)
               </Button>
             </div>
           </div>
@@ -191,7 +191,7 @@ export function MobileInspectionForm({
           ) : (
             <InspectionProgressIndicator 
               current={completedRooms} 
-              total={rooms.length} 
+              total={allRooms.length} 
               currentRoomName={currentRoom.name} 
             />
           )}
@@ -217,7 +217,7 @@ export function MobileInspectionForm({
               className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide" 
               style={{ WebkitOverflowScrolling: 'touch' }}
             >
-              {rooms.map((room, index) => {
+              {allRooms.map((room, index) => {
                 const isCompleted = inspectionData[room.id]?.isHandled;
                 const isCurrent = index === currentRoomIndex;
                 return (
@@ -277,7 +277,7 @@ export function MobileInspectionForm({
                   </CardContent>
                 </Card>
                 <InspectionSummary
-                  rooms={rooms}
+                  rooms={allRooms}
                   inspectionData={inspectionData}
                   onCostUpdate={handleCostUpdate}
                 />
@@ -317,7 +317,7 @@ export function MobileInspectionForm({
               <Button onClick={handleSubmit} disabled={!canComplete} className="flex-1">
                 Slutför besiktning
               </Button>
-            ) : currentRoomIndex === rooms.length - 1 ? (
+            ) : currentRoomIndex === allRooms.length - 1 ? (
               <Button onClick={() => setShowSummary(true)} className="flex-1">
                 <ClipboardList className="h-4 w-4 mr-1" />
                 Sammanställning
