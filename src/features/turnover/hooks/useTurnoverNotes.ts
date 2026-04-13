@@ -21,5 +21,11 @@ export function useTurnoverNotes() {
     setNotes((prev) => [note, ...prev]);
   }, []);
 
-  return { notes, getNotesForEntry, addNote };
+  const toggleImportant = useCallback((noteId: string) => {
+    setNotes((prev) =>
+      prev.map((n) => (n.id === noteId ? { ...n, isImportant: !n.isImportant } : n))
+    );
+  }, []);
+
+  return { notes, getNotesForEntry, addNote, toggleImportant };
 }
