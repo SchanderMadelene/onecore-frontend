@@ -233,7 +233,15 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground italic pl-5">Ingen inflytt</p>
+              <div className="flex items-center justify-between pl-5">
+                <p className="text-xs text-muted-foreground italic">Ingen inflytt</p>
+                <TurnoverRowNoteButton
+                  entryId={`${row.residenceKey}__movein`}
+                  notes={getNotesForEntry(`${row.residenceKey}__movein`)}
+                  onAddNote={addNote}
+                  label="Notering – Inflytt"
+                />
+              </div>
             )}
           </div>
         </div>
