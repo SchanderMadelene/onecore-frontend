@@ -13,7 +13,7 @@ import { InspectionProgressIndicator } from "./InspectionProgressIndicator";
 import { RoomInspectionMobile } from "./RoomInspectionMobile";
 import { InspectorSelectionCard } from "./InspectorSelectionCard";
 import { InspectionSummary } from "../InspectionSummary";
-import { FloorplanOverlay } from "../FloorplanOverlay";
+import { InspectionMoreMenu } from "../InspectionMoreMenu";
 
 interface MobileInspectionFormProps {
   rooms: Room[];
@@ -39,8 +39,8 @@ export function MobileInspectionForm({
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
-  // If we have existing inspection data, skip inspector selection
   const [showInspectorSelection, setShowInspectorSelection] = useState(!existingInspection);
+  const [customRooms, setCustomRooms] = useState<Room[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const {
     inspectorName,
@@ -61,11 +61,19 @@ export function MobileInspectionForm({
     handleComponentPhotoRemove,
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
-    handleCostUpdate
+    handleCostUpdate,
+    addCustomRoom
   } = useInspectionForm(rooms, existingInspection);
 
-  const currentRoom = rooms[currentRoomIndex];
-  const completedRooms = rooms.filter(room => inspectionData[room.id]?.isHandled).length;
+  const allRooms = [...rooms, ...customRooms];
+
+  const currentRoom = allRooms[currentRoomIndex];
+  const completedRooms = allRooms.filter(room => inspectionData[room.id]?.isHandled).length;
+
+  const handleAddRoom = (name: string) => {
+    const newRoom = addCustomRoom(name);
+    setCustomRooms(prev => [...prev, { id: newRoom.id, name: newRoom.name } as Room]);
+  };
 
   // Create tenant snapshot for saving
   const createTenantSnapshot = (): TenantSnapshot | undefined => {
@@ -116,7 +124,7 @@ export function MobileInspectionForm({
     }
   };
 
-  const canComplete = inspectorName && inspectionTime && completedRooms === rooms.length;
+  const canComplete = inspectorName && inspectionTime && completedRooms === allRooms.length;
 
   // Reset scroll position when room or view changes
   useEffect(() => {
@@ -322,7 +330,7 @@ export function MobileInspectionForm({
             )}
           </div>
           <div className="flex gap-2">
-            <FloorplanOverlay floorplanImage={floorplanImage} />
+            <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} />
             <Button 
               variant="secondary" 
               onClick={handleSaveDraft} 
