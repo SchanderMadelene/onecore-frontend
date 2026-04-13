@@ -213,6 +213,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   </div>
                 )}
                 <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
+                  <span className="text-muted-foreground">Status:</span>
+                  <ContractStatusBadge status={row.moveIn.contractStatus} />
                   <span className="text-muted-foreground">Kontakt:</span>
                   <ContactStatusBadge
                     status={row.moveIn.checklist.contactStatus}
