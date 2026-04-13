@@ -176,9 +176,11 @@ export function StudentTurnoverTable({
           cleaningStatus={editDialog.status}
           cleaningBookedDate={editDialog.bookedDate}
           cleaningApprovedDate={editDialog.approvedDate}
+          notes={getNotesForEntry(editDialog.entryId)}
           onCleaningStatusChange={(s) => onCleaningStatusChange(editDialog.entryId, s)}
           onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(editDialog.entryId, d)}
           onAddNote={(content, isImportant) => onAddNote(editDialog.entryId, content, isImportant)}
+          onToggleImportant={onToggleImportant}
         />
       </>
     );
@@ -330,9 +332,11 @@ export function StudentTurnoverTable({
         cleaningStatus={editDialog.status}
         cleaningBookedDate={editDialog.bookedDate}
         cleaningApprovedDate={editDialog.approvedDate}
+        notes={getNotesForEntry(editDialog.entryId)}
         onCleaningStatusChange={(s) => onCleaningStatusChange(editDialog.entryId, s)}
         onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(editDialog.entryId, d)}
         onAddNote={(content, isImportant) => onAddNote(editDialog.entryId, content, isImportant)}
+        onToggleImportant={onToggleImportant}
       />
     </>
   );
