@@ -13,7 +13,7 @@ import { InspectionProgressIndicator } from "./InspectionProgressIndicator";
 import { RoomInspectionMobile } from "./RoomInspectionMobile";
 import { InspectorSelectionCard } from "./InspectorSelectionCard";
 import { InspectionSummary } from "../InspectionSummary";
-import { FloorplanOverlay } from "../FloorplanOverlay";
+import { InspectionMoreMenu } from "../InspectionMoreMenu";
 
 interface MobileInspectionFormProps {
   rooms: Room[];
@@ -39,8 +39,8 @@ export function MobileInspectionForm({
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
-  // If we have existing inspection data, skip inspector selection
   const [showInspectorSelection, setShowInspectorSelection] = useState(!existingInspection);
+  const [customRooms, setCustomRooms] = useState<Room[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const {
     inspectorName,
@@ -49,6 +49,8 @@ export function MobileInspectionForm({
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    inspectionType,
+    setInspectionType,
     isFurnished,
     setIsFurnished,
     inspectionData,
@@ -59,11 +61,19 @@ export function MobileInspectionForm({
     handleComponentPhotoRemove,
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
-    handleCostUpdate
+    handleCostUpdate,
+    addCustomRoom
   } = useInspectionForm(rooms, existingInspection);
 
-  const currentRoom = rooms[currentRoomIndex];
-  const completedRooms = rooms.filter(room => inspectionData[room.id]?.isHandled).length;
+  const allRooms = [...rooms, ...customRooms];
+
+  const currentRoom = allRooms[currentRoomIndex];
+  const completedRooms = allRooms.filter(room => inspectionData[room.id]?.isHandled).length;
+
+  const handleAddRoom = (name: string) => {
+    const newRoom = addCustomRoom(name);
+    setCustomRooms(prev => [...prev, { id: newRoom.id, name: newRoom.name } as Room]);
+  };
 
   // Create tenant snapshot for saving
   const createTenantSnapshot = (): TenantSnapshot | undefined => {
@@ -77,7 +87,7 @@ export function MobileInspectionForm({
   };
 
   const handleNext = () => {
-    if (currentRoomIndex < rooms.length - 1) {
+    if (currentRoomIndex < allRooms.length - 1) {
       setCurrentRoomIndex(currentRoomIndex + 1);
     } else {
       setShowSummary(true);
@@ -97,6 +107,7 @@ export function MobileInspectionForm({
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -107,12 +118,13 @@ export function MobileInspectionForm({
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
   };
 
-  const canComplete = inspectorName && inspectionTime && completedRooms === rooms.length;
+  const canComplete = inspectorName && inspectionTime && completedRooms === allRooms.length;
 
   // Reset scroll position when room or view changes
   useEffect(() => {
@@ -145,7 +157,9 @@ export function MobileInspectionForm({
               inspectionTime={inspectionTime} 
               setInspectionTime={setInspectionTime} 
               needsMasterKey={needsMasterKey} 
-              setNeedsMasterKey={setNeedsMasterKey} 
+              setNeedsMasterKey={setNeedsMasterKey}
+              inspectionType={inspectionType}
+              setInspectionType={setInspectionType}
               tenant={tenant} 
             />
 
@@ -156,7 +170,7 @@ export function MobileInspectionForm({
                 className="w-full" 
                 size="lg"
               >
-                Börja besiktning ({rooms.length} rum)
+                Börja besiktning ({allRooms.length} rum)
               </Button>
             </div>
           </div>
@@ -177,7 +191,7 @@ export function MobileInspectionForm({
           ) : (
             <InspectionProgressIndicator 
               current={completedRooms} 
-              total={rooms.length} 
+              total={allRooms.length} 
               currentRoomName={currentRoom.name} 
             />
           )}
@@ -203,7 +217,7 @@ export function MobileInspectionForm({
               className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide" 
               style={{ WebkitOverflowScrolling: 'touch' }}
             >
-              {rooms.map((room, index) => {
+              {allRooms.map((room, index) => {
                 const isCompleted = inspectionData[room.id]?.isHandled;
                 const isCurrent = index === currentRoomIndex;
                 return (
@@ -263,7 +277,7 @@ export function MobileInspectionForm({
                   </CardContent>
                 </Card>
                 <InspectionSummary
-                  rooms={rooms}
+                  rooms={allRooms}
                   inspectionData={inspectionData}
                   onCostUpdate={handleCostUpdate}
                 />
@@ -286,46 +300,48 @@ export function MobileInspectionForm({
       </div>
 
       {/* Bottom Navigation */}
-      <div className="sticky bottom-0 bg-background border-t p-4">
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              onClick={handlePrevious} 
-              disabled={currentRoomIndex === 0 && !showSummary} 
-              className="flex-1"
-            >
-              <ChevronLeft className="h-4 w-4 mr-1" />
-              Föregående
+      <div className="sticky bottom-0 bg-background border-t px-4 py-3">
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={handlePrevious} 
+            disabled={currentRoomIndex === 0 && !showSummary} 
+          >
+            <ChevronLeft className="h-4 w-4" />
+            <span className="sr-only">Föregående</span>
+          </Button>
+
+          <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} />
+
+          {showSummary ? (
+            <Button onClick={handleSubmit} disabled={!canComplete} className="flex-1">
+              Slutför besiktning
             </Button>
-            
-            {showSummary ? (
-              <Button onClick={handleSubmit} disabled={!canComplete} className="flex-1">
-                Slutför besiktning
-              </Button>
-            ) : currentRoomIndex === rooms.length - 1 ? (
-              <Button onClick={() => setShowSummary(true)} className="flex-1">
-                <ClipboardList className="h-4 w-4 mr-1" />
-                Sammanställning
-              </Button>
-            ) : (
-              <Button onClick={handleNext} className="flex-1">
-                Nästa
-                <ChevronRight className="h-4 w-4 ml-1" />
-              </Button>
-            )}
-          </div>
-          <div className="flex gap-2">
-            <FloorplanOverlay floorplanImage={floorplanImage} />
+          ) : currentRoomIndex === allRooms.length - 1 ? (
+            <Button onClick={() => setShowSummary(true)} className="flex-1">
+              Sammanställning
+            </Button>
+          ) : (
             <Button 
-              variant="secondary" 
+              variant="secondary"
               onClick={handleSaveDraft} 
               disabled={!inspectorName.trim()} 
               className="flex-1"
             >
               Spara utkast
             </Button>
-          </div>
+          )}
+
+          <Button 
+            variant="outline"
+            size="icon"
+            onClick={handleNext} 
+            disabled={(currentRoomIndex >= allRooms.length - 1 && !showSummary) || showSummary}
+          >
+            <ChevronRight className="h-4 w-4" />
+            <span className="sr-only">Nästa</span>
+          </Button>
         </div>
       </div>
     </div>

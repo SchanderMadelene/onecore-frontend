@@ -4,10 +4,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { User, MapPin, ExternalLink, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
+import type { InspectionType } from "../types";
 
 interface InspectorSelectionCardProps {
   inspectorName: string;
@@ -16,6 +18,8 @@ interface InspectorSelectionCardProps {
   setInspectionTime: (time: string) => void;
   needsMasterKey: boolean;
   setNeedsMasterKey: (needs: boolean) => void;
+  inspectionType: InspectionType;
+  setInspectionType: (type: InspectionType) => void;
   tenant?: any;
   layout?: 'vertical' | 'horizontal';
 }
@@ -37,6 +41,8 @@ export function InspectorSelectionCard({
   setInspectionTime,
   needsMasterKey,
   setNeedsMasterKey,
+  inspectionType,
+  setInspectionType,
   tenant,
   layout = 'vertical'
 }: InspectorSelectionCardProps) {
@@ -177,6 +183,23 @@ export function InspectorSelectionCard({
                 ).flat()}
               </SelectContent>
             </Select>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Typ av besiktning</Label>
+            <RadioGroup 
+              value={inspectionType} 
+              onValueChange={(val) => setInspectionType(val as InspectionType)}
+              className="space-y-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="moveout_maintenance" id="moveout_maintenance" />
+                <Label htmlFor="moveout_maintenance" className="font-normal cursor-pointer">Avflytt + underhåll</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="maintenance" id="maintenance" />
+                <Label htmlFor="maintenance" className="font-normal cursor-pointer">Underhåll</Label>
+              </div>
+            </RadioGroup>
           </div>
         </CardContent>
       </Card>

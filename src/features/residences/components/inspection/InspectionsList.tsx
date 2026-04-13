@@ -83,6 +83,7 @@ export function InspectionsList({ rooms, inspections, onInspectionCreated, tenan
       isCompleted: status === 'completed',
       residence: createResidenceInfo(residence),
       needsMasterKey: additionalData.needsMasterKey,
+      inspectionType: additionalData.inspectionType,
       tenant: additionalData.tenant
     };
 

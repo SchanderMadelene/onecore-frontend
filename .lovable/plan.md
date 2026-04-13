@@ -1,33 +1,43 @@
 
 
-## Plan: Visa ikon-alternativ för Uppgång i preview
+## "Mer"-knapp i bottom navigation
 
-Skapa en tillfällig visuell jämförelse som visar kandidat-ikoner för "Uppgång" sida vid sida, så du kan välja.
+Bra idé. Istället för att planritningsknappen och en ny "lägg till rum"-knapp tar var sin plats i footern, slår vi ihop dem i en enda knapp som öppnar en meny med alternativ.
 
-### Vad som visas
+### Upplägg
 
-En enkel panel med dessa ikoner renderade i samma storlek och stil som trädvyn:
+**Mobil:** Ersätt `FloorplanOverlay`-knappen i footern med en `MoreHorizontal`-ikon-knapp som öppnar ett `DropdownMenu` (uppåt, eftersom den sitter längst ner) med två val:
+- **Se planritning** — öppnar planritnings-dialogen som idag
+- **Lägg till rum/utrymme** — öppnar en enkel dialog med textfält för rumsnamn, lägger till rummet i inspektionsdatan
 
-| Ikon | Lucide-komponent | Beskrivning |
-|------|-----------------|-------------|
-| Home (nuvarande) | `Home` | Hus — kan förväxlas med lägenhet |
-| Layers | `Layers` | Lager/nivåer |
-| ArrowUpFromLine | `ArrowUpFromLine` | Pil uppåt — "uppgång" |
-| Columns2 | `Columns2` | Vertikala sektioner |
-| LayoutList | `LayoutList` | Listelement |
-| Hash | `Hash` | Numrering |
-| GitBranch | `GitBranch` | Förgreningspunkt |
-| Stairs | `Stairs` | Trappa — bokstavlig uppgång |
+**Desktop:** Samma koncept i desktop-footern — en "Mer"-knapp med dropdown som ersätter den nuvarande `FloorplanOverlay`-knappen.
 
-### Genomförande
+### Tekniska ändringar
 
-**1 fil ändras:** `src/pages/properties/BuildingDetailPage.tsx` (eller liknande synlig sida)
+1. **Ny komponent `InspectionMoreMenu`** — renderar `DropdownMenu` med `MoreHorizontal`-knapp, innehåller:
+   - "Se planritning" (öppnar befintlig planritnings-dialog)
+   - "Lägg till rum/utrymme" (öppnar en `Dialog` med input för rumsnamn + bekräfta-knapp)
 
-Lägg till en tillfällig sektion längst ner som renderar alla ikoner med namn och beskrivning i ett grid, liknande IconsShowcase-formatet. Sektionen tas bort efter beslut.
+2. **`MobileInspectionForm.tsx`** — ersätt `<FloorplanOverlay />` i bottom-nav med `<InspectionMoreMenu />`. Lägg till state och callback för att hantera nya rum (lägga till i `rooms`-listan och `inspectionData`).
 
-Alternativt skapas en ny tillfällig route `/icon-test` med en minimal komponent som visar jämförelsen.
+3. **`DesktopInspectionForm.tsx`** — samma byte i footer-raden.
 
-### Filer
-- **Ny:** `src/pages/IconComparisonPage.tsx` — tillfällig sida med ikonjämförelse
-- `src/App.tsx` — lägg till route `/icon-test`
+4. **`useInspectionForm.ts`** — lägg till `addCustomRoom(name: string)` som skapar ett nytt rum-objekt med genererat ID och tomma inspektionsdata.
+
+5. **Ta bort / refaktorera `FloorplanOverlay.tsx`** — planritnings-dialogen bäddas in i den nya komponenten istället.
+
+### Visuellt resultat (mobil footer)
+
+```text
+┌─────────────────────────────────────────┐
+│  [Föregående]          [Nästa]          │
+│  [⋯]              [Spara utkast]        │
+└─────────────────────────────────────────┘
+         ↑
+    Dropdown uppåt:
+    ┌──────────────────────┐
+    │ Se planritning       │
+    │ Lägg till rum        │
+    └──────────────────────┘
+```
 

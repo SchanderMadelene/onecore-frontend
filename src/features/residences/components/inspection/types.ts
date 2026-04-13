@@ -1,5 +1,7 @@
 export type CostResponsibility = 'tenant' | 'landlord' | null;
 
+export type InspectionType = 'moveout_maintenance' | 'maintenance';
+
 // Typer av tilläggskomponenter som kan läggas till under "Detaljer"
 export const CUSTOM_COMPONENT_TYPES = [
   { value: 'baseboards', label: 'Golvsocklar' },
@@ -104,6 +106,7 @@ export interface Inspection {
   
   // Från formuläret
   needsMasterKey: boolean;
+  inspectionType: InspectionType;
   
   isFurnished?: boolean;
   isCompleted?: boolean; // Deprecated, use status instead
@@ -113,5 +116,6 @@ export interface Inspection {
 export interface InspectionSubmitData {
   needsMasterKey: boolean;
   isFurnished: boolean;
+  inspectionType: InspectionType;
   tenant?: TenantSnapshot;
 }

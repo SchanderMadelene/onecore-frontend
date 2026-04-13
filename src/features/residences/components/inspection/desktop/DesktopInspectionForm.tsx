@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { InspectionSummary } from "../InspectionSummary";
-import { FloorplanOverlay } from "../FloorplanOverlay";
+import { InspectionMoreMenu } from "../InspectionMoreMenu";
 
 interface DesktopInspectionFormProps {
   rooms: Room[];
@@ -46,6 +46,8 @@ export function DesktopInspectionForm({
     setInspectionTime,
     needsMasterKey,
     setNeedsMasterKey,
+    inspectionType,
+    setInspectionType,
     isFurnished,
     setIsFurnished,
     inspectionData,
@@ -56,10 +58,18 @@ export function DesktopInspectionForm({
     handleComponentPhotoRemove,
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
-    handleCostUpdate
+    handleCostUpdate,
+    addCustomRoom
   } = useInspectionForm(rooms, existingInspection);
 
   const [showSummary, setShowSummary] = useState(false);
+  const [customRooms, setCustomRooms] = useState<Room[]>([]);
+  const allRooms = [...rooms, ...customRooms];
+
+  const handleAddRoom = (name: string) => {
+    const newRoom = addCustomRoom(name);
+    setCustomRooms(prev => [...prev, { id: newRoom.id, name: newRoom.name } as Room]);
+  };
 
   useEffect(() => {
     if (!inspectorName && currentUser && !existingInspection) {
@@ -71,7 +81,7 @@ export function DesktopInspectionForm({
     room => room.isHandled
   ).length;
 
-  const canComplete = inspectorName && completedRooms === rooms.length;
+  const canComplete = inspectorName && completedRooms === allRooms.length;
 
   const createTenantSnapshot = (): TenantSnapshot | undefined => {
     if (!tenant) return undefined;
@@ -88,6 +98,7 @@ export function DesktopInspectionForm({
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -98,6 +109,7 @@ export function DesktopInspectionForm({
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
         isFurnished,
+        inspectionType,
         tenant: createTenantSnapshot()
       });
     }
@@ -135,7 +147,7 @@ export function DesktopInspectionForm({
               </CardContent>
             </Card>
             <InspectionSummary
-              rooms={rooms}
+              rooms={allRooms}
               inspectionData={inspectionData}
               onCostUpdate={handleCostUpdate}
             />
@@ -150,6 +162,8 @@ export function DesktopInspectionForm({
               setInspectionTime={setInspectionTime}
               needsMasterKey={needsMasterKey}
               setNeedsMasterKey={setNeedsMasterKey}
+              inspectionType={inspectionType}
+              setInspectionType={setInspectionType}
               tenant={tenant}
               layout="horizontal"
             />
@@ -158,13 +172,13 @@ export function DesktopInspectionForm({
             <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
               <span className="text-sm font-medium">Besiktningsframsteg</span>
               <span className="text-sm text-muted-foreground">
-                {completedRooms}/{rooms.length} rum klara
+                {completedRooms}/{allRooms.length} rum klara
               </span>
             </div>
 
             {/* Room accordion */}
             <Accordion type="multiple" className="space-y-2">
-              {rooms.map(room => {
+              {allRooms.map(room => {
                 const roomData = inspectionData[room.id];
                 const isCompleted = roomData?.isHandled;
                 
@@ -225,7 +239,7 @@ export function DesktopInspectionForm({
 
       {/* Footer buttons - sticky at bottom */}
       <div className="flex gap-3 justify-end pt-4 border-t mt-4 shrink-0">
-        <FloorplanOverlay floorplanImage={floorplanImage} />
+        <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} />
         <div className="flex-1" />
         <Button variant="outline" onClick={onCancel}>
           Avbryt
