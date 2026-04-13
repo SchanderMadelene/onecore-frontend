@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { Save, AlertTriangle } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
@@ -123,8 +123,7 @@ export function StudentEditDialog({
                 onCheckedChange={(v) => setNoteImportant(v === true)}
                 id="studentNoteImportant"
               />
-              <label htmlFor="studentNoteImportant" className="text-sm font-medium cursor-pointer flex items-center gap-1.5">
-                <AlertTriangle className="h-3.5 w-3.5 text-destructive" />
+              <label htmlFor="studentNoteImportant" className="text-sm font-medium cursor-pointer">
                 Markera som viktig
               </label>
             </div>
