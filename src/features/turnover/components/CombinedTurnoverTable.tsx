@@ -142,7 +142,15 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground italic pl-5">Ingen utflytt</p>
+              <div className="flex items-center justify-between pl-5">
+                <p className="text-xs text-muted-foreground italic">Ingen utflytt</p>
+                <TurnoverRowNoteButton
+                  entryId={`${row.residenceKey}__moveout`}
+                  notes={getNotesForEntry(`${row.residenceKey}__moveout`)}
+                  onAddNote={addNote}
+                  label="Notering – Utflytt"
+                />
+              </div>
             )}
           </div>
 
