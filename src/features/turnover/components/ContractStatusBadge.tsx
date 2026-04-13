@@ -2,7 +2,7 @@ import { Badge } from '@/shared/ui/badge';
 import { ContractStatus } from '../types/move-in-list-types';
 
 const STATUS_CONFIG: Record<ContractStatus, { label: string; variant: 'default' | 'success' | 'muted' }> = {
-  upcoming: { label: 'Kommande', variant: 'default' },
+  upcoming: { label: 'V', variant: 'muted' },
   active: { label: 'Gällande', variant: 'success' },
   expired: { label: 'Upphört', variant: 'muted' },
 };
