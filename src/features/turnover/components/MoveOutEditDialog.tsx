@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CleaningStatus } from '../types/move-in-list-types';
+import { TurnoverNote } from '../types/turnover-note-types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
 import { Separator } from '@/components/ui/separator';
+import { NotesList } from './NotesList';
 
 const STATUS_CONFIG: Record<CleaningStatus, { label: string }> = {
   not_done: { label: 'Ej utförd' },
@@ -26,17 +28,19 @@ interface MoveOutEditDialogProps {
   cleaningBookedDate?: string;
   cleaningApprovedDate?: string;
   keysHandled: boolean;
+  notes: TurnoverNote[];
   onCleaningStatusChange: (status: CleaningStatus) => void;
   onCleaningBookedDateChange: (date: string | undefined) => void;
   onKeysHandledChange: (handled: boolean) => void;
   onAddNote: (content: string, isImportant?: boolean) => void;
+  onToggleImportant: (noteId: string) => void;
 }
 
 export function MoveOutEditDialog({
   open, onOpenChange, tenantName,
   cleaningStatus: initialStatus, cleaningBookedDate: initialBookedDate, cleaningApprovedDate,
-  keysHandled: initialKeysHandled,
-  onCleaningStatusChange, onCleaningBookedDateChange, onKeysHandledChange, onAddNote,
+  keysHandled: initialKeysHandled, notes,
+  onCleaningStatusChange, onCleaningBookedDateChange, onKeysHandledChange, onAddNote, onToggleImportant,
 }: MoveOutEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [bookedDate, setBookedDate] = useState(initialBookedDate);
@@ -175,6 +179,7 @@ export function MoveOutEditDialog({
           {/* Note section */}
           <div className="space-y-2">
             <label className="text-sm font-semibold">Notering</label>
+            <NotesList notes={notes} onToggleImportant={onToggleImportant} />
             <Textarea
               placeholder="Skriv din notering här..."
               className="min-h-[80px]"

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CleaningStatus } from '../types/move-in-list-types';
+import { TurnoverNote } from '../types/turnover-note-types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import { Save } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
+import { NotesList } from './NotesList';
 
 const STATUS_CONFIG: Record<CleaningStatus, { label: string }> = {
   not_done: { label: 'Ej utförd' },
@@ -25,15 +27,17 @@ interface StudentEditDialogProps {
   cleaningStatus: CleaningStatus;
   cleaningBookedDate?: string;
   cleaningApprovedDate?: string;
+  notes: TurnoverNote[];
   onCleaningStatusChange: (status: CleaningStatus) => void;
   onCleaningBookedDateChange: (date: string | undefined) => void;
   onAddNote: (content: string, isImportant?: boolean) => void;
+  onToggleImportant: (noteId: string) => void;
 }
 
 export function StudentEditDialog({
   open, onOpenChange, tenantName,
   cleaningStatus: initialStatus, cleaningBookedDate: initialBookedDate, cleaningApprovedDate,
-  onCleaningStatusChange, onCleaningBookedDateChange, onAddNote,
+  notes, onCleaningStatusChange, onCleaningBookedDateChange, onAddNote, onToggleImportant,
 }: StudentEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [bookedDate, setBookedDate] = useState(initialBookedDate);
@@ -113,6 +117,7 @@ export function StudentEditDialog({
           {/* Note section */}
           <div className="space-y-2">
             <label className="text-sm font-semibold">Notering</label>
+            <NotesList notes={notes} onToggleImportant={onToggleImportant} />
             <Textarea
               placeholder="Skriv din notering här..."
               className="min-h-[80px]"
