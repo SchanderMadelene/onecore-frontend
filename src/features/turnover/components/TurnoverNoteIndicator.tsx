@@ -1,4 +1,4 @@
-import { StickyNote, AlertTriangle } from 'lucide-react';
+import { StickyNote } from 'lucide-react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/ui/hover-card';
 import { Badge } from '@/shared/ui/badge';
 import { TurnoverNote } from '../types/turnover-note-types';
@@ -18,15 +18,8 @@ export function TurnoverNoteIndicator({ notes }: TurnoverNoteIndicatorProps) {
     <HoverCard>
       <HoverCardTrigger asChild>
         <button className="inline-flex items-center justify-center" title="Har noteringar">
-          <Badge
-            variant={hasImportant ? 'warning' : 'muted'}
-            size="icon"
-          >
-            {hasImportant ? (
-              <AlertTriangle className="h-3 w-3" />
-            ) : (
-              <StickyNote className="h-3 w-3" />
-            )}
+          <Badge variant={hasImportant ? 'warning' : 'muted'} size="icon">
+            <StickyNote className="h-3 w-3" />
           </Badge>
         </button>
       </HoverCardTrigger>
@@ -44,10 +37,7 @@ export function TurnoverNoteIndicator({ notes }: TurnoverNoteIndicatorProps) {
                 }`}
               >
                 {note.isImportant && (
-                  <span className="text-xs font-semibold text-destructive flex items-center gap-1 mb-0.5">
-                    <AlertTriangle className="h-3 w-3" />
-                    Viktig
-                  </span>
+                  <span className="text-xs font-semibold text-destructive mb-0.5 block">Viktig</span>
                 )}
                 <p className="text-foreground">{note.content}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
