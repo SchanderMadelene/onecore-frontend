@@ -32,12 +32,12 @@ export function TurnoverRowNoteButton({ entryId, notes, onAddNote, label = 'Note
         <div className="flex items-center gap-1">
           <TurnoverNoteIndicator notes={notes} />
           <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setOpen(true)} title="Lägg till notering">
-            <StickyNote className="h-4 w-4" />
+            <Pencil className="h-4 w-4" />
           </Button>
         </div>
       ) : (
         <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => setOpen(true)} title="Lägg till notering">
-          <StickyNote className="h-4 w-4" />
+          <Pencil className="h-4 w-4" />
         </Button>
       )}
 
