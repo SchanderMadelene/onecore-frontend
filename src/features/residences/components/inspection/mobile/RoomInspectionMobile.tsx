@@ -99,24 +99,26 @@ export function RoomInspectionMobile({
           ))}
         </div>
 
-        {/* Detaljer - tillägg av extra komponenter */}
-        <div className="mt-2">
-          <Separator className="mb-4" />
-          <div className="flex items-center gap-2 mb-3">
-            <h4 className="font-medium text-base">Detaljer</h4>
-            {inspectionData.customComponents.length > 0 && (
-              <span className="text-xs text-muted-foreground">
-                ({inspectionData.customComponents.length})
-              </span>
-            )}
+        {/* Detaljer - tillägg av extra komponenter (hidden for custom rooms) */}
+        {!room.id.startsWith('custom-') && (
+          <div className="mt-2">
+            <Separator className="mb-4" />
+            <div className="flex items-center gap-2 mb-3">
+              <h4 className="font-medium text-base">Detaljer</h4>
+              {inspectionData.customComponents.length > 0 && (
+                <span className="text-xs text-muted-foreground">
+                  ({inspectionData.customComponents.length})
+                </span>
+              )}
+            </div>
+            <CustomComponentsSection
+              components={inspectionData.customComponents}
+              onAdd={handleAddCustomComponent}
+              onRemove={handleRemoveCustomComponent}
+              onNoteUpdate={handleCustomComponentNoteUpdate}
+            />
           </div>
-          <CustomComponentsSection
-            components={inspectionData.customComponents}
-            onAdd={handleAddCustomComponent}
-            onRemove={handleRemoveCustomComponent}
-            onNoteUpdate={handleCustomComponentNoteUpdate}
-          />
-        </div>
+        )}
 
         {/* Detail sheets for each component */}
         {COMPONENTS.map((component) => (
