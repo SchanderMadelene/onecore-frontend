@@ -81,7 +81,7 @@ export function MoveOutEditDialog({
     }
     onKeysHandledChange(keysHandled);
     if (noteContent.trim()) {
-      onAddNote(noteContent.trim());
+      onAddNote(noteContent.trim(), noteImportant);
     }
     onOpenChange(false);
   };
