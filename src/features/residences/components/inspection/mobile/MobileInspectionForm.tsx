@@ -343,7 +343,6 @@ export function MobileInspectionForm({
             <span className="sr-only">Nästa</span>
           </Button>
         </div>
-        </div>
       </div>
     </div>
   );
