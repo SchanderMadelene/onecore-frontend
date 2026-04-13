@@ -455,7 +455,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="p-0 text-center">
                     {row.moveIn ? (
                       <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
-                    ) : null}
+                    ) : (
+                      <TurnoverNoteIndicator notes={getNotesForEntry(`${row.residenceKey}__movein`)} />
+                    )}
                   </TableCell>
                   {/* Move-in actions */}
                   <TableCell>
@@ -480,7 +482,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
                         onQuickMoveInChange={(v) => onQuickMoveInChange(row.moveIn!.id, v)}
                       />
-                    ) : null}
+                    ) : (
+                      <TurnoverRowNoteButton
+                        entryId={`${row.residenceKey}__movein`}
+                        notes={getNotesForEntry(`${row.residenceKey}__movein`)}
+                        onAddNote={addNote}
+                        label="Notering – Inflytt"
+                      />
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
