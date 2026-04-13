@@ -110,11 +110,42 @@ export function MoveOutEditDialog({
             <div className="space-y-2">
               <label className="text-sm font-medium">Datum</label>
               <DatePicker
-                value={bookedDate ? parseISO(bookedDate) : undefined}
+                value={bookedDate ? parseISO(bookedDate.split('T')[0]) : undefined}
                 onChange={(d) => setBookedDate(d ? format(d, 'yyyy-MM-dd') : undefined)}
                 dateFormat="d MMMM yyyy"
                 locale={sv}
               />
+            </div>
+          )}
+
+          {showDatePicker && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Klockslag</label>
+              <div className="flex gap-2 items-center">
+                <Select value={bookedHour} onValueChange={setBookedHour}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Timme" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 24 }, (_, i) => {
+                      const hour = i.toString().padStart(2, '0');
+                      return <SelectItem key={hour} value={hour}>{hour}</SelectItem>;
+                    })}
+                  </SelectContent>
+                </Select>
+                <span className="text-muted-foreground font-medium">:</span>
+                <Select value={bookedMinute} onValueChange={setBookedMinute}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Minut" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 12 }, (_, i) => {
+                      const minute = (i * 5).toString().padStart(2, '0');
+                      return <SelectItem key={minute} value={minute}>{minute}</SelectItem>;
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           )}
 
