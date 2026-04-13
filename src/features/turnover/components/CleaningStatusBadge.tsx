@@ -28,7 +28,10 @@ export function CleaningStatusBadge({ status, bookedDate, approvedDate, showLabe
       <Badge variant={config.variant} className="gap-1.5">
         {config.label}
         {showDate && (
-          <span className="font-normal">{format(parseISO(bookedDate!), 'd MMM', { locale: sv })}</span>
+          <span className="font-normal">
+            {format(parseISO(bookedDate!), 'd MMM', { locale: sv })}
+            {bookedDate!.includes('T') && ` ${bookedDate!.split('T')[1]?.substring(0, 5)}`}
+          </span>
         )}
         {showApproved && (
           <span className="font-normal">{format(parseISO(approvedDate!), 'd MMM', { locale: sv })}</span>
