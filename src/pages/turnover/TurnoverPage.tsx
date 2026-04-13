@@ -141,6 +141,7 @@ export default function TurnoverPage() {
               onCleaningStatusChange={student.updateCleaningStatus}
               onCleaningBookedDateChange={student.updateCleaningBookedDate}
               onAddNote={studentNotes.addNote}
+              onToggleImportant={studentNotes.toggleImportant}
               getNotesForEntry={studentNotes.getNotesForEntry}
             />
           </TabsContent>

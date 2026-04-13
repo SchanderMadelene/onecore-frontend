@@ -21,12 +21,13 @@ interface StudentTurnoverTableProps {
   onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
   onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
+  onToggleImportant: (noteId: string) => void;
   getNotesForEntry: (entryId: string) => TurnoverNote[];
 }
 
 export function StudentTurnoverTable({
   entries, onCleaningStatusChange, onCleaningBookedDateChange,
-  onAddNote, getNotesForEntry,
+  onAddNote, onToggleImportant, getNotesForEntry,
 }: StudentTurnoverTableProps) {
   const isMobile = useIsMobile();
   const [editDialog, setEditDialog] = useState<{
@@ -175,9 +176,11 @@ export function StudentTurnoverTable({
           cleaningStatus={editDialog.status}
           cleaningBookedDate={editDialog.bookedDate}
           cleaningApprovedDate={editDialog.approvedDate}
+          notes={getNotesForEntry(editDialog.entryId)}
           onCleaningStatusChange={(s) => onCleaningStatusChange(editDialog.entryId, s)}
           onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(editDialog.entryId, d)}
           onAddNote={(content, isImportant) => onAddNote(editDialog.entryId, content, isImportant)}
+          onToggleImportant={onToggleImportant}
         />
       </>
     );
@@ -329,9 +332,11 @@ export function StudentTurnoverTable({
         cleaningStatus={editDialog.status}
         cleaningBookedDate={editDialog.bookedDate}
         cleaningApprovedDate={editDialog.approvedDate}
+        notes={getNotesForEntry(editDialog.entryId)}
         onCleaningStatusChange={(s) => onCleaningStatusChange(editDialog.entryId, s)}
         onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(editDialog.entryId, d)}
         onAddNote={(content, isImportant) => onAddNote(editDialog.entryId, content, isImportant)}
+        onToggleImportant={onToggleImportant}
       />
     </>
   );

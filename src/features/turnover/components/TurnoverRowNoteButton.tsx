@@ -6,17 +6,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { TurnoverNote } from '../types/turnover-note-types';
 import { TurnoverNoteIndicator } from './TurnoverNoteIndicator';
-import { format, parseISO } from 'date-fns';
-import { sv } from 'date-fns/locale';
+import { NotesList } from './NotesList';
 
 interface TurnoverRowNoteButtonProps {
   entryId: string;
   notes: TurnoverNote[];
   onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
+  onToggleImportant: (noteId: string) => void;
   label?: string;
 }
 
-export function TurnoverRowNoteButton({ entryId, notes, onAddNote, label = 'Notering' }: TurnoverRowNoteButtonProps) {
+export function TurnoverRowNoteButton({ entryId, notes, onAddNote, onToggleImportant, label = 'Notering' }: TurnoverRowNoteButtonProps) {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState('');
   const [isImportant, setIsImportant] = useState(false);
@@ -50,28 +50,7 @@ export function TurnoverRowNoteButton({ entryId, notes, onAddNote, label = 'Note
             <DialogTitle>{label}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            {notes.length > 0 && (
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                {notes.map((note) => (
-                  <div
-                    key={note.id}
-                    className={`text-sm border-l-2 pl-2 py-1 ${
-                      note.isImportant
-                        ? 'border-destructive bg-destructive/5 rounded-r'
-                        : 'border-muted-foreground/30'
-                    }`}
-                  >
-                    {note.isImportant && (
-                      <span className="text-xs font-semibold text-destructive mb-0.5 block">Viktig</span>
-                    )}
-                    <p className="text-foreground">{note.content}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {note.createdBy} · {format(parseISO(note.createdAt), 'd MMM HH:mm', { locale: sv })}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
+            <NotesList notes={notes} onToggleImportant={onToggleImportant} />
             <Textarea
               placeholder="Skriv en notering..."
               value={content}

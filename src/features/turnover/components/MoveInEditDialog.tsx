@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ContactStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
+import { TurnoverNote } from '../types/turnover-note-types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
 import { CounterInput } from '@/shared/common/CounterInput';
 import { Separator } from '@/components/ui/separator';
+import { NotesList } from './NotesList';
 
 const CONTACT_STATUS_CONFIG: Record<ContactStatus, { label: string; order: number }> = {
   not_contacted: { label: 'Ej kontaktad', order: 0 },
@@ -36,6 +38,7 @@ interface MoveInEditDialogProps {
   welcomeHomeMethod: WelcomeHomeMethod;
   keysHandled: boolean;
   hasQuickMoveIn: boolean;
+  notes: TurnoverNote[];
   onContactStatusChange: (status: ContactStatus) => void;
   onContactAttemptsChange: (count: number) => void;
   onVisitBookedDateChange: (datetime: string | undefined) => void;
@@ -44,6 +47,7 @@ interface MoveInEditDialogProps {
   onKeysHandledChange: (handled: boolean) => void;
   onQuickMoveInChange: (value: boolean) => void;
   onAddNote: (content: string, isImportant?: boolean) => void;
+  onToggleImportant: (noteId: string) => void;
 }
 
 export function MoveInEditDialog({
@@ -51,9 +55,9 @@ export function MoveInEditDialog({
   contactStatus: initialStatus, contactAttempts: initialAttempts, visitBookedDate: initialVisitDate,
   nameAndIntercomDone: initialNamePort, welcomeHomeMethod: initialWelcome,
   keysHandled: initialKeysHandled,
-  hasQuickMoveIn: initialQuickMoveIn,
+  hasQuickMoveIn: initialQuickMoveIn, notes,
   onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange,
-  onNameAndIntercomChange, onWelcomeHomeChange, onKeysHandledChange, onQuickMoveInChange, onAddNote,
+  onNameAndIntercomChange, onWelcomeHomeChange, onKeysHandledChange, onQuickMoveInChange, onAddNote, onToggleImportant,
 }: MoveInEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [attempts, setAttempts] = useState(initialAttempts);
@@ -198,6 +202,7 @@ export function MoveInEditDialog({
           {/* Note section */}
           <div className="space-y-2">
             <label className="text-sm font-semibold">Notering</label>
+            <NotesList notes={notes} onToggleImportant={onToggleImportant} />
             <Textarea
               placeholder="Skriv din notering här..."
               className="min-h-[80px]"

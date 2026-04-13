@@ -39,7 +39,7 @@ interface CombinedTurnoverTableProps {
 
 export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
-  const { getNotesForEntry, addNote } = useTurnoverNotes();
+  const { getNotesForEntry, addNote, toggleImportant } = useTurnoverNotes();
 
   /** Derive residence detail URL from contract number, e.g. "211-080-02-0101/03" → "/properties/211-080/02/0101" */
   const getResidenceUrl = (row: TurnoverRow): string | null => {
@@ -111,6 +111,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       entryId={row.moveOut.id}
                       tenantName={row.moveOut.tenantName}
                       onAddNote={addNote}
+                      onToggleImportant={toggleImportant}
+                      notes={getNotesForEntry(row.moveOut.id)}
                       cleaningStatus={row.moveOut.checklist.cleaningStatus}
                       cleaningBookedDate={row.moveOut.checklist.cleaningBookedDate}
                       cleaningApprovedDate={row.moveOut.checklist.cleaningApprovedDate}
@@ -149,6 +151,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   entryId={`${row.residenceKey}__moveout`}
                   notes={getNotesForEntry(`${row.residenceKey}__moveout`)}
                   onAddNote={addNote}
+                  onToggleImportant={toggleImportant}
                   label="Notering – Utflytt"
                 />
               </div>
@@ -185,6 +188,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       entryId={row.moveIn.id}
                       tenantName={row.moveIn.tenantName}
                       onAddNote={addNote}
+                      onToggleImportant={toggleImportant}
+                      notes={getNotesForEntry(row.moveIn.id)}
                       contactStatus={row.moveIn.checklist.contactStatus}
                       contactAttempts={row.moveIn.checklist.contactAttempts}
                       visitBookedDate={row.moveIn.checklist.visitBookedDate}
@@ -242,6 +247,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   entryId={`${row.residenceKey}__movein`}
                   notes={getNotesForEntry(`${row.residenceKey}__movein`)}
                   onAddNote={addNote}
+                  onToggleImportant={toggleImportant}
                   label="Notering – Inflytt"
                 />
               </div>
@@ -375,6 +381,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         entryId={row.moveOut.id}
                         tenantName={row.moveOut.tenantName}
                         onAddNote={addNote}
+                        onToggleImportant={toggleImportant}
+                        notes={getNotesForEntry(row.moveOut.id)}
                         cleaningStatus={row.moveOut.checklist.cleaningStatus}
                         cleaningBookedDate={row.moveOut.checklist.cleaningBookedDate}
                         cleaningApprovedDate={row.moveOut.checklist.cleaningApprovedDate}
@@ -388,6 +396,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         entryId={`${row.residenceKey}__moveout`}
                         notes={getNotesForEntry(`${row.residenceKey}__moveout`)}
                         onAddNote={addNote}
+                        onToggleImportant={toggleImportant}
                         label="Notering – Utflytt"
                       />
                     )}
@@ -474,6 +483,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         entryId={row.moveIn.id}
                         tenantName={row.moveIn.tenantName}
                         onAddNote={addNote}
+                        onToggleImportant={toggleImportant}
+                        notes={getNotesForEntry(row.moveIn.id)}
                         contactStatus={row.moveIn.checklist.contactStatus}
                         contactAttempts={row.moveIn.checklist.contactAttempts}
                         visitBookedDate={row.moveIn.checklist.visitBookedDate}
@@ -494,6 +505,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         entryId={`${row.residenceKey}__movein`}
                         notes={getNotesForEntry(`${row.residenceKey}__movein`)}
                         onAddNote={addNote}
+                        onToggleImportant={toggleImportant}
                         label="Notering – Inflytt"
                       />
                     )}
