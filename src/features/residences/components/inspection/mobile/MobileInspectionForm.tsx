@@ -322,11 +322,20 @@ export function MobileInspectionForm({
                 Sammanställning
               </Button>
             ) : (
-              <Button onClick={handleNext} className="flex-1">
-                Nästa
-                <ChevronRight className="h-4 w-4 ml-1" />
+              <Button onClick={handleNext} className="flex-1 invisible">
+                {/* Spacer to keep layout balanced */}
               </Button>
             )}
+
+            <Button 
+              variant="outline"
+              size="icon"
+              onClick={handleNext} 
+              disabled={currentRoomIndex >= allRooms.length - 1 && !showSummary || showSummary}
+            >
+              <ChevronRight className="h-4 w-4" />
+              <span className="sr-only">Nästa</span>
+            </Button>
           </div>
           <div className="flex gap-2">
             <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} />
