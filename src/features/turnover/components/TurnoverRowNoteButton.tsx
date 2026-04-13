@@ -6,7 +6,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { TurnoverNote } from '../types/turnover-note-types';
 import { TurnoverNoteIndicator } from './TurnoverNoteIndicator';
-import { AlertTriangle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
@@ -63,10 +62,7 @@ export function TurnoverRowNoteButton({ entryId, notes, onAddNote, label = 'Note
                     }`}
                   >
                     {note.isImportant && (
-                      <span className="text-xs font-semibold text-destructive flex items-center gap-1 mb-0.5">
-                        <AlertTriangle className="h-3 w-3" />
-                        Viktig
-                      </span>
+                      <span className="text-xs font-semibold text-destructive mb-0.5 block">Viktig</span>
                     )}
                     <p className="text-foreground">{note.content}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
@@ -89,8 +85,7 @@ export function TurnoverRowNoteButton({ entryId, notes, onAddNote, label = 'Note
                   onCheckedChange={(v) => setIsImportant(v === true)}
                   id="noteImportant"
                 />
-                <label htmlFor="noteImportant" className="text-sm font-medium cursor-pointer flex items-center gap-1.5">
-                  <AlertTriangle className="h-3.5 w-3.5 text-destructive" />
+                <label htmlFor="noteImportant" className="text-sm font-medium cursor-pointer">
                   Markera som viktig
                 </label>
               </div>
