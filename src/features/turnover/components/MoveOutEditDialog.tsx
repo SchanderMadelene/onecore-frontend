@@ -54,6 +54,7 @@ export function MoveOutEditDialog({
   });
   const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
   const [noteContent, setNoteContent] = useState('');
+  const [noteImportant, setNoteImportant] = useState(false);
 
   const handleOpenChange = (o: boolean) => {
     if (o) {
