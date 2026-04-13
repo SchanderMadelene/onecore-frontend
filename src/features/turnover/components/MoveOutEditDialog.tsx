@@ -29,7 +29,7 @@ interface MoveOutEditDialogProps {
   onCleaningStatusChange: (status: CleaningStatus) => void;
   onCleaningBookedDateChange: (date: string | undefined) => void;
   onKeysHandledChange: (handled: boolean) => void;
-  onAddNote: (content: string) => void;
+  onAddNote: (content: string, isImportant?: boolean) => void;
 }
 
 export function MoveOutEditDialog({
