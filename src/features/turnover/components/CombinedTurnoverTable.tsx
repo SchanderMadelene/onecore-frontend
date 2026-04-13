@@ -359,7 +359,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="p-0 text-center">
                     {row.moveOut ? (
                       <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
-                    ) : null}
+                    ) : (
+                      <TurnoverNoteIndicator notes={getNotesForEntry(`${row.residenceKey}__moveout`)} />
+                    )}
                   </TableCell>
                   {/* Move-out actions */}
                   <TableCell>
@@ -377,7 +379,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         keysHandled={row.moveOut!.checklist.keysHandled}
                         onKeysHandledChange={(v) => onChecklistChange(row.moveOut!.id, 'keysHandled', v)}
                       />
-                    ) : null}
+                    ) : (
+                      <TurnoverRowNoteButton
+                        entryId={`${row.residenceKey}__moveout`}
+                        notes={getNotesForEntry(`${row.residenceKey}__moveout`)}
+                        onAddNote={addNote}
+                        label="Notering – Utflytt"
+                      />
+                    )}
                   </TableCell>
                   {/* Move-in tenant */}
                   <TableCell className="border-l-2 border-border">
