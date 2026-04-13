@@ -324,18 +324,9 @@ export function MobileInspectionForm({
             ) : (
               <Button onClick={handleNext} className="flex-1">
                 Nästa
+                <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
             )}
-
-            <Button 
-              variant="outline"
-              size="icon"
-              onClick={handleNext} 
-              disabled={showSummary}
-            >
-              <ChevronRight className="h-4 w-4" />
-              <span className="sr-only">Nästa</span>
-            </Button>
           </div>
           <div className="flex gap-2">
             <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} />
