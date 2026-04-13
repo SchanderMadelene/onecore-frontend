@@ -63,7 +63,7 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           onCleaningStatusChange={props.onCleaningStatusChange}
           onCleaningBookedDateChange={props.onCleaningBookedDateChange}
           onKeysHandledChange={props.onKeysHandledChange}
-          onAddNote={(content) => props.onAddNote(props.entryId, content)}
+          onAddNote={(content, isImportant) => props.onAddNote(props.entryId, content, isImportant)}
         />
       )}
 
@@ -86,7 +86,7 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           onWelcomeHomeChange={props.onWelcomeHomeChange}
           onKeysHandledChange={props.onKeysHandledChange}
           onQuickMoveInChange={props.onQuickMoveInChange}
-          onAddNote={(content) => props.onAddNote(props.entryId, content)}
+          onAddNote={(content, isImportant) => props.onAddNote(props.entryId, content, isImportant)}
         />
       )}
     </>
