@@ -71,8 +71,11 @@ export function MoveOutEditDialog({
 
   const handleSave = () => {
     onCleaningStatusChange(status);
-    if (showDatePicker) {
-      onCleaningBookedDateChange(bookedDate);
+    if (showDatePicker && bookedDate) {
+      const dateOnly = bookedDate.split('T')[0] || bookedDate;
+      onCleaningBookedDateChange(`${dateOnly}T${bookedHour}:${bookedMinute}`);
+    } else if (showDatePicker) {
+      onCleaningBookedDateChange(undefined);
     }
     onKeysHandledChange(keysHandled);
     if (noteContent.trim()) {
