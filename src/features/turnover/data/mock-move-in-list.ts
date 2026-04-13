@@ -200,6 +200,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-161 61 61',
     date: '2026-02-01',
     hasQuickMoveIn: true,
+    contractStatus: 'active',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'visit_booked', contactAttempts: 1, visitBookedDate: '2026-01-28T10:00', nameAndIntercomDone: true, welcomeHomeMethod: 'digital', keysHandled: true },
   },
   {
@@ -213,6 +214,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Yilmaz Samir',
     tenantPhone: '070-171 71 71',
     date: '2026-02-01',
+    contractStatus: 'upcoming',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -226,6 +228,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Tran Mai',
     tenantPhone: '070-181 81 81',
     date: '2026-02-01',
+    contractStatus: 'active',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_reached', contactAttempts: 3, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -240,6 +243,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-191 91 91',
     date: '2026-02-01',
     hasQuickMoveIn: true,
+    contractStatus: 'active',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'visit_done', contactAttempts: 1, nameAndIntercomDone: false, welcomeHomeMethod: 'manual', keysHandled: true },
   },
   {
@@ -253,6 +257,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Haddad Rami',
     tenantPhone: '070-212 12 12',
     date: '2026-02-01',
+    contractStatus: 'upcoming',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -266,6 +271,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Åberg Linnea',
     tenantPhone: '070-232 32 32',
     date: '2026-03-01',
+    contractStatus: 'upcoming',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -279,6 +285,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Abdi Yara',
     tenantPhone: '070-242 42 42',
     date: '2026-03-05',
+    contractStatus: 'upcoming',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -292,6 +299,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Granberg Joel',
     tenantPhone: '070-252 52 52',
     date: '2026-03-01',
+    contractStatus: 'active',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -305,6 +313,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Tekie Kemal',
     tenantPhone: '070-262 62 62',
     date: '2026-03-01',
+    contractStatus: 'upcoming',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -318,6 +327,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Sjöblom Mattias',
     tenantPhone: '070-272 72 72',
     date: '2026-03-16',
+    contractStatus: 'upcoming',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -331,6 +341,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Hussein Sabina',
     tenantPhone: '070-282 82 82',
     date: '2026-03-15',
+    contractStatus: 'active',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -345,6 +356,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-292 92 92',
     date: '2026-03-15',
     hasSecurityWarning: true,
+    contractStatus: 'upcoming',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -358,6 +370,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Nyman Daniel',
     tenantPhone: '070-303 03 03',
     date: '2026-03-16',
+    contractStatus: 'upcoming',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
   {
@@ -371,6 +384,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Kamara Rosa',
     tenantPhone: '070-313 13 13',
     date: '2026-03-16',
+    contractStatus: 'active',
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
   },
 ];
