@@ -301,7 +301,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   </div>
                 </TableHead>
                 <TableHead className="whitespace-nowrap">Kontrakt</TableHead>
-                <TableHead className="whitespace-nowrap">Status</TableHead>
+                <TableHead className="whitespace-nowrap">Kontraktstatus</TableHead>
                 <TableHead>Kontakt</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Namn/Port</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Välk. hem</TableHead>
