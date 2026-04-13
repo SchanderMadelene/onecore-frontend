@@ -7,12 +7,11 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
   const [inspectorName, setInspectorName] = useState(existingInspection?.inspectedBy || "");
   const [inspectionTime, setInspectionTime] = useState(() => {
     if (existingInspection?.date) {
-      // Try to extract time from existing inspection
-      return "10:00"; // Default time if not available
+      return "10:00";
     }
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const minutes = (Math.round(now.getMinutes() / 5) * 5 % 60).toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   });
   const [needsMasterKey, setNeedsMasterKey] = useState(existingInspection?.needsMasterKey || false);
