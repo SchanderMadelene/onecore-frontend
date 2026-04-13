@@ -4,4 +4,5 @@ export interface TurnoverNote {
   content: string;
   createdAt: string;
   createdBy: string;
+  isImportant?: boolean;
 }
