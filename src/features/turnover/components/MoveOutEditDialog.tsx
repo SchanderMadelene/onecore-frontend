@@ -64,6 +64,7 @@ export function MoveOutEditDialog({
       setBookedMinute(initialBookedDate?.includes('T') ? initialBookedDate.split('T')[1]?.split(':')[1] || '00' : '00');
       setKeysHandled(initialKeysHandled);
       setNoteContent('');
+      setNoteImportant(false);
     }
     onOpenChange(o);
   };
