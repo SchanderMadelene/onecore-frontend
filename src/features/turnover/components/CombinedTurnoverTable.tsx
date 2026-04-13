@@ -5,6 +5,7 @@ import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
 import { TurnoverRowActions } from './TurnoverRowActions';
 import { TurnoverNoteIndicator } from './TurnoverNoteIndicator';
+import { TurnoverRowNoteButton } from './TurnoverRowNoteButton';
 import { useTurnoverNotes } from '../hooks/useTurnoverNotes';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
