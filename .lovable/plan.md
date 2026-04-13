@@ -1,30 +1,43 @@
 
 
-## Lägg till besiktningstyp i InspectorSelectionCard
+## "Mer"-knapp i bottom navigation
 
-### Bakgrund
-Användaren vill kunna välja besiktningstyp ("Avflytt + underhåll" eller "Underhåll") på förstasidan i besiktningsformuläret, innan själva besiktningen startas. Alternativ 1 valdes: lägga till fältet direkt i "Info om besiktning"-kortet i `InspectorSelectionCard`.
+Bra idé. Istället för att planritningsknappen och en ny "lägg till rum"-knapp tar var sin plats i footern, slår vi ihop dem i en enda knapp som öppnar en meny med alternativ.
 
-### Ändringar
+### Upplägg
 
-**1. Utöka typsystemet** (`src/features/residences/components/inspection/types.ts`)
-- Lägg till `inspectionType: 'moveout_maintenance' | 'maintenance'` som ny typ.
-- Lägg till fältet i `Inspection`-interfacet och `InspectionSubmitData`.
+**Mobil:** Ersätt `FloorplanOverlay`-knappen i footern med en `MoreHorizontal`-ikon-knapp som öppnar ett `DropdownMenu` (uppåt, eftersom den sitter längst ner) med två val:
+- **Se planritning** — öppnar planritnings-dialogen som idag
+- **Lägg till rum/utrymme** — öppnar en enkel dialog med textfält för rumsnamn, lägger till rummet i inspektionsdatan
 
-**2. Lägg till RadioGroup i InspectorSelectionCard** (`src/features/residences/components/inspection/mobile/InspectorSelectionCard.tsx`)
-- Lägg till ny prop `inspectionType` + `setInspectionType`.
-- Rendera en `RadioGroup` med två alternativ ("Avflytt + underhåll", "Underhåll") under klockslaget i "Info om besiktning"-kortet.
-- Default: `'moveout_maintenance'`.
+**Desktop:** Samma koncept i desktop-footern — en "Mer"-knapp med dropdown som ersätter den nuvarande `FloorplanOverlay`-knappen.
 
-**3. Koppla state i useInspectionForm** (`src/features/residences/hooks/useInspectionForm.ts`)
-- Lägg till `inspectionType` state med default `'moveout_maintenance'`.
-- Exponera `inspectionType` och `setInspectionType`.
+### Tekniska ändringar
 
-**4. Koppla ihop i Desktop- och Mobile-formulären**
-- `DesktopInspectionForm.tsx`: Skicka `inspectionType`/`setInspectionType` till `InspectorSelectionCard` och inkludera i submit-data.
-- `MobileInspectionForm.tsx` (eller motsvarande): Samma koppling.
-- Inkludera `inspectionType` i `InspectionSubmitData` vid sparning.
+1. **Ny komponent `InspectionMoreMenu`** — renderar `DropdownMenu` med `MoreHorizontal`-knapp, innehåller:
+   - "Se planritning" (öppnar befintlig planritnings-dialog)
+   - "Lägg till rum/utrymme" (öppnar en `Dialog` med input för rumsnamn + bekräfta-knapp)
 
-### Visuell placering
-Fältet placeras som sista element i "Info om besiktning"-kortet, under klockslaget, med en `Label` och `RadioGroup` i samma stil som övriga fält.
+2. **`MobileInspectionForm.tsx`** — ersätt `<FloorplanOverlay />` i bottom-nav med `<InspectionMoreMenu />`. Lägg till state och callback för att hantera nya rum (lägga till i `rooms`-listan och `inspectionData`).
+
+3. **`DesktopInspectionForm.tsx`** — samma byte i footer-raden.
+
+4. **`useInspectionForm.ts`** — lägg till `addCustomRoom(name: string)` som skapar ett nytt rum-objekt med genererat ID och tomma inspektionsdata.
+
+5. **Ta bort / refaktorera `FloorplanOverlay.tsx`** — planritnings-dialogen bäddas in i den nya komponenten istället.
+
+### Visuellt resultat (mobil footer)
+
+```text
+┌─────────────────────────────────────────┐
+│  [Föregående]          [Nästa]          │
+│  [⋯]              [Spara utkast]        │
+└─────────────────────────────────────────┘
+         ↑
+    Dropdown uppåt:
+    ┌──────────────────────┐
+    │ Se planritning       │
+    │ Lägg till rum        │
+    └──────────────────────┘
+```
 
