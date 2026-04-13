@@ -1,4 +1,5 @@
 import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
+import { ContractStatusBadge } from './ContractStatusBadge';
 import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare, ExternalLink } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
@@ -212,6 +213,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   </div>
                 )}
                 <div className="grid grid-cols-[auto_auto] justify-start gap-x-3 gap-y-1.5 text-xs items-center">
+                  <span className="text-muted-foreground">Status:</span>
+                  <ContractStatusBadge status={row.moveIn.contractStatus} />
                   <span className="text-muted-foreground">Kontakt:</span>
                   <ContactStatusBadge
                     status={row.moveIn.checklist.contactStatus}
@@ -292,6 +295,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   </div>
                 </TableHead>
                 <TableHead className="whitespace-nowrap">Kontrakt</TableHead>
+                <TableHead className="whitespace-nowrap">Status</TableHead>
                 <TableHead>Kontakt</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Namn/Port</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Välk. hem</TableHead>
@@ -418,6 +422,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         </Badge>
                       )}
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <ContractStatusBadge status={row.moveIn?.contractStatus} />
                   </TableCell>
                   <TableCell>
                     {row.moveIn ? (
