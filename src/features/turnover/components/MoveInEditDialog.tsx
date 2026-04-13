@@ -101,6 +101,8 @@ export function MoveInEditDialog({
     if (noteContent.trim()) {
       onAddNote(noteContent.trim(), noteImportant);
     }
+    setNoteContent('');
+    setNoteImportant(false);
     onOpenChange(false);
   };
 

@@ -60,6 +60,8 @@ export function StudentEditDialog({
     if (noteContent.trim()) {
       onAddNote(noteContent.trim(), noteImportant);
     }
+    setNoteContent('');
+    setNoteImportant(false);
     onOpenChange(false);
   };
 
