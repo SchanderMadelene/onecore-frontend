@@ -5,6 +5,7 @@ import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
 import { TurnoverRowActions } from './TurnoverRowActions';
 import { TurnoverNoteIndicator } from './TurnoverNoteIndicator';
+import { TurnoverRowNoteButton } from './TurnoverRowNoteButton';
 import { useTurnoverNotes } from '../hooks/useTurnoverNotes';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileAccordion, MobileAccordionItem } from '@/shared/ui/mobile-accordion';
@@ -141,7 +142,15 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground italic pl-5">Ingen utflytt</p>
+              <div className="flex items-center justify-between pl-5">
+                <p className="text-xs text-muted-foreground italic">Ingen utflytt</p>
+                <TurnoverRowNoteButton
+                  entryId={`${row.residenceKey}__moveout`}
+                  notes={getNotesForEntry(`${row.residenceKey}__moveout`)}
+                  onAddNote={addNote}
+                  label="Notering – Utflytt"
+                />
+              </div>
             )}
           </div>
 
@@ -224,7 +233,15 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground italic pl-5">Ingen inflytt</p>
+              <div className="flex items-center justify-between pl-5">
+                <p className="text-xs text-muted-foreground italic">Ingen inflytt</p>
+                <TurnoverRowNoteButton
+                  entryId={`${row.residenceKey}__movein`}
+                  notes={getNotesForEntry(`${row.residenceKey}__movein`)}
+                  onAddNote={addNote}
+                  label="Notering – Inflytt"
+                />
+              </div>
             )}
           </div>
         </div>
@@ -342,7 +359,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="p-0 text-center">
                     {row.moveOut ? (
                       <TurnoverNoteIndicator notes={getNotesForEntry(row.moveOut.id)} />
-                    ) : null}
+                    ) : (
+                      <TurnoverNoteIndicator notes={getNotesForEntry(`${row.residenceKey}__moveout`)} />
+                    )}
                   </TableCell>
                   {/* Move-out actions */}
                   <TableCell>
@@ -360,7 +379,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         keysHandled={row.moveOut!.checklist.keysHandled}
                         onKeysHandledChange={(v) => onChecklistChange(row.moveOut!.id, 'keysHandled', v)}
                       />
-                    ) : null}
+                    ) : (
+                      <TurnoverRowNoteButton
+                        entryId={`${row.residenceKey}__moveout`}
+                        notes={getNotesForEntry(`${row.residenceKey}__moveout`)}
+                        onAddNote={addNote}
+                        label="Notering – Utflytt"
+                      />
+                    )}
                   </TableCell>
                   {/* Move-in tenant */}
                   <TableCell className="border-l-2 border-border">
@@ -429,7 +455,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="p-0 text-center">
                     {row.moveIn ? (
                       <TurnoverNoteIndicator notes={getNotesForEntry(row.moveIn.id)} />
-                    ) : null}
+                    ) : (
+                      <TurnoverNoteIndicator notes={getNotesForEntry(`${row.residenceKey}__movein`)} />
+                    )}
                   </TableCell>
                   {/* Move-in actions */}
                   <TableCell>
@@ -454,7 +482,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
                         onQuickMoveInChange={(v) => onQuickMoveInChange(row.moveIn!.id, v)}
                       />
-                    ) : null}
+                    ) : (
+                      <TurnoverRowNoteButton
+                        entryId={`${row.residenceKey}__movein`}
+                        notes={getNotesForEntry(`${row.residenceKey}__movein`)}
+                        onAddNote={addNote}
+                        label="Notering – Inflytt"
+                      />
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
