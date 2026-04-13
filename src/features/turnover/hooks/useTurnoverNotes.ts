@@ -9,13 +9,14 @@ export function useTurnoverNotes() {
     [notes]
   );
 
-  const addNote = useCallback((entryId: string, content: string) => {
+  const addNote = useCallback((entryId: string, content: string, isImportant?: boolean) => {
     const note: TurnoverNote = {
       id: crypto.randomUUID(),
       entryId,
       content,
       createdAt: new Date().toISOString(),
       createdBy: 'Användare',
+      isImportant: isImportant || false,
     };
     setNotes((prev) => [note, ...prev]);
   }, []);

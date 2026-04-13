@@ -8,7 +8,7 @@ import { CleaningStatus, ContactStatus, WelcomeHomeMethod } from '../types/move-
 interface MoveOutProps {
   entryId: string;
   tenantName: string;
-  onAddNote: (entryId: string, content: string) => void;
+  onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
   cleaningStatus: CleaningStatus;
   cleaningBookedDate?: string;
   cleaningApprovedDate?: string;
@@ -21,7 +21,7 @@ interface MoveOutProps {
 interface MoveInProps {
   entryId: string;
   tenantName: string;
-  onAddNote: (entryId: string, content: string) => void;
+  onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
   contactStatus: ContactStatus;
   contactAttempts: number;
   visitBookedDate?: string;
@@ -63,7 +63,7 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           onCleaningStatusChange={props.onCleaningStatusChange}
           onCleaningBookedDateChange={props.onCleaningBookedDateChange}
           onKeysHandledChange={props.onKeysHandledChange}
-          onAddNote={(content) => props.onAddNote(props.entryId, content)}
+          onAddNote={(content, isImportant) => props.onAddNote(props.entryId, content, isImportant)}
         />
       )}
 
@@ -86,7 +86,7 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           onWelcomeHomeChange={props.onWelcomeHomeChange}
           onKeysHandledChange={props.onKeysHandledChange}
           onQuickMoveInChange={props.onQuickMoveInChange}
-          onAddNote={(content) => props.onAddNote(props.entryId, content)}
+          onAddNote={(content, isImportant) => props.onAddNote(props.entryId, content, isImportant)}
         />
       )}
     </>

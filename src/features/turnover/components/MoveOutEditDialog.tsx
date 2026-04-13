@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/shared/ui/textarea';
-import { Save } from 'lucide-react';
+import { Save, AlertTriangle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
@@ -29,7 +29,7 @@ interface MoveOutEditDialogProps {
   onCleaningStatusChange: (status: CleaningStatus) => void;
   onCleaningBookedDateChange: (date: string | undefined) => void;
   onKeysHandledChange: (handled: boolean) => void;
-  onAddNote: (content: string) => void;
+  onAddNote: (content: string, isImportant?: boolean) => void;
 }
 
 export function MoveOutEditDialog({
@@ -54,6 +54,7 @@ export function MoveOutEditDialog({
   });
   const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
   const [noteContent, setNoteContent] = useState('');
+  const [noteImportant, setNoteImportant] = useState(false);
 
   const handleOpenChange = (o: boolean) => {
     if (o) {
@@ -63,6 +64,7 @@ export function MoveOutEditDialog({
       setBookedMinute(initialBookedDate?.includes('T') ? initialBookedDate.split('T')[1]?.split(':')[1] || '00' : '00');
       setKeysHandled(initialKeysHandled);
       setNoteContent('');
+      setNoteImportant(false);
     }
     onOpenChange(o);
   };
@@ -79,7 +81,7 @@ export function MoveOutEditDialog({
     }
     onKeysHandledChange(keysHandled);
     if (noteContent.trim()) {
-      onAddNote(noteContent.trim());
+      onAddNote(noteContent.trim(), noteImportant);
     }
     onOpenChange(false);
   };
@@ -177,6 +179,17 @@ export function MoveOutEditDialog({
               value={noteContent}
               onChange={(e) => setNoteContent(e.target.value)}
             />
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={noteImportant}
+                onCheckedChange={(v) => setNoteImportant(v === true)}
+                id="moveOutNoteImportant"
+              />
+              <label htmlFor="moveOutNoteImportant" className="text-sm font-medium cursor-pointer flex items-center gap-1.5">
+                <AlertTriangle className="h-3.5 w-3.5 text-destructive" />
+                Markera som viktig
+              </label>
+            </div>
           </div>
         </div>
         <DialogFooter>
