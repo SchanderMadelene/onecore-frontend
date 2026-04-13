@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import type { InspectionRoom, Inspection, CostResponsibility, CustomInspectionComponent, InspectionType } from "@/features/residences/components/inspection/types";
 import type { Room } from "@/types/api";
-import { initializeInspectionData } from "@/features/residences/components/inspection/form/initialData";
+import { initializeInspectionData, initialRoomData } from "@/features/residences/components/inspection/form/initialData";
 
 export function useInspectionForm(rooms: Room[], existingInspection?: Inspection) {
   const [inspectorName, setInspectorName] = useState(existingInspection?.inspectedBy || "");
@@ -208,6 +208,18 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     }));
   }, []);
 
+  const addCustomRoom = useCallback((name: string) => {
+    const id = `custom-${Date.now()}`;
+    setInspectionData(prev => ({
+      ...prev,
+      [id]: {
+        ...initialRoomData,
+        roomId: id,
+      }
+    }));
+    return { id, name };
+  }, []);
+
   const handleCostUpdate = useCallback((
     roomId: string,
     costKey: string,
@@ -252,6 +264,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handleApproveRoom,
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
-    handleCostUpdate
+    handleCostUpdate,
+    addCustomRoom
   };
 }
