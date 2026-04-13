@@ -309,7 +309,6 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableRow key={row.residenceKey}>
                   <TableCell className="font-medium text-sm whitespace-nowrap">
                     <div className="flex items-center gap-1.5">
-                      {row.address}
                       {getResidenceUrl(row) && (
                         <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                           <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
@@ -317,6 +316,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           </a>
                         </Button>
                       )}
+                      {row.address}
                     </div>
                   </TableCell>
                   <TableCell className="text-sm">{row.apartmentType}</TableCell>
