@@ -40,10 +40,10 @@ export function InspectionMoreMenu({ floorplanImage, onAddRoom }: InspectionMore
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="top" align="start">
-          <DropdownMenuItem onSelect={() => setShowFloorplan(true)}>
+          <DropdownMenuItem onSelect={() => setShowFloorplan(true)} className="py-3 text-base">
             Se planritning
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setShowAddRoom(true)}>
+          <DropdownMenuItem onSelect={() => setShowAddRoom(true)} className="py-3 text-base">
             Lägg till rum/utrymme
           </DropdownMenuItem>
         </DropdownMenuContent>
