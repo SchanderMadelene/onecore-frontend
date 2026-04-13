@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { InspectionSummary } from "../InspectionSummary";
-import { FloorplanOverlay } from "../FloorplanOverlay";
+import { InspectionMoreMenu } from "../InspectionMoreMenu";
 
 interface DesktopInspectionFormProps {
   rooms: Room[];
@@ -58,10 +58,18 @@ export function DesktopInspectionForm({
     handleComponentPhotoRemove,
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
-    handleCostUpdate
+    handleCostUpdate,
+    addCustomRoom
   } = useInspectionForm(rooms, existingInspection);
 
   const [showSummary, setShowSummary] = useState(false);
+  const [customRooms, setCustomRooms] = useState<Room[]>([]);
+  const allRooms = [...rooms, ...customRooms];
+
+  const handleAddRoom = (name: string) => {
+    const newRoom = addCustomRoom(name);
+    setCustomRooms(prev => [...prev, { id: newRoom.id, name: newRoom.name } as Room]);
+  };
 
   useEffect(() => {
     if (!inspectorName && currentUser && !existingInspection) {
