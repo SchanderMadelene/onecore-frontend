@@ -163,26 +163,51 @@ export function InspectorSelectionCard({
               <Clock className="h-4 w-4 text-muted-foreground" />
               Klockslag
             </Label>
-            <Select 
-              value={inspectionTime || '09:00'} 
-              onValueChange={setInspectionTime}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Välj tid" />
-              </SelectTrigger>
-              <SelectContent>
-                {Array.from({ length: 24 }, (_, hour) => 
-                  ['00', '15', '30', '45'].map(minute => {
-                    const time = `${hour.toString().padStart(2, '0')}:${minute}`;
+            <div className="flex gap-2 items-center">
+              <Select 
+                value={(inspectionTime || '09:00').split(':')[0]} 
+                onValueChange={(hour) => {
+                  const currentMinute = (inspectionTime || '09:00').split(':')[1];
+                  setInspectionTime(`${hour}:${currentMinute}`);
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Timme" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 24 }, (_, i) => {
+                    const hour = i.toString().padStart(2, '0');
                     return (
-                      <SelectItem key={time} value={time}>
-                        {time}
+                      <SelectItem key={hour} value={hour}>
+                        {hour}
                       </SelectItem>
                     );
-                  })
-                ).flat()}
-              </SelectContent>
-            </Select>
+                  })}
+                </SelectContent>
+              </Select>
+              <span className="text-muted-foreground font-medium">:</span>
+              <Select 
+                value={(inspectionTime || '09:00').split(':')[1]} 
+                onValueChange={(minute) => {
+                  const currentHour = (inspectionTime || '09:00').split(':')[0];
+                  setInspectionTime(`${currentHour}:${minute}`);
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Minut" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 12 }, (_, i) => {
+                    const minute = (i * 5).toString().padStart(2, '0');
+                    return (
+                      <SelectItem key={minute} value={minute}>
+                        {minute}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <div className="space-y-2">
             <Label className="text-sm font-medium">Typ av besiktning</Label>
