@@ -422,6 +422,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     </div>
                   </TableCell>
                   <TableCell>
+                    <ContractStatusBadge status={row.moveIn?.contractStatus} />
+                  </TableCell>
+                  <TableCell>
                     {row.moveIn ? (
                       <ContactStatusBadge
                         status={row.moveIn.checklist.contactStatus}
