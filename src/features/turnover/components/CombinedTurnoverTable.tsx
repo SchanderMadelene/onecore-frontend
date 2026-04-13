@@ -39,7 +39,7 @@ interface CombinedTurnoverTableProps {
 
 export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
-  const { getNotesForEntry, addNote } = useTurnoverNotes();
+  const { getNotesForEntry, addNote, toggleImportant } = useTurnoverNotes();
 
   /** Derive residence detail URL from contract number, e.g. "211-080-02-0101/03" → "/properties/211-080/02/0101" */
   const getResidenceUrl = (row: TurnoverRow): string | null => {

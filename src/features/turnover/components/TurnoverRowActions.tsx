@@ -4,11 +4,14 @@ import { Button } from '@/components/ui/button';
 import { MoveOutEditDialog } from './MoveOutEditDialog';
 import { MoveInEditDialog } from './MoveInEditDialog';
 import { CleaningStatus, ContactStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
+import { TurnoverNote } from '../types/turnover-note-types';
 
 interface MoveOutProps {
   entryId: string;
   tenantName: string;
   onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
+  onToggleImportant: (noteId: string) => void;
+  notes: TurnoverNote[];
   cleaningStatus: CleaningStatus;
   cleaningBookedDate?: string;
   cleaningApprovedDate?: string;
@@ -22,6 +25,8 @@ interface MoveInProps {
   entryId: string;
   tenantName: string;
   onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
+  onToggleImportant: (noteId: string) => void;
+  notes: TurnoverNote[];
   contactStatus: ContactStatus;
   contactAttempts: number;
   visitBookedDate?: string;
@@ -60,10 +65,12 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           cleaningBookedDate={props.cleaningBookedDate}
           cleaningApprovedDate={props.cleaningApprovedDate}
           keysHandled={props.keysHandled}
+          notes={props.notes}
           onCleaningStatusChange={props.onCleaningStatusChange}
           onCleaningBookedDateChange={props.onCleaningBookedDateChange}
           onKeysHandledChange={props.onKeysHandledChange}
           onAddNote={(content, isImportant) => props.onAddNote(props.entryId, content, isImportant)}
+          onToggleImportant={props.onToggleImportant}
         />
       )}
 
@@ -79,6 +86,7 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           welcomeHomeMethod={props.welcomeHomeMethod}
           keysHandled={props.keysHandled}
           hasQuickMoveIn={props.hasQuickMoveIn}
+          notes={props.notes}
           onContactStatusChange={props.onContactStatusChange}
           onContactAttemptsChange={props.onContactAttemptsChange}
           onVisitBookedDateChange={props.onVisitBookedDateChange}
@@ -87,6 +95,7 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           onKeysHandledChange={props.onKeysHandledChange}
           onQuickMoveInChange={props.onQuickMoveInChange}
           onAddNote={(content, isImportant) => props.onAddNote(props.entryId, content, isImportant)}
+          onToggleImportant={props.onToggleImportant}
         />
       )}
     </>

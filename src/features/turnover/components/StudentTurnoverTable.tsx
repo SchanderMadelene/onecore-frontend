@@ -21,12 +21,13 @@ interface StudentTurnoverTableProps {
   onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
   onAddNote: (entryId: string, content: string, isImportant?: boolean) => void;
+  onToggleImportant: (noteId: string) => void;
   getNotesForEntry: (entryId: string) => TurnoverNote[];
 }
 
 export function StudentTurnoverTable({
   entries, onCleaningStatusChange, onCleaningBookedDateChange,
-  onAddNote, getNotesForEntry,
+  onAddNote, onToggleImportant, getNotesForEntry,
 }: StudentTurnoverTableProps) {
   const isMobile = useIsMobile();
   const [editDialog, setEditDialog] = useState<{
