@@ -34,6 +34,7 @@ export interface MoveInListEntry {
   hasSecurityWarning?: boolean;
   hasQuickMoveIn?: boolean;
   hasTenantNote?: boolean;
+  tenantId?: string;
   contractStatus?: ContractStatus;
   checklist: MoveInListChecklist;
 }
