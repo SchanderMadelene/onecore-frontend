@@ -202,6 +202,7 @@ export function useMoveInList() {
     updateCleaningCount,
     updateCleaningBookedDate,
     updateWelcomeHome,
+    updateInspectionProtocol,
     updateContactStatus,
     updateContactAttempts,
     updateVisitBookedDate,
