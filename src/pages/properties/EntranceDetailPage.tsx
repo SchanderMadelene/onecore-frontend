@@ -23,20 +23,6 @@ const EntranceDetailPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className={isMobile ? "p-4 space-y-4" : "p-6 space-y-6"}>
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-1 text-sm text-muted-foreground flex-wrap">
-          <Link to="/properties" className="hover:text-foreground transition-colors">Fastigheter</Link>
-          <ChevronRight className="h-3 w-3" />
-          <Link to={`/properties/${property}`} className="hover:text-foreground transition-colors">
-            {propertyNode?.label ?? property}
-          </Link>
-          <ChevronRight className="h-3 w-3" />
-          <Link to={`/properties/${property}/${building}`} className="hover:text-foreground transition-colors">
-            {buildingNode?.label ?? building}
-          </Link>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-foreground font-medium">{entranceNode?.label ?? entrance}</span>
-        </div>
 
         {/* Header */}
         <div className="flex items-center gap-3">
