@@ -1,30 +1,33 @@
 
 
-## Plan: Lägg till kundkortslänk i ut- & inflyttstabellen
+## Plan: Minska visuellt brus i ut- & inflyttstabellen
 
-### Vad
-En ikon-knapp bredvid hyresgästnamnet som öppnar kundkortet — samma visuella mönster som ExternalLink-knappen för lägenhetskortet.
+### Problem
+Varje rad har upp till 7 knappar synliga samtidigt (lägenhetskort, 2× kundkort, 2× telefon, 2× penna). Det ger ett plottrig intryck.
 
-### Ändringar
+### Föreslagna åtgärder
+
+**1. Hover-to-reveal på action-knappar (desktop)**
+Knapparna för lägenhetskort, kundkort och telefon görs osynliga (opacity-0) som standard och visas vid hover på raden via CSS-gruppen `group/row` + `group-hover/row:opacity-100`. Penna-knappen (edit) och noteringsikonen behålls alltid synliga eftersom de är primära arbetsverktyg.
+
+**2. Behåll alltid varningsindikatorer**
+SecurityWarningIcon, TenantNote-badge och TurnoverNoteIndicator är alltid synliga — de kommunicerar status, inte åtgärder.
+
+### Teknisk implementation
 
 | Fil | Ändring |
 |-----|---------|
-| `move-in-list-types.ts` | Lägg till `tenantId?: string` i `MoveInListEntry` |
-| `mock-move-in-list.ts` | Lägg till fiktiva `tenantId`-värden på alla poster |
-| `CombinedTurnoverTable.tsx` | Lägg till `ExternalLink`-knapp (outline, h-6 w-6) bredvid hyresgästnamnet som länkar till `/tenants/detail/${entry.tenantId}` |
+| `CombinedTurnoverTable.tsx` | Lägg till `group/row` på `<TableRow>`, wrappa ExternalLink- och Phone-knappar i en span med `opacity-0 group-hover/row:opacity-100 transition-opacity` |
 
-### Desktop
-Knappen placeras i hyresgästcellen, till vänster om telefon-knappen — precis som lägenhetskort-knappen ligger till vänster om adressen. Samma `Button variant="outline" size="icon" asChild` med `ExternalLink`-ikon, title "Öppna kundkort".
+### Visuellt resultat
 
+```text
+Före:  [↗] [↗] [📞] Ekberg Maja ⚠️  ...  [↗] [📞] Lindström Per  ... [✏]
+Efter: [                ] Ekberg Maja ⚠️  ...  [                ] Lindström Per  ... [✏]
+       ↑ knappar dyker upp vid hover ↑
 ```
-[↗ kundkort] [📞] Ekberg Maja ⚠️
-```
 
-### Mobil
-Knappen placeras i hyresgästens namnrad i accordion-kortet, bredvid telefonknappen.
-
-### Detaljer
-- Ikonen är samma `ExternalLink` som för lägenhetskortet — konsekvent mönster
-- Länken öppnas i ny flik (`target="_blank"`)
-- Visas bara om `tenantId` finns (skyddad identitet kan sakna det)
+### Avgränsning
+- Mobil påverkas inte (hover finns inte, alla knappar visas som idag)
+- Penna-knappen och noteringsikonen förblir alltid synliga
 
