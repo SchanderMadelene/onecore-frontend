@@ -1,61 +1,30 @@
 
-Målet är att göra previewn robust igen när Lovables dev-preview tappar synk med Vites dynamiska route-importer.
 
-1. Bekräftad rotorsak
-- Koden för appen verkar inte vara trasig i sig.
-- Både preview-URL:n och published-URL:n renderar korrekt när de hämtas externt.
-- Felet i din inbäddade preview är istället ett runtime-fel för lazy-loaded routes:
-  - `Failed to fetch dynamically imported module: .../src/pages/Index.tsx`
-  - `Failed to fetch dynamically imported module: .../src/pages/properties/AllPropertiesPage.tsx`
-- Det pekar på ett dev/HMR-cache-problem i `.lovableproject.com`-previewn, inte på att startsidan eller fastighetssidan är logiskt trasiga.
+## Plan: Lägg till kundkortslänk i ut- & inflyttstabellen
 
-2. Föreslagen implementation
-- Behåll lazy loading, men gör route-laddning mer självläkande.
-- Uppdatera `lazyWithRetry` i `src/App.tsx` så att den känner igen just dynamic-import chunk-fel och gör en kontrollerad engångs-reload istället för att fastna i permanent felskärm.
-- Lägg till enkel guard via `sessionStorage` så att sidan inte kan hamna i reload-loop.
-- Om reload redan har testats en gång och importen fortfarande misslyckas, visa befintlig felvy.
+### Vad
+En ikon-knapp bredvid hyresgästnamnet som öppnar kundkortet — samma visuella mönster som ExternalLink-knappen för lägenhetskortet.
 
-3. Konkreta kodändringar
-- `src/App.tsx`
-  - förbättra `lazyWithRetry(...)`
-  - identifiera feltyper som:
-    - “Failed to fetch dynamically imported module”
-    - eventuellt chunk/script-laddningsfel
-  - trigga `window.location.reload()` endast en gång per session för route-load recovery
-- eventuellt även:
-  - återställ reload-flaggan när en import lyckas, så framtida riktiga uppdateringar kan återhämta sig normalt
+### Ändringar
 
-4. Varför detta är rätt nivå
-- Jag ser inget i `Index.tsx` eller `AllPropertiesPage.tsx` som förklarar att hela previewn skulle bli vit.
-- Samma UI laddar korrekt via extern fetch/screenshot.
-- Därför bör vi inte börja refaktorera sidorna, utan stärka route-laddningen i appskalet.
+| Fil | Ändring |
+|-----|---------|
+| `move-in-list-types.ts` | Lägg till `tenantId?: string` i `MoveInListEntry` |
+| `mock-move-in-list.ts` | Lägg till fiktiva `tenantId`-värden på alla poster |
+| `CombinedTurnoverTable.tsx` | Lägg till `ExternalLink`-knapp (outline, h-6 w-6) bredvid hyresgästnamnet som länkar till `/tenants/detail/${entry.tenantId}` |
 
-5. Förväntat resultat efter implementation
-- Previewn återhämtar sig automatiskt från tillfälliga Vite/HMR-importfel.
-- Den vita/felaktiga previewn ska i praktiken försvinna i de flesta sådana lägen.
-- Om felet ändå kvarstår visas fallbacken som idag, men utan att användaren fastnar lika lätt.
+### Desktop
+Knappen placeras i hyresgästcellen, till vänster om telefon-knappen — precis som lägenhetskort-knappen ligger till vänster om adressen. Samma `Button variant="outline" size="icon" asChild` med `ExternalLink`-ikon, title "Öppna kundkort".
 
-6. Tekniska detaljer
-```text
-Nuvarande flöde:
-Route lazy import misslyckas
--> Suspense bryts
--> ErrorBoundary visar "Ett tillfälligt laddningsfel uppstod"
-
-Planerat flöde:
-Route lazy import misslyckas
--> lazyWithRetry testar om
--> om typiskt stale dev-chunk-fel:
-   -> kontrollera sessionStorage-flagga
-   -> reload EN gång
--> om samma fel kvarstår efter reload:
-   -> kasta vidare
-   -> ErrorBoundary visar fallback
+```
+[↗ kundkort] [📞] Ekberg Maja ⚠️
 ```
 
-7. Verifiering efteråt
-- Testa `/`
-- Testa `/properties`
-- Testa att navigera mellan startsidan och fastigheter flera gånger
-- Kontrollera att preview inte fastnar i reload-loop
-- Kontrollera att vanlig routing fortfarande fungerar i desktop och mobil
+### Mobil
+Knappen placeras i hyresgästens namnrad i accordion-kortet, bredvid telefonknappen.
+
+### Detaljer
+- Ikonen är samma `ExternalLink` som för lägenhetskortet — konsekvent mönster
+- Länken öppnas i ny flik (`target="_blank"`)
+- Visas bara om `tenantId` finns (skyddad identitet kan sakna det)
+
