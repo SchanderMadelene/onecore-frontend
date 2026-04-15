@@ -3,7 +3,7 @@ import { Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MoveOutEditDialog } from './MoveOutEditDialog';
 import { MoveInEditDialog } from './MoveInEditDialog';
-import { CleaningStatus, ContactStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
+import { CleaningStatus, ContactStatus } from '../types/move-in-list-types';
 import { TurnoverNote } from '../types/turnover-note-types';
 
 interface MoveOutProps {
@@ -31,14 +31,16 @@ interface MoveInProps {
   contactAttempts: number;
   visitBookedDate?: string;
   nameAndIntercomDone: boolean;
-  welcomeHomeMethod: WelcomeHomeMethod;
+  welcomeHomeDone: boolean;
+  inspectionProtocolDone: boolean;
   keysHandled: boolean;
   hasQuickMoveIn: boolean;
   onContactStatusChange: (status: ContactStatus) => void;
   onContactAttemptsChange: (count: number) => void;
   onVisitBookedDateChange: (datetime: string | undefined) => void;
   onNameAndIntercomChange: (checked: boolean) => void;
-  onWelcomeHomeChange: (method: WelcomeHomeMethod) => void;
+  onWelcomeHomeChange: (done: boolean) => void;
+  onInspectionProtocolChange: (done: boolean) => void;
   onKeysHandledChange: (handled: boolean) => void;
   onQuickMoveInChange: (value: boolean) => void;
 }
@@ -83,7 +85,8 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           contactAttempts={props.contactAttempts}
           visitBookedDate={props.visitBookedDate}
           nameAndIntercomDone={props.nameAndIntercomDone}
-          welcomeHomeMethod={props.welcomeHomeMethod}
+          welcomeHomeDone={props.welcomeHomeDone}
+          inspectionProtocolDone={props.inspectionProtocolDone}
           keysHandled={props.keysHandled}
           hasQuickMoveIn={props.hasQuickMoveIn}
           notes={props.notes}
@@ -92,6 +95,7 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
           onVisitBookedDateChange={props.onVisitBookedDateChange}
           onNameAndIntercomChange={props.onNameAndIntercomChange}
           onWelcomeHomeChange={props.onWelcomeHomeChange}
+          onInspectionProtocolChange={props.onInspectionProtocolChange}
           onKeysHandledChange={props.onKeysHandledChange}
           onQuickMoveInChange={props.onQuickMoveInChange}
           onAddNote={(content, isImportant) => props.onAddNote(props.entryId, content, isImportant)}

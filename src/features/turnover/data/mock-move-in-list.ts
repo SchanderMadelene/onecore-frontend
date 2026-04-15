@@ -14,7 +14,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Ekberg Maja',
     tenantPhone: '070-111 11 11',
     date: '2026-01-31',
-    checklist: { cleaningStatus: 'reinspection', cleaningCount: 2, cleaningBookedDate: '2026-02-05', contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: true },
+    checklist: { cleaningStatus: 'reinspection', cleaningCount: 2, cleaningBookedDate: '2026-02-05', contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: true },
   },
   {
     id: 'mil-002',
@@ -27,7 +27,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Skyddad Identitet',
     tenantPhone: '070-000 00 00',
     date: '2026-01-31',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-003',
@@ -40,7 +40,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Holmgren Anton',
     tenantPhone: '070-222 22 22',
     date: '2026-01-31',
-    checklist: { cleaningStatus: 'approved', cleaningCount: 1, cleaningApprovedDate: '2026-01-28', contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: true },
+    checklist: { cleaningStatus: 'approved', cleaningCount: 1, cleaningApprovedDate: '2026-01-28', contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: true },
   },
   {
     id: 'mil-004',
@@ -53,7 +53,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Vikström Tore',
     tenantPhone: '070-333 33 33',
     date: '2026-01-31',
-    checklist: { cleaningStatus: 'booked', cleaningCount: 0, cleaningBookedDate: '2026-02-10', contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'booked', cleaningCount: 0, cleaningBookedDate: '2026-02-10', contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-005',
@@ -66,7 +66,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Falk Lennart',
     tenantPhone: '070-444 44 44',
     date: '2026-01-31',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-006',
@@ -80,7 +80,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-555 55 55',
     date: '2026-02-28',
     hasSecurityWarning: true,
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-007',
@@ -93,7 +93,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Nordlund Fatou',
     tenantPhone: '070-666 66 66',
     date: '2026-02-28',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-008',
@@ -106,7 +106,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Dahl Klara',
     tenantPhone: '070-777 77 77',
     date: '2026-02-28',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-009',
@@ -119,7 +119,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Hagen Stefan',
     tenantPhone: '070-888 88 88',
     date: '2026-02-28',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-010',
@@ -132,7 +132,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Eklund Martin',
     tenantPhone: '070-999 99 99',
     date: '2026-03-01',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-011',
@@ -145,7 +145,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Rydberg Hugo',
     tenantPhone: '070-121 21 21',
     date: '2026-03-01',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-012',
@@ -158,7 +158,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Lind Astrid',
     tenantPhone: '070-131 31 31',
     date: '2026-03-15',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-013',
@@ -171,7 +171,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Kvarnström Lotta',
     tenantPhone: '070-141 41 41',
     date: '2026-03-15',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-014',
@@ -184,7 +184,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantName: 'Forsell Patrik',
     tenantPhone: '070-151 51 51',
     date: '2026-03-15',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: true },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: true },
   },
 
   // === INFLYTTNINGAR ===
@@ -201,7 +201,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     date: '2026-02-01',
     hasQuickMoveIn: true,
     contractStatus: 'active',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'visit_booked', contactAttempts: 1, visitBookedDate: '2026-01-28T10:00', nameAndIntercomDone: true, welcomeHomeMethod: 'digital', keysHandled: true },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'visit_booked', contactAttempts: 1, visitBookedDate: '2026-01-28T10:00', nameAndIntercomDone: true, welcomeHomeDone: true, inspectionProtocolDone: false, keysHandled: true },
   },
   {
     id: 'mil-021',
@@ -215,7 +215,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-171 71 71',
     date: '2026-02-01',
     contractStatus: 'upcoming',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-022',
@@ -229,7 +229,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-181 81 81',
     date: '2026-02-01',
     contractStatus: 'active',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_reached', contactAttempts: 3, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_reached', contactAttempts: 3, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-023',
@@ -244,7 +244,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     date: '2026-02-01',
     hasQuickMoveIn: true,
     contractStatus: 'active',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'visit_done', contactAttempts: 1, nameAndIntercomDone: false, welcomeHomeMethod: 'manual', keysHandled: true },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'visit_done', contactAttempts: 1, nameAndIntercomDone: false, welcomeHomeDone: true, inspectionProtocolDone: false, keysHandled: true },
   },
   {
     id: 'mil-024',
@@ -258,7 +258,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-212 12 12',
     date: '2026-02-01',
     contractStatus: 'upcoming',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-025',
@@ -272,7 +272,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-232 32 32',
     date: '2026-03-01',
     contractStatus: 'upcoming',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-026',
@@ -286,7 +286,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-242 42 42',
     date: '2026-03-05',
     contractStatus: 'upcoming',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-027',
@@ -300,7 +300,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-252 52 52',
     date: '2026-03-01',
     contractStatus: 'active',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-028',
@@ -314,7 +314,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-262 62 62',
     date: '2026-03-01',
     contractStatus: 'upcoming',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-029',
@@ -328,7 +328,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-272 72 72',
     date: '2026-03-16',
     contractStatus: 'upcoming',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-030',
@@ -342,7 +342,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-282 82 82',
     date: '2026-03-15',
     contractStatus: 'active',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-031',
@@ -357,7 +357,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     date: '2026-03-15',
     hasSecurityWarning: true,
     contractStatus: 'upcoming',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-032',
@@ -371,7 +371,7 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-303 03 03',
     date: '2026-03-16',
     contractStatus: 'upcoming',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
     id: 'mil-033',
@@ -385,6 +385,6 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     tenantPhone: '070-313 13 13',
     date: '2026-03-16',
     contractStatus: 'active',
-    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeMethod: 'none', keysHandled: false },
+    checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
 ];

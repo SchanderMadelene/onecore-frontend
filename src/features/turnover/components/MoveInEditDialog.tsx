@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ContactStatus, WelcomeHomeMethod } from '../types/move-in-list-types';
+import { ContactStatus } from '../types/move-in-list-types';
 import { TurnoverNote } from '../types/turnover-note-types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
@@ -21,12 +21,6 @@ const CONTACT_STATUS_CONFIG: Record<ContactStatus, { label: string; order: numbe
   visit_done: { label: 'Besök genomfört', order: 3 },
 };
 
-const WELCOME_HOME_CONFIG: Record<WelcomeHomeMethod, string> = {
-  none: '–',
-  digital: 'Digital',
-  manual: 'Manuell',
-};
-
 interface MoveInEditDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -35,7 +29,8 @@ interface MoveInEditDialogProps {
   contactAttempts: number;
   visitBookedDate?: string;
   nameAndIntercomDone: boolean;
-  welcomeHomeMethod: WelcomeHomeMethod;
+  welcomeHomeDone: boolean;
+  inspectionProtocolDone: boolean;
   keysHandled: boolean;
   hasQuickMoveIn: boolean;
   notes: TurnoverNote[];
@@ -43,7 +38,8 @@ interface MoveInEditDialogProps {
   onContactAttemptsChange: (count: number) => void;
   onVisitBookedDateChange: (datetime: string | undefined) => void;
   onNameAndIntercomChange: (checked: boolean) => void;
-  onWelcomeHomeChange: (method: WelcomeHomeMethod) => void;
+  onWelcomeHomeChange: (done: boolean) => void;
+  onInspectionProtocolChange: (done: boolean) => void;
   onKeysHandledChange: (handled: boolean) => void;
   onQuickMoveInChange: (value: boolean) => void;
   onAddNote: (content: string, isImportant?: boolean) => void;
@@ -53,18 +49,20 @@ interface MoveInEditDialogProps {
 export function MoveInEditDialog({
   open, onOpenChange, tenantName,
   contactStatus: initialStatus, contactAttempts: initialAttempts, visitBookedDate: initialVisitDate,
-  nameAndIntercomDone: initialNamePort, welcomeHomeMethod: initialWelcome,
+  nameAndIntercomDone: initialNamePort, welcomeHomeDone: initialWelcomeHome,
+  inspectionProtocolDone: initialInspectionProtocol,
   keysHandled: initialKeysHandled,
   hasQuickMoveIn: initialQuickMoveIn, notes,
   onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange,
-  onNameAndIntercomChange, onWelcomeHomeChange, onKeysHandledChange, onQuickMoveInChange, onAddNote, onToggleImportant,
+  onNameAndIntercomChange, onWelcomeHomeChange, onInspectionProtocolChange, onKeysHandledChange, onQuickMoveInChange, onAddNote, onToggleImportant,
 }: MoveInEditDialogProps) {
   const [status, setStatus] = useState(initialStatus);
   const [attempts, setAttempts] = useState(initialAttempts);
   const [visitDate, setVisitDate] = useState(initialVisitDate);
   const [visitTime, setVisitTime] = useState(initialVisitDate?.substring(11, 16) ?? '10:00');
   const [namePort, setNamePort] = useState(initialNamePort);
-  const [welcomeHome, setWelcomeHome] = useState(initialWelcome);
+  const [welcomeHome, setWelcomeHome] = useState(initialWelcomeHome);
+  const [inspectionProtocol, setInspectionProtocol] = useState(initialInspectionProtocol);
   const [keysHandled, setKeysHandled] = useState(initialKeysHandled);
   const [quickMoveIn, setQuickMoveIn] = useState(initialQuickMoveIn);
   const [noteContent, setNoteContent] = useState('');
@@ -77,7 +75,8 @@ export function MoveInEditDialog({
       setVisitDate(initialVisitDate);
       setVisitTime(initialVisitDate?.substring(11, 16) ?? '10:00');
       setNamePort(initialNamePort);
-      setWelcomeHome(initialWelcome);
+      setWelcomeHome(initialWelcomeHome);
+      setInspectionProtocol(initialInspectionProtocol);
       setKeysHandled(initialKeysHandled);
       setQuickMoveIn(initialQuickMoveIn);
       setNoteContent('');
@@ -100,6 +99,7 @@ export function MoveInEditDialog({
     }
     onNameAndIntercomChange(namePort);
     onWelcomeHomeChange(welcomeHome);
+    onInspectionProtocolChange(inspectionProtocol);
     onKeysHandledChange(keysHandled);
     onQuickMoveInChange(quickMoveIn);
     if (noteContent.trim()) {
@@ -171,18 +171,15 @@ export function MoveInEditDialog({
           </div>
 
           {/* Welcome home */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold">Välkommen hem</label>
-            <Select value={welcomeHome} onValueChange={(v) => setWelcomeHome(v as WelcomeHomeMethod)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(WELCOME_HOME_CONFIG).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>{label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="flex items-center gap-2">
+            <Checkbox checked={welcomeHome} onCheckedChange={(v) => setWelcomeHome(v === true)} id="welcomeHome" />
+            <label htmlFor="welcomeHome" className="text-sm font-medium cursor-pointer">Välkommen hem</label>
+          </div>
+
+          {/* Inspection protocol */}
+          <div className="flex items-center gap-2">
+            <Checkbox checked={inspectionProtocol} onCheckedChange={(v) => setInspectionProtocol(v === true)} id="inspectionProtocol" />
+            <label htmlFor="inspectionProtocol" className="text-sm font-medium cursor-pointer">Besiktningsprotokoll</label>
           </div>
 
           {/* Keys */}
