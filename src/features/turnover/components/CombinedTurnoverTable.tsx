@@ -233,7 +233,21 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     )}
                   </div>
                   <span className="text-muted-foreground">Välk. hem:</span>
-                  <span className="font-medium">{row.moveIn.checklist.welcomeHomeDone ? '✓' : '–'}</span>
+                  <div>
+                    {row.moveIn.checklist.welcomeHomeDone ? (
+                      <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    ) : (
+                      <span className="text-muted-foreground">–</span>
+                    )}
+                  </div>
+                  <span className="text-muted-foreground">Besiktn.prot.:</span>
+                  <div>
+                    {row.moveIn.checklist.inspectionProtocolDone ? (
+                      <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    ) : (
+                      <span className="text-muted-foreground">–</span>
+                    )}
+                  </div>
                   <span className="text-muted-foreground">Nycklar:</span>
                   <KeysHandledBadge handled={row.moveIn.checklist.keysHandled} />
                 </div>
