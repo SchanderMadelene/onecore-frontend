@@ -10,22 +10,49 @@ import { HousingOffersProvider } from "@/contexts/HousingOffersContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { RoleProvider } from "@/contexts/RoleContext";
 
+const isDynamicImportError = (error: unknown): boolean => {
+  if (!(error instanceof Error)) return false;
+  const msg = error.message.toLowerCase();
+  return (
+    msg.includes("failed to fetch dynamically imported module") ||
+    msg.includes("importing a module script failed") ||
+    msg.includes("error loading dynamically imported module") ||
+    msg.includes("failed to load module script")
+  );
+};
+
 const lazyWithRetry = <T extends React.ComponentType<any>>(
   importer: () => Promise<{ default: T }>,
   retries = 2,
   delayMs = 300
 ): React.LazyExoticComponent<T> =>
   lazy(async () => {
+    const RELOAD_KEY = "lazy_import_reload";
     let lastError: unknown;
 
     for (let attempt = 0; attempt <= retries; attempt += 1) {
       try {
-        return await importer();
+        const module = await importer();
+        // Success — clear the reload flag so future stale-chunk errors can self-heal again
+        sessionStorage.removeItem(RELOAD_KEY);
+        return module;
       } catch (error) {
         lastError = error;
         if (attempt < retries) {
           await new Promise((resolve) => setTimeout(resolve, delayMs * (attempt + 1)));
         }
+      }
+    }
+
+    // All retries exhausted — if it looks like a stale chunk / HMR error, try a one-time reload
+    if (isDynamicImportError(lastError as Error)) {
+      const alreadyReloaded = sessionStorage.getItem(RELOAD_KEY);
+      if (!alreadyReloaded) {
+        sessionStorage.setItem(RELOAD_KEY, "1");
+        window.location.reload();
+        // Return a never-resolving promise so React doesn't render the error boundary
+        // while the browser is reloading
+        return new Promise<never>(() => {});
       }
     }
 
