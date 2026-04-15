@@ -229,20 +229,22 @@ export function StudentTurnoverTable({
               </TableHeader>
               <TableBody>
                 {entries.map(row => (
-                  <TableRow key={row.roomKey}>
+                  <TableRow key={row.roomKey} className="group/row">
                     <TableCell className="font-medium text-sm whitespace-nowrap">{row.propertyName}</TableCell>
                     <TableCell className="text-sm whitespace-nowrap">{row.roomCode}</TableCell>
                     {/* Move-out student */}
-                    <TableCell className="border-l-2 border-border">
+                    <TableCell className="border-l-2 border-border relative">
                       {row.moveOut ? (
-                        <div className="flex items-center gap-1.5">
-                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                            <a href={`mailto:${row.moveOut.email}`} title={row.moveOut.email}>
-                              <Mail className="h-3 w-3" />
-                            </a>
-                          </Button>
+                        <>
                           <span className="text-sm">{row.moveOut.studentName}</span>
-                        </div>
+                          <span className="absolute inset-y-0 right-0 flex items-center pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
+                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                              <a href={`mailto:${row.moveOut.email}`} title={row.moveOut.email}>
+                                <Mail className="h-3 w-3" />
+                              </a>
+                            </Button>
+                          </span>
+                        </>
                       ) : <span className="text-muted-foreground">–</span>}
                     </TableCell>
                     <TableCell className="text-sm whitespace-nowrap">
@@ -276,16 +278,18 @@ export function StudentTurnoverTable({
                       ) : null}
                     </TableCell>
                     {/* Move-in student */}
-                    <TableCell className="border-l-2 border-border">
+                    <TableCell className="border-l-2 border-border relative">
                       {row.moveIn ? (
-                        <div className="flex items-center gap-1.5">
-                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                            <a href={`mailto:${row.moveIn.email}`} title={row.moveIn.email}>
-                              <Mail className="h-3 w-3" />
-                            </a>
-                          </Button>
+                        <>
                           <span className="text-sm">{row.moveIn.studentName}</span>
-                        </div>
+                          <span className="absolute inset-y-0 right-0 flex items-center pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
+                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                              <a href={`mailto:${row.moveIn.email}`} title={row.moveIn.email}>
+                                <Mail className="h-3 w-3" />
+                              </a>
+                            </Button>
+                          </span>
+                        </>
                       ) : <span className="text-muted-foreground">–</span>}
                     </TableCell>
                     <TableCell className="text-sm whitespace-nowrap">
