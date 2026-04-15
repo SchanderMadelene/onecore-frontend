@@ -565,5 +565,6 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
         </div>
       </CardContent>
     </Card>
+    </>
   );
 }
