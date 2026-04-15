@@ -326,6 +326,13 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="border-l-2 border-border">
                     {row.moveOut ? (
                       <div className="flex items-center gap-1.5">
+                        {row.moveOut.tenantId && (
+                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                            <a href={`/tenants/detail/${row.moveOut.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          </Button>
+                        )}
                         {row.moveOut.tenantPhone && (
                           <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                             <a href={`tel:${row.moveOut.tenantPhone}`} title={row.moveOut.tenantPhone}>
@@ -401,6 +408,13 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="border-l-2 border-border">
                     {row.moveIn ? (
                       <div className="flex items-center gap-1.5">
+                        {row.moveIn.tenantId && (
+                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
+                            <a href={`/tenants/detail/${row.moveIn.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          </Button>
+                        )}
                         {row.moveIn.tenantPhone && (
                           <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                             <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
