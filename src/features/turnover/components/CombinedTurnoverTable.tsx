@@ -322,52 +322,23 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
             </TableHeader>
             <TableBody>
               {entries.map(row => (
-                <TableRow key={row.residenceKey} className="group/row">
-                  <TableCell className="font-medium text-sm whitespace-nowrap relative">
+                <TableRow key={row.residenceKey}>
+                  <TableCell className="font-medium text-sm whitespace-nowrap">
                     <span>{row.address}</span>
-                    {getResidenceUrl(row) && (
-                      <span className="absolute inset-y-0 right-0 flex items-center pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
-                        <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                          <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
-                            <ExternalLink className="h-3 w-3" />
-                          </a>
-                        </Button>
-                      </span>
-                    )}
                   </TableCell>
                   <TableCell className="text-sm">{row.apartmentType}</TableCell>
                   {/* Move-out tenant */}
-                  <TableCell className="border-l-2 border-border relative">
+                  <TableCell className="border-l-2 border-border">
                     {row.moveOut ? (
-                      <>
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveOut.tenantName}</span>
-                          <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
-                          {row.moveOut.hasTenantNote && (
-                            <Badge variant="muted" size="icon" title="Notering på hyresgäst">
-                              <MessageSquare className="h-3 w-3" />
-                            </Badge>
-                          )}
-                        </div>
-                        {(row.moveOut.tenantId || row.moveOut.tenantPhone) && (
-                          <span className="absolute inset-y-0 right-0 flex items-center gap-1 pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
-                              {row.moveOut.tenantId && (
-                                <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                                  <a href={`/tenants/detail/${row.moveOut.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
-                                    <ExternalLink className="h-3 w-3" />
-                                  </a>
-                                </Button>
-                              )}
-                              {row.moveOut.tenantPhone && (
-                                <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                                  <a href={`tel:${row.moveOut.tenantPhone}`} title={row.moveOut.tenantPhone}>
-                                    <Phone className="h-3 w-3" />
-                                  </a>
-                                </Button>
-                              )}
-                          </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm">{row.moveOut.tenantName}</span>
+                        <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                        {row.moveOut.hasTenantNote && (
+                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
+                            <MessageSquare className="h-3 w-3" />
+                          </Badge>
                         )}
-                      </>
+                      </div>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   <TableCell className="text-sm whitespace-nowrap">
@@ -413,6 +384,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         onCleaningBookedDateChange={(d) => onCleaningBookedDateChange(row.moveOut!.id, d)}
                         keysHandled={row.moveOut!.checklist.keysHandled}
                         onKeysHandledChange={(v) => onChecklistChange(row.moveOut!.id, 'keysHandled', v)}
+                        residenceUrl={getResidenceUrl(row)}
+                        tenantId={row.moveOut.tenantId}
+                        tenantPhone={row.moveOut.tenantPhone}
                       />
                     ) : (
                       <TurnoverRowNoteButton
@@ -425,37 +399,17 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     )}
                   </TableCell>
                   {/* Move-in tenant */}
-                  <TableCell className="border-l-2 border-border relative">
+                  <TableCell className="border-l-2 border-border">
                     {row.moveIn ? (
-                      <>
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveIn.tenantName}</span>
-                          <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
-                          {row.moveIn.hasTenantNote && (
-                            <Badge variant="muted" size="icon" title="Notering på hyresgäst">
-                              <MessageSquare className="h-3 w-3" />
-                            </Badge>
-                          )}
-                        </div>
-                        {(row.moveIn.tenantId || row.moveIn.tenantPhone) && (
-                          <span className="absolute inset-y-0 right-0 flex items-center gap-1 pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
-                              {row.moveIn.tenantId && (
-                                <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                                  <a href={`/tenants/detail/${row.moveIn.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
-                                    <ExternalLink className="h-3 w-3" />
-                                  </a>
-                                </Button>
-                              )}
-                              {row.moveIn.tenantPhone && (
-                                <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                                  <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
-                                    <Phone className="h-3 w-3" />
-                                  </a>
-                                </Button>
-                              )}
-                          </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm">{row.moveIn.tenantName}</span>
+                        <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                        {row.moveIn.hasTenantNote && (
+                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
+                            <MessageSquare className="h-3 w-3" />
+                          </Badge>
                         )}
-                      </>
+                      </div>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   <TableCell className="text-sm whitespace-nowrap">
@@ -528,17 +482,19 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         visitBookedDate={row.moveIn.checklist.visitBookedDate}
                         nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
                         welcomeHomeDone={row.moveIn.checklist.welcomeHomeDone}
-                      inspectionProtocolDone={row.moveIn.checklist.inspectionProtocolDone}
+                        inspectionProtocolDone={row.moveIn.checklist.inspectionProtocolDone}
                         onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
                         onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
                         onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
                         onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
                         onWelcomeHomeChange={(v) => onWelcomeHomeChange(row.moveIn!.id, v)}
-                      onInspectionProtocolChange={(v) => onInspectionProtocolChange(row.moveIn!.id, v)}
+                        onInspectionProtocolChange={(v) => onInspectionProtocolChange(row.moveIn!.id, v)}
                         keysHandled={row.moveIn!.checklist.keysHandled}
                         hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
                         onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
                         onQuickMoveInChange={(v) => onQuickMoveInChange(row.moveIn!.id, v)}
+                        tenantId={row.moveIn.tenantId}
+                        tenantPhone={row.moveIn.tenantPhone}
                       />
                     ) : (
                       <TurnoverRowNoteButton
