@@ -288,7 +288,7 @@ const App = () => {
               <Sonner />
               <BrowserRouter>
                 <AppErrorBoundary>
-                  <Suspense fallback={<div className="p-4 text-sm text-muted-foreground">Laddar…</div>}>
+                  <Suspense fallback={<AppLoadingSkeleton />}>
                     <AppRoutes />
                   </Suspense>
                 </AppErrorBoundary>
