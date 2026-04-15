@@ -236,12 +236,12 @@ export function StudentTurnoverTable({
                     <TableCell className="border-l-2 border-border">
                       {row.moveOut ? (
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveOut.studentName}</span>
                           <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                             <a href={`mailto:${row.moveOut.email}`} title={row.moveOut.email}>
                               <Mail className="h-3 w-3" />
                             </a>
                           </Button>
+                          <span className="text-sm">{row.moveOut.studentName}</span>
                         </div>
                       ) : <span className="text-muted-foreground">–</span>}
                     </TableCell>
@@ -279,12 +279,12 @@ export function StudentTurnoverTable({
                     <TableCell className="border-l-2 border-border">
                       {row.moveIn ? (
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveIn.studentName}</span>
                           <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                             <a href={`mailto:${row.moveIn.email}`} title={row.moveIn.email}>
                               <Mail className="h-3 w-3" />
                             </a>
                           </Button>
+                          <span className="text-sm">{row.moveIn.studentName}</span>
                         </div>
                       ) : <span className="text-muted-foreground">–</span>}
                     </TableCell>
