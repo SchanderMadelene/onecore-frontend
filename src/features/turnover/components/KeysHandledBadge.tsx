@@ -1,13 +1,9 @@
-import { Badge } from '@/shared/ui/badge';
+import { BooleanBadge } from './BooleanBadge';
 
 interface KeysHandledBadgeProps {
   handled: boolean;
 }
 
 export function KeysHandledBadge({ handled }: KeysHandledBadgeProps) {
-  return (
-    <Badge variant={handled ? 'success' : 'muted'}>
-      {handled ? 'Ja' : 'Nej'}
-    </Badge>
-  );
+  return <BooleanBadge value={handled} />;
 }
