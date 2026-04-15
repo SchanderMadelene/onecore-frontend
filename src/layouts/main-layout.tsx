@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { PropertyBreadcrumb } from "@/shared/common/Breadcrumb";
 
 const LG_BREAKPOINT = 1024;
 
@@ -110,6 +111,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
             z-10
           `}
         >
+          <PropertyBreadcrumb />
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}

@@ -13,13 +13,16 @@ import { generateBreadcrumbs } from "@/utils/breadcrumbUtils";
 export const PropertyBreadcrumb = () => {
   const location = useLocation();
   const breadcrumbs = generateBreadcrumbs(location.pathname);
-  
+
+  // Don't render on index or when there's nothing to show
+  if (breadcrumbs.length <= 1) return null;
+
   return (
-    <Breadcrumb className="mb-4">
+    <Breadcrumb>
       <BreadcrumbList>
         {breadcrumbs.map((breadcrumb, index) => {
           const isLast = index === breadcrumbs.length - 1;
-          
+
           return (
             <div key={breadcrumb.path} className="flex items-center">
               <BreadcrumbItem>
