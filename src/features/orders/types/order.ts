@@ -12,6 +12,7 @@ export interface Order {
   needsMasterKey?: boolean;
   plannedExecutionDate?: string;
   dueDate?: string;
+  entranceId?: string;
   residenceId?: string;
   type?: "Odoo" | "Xpand";
 }

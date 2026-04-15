@@ -22,7 +22,7 @@ export type OrderFormData = z.infer<typeof orderFormSchema>;
 export const transformFormDataToOrder = (
   formData: OrderFormData,
   residenceId: string,
-  contextType: "tenant" | "residence" | "building",
+  contextType: "tenant" | "residence" | "building" | "entrance",
   maintenanceUnit?: MaintenanceUnit
 ) => {
   return {

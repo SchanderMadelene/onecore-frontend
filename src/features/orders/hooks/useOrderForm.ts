@@ -6,7 +6,7 @@ import { Room, MaintenanceUnit } from "@/types/api";
 
 type UseOrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
-  contextType: "tenant" | "residence" | "building";
+  contextType: "tenant" | "residence" | "building" | "entrance";
   rooms: Room[];
   residenceId?: string;
   maintenanceUnit?: MaintenanceUnit;

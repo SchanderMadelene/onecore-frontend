@@ -3,9 +3,10 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { PageLayout } from "@/layouts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DoorOpen, Home, ChevronRight, Building } from "lucide-react";
+import { Home, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { treeData } from "@/widgets/navigation/treeview/treeData";
+import { OrdersManagement } from "@/features/residences/components/OrdersManagement";
 
 const EntranceDetailPage = () => {
   const { property, building, id: entrance } = useParams();
@@ -59,6 +60,12 @@ const EntranceDetailPage = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Orders section */}
+        <OrdersManagement
+          contextType="entrance"
+          residenceId={entrance}
+        />
       </div>
     </PageLayout>
   );
