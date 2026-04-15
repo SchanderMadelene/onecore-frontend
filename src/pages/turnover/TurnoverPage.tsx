@@ -101,6 +101,8 @@ export default function TurnoverPage() {
                   districts={availableDistricts}
                   selectedDistrict={selectedDistrict}
                   onDistrictChange={setSelectedDistrict}
+                  moveOutCount={filteredEntries.filter(e => e.moveOut).length}
+                  moveInCount={filteredEntries.filter(e => e.moveIn).length}
                 />
               </CardContent>
             </Card>
