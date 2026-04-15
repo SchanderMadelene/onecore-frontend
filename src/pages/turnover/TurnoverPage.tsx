@@ -29,7 +29,7 @@ export default function TurnoverPage() {
     selectedDistrict, setSelectedDistrict,
     combinedEntries, updateChecklist, updateCleaningStatus,
     updateCleaningCount, updateCleaningBookedDate,
-    updateWelcomeHome, updateContactStatus,
+    updateWelcomeHome, updateInspectionProtocol, updateContactStatus,
     updateContactAttempts, updateVisitBookedDate,
     updateQuickMoveIn, availableKvvAreas, availableDistricts,
   } = useMoveInList();
