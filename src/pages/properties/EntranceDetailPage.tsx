@@ -26,9 +26,7 @@ const EntranceDetailPage = () => {
 
         {/* Header */}
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary/10">
-            <DoorOpen className="h-6 w-6 text-primary" />
-          </div>
+          <div>
           <div>
             <h1 className={`font-bold ${isMobile ? "text-xl" : "text-2xl"}`}>
               {entranceNode?.label ?? entrance}
