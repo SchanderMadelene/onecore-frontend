@@ -303,6 +303,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableHead>Kontakt</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Namn/Port</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Välk. hem</TableHead>
+                <TableHead className="text-center whitespace-nowrap"><FileText className="h-3.5 w-3.5 mx-auto" title="Besiktningsprotokoll" /></TableHead>
                 <TableHead className="w-[40px] text-center p-1"><Key className="h-3.5 w-3.5 mx-auto" /></TableHead>
                 <TableHead className="w-[28px] p-0"></TableHead>
                 <TableHead className="w-[40px] p-1"></TableHead>
@@ -455,7 +456,21 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   {/* Read-only Välkommen hem */}
                   <TableCell className="text-center text-sm">
                     {row.moveIn ? (
-                      <span>{row.moveIn.checklist.welcomeHomeDone ? '✓' : '–'}</span>
+                      row.moveIn.checklist.welcomeHomeDone ? (
+                        <Check className="h-4 w-4 text-emerald-600 mx-auto" />
+                      ) : (
+                        <span className="text-muted-foreground">–</span>
+                      )
+                    ) : <span className="text-muted-foreground">–</span>}
+                  </TableCell>
+                  {/* Read-only Besiktningsprotokoll */}
+                  <TableCell className="text-center text-sm">
+                    {row.moveIn ? (
+                      row.moveIn.checklist.inspectionProtocolDone ? (
+                        <Check className="h-4 w-4 text-emerald-600 mx-auto" />
+                      ) : (
+                        <span className="text-muted-foreground">–</span>
+                      )
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in keys */}
