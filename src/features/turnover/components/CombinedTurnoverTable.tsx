@@ -323,49 +323,53 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
             <TableBody>
               {entries.map(row => (
                 <TableRow key={row.residenceKey} className="group/row">
-                  <TableCell className="font-medium text-sm whitespace-nowrap">
-                    <div className="flex items-center gap-1.5">
-                      {getResidenceUrl(row) && (
-                        <span className="opacity-0 group-hover/row:opacity-100 transition-opacity">
-                          <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                            <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
-                              <ExternalLink className="h-3 w-3" />
-                            </a>
-                          </Button>
-                        </span>
-                      )}
-                      {row.address}
-                    </div>
+                  <TableCell className="font-medium text-sm whitespace-nowrap relative">
+                    <span>{row.address}</span>
+                    {getResidenceUrl(row) && (
+                      <span className="absolute inset-y-0 left-2 flex items-center opacity-0 group-hover/row:opacity-100 transition-opacity">
+                        <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                          <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </Button>
+                      </span>
+                    )}
                   </TableCell>
                   <TableCell className="text-sm">{row.apartmentType}</TableCell>
                   {/* Move-out tenant */}
-                  <TableCell className="border-l-2 border-border">
+                  <TableCell className="border-l-2 border-border relative">
                     {row.moveOut ? (
-                      <div className="flex items-center gap-1.5">
-                        <span className="flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
-                          {row.moveOut.tenantId && (
-                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                              <a href={`/tenants/detail/${row.moveOut.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
-                                <ExternalLink className="h-3 w-3" />
-                              </a>
-                            </Button>
+                      <>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm">{row.moveOut.tenantName}</span>
+                          <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
+                          {row.moveOut.hasTenantNote && (
+                            <Badge variant="muted" size="icon" title="Notering på hyresgäst">
+                              <MessageSquare className="h-3 w-3" />
+                            </Badge>
                           )}
-                          {row.moveOut.tenantPhone && (
-                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                              <a href={`tel:${row.moveOut.tenantPhone}`} title={row.moveOut.tenantPhone}>
-                                <Phone className="h-3 w-3" />
-                              </a>
-                            </Button>
-                          )}
-                        </span>
-                        <span className="text-sm">{row.moveOut.tenantName}</span>
-                        <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
-                        {row.moveOut.hasTenantNote && (
-                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
-                            <MessageSquare className="h-3 w-3" />
-                          </Badge>
+                        </div>
+                        {(row.moveOut.tenantId || row.moveOut.tenantPhone) && (
+                          <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                            <span className="flex items-center gap-1 bg-background pr-1">
+                              {row.moveOut.tenantId && (
+                                <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                                  <a href={`/tenants/detail/${row.moveOut.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
+                                    <ExternalLink className="h-3 w-3" />
+                                  </a>
+                                </Button>
+                              )}
+                              {row.moveOut.tenantPhone && (
+                                <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                                  <a href={`tel:${row.moveOut.tenantPhone}`} title={row.moveOut.tenantPhone}>
+                                    <Phone className="h-3 w-3" />
+                                  </a>
+                                </Button>
+                              )}
+                            </span>
+                          </span>
                         )}
-                      </div>
+                      </>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   <TableCell className="text-sm whitespace-nowrap">
@@ -423,33 +427,39 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     )}
                   </TableCell>
                   {/* Move-in tenant */}
-                  <TableCell className="border-l-2 border-border">
+                  <TableCell className="border-l-2 border-border relative">
                     {row.moveIn ? (
-                      <div className="flex items-center gap-1.5">
-                        <span className="flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
-                          {row.moveIn.tenantId && (
-                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                              <a href={`/tenants/detail/${row.moveIn.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
-                                <ExternalLink className="h-3 w-3" />
-                              </a>
-                            </Button>
+                      <>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm">{row.moveIn.tenantName}</span>
+                          <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
+                          {row.moveIn.hasTenantNote && (
+                            <Badge variant="muted" size="icon" title="Notering på hyresgäst">
+                              <MessageSquare className="h-3 w-3" />
+                            </Badge>
                           )}
-                          {row.moveIn.tenantPhone && (
-                            <Button variant="outline" size="icon" className="h-6 w-6" asChild>
-                              <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
-                                <Phone className="h-3 w-3" />
-                              </a>
-                            </Button>
-                          )}
-                        </span>
-                        <span className="text-sm">{row.moveIn.tenantName}</span>
-                        <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
-                        {row.moveIn.hasTenantNote && (
-                          <Badge variant="muted" size="icon" title="Notering på hyresgäst">
-                            <MessageSquare className="h-3 w-3" />
-                          </Badge>
+                        </div>
+                        {(row.moveIn.tenantId || row.moveIn.tenantPhone) && (
+                          <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                            <span className="flex items-center gap-1 bg-background pr-1">
+                              {row.moveIn.tenantId && (
+                                <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                                  <a href={`/tenants/detail/${row.moveIn.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
+                                    <ExternalLink className="h-3 w-3" />
+                                  </a>
+                                </Button>
+                              )}
+                              {row.moveIn.tenantPhone && (
+                                <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                                  <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
+                                    <Phone className="h-3 w-3" />
+                                  </a>
+                                </Button>
+                              )}
+                            </span>
+                          </span>
                         )}
-                      </div>
+                      </>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   <TableCell className="text-sm whitespace-nowrap">
