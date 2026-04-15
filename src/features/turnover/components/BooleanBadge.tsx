@@ -3,19 +3,16 @@ import { Check, Minus } from 'lucide-react';
 
 interface BooleanBadgeProps {
   value: boolean;
-  trueLabel?: string;
-  falseLabel?: string;
 }
 
-export function BooleanBadge({ value, trueLabel = 'Ja', falseLabel = 'Nej' }: BooleanBadgeProps) {
+export function BooleanBadge({ value }: BooleanBadgeProps) {
   return (
-    <Badge variant={value ? 'success' : 'muted'} className="gap-1">
+    <Badge variant={value ? 'success' : 'muted'} className="px-1.5">
       {value ? (
         <Check className="h-3 w-3" />
       ) : (
         <Minus className="h-3 w-3" />
       )}
-      {value ? trueLabel : falseLabel}
     </Badge>
   );
 }
