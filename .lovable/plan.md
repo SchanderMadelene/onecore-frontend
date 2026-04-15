@@ -1,56 +1,41 @@
 
 
-## Plan: Overlay-knappar vid hover istället för reserverat utrymme
+## Plan: Högerställd overlay med gradient-fade
 
-### Problem
-Knapparna (lägenhetskort, kundkort, telefon) tar upp horisontellt utrymme i tabellen även när de är dolda med `opacity-0` — de är fortfarande i dokumentflödet och breddberäkningen.
-
-### Lösning
-Ändra knapparna från inline-flow till **absolut positionerade overlays** som visas ovanpå cellinnehållet vid hover. Cellen behåller `position: relative` och knapparna placeras med `absolute` så de inte påverkar tabellbredden.
+### Koncept
+Vid hover glider en knappgrupp in från höger i varje sektion (utflytt / inflytt). En gradient-fade från transparent till radens bakgrundsfärg skapar en mjuk övergång där texten fadear ut under knapparna.
 
 ### Teknisk implementation
 
 **Fil: `CombinedTurnoverTable.tsx`**
 
-1. **Adress-cellen (lägenhetskort)**: Ta bort `<span>`-wrappern med opacity. Lägg istället en absolut-positionerad knapp som visas vid hover ovanpå adresstexten:
+1. **Flytta overlay-knapparna** från `left-2` (ovanpå namn) till **höger** inom hyresgästcellen. Använd `absolute inset-y-0 right-0` istället.
+
+2. **Gradient-bakgrund** istället för solid `bg-muted/50`:
 ```tsx
-<TableCell className="relative">
-  <span className="text-sm">{row.address}</span>
-  {getResidenceUrl(row) && (
-    <span className="absolute inset-y-0 left-1 flex items-center opacity-0 group-hover/row:opacity-100 transition-opacity">
-      <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
-        <a href={...}><ExternalLink /></a>
-      </Button>
-    </span>
-  )}
-</TableCell>
+<span className="absolute inset-y-0 right-0 flex items-center gap-1 pr-1 
+  opacity-0 group-hover/row:opacity-100 transition-opacity
+  bg-gradient-to-l from-background via-background to-transparent">
 ```
+Gradienten går från solid bakgrund (höger) till transparent (vänster), så texten fadear naturligt under.
 
-2. **Hyresgästcellen (kundkort + telefon)**: Samma mönster — knapparna positioneras absolut till vänster om/ovanpå namnets yta med en `bg-background` för att täcka texten under:
+3. **Samma mönster på tre ställen**:
+   - Adresscellen (lägenhetskort-knapp) → overlay högerställd
+   - Utflytthyresgäst-cellen (kundkort + telefon) → overlay högerställd  
+   - Inflytthyresgäst-cellen (kundkort + telefon) → overlay högerställd
+
+4. **Hover-state-anpassning**: Gradienten använder CSS-variabeln `from-background` som standard, men vid row-hover byter tabellraden till `hover:bg-muted/50`. Vi löser detta genom att använda `from-muted/50 via-muted/50` som gradient-färger, matchat med gruppens hover:
 ```tsx
-<TableCell className="border-l-2 border-border relative">
-  <div className="flex items-center gap-1.5">
-    <span className="text-sm">{row.moveOut.tenantName}</span>
-    <SecurityWarningIcon ... />
-  </div>
-  <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
-    <span className="flex items-center gap-1 bg-background pr-1">
-      {/* kundkort + telefon-knappar */}
-    </span>
-  </span>
-</TableCell>
+className="... from-transparent to-transparent 
+  group-hover/row:from-muted/50 group-hover/row:via-muted/50"
 ```
-
-3. Knapparna får `bg-background` så de täcker texten bakom sig rent visuellt.
-
-4. Samma mönster appliceras på **både utflytt- och inflytthyresgästen**.
+Eftersom overlayen bara syns vid hover behöver färgen bara matcha hover-statet.
 
 ### Resultat
-- **Utan hover**: Tabellen visar bara text — adress, namn, statusar. Inga knappar tar plats.
-- **Vid hover**: Knappar glider in ovanpå texten med en bakgrundsfärg som döljer det under.
-- Tabellen blir smalare och kräver mindre/ingen horisontell scroll.
+- Utan hover: Ren text, inga knappar synliga, inget extra utrymme
+- Vid hover: Knappar glider in snyggt från höger med en gradient som mjukt döljer texten under
 
 ### Avgränsning
-- Mobil: oförändrad (inga hover-effekter)
-- Penna-knapp, noter-ikon: oförändrade (alltid synliga, i egna smala kolumner)
+- Mobil: oförändrad
+- Penna-knapp, noter-ikon: oförändrade (egna kolumner)
 
