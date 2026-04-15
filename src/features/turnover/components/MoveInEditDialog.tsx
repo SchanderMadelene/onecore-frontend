@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ContactStatus } from '../types/move-in-list-types';
 import { TurnoverNote } from '../types/turnover-note-types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -165,33 +166,78 @@ export function MoveInEditDialog({
           <Separator />
 
           {/* Name/Port */}
-          <div className="flex items-center gap-2">
-            <Checkbox checked={namePort} onCheckedChange={(v) => setNamePort(v === true)} id="namePort" />
-            <label htmlFor="namePort" className="text-sm font-medium cursor-pointer">Namn/Port klart</label>
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold">Namn/Port klart</label>
+            <RadioGroup value={namePort ? 'ja' : 'nej'} onValueChange={(v) => setNamePort(v === 'ja')} className="flex gap-4">
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="ja" id="namePortYes" />
+                <label htmlFor="namePortYes" className="text-sm cursor-pointer">Ja</label>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="nej" id="namePortNo" />
+                <label htmlFor="namePortNo" className="text-sm cursor-pointer">Nej</label>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* Welcome home */}
-          <div className="flex items-center gap-2">
-            <Checkbox checked={welcomeHome} onCheckedChange={(v) => setWelcomeHome(v === true)} id="welcomeHome" />
-            <label htmlFor="welcomeHome" className="text-sm font-medium cursor-pointer">Välkommen hem</label>
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold">Välkommen hem</label>
+            <RadioGroup value={welcomeHome ? 'ja' : 'nej'} onValueChange={(v) => setWelcomeHome(v === 'ja')} className="flex gap-4">
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="ja" id="welcomeHomeYes" />
+                <label htmlFor="welcomeHomeYes" className="text-sm cursor-pointer">Ja</label>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="nej" id="welcomeHomeNo" />
+                <label htmlFor="welcomeHomeNo" className="text-sm cursor-pointer">Nej</label>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* Inspection protocol */}
-          <div className="flex items-center gap-2">
-            <Checkbox checked={inspectionProtocol} onCheckedChange={(v) => setInspectionProtocol(v === true)} id="inspectionProtocol" />
-            <label htmlFor="inspectionProtocol" className="text-sm font-medium cursor-pointer">Besiktningsprotokoll</label>
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold">Besiktningsprotokoll</label>
+            <RadioGroup value={inspectionProtocol ? 'ja' : 'nej'} onValueChange={(v) => setInspectionProtocol(v === 'ja')} className="flex gap-4">
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="ja" id="inspProtYes" />
+                <label htmlFor="inspProtYes" className="text-sm cursor-pointer">Ja</label>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="nej" id="inspProtNo" />
+                <label htmlFor="inspProtNo" className="text-sm cursor-pointer">Nej</label>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* Keys */}
-          <div className="flex items-center gap-2">
-            <Checkbox checked={keysHandled} onCheckedChange={(v) => setKeysHandled(v === true)} id="keysHandledIn" />
-            <label htmlFor="keysHandledIn" className="text-sm font-medium cursor-pointer">Nycklar uthämtade</label>
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold">Nycklar uthämtade</label>
+            <RadioGroup value={keysHandled ? 'ja' : 'nej'} onValueChange={(v) => setKeysHandled(v === 'ja')} className="flex gap-4">
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="ja" id="keysYes" />
+                <label htmlFor="keysYes" className="text-sm cursor-pointer">Ja</label>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="nej" id="keysNo" />
+                <label htmlFor="keysNo" className="text-sm cursor-pointer">Nej</label>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* Quick move-in */}
-          <div className="flex items-center gap-2">
-            <Checkbox checked={quickMoveIn} onCheckedChange={(v) => setQuickMoveIn(v === true)} id="quickMoveIn" />
-            <label htmlFor="quickMoveIn" className="text-sm font-medium cursor-pointer">Snabb inflytt</label>
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold">Snabb inflytt</label>
+            <RadioGroup value={quickMoveIn ? 'ja' : 'nej'} onValueChange={(v) => setQuickMoveIn(v === 'ja')} className="flex gap-4">
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="ja" id="quickYes" />
+                <label htmlFor="quickYes" className="text-sm cursor-pointer">Ja</label>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="nej" id="quickNo" />
+                <label htmlFor="quickNo" className="text-sm cursor-pointer">Nej</label>
+              </div>
+            </RadioGroup>
           </div>
 
           <Separator />
