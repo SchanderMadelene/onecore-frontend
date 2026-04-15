@@ -322,7 +322,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
             </TableHeader>
             <TableBody>
               {entries.map(row => (
-                <TableRow key={row.residenceKey} className="group/row">
+                <TableRow key={row.residenceKey}>
                   <TableCell className="font-medium text-sm whitespace-nowrap">
                     <span>{row.address}</span>
                   </TableCell>
