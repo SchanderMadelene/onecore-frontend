@@ -166,7 +166,7 @@ export function MoveInEditDialog({
           <Separator />
 
           {/* Name/Port */}
-          <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
             <label className="text-sm font-semibold">Namn/Port klart</label>
             <RadioGroup value={namePort ? 'ja' : 'nej'} onValueChange={(v) => setNamePort(v === 'ja')} className="flex gap-4">
               <div className="flex items-center gap-1.5">
@@ -181,7 +181,7 @@ export function MoveInEditDialog({
           </div>
 
           {/* Welcome home */}
-          <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
             <label className="text-sm font-semibold">Välkommen hem</label>
             <RadioGroup value={welcomeHome ? 'ja' : 'nej'} onValueChange={(v) => setWelcomeHome(v === 'ja')} className="flex gap-4">
               <div className="flex items-center gap-1.5">
@@ -196,7 +196,7 @@ export function MoveInEditDialog({
           </div>
 
           {/* Inspection protocol */}
-          <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
             <label className="text-sm font-semibold">Besiktningsprotokoll</label>
             <RadioGroup value={inspectionProtocol ? 'ja' : 'nej'} onValueChange={(v) => setInspectionProtocol(v === 'ja')} className="flex gap-4">
               <div className="flex items-center gap-1.5">
@@ -211,7 +211,7 @@ export function MoveInEditDialog({
           </div>
 
           {/* Keys */}
-          <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
             <label className="text-sm font-semibold">Nycklar uthämtade</label>
             <RadioGroup value={keysHandled ? 'ja' : 'nej'} onValueChange={(v) => setKeysHandled(v === 'ja')} className="flex gap-4">
               <div className="flex items-center gap-1.5">
@@ -226,7 +226,7 @@ export function MoveInEditDialog({
           </div>
 
           {/* Quick move-in */}
-          <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
             <label className="text-sm font-semibold">Snabb inflytt</label>
             <RadioGroup value={quickMoveIn ? 'ja' : 'nej'} onValueChange={(v) => setQuickMoveIn(v === 'ja')} className="flex gap-4">
               <div className="flex items-center gap-1.5">
