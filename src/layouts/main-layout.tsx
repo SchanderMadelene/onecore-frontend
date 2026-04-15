@@ -4,6 +4,7 @@ import { TreeView } from "@/widgets/navigation";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 const LG_BREAKPOINT = 1024;
 
@@ -41,7 +42,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
+    <div className="min-h-screen bg-background">
       <NavigationBar 
         onMenuClick={handleSidebarToggle}
       />
@@ -109,9 +110,18 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
             z-10
           `}
         >
-          <div className="w-full">
-            {children}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="w-full"
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
     </div>
