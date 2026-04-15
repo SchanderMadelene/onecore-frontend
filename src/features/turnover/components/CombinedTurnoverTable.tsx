@@ -326,8 +326,8 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="font-medium text-sm whitespace-nowrap relative">
                     <span>{row.address}</span>
                     {getResidenceUrl(row) && (
-                      <span className="absolute inset-y-0 left-2 flex items-center opacity-0 group-hover/row:opacity-100 transition-opacity">
-                        <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                      <span className="absolute inset-y-0 left-2 flex items-center opacity-0 group-hover/row:opacity-100 transition-opacity bg-muted/50 pr-1">
+                        <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                           <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
                             <ExternalLink className="h-3 w-3" />
                           </a>
@@ -350,17 +350,17 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           )}
                         </div>
                         {(row.moveOut.tenantId || row.moveOut.tenantPhone) && (
-                          <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
-                            <span className="flex items-center gap-1 bg-background pr-1">
+                          <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-muted/50 pr-1">
+                            <span className="flex items-center gap-1">
                               {row.moveOut.tenantId && (
-                                <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                                <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`/tenants/detail/${row.moveOut.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
                                     <ExternalLink className="h-3 w-3" />
                                   </a>
                                 </Button>
                               )}
                               {row.moveOut.tenantPhone && (
-                                <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                                <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`tel:${row.moveOut.tenantPhone}`} title={row.moveOut.tenantPhone}>
                                     <Phone className="h-3 w-3" />
                                   </a>
@@ -440,17 +440,17 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           )}
                         </div>
                         {(row.moveIn.tenantId || row.moveIn.tenantPhone) && (
-                          <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
-                            <span className="flex items-center gap-1 bg-background pr-1">
+                          <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-muted/50 pr-1">
+                            <span className="flex items-center gap-1">
                               {row.moveIn.tenantId && (
-                                <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                                <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`/tenants/detail/${row.moveIn.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
                                     <ExternalLink className="h-3 w-3" />
                                   </a>
                                 </Button>
                               )}
                               {row.moveIn.tenantPhone && (
-                                <Button variant="outline" size="icon" className="h-6 w-6 bg-background" asChild>
+                                <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
                                     <Phone className="h-3 w-3" />
                                   </a>
