@@ -22,7 +22,7 @@ import { FormActions } from "./form/FormActions";
 type OrderFormProps = {
   onSubmit: (orderData: Omit<Order, "id" | "status" | "reportedDate">) => void;
   onCancel: () => void;
-  contextType?: "tenant" | "residence" | "building";
+  contextType?: "tenant" | "residence" | "building" | "entrance";
   rooms?: Room[];
   tenant?: any;
   residenceId?: string;

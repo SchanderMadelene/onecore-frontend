@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { TabLayout } from "@/components/ui/tab-layout";
 
 export interface OrdersManagementProps {
-  contextType?: "tenant" | "residence" | "building";
+  contextType?: "tenant" | "residence" | "building" | "entrance";
   residenceId?: string;
   tenant?: any;
   compact?: boolean;
