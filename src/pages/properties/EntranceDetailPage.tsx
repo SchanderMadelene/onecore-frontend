@@ -25,8 +25,7 @@ const EntranceDetailPage = () => {
       <div className={isMobile ? "p-4 space-y-4" : "p-6 space-y-6"}>
 
         {/* Header */}
-        <div className="flex items-center gap-3">
-          <div>
+        <div>
           <div>
             <h1 className={`font-bold ${isMobile ? "text-xl" : "text-2xl"}`}>
               {entranceNode?.label ?? entrance}
