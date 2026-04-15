@@ -1,6 +1,6 @@
-import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
+import { TurnoverRow, MoveInListChecklist, CleaningStatus, ContactStatus } from '../types/move-in-list-types';
 import { ContractStatusBadge } from './ContractStatusBadge';
-import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare, ExternalLink, FileText } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
@@ -18,11 +18,6 @@ import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
-const WELCOME_LABELS: Record<WelcomeHomeMethod, string> = {
-  none: '–',
-  digital: 'Digital',
-  manual: 'Manuell',
-};
 
 interface CombinedTurnoverTableProps {
   entries: TurnoverRow[];
@@ -30,14 +25,15 @@ interface CombinedTurnoverTableProps {
   onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningCountChange: (entryId: string, count: number) => void;
   onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
-  onWelcomeHomeChange: (entryId: string, method: WelcomeHomeMethod) => void;
+  onWelcomeHomeChange: (entryId: string, done: boolean) => void;
+  onInspectionProtocolChange: (entryId: string, done: boolean) => void;
   onContactStatusChange: (entryId: string, status: ContactStatus) => void;
   onContactAttemptsChange: (entryId: string, count: number) => void;
   onVisitBookedDateChange: (entryId: string, datetime: string | undefined) => void;
   onQuickMoveInChange: (entryId: string, value: boolean) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onInspectionProtocolChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
   const { getNotesForEntry, addNote, toggleImportant } = useTurnoverNotes();
 
@@ -194,12 +190,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       contactAttempts={row.moveIn.checklist.contactAttempts}
                       visitBookedDate={row.moveIn.checklist.visitBookedDate}
                       nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
-                      welcomeHomeMethod={row.moveIn.checklist.welcomeHomeMethod}
+                      welcomeHomeDone={row.moveIn.checklist.welcomeHomeDone}
+                      inspectionProtocolDone={row.moveIn.checklist.inspectionProtocolDone}
                       onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
                       onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
                       onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
                       onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
-                      onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                      onWelcomeHomeChange={(v) => onWelcomeHomeChange(row.moveIn!.id, v)}
+                      onInspectionProtocolChange={(v) => onInspectionProtocolChange(row.moveIn!.id, v)}
                       keysHandled={row.moveIn!.checklist.keysHandled}
                       hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
                       onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
@@ -235,7 +233,21 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     )}
                   </div>
                   <span className="text-muted-foreground">Välk. hem:</span>
-                  <span className="font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
+                  <div>
+                    {row.moveIn.checklist.welcomeHomeDone ? (
+                      <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    ) : (
+                      <span className="text-muted-foreground">–</span>
+                    )}
+                  </div>
+                  <span className="text-muted-foreground">Besiktn.prot.:</span>
+                  <div>
+                    {row.moveIn.checklist.inspectionProtocolDone ? (
+                      <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    ) : (
+                      <span className="text-muted-foreground">–</span>
+                    )}
+                  </div>
                   <span className="text-muted-foreground">Nycklar:</span>
                   <KeysHandledBadge handled={row.moveIn.checklist.keysHandled} />
                 </div>
@@ -305,6 +317,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableHead>Kontakt</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Namn/Port</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Välk. hem</TableHead>
+                <TableHead className="text-center whitespace-nowrap"><span title="Besiktningsprotokoll"><FileText className="h-3.5 w-3.5 mx-auto" /></span></TableHead>
                 <TableHead className="w-[40px] text-center p-1"><Key className="h-3.5 w-3.5 mx-auto" /></TableHead>
                 <TableHead className="w-[28px] p-0"></TableHead>
                 <TableHead className="w-[40px] p-1"></TableHead>
@@ -457,7 +470,21 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   {/* Read-only Välkommen hem */}
                   <TableCell className="text-center text-sm">
                     {row.moveIn ? (
-                      <span>{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
+                      row.moveIn.checklist.welcomeHomeDone ? (
+                        <Check className="h-4 w-4 text-emerald-600 mx-auto" />
+                      ) : (
+                        <span className="text-muted-foreground">–</span>
+                      )
+                    ) : <span className="text-muted-foreground">–</span>}
+                  </TableCell>
+                  {/* Read-only Besiktningsprotokoll */}
+                  <TableCell className="text-center text-sm">
+                    {row.moveIn ? (
+                      row.moveIn.checklist.inspectionProtocolDone ? (
+                        <Check className="h-4 w-4 text-emerald-600 mx-auto" />
+                      ) : (
+                        <span className="text-muted-foreground">–</span>
+                      )
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in keys */}
@@ -489,12 +516,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         contactAttempts={row.moveIn.checklist.contactAttempts}
                         visitBookedDate={row.moveIn.checklist.visitBookedDate}
                         nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
-                        welcomeHomeMethod={row.moveIn.checklist.welcomeHomeMethod}
+                        welcomeHomeDone={row.moveIn.checklist.welcomeHomeDone}
+                      inspectionProtocolDone={row.moveIn.checklist.inspectionProtocolDone}
                         onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
                         onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
                         onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
                         onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
-                        onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                        onWelcomeHomeChange={(v) => onWelcomeHomeChange(row.moveIn!.id, v)}
+                      onInspectionProtocolChange={(v) => onInspectionProtocolChange(row.moveIn!.id, v)}
                         keysHandled={row.moveIn!.checklist.keysHandled}
                         hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
                         onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}

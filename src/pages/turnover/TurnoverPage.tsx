@@ -29,7 +29,7 @@ export default function TurnoverPage() {
     selectedDistrict, setSelectedDistrict,
     combinedEntries, updateChecklist, updateCleaningStatus,
     updateCleaningCount, updateCleaningBookedDate,
-    updateWelcomeHome, updateContactStatus,
+    updateWelcomeHome, updateInspectionProtocol, updateContactStatus,
     updateContactAttempts, updateVisitBookedDate,
     updateQuickMoveIn, availableKvvAreas, availableDistricts,
   } = useMoveInList();
@@ -112,6 +112,7 @@ export default function TurnoverPage() {
               onCleaningCountChange={updateCleaningCount}
               onCleaningBookedDateChange={updateCleaningBookedDate}
               onWelcomeHomeChange={updateWelcomeHome}
+              onInspectionProtocolChange={updateInspectionProtocol}
               onContactStatusChange={updateContactStatus}
               onContactAttemptsChange={updateContactAttempts}
               onVisitBookedDateChange={updateVisitBookedDate}

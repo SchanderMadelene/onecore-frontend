@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MoveInListEntry, MoveInListChecklist, TurnoverRow, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
+import { MoveInListEntry, MoveInListChecklist, TurnoverRow, CleaningStatus, ContactStatus } from '../types/move-in-list-types';
 import { mockMoveInListEntries } from '../data/mock-move-in-list';
 import { parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 
@@ -114,11 +114,21 @@ export function useMoveInList() {
     );
   };
 
-  const updateWelcomeHome = (entryId: string, method: WelcomeHomeMethod) => {
+  const updateWelcomeHome = (entryId: string, done: boolean) => {
     setEntries(prev =>
       prev.map(entry =>
         entry.id === entryId
-          ? { ...entry, checklist: { ...entry.checklist, welcomeHomeMethod: method } }
+          ? { ...entry, checklist: { ...entry.checklist, welcomeHomeDone: done } }
+          : entry
+      )
+    );
+  };
+
+  const updateInspectionProtocol = (entryId: string, done: boolean) => {
+    setEntries(prev =>
+      prev.map(entry =>
+        entry.id === entryId
+          ? { ...entry, checklist: { ...entry.checklist, inspectionProtocolDone: done } }
           : entry
       )
     );
@@ -192,6 +202,7 @@ export function useMoveInList() {
     updateCleaningCount,
     updateCleaningBookedDate,
     updateWelcomeHome,
+    updateInspectionProtocol,
     updateContactStatus,
     updateContactAttempts,
     updateVisitBookedDate,
