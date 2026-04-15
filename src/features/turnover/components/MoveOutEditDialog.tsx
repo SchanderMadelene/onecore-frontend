@@ -169,9 +169,18 @@ export function MoveOutEditDialog({
           <Separator />
 
           {/* Keys */}
-          <div className="flex items-center gap-2">
-            <Checkbox checked={keysHandled} onCheckedChange={(v) => setKeysHandled(v === true)} id="keysHandled" />
-            <label htmlFor="keysHandled" className="text-sm font-medium cursor-pointer">Nycklar inlämnade</label>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-semibold">Nycklar inlämnade</label>
+            <RadioGroup value={keysHandled ? 'ja' : 'nej'} onValueChange={(v) => setKeysHandled(v === 'ja')} className="flex gap-4">
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="ja" id="moveOutKeysYes" />
+                <label htmlFor="moveOutKeysYes" className="text-sm cursor-pointer">Ja</label>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <RadioGroupItem value="nej" id="moveOutKeysNo" />
+                <label htmlFor="moveOutKeysNo" className="text-sm cursor-pointer">Nej</label>
+              </div>
+            </RadioGroup>
           </div>
 
           <Separator />
