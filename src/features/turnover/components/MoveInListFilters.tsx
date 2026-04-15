@@ -17,6 +17,8 @@ interface MoveInListFiltersProps {
   districts: string[];
   selectedDistrict: string;
   onDistrictChange: (value: string) => void;
+  moveOutCount?: number;
+  moveInCount?: number;
 }
 
 export function MoveInListFilters({
@@ -32,6 +34,8 @@ export function MoveInListFilters({
   districts,
   selectedDistrict,
   onDistrictChange,
+  moveOutCount,
+  moveInCount,
 }: MoveInListFiltersProps) {
   return (
     <div className="space-y-3">
@@ -88,7 +92,13 @@ export function MoveInListFilters({
           ))}
         </SelectContent>
       </Select>
-    </div>
+      </div>
+      {(moveOutCount !== undefined || moveInCount !== undefined) && (
+        <div className="flex justify-end gap-3 text-xs text-muted-foreground">
+          {moveOutCount !== undefined && <span>Utflytt: {moveOutCount}</span>}
+          {moveInCount !== undefined && <span>Inflytt: {moveInCount}</span>}
+        </div>
+      )}
     </div>
   );
 }

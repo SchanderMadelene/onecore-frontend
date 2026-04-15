@@ -279,18 +279,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
   }
 
   // Desktop table
-  const moveOutCount = entries.filter(e => e.moveOut).length;
-  const moveInCount = entries.filter(e => e.moveIn).length;
-
   return (
-    <>
-      <div className="flex items-center gap-3 mb-2 text-xs text-muted-foreground">
-        <span>Utflytt: {moveOutCount}</span>
-        <span>Inflytt: {moveInCount}</span>
-      </div>
-      <Card>
-        <CardContent className="p-0">
-          <div className="rounded-md border-0 overflow-x-auto">
+    <Card>
+      <CardContent className="p-0">
+        <div className="rounded-md border-0 overflow-x-auto">
           <Table className="[&_th]:px-2 [&_th]:py-1.5 [&_td]:px-2 [&_td]:py-1.5">
             <TableHeader>
               <TableRow>
@@ -565,6 +557,5 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
         </div>
       </CardContent>
     </Card>
-    </>
   );
 }
