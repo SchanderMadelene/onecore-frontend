@@ -1,41 +1,57 @@
 
 
-## Plan: Högerställd overlay med gradient-fade
+## Plan: Konsolidera alla knappar till en MoreHorizontal-meny
 
 ### Koncept
-Vid hover glider en knappgrupp in från höger i varje sektion (utflytt / inflytt). En gradient-fade från transparent till radens bakgrundsfärg skapar en mjuk övergång där texten fadear ut under knapparna.
-
-### Teknisk implementation
-
-**Fil: `CombinedTurnoverTable.tsx`**
-
-1. **Flytta overlay-knapparna** från `left-2` (ovanpå namn) till **höger** inom hyresgästcellen. Använd `absolute inset-y-0 right-0` istället.
-
-2. **Gradient-bakgrund** istället för solid `bg-muted/50`:
-```tsx
-<span className="absolute inset-y-0 right-0 flex items-center gap-1 pr-1 
-  opacity-0 group-hover/row:opacity-100 transition-opacity
-  bg-gradient-to-l from-background via-background to-transparent">
-```
-Gradienten går från solid bakgrund (höger) till transparent (vänster), så texten fadear naturligt under.
-
-3. **Samma mönster på tre ställen**:
-   - Adresscellen (lägenhetskort-knapp) → overlay högerställd
-   - Utflytthyresgäst-cellen (kundkort + telefon) → overlay högerställd  
-   - Inflytthyresgäst-cellen (kundkort + telefon) → overlay högerställd
-
-4. **Hover-state-anpassning**: Gradienten använder CSS-variabeln `from-background` som standard, men vid row-hover byter tabellraden till `hover:bg-muted/50`. Vi löser detta genom att använda `from-muted/50 via-muted/50` som gradient-färger, matchat med gruppens hover:
-```tsx
-className="... from-transparent to-transparent 
-  group-hover/row:from-muted/50 group-hover/row:via-muted/50"
-```
-Eftersom overlayen bara syns vid hover behöver färgen bara matcha hover-statet.
+Ersätt de absolut-positionerade hover-overlay-knapparna OCH penna-knappen med **en enda MoreHorizontal-knapp (⋯)** per sektion. Klick öppnar en DropdownMenu med alla åtgärder som menyalternativ.
 
 ### Resultat
-- Utan hover: Ren text, inga knappar synliga, inget extra utrymme
-- Vid hover: Knappar glider in snyggt från höger med en gradient som mjukt döljer texten under
 
-### Avgränsning
-- Mobil: oförändrad
-- Penna-knapp, noter-ikon: oförändrade (egna kolumner)
+```text
+Före:  [text + hover-overlay-knappar] ... [📝noter] [✏]
+Efter: [text]                         ... [📝noter] [⋯]
+```
+
+### Menyinnehåll
+
+**Uppgångs-kolumnen** (adresscellen):
+- En ⋯-knapp ersätter hover-overlayen
+- Menyalternativ: "Öppna lägenhetskort ↗"
+
+**Utflytt-sektionen** (en ⋯-knapp ersätter penna + hover-overlay):
+- "Redigera utflytt" (öppnar MoveOutEditDialog)
+- "Öppna kundkort ↗" (om tenantId finns)
+- "Ring [telefonnummer]" (om tenantPhone finns)
+
+**Inflytt-sektionen** (samma mönster):
+- "Redigera inflytt" (öppnar MoveInEditDialog)
+- "Öppna kundkort ↗" (om tenantId finns)
+- "Ring [telefonnummer]" (om tenantPhone finns)
+
+### Tekniska ändringar
+
+**1. Refaktorera `TurnoverRowActions.tsx`**
+- Byt ut `<Button><Pencil /></Button>` mot `<DropdownMenu>` med `<MoreHorizontal />` som trigger
+- Lägg till nya props: `residenceUrl?`, `tenantId?`, `tenantPhone?`
+- Menyalternativen: "Redigera" öppnar dialogen (behåller befintlig dialoglogik), övriga är `<a>`-länkar
+
+**2. Uppdatera `CombinedTurnoverTable.tsx`**
+- Ta bort alla `absolute inset-y-0` overlay-spans (gradient-knapparna)
+- Ta bort `relative` från TableCells som hade overlays
+- Skicka `residenceUrl`, `tenantId`, `tenantPhone` som nya props till `TurnoverRowActions`
+- Adresscellen: Lägg till en egen liten ⋯-meny ELLER baka in lägenhetskort-länken i utflytts-menyn (renare)
+
+**3. Adresscellen — enklare approach**
+Istället för en separat meny på adressen: baka in "Öppna lägenhetskort" som första alternativ i utflytt-menyn. Då behövs bara **två** ⋯-knappar per rad (utflytt + inflytt) istället för tre.
+
+### Filer som ändras
+| Fil | Ändring |
+|-----|---------|
+| `TurnoverRowActions.tsx` | Byt Pencil-knapp → MoreHorizontal + DropdownMenu. Nya props för tenantId, tenantPhone, residenceUrl |
+| `CombinedTurnoverTable.tsx` | Ta bort alla hover-overlay-spans. Skicka nya props. Ta bort oanvända kolumner om möjligt |
+
+### Visuellt
+- Varje rad har max 2 diskreta ⋯-knappar (en per sektion) + noteringsikoner
+- Inget hover-beteende behövs längre — allt är alltid tillgängligt via menyn
+- Tabellen blir renare och smalare
 
