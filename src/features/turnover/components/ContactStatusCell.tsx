@@ -116,12 +116,35 @@ export function ContactStatusCell({
             placeholder="Datum"
             className="h-7 w-auto px-2.5 text-xs"
           />
-          <input
-            type="time"
-            className="h-7 px-2 text-xs border rounded-md bg-background"
-            value={visitBookedDate ? visitBookedDate.substring(11, 16) : '10:00'}
-            onChange={(e) => handleTimeChange(e.target.value)}
-          />
+          <Select 
+            value={visitBookedDate ? visitBookedDate.substring(11, 13) : '10'} 
+            onValueChange={(h) => handleTimeChange(`${h}:${visitBookedDate ? visitBookedDate.substring(14, 16) : '00'}`)}
+          >
+            <SelectTrigger className="h-7 w-auto px-2 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Array.from({ length: 24 }, (_, i) => {
+                const hour = i.toString().padStart(2, '0');
+                return <SelectItem key={hour} value={hour}>{hour}</SelectItem>;
+              })}
+            </SelectContent>
+          </Select>
+          <span className="text-xs text-muted-foreground">:</span>
+          <Select 
+            value={visitBookedDate ? visitBookedDate.substring(14, 16) : '00'} 
+            onValueChange={(m) => handleTimeChange(`${visitBookedDate ? visitBookedDate.substring(11, 13) : '10'}:${m}`)}
+          >
+            <SelectTrigger className="h-7 w-auto px-2 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Array.from({ length: 12 }, (_, i) => {
+                const minute = (i * 5).toString().padStart(2, '0');
+                return <SelectItem key={minute} value={minute}>{minute}</SelectItem>;
+              })}
+            </SelectContent>
+          </Select>
         </div>
       )}
     </div>

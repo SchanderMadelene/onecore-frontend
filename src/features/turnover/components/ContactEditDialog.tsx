@@ -107,13 +107,32 @@ export function ContactEditDialog({
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Tid</label>
-                <input
-                  type="time"
-                  className="h-9 w-full px-3 text-sm border rounded-md bg-background"
-                  value={visitTime}
-                  onChange={(e) => setVisitTime(e.target.value)}
-                />
+                <label className="text-sm font-medium">Klockslag</label>
+                <div className="flex gap-2 items-center">
+                  <Select value={visitTime.substring(0, 2)} onValueChange={(h) => setVisitTime(`${h}:${visitTime.substring(3, 5)}`)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Timme" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 24 }, (_, i) => {
+                        const hour = i.toString().padStart(2, '0');
+                        return <SelectItem key={hour} value={hour}>{hour}</SelectItem>;
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <span className="text-muted-foreground font-medium">:</span>
+                  <Select value={visitTime.substring(3, 5)} onValueChange={(m) => setVisitTime(`${visitTime.substring(0, 2)}:${m}`)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Minut" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 12 }, (_, i) => {
+                        const minute = (i * 5).toString().padStart(2, '0');
+                        return <SelectItem key={minute} value={minute}>{minute}</SelectItem>;
+                      })}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </>
           )}
