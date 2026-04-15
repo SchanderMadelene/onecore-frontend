@@ -326,7 +326,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   <TableCell className="font-medium text-sm whitespace-nowrap relative">
                     <span>{row.address}</span>
                     {getResidenceUrl(row) && (
-                      <span className="absolute inset-y-0 left-2 flex items-center opacity-0 group-hover/row:opacity-100 transition-opacity bg-muted/50 pr-1">
+                      <span className="absolute inset-y-0 right-0 flex items-center pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
                         <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                           <a href={getResidenceUrl(row)!} target="_blank" rel="noopener noreferrer" title="Öppna lägenhetskort">
                             <ExternalLink className="h-3 w-3" />
@@ -350,8 +350,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           )}
                         </div>
                         {(row.moveOut.tenantId || row.moveOut.tenantPhone) && (
-                          <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-muted/50 pr-1">
-                            <span className="flex items-center gap-1">
+                          <span className="absolute inset-y-0 right-0 flex items-center gap-1 pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
                               {row.moveOut.tenantId && (
                                 <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`/tenants/detail/${row.moveOut.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
@@ -366,7 +365,6 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                                   </a>
                                 </Button>
                               )}
-                            </span>
                           </span>
                         )}
                       </>
@@ -440,8 +438,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                           )}
                         </div>
                         {(row.moveIn.tenantId || row.moveIn.tenantPhone) && (
-                          <span className="absolute inset-y-0 left-2 flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-muted/50 pr-1">
-                            <span className="flex items-center gap-1">
+                          <span className="absolute inset-y-0 right-0 flex items-center gap-1 pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
                               {row.moveIn.tenantId && (
                                 <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`/tenants/detail/${row.moveIn.tenantId}`} target="_blank" rel="noopener noreferrer" title="Öppna kundkort">
@@ -456,7 +453,6 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                                   </a>
                                 </Button>
                               )}
-                            </span>
                           </span>
                         )}
                       </>
