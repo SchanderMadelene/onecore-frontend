@@ -106,7 +106,7 @@ export function TurnoverRowActions(props: TurnoverRowActionsProps) {
             <DropdownMenuItem asChild>
               <a href={`tel:${tenantPhone}`}>
                 <Phone className="h-4 w-4 mr-2" />
-                Ring {tenantPhone}
+                Ring hyresgäst
               </a>
             </DropdownMenuItem>
           )}
