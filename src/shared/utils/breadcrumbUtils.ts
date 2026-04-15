@@ -1,4 +1,7 @@
 
+import { treeData } from "@/widgets/navigation/treeview/treeData";
+import type { TreeNode } from "@/widgets/navigation/treeview/types";
+
 export interface BreadcrumbItem {
   label: string;
   path: string;
@@ -115,6 +118,15 @@ export const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
         });
 
         if (residenceSegment) {
+          // Check if this residence lives under an entrance in the tree
+          const entrance = findEntranceParent(propertySegment, buildingSegment, residenceSegment);
+          if (entrance) {
+            breadcrumbs.push({
+              label: entrance.label,
+              path: entrance.path || buildingPath,
+            });
+          }
+
           breadcrumbs.push({
             label: getBreadcrumbLabel(residenceSegment, 'residence'),
             path: `${buildingPath}/${residenceSegment}`,
