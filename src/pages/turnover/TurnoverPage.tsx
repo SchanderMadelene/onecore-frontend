@@ -112,6 +112,7 @@ export default function TurnoverPage() {
               onCleaningCountChange={updateCleaningCount}
               onCleaningBookedDateChange={updateCleaningBookedDate}
               onWelcomeHomeChange={updateWelcomeHome}
+              onInspectionProtocolChange={updateInspectionProtocol}
               onContactStatusChange={updateContactStatus}
               onContactAttemptsChange={updateContactAttempts}
               onVisitBookedDateChange={updateVisitBookedDate}

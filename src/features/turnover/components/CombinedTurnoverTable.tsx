@@ -303,7 +303,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                 <TableHead>Kontakt</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Namn/Port</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Välk. hem</TableHead>
-                <TableHead className="text-center whitespace-nowrap"><FileText className="h-3.5 w-3.5 mx-auto" title="Besiktningsprotokoll" /></TableHead>
+                <TableHead className="text-center whitespace-nowrap"><span title="Besiktningsprotokoll"><FileText className="h-3.5 w-3.5 mx-auto" /></span></TableHead>
                 <TableHead className="w-[40px] text-center p-1"><Key className="h-3.5 w-3.5 mx-auto" /></TableHead>
                 <TableHead className="w-[28px] p-0"></TableHead>
                 <TableHead className="w-[40px] p-1"></TableHead>
