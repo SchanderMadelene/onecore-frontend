@@ -25,16 +25,9 @@ const EntranceDetailPage = () => {
       <div className={isMobile ? "p-4 space-y-4" : "p-6 space-y-6"}>
 
         {/* Header */}
-        <div>
-          <div>
-            <h1 className={`font-bold ${isMobile ? "text-xl" : "text-2xl"}`}>
-              {entranceNode?.label ?? entrance}
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {buildingNode?.label} · {propertyNode?.label}
-            </p>
-          </div>
-        </div>
+        <h1 className={`font-bold ${isMobile ? "text-xl" : "text-2xl"}`}>
+          {entranceNode?.label ?? entrance}
+        </h1>
 
         {/* Units list */}
         <Card>
