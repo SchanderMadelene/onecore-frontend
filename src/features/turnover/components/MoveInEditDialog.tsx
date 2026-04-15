@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/shared/ui/textarea';
-import { Save } from 'lucide-react';
+
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
@@ -158,7 +158,24 @@ export function MoveInEditDialog({
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Tid</label>
-                <input type="time" className="h-9 w-full px-3 text-sm border rounded-md bg-background" value={visitTime} onChange={(e) => setVisitTime(e.target.value)} />
+                <div className="flex gap-2">
+                  <Select value={visitTime.substring(0, 2)} onValueChange={(h) => setVisitTime(`${h}:${visitTime.substring(3, 5)}`)}>
+                    <SelectTrigger className="w-[80px]"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0')).map(h => (
+                        <SelectItem key={h} value={h}>{h}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select value={visitTime.substring(3, 5)} onValueChange={(m) => setVisitTime(`${visitTime.substring(0, 2)}:${m}`)}>
+                    <SelectTrigger className="w-[80px]"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, '0')).map(m => (
+                        <SelectItem key={m} value={m}>{m}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </>
           )}
@@ -266,10 +283,7 @@ export function MoveInEditDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Avbryt</Button>
-          <Button onClick={handleSave} className="flex items-center gap-1">
-            <Save className="h-4 w-4" />
-            Spara
-          </Button>
+          <Button onClick={handleSave}>Spara</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

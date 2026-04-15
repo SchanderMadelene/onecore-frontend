@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { Save } from 'lucide-react';
+
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DatePicker } from '@/shared/common/DatePicker';
@@ -138,10 +138,7 @@ export function StudentEditDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Avbryt</Button>
-          <Button onClick={handleSave} className="flex items-center gap-1">
-            <Save className="h-4 w-4" />
-            Spara
-          </Button>
+          <Button onClick={handleSave}>Spara</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

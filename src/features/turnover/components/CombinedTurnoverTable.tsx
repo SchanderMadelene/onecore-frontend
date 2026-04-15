@@ -281,6 +281,9 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
   // Desktop table
   return (
     <Card>
+      <CardHeader className="pb-0">
+        <CardTitle className="text-base">Ut- & inflytt ({entries.length})</CardTitle>
+      </CardHeader>
       <CardContent className="p-0">
         <div className="rounded-md border-0 overflow-x-auto">
           <Table className="[&_th]:px-2 [&_th]:py-1.5 [&_td]:px-2 [&_td]:py-1.5">
