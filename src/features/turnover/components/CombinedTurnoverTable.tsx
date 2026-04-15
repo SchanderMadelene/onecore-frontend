@@ -1,6 +1,7 @@
 import { TurnoverRow, MoveInListChecklist, CleaningStatus, ContactStatus } from '../types/move-in-list-types';
 import { ContractStatusBadge } from './ContractStatusBadge';
-import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare, ExternalLink, FileText } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Phone, Key, Zap, MessageSquare, ExternalLink, FileText } from 'lucide-react';
+import { BooleanBadge } from './BooleanBadge';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
@@ -225,29 +226,11 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     visitBookedDate={row.moveIn.checklist.visitBookedDate}
                   />
                   <span className="text-muted-foreground">Namn/Port:</span>
-                  <div>
-                    {row.moveIn.checklist.nameAndIntercomDone ? (
-                      <Check className="h-3.5 w-3.5 text-emerald-600" />
-                    ) : (
-                      <span className="text-muted-foreground">–</span>
-                    )}
-                  </div>
+                  <BooleanBadge value={row.moveIn.checklist.nameAndIntercomDone} />
                   <span className="text-muted-foreground">Välk. hem:</span>
-                  <div>
-                    {row.moveIn.checklist.welcomeHomeDone ? (
-                      <Check className="h-3.5 w-3.5 text-emerald-600" />
-                    ) : (
-                      <span className="text-muted-foreground">–</span>
-                    )}
-                  </div>
+                  <BooleanBadge value={row.moveIn.checklist.welcomeHomeDone} />
                   <span className="text-muted-foreground">Besiktn.prot.:</span>
-                  <div>
-                    {row.moveIn.checklist.inspectionProtocolDone ? (
-                      <Check className="h-3.5 w-3.5 text-emerald-600" />
-                    ) : (
-                      <span className="text-muted-foreground">–</span>
-                    )}
-                  </div>
+                  <BooleanBadge value={row.moveIn.checklist.inspectionProtocolDone} />
                   <span className="text-muted-foreground">Nycklar:</span>
                   <KeysHandledBadge handled={row.moveIn.checklist.keysHandled} />
                 </div>
@@ -460,31 +443,19 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   {/* Read-only Namn/Port */}
                   <TableCell className="text-center">
                     {row.moveIn ? (
-                      row.moveIn.checklist.nameAndIntercomDone ? (
-                        <Check className="h-4 w-4 text-emerald-600 mx-auto" />
-                      ) : (
-                        <span className="text-muted-foreground">–</span>
-                      )
+                      <BooleanBadge value={row.moveIn.checklist.nameAndIntercomDone} />
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Read-only Välkommen hem */}
                   <TableCell className="text-center text-sm">
                     {row.moveIn ? (
-                      row.moveIn.checklist.welcomeHomeDone ? (
-                        <Check className="h-4 w-4 text-emerald-600 mx-auto" />
-                      ) : (
-                        <span className="text-muted-foreground">–</span>
-                      )
+                      <BooleanBadge value={row.moveIn.checklist.welcomeHomeDone} />
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Read-only Besiktningsprotokoll */}
                   <TableCell className="text-center text-sm">
                     {row.moveIn ? (
-                      row.moveIn.checklist.inspectionProtocolDone ? (
-                        <Check className="h-4 w-4 text-emerald-600 mx-auto" />
-                      ) : (
-                        <span className="text-muted-foreground">–</span>
-                      )
+                      <BooleanBadge value={row.moveIn.checklist.inspectionProtocolDone} />
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in keys */}
