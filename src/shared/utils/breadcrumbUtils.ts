@@ -84,6 +84,26 @@ const subRouteLabels: Record<string, Record<string, string>> = {
   "property-areas": { admin: "Administration" },
 };
 
+/** Find the entrance node that contains a given residence in the tree data */
+const findEntranceParent = (
+  propertyId: string,
+  buildingId: string,
+  residenceId: string
+): TreeNode | null => {
+  const propertiesNode = treeData.find(n => n.id === "properties");
+  const propertyNode = propertiesNode?.children?.find(p => p.id === propertyId);
+  const buildingNode = propertyNode?.children?.find(b => b.id === buildingId);
+  if (!buildingNode?.children) return null;
+
+  for (const child of buildingNode.children) {
+    if (child.icon === "home" && child.children) {
+      const found = child.children.some(r => r.id === residenceId);
+      if (found) return child;
+    }
+  }
+  return null;
+};
+
 export const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
   const segments = pathname.split('/').filter(Boolean);
   if (segments.length === 0) return [];
