@@ -5,7 +5,7 @@ import { usePropertyDetail, PropertyDetailTabs, PropertyHeader, PropertyBasicInf
 import { PageLayout } from "@/layouts";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { PropertyBreadcrumb } from "@/components/common";
+
 
 const PropertyDetailPage = () => {
   const { property } = useParams();
@@ -56,7 +56,7 @@ const PropertyDetailPage = () => {
 
     return (
       <div className="py-4 space-y-6">
-        <PropertyBreadcrumb />
+        
         <PropertyHeader propertyDetail={propertyDetail} />
         
         {/* Grundläggande information always visible above tabs */}
