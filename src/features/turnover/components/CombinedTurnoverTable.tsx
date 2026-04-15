@@ -1,6 +1,6 @@
-import { TurnoverRow, MoveInListChecklist, CleaningStatus, WelcomeHomeMethod, ContactStatus } from '../types/move-in-list-types';
+import { TurnoverRow, MoveInListChecklist, CleaningStatus, ContactStatus } from '../types/move-in-list-types';
 import { ContractStatusBadge } from './ContractStatusBadge';
-import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Phone, Check, Key, Zap, MessageSquare, ExternalLink, FileText } from 'lucide-react';
 import { CleaningStatusBadge } from './CleaningStatusBadge';
 import { ContactStatusBadge } from './ContactStatusBadge';
 import { SecurityWarningIcon } from './SecurityWarningIcon';
@@ -18,11 +18,6 @@ import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
 
-const WELCOME_LABELS: Record<WelcomeHomeMethod, string> = {
-  none: '–',
-  digital: 'Digital',
-  manual: 'Manuell',
-};
 
 interface CombinedTurnoverTableProps {
   entries: TurnoverRow[];
@@ -30,14 +25,15 @@ interface CombinedTurnoverTableProps {
   onCleaningStatusChange: (entryId: string, status: CleaningStatus) => void;
   onCleaningCountChange: (entryId: string, count: number) => void;
   onCleaningBookedDateChange: (entryId: string, date: string | undefined) => void;
-  onWelcomeHomeChange: (entryId: string, method: WelcomeHomeMethod) => void;
+  onWelcomeHomeChange: (entryId: string, done: boolean) => void;
+  onInspectionProtocolChange: (entryId: string, done: boolean) => void;
   onContactStatusChange: (entryId: string, status: ContactStatus) => void;
   onContactAttemptsChange: (entryId: string, count: number) => void;
   onVisitBookedDateChange: (entryId: string, datetime: string | undefined) => void;
   onQuickMoveInChange: (entryId: string, value: boolean) => void;
 }
 
-export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
+export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onInspectionProtocolChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
   const { getNotesForEntry, addNote, toggleImportant } = useTurnoverNotes();
 
