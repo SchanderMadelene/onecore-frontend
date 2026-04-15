@@ -1,31 +1,61 @@
 
+Målet är att göra previewn robust igen när Lovables dev-preview tappar synk med Vites dynamiska route-importer.
 
-## Plan: Visa noteringar i redigeringsdialoger med toggling av viktig-flagga
+1. Bekräftad rotorsak
+- Koden för appen verkar inte vara trasig i sig.
+- Både preview-URL:n och published-URL:n renderar korrekt när de hämtas externt.
+- Felet i din inbäddade preview är istället ett runtime-fel för lazy-loaded routes:
+  - `Failed to fetch dynamically imported module: .../src/pages/Index.tsx`
+  - `Failed to fetch dynamically imported module: .../src/pages/properties/AllPropertiesPage.tsx`
+- Det pekar på ett dev/HMR-cache-problem i `.lovableproject.com`-previewn, inte på att startsidan eller fastighetssidan är logiskt trasiga.
 
-### Bakgrund
-Idag kan man markera en notering som viktig när den skapas, men det går inte att ändra efteråt. Noteringar visas bara i hovercarden (TurnoverNoteIndicator), inte i redigeringsmodalerna.
+2. Föreslagen implementation
+- Behåll lazy loading, men gör route-laddning mer självläkande.
+- Uppdatera `lazyWithRetry` i `src/App.tsx` så att den känner igen just dynamic-import chunk-fel och gör en kontrollerad engångs-reload istället för att fastna i permanent felskärm.
+- Lägg till enkel guard via `sessionStorage` så att sidan inte kan hamna i reload-loop.
+- Om reload redan har testats en gång och importen fortfarande misslyckas, visa befintlig felvy.
 
-### Lösning
-Visa befintliga noteringar i alla redigeringsdialoger (MoveOut, MoveIn, Student) och i TurnoverRowNoteButton. Varje notering får en klickbar viktig-toggling direkt i listan.
+3. Konkreta kodändringar
+- `src/App.tsx`
+  - förbättra `lazyWithRetry(...)`
+  - identifiera feltyper som:
+    - “Failed to fetch dynamically imported module”
+    - eventuellt chunk/script-laddningsfel
+  - trigga `window.location.reload()` endast en gång per session för route-load recovery
+- eventuellt även:
+  - återställ reload-flaggan när en import lyckas, så framtida riktiga uppdateringar kan återhämta sig normalt
 
-### Ändringar
+4. Varför detta är rätt nivå
+- Jag ser inget i `Index.tsx` eller `AllPropertiesPage.tsx` som förklarar att hela previewn skulle bli vit.
+- Samma UI laddar korrekt via extern fetch/screenshot.
+- Därför bör vi inte börja refaktorera sidorna, utan stärka route-laddningen i appskalet.
 
-**1. `useTurnoverNotes.ts` — Lägg till `toggleImportant`**
-- Ny funktion `toggleImportant(noteId: string)` som flippar `isImportant` på en specifik notering.
+5. Förväntat resultat efter implementation
+- Previewn återhämtar sig automatiskt från tillfälliga Vite/HMR-importfel.
+- Den vita/felaktiga previewn ska i praktiken försvinna i de flesta sådana lägen.
+- Om felet ändå kvarstår visas fallbacken som idag, men utan att användaren fastnar lika lätt.
 
-**2. Alla edit-dialoger — Visa noteringar + toggle**
-- Skicka in `notes: TurnoverNote[]` och `onToggleImportant: (noteId: string) => void` som props till `MoveOutEditDialog`, `MoveInEditDialog`, `StudentEditDialog`.
-- I noteringssektionen, lista befintliga noteringar ovanför inmatningsfältet (samma stil som i TurnoverRowNoteButton/TurnoverNoteIndicator).
-- Varje notering får en liten klickbar "Viktig"-toggle (t.ex. en kryssruta eller klickbar etikett) som anropar `onToggleImportant`.
+6. Tekniska detaljer
+```text
+Nuvarande flöde:
+Route lazy import misslyckas
+-> Suspense bryts
+-> ErrorBoundary visar "Ett tillfälligt laddningsfel uppstod"
 
-**3. `TurnoverRowNoteButton.tsx` — Samma toggle**
-- Lägg till `onToggleImportant` som prop och visa toggle per notering i den befintliga noteringslistan.
+Planerat flöde:
+Route lazy import misslyckas
+-> lazyWithRetry testar om
+-> om typiskt stale dev-chunk-fel:
+   -> kontrollera sessionStorage-flagga
+   -> reload EN gång
+-> om samma fel kvarstår efter reload:
+   -> kasta vidare
+   -> ErrorBoundary visar fallback
+```
 
-**4. `TurnoverRowActions.tsx` / tabellkomponenter — Koppla ihop**
-- Skicka `notes` och `toggleImportant` vidare till dialogerna.
-
-### Visuell design
-- Befintliga noteringar visas med samma stil som idag (röd border-left + "Viktig"-etikett för viktiga).
-- En liten klickbar text/checkbox per notering: "Viktig" som kan togglas av/på direkt.
-- Ändringen sker omedelbart (ingen separat spara-knapp för detta).
-
+7. Verifiering efteråt
+- Testa `/`
+- Testa `/properties`
+- Testa att navigera mellan startsidan och fastigheter flera gånger
+- Kontrollera att preview inte fastnar i reload-loop
+- Kontrollera att vanlig routing fortfarande fungerar i desktop och mobil
