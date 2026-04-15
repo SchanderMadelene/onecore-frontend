@@ -1,41 +1,31 @@
 
 
-## Plan: Högerställd overlay med gradient-fade
+## Plan: Förbättringar av Ut- & inflytt (punkt 1, 2, 3, 6)
 
-### Koncept
-Vid hover glider en knappgrupp in från höger i varje sektion (utflytt / inflytt). En gradient-fade från transparent till radens bakgrundsfärg skapar en mjuk övergång där texten fadear ut under knapparna.
+### 1. MoveInEditDialog — Byt tidväljare till dual-Select
+Rad 161: Ersätt `<input type="time">` med samma dual-Select-mönster (timmar 00–23, minuter i 5-minutersintervall) som redan finns i ContactEditDialog.
 
-### Teknisk implementation
+### 2. Ta bort Save-ikon från alla tre dialogers Spara-knapp
+- **MoveOutEditDialog.tsx** rad 213–215: Ta bort `<Save className="h-4 w-4" />`
+- **MoveInEditDialog.tsx** rad 269–271: Ta bort `<Save className="h-4 w-4" />`
+- **StudentEditDialog.tsx** rad 141–143: Ta bort `<Save className="h-4 w-4" />`
 
-**Fil: `CombinedTurnoverTable.tsx`**
+### 3. StudentTurnoverTable — Hover-overlay för e-postknappar
+Applicera samma mönster som CombinedTurnoverTable:
+- Lägg till `group/row` på `<TableRow>`
+- Gör studentnamn-cellerna (utflytt rad 236–246, inflytt rad 279–289) till `relative`
+- Flytta Mail-knappen till en absolut positionerad overlay med gradient-fade som visas vid hover
+- Namn visas som vanlig text, e-postknappen glider in från höger vid hover
 
-1. **Flytta overlay-knapparna** från `left-2` (ovanpå namn) till **höger** inom hyresgästcellen. Använd `absolute inset-y-0 right-0` istället.
+### 6. Visa antal poster i desktop-vyn
+Lägg till en diskret räknare i CombinedTurnoverTable desktop-vyn, t.ex. som en `CardHeader` med `<CardTitle>Ut- & inflytt ({entries.length})</CardTitle>` — matchande studenttabellens befintliga mönster.
 
-2. **Gradient-bakgrund** istället för solid `bg-muted/50`:
-```tsx
-<span className="absolute inset-y-0 right-0 flex items-center gap-1 pr-1 
-  opacity-0 group-hover/row:opacity-100 transition-opacity
-  bg-gradient-to-l from-background via-background to-transparent">
-```
-Gradienten går från solid bakgrund (höger) till transparent (vänster), så texten fadear naturligt under.
-
-3. **Samma mönster på tre ställen**:
-   - Adresscellen (lägenhetskort-knapp) → overlay högerställd
-   - Utflytthyresgäst-cellen (kundkort + telefon) → overlay högerställd  
-   - Inflytthyresgäst-cellen (kundkort + telefon) → overlay högerställd
-
-4. **Hover-state-anpassning**: Gradienten använder CSS-variabeln `from-background` som standard, men vid row-hover byter tabellraden till `hover:bg-muted/50`. Vi löser detta genom att använda `from-muted/50 via-muted/50` som gradient-färger, matchat med gruppens hover:
-```tsx
-className="... from-transparent to-transparent 
-  group-hover/row:from-muted/50 group-hover/row:via-muted/50"
-```
-Eftersom overlayen bara syns vid hover behöver färgen bara matcha hover-statet.
-
-### Resultat
-- Utan hover: Ren text, inga knappar synliga, inget extra utrymme
-- Vid hover: Knappar glider in snyggt från höger med en gradient som mjukt döljer texten under
-
-### Avgränsning
-- Mobil: oförändrad
-- Penna-knapp, noter-ikon: oförändrade (egna kolumner)
+### Filer som ändras
+| Fil | Ändring |
+|---|---|
+| `MoveInEditDialog.tsx` | Dual-Select tidväljare + ta bort Save-ikon |
+| `MoveOutEditDialog.tsx` | Ta bort Save-ikon |
+| `StudentEditDialog.tsx` | Ta bort Save-ikon |
+| `StudentTurnoverTable.tsx` | Hover-overlay för e-postknappar |
+| `CombinedTurnoverTable.tsx` | Lägg till antal poster i header |
 
