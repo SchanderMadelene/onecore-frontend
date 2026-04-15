@@ -190,12 +190,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                       contactAttempts={row.moveIn.checklist.contactAttempts}
                       visitBookedDate={row.moveIn.checklist.visitBookedDate}
                       nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
-                      welcomeHomeMethod={row.moveIn.checklist.welcomeHomeMethod}
+                      welcomeHomeDone={row.moveIn.checklist.welcomeHomeDone}
+                      inspectionProtocolDone={row.moveIn.checklist.inspectionProtocolDone}
                       onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
                       onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
                       onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
                       onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
-                      onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                      onWelcomeHomeChange={(v) => onWelcomeHomeChange(row.moveIn!.id, v)}
+                      onInspectionProtocolChange={(v) => onInspectionProtocolChange(row.moveIn!.id, v)}
                       keysHandled={row.moveIn!.checklist.keysHandled}
                       hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
                       onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
@@ -231,7 +233,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     )}
                   </div>
                   <span className="text-muted-foreground">Välk. hem:</span>
-                  <span className="font-medium">{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
+                  <span className="font-medium">{row.moveIn.checklist.welcomeHomeDone ? '✓' : '–'}</span>
                   <span className="text-muted-foreground">Nycklar:</span>
                   <KeysHandledBadge handled={row.moveIn.checklist.keysHandled} />
                 </div>
@@ -453,7 +455,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                   {/* Read-only Välkommen hem */}
                   <TableCell className="text-center text-sm">
                     {row.moveIn ? (
-                      <span>{WELCOME_LABELS[row.moveIn.checklist.welcomeHomeMethod]}</span>
+                      <span>{row.moveIn.checklist.welcomeHomeDone ? '✓' : '–'}</span>
                     ) : <span className="text-muted-foreground">–</span>}
                   </TableCell>
                   {/* Move-in keys */}
@@ -485,12 +487,14 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                         contactAttempts={row.moveIn.checklist.contactAttempts}
                         visitBookedDate={row.moveIn.checklist.visitBookedDate}
                         nameAndIntercomDone={row.moveIn.checklist.nameAndIntercomDone}
-                        welcomeHomeMethod={row.moveIn.checklist.welcomeHomeMethod}
+                        welcomeHomeDone={row.moveIn.checklist.welcomeHomeDone}
+                      inspectionProtocolDone={row.moveIn.checklist.inspectionProtocolDone}
                         onContactStatusChange={(s) => onContactStatusChange(row.moveIn!.id, s)}
                         onContactAttemptsChange={(c) => onContactAttemptsChange(row.moveIn!.id, c)}
                         onVisitBookedDateChange={(d) => onVisitBookedDateChange(row.moveIn!.id, d)}
                         onNameAndIntercomChange={(v) => onChecklistChange(row.moveIn!.id, 'nameAndIntercomDone', v)}
-                        onWelcomeHomeChange={(m) => onWelcomeHomeChange(row.moveIn!.id, m)}
+                        onWelcomeHomeChange={(v) => onWelcomeHomeChange(row.moveIn!.id, v)}
+                      onInspectionProtocolChange={(v) => onInspectionProtocolChange(row.moveIn!.id, v)}
                         keysHandled={row.moveIn!.checklist.keysHandled}
                         hasQuickMoveIn={row.moveIn!.hasQuickMoveIn ?? false}
                         onKeysHandledChange={(v) => onChecklistChange(row.moveIn!.id, 'keysHandled', v)}
