@@ -3,8 +3,10 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon } from "lucide-react";
-import { Control } from "react-hook-form";
+import { Control, useWatch } from "react-hook-form";
+import { DatePicker } from "@/shared/common";
 import type { EditHousingFormData } from "./types";
 
 interface EditableFormSectionProps {
