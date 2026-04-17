@@ -13,6 +13,7 @@ import { DetailedDescriptionTab } from "@/features/rentals/components/edit-housi
 import { PlanritningTab } from "@/features/rentals/components/edit-housing/PlanritningTab";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { EditHousingFormData } from "@/features/rentals/components/edit-housing/types";
+import { PublishActionBar } from "@/shared/ui/publish-action-bar";
 
 export default function CreateHousingAdPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
