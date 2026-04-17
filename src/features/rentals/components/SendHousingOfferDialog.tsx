@@ -217,28 +217,31 @@ export function SendHousingOfferDialog({
           )}
 
           {showingHost === "custom" && (
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="custom-host-name" className="text-sm font-normal">
-                  Namn på visningsvärd
-                </Label>
-                <Input
-                  id="custom-host-name"
-                  value={customHostName}
-                  onChange={(e) => setCustomHostName(e.target.value)}
-                  placeholder="För- och efternamn"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="custom-host-phone" className="text-sm font-normal">
-                  Telefon
-                </Label>
-                <Input
-                  id="custom-host-phone"
-                  value={customHostPhone}
-                  onChange={(e) => setCustomHostPhone(e.target.value)}
-                  placeholder="070-123 45 67"
-                />
+            <div className="rounded-lg border bg-muted/30 p-4 space-y-3">
+              <p className="text-sm font-medium">Kontaktuppgifter för egen kontakt</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="custom-host-name" className="text-sm font-normal">
+                    Namn
+                  </Label>
+                  <Input
+                    id="custom-host-name"
+                    value={customHostName}
+                    onChange={(e) => setCustomHostName(e.target.value)}
+                    placeholder="För- och efternamn"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="custom-host-phone" className="text-sm font-normal">
+                    Telefon
+                  </Label>
+                  <Input
+                    id="custom-host-phone"
+                    value={customHostPhone}
+                    onChange={(e) => setCustomHostPhone(e.target.value)}
+                    placeholder="070-123 45 67"
+                  />
+                </div>
               </div>
             </div>
           )}
