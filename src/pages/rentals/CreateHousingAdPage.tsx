@@ -140,35 +140,16 @@ export default function CreateHousingAdPage() {
           </TabsContent>
         </Tabs>
 
-        <div className={`${isMobile ? 'flex-col gap-2 pt-4' : 'flex justify-between pt-6'} border-t mt-6`}>
-          {isMobile ? (
-            <div className="flex flex-col gap-2 w-full">
-              <Button 
-                onClick={form.handleSubmit(onSubmit)} 
-                className="w-full bg-primary hover:bg-primary/90"
-              >
-                Skapa annons
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={handlePublish}
-                className="w-full"
-              >
-                Skapa och publicera
-              </Button>
-            </div>
-          ) : (
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={handlePublish} className="px-8">
-                Skapa och publicera
-              </Button>
-              <Button onClick={form.handleSubmit(onSubmit)} className="px-8 bg-primary hover:bg-primary/90">
-                Skapa annons
-              </Button>
-            </div>
-          )}
-        </div>
       </div>
+
+      <PublishActionBar
+        status="Utkast — ej sparat"
+        primaryAction={{ label: "Skapa annons", onClick: form.handleSubmit(onSubmit) }}
+        secondaryActions={[
+          { label: "Skapa och publicera", onClick: handlePublish },
+          { label: "Avbryt", onClick: handleBack },
+        ]}
+      />
     </PageLayout>
   );
 }
