@@ -18,59 +18,55 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
 
   return (
     <div className="space-y-6">
-      {/* Publiceringsperiod */}
-      <div className="space-y-3 rounded-lg border bg-muted/30 p-4">
-        <h3 className="text-sm font-medium">Publiceringsperiod</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FormField
-            control={control}
-            name="publishFrom"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-sm font-medium">Publicera från</FormLabel>
-                <FormControl>
-                  <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj startdatum" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={control}
-            name="publishTo"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-sm font-medium">Publicera till</FormLabel>
-                <FormControl>
-                  <DatePicker
-                    value={untilFurtherNotice ? undefined : field.value}
-                    onChange={field.onChange}
-                    placeholder={untilFurtherNotice ? "Tillsvidare" : "Välj slutdatum"}
-                    disabled={untilFurtherNotice}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          control={control}
+          name="publishFrom"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel className="text-sm font-medium">Publicera från</FormLabel>
+              <FormControl>
+                <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj startdatum" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={control}
-          name="publishUntilFurtherNotice"
+          name="publishTo"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center gap-2 space-y-0">
+            <FormItem className="flex flex-col">
+              <FormLabel className="text-sm font-medium">Publicera till</FormLabel>
               <FormControl>
-                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                <DatePicker
+                  value={untilFurtherNotice ? undefined : field.value}
+                  onChange={field.onChange}
+                  placeholder={untilFurtherNotice ? "Tillsvidare" : "Välj slutdatum"}
+                  disabled={untilFurtherNotice}
+                />
               </FormControl>
-              <FormLabel className="text-sm font-normal cursor-pointer">
-                Publicera tillsvidare (inget slutdatum)
-              </FormLabel>
+              <FormMessage />
             </FormItem>
           )}
         />
       </div>
+
+      <FormField
+        control={control}
+        name="publishUntilFurtherNotice"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center gap-2 space-y-0 -mt-2">
+            <FormControl>
+              <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+            </FormControl>
+            <FormLabel className="text-sm font-normal cursor-pointer">
+              Publicera tillsvidare (inget slutdatum)
+            </FormLabel>
+          </FormItem>
+        )}
+      />
 
       <FormField
         control={control}
