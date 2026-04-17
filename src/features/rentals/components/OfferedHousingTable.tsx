@@ -26,6 +26,18 @@ export function OfferedHousingTable() {
         return `${offer?.selectedApplicants.length || 0} st`;
       }
     },
+    {
+      key: "accepted",
+      label: "Tackat ja",
+      render: (h: any) => {
+        const offer = offers.find(o => o.listingId === h.id);
+        const total = offer?.selectedApplicants.length || 0;
+        // Mock: deterministisk andel som tackat ja baserat på listing-id
+        const seed = h.id.split("").reduce((a: number, c: string) => a + c.charCodeAt(0), 0);
+        const accepted = total === 0 ? 0 : seed % (total + 1);
+        return `${accepted} st`;
+      }
+    },
     { 
       key: "status", 
       label: "Status", 
