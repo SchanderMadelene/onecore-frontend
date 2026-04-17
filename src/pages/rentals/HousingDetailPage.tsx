@@ -3,18 +3,23 @@ import { PageLayout } from "@/layouts";
 import { Button } from "@/components/ui/button";
 import { useHousingListing, useHousingStatus } from "@/features/rentals";
 import { toast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
+import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
+import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 
 const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
+  const [smsOpen, setSmsOpen] = useState(false);
+  const [emailOpen, setEmailOpen] = useState(false);
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,6 +27,20 @@ const HousingDetailPage = () => {
   const { getHousingStatus } = useHousingStatus();
   
   const { data: listing, isLoading } = useHousingListing(housingId || "");
+
+  // Bygg recipient-listan för bulk-SMS/mejl baserat på markerade sökande.
+  // Telefon och e-post mockas tills riktig kunddata är kopplad.
+  const bulkRecipients = useMemo(() => {
+    if (!listing) return [];
+    return listing.applicants
+      .filter(a => selectedApplicants.includes(String(a.id)))
+      .map(a => ({
+        id: String(a.id),
+        name: a.name,
+        phone: `+4670${String(1000000 + a.id).slice(-7)}`,
+        email: `${a.name.toLowerCase().replace(/\s+/g, ".").replace(/[åä]/g, "a").replace(/ö/g, "o")}@example.com`,
+      }));
+  }, [listing, selectedApplicants]);
 
   const handleBack = () => {
     // Navigate back to rentals page with bostad tab and the specific housing sub-tab
@@ -184,6 +203,36 @@ const HousingDetailPage = () => {
         recipientCount={selectedApplicants.length}
         housingAddress={listing.address}
         onConfirm={handleConfirmOffer}
+      />
+
+      {/* Bulk-actions för markerade sökande (SMS/mejl). Visas i alla tre lägen
+          (urval för erbjudande, granska erbjudna, kontrakt). I urvalsläget
+          används samma selection som "Skicka erbjudande". */}
+      <BulkActionBar
+        selectedCount={selectedApplicants.length}
+        onSendSms={() => setSmsOpen(true)}
+        onSendEmail={() => setEmailOpen(true)}
+        onClear={() => setSelectedApplicants([])}
+      />
+
+      <BulkSmsModal
+        open={smsOpen}
+        onOpenChange={setSmsOpen}
+        recipients={bulkRecipients}
+        onSend={async (_message, sentTo) => {
+          await new Promise((r) => setTimeout(r, 300));
+          sonnerToast.success(`SMS skickat till ${sentTo.length} sökande`);
+        }}
+      />
+
+      <BulkEmailModal
+        open={emailOpen}
+        onOpenChange={setEmailOpen}
+        recipients={bulkRecipients}
+        onSend={async (_subject, _body, sentTo) => {
+          await new Promise((r) => setTimeout(r, 300));
+          sonnerToast.success(`Mejl skickat till ${sentTo.length} sökande`);
+        }}
       />
     </PageLayout>
   );

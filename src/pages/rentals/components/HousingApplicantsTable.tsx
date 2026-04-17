@@ -36,9 +36,14 @@ export function HousingApplicantsTable({
 
   // Förvalja de 10 översta sökandena (efter köpoäng-ordning som listan kommer i)
   // som inte redan har erbjudits, så uthyrare snabbt kan skicka erbjudande.
+  // Endast i urvalsläget (showSelectionColumn) — i granskning/kontrakt ska
+  // checkboxarna börja tomma så användaren själv väljer SMS-mottagare.
   useEffect(() => {
     if (hasInitializedSelection.current) return;
-    if (!showSelectionColumn) return;
+    if (!showSelectionColumn) {
+      hasInitializedSelection.current = true;
+      return;
+    }
     if (applicants.length === 0) return;
 
     const eligible = applicants
@@ -211,7 +216,7 @@ export function HousingApplicantsTable({
         <Table>
         <TableHeader>
           <TableRow>
-            {showSelectionColumn && <TableHead className="w-12">Val</TableHead>}
+            <TableHead className="w-12">Val</TableHead>
             <TableHead className="whitespace-nowrap">Namn</TableHead>
             <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
             <TableHead className="whitespace-nowrap">Köpoäng</TableHead>
@@ -230,19 +235,17 @@ export function HousingApplicantsTable({
             .map((applicant) => (
               <>
                 <TableRow key={applicant.id}>
-                  {showSelectionColumn && (
-                    <TableCell className="py-3">
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          checked={selectedApplicants.has(String(applicant.id))}
-                          onCheckedChange={(checked) => 
-                            handleApplicantSelection(String(applicant.id), checked as boolean)
-                          }
-                          className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                        />
-                      </div>
-                    </TableCell>
-                  )}
+                  <TableCell className="py-3">
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        checked={selectedApplicants.has(String(applicant.id))}
+                        onCheckedChange={(checked) =>
+                          handleApplicantSelection(String(applicant.id), checked as boolean)
+                        }
+                        className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <Button
@@ -251,8 +254,8 @@ export function HousingApplicantsTable({
                         onClick={() => handleToggleExpand(applicant)}
                         className="p-1 h-auto"
                       >
-                        {expandedApplicant === String(applicant.id) ? 
-                          <ChevronDown className="h-4 w-4" /> : 
+                        {expandedApplicant === String(applicant.id) ?
+                          <ChevronDown className="h-4 w-4" /> :
                           <ChevronRight className="h-4 w-4" />
                         }
                       </Button>
@@ -324,7 +327,7 @@ export function HousingApplicantsTable({
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={showSelectionColumn ? 9 : 11} className="p-0">
+                    <TableCell colSpan={11} className="p-0">
                       <div className="border-t">
                         <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
@@ -334,7 +337,7 @@ export function HousingApplicantsTable({
               </>
             )) : (
               <TableRow>
-                <TableCell colSpan={showSelectionColumn ? 9 : 11} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>
