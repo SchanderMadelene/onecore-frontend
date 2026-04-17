@@ -119,9 +119,14 @@ const HousingDetailPage = () => {
   
   // Get active offer for this listing
   const activeOffer = getOfferForListing(housingId);
-  
+
+  // Kontrakt-läge: visa endast sökande som tackat ja
+  const isContractMode = location.state?.activeHousingTab === 'kontrakt';
+
   // Show all applicants with offer information
-  const displayedApplicants = listing.applicants;
+  const displayedApplicants = isContractMode
+    ? listing.applicants.filter(a => a.offerResponse?.status === 'Accepterat')
+    : listing.applicants;
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
@@ -140,16 +145,17 @@ const HousingDetailPage = () => {
         <div className="space-y-8">
           <section>
             <h2 className="text-xl font-semibold mb-4">
-              Intresseanmälningar
+              {isContractMode ? 'Sökande som tackat ja' : 'Intresseanmälningar'}
             </h2>
             <HousingApplicantsTable 
               applicants={displayedApplicants}
               housingAddress={listing.address}
               listingId={listing.id}
               showOfferColumns={false}
-              showSelectionColumn={!activeOffer}
+              showSelectionColumn={!activeOffer && !isContractMode}
               onSelectionChange={setSelectedApplicants}
               offeredApplicantIds={activeOffer?.selectedApplicants || []}
+              contractMode={isContractMode}
             />
           </section>
 
