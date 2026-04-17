@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DatePicker } from "@/shared/common/date-picker";
+import { DatePicker } from "@/shared/common/DatePicker";
 import { toast } from "sonner";
 
 interface CreateContractDialogProps {
@@ -68,7 +68,7 @@ export function CreateContractDialog({
 
           <div className="space-y-2">
             <Label>Kontraktsstart</Label>
-            <DatePicker date={startDate} onDateChange={setStartDate} placeholder="Välj startdatum" />
+            <DatePicker value={startDate} onChange={setStartDate} placeholder="Välj startdatum" />
           </div>
 
           <div className="space-y-2">
