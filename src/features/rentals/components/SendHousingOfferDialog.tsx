@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { DatePicker } from "@/shared/common";
 import { TemplateSelector } from "@/features/communication/components/TemplateSelector";
@@ -64,9 +65,21 @@ export function SendHousingOfferDialog({
   }, []);
   const defaultTemplate = offerTemplates[0];
 
+  // Mockad nuvarande hyresgäst hämtad från kundkortet kopplat till bostaden
+  const mockTenant = useMemo(
+    () => ({ name: "Lars Hedberg", phone: "070-555 12 34", email: "lars.hedberg@example.se" }),
+    []
+  );
+
   const [responseDeadline, setResponseDeadline] = useState<Date | undefined>(defaultDeadline);
   const [showingDateTime, setShowingDateTime] = useState<Date | undefined>(defaultShowing);
   const [showingHost, setShowingHost] = useState<ShowingHostType>("tenant");
+  const [tenantName, setTenantName] = useState(mockTenant.name);
+  const [tenantPhone, setTenantPhone] = useState(mockTenant.phone);
+  const [tenantEmail, setTenantEmail] = useState(mockTenant.email);
+  const [includeTenantName, setIncludeTenantName] = useState(true);
+  const [includeTenantPhone, setIncludeTenantPhone] = useState(true);
+  const [includeTenantEmail, setIncludeTenantEmail] = useState(true);
   const [customHostName, setCustomHostName] = useState("");
   const [customHostPhone, setCustomHostPhone] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState<MessageTemplate | undefined>(defaultTemplate);
@@ -197,6 +210,69 @@ export function SendHousingOfferDialog({
               </Select>
             </div>
           </div>
+
+          {showingHost === "tenant" && (
+            <div className="rounded-lg border bg-muted/30 p-4 space-y-3">
+              <div className="flex items-baseline justify-between">
+                <p className="text-sm font-medium">Kontaktuppgifter till befintlig hyresgäst</p>
+                <p className="text-xs text-muted-foreground">Bocka i de fält som ska skickas med i mejlet</p>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="include-tenant-name"
+                      checked={includeTenantName}
+                      onCheckedChange={(v) => setIncludeTenantName(v === true)}
+                    />
+                    <Label htmlFor="include-tenant-name" className="text-sm font-normal cursor-pointer">
+                      Namn
+                    </Label>
+                  </div>
+                  <Input
+                    value={tenantName}
+                    onChange={(e) => setTenantName(e.target.value)}
+                    disabled={!includeTenantName}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="include-tenant-phone"
+                      checked={includeTenantPhone}
+                      onCheckedChange={(v) => setIncludeTenantPhone(v === true)}
+                    />
+                    <Label htmlFor="include-tenant-phone" className="text-sm font-normal cursor-pointer">
+                      Telefon
+                    </Label>
+                  </div>
+                  <Input
+                    value={tenantPhone}
+                    onChange={(e) => setTenantPhone(e.target.value)}
+                    disabled={!includeTenantPhone}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="include-tenant-email"
+                      checked={includeTenantEmail}
+                      onCheckedChange={(v) => setIncludeTenantEmail(v === true)}
+                    />
+                    <Label htmlFor="include-tenant-email" className="text-sm font-normal cursor-pointer">
+                      E-post
+                    </Label>
+                  </div>
+                  <Input
+                    type="email"
+                    value={tenantEmail}
+                    onChange={(e) => setTenantEmail(e.target.value)}
+                    disabled={!includeTenantEmail}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {showingHost === "custom" && (
             <div className="grid grid-cols-2 gap-4">
