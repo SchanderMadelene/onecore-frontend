@@ -133,7 +133,7 @@ const HousingDetailPage = () => {
           hasOffers={listing.offers.length > 0 || isListingOffered(housingId)}
           hasSelectedApplicants={selectedApplicants.length > 0}
           onBack={handleBack}
-          onCreateOffer={handleCreateOffer}
+          onCreateOffer={handleOpenOfferDialog}
           isCreatingOffer={false}
         />
 
@@ -171,6 +171,14 @@ const HousingDetailPage = () => {
           </section>
         </div>
       </div>
+
+      <SendHousingOfferDialog
+        open={isOfferDialogOpen}
+        onOpenChange={setIsOfferDialogOpen}
+        recipientCount={selectedApplicants.length}
+        housingAddress={listing.address}
+        onConfirm={handleConfirmOffer}
+      />
     </PageLayout>
   );
 };
