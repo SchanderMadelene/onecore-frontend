@@ -66,7 +66,7 @@ export function SendHousingOfferDialog({
 
   const [responseDeadline, setResponseDeadline] = useState<Date | undefined>(defaultDeadline);
   const [showingDateTime, setShowingDateTime] = useState<Date | undefined>(defaultShowing);
-  const [showingHost, setShowingHost] = useState<ShowingHostType>("mimer");
+  const [showingHost, setShowingHost] = useState<ShowingHostType>("tenant");
   const [customHostName, setCustomHostName] = useState("");
   const [customHostPhone, setCustomHostPhone] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState<MessageTemplate | undefined>(defaultTemplate);
