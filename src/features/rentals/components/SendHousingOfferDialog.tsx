@@ -113,7 +113,7 @@ export function SendHousingOfferDialog({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
               <Label>Sista svarsdatum</Label>
               <DatePicker
@@ -154,7 +154,7 @@ export function SendHousingOfferDialog({
                     setShowingDateTime(next);
                   }}
                 >
-                  <SelectTrigger className="w-[78px]">
+                  <SelectTrigger className="w-[68px] px-2">
                     <SelectValue placeholder="tt" />
                   </SelectTrigger>
                   <SelectContent>
@@ -171,7 +171,7 @@ export function SendHousingOfferDialog({
                     setShowingDateTime(next);
                   }}
                 >
-                  <SelectTrigger className="w-[78px]">
+                  <SelectTrigger className="w-[68px] px-2">
                     <SelectValue placeholder="mm" />
                   </SelectTrigger>
                   <SelectContent>
@@ -182,48 +182,48 @@ export function SendHousingOfferDialog({
                 </Select>
               </div>
             </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>Visningsvärd</Label>
+              <Select value={showingHost} onValueChange={(v) => setShowingHost(v as ShowingHostType)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mimer">Mimer</SelectItem>
+                  <SelectItem value="tenant">Befintlig hyresgäst</SelectItem>
+                  <SelectItem value="custom">Egen kontakt</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-          <div className="space-y-3">
-            <Label>Visningsvärd</Label>
-            <Select value={showingHost} onValueChange={(v) => setShowingHost(v as ShowingHostType)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="mimer">Mimer</SelectItem>
-                <SelectItem value="tenant">Befintlig hyresgäst</SelectItem>
-                <SelectItem value="custom">Egen kontakt</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {showingHost === "custom" && (
-              <div className="grid grid-cols-2 gap-4 pt-1">
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="custom-host-name" className="text-sm font-normal">
-                    Namn
-                  </Label>
-                  <Input
-                    id="custom-host-name"
-                    value={customHostName}
-                    onChange={(e) => setCustomHostName(e.target.value)}
-                    placeholder="För- och efternamn"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="custom-host-phone" className="text-sm font-normal">
-                    Telefon
-                  </Label>
-                  <Input
-                    id="custom-host-phone"
-                    value={customHostPhone}
-                    onChange={(e) => setCustomHostPhone(e.target.value)}
-                    placeholder="070-123 45 67"
-                  />
-                </div>
+          {showingHost === "custom" && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="custom-host-name" className="text-sm font-normal">
+                  Namn på visningsvärd
+                </Label>
+                <Input
+                  id="custom-host-name"
+                  value={customHostName}
+                  onChange={(e) => setCustomHostName(e.target.value)}
+                  placeholder="För- och efternamn"
+                />
               </div>
-            )}
-          </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="custom-host-phone" className="text-sm font-normal">
+                  Telefon
+                </Label>
+                <Input
+                  id="custom-host-phone"
+                  value={customHostPhone}
+                  onChange={(e) => setCustomHostPhone(e.target.value)}
+                  placeholder="070-123 45 67"
+                />
+              </div>
+            </div>
+          )}
 
           <Separator />
 
