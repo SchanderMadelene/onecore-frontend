@@ -39,15 +39,6 @@ export function OfferedHousingTable() {
       }
     },
     { 
-      key: "status", 
-      label: "Status", 
-      render: () => (
-        <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-          Väntar på svar
-        </Badge>
-      )
-    },
-    { 
       key: "sentAt", 
       label: "Skickat", 
       render: (h: any) => {
