@@ -28,6 +28,20 @@ const HousingDetailPage = () => {
   
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
+  // Bygg recipient-listan för bulk-SMS/mejl baserat på markerade sökande.
+  // Telefon och e-post mockas tills riktig kunddata är kopplad.
+  const bulkRecipients = useMemo(() => {
+    if (!listing) return [];
+    return listing.applicants
+      .filter(a => selectedApplicants.includes(String(a.id)))
+      .map(a => ({
+        id: String(a.id),
+        name: a.name,
+        phone: `+4670${String(1000000 + a.id).slice(-7)}`,
+        email: `${a.name.toLowerCase().replace(/\s+/g, ".").replace(/[åä]/g, "a").replace(/ö/g, "o")}@example.com`,
+      }));
+  }, [listing, selectedApplicants]);
+
   const handleBack = () => {
     // Navigate back to rentals page with bostad tab and the specific housing sub-tab
     const activeHousingTab = location.state?.activeHousingTab || "publicerade";
