@@ -9,10 +9,12 @@ import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
+import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
 
 const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
+  const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,19 +31,25 @@ const HousingDetailPage = () => {
     });
   };
 
-  const handleCreateOffer = () => {
+  const handleOpenOfferDialog = () => {
     if (!housingId || selectedApplicants.length === 0) return;
-    
+    setIsOfferDialogOpen(true);
+  };
+
+  const handleConfirmOffer = (_dispatch: HousingOfferDispatch) => {
+    if (!housingId || selectedApplicants.length === 0) return;
+
     const applicantIds = selectedApplicants.map(id => parseInt(id));
     createOffer(housingId, applicantIds);
-    
+
+    setIsOfferDialogOpen(false);
+
     toast({
       title: "Erbjudande skickat",
       description: `Erbjudanden har skickats till ${selectedApplicants.length} valda sökande`
     });
 
-    // Navigate back to rentals page with "erbjudna" tab
-    navigate('/rentals?tab=bostad', { 
+    navigate('/rentals?tab=bostad', {
       state: { activeHousingTab: 'erbjudna' }
     });
   };

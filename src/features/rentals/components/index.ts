@@ -19,6 +19,7 @@ export * from './DeleteListingDialog';
 export * from './PublishParkingSpacesDialog';
 export * from './SyncParkingSpacesDialog';
 export * from './EditHousingDialog';
+export * from './SendHousingOfferDialog';
 
 // Tables
 export * from './UnpublishedHousingTable';
