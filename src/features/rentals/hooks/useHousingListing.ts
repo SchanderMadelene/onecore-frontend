@@ -181,7 +181,7 @@ export const useHousingListing = (id: string) => {
             creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-17" },
             paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-17" },
             viewingBooked: { status: "Ja" as const, date: "2024-02-06" },
-            offerResponse: { status: "Väntar på svar" as const }
+            offerResponse: { status: "Accepterat" as const, date: "2026-04-12" }
           },
           {
             id: 5,
@@ -202,7 +202,7 @@ export const useHousingListing = (id: string) => {
             creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-19" },
             paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-19" },
             viewingBooked: { status: "Ja" as const, date: "2024-02-07" },
-            offerResponse: { status: "Väntar på svar" as const }
+            offerResponse: { status: "Accepterat" as const, date: "2026-04-13" }
           },
           {
             id: 6,
@@ -223,7 +223,7 @@ export const useHousingListing = (id: string) => {
             creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-18" },
             paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-18" },
             viewingBooked: { status: "Ja" as const, date: "2024-02-08" },
-            offerResponse: { status: "Väntar på svar" as const }
+            offerResponse: { status: "Accepterat" as const, date: "2026-04-14" }
           },
           {
             id: 7,
