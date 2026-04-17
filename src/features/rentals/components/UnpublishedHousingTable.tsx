@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Trash2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/ui/dropdown-menu";
+import { ChevronRight, MoreHorizontal } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
-import { EditHousingDialog } from "./EditHousingDialog";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 
@@ -12,9 +19,9 @@ const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
     case "draft":
       return <Badge variant="secondary">Utkast</Badge>;
     case "needs_review":
-      return <Badge variant="outline">Behöver granskning</Badge>;
+      return <Badge variant="warning">Behöver granskning</Badge>;
     case "ready_to_publish":
-      return <Badge variant="default">Redo att publicera</Badge>;
+      return <Badge variant="success">Redo att publicera</Badge>;
     default:
       return <Badge variant="secondary">{status}</Badge>;
   }
@@ -23,36 +30,59 @@ const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
 export function UnpublishedHousingTable() {
   const navigate = useNavigate();
 
+  const goToDetail = (s: UnpublishedHousingSpace) =>
+    navigate(`/rentals/housing/${s.id}`, { state: { activeHousingTab: "behovAvPublicering" } });
+
+  const renderActions = (s: UnpublishedHousingSpace) => (
+    <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
+      <Button
+        size="sm"
+        onClick={() => toast.success(`"${s.address}" publicerad`)}
+      >
+        Publicera
+      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon" aria-label="Fler åtgärder">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => goToDetail(s)}>Visa</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => goToDetail(s)}>Redigera</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="text-destructive focus:text-destructive"
+            onClick={() => toast.error(`"${s.address}" borttagen`)}
+          >
+            Ta bort
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Button
+        variant="outline"
+        size="icon"
+        aria-label="Öppna"
+        onClick={() => goToDetail(s)}
+      >
+        <ChevronRight className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+
   const columns = [
-    { key: "address", label: "Adress", render: (s: any) => <span className="font-medium">{s.address}</span> },
-    { key: "area", label: "Område", render: (s: any) => s.area, hideOnMobile: true },
-    { key: "rooms", label: "Rum", render: (s: any) => s.rooms, hideOnMobile: true },
-    { key: "size", label: "Yta", render: (s: any) => s.size, hideOnMobile: true },
-    { key: "rent", label: "Hyra", render: (s: any) => s.rent },
-    { key: "status", label: "Status", render: (s: any) => getStatusBadge(s.status) },
-    { key: "lastModified", label: "Senast ändrad", render: (s: any) => s.lastModified, hideOnMobile: true },
-    { key: "createdBy", label: "Skapad av", render: (s: any) => s.createdBy, hideOnMobile: true },
-    { 
-      key: "actions", 
-      label: "", 
-      className: "text-right",
-      render: (s: any) => (
-        <div className="flex items-center justify-end gap-2">
-          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-            <Eye className="h-4 w-4" />
-          </Button>
-          <div onClick={(e) => e.stopPropagation()}>
-            <EditHousingDialog housingSpace={s} />
-          </div>
-          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      )
-    },
+    { key: "address", label: "Adress", render: (s: UnpublishedHousingSpace) => <span className="font-medium">{s.address}</span> },
+    { key: "area", label: "Område", render: (s: UnpublishedHousingSpace) => s.area, hideOnMobile: true },
+    { key: "rooms", label: "Rum", render: (s: UnpublishedHousingSpace) => s.rooms, hideOnMobile: true },
+    { key: "size", label: "Yta", render: (s: UnpublishedHousingSpace) => s.size, hideOnMobile: true },
+    { key: "rent", label: "Hyra", render: (s: UnpublishedHousingSpace) => s.rent },
+    { key: "status", label: "Status", render: (s: UnpublishedHousingSpace) => getStatusBadge(s.status) },
+    { key: "lastModified", label: "Senast ändrad", render: (s: UnpublishedHousingSpace) => s.lastModified, hideOnMobile: true },
+    { key: "createdBy", label: "Skapad av", render: (s: UnpublishedHousingSpace) => s.createdBy, hideOnMobile: true },
+    { key: "actions", label: "", className: "text-right", render: renderActions },
   ];
 
-  const mobileCardRenderer = (space: any) => (
+  const mobileCardRenderer = (space: UnpublishedHousingSpace) => (
     <div>
       <div className="font-medium">{space.address}</div>
       <div className="text-sm text-muted-foreground">{space.area}</div>
@@ -60,17 +90,7 @@ export function UnpublishedHousingTable() {
         {getStatusBadge(space.status)}
         <span className="text-sm text-muted-foreground">{space.rent}</span>
       </div>
-      <div className="flex items-center gap-2 mt-3">
-        <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-          <Eye className="h-4 w-4" />
-        </Button>
-        <div onClick={(e) => e.stopPropagation()}>
-          <EditHousingDialog housingSpace={space} />
-        </div>
-        <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </div>
+      <div className="mt-3">{renderActions(space)}</div>
     </div>
   );
 
@@ -81,7 +101,7 @@ export function UnpublishedHousingTable() {
       keyExtractor={(s) => s.id}
       emptyMessage="Inga opublicerade bostäder"
       mobileCardRenderer={mobileCardRenderer}
-      onRowClick={(s) => navigate(`/rentals/housing/${s.id}`, { state: { activeHousingTab: "behovAvPublicering" } })}
+      onRowClick={goToDetail}
     />
   );
 }

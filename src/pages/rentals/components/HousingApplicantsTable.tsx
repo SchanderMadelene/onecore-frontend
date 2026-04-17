@@ -6,6 +6,7 @@ import { CompactProfileForm } from "@/features/rentals/components/residence-prof
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
+import { CreateContractDialog } from "@/features/rentals/components/CreateContractDialog";
 
 
 interface HousingApplicantsTableProps {
@@ -271,7 +272,21 @@ export function HousingApplicantsTable({
                     </div>
                   </TableCell>
                   <TableCell>
-                    {getOfferStatusBadge(applicant.id)}
+                    <div className="flex items-center gap-2">
+                      {getOfferStatusBadge(applicant.id)}
+                      {offeredApplicantIds.includes(applicant.id) && (
+                        <CreateContractDialog
+                          applicantName={applicant.name}
+                          applicantCustomerNumber={applicant.contactCode}
+                          housingAddress={housingAddress}
+                          trigger={
+                            <Button size="sm" variant="outline" onClick={(e) => e.stopPropagation()}>
+                              Kontrakt
+                            </Button>
+                          }
+                        />
+                      )}
+                    </div>
                   </TableCell>
                   {!showSelectionColumn && applicant.viewingBooked && (
                     <TableCell>
