@@ -14,8 +14,64 @@ interface EditableFormSectionProps {
 }
 
 export function EditableFormSection({ control }: EditableFormSectionProps) {
+  const untilFurtherNotice = useWatch({ control, name: "publishUntilFurtherNotice" });
+
   return (
     <div className="space-y-6">
+      {/* Publiceringsperiod */}
+      <div className="space-y-3 rounded-lg border bg-muted/30 p-4">
+        <h3 className="text-sm font-medium">Publiceringsperiod</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FormField
+            control={control}
+            name="publishFrom"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel className="text-sm font-medium">Publicera från</FormLabel>
+                <FormControl>
+                  <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj startdatum" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={control}
+            name="publishTo"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel className="text-sm font-medium">Publicera till</FormLabel>
+                <FormControl>
+                  <DatePicker
+                    value={untilFurtherNotice ? undefined : field.value}
+                    onChange={field.onChange}
+                    placeholder={untilFurtherNotice ? "Tillsvidare" : "Välj slutdatum"}
+                    disabled={untilFurtherNotice}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          control={control}
+          name="publishUntilFurtherNotice"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center gap-2 space-y-0">
+              <FormControl>
+                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+              <FormLabel className="text-sm font-normal cursor-pointer">
+                Publicera tillsvidare (inget slutdatum)
+              </FormLabel>
+            </FormItem>
+          )}
+        />
+      </div>
+
       <FormField
         control={control}
         name="housingObjectType"
