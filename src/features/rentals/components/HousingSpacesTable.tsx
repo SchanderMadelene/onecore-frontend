@@ -6,6 +6,7 @@ import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
 import { PublishedHousingTable } from "./PublishedHousingTable";
 import { OfferedHousingTable } from "./OfferedHousingTable";
 import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
+import { HistoryHousingTable } from "./HistoryHousingTable";
 import { ApplicantProfileModal } from "./ApplicantProfileModal";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -116,11 +117,7 @@ export function HousingSpacesTable() {
               <ApplicantProfileModal />
             </div>
           </div>
-          <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
-            <div className="text-center">
-              <p>Ingen historik</p>
-            </div>
-          </div>
+          <HistoryHousingTable />
         </div>
       )
     },
