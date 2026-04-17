@@ -209,9 +209,6 @@ export function SendHousingOfferDialog({
                 onChange={(e) => setEmailContent(e.target.value)}
                 className="min-h-[180px] resize-y"
               />
-              <p className="text-xs text-muted-foreground">
-                Platshållare som {"{namn}"}, {"{adress}"}, {"{svarsdatum}"}, {"{visningsdatum}"}, {"{visningstid}"} och {"{visningsvard}"} ersätts automatiskt per mottagare.
-              </p>
             </div>
           </div>
         </div>
