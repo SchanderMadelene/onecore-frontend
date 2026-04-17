@@ -1,0 +1,235 @@
+import { useMemo, useState } from "react";
+import { addDays, format } from "date-fns";
+import { sv } from "date-fns/locale";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import { DatePicker, DateTimePicker } from "@/shared/common";
+import { TemplateSelector } from "@/features/communication/components/TemplateSelector";
+import { messageTemplates } from "@/features/communication/data/messageTemplates";
+import type { MessageTemplate } from "@/features/communication/types/messageTemplate";
+
+export type ShowingHostType = "mimer" | "tenant" | "custom";
+
+export interface HousingOfferDispatch {
+  responseDeadline: Date;
+  showingHost: ShowingHostType;
+  customHostName?: string;
+  customHostPhone?: string;
+  showingDateTime: Date;
+  templateId: string;
+  emailSubject: string;
+  emailContent: string;
+}
+
+interface SendHousingOfferDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  recipientCount: number;
+  housingAddress: string;
+  onConfirm: (dispatch: HousingOfferDispatch) => void;
+}
+
+const offerTemplates = messageTemplates.filter((t) => t.category === "Uthyrning");
+
+export function SendHousingOfferDialog({
+  open,
+  onOpenChange,
+  recipientCount,
+  housingAddress,
+  onConfirm,
+}: SendHousingOfferDialogProps) {
+  const defaultDeadline = useMemo(() => addDays(new Date(), 10), []);
+  const defaultShowing = useMemo(() => {
+    const d = addDays(new Date(), 5);
+    d.setHours(17, 0, 0, 0);
+    return d;
+  }, []);
+  const defaultTemplate = offerTemplates[0];
+
+  const [responseDeadline, setResponseDeadline] = useState<Date | undefined>(defaultDeadline);
+  const [showingDateTime, setShowingDateTime] = useState<Date | undefined>(defaultShowing);
+  const [showingHost, setShowingHost] = useState<ShowingHostType>("mimer");
+  const [customHostName, setCustomHostName] = useState("");
+  const [customHostPhone, setCustomHostPhone] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState<MessageTemplate | undefined>(defaultTemplate);
+  const [emailSubject, setEmailSubject] = useState(defaultTemplate?.emailSubject ?? "");
+  const [emailContent, setEmailContent] = useState(defaultTemplate?.emailContent ?? "");
+
+  const handleTemplateSelect = (template: MessageTemplate) => {
+    setSelectedTemplate(template);
+    setEmailSubject(template.emailSubject);
+    setEmailContent(template.emailContent);
+  };
+
+  const isCustomHostValid = showingHost !== "custom" || customHostName.trim().length > 0;
+  const canSubmit =
+    responseDeadline &&
+    showingDateTime &&
+    selectedTemplate &&
+    emailSubject.trim().length > 0 &&
+    emailContent.trim().length > 0 &&
+    isCustomHostValid;
+
+  const handleSubmit = () => {
+    if (!canSubmit || !responseDeadline || !showingDateTime || !selectedTemplate) return;
+    onConfirm({
+      responseDeadline,
+      showingHost,
+      customHostName: showingHost === "custom" ? customHostName.trim() : undefined,
+      customHostPhone: showingHost === "custom" ? customHostPhone.trim() : undefined,
+      showingDateTime,
+      templateId: selectedTemplate.id,
+      emailSubject,
+      emailContent,
+    });
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl flex flex-col max-h-[90vh] p-0 gap-0">
+        <DialogHeader className="p-6 pb-4">
+          <DialogTitle>Skicka erbjudande</DialogTitle>
+          <DialogDescription>
+            Erbjudande till {recipientCount} {recipientCount === 1 ? "sökande" : "sökande"} för {housingAddress}.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex-1 overflow-y-auto px-6 space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <Label>Sista svarsdatum</Label>
+              <DatePicker
+                value={responseDeadline}
+                onChange={setResponseDeadline}
+                placeholder="Välj svarsdatum"
+                locale={sv}
+                dateFormat="yyyy-MM-dd"
+              />
+              {responseDeadline && (
+                <p className="text-xs text-muted-foreground">
+                  {format(responseDeadline, "EEEE d MMMM yyyy", { locale: sv })}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>Datum för visning</Label>
+              <DateTimePicker
+                value={showingDateTime}
+                onChange={setShowingDateTime}
+                placeholder="Välj datum och tid"
+                locale={sv}
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <Label>Visningsvärd</Label>
+            <Select value={showingHost} onValueChange={(v) => setShowingHost(v as ShowingHostType)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mimer">Mimer</SelectItem>
+                <SelectItem value="tenant">Befintlig hyresgäst</SelectItem>
+                <SelectItem value="custom">Egen kontakt</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {showingHost === "custom" && (
+              <div className="grid grid-cols-2 gap-4 pt-1">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="custom-host-name" className="text-sm font-normal">
+                    Namn
+                  </Label>
+                  <Input
+                    id="custom-host-name"
+                    value={customHostName}
+                    onChange={(e) => setCustomHostName(e.target.value)}
+                    placeholder="För- och efternamn"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="custom-host-phone" className="text-sm font-normal">
+                    Telefon
+                  </Label>
+                  <Input
+                    id="custom-host-phone"
+                    value={customHostPhone}
+                    onChange={(e) => setCustomHostPhone(e.target.value)}
+                    placeholder="070-123 45 67"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <Separator />
+
+          <div className="space-y-3">
+            <Label>E-postmall</Label>
+            <TemplateSelector
+              templates={offerTemplates}
+              onSelect={handleTemplateSelect}
+              type="email"
+            />
+
+            <div className="flex flex-col gap-2 pt-2">
+              <Label htmlFor="email-subject" className="text-sm font-normal">
+                Ämne
+              </Label>
+              <Input
+                id="email-subject"
+                value={emailSubject}
+                onChange={(e) => setEmailSubject(e.target.value)}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="email-content" className="text-sm font-normal">
+                Meddelande
+              </Label>
+              <Textarea
+                id="email-content"
+                value={emailContent}
+                onChange={(e) => setEmailContent(e.target.value)}
+                className="min-h-[180px] resize-y"
+              />
+              <p className="text-xs text-muted-foreground">
+                Platshållare som {"{namn}"}, {"{adress}"}, {"{svarsdatum}"}, {"{visningsdatum}"}, {"{visningstid}"} och {"{visningsvard}"} ersätts automatiskt per mottagare.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="p-6 pt-4 border-t bg-background">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Avbryt
+          </Button>
+          <Button onClick={handleSubmit} disabled={!canSubmit}>
+            Skicka erbjudande
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
