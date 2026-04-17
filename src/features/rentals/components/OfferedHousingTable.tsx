@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { publishedHousingSpaces } from "../data/published-housing";
 import { useHousingStatus } from "../hooks/useHousingStatus";
-import { useHousingBulkSms } from "../hooks/useHousingBulkSms";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
-import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
-import { BulkSmsModal } from "@/features/communication";
 
 export function OfferedHousingTable() {
   const navigate = useNavigate();
@@ -14,10 +11,6 @@ export function OfferedHousingTable() {
   const { filterHousingByStatus } = useHousingStatus();
 
   const offeredHousings = filterHousingByStatus(publishedHousingSpaces, 'offered');
-  const {
-    selectedIds, setSelectedIds, smsOpen, setSmsOpen,
-    recipients, handleSendSms, clearSelection,
-  } = useHousingBulkSms(offeredHousings);
 
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => <span className="font-medium">{h.address}</span> },
@@ -72,30 +65,13 @@ export function OfferedHousingTable() {
   };
 
   return (
-    <>
-      <ResponsiveTable
-        data={offeredHousings}
-        columns={columns}
-        keyExtractor={(h) => h.id}
-        emptyMessage="Inga erbjudanden skickade"
-        mobileCardRenderer={mobileCardRenderer}
-        selectable
-        selectedKeys={selectedIds}
-        onSelectionChange={setSelectedIds}
-        onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "erbjudna" } })}
-      />
-      <BulkActionBar
-        selectedCount={selectedIds.length}
-        onSendSms={() => setSmsOpen(true)}
-        onSendEmail={() => setSmsOpen(true)}
-        onClear={clearSelection}
-      />
-      <BulkSmsModal
-        open={smsOpen}
-        onOpenChange={setSmsOpen}
-        recipients={recipients}
-        onSend={handleSendSms}
-      />
-    </>
+    <ResponsiveTable
+      data={offeredHousings}
+      columns={columns}
+      keyExtractor={(h) => h.id}
+      emptyMessage="Inga erbjudanden skickade"
+      mobileCardRenderer={mobileCardRenderer}
+      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "erbjudna" } })}
+    />
   );
 }

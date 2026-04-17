@@ -1,20 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { publishedHousingSpaces } from "../data/published-housing";
 import { useHousingStatus } from "../hooks/useHousingStatus";
-import { useHousingBulkSms } from "../hooks/useHousingBulkSms";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
-import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
-import { BulkSmsModal } from "@/features/communication";
 
 export function ReadyForOfferHousingTable() {
   const navigate = useNavigate();
   const { filterHousingByStatus } = useHousingStatus();
 
   const readyForOfferHousings = filterHousingByStatus(publishedHousingSpaces, 'ready_for_offer');
-  const {
-    selectedIds, setSelectedIds, smsOpen, setSmsOpen,
-    recipients, handleSendSms, clearSelection,
-  } = useHousingBulkSms(readyForOfferHousings);
 
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => <span className="font-medium">{h.address}</span> },
@@ -40,30 +33,13 @@ export function ReadyForOfferHousingTable() {
   );
 
   return (
-    <>
-      <ResponsiveTable
-        data={readyForOfferHousings}
-        columns={columns}
-        keyExtractor={(h) => h.id}
-        emptyMessage="Inga bostäder klara för erbjudande"
-        mobileCardRenderer={mobileCardRenderer}
-        selectable
-        selectedKeys={selectedIds}
-        onSelectionChange={setSelectedIds}
-        onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "klaraForErbjudande" } })}
-      />
-      <BulkActionBar
-        selectedCount={selectedIds.length}
-        onSendSms={() => setSmsOpen(true)}
-        onSendEmail={() => setSmsOpen(true)}
-        onClear={clearSelection}
-      />
-      <BulkSmsModal
-        open={smsOpen}
-        onOpenChange={setSmsOpen}
-        recipients={recipients}
-        onSend={handleSendSms}
-      />
-    </>
+    <ResponsiveTable
+      data={readyForOfferHousings}
+      columns={columns}
+      keyExtractor={(h) => h.id}
+      emptyMessage="Inga bostäder klara för erbjudande"
+      mobileCardRenderer={mobileCardRenderer}
+      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "klaraForErbjudande" } })}
+    />
   );
 }
