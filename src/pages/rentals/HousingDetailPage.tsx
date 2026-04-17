@@ -3,18 +3,23 @@ import { PageLayout } from "@/layouts";
 import { Button } from "@/components/ui/button";
 import { useHousingListing, useHousingStatus } from "@/features/rentals";
 import { toast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
+import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
+import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 
 const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
+  const [smsOpen, setSmsOpen] = useState(false);
+  const [emailOpen, setEmailOpen] = useState(false);
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
