@@ -219,8 +219,8 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap">Boendereferens</TableHead>
             <TableHead className="whitespace-nowrap">Kreditupplysning</TableHead>
             <TableHead className="whitespace-nowrap">Betalningshistorik</TableHead>
-            <TableHead className="whitespace-nowrap">Erbjudande</TableHead>
-            {!showSelectionColumn && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
+            {!contractMode && <TableHead className="whitespace-nowrap">Erbjudande</TableHead>}
+            {!showSelectionColumn && !contractMode && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
             {!showSelectionColumn && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
           </TableRow>
         </TableHeader>
@@ -292,10 +292,12 @@ export function HousingApplicantsTable({
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>
-                    {getOfferStatusBadge(applicant.id)}
-                  </TableCell>
-                  {!showSelectionColumn && applicant.viewingBooked && (
+                  {!contractMode && (
+                    <TableCell>
+                      {getOfferStatusBadge(applicant.id)}
+                    </TableCell>
+                  )}
+                  {!showSelectionColumn && !contractMode && applicant.viewingBooked && (
                     <TableCell>
                       <div className="space-y-1">
                         <div>{getViewingBookedBadge(applicant.viewingBooked.status)}</div>
