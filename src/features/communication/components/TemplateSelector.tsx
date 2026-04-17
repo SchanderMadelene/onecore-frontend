@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MessageTemplate } from "@/features/communication/types/messageTemplate";
-import { FileText } from "lucide-react";
+
 
 interface TemplateSelectorProps {
   templates: MessageTemplate[];
@@ -35,10 +35,7 @@ export function TemplateSelector({ templates, onSelect }: TemplateSelectorProps)
   return (
     <Select onValueChange={handleValueChange}>
       <SelectTrigger className="w-full">
-        <span className="flex items-center gap-2">
-          <FileText className="h-4 w-4 text-muted-foreground" />
-          <SelectValue placeholder="Välj mall..." />
-        </span>
+        <SelectValue placeholder="Välj mall..." />
       </SelectTrigger>
 
       <SelectContent>
