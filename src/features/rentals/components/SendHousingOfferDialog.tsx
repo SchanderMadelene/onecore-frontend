@@ -113,8 +113,8 @@ export function SendHousingOfferDialog({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-12 gap-4">
+            <div className="col-span-6 flex flex-col gap-2">
               <Label>Sista svarsdatum</Label>
               <DatePicker
                 value={responseDeadline}
@@ -125,7 +125,7 @@ export function SendHousingOfferDialog({
               />
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="col-span-3 flex flex-col gap-2">
               <Label>Datum för visning</Label>
               <DatePicker
                 value={showingDateTime}
@@ -144,51 +144,47 @@ export function SendHousingOfferDialog({
                 dateFormat="yyyy-MM-dd"
               />
             </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div />
-            <div className="grid grid-cols-2 gap-2">
-              <div className="flex flex-col gap-2">
-                <Label className="text-sm font-normal">Timme</Label>
-                <Select
-                  value={showingDateTime ? String(showingDateTime.getHours()).padStart(2, "0") : undefined}
-                  onValueChange={(v) => {
-                    const next = new Date(showingDateTime ?? defaultShowing);
-                    next.setHours(parseInt(v, 10));
-                    setShowingDateTime(next);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Timme" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0")).map((h) => (
-                      <SelectItem key={h} value={h}>{h}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label className="text-sm font-normal">Minut</Label>
-                <Select
-                  value={showingDateTime ? String(showingDateTime.getMinutes()).padStart(2, "0") : undefined}
-                  onValueChange={(v) => {
-                    const next = new Date(showingDateTime ?? defaultShowing);
-                    next.setMinutes(parseInt(v, 10));
-                    setShowingDateTime(next);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Minut" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, "0")).map((m) => (
-                      <SelectItem key={m} value={m}>{m}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="col-span-2 flex flex-col gap-2">
+              <Label>Timme</Label>
+              <Select
+                value={showingDateTime ? String(showingDateTime.getHours()).padStart(2, "0") : undefined}
+                onValueChange={(v) => {
+                  const next = new Date(showingDateTime ?? defaultShowing);
+                  next.setHours(parseInt(v, 10));
+                  setShowingDateTime(next);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="tt" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0")).map((h) => (
+                    <SelectItem key={h} value={h}>{h}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="col-span-1 flex flex-col gap-2">
+              <Label>Minut</Label>
+              <Select
+                value={showingDateTime ? String(showingDateTime.getMinutes()).padStart(2, "0") : undefined}
+                onValueChange={(v) => {
+                  const next = new Date(showingDateTime ?? defaultShowing);
+                  next.setMinutes(parseInt(v, 10));
+                  setShowingDateTime(next);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="mm" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, "0")).map((m) => (
+                    <SelectItem key={m} value={m}>{m}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
