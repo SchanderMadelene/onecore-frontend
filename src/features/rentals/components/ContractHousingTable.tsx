@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
-import { Badge } from "@/components/ui/badge";
+
 import { publishedHousingSpaces } from "../data/published-housing";
 
 export function ContractHousingTable() {
@@ -29,15 +29,6 @@ export function ContractHousingTable() {
       label: "Tillträde",
       render: (h: any) => new Date(h.availableFrom).toLocaleDateString("sv-SE"),
       hideOnMobile: true,
-    },
-    {
-      key: "status",
-      label: "Status",
-      render: () => (
-        <Badge variant="outline" className="bg-sky-50 text-sky-700 border-sky-200">
-          Klar för kontrakt
-        </Badge>
-      ),
     },
   ];
 
