@@ -117,7 +117,7 @@ export function SendHousingOfferDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl flex flex-col max-h-[90vh] p-0 gap-0">
+      <DialogContent className="max-w-3xl flex flex-col max-h-[90vh] p-0 gap-0">
         <DialogHeader className="p-6 pb-4">
           <DialogTitle>Skicka erbjudande</DialogTitle>
           <DialogDescription>
