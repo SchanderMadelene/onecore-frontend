@@ -7,3 +7,4 @@ export * from './useHousingStatus';
 export * from './useOfferActions';
 export * from './useCreateInterestApplication';
 export * from './useCreateHousingApplication';
+export * from './useHousingBulkSms';

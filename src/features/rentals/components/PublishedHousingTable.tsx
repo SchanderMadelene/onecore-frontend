@@ -1,13 +1,20 @@
 import { publishedHousingSpaces } from "../data/published-housing";
 import { useNavigate } from "react-router-dom";
 import { useHousingStatus } from "../hooks/useHousingStatus";
+import { useHousingBulkSms } from "../hooks/useHousingBulkSms";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
+import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
+import { BulkSmsModal } from "@/features/communication";
 
 export function PublishedHousingTable() {
   const navigate = useNavigate();
   const { filterHousingByStatus } = useHousingStatus();
 
   const publishedHousings = filterHousingByStatus(publishedHousingSpaces, 'published');
+  const {
+    selectedIds, setSelectedIds, smsOpen, setSmsOpen,
+    recipients, handleSendSms, clearSelection,
+  } = useHousingBulkSms(publishedHousings);
 
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => <span className="font-medium">{h.address}</span> },
@@ -36,13 +43,30 @@ export function PublishedHousingTable() {
   );
 
   return (
-    <ResponsiveTable
-      data={publishedHousings}
-      columns={columns}
-      keyExtractor={(h) => h.id}
-      emptyMessage="Inga publicerade bostäder"
-      mobileCardRenderer={mobileCardRenderer}
-      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "publicerade" } })}
-    />
+    <>
+      <ResponsiveTable
+        data={publishedHousings}
+        columns={columns}
+        keyExtractor={(h) => h.id}
+        emptyMessage="Inga publicerade bostäder"
+        mobileCardRenderer={mobileCardRenderer}
+        selectable
+        selectedKeys={selectedIds}
+        onSelectionChange={setSelectedIds}
+        onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "publicerade" } })}
+      />
+      <BulkActionBar
+        selectedCount={selectedIds.length}
+        onSendSms={() => setSmsOpen(true)}
+        onSendEmail={() => setSmsOpen(true)}
+        onClear={clearSelection}
+      />
+      <BulkSmsModal
+        open={smsOpen}
+        onOpenChange={setSmsOpen}
+        recipients={recipients}
+        onSend={handleSendSms}
+      />
+    </>
   );
 }
