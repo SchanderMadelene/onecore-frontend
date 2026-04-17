@@ -195,9 +195,9 @@ export function HousingApplicantsTable({
   const getOfferResponseBadge = (status: "Accepterat" | "Nekat" | "Väntar på svar") => {
     switch (status) {
       case "Accepterat":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Accepterat</Badge>;
+        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Ja</Badge>;
       case "Nekat":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Nekat</Badge>;
+        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Nej</Badge>;
       case "Väntar på svar":
         return <Badge variant="outline" className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200">Väntar på svar</Badge>;
       default:
