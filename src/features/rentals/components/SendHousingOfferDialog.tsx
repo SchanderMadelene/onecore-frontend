@@ -211,6 +211,69 @@ export function SendHousingOfferDialog({
             </div>
           </div>
 
+          {showingHost === "tenant" && (
+            <div className="rounded-lg border bg-muted/30 p-4 space-y-3">
+              <div className="flex items-baseline justify-between">
+                <p className="text-sm font-medium">Kontaktuppgifter till befintlig hyresgäst</p>
+                <p className="text-xs text-muted-foreground">Bocka i de fält som ska skickas med i mejlet</p>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="include-tenant-name"
+                      checked={includeTenantName}
+                      onCheckedChange={(v) => setIncludeTenantName(v === true)}
+                    />
+                    <Label htmlFor="include-tenant-name" className="text-sm font-normal cursor-pointer">
+                      Namn
+                    </Label>
+                  </div>
+                  <Input
+                    value={tenantName}
+                    onChange={(e) => setTenantName(e.target.value)}
+                    disabled={!includeTenantName}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="include-tenant-phone"
+                      checked={includeTenantPhone}
+                      onCheckedChange={(v) => setIncludeTenantPhone(v === true)}
+                    />
+                    <Label htmlFor="include-tenant-phone" className="text-sm font-normal cursor-pointer">
+                      Telefon
+                    </Label>
+                  </div>
+                  <Input
+                    value={tenantPhone}
+                    onChange={(e) => setTenantPhone(e.target.value)}
+                    disabled={!includeTenantPhone}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="include-tenant-email"
+                      checked={includeTenantEmail}
+                      onCheckedChange={(v) => setIncludeTenantEmail(v === true)}
+                    />
+                    <Label htmlFor="include-tenant-email" className="text-sm font-normal cursor-pointer">
+                      E-post
+                    </Label>
+                  </div>
+                  <Input
+                    type="email"
+                    value={tenantEmail}
+                    onChange={(e) => setTenantEmail(e.target.value)}
+                    disabled={!includeTenantEmail}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           {showingHost === "custom" && (
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
