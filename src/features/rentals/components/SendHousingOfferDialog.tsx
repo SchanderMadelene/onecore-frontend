@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { DatePicker } from "@/shared/common";
 import { TemplateSelector } from "@/features/communication/components/TemplateSelector";
@@ -64,9 +65,21 @@ export function SendHousingOfferDialog({
   }, []);
   const defaultTemplate = offerTemplates[0];
 
+  // Mockad nuvarande hyresgäst hämtad från kundkortet kopplat till bostaden
+  const mockTenant = useMemo(
+    () => ({ name: "Lars Hedberg", phone: "070-555 12 34", email: "lars.hedberg@example.se" }),
+    []
+  );
+
   const [responseDeadline, setResponseDeadline] = useState<Date | undefined>(defaultDeadline);
   const [showingDateTime, setShowingDateTime] = useState<Date | undefined>(defaultShowing);
   const [showingHost, setShowingHost] = useState<ShowingHostType>("tenant");
+  const [tenantName, setTenantName] = useState(mockTenant.name);
+  const [tenantPhone, setTenantPhone] = useState(mockTenant.phone);
+  const [tenantEmail, setTenantEmail] = useState(mockTenant.email);
+  const [includeTenantName, setIncludeTenantName] = useState(true);
+  const [includeTenantPhone, setIncludeTenantPhone] = useState(true);
+  const [includeTenantEmail, setIncludeTenantEmail] = useState(true);
   const [customHostName, setCustomHostName] = useState("");
   const [customHostPhone, setCustomHostPhone] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState<MessageTemplate | undefined>(defaultTemplate);
