@@ -53,20 +53,23 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
         />
       </div>
 
-      <FormField
-        control={control}
-        name="publishUntilFurtherNotice"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center gap-2 space-y-0 -mt-2">
-            <FormControl>
-              <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-            </FormControl>
-            <FormLabel className="text-sm font-normal cursor-pointer">
-              Publicera tillsvidare (inget slutdatum)
-            </FormLabel>
-          </FormItem>
-        )}
-      />
+      <div className="grid grid-cols-2 gap-4 -mt-2">
+        <div />
+        <FormField
+          control={control}
+          name="publishUntilFurtherNotice"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center gap-2 space-y-0">
+              <FormControl>
+                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+              <FormLabel className="text-sm font-normal cursor-pointer">
+                Publicera tillsvidare (inget slutdatum)
+              </FormLabel>
+            </FormItem>
+          )}
+        />
+      </div>
 
       <FormField
         control={control}
