@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { addDays, format } from "date-fns";
+import { addDays } from "date-fns";
 import { sv } from "date-fns/locale";
 import {
   Dialog,
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { DatePicker, DateTimePicker } from "@/shared/common";
+import { DatePicker } from "@/shared/common";
 import { TemplateSelector } from "@/features/communication/components/TemplateSelector";
 import { messageTemplates } from "@/features/communication/data/messageTemplates";
 import type { MessageTemplate } from "@/features/communication/types/messageTemplate";
@@ -127,13 +127,68 @@ export function SendHousingOfferDialog({
 
             <div className="flex flex-col gap-2">
               <Label>Datum för visning</Label>
-              <DateTimePicker
+              <DatePicker
                 value={showingDateTime}
-                onChange={setShowingDateTime}
-                placeholder="Välj datum och tid"
+                onChange={(date) => {
+                  if (!date) {
+                    setShowingDateTime(undefined);
+                    return;
+                  }
+                  const next = new Date(date);
+                  const base = showingDateTime ?? defaultShowing;
+                  next.setHours(base.getHours(), base.getMinutes(), 0, 0);
+                  setShowingDateTime(next);
+                }}
+                placeholder="Välj datum"
                 locale={sv}
-                className="w-full"
+                dateFormat="yyyy-MM-dd"
               />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div />
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col gap-2">
+                <Label className="text-sm font-normal">Timme</Label>
+                <Select
+                  value={showingDateTime ? String(showingDateTime.getHours()).padStart(2, "0") : undefined}
+                  onValueChange={(v) => {
+                    const next = new Date(showingDateTime ?? defaultShowing);
+                    next.setHours(parseInt(v, 10));
+                    setShowingDateTime(next);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Timme" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0")).map((h) => (
+                      <SelectItem key={h} value={h}>{h}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label className="text-sm font-normal">Minut</Label>
+                <Select
+                  value={showingDateTime ? String(showingDateTime.getMinutes()).padStart(2, "0") : undefined}
+                  onValueChange={(v) => {
+                    const next = new Date(showingDateTime ?? defaultShowing);
+                    next.setMinutes(parseInt(v, 10));
+                    setShowingDateTime(next);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Minut" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, "0")).map((m) => (
+                      <SelectItem key={m} value={m}>{m}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
