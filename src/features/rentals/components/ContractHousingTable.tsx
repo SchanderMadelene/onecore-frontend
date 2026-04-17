@@ -30,15 +30,6 @@ export function ContractHousingTable() {
       render: (h: any) => new Date(h.availableFrom).toLocaleDateString("sv-SE"),
       hideOnMobile: true,
     },
-    {
-      key: "status",
-      label: "Status",
-      render: () => (
-        <Badge variant="outline" className="bg-sky-50 text-sky-700 border-sky-200">
-          Klar för kontrakt
-        </Badge>
-      ),
-    },
   ];
 
   const mobileCardRenderer = (housing: any) => (
