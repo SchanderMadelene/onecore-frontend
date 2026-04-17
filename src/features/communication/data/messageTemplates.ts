@@ -21,5 +21,41 @@ Vid frågor, kontakta oss på 021-39 33 00.
 
 Med vänlig hälsning,
 Mimer`
+  },
+  {
+    id: "bostadserbjudande-standard",
+    name: "Bostadserbjudande – Standard",
+    category: "Uthyrning",
+    smsContent: "Hej {namn}! Du har fått ett erbjudande om bostad på {adress}. Svara senast {svarsdatum}. Logga in på Mina sidor för mer information. /Mimer",
+    emailSubject: "Erbjudande om bostad – {adress}",
+    emailContent: `Hej {namn},
+
+Vi har glädjen att erbjuda dig bostaden på {adress}.
+
+Svara senast: {svarsdatum}
+Visning: {visningsdatum} kl {visningstid}
+Visningsvärd: {visningsvard}
+
+Logga in på Mina sidor för att tacka ja eller nej till erbjudandet.
+
+Med vänlig hälsning,
+Mimer`
+  },
+  {
+    id: "bostadserbjudande-korttid",
+    name: "Bostadserbjudande – Korttidskontrakt",
+    category: "Uthyrning",
+    smsContent: "Hej {namn}! Du har fått ett korttidserbjudande på {adress}. Svara senast {svarsdatum}. /Mimer",
+    emailSubject: "Korttidserbjudande – {adress}",
+    emailContent: `Hej {namn},
+
+Vi erbjuder dig ett korttidskontrakt på {adress}.
+
+Svara senast: {svarsdatum}
+Visning: {visningsdatum} kl {visningstid}
+Visningsvärd: {visningsvard}
+
+Med vänlig hälsning,
+Mimer`
   }
 ];
