@@ -36,9 +36,14 @@ export function HousingApplicantsTable({
 
   // Förvalja de 10 översta sökandena (efter köpoäng-ordning som listan kommer i)
   // som inte redan har erbjudits, så uthyrare snabbt kan skicka erbjudande.
+  // Endast i urvalsläget (showSelectionColumn) — i granskning/kontrakt ska
+  // checkboxarna börja tomma så användaren själv väljer SMS-mottagare.
   useEffect(() => {
     if (hasInitializedSelection.current) return;
-    if (!showSelectionColumn) return;
+    if (!showSelectionColumn) {
+      hasInitializedSelection.current = true;
+      return;
+    }
     if (applicants.length === 0) return;
 
     const eligible = applicants
