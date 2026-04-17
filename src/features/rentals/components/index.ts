@@ -25,6 +25,7 @@ export * from './SendHousingOfferDialog';
 export * from './UnpublishedHousingTable';
 export * from './PublishedHousingTable';
 export * from './OfferedHousingTable';
+export * from './ContractHousingTable';
 export * from './ReadyForOfferHousingTable';
 
 // Tabs

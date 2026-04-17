@@ -5,6 +5,7 @@ import { Search, UserPlus } from "lucide-react";
 import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
 import { PublishedHousingTable } from "./PublishedHousingTable";
 import { OfferedHousingTable } from "./OfferedHousingTable";
+import { ContractHousingTable } from "./ContractHousingTable";
 import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { HistoryHousingTable } from "./HistoryHousingTable";
 import { ApplicantProfileModal } from "./ApplicantProfileModal";
@@ -96,6 +97,28 @@ export function HousingSpacesTable() {
             </div>
           </div>
           <OfferedHousingTable />
+        </div>
+      )
+    },
+    {
+      value: "kontrakt",
+      label: "Kontrakt",
+      content: (
+        <div className="flex flex-col space-y-4">
+          <div className="flex flex-col sm:flex-row justify-between gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input placeholder="Sök bostad för kontrakt..." className="pl-9 w-full sm:w-[300px]" />
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
+                <UserPlus className="h-4 w-4" />
+                Ny bostadsannons
+              </Button>
+              <ApplicantProfileModal />
+            </div>
+          </div>
+          <ContractHousingTable />
         </div>
       )
     },
