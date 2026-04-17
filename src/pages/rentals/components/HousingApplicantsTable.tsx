@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { CompactProfileForm } from "@/features/rentals/components/residence-profile/CompactProfileForm";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
 
@@ -29,8 +29,27 @@ export function HousingApplicantsTable({
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
-  
+  const hasInitializedSelection = useRef(false);
 
+  // Förvalja de 10 översta sökandena (efter köpoäng-ordning som listan kommer i)
+  // som inte redan har erbjudits, så uthyrare snabbt kan skicka erbjudande.
+  useEffect(() => {
+    if (hasInitializedSelection.current) return;
+    if (!showSelectionColumn) return;
+    if (applicants.length === 0) return;
+
+    const eligible = applicants
+      .filter(a => !offeredApplicantIds.includes(a.id))
+      .slice(0, 10)
+      .map(a => String(a.id));
+
+    if (eligible.length === 0) return;
+
+    const initial = new Set(eligible);
+    setSelectedApplicants(initial);
+    onSelectionChange?.(Array.from(initial));
+    hasInitializedSelection.current = true;
+  }, [applicants, offeredApplicantIds, showSelectionColumn, onSelectionChange]);
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
     const newSelected = new Set(selectedApplicants);
