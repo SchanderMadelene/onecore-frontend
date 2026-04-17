@@ -123,11 +123,6 @@ export function SendHousingOfferDialog({
                 locale={sv}
                 dateFormat="yyyy-MM-dd"
               />
-              {responseDeadline && (
-                <p className="text-xs text-muted-foreground">
-                  {format(responseDeadline, "EEEE d MMMM yyyy", { locale: sv })}
-                </p>
-              )}
             </div>
 
             <div className="flex flex-col gap-2">
