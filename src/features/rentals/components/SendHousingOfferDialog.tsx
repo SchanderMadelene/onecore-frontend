@@ -113,7 +113,7 @@ export function SendHousingOfferDialog({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
               <Label>Sista svarsdatum</Label>
               <DatePicker
@@ -126,64 +126,6 @@ export function SendHousingOfferDialog({
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label>Datum och tid för visning</Label>
-              <div className="flex gap-2">
-                <div className="flex-1 min-w-0">
-                  <DatePicker
-                    value={showingDateTime}
-                    onChange={(date) => {
-                      if (!date) {
-                        setShowingDateTime(undefined);
-                        return;
-                      }
-                      const next = new Date(date);
-                      const base = showingDateTime ?? defaultShowing;
-                      next.setHours(base.getHours(), base.getMinutes(), 0, 0);
-                      setShowingDateTime(next);
-                    }}
-                    placeholder="Välj datum"
-                    locale={sv}
-                    dateFormat="yyyy-MM-dd"
-                  />
-                </div>
-                <Select
-                  value={showingDateTime ? String(showingDateTime.getHours()).padStart(2, "0") : undefined}
-                  onValueChange={(v) => {
-                    const next = new Date(showingDateTime ?? defaultShowing);
-                    next.setHours(parseInt(v, 10));
-                    setShowingDateTime(next);
-                  }}
-                >
-                  <SelectTrigger className="w-[68px] px-2">
-                    <SelectValue placeholder="tt" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0")).map((h) => (
-                      <SelectItem key={h} value={h}>{h}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select
-                  value={showingDateTime ? String(showingDateTime.getMinutes()).padStart(2, "0") : undefined}
-                  onValueChange={(v) => {
-                    const next = new Date(showingDateTime ?? defaultShowing);
-                    next.setMinutes(parseInt(v, 10));
-                    setShowingDateTime(next);
-                  }}
-                >
-                  <SelectTrigger className="w-[68px] px-2">
-                    <SelectValue placeholder="mm" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, "0")).map((m) => (
-                      <SelectItem key={m} value={m}>{m}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
               <Label>Visningsvärd</Label>
               <Select value={showingHost} onValueChange={(v) => setShowingHost(v as ShowingHostType)}>
                 <SelectTrigger>
@@ -193,6 +135,64 @@ export function SendHousingOfferDialog({
                   <SelectItem value="mimer">Mimer</SelectItem>
                   <SelectItem value="tenant">Befintlig hyresgäst</SelectItem>
                   <SelectItem value="custom">Egen kontakt</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label>Datum och tid för visning</Label>
+            <div className="flex gap-2">
+              <div className="flex-1 min-w-0">
+                <DatePicker
+                  value={showingDateTime}
+                  onChange={(date) => {
+                    if (!date) {
+                      setShowingDateTime(undefined);
+                      return;
+                    }
+                    const next = new Date(date);
+                    const base = showingDateTime ?? defaultShowing;
+                    next.setHours(base.getHours(), base.getMinutes(), 0, 0);
+                    setShowingDateTime(next);
+                  }}
+                  placeholder="Välj datum"
+                  locale={sv}
+                  dateFormat="yyyy-MM-dd"
+                />
+              </div>
+              <Select
+                value={showingDateTime ? String(showingDateTime.getHours()).padStart(2, "0") : undefined}
+                onValueChange={(v) => {
+                  const next = new Date(showingDateTime ?? defaultShowing);
+                  next.setHours(parseInt(v, 10));
+                  setShowingDateTime(next);
+                }}
+              >
+                <SelectTrigger className="w-[88px]">
+                  <SelectValue placeholder="tt" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0")).map((h) => (
+                    <SelectItem key={h} value={h}>{h}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select
+                value={showingDateTime ? String(showingDateTime.getMinutes()).padStart(2, "0") : undefined}
+                onValueChange={(v) => {
+                  const next = new Date(showingDateTime ?? defaultShowing);
+                  next.setMinutes(parseInt(v, 10));
+                  setShowingDateTime(next);
+                }}
+              >
+                <SelectTrigger className="w-[88px]">
+                  <SelectValue placeholder="mm" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, "0")).map((m) => (
+                    <SelectItem key={m} value={m}>{m}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
