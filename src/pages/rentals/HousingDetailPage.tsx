@@ -190,6 +190,36 @@ const HousingDetailPage = () => {
         housingAddress={listing.address}
         onConfirm={handleConfirmOffer}
       />
+
+      {/* Bulk-actions för markerade sökande (SMS/mejl). Visas i alla tre lägen
+          (urval för erbjudande, granska erbjudna, kontrakt). I urvalsläget
+          används samma selection som "Skicka erbjudande". */}
+      <BulkActionBar
+        selectedCount={selectedApplicants.length}
+        onSendSms={() => setSmsOpen(true)}
+        onSendEmail={() => setEmailOpen(true)}
+        onClear={() => setSelectedApplicants([])}
+      />
+
+      <BulkSmsModal
+        open={smsOpen}
+        onOpenChange={setSmsOpen}
+        recipients={bulkRecipients}
+        onSend={async (_message, sentTo) => {
+          await new Promise((r) => setTimeout(r, 300));
+          sonnerToast.success(`SMS skickat till ${sentTo.length} sökande`);
+        }}
+      />
+
+      <BulkEmailModal
+        open={emailOpen}
+        onOpenChange={setEmailOpen}
+        recipients={bulkRecipients}
+        onSend={async (_subject, _body, sentTo) => {
+          await new Promise((r) => setTimeout(r, 300));
+          sonnerToast.success(`Mejl skickat till ${sentTo.length} sökande`);
+        }}
+      />
     </PageLayout>
   );
 };
