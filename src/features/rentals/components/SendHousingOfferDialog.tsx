@@ -211,6 +211,7 @@ export function SendHousingOfferDialog({
               />
             </div>
           </div>
+        <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-6">
         </div>
 
         <DialogFooter className="p-6 pt-4 border-t bg-background">
