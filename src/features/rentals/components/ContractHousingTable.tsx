@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
-import { Badge } from "@/components/ui/badge";
+
 import { publishedHousingSpaces } from "../data/published-housing";
 
 export function ContractHousingTable() {
