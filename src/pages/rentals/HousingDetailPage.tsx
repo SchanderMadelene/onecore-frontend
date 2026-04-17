@@ -133,19 +133,6 @@ const HousingDetailPage = () => {
     ? listing.applicants.filter(a => a.offerResponse?.status === 'Accepterat')
     : listing.applicants;
 
-  // Bygg recipient-listan för bulk-SMS/mejl baserat på markerade sökande.
-  // Telefon och e-post mockas tills riktig kunddata är kopplad.
-  const bulkRecipients = useMemo(() => {
-    return displayedApplicants
-      .filter(a => selectedApplicants.includes(String(a.id)))
-      .map(a => ({
-        id: String(a.id),
-        name: a.name,
-        phone: `+4670${String(1000000 + a.id).slice(-7)}`,
-        email: `${a.name.toLowerCase().replace(/\s+/g, ".").replace(/[åä]/g, "a").replace(/ö/g, "o")}@example.com`,
-      }));
-  }, [displayedApplicants, selectedApplicants]);
-
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="p-6">
