@@ -5,6 +5,10 @@ export interface EditHousingFormData {
   moveInDate: string;
   availableFrom: string;
   eventuallyAvailableFrom: string;
+  // Publication period
+  publishFrom?: Date;
+  publishTo?: Date;
+  publishUntilFurtherNotice: boolean;
   queue: string;
   standardNote: string;
   // Detailed description fields
