@@ -16,6 +16,8 @@ interface HousingApplicantsTableProps {
   showSelectionColumn?: boolean;
   onSelectionChange?: (selectedIds: string[]) => void;
   offeredApplicantIds?: number[];
+  /** Kontrakt-läge: dölj kolumnerna "Erbjudande" och "Visning bokad" */
+  contractMode?: boolean;
 }
 
 export function HousingApplicantsTable({ 
@@ -25,7 +27,8 @@ export function HousingApplicantsTable({
   showOfferColumns = false,
   showSelectionColumn = true,
   onSelectionChange,
-  offeredApplicantIds = []
+  offeredApplicantIds = [],
+  contractMode = false
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
