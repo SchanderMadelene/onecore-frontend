@@ -6,4 +6,5 @@ export interface UnpublishedHousingSpace extends HousingSpace {
   createdBy: string;
   description?: string;
   availableFrom?: string;
+  preferredMoveOutDate?: string;
 }
