@@ -176,29 +176,16 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
     else if (a.kind === "new-app") setEditOpen(false); // fallthrough; rarely used in menu directly
   };
 
-  const { primary, menu } = getActions(tab, housing.address);
-
-  // For "Ny anmälan" inside the dropdown menu we can't easily mount a dialog from a menu item,
-  // so we render it as a primary button only and skip it in the menu trigger flow by keeping
-  // a separate inline mount for each occurrence.
-  const inlineNewApp = menu.some((m) => m.kind === "new-app");
+  const { menu } = getActions(tab, housing.address);
 
   const containerClass =
     variant === "row"
       ? "flex items-center justify-end gap-2"
       : "flex items-center justify-end gap-2 mt-3";
-  const hoverClass =
-    variant === "row"
-      ? "hidden md:flex items-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity"
-      : "flex items-center gap-2";
 
   return (
     <>
       <div className={containerClass} onClick={stop}>
-        <div className={hoverClass}>
-          {primary.map((a) => trigger(a))}
-        </div>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" onClick={stop} aria-label="Fler åtgärder">
