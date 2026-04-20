@@ -198,6 +198,7 @@ export const PublishedParkingTab = () => {
         keyExtractor={(space) => space.id}
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
+        onRowClick={(space) => navigate(`/rentals/parking/${space.id}`, { state: { from: "?tab=publicerade" } })}
       />
       <p className="text-sm text-muted-foreground">{filteredSpaces.length} annonser</p>
     </div>
