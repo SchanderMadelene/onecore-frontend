@@ -141,23 +141,6 @@ export function CancelRentalDialog({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-5">
-          {/* Recipients summary */}
-          <div className="rounded-md border bg-muted/30 p-4 space-y-3">
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-              <div className="text-sm font-medium">
-                {applicants.length} sökande
-              </div>
-              <div className="flex gap-2">
-                <Badge variant="secondary">{phoneCount} med telefon</Badge>
-                <Badge variant="secondary">{emailCount} med e-post</Badge>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {visibleNames.join(", ")}
-              {remaining > 0 ? ` …och ${remaining} till` : ""}
-            </p>
-          </div>
-
           {/* Channel */}
           <div className="space-y-2">
             <Label>Skicka via</Label>
