@@ -14,10 +14,18 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { getMockApplicantsForParking } from "../data/mockParkingApplicants";
-import type { ParkingSpace } from "./types/parking";
+
+export type CancelRentalKind = "parking" | "housing";
+
+interface CancelRentalSubject {
+  id: string;
+  address: string;
+  seekers: number;
+}
 
 interface CancelRentalDialogProps {
-  parkingSpace: ParkingSpace;
+  subject: CancelRentalSubject;
+  kind?: CancelRentalKind;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCancelled?: () => void;
