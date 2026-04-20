@@ -127,6 +127,9 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
   const [newAppOpen, setNewAppOpen] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmSpec | null>(null);
   const [pending, setPending] = useState(false);
+  const [cancelRentalOpen, setCancelRentalOpen] = useState(false);
+
+  const seekers = (housing as HousingSpace).seekers ?? 0;
 
   const stop = (e: React.MouseEvent | React.SyntheticEvent) => e.stopPropagation();
   const goDetail = () =>
@@ -144,7 +147,13 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
   const handleMenu = (a: ActionDef) => {
     if (a.kind === "edit") setEditOpen(true);
     else if (a.kind === "navigate") goDetail();
-    else if (a.kind === "confirm") setConfirm(a.confirm);
+    else if (a.kind === "confirm") {
+      if (a.key === "unpublish" && seekers > 0) {
+        setCancelRentalOpen(true);
+      } else {
+        setConfirm(a.confirm);
+      }
+    }
     else if (a.kind === "new-app") setNewAppOpen(true);
   };
 
@@ -214,6 +223,13 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
         variant={confirm?.destructive ? "destructive" : "default"}
         isPending={pending}
         onConfirm={runConfirm}
+      />
+
+      <CancelRentalDialog
+        subject={{ id: housing.id, address: housing.address, seekers }}
+        kind="housing"
+        open={cancelRentalOpen}
+        onOpenChange={setCancelRentalOpen}
       />
     </>
   );
