@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { getDistrictByArea } from "../utils/area-district";
+import { getRentalObjectType } from "../utils/rental-object-type";
+import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
 
 import { publishedHousingSpaces } from "../data/published-housing";
 
@@ -18,6 +20,7 @@ export function ContractHousingTable() {
     { key: "address", label: "Adress", render: (h: any) => <span className="font-medium">{h.address}</span> },
     { key: "area", label: "Område", render: (h: any) => h.area, hideOnMobile: true },
     { key: "district", label: "Distrikt", render: (h: any) => getDistrictByArea(h.area), hideOnMobile: true },
+    { key: "rentalType", label: "Hyresobjektstyp", render: (h: any) => <BuildingTypeBadge type={getRentalObjectType(h.id)} />, hideOnMobile: true },
     { key: "rooms", label: "Rum", render: (h: any) => h.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
