@@ -6,6 +6,7 @@ import { unpublishedHousingSpaces } from "../data/unpublished-housing";
 import { EditHousingDialog } from "./EditHousingDialog";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
+import { getDistrictByArea } from "../utils/area-district";
 
 const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
   switch (status) {
@@ -26,6 +27,7 @@ export function UnpublishedHousingTable() {
   const columns = [
     { key: "address", label: "Adress", render: (s: any) => <span className="font-medium">{s.address}</span> },
     { key: "area", label: "Område", render: (s: any) => s.area, hideOnMobile: true },
+    { key: "district", label: "Distrikt", render: (s: any) => getDistrictByArea(s.area), hideOnMobile: true },
     { key: "rooms", label: "Rum", render: (s: any) => s.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (s: any) => s.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (s: any) => s.rent },
