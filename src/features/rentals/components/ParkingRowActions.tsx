@@ -143,7 +143,8 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
       />
 
       <CancelRentalDialog
-        parkingSpace={parkingSpace}
+        subject={parkingSpace}
+        kind="parking"
         open={cancelRentalOpen}
         onOpenChange={setCancelRentalOpen}
       />

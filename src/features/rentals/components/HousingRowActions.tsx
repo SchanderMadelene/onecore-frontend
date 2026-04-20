@@ -13,6 +13,7 @@ import { ConfirmDialog } from "@/shared/common";
 import { toast } from "@/hooks/use-toast";
 import { CreateHousingApplicationDialog } from "./CreateHousingApplicationDialog";
 import { EditHousingDialog } from "./EditHousingDialog";
+import { CancelRentalDialog } from "./CancelRentalDialog";
 import type { HousingSpace } from "./types/housing";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 
@@ -47,15 +48,15 @@ type ActionDef =
 function getActions(tab: HousingActionTab, address: string): { primary: ActionDef[]; menu: ActionDef[] } {
   const unpublish: ActionDef = {
     key: "unpublish",
-    label: "Avpublicera",
+    label: "Avbryt uthyrning",
     kind: "confirm",
     destructive: true,
     confirm: {
-      title: "Avpublicera bostadsannons",
-      description: `Vill du avpublicera annonsen för ${address}?`,
-      confirmLabel: "Avpublicera",
-      pendingLabel: "Avpublicerar...",
-      successTitle: "Annons avpublicerad",
+      title: "Avbryt uthyrning",
+      description: `Vill du avbryta uthyrningen av ${address}?`,
+      confirmLabel: "Avbryt uthyrning",
+      pendingLabel: "Avbryter...",
+      successTitle: "Uthyrning avbruten",
       destructive: true,
     },
   };
