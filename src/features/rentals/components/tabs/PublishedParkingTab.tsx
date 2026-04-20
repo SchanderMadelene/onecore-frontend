@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import type { ParkingSpace } from "../types/parking";
 
 export const PublishedParkingTab = () => {
+  const navigate = useNavigate();
   const { data: publishedSpaces, isLoading, error } = useParkingSpaceListingsByType('published');
   const [filters, setFilters] = useState({
     address: "",
@@ -158,7 +159,6 @@ export const PublishedParkingTab = () => {
     },
   ];
 
-  const navigate = useNavigate();
   const mobileCardRenderer = (space: ParkingSpace) => (
     <div className="space-y-2">
       <div>
