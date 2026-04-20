@@ -50,5 +50,7 @@ export const BUILDING_TYPES: Record<string, string> = {
   "55PLUS": "55+",
   "STUD": "Student",
   "TRYGG": "Trygghetsboende",
-  "CO-LIVING": "Co-living"
+  "CO-LIVING": "Co-living",
+  "POANGFRITT": "Poängfri",
+  "KOOPERATIV": "Kooperativ"
 };
