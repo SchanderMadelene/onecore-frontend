@@ -39,8 +39,8 @@ export const BUILDING_TYPE_STYLES: Record<string, BuildingTypeStyle> = {
     label: "Co-living"
   },
   "KOOPERATIV": {
-    bg: "bg-teal-400",
-    text: "text-black",
+    bg: "bg-rose-200",
+    text: "text-rose-900",
     label: "Kooperativ"
   },
   "POANGFRITT": {
