@@ -1,0 +1,243 @@
+import { useMemo, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/ui/dialog";
+import { Button } from "@/shared/ui/button";
+import { Textarea } from "@/shared/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/shared/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
+import { getMockApplicantsForParking } from "../data/mockParkingApplicants";
+import type { ParkingSpace } from "./types/parking";
+
+interface CancelRentalDialogProps {
+  parkingSpace: ParkingSpace;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onCancelled?: () => void;
+}
+
+type Channel = "sms" | "email" | "both";
+
+const DEFAULT_SMS =
+  "Hej {namn}! Vi har tyvärr behövt avbryta uthyrningen av bilplats {adress} (annons {annonsid}). Tack för din intresseanmälan. /Mimer";
+
+const DEFAULT_EMAIL_SUBJECT = "Uthyrningen av bilplats {adress} har avbrutits";
+
+const DEFAULT_EMAIL_BODY =
+  "Hej {namn},\n\nVi vill informera dig om att uthyrningen av bilplats {adress} (annons {annonsid}) har avbrutits och annonsen är inte längre aktuell.\n\nTack för din intresseanmälan – du står kvar i kön för andra bilplatser.\n\nVänliga hälsningar,\nMimer";
+
+function fillVariables(
+  template: string,
+  vars: { namn: string; adress: string; annonsid: string },
+) {
+  return template
+    .replace(/\{namn\}/g, vars.namn)
+    .replace(/\{adress\}/g, vars.adress)
+    .replace(/\{annonsid\}/g, vars.annonsid);
+}
+
+export function CancelRentalDialog({
+  parkingSpace,
+  open,
+  onOpenChange,
+  onCancelled,
+}: CancelRentalDialogProps) {
+  const applicants = useMemo(
+    () => getMockApplicantsForParking(parkingSpace.id, parkingSpace.seekers),
+    [parkingSpace.id, parkingSpace.seekers],
+  );
+
+  const phoneCount = applicants.filter((a) => a.phone).length;
+  const emailCount = applicants.filter((a) => a.email).length;
+
+  const [channel, setChannel] = useState<Channel>("sms");
+  const [smsText, setSmsText] = useState(DEFAULT_SMS);
+  const [emailSubject, setEmailSubject] = useState(DEFAULT_EMAIL_SUBJECT);
+  const [emailBody, setEmailBody] = useState(DEFAULT_EMAIL_BODY);
+  const [pending, setPending] = useState(false);
+
+  const previewVars = {
+    namn: applicants[0]?.name ?? "Kund",
+    adress: parkingSpace.address,
+    annonsid: parkingSpace.id,
+  };
+
+  const recipientCount =
+    channel === "sms" ? phoneCount : channel === "email" ? emailCount : applicants.length;
+
+  const visibleNames = applicants.slice(0, 5).map((a) => a.name);
+  const remaining = Math.max(0, applicants.length - visibleNames.length);
+
+  const handleClose = () => {
+    if (pending) return;
+    onOpenChange(false);
+  };
+
+  const handleCancelOnly = async () => {
+    setPending(true);
+    await new Promise((r) => setTimeout(r, 500));
+    toast({
+      title: "Uthyrning avbruten",
+      description: `${parkingSpace.address} – inga meddelanden skickades.`,
+    });
+    setPending(false);
+    onOpenChange(false);
+    onCancelled?.();
+  };
+
+  const handleCancelAndSend = async () => {
+    setPending(true);
+    await new Promise((r) => setTimeout(r, 700));
+    toast({
+      title: "Uthyrning avbruten",
+      description: parkingSpace.address,
+    });
+    toast({
+      title: `Meddelanden köade till ${recipientCount} sökande`,
+      description:
+        channel === "sms"
+          ? "SMS skickas inom kort."
+          : channel === "email"
+          ? "E-post skickas inom kort."
+          : "SMS och e-post skickas inom kort.",
+    });
+    setPending(false);
+    onOpenChange(false);
+    onCancelled?.();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col gap-0 p-0">
+        <DialogHeader className="p-6 pb-4">
+          <DialogTitle>Avbryt uthyrning</DialogTitle>
+          <DialogDescription>
+            Annonsen för {parkingSpace.address} har {applicants.length}{" "}
+            {applicants.length === 1 ? "intresseanmälan" : "intresseanmälningar"}.
+            Vi rekommenderar att du meddelar de sökande att uthyrningen avbryts.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex-1 overflow-y-auto px-6 space-y-5">
+          {/* Recipients summary */}
+          <div className="rounded-md border bg-muted/30 p-4 space-y-3">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="text-sm font-medium">
+                {applicants.length} sökande
+              </div>
+              <div className="flex gap-2">
+                <Badge variant="secondary">{phoneCount} med telefon</Badge>
+                <Badge variant="secondary">{emailCount} med e-post</Badge>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {visibleNames.join(", ")}
+              {remaining > 0 ? ` …och ${remaining} till` : ""}
+            </p>
+          </div>
+
+          {/* Channel */}
+          <div className="space-y-2">
+            <Label>Skicka via</Label>
+            <RadioGroup
+              value={channel}
+              onValueChange={(v) => setChannel(v as Channel)}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-2"
+            >
+              <label className="flex items-center gap-2 rounded-md border p-3 cursor-pointer hover:bg-accent">
+                <RadioGroupItem value="sms" id="ch-sms" />
+                <span className="text-sm">SMS ({phoneCount})</span>
+              </label>
+              <label className="flex items-center gap-2 rounded-md border p-3 cursor-pointer hover:bg-accent">
+                <RadioGroupItem value="email" id="ch-email" />
+                <span className="text-sm">E-post ({emailCount})</span>
+              </label>
+              <label className="flex items-center gap-2 rounded-md border p-3 cursor-pointer hover:bg-accent">
+                <RadioGroupItem value="both" id="ch-both" />
+                <span className="text-sm">Båda</span>
+              </label>
+            </RadioGroup>
+          </div>
+
+          {/* Message */}
+          {(channel === "sms" || channel === "both") && (
+            <div className="space-y-2">
+              <Label htmlFor="sms-text">SMS-meddelande</Label>
+              <Textarea
+                id="sms-text"
+                value={smsText}
+                onChange={(e) => setSmsText(e.target.value)}
+                rows={3}
+              />
+              <p className="text-xs text-muted-foreground">
+                Förhandsgranskning: {fillVariables(smsText, previewVars)}
+              </p>
+            </div>
+          )}
+
+          {(channel === "email" || channel === "both") && (
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <Label htmlFor="email-subject">E-post – ämne</Label>
+                <Input
+                  id="email-subject"
+                  value={emailSubject}
+                  onChange={(e) => setEmailSubject(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email-body">E-post – meddelande</Label>
+                <Textarea
+                  id="email-body"
+                  value={emailBody}
+                  onChange={(e) => setEmailBody(e.target.value)}
+                  rows={6}
+                />
+                <p className="text-xs text-muted-foreground whitespace-pre-line">
+                  Förhandsgranskning ({fillVariables(emailSubject, previewVars)}):{"\n"}
+                  {fillVariables(emailBody, previewVars)}
+                </p>
+              </div>
+            </div>
+          )}
+
+          <p className="text-xs text-muted-foreground">
+            Variabler: {"{namn}"}, {"{adress}"}, {"{annonsid}"} ersätts automatiskt per mottagare.
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between gap-2 p-4 border-t bg-background flex-wrap">
+          <Button
+            variant="ghost"
+            onClick={handleCancelOnly}
+            disabled={pending}
+            className="text-muted-foreground"
+          >
+            Avbryt utan att meddela sökande
+          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={handleClose} disabled={pending}>
+              Stäng
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleCancelAndSend}
+              disabled={pending || recipientCount === 0}
+            >
+              {pending
+                ? `Skickar till ${recipientCount} sökande...`
+                : "Avbryt uthyrning och skicka"}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
