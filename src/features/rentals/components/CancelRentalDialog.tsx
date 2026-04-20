@@ -14,10 +14,18 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { getMockApplicantsForParking } from "../data/mockParkingApplicants";
-import type { ParkingSpace } from "./types/parking";
+
+export type CancelRentalKind = "parking" | "housing";
+
+interface CancelRentalSubject {
+  id: string;
+  address: string;
+  seekers: number;
+}
 
 interface CancelRentalDialogProps {
-  parkingSpace: ParkingSpace;
+  subject: CancelRentalSubject;
+  kind?: CancelRentalKind;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCancelled?: () => void;
@@ -44,29 +52,36 @@ function fillVariables(
 }
 
 export function CancelRentalDialog({
-  parkingSpace,
+  subject,
+  kind = "parking",
   open,
   onOpenChange,
   onCancelled,
 }: CancelRentalDialogProps) {
+  const noun = kind === "housing" ? "bostad" : "bilplats";
+
   const applicants = useMemo(
-    () => getMockApplicantsForParking(parkingSpace.id, parkingSpace.seekers),
-    [parkingSpace.id, parkingSpace.seekers],
+    () => getMockApplicantsForParking(subject.id, subject.seekers),
+    [subject.id, subject.seekers],
   );
 
   const phoneCount = applicants.filter((a) => a.phone).length;
   const emailCount = applicants.filter((a) => a.email).length;
 
+  const defaultSms = DEFAULT_SMS.replace("bilplats", noun);
+  const defaultEmailSubject = DEFAULT_EMAIL_SUBJECT.replace("bilplats", noun);
+  const defaultEmailBody = DEFAULT_EMAIL_BODY.replace("bilplats", noun);
+
   const [channel, setChannel] = useState<Channel>("sms");
-  const [smsText, setSmsText] = useState(DEFAULT_SMS);
-  const [emailSubject, setEmailSubject] = useState(DEFAULT_EMAIL_SUBJECT);
-  const [emailBody, setEmailBody] = useState(DEFAULT_EMAIL_BODY);
+  const [smsText, setSmsText] = useState(defaultSms);
+  const [emailSubject, setEmailSubject] = useState(defaultEmailSubject);
+  const [emailBody, setEmailBody] = useState(defaultEmailBody);
   const [pending, setPending] = useState(false);
 
   const previewVars = {
     namn: applicants[0]?.name ?? "Kund",
-    adress: parkingSpace.address,
-    annonsid: parkingSpace.id,
+    adress: subject.address,
+    annonsid: subject.id,
   };
 
   const recipientCount =
@@ -85,7 +100,7 @@ export function CancelRentalDialog({
     await new Promise((r) => setTimeout(r, 500));
     toast({
       title: "Uthyrning avbruten",
-      description: `${parkingSpace.address} – inga meddelanden skickades.`,
+      description: `${subject.address} – inga meddelanden skickades.`,
     });
     setPending(false);
     onOpenChange(false);
@@ -97,7 +112,7 @@ export function CancelRentalDialog({
     await new Promise((r) => setTimeout(r, 700));
     toast({
       title: "Uthyrning avbruten",
-      description: parkingSpace.address,
+      description: subject.address,
     });
     toast({
       title: `Meddelanden köade till ${recipientCount} sökande`,
@@ -119,7 +134,7 @@ export function CancelRentalDialog({
         <DialogHeader className="p-6 pb-4">
           <DialogTitle>Avbryt uthyrning</DialogTitle>
           <DialogDescription>
-            Annonsen för {parkingSpace.address} har {applicants.length}{" "}
+            Annonsen för {subject.address} har {applicants.length}{" "}
             {applicants.length === 1 ? "intresseanmälan" : "intresseanmälningar"}.
             Vi rekommenderar att du meddelar de sökande att uthyrningen avbryts.
           </DialogDescription>
