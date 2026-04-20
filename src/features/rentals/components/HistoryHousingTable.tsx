@@ -35,13 +35,16 @@ export function HistoryHousingTable() {
   );
 
   return (
-    <ResponsiveTable
-      data={historyHousingSpaces}
-      columns={columns}
-      keyExtractor={(h) => h.id}
-      emptyMessage="Ingen historik"
-      mobileCardRenderer={mobileCardRenderer}
-      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "historik" } })}
-    />
+    <>
+      <ResponsiveTable
+        data={historyHousingSpaces}
+        columns={columns}
+        keyExtractor={(h) => h.id}
+        emptyMessage="Ingen historik"
+        mobileCardRenderer={mobileCardRenderer}
+        onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "historik" } })}
+      />
+      <p className="text-sm text-muted-foreground mt-3">{historyHousingSpaces.length} annonser</p>
+    </>
   );
 }

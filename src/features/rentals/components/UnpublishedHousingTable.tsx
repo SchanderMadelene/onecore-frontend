@@ -77,13 +77,16 @@ export function UnpublishedHousingTable() {
   );
 
   return (
-    <ResponsiveTable
-      data={unpublishedHousingSpaces}
-      columns={columns}
-      keyExtractor={(s) => s.id}
-      emptyMessage="Inga opublicerade bostäder"
-      mobileCardRenderer={mobileCardRenderer}
-      onRowClick={(s) => navigate(`/rentals/housing/${s.id}`, { state: { activeHousingTab: "behovAvPublicering" } })}
-    />
+    <>
+      <ResponsiveTable
+        data={unpublishedHousingSpaces}
+        columns={columns}
+        keyExtractor={(s) => s.id}
+        emptyMessage="Inga opublicerade bostäder"
+        mobileCardRenderer={mobileCardRenderer}
+        onRowClick={(s) => navigate(`/rentals/housing/${s.id}`, { state: { activeHousingTab: "behovAvPublicering" } })}
+      />
+      <p className="text-sm text-muted-foreground mt-3">{unpublishedHousingSpaces.length} annonser</p>
+    </>
   );
 }
