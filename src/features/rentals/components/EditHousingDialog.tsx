@@ -88,12 +88,14 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
-          <Edit className="h-4 w-4" />
-          {isMobile ? "Redigera" : "Redigera"}
-        </Button>
-      </DialogTrigger>
+      {!hideTrigger && (
+        <DialogTrigger asChild>
+          <Button variant="outline" size="sm" className="flex items-center gap-1">
+            <Edit className="h-4 w-4" />
+            {isMobile ? "Redigera" : "Redigera"}
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className={`${isMobile ? 'max-w-[95vw] max-h-[95vh] m-2' : 'max-w-4xl max-h-[90vh]'} overflow-y-auto`}>
         <DialogHeader className={isMobile ? "pb-4" : ""}>
           <DialogTitle className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold`}>
