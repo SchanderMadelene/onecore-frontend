@@ -103,7 +103,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
       {/* Filtersektion */}
       <Card>
         <CardHeader>
-          <CardTitle>Händelselogg</CardTitle>
+          <CardTitle>Kommunikationslogg</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">
