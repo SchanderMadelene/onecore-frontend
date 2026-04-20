@@ -4,6 +4,7 @@ import { historyHousingSpaces } from "../data/history-housing";
 import { getDistrictByArea } from "../utils/area-district";
 import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
+import { HousingRowActions } from "./HousingRowActions";
 
 export function HistoryHousingTable() {
   const navigate = useNavigate();
@@ -20,6 +21,13 @@ export function HistoryHousingTable() {
     { key: "contractStart", label: "Kontraktstart", render: (h: any) => new Date(h.contractStart).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "signedAt", label: "Tecknat", render: (h: any) => new Date(h.signedAt).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "applicants", label: "Sökande", render: (h: any) => h.applicants, hideOnMobile: true },
+    {
+      key: "actions",
+      label: "",
+      className: "text-right whitespace-nowrap",
+      hideOnMobile: true,
+      render: (h: any) => <HousingRowActions housing={h} tab="historik" />,
+    },
   ];
 
   const mobileCardRenderer = (housing: any) => (
@@ -34,6 +42,7 @@ export function HistoryHousingTable() {
         <span className="text-sm text-muted-foreground">Hyra:</span>
         <span className="text-sm">{housing.rent}</span>
       </div>
+      <HousingRowActions housing={housing} tab="historik" variant="mobile" />
     </div>
   );
 
@@ -46,6 +55,7 @@ export function HistoryHousingTable() {
         emptyMessage="Ingen historik"
         mobileCardRenderer={mobileCardRenderer}
         onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "historik" } })}
+        rowClassName="group"
       />
       <p className="text-sm text-muted-foreground mt-3">{historyHousingSpaces.length} annonser</p>
     </>

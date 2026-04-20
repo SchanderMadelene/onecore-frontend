@@ -5,6 +5,7 @@ import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { getDistrictByArea } from "../utils/area-district";
 import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
+import { HousingRowActions } from "./HousingRowActions";
 
 export function ReadyForOfferHousingTable() {
   const navigate = useNavigate();
@@ -22,6 +23,13 @@ export function ReadyForOfferHousingTable() {
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
     { key: "seekers", label: "Sökande", render: (h: any) => h.seekers },
     { key: "publishedTo", label: "Publicerad till", render: (h: any) => new Date(h.publishedTo).toLocaleDateString('sv-SE'), hideOnMobile: true },
+    {
+      key: "actions",
+      label: "",
+      className: "text-right whitespace-nowrap",
+      hideOnMobile: true,
+      render: (h: any) => <HousingRowActions housing={h} tab="klaraForErbjudande" />,
+    },
   ];
 
   const mobileCardRenderer = (housing: any) => (
@@ -34,6 +42,7 @@ export function ReadyForOfferHousingTable() {
         <span className="text-sm text-muted-foreground">Sökande:</span>
         <span className="text-sm">{housing.seekers}</span>
       </div>
+      <HousingRowActions housing={housing} tab="klaraForErbjudande" variant="mobile" />
     </div>
   );
 
@@ -46,6 +55,7 @@ export function ReadyForOfferHousingTable() {
         emptyMessage="Inga bostäder klara för erbjudande"
         mobileCardRenderer={mobileCardRenderer}
         onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "klaraForErbjudande" } })}
+        rowClassName="group"
       />
       <p className="text-sm text-muted-foreground mt-3">{readyForOfferHousings.length} annonser</p>
     </>

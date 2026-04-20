@@ -1,55 +1,37 @@
-
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, Car, Loader2, ChevronRight } from "lucide-react";
-import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
-import { DeleteListingDialog } from "../DeleteListingDialog";
+import { Search, Car, Loader2 } from "lucide-react";
 import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
+import { ParkingRowActions } from "../ParkingRowActions";
 import type { ParkingSpace } from "../types/parking";
 
 export const ReadyForOfferTab = () => {
   const { data: readyForOfferSpaces, isLoading, error } = useParkingSpaceListingsByType('ready-for-offer');
-  const [filters, setFilters] = useState({
-    address: "",
-    area: "",
-    type: "",
-    queueType: ""
-  });
+  const navigate = useNavigate();
+  const [filters, setFilters] = useState({ address: "", area: "", type: "", queueType: "" });
 
   const filteredSpaces = useMemo(() => {
     if (!readyForOfferSpaces) return [];
-    
     return readyForOfferSpaces.filter(space => {
-      const matchesAddress = !filters.address || 
-        space.address.toLowerCase().includes(filters.address.toLowerCase());
-      const matchesArea = !filters.area || 
-        space.area.toLowerCase().includes(filters.area.toLowerCase());
-      const matchesType = !filters.type || 
-        space.type.toLowerCase().includes(filters.type.toLowerCase());
-      const matchesQueueType = !filters.queueType || 
-        space.queueType.toLowerCase().includes(filters.queueType.toLowerCase());
-      
-      return matchesAddress && matchesArea && matchesType && matchesQueueType;
+      const m = (a: string, b: string) => !a || b.toLowerCase().includes(a.toLowerCase());
+      return m(filters.address, space.address) && m(filters.area, space.area) && m(filters.type, space.type) && m(filters.queueType, space.queueType);
     });
   }, [readyForOfferSpaces, filters]);
 
   const filterOptions = useMemo(() => {
     if (!readyForOfferSpaces) return { addresses: [], areas: [], types: [], queueTypes: [] };
-    
     return {
-      addresses: [...new Set(readyForOfferSpaces.map(space => space.address))].sort(),
-      areas: [...new Set(readyForOfferSpaces.map(space => space.area))].sort(),
-      types: [...new Set(readyForOfferSpaces.map(space => space.type))].sort(),
-      queueTypes: [...new Set(readyForOfferSpaces.map(space => space.queueType))].sort(),
+      addresses: [...new Set(readyForOfferSpaces.map(s => s.address))].sort(),
+      areas: [...new Set(readyForOfferSpaces.map(s => s.area))].sort(),
+      types: [...new Set(readyForOfferSpaces.map(s => s.type))].sort(),
+      queueTypes: [...new Set(readyForOfferSpaces.map(s => s.queueType))].sort(),
     };
   }, [readyForOfferSpaces]);
 
-  const handleFilterChange = (field: keyof typeof filters) => (value: string) => {
+  const handleFilterChange = (field: keyof typeof filters) => (value: string) =>
     setFilters(prev => ({ ...prev, [field]: value }));
-  };
 
   if (isLoading) {
     return (
@@ -81,99 +63,37 @@ export const ReadyForOfferTab = () => {
 
   const columns = [
     {
-      key: "address",
-      label: "Bilplats",
-      className: "w-[250px] whitespace-nowrap",
-      filterOptions: filterOptions.addresses,
-      filterValue: filters.address,
-      onFilter: handleFilterChange('address'),
-      filterPlaceholder: "Sök adress...",
-      render: (space: ParkingSpace) => (
-        <div>
-          <div className="font-medium">{space.address}</div>
-          <div className="text-sm text-muted-foreground">{space.id}</div>
-        </div>
-      ),
+      key: "address", label: "Bilplats", className: "w-[250px] whitespace-nowrap",
+      filterOptions: filterOptions.addresses, filterValue: filters.address,
+      onFilter: handleFilterChange('address'), filterPlaceholder: "Sök adress...",
+      render: (s: ParkingSpace) => (<div><div className="font-medium">{s.address}</div><div className="text-sm text-muted-foreground">{s.id}</div></div>),
     },
+    { key: "area", label: "Område", className: "whitespace-nowrap", hideOnMobile: true, filterOptions: filterOptions.areas, filterValue: filters.area, onFilter: handleFilterChange('area'), filterPlaceholder: "Sök område...", render: (s: ParkingSpace) => s.area },
+    { key: "type", label: "Bilplatstyp", className: "whitespace-nowrap", hideOnMobile: true, filterOptions: filterOptions.types, filterValue: filters.type, onFilter: handleFilterChange('type'), filterPlaceholder: "Sök typ...", render: (s: ParkingSpace) => s.type },
+    { key: "queueType", label: "Kötyp", className: "whitespace-nowrap", hideOnMobile: true, filterOptions: filterOptions.queueTypes, filterValue: filters.queueType, onFilter: handleFilterChange('queueType'), filterPlaceholder: "Sök kötyp...", render: (s: ParkingSpace) => s.queueType },
+    { key: "rent", label: "Hyra", className: "whitespace-nowrap", render: (s: ParkingSpace) => <div className="font-medium">{s.rent}</div> },
+    { key: "seekers", label: "Sökande", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => <div className="font-medium">{s.seekers}</div> },
+    { key: "publishedTo", label: "Publicerad t.om", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.publishedTo },
+    { key: "publishedFrom", label: "Publicerad fr.o.m", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.publishedFrom },
     {
-      key: "area",
-      label: "Område",
-      className: "whitespace-nowrap",
-      hideOnMobile: true,
-      filterOptions: filterOptions.areas,
-      filterValue: filters.area,
-      onFilter: handleFilterChange('area'),
-      filterPlaceholder: "Sök område...",
-      render: (space: ParkingSpace) => space.area,
-    },
-    {
-      key: "type",
-      label: "Bilplatstyp",
-      className: "whitespace-nowrap",
-      hideOnMobile: true,
-      filterOptions: filterOptions.types,
-      filterValue: filters.type,
-      onFilter: handleFilterChange('type'),
-      filterPlaceholder: "Sök typ...",
-      render: (space: ParkingSpace) => space.type,
-    },
-    {
-      key: "queueType",
-      label: "Kötyp",
-      className: "whitespace-nowrap",
-      hideOnMobile: true,
-      filterOptions: filterOptions.queueTypes,
-      filterValue: filters.queueType,
-      onFilter: handleFilterChange('queueType'),
-      filterPlaceholder: "Sök kötyp...",
-      render: (space: ParkingSpace) => space.queueType,
-    },
-    { key: "rent", label: "Hyra", className: "whitespace-nowrap", render: (space: ParkingSpace) => <div className="font-medium">{space.rent}</div> },
-    { key: "seekers", label: "Sökande", className: "whitespace-nowrap", hideOnMobile: true, render: (space: ParkingSpace) => <div className="font-medium">{space.seekers}</div> },
-    { key: "publishedTo", label: "Publicerad t.om", className: "whitespace-nowrap", hideOnMobile: true, render: (space: ParkingSpace) => space.publishedTo },
-    { key: "publishedFrom", label: "Publicerad fr.o.m", className: "whitespace-nowrap", hideOnMobile: true, render: (space: ParkingSpace) => space.publishedFrom },
-    {
-      key: "actions",
-      label: "Åtgärder",
-      className: "text-right whitespace-nowrap",
-      hideOnMobile: true,
-      render: (space: ParkingSpace) => (
-        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <DeleteListingDialog parkingSpace={space} />
-          <ParkingApplicationDialog parkingSpace={space} />
-          <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=klaraForErbjudande" }}>
-            <Button variant="outline" size="icon">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      ),
+      key: "actions", label: "", className: "text-right whitespace-nowrap", hideOnMobile: true,
+      render: (s: ParkingSpace) => <ParkingRowActions parkingSpace={s} tab="klaraForErbjudande" />,
     },
   ];
 
-  const mobileCardRenderer = (space: ParkingSpace) => (
+  const mobileCardRenderer = (s: ParkingSpace) => (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="font-medium">{space.address}</div>
-          <div className="text-sm text-muted-foreground">{space.id}</div>
-        </div>
-        <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=klaraForErbjudande" }}>
-          <Button variant="outline" size="icon">
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </Link>
+      <div>
+        <div className="font-medium">{s.address}</div>
+        <div className="text-sm text-muted-foreground">{s.id}</div>
       </div>
       <div className="grid grid-cols-[auto_auto] gap-x-4 gap-y-1 justify-start text-sm">
-        <span className="text-muted-foreground">Område:</span>
-        <span>{space.area}</span>
-        <span className="text-muted-foreground">Typ:</span>
-        <span>{space.type}</span>
-        <span className="text-muted-foreground">Hyra:</span>
-        <span className="font-medium">{space.rent}</span>
-        <span className="text-muted-foreground">Sökande:</span>
-        <span>{space.seekers}</span>
+        <span className="text-muted-foreground">Område:</span><span>{s.area}</span>
+        <span className="text-muted-foreground">Typ:</span><span>{s.type}</span>
+        <span className="text-muted-foreground">Hyra:</span><span className="font-medium">{s.rent}</span>
+        <span className="text-muted-foreground">Sökande:</span><span>{s.seekers}</span>
       </div>
+      <ParkingRowActions parkingSpace={s} tab="klaraForErbjudande" variant="mobile" />
     </div>
   );
 
@@ -185,13 +105,13 @@ export const ReadyForOfferTab = () => {
           <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
         </div>
       </div>
-
       <ResponsiveTable
         data={filteredSpaces}
         columns={columns}
-        keyExtractor={(space) => space.id}
+        keyExtractor={(s) => s.id}
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
+        onRowClick={(s) => navigate(`/rentals/parking/${s.id}`, { state: { from: "?tab=klaraForErbjudande" } })}
       />
       <p className="text-sm text-muted-foreground">{filteredSpaces.length} annonser</p>
     </div>

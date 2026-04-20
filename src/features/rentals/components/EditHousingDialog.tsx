@@ -25,10 +25,18 @@ import type { EditHousingFormData } from "./edit-housing/types";
 
 interface EditHousingDialogProps {
   housingSpace: UnpublishedHousingSpace;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
 }
 
-export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
-  const [open, setOpen] = useState(false);
+export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenChange, hideTrigger }: EditHousingDialogProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = (v: boolean) => {
+    if (onOpenChange) onOpenChange(v);
+    else setInternalOpen(v);
+  };
   const isMobile = useIsMobile();
   
   const form = useForm<EditHousingFormData>({
@@ -80,12 +88,14 @@ export function EditHousingDialog({ housingSpace }: EditHousingDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
-          <Edit className="h-4 w-4" />
-          {isMobile ? "Redigera" : "Redigera"}
-        </Button>
-      </DialogTrigger>
+      {!hideTrigger && (
+        <DialogTrigger asChild>
+          <Button variant="outline" size="sm" className="flex items-center gap-1">
+            <Edit className="h-4 w-4" />
+            {isMobile ? "Redigera" : "Redigera"}
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className={`${isMobile ? 'max-w-[95vw] max-h-[95vh] m-2' : 'max-w-4xl max-h-[90vh]'} overflow-y-auto`}>
         <DialogHeader className={isMobile ? "pb-4" : ""}>
           <DialogTitle className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold`}>
