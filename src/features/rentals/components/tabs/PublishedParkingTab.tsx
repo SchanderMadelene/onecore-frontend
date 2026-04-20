@@ -151,35 +151,19 @@ export const PublishedParkingTab = () => {
     { key: "publishedFrom", label: "Publicerad fr.o.m", className: "whitespace-nowrap", hideOnMobile: true, render: (space: ParkingSpace) => space.publishedFrom },
     {
       key: "actions",
-      label: "Åtgärder",
+      label: "",
       className: "text-right whitespace-nowrap",
       hideOnMobile: true,
-      render: (space: ParkingSpace) => (
-        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <DeleteListingDialog parkingSpace={space} />
-          <ParkingApplicationDialog parkingSpace={space} />
-          <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
-            <Button variant="outline" size="icon">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      ),
+      render: (space: ParkingSpace) => <ParkingRowActions parkingSpace={space} tab="publicerade" />,
     },
   ];
 
+  const navigate = useNavigate();
   const mobileCardRenderer = (space: ParkingSpace) => (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="font-medium">{space.address}</div>
-          <div className="text-sm text-muted-foreground">{space.id}</div>
-        </div>
-        <Link to={`/rentals/parking/${space.id}`} state={{ from: "?tab=publicerade" }}>
-          <Button variant="outline" size="icon">
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </Link>
+      <div>
+        <div className="font-medium">{space.address}</div>
+        <div className="text-sm text-muted-foreground">{space.id}</div>
       </div>
       <div className="grid grid-cols-[auto_auto] gap-x-4 gap-y-1 justify-start text-sm">
         <span className="text-muted-foreground">Område:</span>
@@ -191,6 +175,7 @@ export const PublishedParkingTab = () => {
         <span className="text-muted-foreground">Sökande:</span>
         <span>{space.seekers}</span>
       </div>
+      <ParkingRowActions parkingSpace={space} tab="publicerade" variant="mobile" />
     </div>
   );
 
