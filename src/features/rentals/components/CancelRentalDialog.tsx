@@ -38,9 +38,9 @@ function fillVariables(
   vars: { namn: string; adress: string; annonsid: string },
 ) {
   return template
-    .replaceAll("{namn}", vars.namn)
-    .replaceAll("{adress}", vars.adress)
-    .replaceAll("{annonsid}", vars.annonsid);
+    .replace(/\{namn\}/g, vars.namn)
+    .replace(/\{adress\}/g, vars.adress)
+    .replace(/\{annonsid\}/g, vars.annonsid);
 }
 
 export function CancelRentalDialog({
