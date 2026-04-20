@@ -199,11 +199,17 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
         )}
       </div>
 
-      {/* Controlled edit dialog (opened via menu) */}
       <EditHousingDialog
         housingSpace={housing as UnpublishedHousingSpace}
         open={editOpen}
         onOpenChange={setEditOpen}
+        hideTrigger
+      />
+
+      <CreateHousingApplicationDialog
+        housingSpace={housing as HousingSpace}
+        open={newAppOpen}
+        onOpenChange={setNewAppOpen}
         hideTrigger
       />
 
@@ -218,9 +224,6 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
         isPending={pending}
         onConfirm={runConfirm}
       />
-
-      {/* Suppress unused warning for inlineNewApp helper flag */}
-      {inlineNewApp ? null : null}
     </>
   );
 }
