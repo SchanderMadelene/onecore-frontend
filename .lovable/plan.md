@@ -1,52 +1,64 @@
 
-
 ## Mål
-Återanvänd parking-tabellernas åtgärdsmönster på bostadstabellerna och utöka det med en "more-menu" som rymmer samtliga rad-åtgärder. Hover-knappar finns kvar för snabb åtkomst, men allt finns även samlat i menyn.
+Byt menyetiketten "Avpublicera" → "Avbryt uthyrning" på bilplatsannonser. Om annonsen har ≥1 intresseanmälan ska användaren först få en dialog som föreslår att kontakta de sökande, med val för kanal (SMS/e-post) och fritextmeddelande.
 
-## Etablerat mönster (parking → bostad)
-Idag på bilplatsrader (hover på rad):
-- "Ta bort" (DeleteListingDialog – soptunna)
-- "Ny intresseanmälan" (ParkingApplicationDialog – PlusCircle)
-- ChevronRight → detaljsida
-
-Nytt på bostadsraderna – samma upplägg + en `MoreHorizontal`-meny med samma åtgärder bakade som menyposter:
+## Flöde
 
 ```text
-[Hover-knappar synliga vid hover]              [Alltid synliga]
-[Ny anmälan] [Avpublicera/Ta bort]   [⋯ More]  [›]
+[⋯ → Avbryt uthyrning]
+        │
+        ▼
+ Har annonsen sökande?
+   ├─ Nej → ConfirmDialog "Avbryt uthyrning" → bekräfta → klar
+   └─ Ja  → CancelRentalDialog
+                 │
+                 ├─ [Avbryt uthyrning och skicka]  (primär, destruktiv)
+                 ├─ [Avbryt utan att meddela]      (ghost-länk)
+                 └─ [Stäng]
 ```
 
-## Åtgärder per flik (bostad)
+## Ny dialog: `CancelRentalDialog`
+Plats: `src/features/rentals/components/CancelRentalDialog.tsx`
 
-| Flik | Hover-knappar | More-menu (alla åtgärder) |
-|---|---|---|
-| Publicerade | Ny anmälan, Avpublicera | Ny anmälan · Redigera annons · Avpublicera |
-| Behov av publicering | Publicera, Ta bort | Publicera · Redigera annons · Ta bort |
-| Klara för erbjudande | Skapa erbjudande | Skapa erbjudande · Visa sökande |
-| Erbjudna | Visa erbjudande | Visa erbjudande · Återkalla erbjudande |
-| Historik | – | Visa annons |
+Innehåll uppifrån och ned:
+1. **Rubrik:** "Avbryt uthyrning"
+2. **Beskrivning:** "Annonsen för {adress} har {N} intresseanmälningar. Vi rekommenderar att du meddelar de sökande att uthyrningen avbryts."
+3. **Mottagarsammanfattning** (read-only kort):
+   - "{N} sökande" + liten lista (max 5 namn + "…och X till")
+   - Två badges: antal med telefon resp. e-post
+4. **Kanal** (`RadioGroup`, default = SMS):
+   - SMS ({n med telefon})
+   - E-post ({n med e-post})
+   - Båda
+5. **Meddelande** (`Textarea`, fritext, förifyllt med en kort default-text):
+   - SMS-fält när SMS/Båda valt
+   - Ämne + brödtext när E-post/Båda valt
+   - Variabler `{namn}`, `{adress}`, `{annonsid}` ersätts live i förhandsgranskning
+6. **Footer:**
+   - Ghost-länk: "Avbryt utan att meddela sökande"
+   - Primär destruktiv: "Avbryt uthyrning och skicka" (pending: "Skickar till N sökande…")
+   - Cancel: "Stäng"
 
-Samma åtgärder återspeglas i mobilkortens nedre actions-rad.
+Vid bekräftelse: stänger annonsen + två toasts (uthyrning avbruten / meddelanden köade till N sökande). Vid "utan att meddela": endast stänger annonsen.
 
-## Ny återanvändbar komponent
-`src/features/rentals/components/HousingRowActions.tsx`
-- Props: `housing`, `tab`, valfri `onAction`
-- Renderar hover-gruppen (`opacity-0 group-hover:opacity-100`) + `DropdownMenu` med `MoreHorizontal` (`variant="outline"`, `size="icon"`) + `ChevronRight`-länk
-- Återanvänder befintliga dialoger: `CreateHousingApplicationDialog`, `EditHousingDialog`, `DeleteListingDialog` (parameteriseras för housing eller görs generisk)
-- Alla klick: `e.stopPropagation()` för att inte trigga `onRowClick`
+> Inga nya mallar skapas i `messageTemplates.ts`. Default-texten ligger som konstant i `CancelRentalDialog.tsx`.
 
-För symmetri uppdateras även parking-tabellerna (`PublishedParkingTab`, `ReadyForOfferTab`, m.fl.) med samma `MoreHorizontal`-meny som speglar de befintliga hover-knapparna.
+## Ändringar i `ParkingRowActions.tsx`
+- Menyetikett `"Avpublicera"` → `"Avbryt uthyrning"`
+- `parkingSpace.seekers > 0` → öppna `CancelRentalDialog`
+- `seekers === 0` → behåll `ConfirmDialog` med texterna "Avbryt uthyrning" / "Avbryter…" / toast "Uthyrning avbruten"
+- `confirmClose` (för `behovAvPublicering`) får samma etikettbyte för konsekvens
 
-## Filer som ändras
-- Ny: `src/features/rentals/components/HousingRowActions.tsx`
-- Ny: `src/features/rentals/components/ParkingRowActions.tsx` (refaktor av befintlig actions-cell)
-- `PublishedHousingTable.tsx`, `UnpublishedHousingTable.tsx`, `ReadyForOfferHousingTable.tsx`, `OfferedHousingTable.tsx`, `HistoryHousingTable.tsx`: lägg till `actions`-kolumn + uppdatera mobilkort
-- `tabs/PublishedParkingTab.tsx`, `ReadyForOfferTab.tsx`, `OfferedTab.tsx`, `HistoryTab.tsx`, `NeedsRepublishTab.tsx`: byt actions-cellen till `ParkingRowActions`
+## Mock-data
+Ny helper `src/features/rentals/data/mockParkingApplicants.ts` som returnerar anonymiserade svenska namn + telefon/e-post baserat på `parkingSpace.id` och `seekers`.
 
 ## Designregler som följs
-- More-knapp och chevron: `Button variant="outline" size="icon"` (table-action standard)
-- Inga ikoner i text-CTA:er (t.ex. "Ny anmälan")
-- Hover-gruppen behåller `opacity-0 group-hover:opacity-100 transition-opacity`
-- More-menyn är alltid synlig (även utan hover) så åtgärder är nåbara på touch och utan hover
-- Destruktiva poster (Ta bort, Avpublicera, Återkalla) får `text-destructive` i menyn
+- Standard `Dialog`-layout (flex-col, sticky footer)
+- Inga ikoner i text-CTA
+- Destruktiv primär: `variant="destructive"`
+- All mockdata anonymiserad
 
+## Filer
+- Ny: `src/features/rentals/components/CancelRentalDialog.tsx`
+- Ny: `src/features/rentals/data/mockParkingApplicants.ts`
+- Ändrad: `src/features/rentals/components/ParkingRowActions.tsx`
