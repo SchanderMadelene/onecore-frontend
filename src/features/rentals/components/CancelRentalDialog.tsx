@@ -191,9 +191,6 @@ export function CancelRentalDialog({
                 onChange={(e) => setSmsText(e.target.value)}
                 rows={3}
               />
-              <p className="text-xs text-muted-foreground">
-                Förhandsgranskning: {fillVariables(smsText, previewVars)}
-              </p>
             </div>
           )}
 
