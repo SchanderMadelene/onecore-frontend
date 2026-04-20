@@ -178,7 +178,7 @@ export function CancelRentalDialog({
                     className={`flex items-center gap-2 rounded-md border p-3 cursor-pointer transition-colors ${
                       selected
                         ? "border-primary bg-primary/5 hover:bg-primary/10"
-                        : "hover:bg-accent"
+                        : "hover:bg-muted/50"
                     }`}
                   >
                     <RadioGroupItem value={opt.value} id={`ch-${opt.value}`} />
