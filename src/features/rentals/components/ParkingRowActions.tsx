@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -111,16 +111,6 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {variant === "row" && (
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={(e) => { stop(e); goDetail(); }}
-            aria-label="Öppna"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        )}
       </div>
 
       <ParkingApplicationDialog
