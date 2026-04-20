@@ -16,11 +16,22 @@ import { ValidationAlerts } from "./housing-application/ValidationAlerts";
 import { NotesSection } from "./interest-application/NotesSection";
 interface CreateHousingApplicationDialogProps {
   housingSpace: HousingSpace;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
 }
 export const CreateHousingApplicationDialog = ({
-  housingSpace
+  housingSpace,
+  open: controlledOpen,
+  onOpenChange,
+  hideTrigger
 }: CreateHousingApplicationDialogProps) => {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = (v: boolean) => {
+    if (onOpenChange) onOpenChange(v);
+    else setInternalOpen(v);
+  };
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [notes, setNotes] = useState("");
