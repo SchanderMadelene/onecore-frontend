@@ -50,13 +50,16 @@ export function ContractHousingTable() {
   );
 
   return (
-    <ResponsiveTable
-      data={contractHousings}
-      columns={columns}
-      keyExtractor={(h) => h.id}
-      emptyMessage="Inga annonser klara för kontrakt"
-      mobileCardRenderer={mobileCardRenderer}
-      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "kontrakt" } })}
-    />
+    <>
+      <ResponsiveTable
+        data={contractHousings}
+        columns={columns}
+        keyExtractor={(h) => h.id}
+        emptyMessage="Inga annonser klara för kontrakt"
+        mobileCardRenderer={mobileCardRenderer}
+        onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "kontrakt" } })}
+      />
+      <p className="text-sm text-muted-foreground mt-3">{contractHousings.length} annonser</p>
+    </>
   );
 }

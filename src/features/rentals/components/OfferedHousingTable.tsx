@@ -67,13 +67,16 @@ export function OfferedHousingTable() {
   };
 
   return (
-    <ResponsiveTable
-      data={offeredHousings}
-      columns={columns}
-      keyExtractor={(h) => h.id}
-      emptyMessage="Inga erbjudanden skickade"
-      mobileCardRenderer={mobileCardRenderer}
-      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "erbjudna" } })}
-    />
+    <>
+      <ResponsiveTable
+        data={offeredHousings}
+        columns={columns}
+        keyExtractor={(h) => h.id}
+        emptyMessage="Inga erbjudanden skickade"
+        mobileCardRenderer={mobileCardRenderer}
+        onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "erbjudna" } })}
+      />
+      <p className="text-sm text-muted-foreground mt-3">{offeredHousings.length} annonser</p>
+    </>
   );
 }

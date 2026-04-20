@@ -35,13 +35,16 @@ export function ReadyForOfferHousingTable() {
   );
 
   return (
-    <ResponsiveTable
-      data={readyForOfferHousings}
-      columns={columns}
-      keyExtractor={(h) => h.id}
-      emptyMessage="Inga bostäder klara för erbjudande"
-      mobileCardRenderer={mobileCardRenderer}
-      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "klaraForErbjudande" } })}
-    />
+    <>
+      <ResponsiveTable
+        data={readyForOfferHousings}
+        columns={columns}
+        keyExtractor={(h) => h.id}
+        emptyMessage="Inga bostäder klara för erbjudande"
+        mobileCardRenderer={mobileCardRenderer}
+        onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "klaraForErbjudande" } })}
+      />
+      <p className="text-sm text-muted-foreground mt-3">{readyForOfferHousings.length} annonser</p>
+    </>
   );
 }

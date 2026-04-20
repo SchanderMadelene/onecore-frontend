@@ -38,13 +38,16 @@ export function PublishedHousingTable() {
   );
 
   return (
-    <ResponsiveTable
-      data={publishedHousings}
-      columns={columns}
-      keyExtractor={(h) => h.id}
-      emptyMessage="Inga publicerade bostäder"
-      mobileCardRenderer={mobileCardRenderer}
-      onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "publicerade" } })}
-    />
+    <>
+      <ResponsiveTable
+        data={publishedHousings}
+        columns={columns}
+        keyExtractor={(h) => h.id}
+        emptyMessage="Inga publicerade bostäder"
+        mobileCardRenderer={mobileCardRenderer}
+        onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "publicerade" } })}
+      />
+      <p className="text-sm text-muted-foreground mt-3">{publishedHousings.length} annonser</p>
+    </>
   );
 }
