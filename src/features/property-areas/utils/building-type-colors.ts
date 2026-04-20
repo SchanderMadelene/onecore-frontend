@@ -46,7 +46,7 @@ export const BUILDING_TYPE_STYLES: Record<string, BuildingTypeStyle> = {
   "POANGFRITT": {
     bg: "bg-orange-400",
     text: "text-black",
-    label: "Poängfritt"
+    label: "Poängfri"
   }
 };
 
