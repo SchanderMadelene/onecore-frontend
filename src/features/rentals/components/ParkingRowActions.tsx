@@ -41,6 +41,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
   const closeListing = useCloseParkingSpaceListing();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmClose, setConfirmClose] = useState(false);
+  const [newAppOpen, setNewAppOpen] = useState(false);
   const [pending, setPending] = useState(false);
 
   const stop = (e: React.MouseEvent | React.SyntheticEvent) => e.stopPropagation();
@@ -64,40 +65,13 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
     variant === "row"
       ? "flex items-center justify-end gap-2"
       : "flex items-center justify-end gap-2 mt-3";
-  const hoverClass =
-    variant === "row"
-      ? "hidden md:flex items-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity"
-      : "flex items-center gap-2";
 
   const isRepublish = tab === "behovAvPublicering";
+  const isHistory = tab === "historik";
 
   return (
     <>
       <div className={containerClass} onClick={stop}>
-        <div className={hoverClass}>
-          {isRepublish ? (
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={(e) => { stop(e); setConfirmClose(true); }}
-              disabled={closeListing.isPending}
-            >
-              {closeListing.isPending ? "Stänger..." : "Stäng listning"}
-            </Button>
-          ) : (
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={(e) => { stop(e); setConfirmDelete(true); }}
-            >
-              Ta bort
-            </Button>
-          )}
-          <div onClick={stop}>
-            <ParkingApplicationDialog parkingSpace={parkingSpace} />
-          </div>
-        </div>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" onClick={stop} aria-label="Fler åtgärder">
@@ -105,6 +79,11 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" onClick={stop}>
+            {!isRepublish && !isHistory && (
+              <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setNewAppOpen(true); }}>
+                Ny intresseanmälan
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem onSelect={(e) => { e.preventDefault(); goDetail(); }}>
               Öppna detaljer
             </DropdownMenuItem>
@@ -118,7 +97,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
                   Stäng listning
                 </DropdownMenuItem>
               </>
-            ) : (
+            ) : !isHistory ? (
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -128,7 +107,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
                   Ta bort
                 </DropdownMenuItem>
               </>
-            )}
+            ) : null}
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -143,6 +122,13 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
           </Button>
         )}
       </div>
+
+      <ParkingApplicationDialog
+        parkingSpace={parkingSpace}
+        open={newAppOpen}
+        onOpenChange={setNewAppOpen}
+        hideTrigger
+      />
 
       <ConfirmDialog
         open={confirmDelete}
