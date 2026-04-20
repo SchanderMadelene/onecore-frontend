@@ -193,6 +193,7 @@ export const ReadyForOfferTab = () => {
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
       />
+      <p className="text-sm text-muted-foreground">{filteredSpaces.length} annonser</p>
     </div>
   );
 };

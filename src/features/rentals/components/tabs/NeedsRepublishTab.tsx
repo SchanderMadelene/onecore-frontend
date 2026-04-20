@@ -143,6 +143,7 @@ export const NeedsRepublishTab = () => {
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
       />
+      <p className="text-sm text-muted-foreground">{needsRepublishSpaces.length} annonser</p>
     </div>
   );
 };

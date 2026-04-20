@@ -119,6 +119,7 @@ export const HistoryTab = () => {
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
       />
+      <p className="text-sm text-muted-foreground">{historySpaces.length} annonser</p>
     </div>
   );
 };

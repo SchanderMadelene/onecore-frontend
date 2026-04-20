@@ -120,6 +120,7 @@ export const OfferedTab = () => {
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
       />
+      <p className="text-sm text-muted-foreground">{offeredSpaces.length} annonser</p>
     </div>
   );
 };
