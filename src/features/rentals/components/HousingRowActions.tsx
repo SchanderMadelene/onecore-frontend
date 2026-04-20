@@ -123,6 +123,7 @@ function getActions(tab: HousingActionTab, address: string): { primary: ActionDe
 export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowActionsProps) {
   const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
+  const [newAppOpen, setNewAppOpen] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmSpec | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -139,41 +140,11 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
     setConfirm(null);
   };
 
-  const trigger = (a: ActionDef) => {
-    if (a.kind === "new-app") {
-      return (
-        <div key={a.key} onClick={stop}>
-          <CreateHousingApplicationDialog housingSpace={housing as HousingSpace} />
-        </div>
-      );
-    }
-    if (a.kind === "navigate") {
-      return (
-        <Button key={a.key} size="sm" onClick={(e) => { stop(e); goDetail(); }}>
-          {a.label}
-        </Button>
-      );
-    }
-    if (a.kind === "confirm") {
-      return (
-        <Button
-          key={a.key}
-          variant={a.destructive ? "destructive" : "default"}
-          size="sm"
-          onClick={(e) => { stop(e); setConfirm(a.confirm); }}
-        >
-          {a.label}
-        </Button>
-      );
-    }
-    return null;
-  };
-
   const handleMenu = (a: ActionDef) => {
     if (a.kind === "edit") setEditOpen(true);
     else if (a.kind === "navigate") goDetail();
     else if (a.kind === "confirm") setConfirm(a.confirm);
-    else if (a.kind === "new-app") setEditOpen(false); // fallthrough; rarely used in menu directly
+    else if (a.kind === "new-app") setNewAppOpen(true);
   };
 
   const { menu } = getActions(tab, housing.address);
