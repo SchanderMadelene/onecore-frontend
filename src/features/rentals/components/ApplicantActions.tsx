@@ -59,7 +59,7 @@ export const ApplicantActions = ({
         <DropdownMenuContent align="end" className="bg-background border shadow-md">
           <DropdownMenuItem 
             onClick={() => setShowDeleteDialog(true)}
-            className="text-destructive focus:bg-destructive focus:text-destructive-foreground"
+            className="text-destructive focus:text-destructive"
           >
             Ta bort anmälan
           </DropdownMenuItem>
