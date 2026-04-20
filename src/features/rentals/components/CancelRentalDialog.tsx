@@ -219,10 +219,6 @@ export function CancelRentalDialog({
               </div>
             </div>
           )}
-
-          <p className="text-xs text-muted-foreground">
-            Variabler: {"{namn}"}, {"{adress}"}, {"{annonsid}"} ersätts automatiskt per mottagare.
-          </p>
         </div>
 
         <div className="flex items-center justify-between gap-2 p-4 border-t bg-background flex-wrap">
