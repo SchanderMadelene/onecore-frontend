@@ -101,7 +101,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className="text-destructive focus:text-destructive"
+                  className="text-destructive focus:bg-destructive focus:text-destructive-foreground"
                   onSelect={(e) => { e.preventDefault(); setConfirmClose(true); }}
                 >
                   Stäng listning
@@ -111,7 +111,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className="text-destructive focus:text-destructive"
+                  className="text-destructive focus:bg-destructive focus:text-destructive-foreground"
                   onSelect={(e) => { e.preventDefault(); handleCancelClick(); }}
                 >
                   Avbryt uthyrning
