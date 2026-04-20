@@ -91,12 +91,14 @@ export const CreateHousingApplicationDialog = ({
     setOpen(isOpen);
     if (!isOpen) resetForm();
   }}>
-      <DialogTrigger asChild>
-        <Button className="flex items-center gap-1">
-          <PlusCircle className="h-4 w-4" />
-          <span>Ny anmälan</span>
-        </Button>
-      </DialogTrigger>
+      {!hideTrigger && (
+        <DialogTrigger asChild>
+          <Button className="flex items-center gap-1">
+            <PlusCircle className="h-4 w-4" />
+            <span>Ny anmälan</span>
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-w-2xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="text-xl font-semibold text-left">
