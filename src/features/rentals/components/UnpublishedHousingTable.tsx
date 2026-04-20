@@ -1,14 +1,12 @@
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
-import { EditHousingDialog } from "./EditHousingDialog";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 import { getDistrictByArea } from "../utils/area-district";
 import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
+import { HousingRowActions } from "./HousingRowActions";
 
 const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
   switch (status) {
@@ -37,23 +35,12 @@ export function UnpublishedHousingTable() {
     { key: "status", label: "Status", render: (s: any) => getStatusBadge(s.status) },
     { key: "lastModified", label: "Senast ändrad", render: (s: any) => s.lastModified, hideOnMobile: true },
     { key: "createdBy", label: "Skapad av", render: (s: any) => s.createdBy, hideOnMobile: true },
-    { 
-      key: "actions", 
-      label: "", 
-      className: "text-right",
-      render: (s: any) => (
-        <div className="flex items-center justify-end gap-2">
-          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-            <Eye className="h-4 w-4" />
-          </Button>
-          <div onClick={(e) => e.stopPropagation()}>
-            <EditHousingDialog housingSpace={s} />
-          </div>
-          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      )
+    {
+      key: "actions",
+      label: "",
+      className: "text-right whitespace-nowrap",
+      hideOnMobile: true,
+      render: (s: any) => <HousingRowActions housing={s} tab="behovAvPublicering" />,
     },
   ];
 
@@ -65,17 +52,7 @@ export function UnpublishedHousingTable() {
         {getStatusBadge(space.status)}
         <span className="text-sm text-muted-foreground">{space.rent}</span>
       </div>
-      <div className="flex items-center gap-2 mt-3">
-        <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-          <Eye className="h-4 w-4" />
-        </Button>
-        <div onClick={(e) => e.stopPropagation()}>
-          <EditHousingDialog housingSpace={space} />
-        </div>
-        <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </div>
+      <HousingRowActions housing={space} tab="behovAvPublicering" variant="mobile" />
     </div>
   );
 
@@ -88,6 +65,7 @@ export function UnpublishedHousingTable() {
         emptyMessage="Inga opublicerade bostäder"
         mobileCardRenderer={mobileCardRenderer}
         onRowClick={(s) => navigate(`/rentals/housing/${s.id}`, { state: { activeHousingTab: "behovAvPublicering" } })}
+        rowClassName="group"
       />
       <p className="text-sm text-muted-foreground mt-3">{unpublishedHousingSpaces.length} annonser</p>
     </>

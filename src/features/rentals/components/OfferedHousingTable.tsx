@@ -7,6 +7,7 @@ import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { getDistrictByArea } from "../utils/area-district";
 import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
+import { HousingRowActions } from "./HousingRowActions";
 
 export function OfferedHousingTable() {
   const navigate = useNavigate();
@@ -23,9 +24,9 @@ export function OfferedHousingTable() {
     { key: "rooms", label: "Rum", render: (h: any) => h.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
-    { 
-      key: "offered", 
-      label: "Erbjudna", 
+    {
+      key: "offered",
+      label: "Erbjudna",
       render: (h: any) => {
         const offer = offers.find(o => o.listingId === h.id);
         return `${offer?.selectedApplicants.length || 0} st`;
@@ -42,14 +43,21 @@ export function OfferedHousingTable() {
         return `${accepted} st`;
       }
     },
-    { 
-      key: "sentAt", 
-      label: "Skickat", 
+    {
+      key: "sentAt",
+      label: "Skickat",
       render: (h: any) => {
         const offer = offers.find(o => o.listingId === h.id);
         return offer?.sentAt ? new Date(offer.sentAt).toLocaleDateString('sv-SE') : '-';
       },
-      hideOnMobile: true 
+      hideOnMobile: true
+    },
+    {
+      key: "actions",
+      label: "",
+      className: "text-right whitespace-nowrap",
+      hideOnMobile: true,
+      render: (h: any) => <HousingRowActions housing={h} tab="erbjudna" />,
     },
   ];
 
@@ -65,6 +73,7 @@ export function OfferedHousingTable() {
           </Badge>
           <span className="text-sm text-muted-foreground">{offer?.selectedApplicants.length || 0} erbjudna</span>
         </div>
+        <HousingRowActions housing={housing} tab="erbjudna" variant="mobile" />
       </div>
     );
   };
@@ -78,6 +87,7 @@ export function OfferedHousingTable() {
         emptyMessage="Inga erbjudanden skickade"
         mobileCardRenderer={mobileCardRenderer}
         onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "erbjudna" } })}
+        rowClassName="group"
       />
       <p className="text-sm text-muted-foreground mt-3">{offeredHousings.length} annonser</p>
     </>
