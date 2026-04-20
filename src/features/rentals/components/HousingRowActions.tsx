@@ -183,7 +183,7 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
                 <div key={item.key}>
                   {showSeparator && <DropdownMenuSeparator />}
                   <DropdownMenuItem
-                    className={isDestructive ? "text-destructive focus:bg-destructive focus:text-destructive-foreground" : ""}
+                    className={isDestructive ? "text-destructive focus:text-destructive" : ""}
                     onSelect={(e) => {
                       e.preventDefault();
                       handleMenu(item);
