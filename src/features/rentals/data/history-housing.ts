@@ -12,6 +12,7 @@ export interface HistoryHousingSpace {
   contractStart: string;
   signedAt: string;
   applicants: number;
+  preferredMoveOutDate: string;
 }
 
 export const historyHousingSpaces: HistoryHousingSpace[] = [
@@ -27,6 +28,7 @@ export const historyHousingSpaces: HistoryHousingSpace[] = [
     contractedTo: "Lina Sjöberg",
     contractedToCustomerNumber: "P-104852",
     contractStart: "2024-09-01",
+    preferredMoveOutDate: "2024-08-02",
     signedAt: "2024-07-18",
     applicants: 24,
   },
@@ -42,6 +44,7 @@ export const historyHousingSpaces: HistoryHousingSpace[] = [
     contractedTo: "Mikael Forsberg",
     contractedToCustomerNumber: "P-098231",
     contractStart: "2024-10-01",
+    preferredMoveOutDate: "2024-09-01",
     signedAt: "2024-08-22",
     applicants: 41,
   },
@@ -57,6 +60,7 @@ export const historyHousingSpaces: HistoryHousingSpace[] = [
     contractedTo: "Eva Lindqvist",
     contractedToCustomerNumber: "P-115640",
     contractStart: "2024-11-01",
+    preferredMoveOutDate: "2024-10-02",
     signedAt: "2024-09-12",
     applicants: 33,
   },
@@ -72,6 +76,7 @@ export const historyHousingSpaces: HistoryHousingSpace[] = [
     contractedTo: "Oskar Lundgren",
     contractedToCustomerNumber: "P-121903",
     contractStart: "2024-12-01",
+    preferredMoveOutDate: "2024-11-01",
     signedAt: "2024-10-04",
     applicants: 19,
   },
@@ -87,6 +92,7 @@ export const historyHousingSpaces: HistoryHousingSpace[] = [
     contractedTo: "Hanna Petersson",
     contractedToCustomerNumber: "P-088471",
     contractStart: "2025-01-15",
+    preferredMoveOutDate: "2024-12-16",
     signedAt: "2024-11-20",
     applicants: 38,
   },
@@ -102,6 +108,7 @@ export const historyHousingSpaces: HistoryHousingSpace[] = [
     contractedTo: "Daniel Åström",
     contractedToCustomerNumber: "P-132088",
     contractStart: "2025-02-01",
+    preferredMoveOutDate: "2025-01-02",
     signedAt: "2024-12-09",
     applicants: 15,
   },
