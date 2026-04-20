@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { publishedHousingSpaces } from "../data/published-housing";
 import { useHousingStatus } from "../hooks/useHousingStatus";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
+import { getDistrictByArea } from "../utils/area-district";
 
 export function ReadyForOfferHousingTable() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export function ReadyForOfferHousingTable() {
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => <span className="font-medium">{h.address}</span> },
     { key: "area", label: "Område", render: (h: any) => h.area, hideOnMobile: true },
+    { key: "district", label: "Distrikt", render: (h: any) => getDistrictByArea(h.area), hideOnMobile: true },
     { key: "rooms", label: "Rum", render: (h: any) => h.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
