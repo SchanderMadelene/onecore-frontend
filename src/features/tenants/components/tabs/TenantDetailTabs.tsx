@@ -33,7 +33,7 @@ export const TenantDetailTabs = ({ defaultValue, children, hasActiveCases, custo
           Nyckelknippa
         </TabsTrigger>
         <TabsTrigger value="events">
-          Händelselogg
+          Kommunikationslogg
         </TabsTrigger>
         <TabsTrigger value="documents">
           Dokument
