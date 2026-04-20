@@ -34,6 +34,7 @@ export function UnpublishedHousingTable() {
     { key: "rent", label: "Hyra", render: (s: any) => s.rent },
     { key: "status", label: "Status", render: (s: any) => getStatusBadge(s.status) },
     { key: "lastModified", label: "Senast ändrad", render: (s: any) => s.lastModified, hideOnMobile: true },
+    { key: "preferredMoveOutDate", label: "Önskad avflyttning", render: (s: any) => s.preferredMoveOutDate ? new Date(s.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
     { key: "createdBy", label: "Skapad av", render: (s: any) => s.createdBy, hideOnMobile: true },
     {
       key: "actions",

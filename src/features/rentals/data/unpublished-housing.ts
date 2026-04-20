@@ -17,7 +17,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     lastModified: "2024-01-20",
     createdBy: "Anna Andersson",
     description: "",
-    availableFrom: "2024-03-01"
+    availableFrom: "2024-03-01",
+    preferredMoveOutDate: "2024-02-16"
   },
   {
     id: "234-234-234-0202",
@@ -35,7 +36,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     lastModified: "2024-01-18",
     createdBy: "Erik Larsson",
     description: "",
-    availableFrom: "2024-02-15"
+    availableFrom: "2024-02-15",
+    preferredMoveOutDate: "2024-02-01"
   },
   {
     id: "234-234-234-0203",
@@ -53,7 +55,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     lastModified: "2024-01-22",
     createdBy: "Maria Nilsson",
     description: "",
-    availableFrom: "2024-03-15"
+    availableFrom: "2024-03-15",
+    preferredMoveOutDate: "2024-03-01"
   },
   {
     id: "234-234-234-0204",
@@ -71,7 +74,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     lastModified: "2024-02-01",
     createdBy: "Johan Berg",
     description: "",
-    availableFrom: "2024-04-01"
+    availableFrom: "2024-04-01",
+    preferredMoveOutDate: "2024-03-18"
   },
   {
     id: "234-234-234-0205",
@@ -89,7 +93,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     lastModified: "2024-02-05",
     createdBy: "Sofia Lind",
     description: "",
-    availableFrom: "2024-04-15"
+    availableFrom: "2024-04-15",
+    preferredMoveOutDate: "2024-04-01"
   },
   {
     id: "234-234-234-0206",
@@ -107,7 +112,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     lastModified: "2024-02-08",
     createdBy: "Karin Holm",
     description: "",
-    availableFrom: "2024-05-01"
+    availableFrom: "2024-05-01",
+    preferredMoveOutDate: "2024-04-17"
   },
   {
     id: "234-234-234-0207",
@@ -125,6 +131,7 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     lastModified: "2024-02-12",
     createdBy: "Anders Ek",
     description: "",
-    availableFrom: "2024-05-15"
+    availableFrom: "2024-05-15",
+    preferredMoveOutDate: "2024-05-01"
   }
 ];

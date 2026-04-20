@@ -11,6 +11,7 @@ export interface PublishedHousingSpace {
   publishedFrom: string;
   publishedTo: string;
   availableFrom: string;
+  preferredMoveOutDate: string;
   description: string;
 }
 
@@ -28,6 +29,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-03-15",
     publishedTo: "2026-08-20",
     availableFrom: "2024-03-01",
+    preferredMoveOutDate: "2024-02-16",
     description: "Fin tvårummare med balkong"
   },
   {
@@ -43,6 +45,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-03-01",
     publishedTo: "2026-09-01",
     availableFrom: "2024-02-20",
+    preferredMoveOutDate: "2024-02-06",
     description: "Centralt belägen lägenhet"
   },
   {
@@ -58,6 +61,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-03-08",
     publishedTo: "2026-07-25",
     availableFrom: "2024-02-15",
+    preferredMoveOutDate: "2024-02-01",
     description: "Rymlig trea i lugnt område"
   },
   {
@@ -73,6 +77,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-03-20",
     publishedTo: "2026-08-10",
     availableFrom: "2024-03-10",
+    preferredMoveOutDate: "2024-02-25",
     description: "Mysig etta för singel"
   },
   {
@@ -88,6 +93,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-03-12",
     publishedTo: "2026-07-12",
     availableFrom: "2024-02-25",
+    preferredMoveOutDate: "2024-02-11",
     description: "Familjevänlig bostad"
   },
   {
@@ -103,6 +109,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-03-15",
     publishedTo: "2026-09-15",
     availableFrom: "2024-03-15",
+    preferredMoveOutDate: "2024-03-01",
     description: "Stor fyra för familjen"
   },
   {
@@ -118,6 +125,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-03-20",
     publishedTo: "2026-09-20",
     availableFrom: "2024-03-20",
+    preferredMoveOutDate: "2024-03-06",
     description: "Central tvåa med utsikt"
   },
   {
@@ -133,6 +141,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-03-25",
     publishedTo: "2026-08-25",
     availableFrom: "2024-03-25",
+    preferredMoveOutDate: "2024-03-11",
     description: "Perfekt studentbostad"
   },
   {
@@ -148,6 +157,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-04-01",
     publishedTo: "2026-09-30",
     availableFrom: "2024-04-01",
+    preferredMoveOutDate: "2024-03-18",
     description: "Ljus trea med balkong mot söder"
   },
   {
@@ -163,6 +173,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2026-04-05",
     publishedTo: "2026-10-05",
     availableFrom: "2024-04-05",
+    preferredMoveOutDate: "2024-03-22",
     description: "Rymlig tvåa i barnvänligt område"
   },
   // --- Klara för erbjudande (publishedTo i förflutet) ---
@@ -179,6 +190,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2024-08-15",
     publishedTo: "2024-09-05",
     availableFrom: "2024-11-01",
+    preferredMoveOutDate: "2024-10-18",
     description: "Lugnt läge nära skola"
   },
   {
@@ -194,6 +206,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2024-09-10",
     publishedTo: "2024-09-30",
     availableFrom: "2024-11-15",
+    preferredMoveOutDate: "2024-11-01",
     description: "Trea med inglasad balkong"
   },
   {
@@ -209,6 +222,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2024-10-01",
     publishedTo: "2024-10-20",
     availableFrom: "2024-12-01",
+    preferredMoveOutDate: "2024-11-17",
     description: "Central tvåa i populärt område"
   },
   {
@@ -224,6 +238,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2024-10-15",
     publishedTo: "2024-11-05",
     availableFrom: "2024-12-15",
+    preferredMoveOutDate: "2024-12-01",
     description: "Stor familjelägenhet"
   },
   {
@@ -239,6 +254,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedFrom: "2024-11-01",
     publishedTo: "2024-11-25",
     availableFrom: "2025-01-10",
+    preferredMoveOutDate: "2024-12-27",
     description: "Mysig tvåa med utsikt"
   }
 ];

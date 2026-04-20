@@ -24,6 +24,7 @@ export function PublishedHousingTable() {
     { key: "seekers", label: "Sökande", render: (h: any) => h.seekers },
     { key: "publishedTo", label: "Publicerad till", render: (h: any) => new Date(h.publishedTo).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "availableFrom", label: "Ledig från", render: (h: any) => new Date(h.availableFrom).toLocaleDateString('sv-SE'), hideOnMobile: true },
+    { key: "preferredMoveOutDate", label: "Önskad avflyttning", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
     {
       key: "actions",
       label: "",

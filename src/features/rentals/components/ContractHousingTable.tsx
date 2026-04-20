@@ -35,6 +35,12 @@ export function ContractHousingTable() {
       render: (h: any) => new Date(h.availableFrom).toLocaleDateString("sv-SE"),
       hideOnMobile: true,
     },
+    {
+      key: "preferredMoveOutDate",
+      label: "Önskad avflyttning",
+      render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString("sv-SE") : "-",
+      hideOnMobile: true,
+    },
   ];
 
   const mobileCardRenderer = (housing: any) => (
