@@ -123,6 +123,7 @@ function getActions(tab: HousingActionTab, address: string): { primary: ActionDe
 export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowActionsProps) {
   const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
+  const [newAppOpen, setNewAppOpen] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmSpec | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -139,66 +140,23 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
     setConfirm(null);
   };
 
-  const trigger = (a: ActionDef) => {
-    if (a.kind === "new-app") {
-      return (
-        <div key={a.key} onClick={stop}>
-          <CreateHousingApplicationDialog housingSpace={housing as HousingSpace} />
-        </div>
-      );
-    }
-    if (a.kind === "navigate") {
-      return (
-        <Button key={a.key} size="sm" onClick={(e) => { stop(e); goDetail(); }}>
-          {a.label}
-        </Button>
-      );
-    }
-    if (a.kind === "confirm") {
-      return (
-        <Button
-          key={a.key}
-          variant={a.destructive ? "destructive" : "default"}
-          size="sm"
-          onClick={(e) => { stop(e); setConfirm(a.confirm); }}
-        >
-          {a.label}
-        </Button>
-      );
-    }
-    return null;
-  };
-
   const handleMenu = (a: ActionDef) => {
     if (a.kind === "edit") setEditOpen(true);
     else if (a.kind === "navigate") goDetail();
     else if (a.kind === "confirm") setConfirm(a.confirm);
-    else if (a.kind === "new-app") setEditOpen(false); // fallthrough; rarely used in menu directly
+    else if (a.kind === "new-app") setNewAppOpen(true);
   };
 
-  const { primary, menu } = getActions(tab, housing.address);
-
-  // For "Ny anmälan" inside the dropdown menu we can't easily mount a dialog from a menu item,
-  // so we render it as a primary button only and skip it in the menu trigger flow by keeping
-  // a separate inline mount for each occurrence.
-  const inlineNewApp = menu.some((m) => m.kind === "new-app");
+  const { menu } = getActions(tab, housing.address);
 
   const containerClass =
     variant === "row"
       ? "flex items-center justify-end gap-2"
       : "flex items-center justify-end gap-2 mt-3";
-  const hoverClass =
-    variant === "row"
-      ? "hidden md:flex items-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity"
-      : "flex items-center gap-2";
 
   return (
     <>
       <div className={containerClass} onClick={stop}>
-        <div className={hoverClass}>
-          {primary.map((a) => trigger(a))}
-        </div>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" onClick={stop} aria-label="Fler åtgärder">
@@ -241,11 +199,17 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
         )}
       </div>
 
-      {/* Controlled edit dialog (opened via menu) */}
       <EditHousingDialog
         housingSpace={housing as UnpublishedHousingSpace}
         open={editOpen}
         onOpenChange={setEditOpen}
+        hideTrigger
+      />
+
+      <CreateHousingApplicationDialog
+        housingSpace={housing as HousingSpace}
+        open={newAppOpen}
+        onOpenChange={setNewAppOpen}
         hideTrigger
       />
 
@@ -260,9 +224,6 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
         isPending={pending}
         onConfirm={runConfirm}
       />
-
-      {/* Suppress unused warning for inlineNewApp helper flag */}
-      {inlineNewApp ? null : null}
     </>
   );
 }

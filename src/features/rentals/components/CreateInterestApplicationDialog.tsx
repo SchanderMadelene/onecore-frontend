@@ -18,10 +18,18 @@ import { NotesSection } from "./interest-application/NotesSection";
 
 interface CreateInterestApplicationDialogProps {
   parkingSpace: ParkingSpace;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
 }
 
-export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterestApplicationDialogProps) => {
-  const [open, setOpen] = useState(false);
+export const CreateInterestApplicationDialog = ({ parkingSpace, open: controlledOpen, onOpenChange, hideTrigger }: CreateInterestApplicationDialogProps) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = (v: boolean) => {
+    if (onOpenChange) onOpenChange(v);
+    else setInternalOpen(v);
+  };
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [applicationType, setApplicationType] = useState<"Replace" | "Additional">("Additional");
@@ -98,12 +106,14 @@ export const CreateInterestApplicationDialog = ({ parkingSpace }: CreateInterest
       setOpen(isOpen);
       if (!isOpen) resetForm();
     }}>
-      <DialogTrigger asChild>
-        <Button size="sm" className="flex items-center gap-1">
-          <PlusCircle className="h-4 w-4" />
-          <span>Ny anmälan</span>
-        </Button>
-      </DialogTrigger>
+      {!hideTrigger && (
+        <DialogTrigger asChild>
+          <Button size="sm" className="flex items-center gap-1">
+            <PlusCircle className="h-4 w-4" />
+            <span>Ny anmälan</span>
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-w-2xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="text-xl font-semibold text-left">

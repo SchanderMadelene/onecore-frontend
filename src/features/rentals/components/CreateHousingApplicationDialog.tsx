@@ -16,11 +16,22 @@ import { ValidationAlerts } from "./housing-application/ValidationAlerts";
 import { NotesSection } from "./interest-application/NotesSection";
 interface CreateHousingApplicationDialogProps {
   housingSpace: HousingSpace;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
 }
 export const CreateHousingApplicationDialog = ({
-  housingSpace
+  housingSpace,
+  open: controlledOpen,
+  onOpenChange,
+  hideTrigger
 }: CreateHousingApplicationDialogProps) => {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = (v: boolean) => {
+    if (onOpenChange) onOpenChange(v);
+    else setInternalOpen(v);
+  };
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [notes, setNotes] = useState("");
@@ -80,12 +91,14 @@ export const CreateHousingApplicationDialog = ({
     setOpen(isOpen);
     if (!isOpen) resetForm();
   }}>
-      <DialogTrigger asChild>
-        <Button className="flex items-center gap-1">
-          <PlusCircle className="h-4 w-4" />
-          <span>Ny anmälan</span>
-        </Button>
-      </DialogTrigger>
+      {!hideTrigger && (
+        <DialogTrigger asChild>
+          <Button className="flex items-center gap-1">
+            <PlusCircle className="h-4 w-4" />
+            <span>Ny anmälan</span>
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-w-2xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="text-xl font-semibold text-left">
