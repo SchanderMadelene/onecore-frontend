@@ -51,7 +51,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
   const handleDelete = async () => {
     setPending(true);
     await new Promise((r) => setTimeout(r, 600));
-    toast({ title: "Bilplatsannons borttagen", description: parkingSpace.address });
+    toast({ title: "Bilplatsannons avpublicerad", description: parkingSpace.address });
     setPending(false);
     setConfirmDelete(false);
   };
@@ -104,7 +104,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
                   className="text-destructive focus:text-destructive"
                   onSelect={(e) => { e.preventDefault(); setConfirmDelete(true); }}
                 >
-                  Ta bort
+                  Avpublicera
                 </DropdownMenuItem>
               </>
             ) : null}
@@ -123,12 +123,12 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
       <ConfirmDialog
         open={confirmDelete}
         onOpenChange={setConfirmDelete}
-        title="Ta bort bilplatsannons"
-        description={`Vill du ta bort bilplatsannons ${parkingSpace.address} med hyresid ${parkingSpace.id}?`}
+        title="Avpublicera bilplatsannons"
+        description={`Vill du avpublicera bilplatsannons ${parkingSpace.address} med hyresid ${parkingSpace.id}?`}
         onConfirm={handleDelete}
         variant="destructive"
-        confirmLabel="Ta bort"
-        pendingLabel="Tar bort..."
+        confirmLabel="Avpublicera"
+        pendingLabel="Avpublicerar..."
         isPending={pending}
       />
 
