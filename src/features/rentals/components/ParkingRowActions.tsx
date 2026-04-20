@@ -12,6 +12,7 @@ import {
 import { ConfirmDialog } from "@/shared/common";
 import { toast } from "@/hooks/use-toast";
 import { ParkingApplicationDialog } from "./ParkingApplicationDialog";
+import { CancelRentalDialog } from "./CancelRentalDialog";
 import { useCloseParkingSpaceListing } from "../hooks/useParkingSpaceActions";
 import type { ParkingSpace } from "./types/parking";
 
@@ -41,6 +42,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
   const closeListing = useCloseParkingSpaceListing();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmClose, setConfirmClose] = useState(false);
+  const [cancelRentalOpen, setCancelRentalOpen] = useState(false);
   const [newAppOpen, setNewAppOpen] = useState(false);
   const [pending, setPending] = useState(false);
 
@@ -48,12 +50,20 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
   const goDetail = () =>
     navigate(`/rentals/parking/${parkingSpace.id}`, { state: { from: TAB_TO_QUERY[tab] } });
 
-  const handleDelete = async () => {
+  const handleCancelRental = async () => {
     setPending(true);
     await new Promise((r) => setTimeout(r, 600));
-    toast({ title: "Bilplatsannons avpublicerad", description: parkingSpace.address });
+    toast({ title: "Uthyrning avbruten", description: parkingSpace.address });
     setPending(false);
     setConfirmDelete(false);
+  };
+
+  const handleCancelClick = () => {
+    if (parkingSpace.seekers > 0) {
+      setCancelRentalOpen(true);
+    } else {
+      setConfirmDelete(true);
+    }
   };
 
   const handleClose = () => {
@@ -102,9 +112,9 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="text-destructive focus:text-destructive"
-                  onSelect={(e) => { e.preventDefault(); setConfirmDelete(true); }}
+                  onSelect={(e) => { e.preventDefault(); handleCancelClick(); }}
                 >
-                  Avpublicera
+                  Avbryt uthyrning
                 </DropdownMenuItem>
               </>
             ) : null}
@@ -123,24 +133,30 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
       <ConfirmDialog
         open={confirmDelete}
         onOpenChange={setConfirmDelete}
-        title="Avpublicera bilplatsannons"
-        description={`Vill du avpublicera bilplatsannons ${parkingSpace.address} med hyresid ${parkingSpace.id}?`}
-        onConfirm={handleDelete}
+        title="Avbryt uthyrning"
+        description={`Vill du avbryta uthyrningen av bilplats ${parkingSpace.address} (hyresid ${parkingSpace.id})?`}
+        onConfirm={handleCancelRental}
         variant="destructive"
-        confirmLabel="Avpublicera"
-        pendingLabel="Avpublicerar..."
+        confirmLabel="Avbryt uthyrning"
+        pendingLabel="Avbryter..."
         isPending={pending}
+      />
+
+      <CancelRentalDialog
+        parkingSpace={parkingSpace}
+        open={cancelRentalOpen}
+        onOpenChange={setCancelRentalOpen}
       />
 
       <ConfirmDialog
         open={confirmClose}
         onOpenChange={setConfirmClose}
-        title="Stäng listning"
-        description={`Vill du stänga listningen för ${parkingSpace.address}?`}
+        title="Avbryt uthyrning"
+        description={`Vill du avbryta uthyrningen av ${parkingSpace.address}?`}
         onConfirm={handleClose}
         variant="destructive"
-        confirmLabel="Stäng listning"
-        pendingLabel="Stänger..."
+        confirmLabel="Avbryt uthyrning"
+        pendingLabel="Avbryter..."
         isPending={closeListing.isPending}
       />
     </>
