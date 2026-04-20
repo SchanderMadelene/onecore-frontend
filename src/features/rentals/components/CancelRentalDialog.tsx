@@ -166,18 +166,26 @@ export function CancelRentalDialog({
               onValueChange={(v) => setChannel(v as Channel)}
               className="grid grid-cols-1 sm:grid-cols-3 gap-2"
             >
-              <label className="flex items-center gap-2 rounded-md border p-3 cursor-pointer hover:bg-accent">
-                <RadioGroupItem value="sms" id="ch-sms" />
-                <span className="text-sm">SMS ({phoneCount})</span>
-              </label>
-              <label className="flex items-center gap-2 rounded-md border p-3 cursor-pointer hover:bg-accent">
-                <RadioGroupItem value="email" id="ch-email" />
-                <span className="text-sm">E-post ({emailCount})</span>
-              </label>
-              <label className="flex items-center gap-2 rounded-md border p-3 cursor-pointer hover:bg-accent">
-                <RadioGroupItem value="both" id="ch-both" />
-                <span className="text-sm">Båda</span>
-              </label>
+              {[
+                { value: "sms", label: `SMS (${phoneCount})` },
+                { value: "email", label: `E-post (${emailCount})` },
+                { value: "both", label: "Båda" },
+              ].map((opt) => {
+                const selected = channel === opt.value;
+                return (
+                  <label
+                    key={opt.value}
+                    className={`flex items-center gap-2 rounded-md border p-3 cursor-pointer transition-colors ${
+                      selected
+                        ? "border-primary bg-primary/5 hover:bg-primary/10"
+                        : "hover:bg-accent"
+                    }`}
+                  >
+                    <RadioGroupItem value={opt.value} id={`ch-${opt.value}`} />
+                    <span className="text-sm">{opt.label}</span>
+                  </label>
+                );
+              })}
             </RadioGroup>
           </div>
 
