@@ -1,16 +1,14 @@
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, ChevronRight } from "lucide-react";
-import { ParkingApplicationDialog } from "../ParkingApplicationDialog";
+import { Search } from "lucide-react";
 import { PublishParkingSpacesDialog } from "../PublishParkingSpacesDialog";
 import { SyncParkingSpacesDialog } from "../SyncParkingSpacesDialog";
-import { DeleteListingDialog } from "../DeleteListingDialog";
 import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
 import { Loader2, Car } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
+import { ParkingRowActions } from "../ParkingRowActions";
+import { useNavigate } from "react-router-dom";
 import type { ParkingSpace } from "../types/parking";
 
 export const PublishedParkingTab = () => {
