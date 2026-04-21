@@ -41,14 +41,16 @@ export const CustomerInformation = ({ customer, tenantValidation, onClear }: Cus
                   {badge.label}
                 </Badge>
                 {onClear && (
-                  <button
+                  <Button
                     type="button"
+                    variant="subtle"
+                    size="icon"
+                    className="h-7 w-7"
                     onClick={onClear}
                     aria-label="Ta bort vald kund"
-                    className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <X className="h-4 w-4" />
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>
