@@ -62,7 +62,17 @@ export function HousingApplicantsTable({
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
+  const [responseOverrides, setResponseOverrides] = useState<Record<number, OfferResponseStatus>>({});
   const hasInitializedSelection = useRef(false);
+
+  const handleManualResponse = (applicant: HousingApplicant, status: OfferResponseStatus) => {
+    setResponseOverrides(prev => ({ ...prev, [applicant.id]: status }));
+    toast.success(
+      status === "Accepterat"
+        ? `${applicant.name} har tackat ja`
+        : `${applicant.name} har tackat nej`
+    );
+  };
 
   // Förvalja endast i läget "Klara för erbjudande" (autoSelectTopApplicants).
   // På publicerade annonser börjar checkboxarna tomma.
