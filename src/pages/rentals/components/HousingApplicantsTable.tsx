@@ -20,6 +20,10 @@ interface HousingApplicantsTableProps {
   contractMode?: boolean;
   /** Förvälj de 10 översta sökandena (används endast i "Klara för erbjudande"-läge) */
   autoSelectTopApplicants?: boolean;
+  /** Historik-läge: read-only, ingen selection, markera vinnaren */
+  historyMode?: boolean;
+  /** Namnet på den sökande som tilldelades kontraktet (historik) */
+  contractWinnerName?: string;
 }
 
 export function HousingApplicantsTable({ 
@@ -32,6 +36,8 @@ export function HousingApplicantsTable({
   offeredApplicantIds = [],
   contractMode = false,
   autoSelectTopApplicants = false,
+  historyMode = false,
+  contractWinnerName,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
