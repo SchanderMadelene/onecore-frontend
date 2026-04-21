@@ -82,11 +82,7 @@ export const CreateHousingApplicationDialog = ({
     setSearchQuery("");
     setNotes("");
   };
-  const tenantHasValidContractForTheDistrict = () => {
-    if (!tenantValidation.data) return false;
-    return tenantValidation.data.hasContractInDistrict || tenantValidation.data.hasUpcomingContractInDistrict;
-  };
-  const canSubmit = selectedCustomer && tenantValidation.data?.validationResult !== 'no-contract' && tenantHasValidContractForTheDistrict() && !createApplication.isPending;
+  const canSubmit = selectedCustomer && !createApplication.isPending;
   return <Dialog open={open} onOpenChange={isOpen => {
     setOpen(isOpen);
     if (!isOpen) resetForm();
