@@ -198,11 +198,11 @@ export const useHousingListing = (id: string) => {
             priority: 5,
             listingId: id,
             profileStatus: "Approved" as const,
-            housingReference: { status: "Godkänd" as const, date: "2024-01-22" },
-            creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-19" },
-            paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-19" },
-            viewingBooked: { status: "Ja" as const, date: "2024-02-07" },
-            offerResponse: { status: "Accepterat" as const, date: "2026-04-13" }
+            housingReference: { status: "Kontaktad - ej svar" as const, date: "2024-01-22" },
+            creditReport: { status: "Förhöjd risk" as const, date: "2024-01-19" },
+            paymentHistory: { status: "Behöver kontrolleras" as const, date: "2024-01-19" },
+            viewingBooked: { status: "Väntar på svar" as const },
+            offerResponse: { status: "Väntar på svar" as const }
           },
           {
             id: 6,
@@ -221,9 +221,9 @@ export const useHousingListing = (id: string) => {
             profileStatus: "Approved" as const,
             housingReference: { status: "Godkänd" as const, date: "2024-01-19" },
             creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-18" },
-            paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-18" },
+            paymentHistory: { status: "Behöver kontrolleras" as const, date: "2024-01-18" },
             viewingBooked: { status: "Ja" as const, date: "2024-02-08" },
-            offerResponse: { status: "Accepterat" as const, date: "2026-04-14" }
+            offerResponse: { status: "Nekat" as const, date: "2026-04-14" }
           },
           {
             id: 7,
@@ -262,7 +262,7 @@ export const useHousingListing = (id: string) => {
             listingId: id,
             profileStatus: "Approved" as const,
             housingReference: { status: "Godkänd" as const, date: "2024-01-16" },
-            creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-15" },
+            creditReport: { status: "Förhöjd risk" as const, date: "2024-01-15" },
             paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-15" },
             viewingBooked: { status: "Ja" as const, date: "2024-02-04" },
             offerResponse: { status: "Väntar på svar" as const }
@@ -284,8 +284,8 @@ export const useHousingListing = (id: string) => {
             profileStatus: "PartiallyApproved" as const,
             housingReference: { status: "Ej behandlad" as const },
             creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-21" },
-            paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-21" },
-            viewingBooked: { status: "Nej" as const, date: "2024-02-09" },
+            paymentHistory: { status: "Behöver kontrolleras" as const, date: "2024-01-21" },
+            viewingBooked: { status: "Väntar på svar" as const },
             offerResponse: { status: "Väntar på svar" as const }
           },
           {
@@ -303,10 +303,10 @@ export const useHousingListing = (id: string) => {
             priority: 10,
             listingId: id,
             profileStatus: "Approved" as const,
-            housingReference: { status: "Godkänd" as const, date: "2024-01-23" },
+            housingReference: { status: "Referens krävs ej" as const },
             creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-22" },
             paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-22" },
-            viewingBooked: { status: "Ja" as const, date: "2024-02-10" },
+            viewingBooked: { status: "Nej" as const, date: "2024-02-10" },
             offerResponse: { status: "Väntar på svar" as const }
           },
           {
@@ -326,8 +326,8 @@ export const useHousingListing = (id: string) => {
             profileStatus: "Approved" as const,
             housingReference: { status: "Godkänd" as const, date: "2024-01-14" },
             creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-13" },
-            paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-13" },
-            viewingBooked: { status: "Ja" as const, date: "2024-02-03" },
+            paymentHistory: { status: "Behöver kontrolleras" as const, date: "2024-01-13" },
+            viewingBooked: { status: "Väntar på svar" as const },
             offerResponse: { status: "Väntar på svar" as const }
           },
           {
@@ -345,8 +345,8 @@ export const useHousingListing = (id: string) => {
             priority: 12,
             listingId: id,
             profileStatus: "Approved" as const,
-            housingReference: { status: "Godkänd" as const, date: "2024-01-26" },
-            creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-24" },
+            housingReference: { status: "Kontaktad - ej svar" as const, date: "2024-01-26" },
+            creditReport: { status: "Förhöjd risk" as const, date: "2024-01-24" },
             paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-24" },
             viewingBooked: { status: "Väntar på svar" as const },
             offerResponse: { status: "Väntar på svar" as const }
@@ -388,8 +388,8 @@ export const useHousingListing = (id: string) => {
             listingId: id,
             profileStatus: "Approved" as const,
             housingReference: { status: "Godkänd" as const, date: "2024-01-19" },
-            creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-17" },
-            paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-17" },
+            creditReport: { status: "Förhöjd risk" as const, date: "2024-01-17" },
+            paymentHistory: { status: "Behöver kontrolleras" as const, date: "2024-01-17" },
             viewingBooked: { status: "Ja" as const, date: "2024-02-05" },
             offerResponse: { status: "Väntar på svar" as const }
           },
@@ -408,10 +408,10 @@ export const useHousingListing = (id: string) => {
             priority: 15,
             listingId: id,
             profileStatus: "Approved" as const,
-            housingReference: { status: "Godkänd" as const, date: "2024-01-21" },
+            housingReference: { status: "Ej behandlad" as const },
             creditReport: { status: "Godkänd/låg risk" as const, date: "2024-01-20" },
             paymentHistory: { status: "Inga anmärkningar" as const, date: "2024-01-20" },
-            viewingBooked: { status: "Ja" as const, date: "2024-02-08" },
+            viewingBooked: { status: "Nej" as const, date: "2024-02-08" },
             offerResponse: { status: "Väntar på svar" as const }
           }
         ],
