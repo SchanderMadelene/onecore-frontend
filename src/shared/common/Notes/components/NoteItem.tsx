@@ -43,9 +43,9 @@ export function NoteItem({ note, onTogglePin, onDelete }: NoteItemProps) {
         </div>
         <div className="flex gap-1">
           <Button 
-            variant="ghost" 
+            variant="subtle" 
             size="icon" 
-            className="h-6 w-6 text-muted-foreground hover:text-amber-600"
+            className="h-6 w-6 hover:text-amber-600"
             onClick={() => onTogglePin(note.id)}
             title={note.isPinned ? "Ta bort pin" : "Pinna notering"}
           >
@@ -56,9 +56,9 @@ export function NoteItem({ note, onTogglePin, onDelete }: NoteItemProps) {
             )}
           </Button>
           <Button 
-            variant="ghost" 
+            variant="subtle" 
             size="icon" 
-            className="h-6 w-6 text-muted-foreground hover:text-destructive"
+            className="h-6 w-6 hover:text-destructive"
             onClick={() => onDelete(note.id)}
             title="Ta bort notering"
           >

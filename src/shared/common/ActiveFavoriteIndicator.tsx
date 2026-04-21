@@ -76,7 +76,7 @@ export function ActiveFavoriteIndicator() {
           )}
           <Button
             size="sm"
-            variant="ghost"
+            variant="subtle"
             onClick={clearActiveFavorite}
           >
             <X className="h-3 w-3" />

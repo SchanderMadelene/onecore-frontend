@@ -76,7 +76,7 @@ export function InspectorSelectionCard({
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">Hyresgäst</CardTitle>
               <Button 
-                variant="ghost" 
+                variant="subtle" 
                 size="sm"
                 onClick={handleOpenTenantProfile}
                 className="h-8 px-2"

@@ -105,9 +105,9 @@ export function Notes({
                 </div>
                 <div className="flex gap-1 flex-shrink-0 ml-2">
                   <Button 
-                    variant="ghost" 
+                    variant="subtle" 
                     size="icon" 
-                    className="h-6 w-6 text-muted-foreground hover:text-amber-600"
+                    className="h-6 w-6 hover:text-amber-600"
                     onClick={() => handleTogglePin(note.id)}
                     title={note.isPinned ? "Ta bort pin" : "Pinna notering"}
                   >
@@ -118,9 +118,9 @@ export function Notes({
                     )}
                   </Button>
                   <Button 
-                    variant="ghost" 
+                    variant="subtle" 
                     size="icon" 
-                    className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                    className="h-6 w-6 hover:text-destructive"
                     onClick={() => handleDeleteNote(note.id)}
                     title="Ta bort notering"
                   >
