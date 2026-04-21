@@ -364,13 +364,8 @@ export function HousingApplicantsTable({
                     <TableCell>
                       {isWinner ? (
                         <Badge variant="success">Tackat ja — tilldelad</Badge>
-                      ) : applicant.offerResponse?.status === "Nekat" ? (
-                        <div className="space-y-1">
-                          <Badge variant="destructive">Tackat nej</Badge>
-                          {applicant.offerResponse.date && (
-                            <div className="text-xs text-muted-foreground">{applicant.offerResponse.date}</div>
-                          )}
-                        </div>
+                      ) : wasOffered ? (
+                        <Badge variant="destructive">Tackat nej</Badge>
                       ) : (
                         <span className="text-sm text-muted-foreground">Inget erbjudande</span>
                       )}
@@ -394,7 +389,8 @@ export function HousingApplicantsTable({
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>
-            )}
+            );
+          })()}
         </TableBody>
       </Table>
     </div>
