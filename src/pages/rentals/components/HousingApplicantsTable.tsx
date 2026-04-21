@@ -244,7 +244,7 @@ export function HousingApplicantsTable({
       case "Nekat":
         return <Badge variant="destructive">Nej</Badge>;
       case "Väntar på svar":
-        return <Badge variant="warning">Väntar på svar</Badge>;
+        return <Badge variant="warning">Väntar</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
