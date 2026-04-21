@@ -18,6 +18,8 @@ interface HousingApplicantsTableProps {
   offeredApplicantIds?: number[];
   /** Kontrakt-läge: dölj kolumnerna "Erbjudande" och "Visning bokad" */
   contractMode?: boolean;
+  /** Förvälj de 10 översta sökandena (används endast i "Klara för erbjudande"-läge) */
+  autoSelectTopApplicants?: boolean;
 }
 
 export function HousingApplicantsTable({ 
@@ -28,19 +30,18 @@ export function HousingApplicantsTable({
   showSelectionColumn = true,
   onSelectionChange,
   offeredApplicantIds = [],
-  contractMode = false
+  contractMode = false,
+  autoSelectTopApplicants = false,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
   const hasInitializedSelection = useRef(false);
 
-  // Förvalja de 10 översta sökandena (efter köpoäng-ordning som listan kommer i)
-  // som inte redan har erbjudits, så uthyrare snabbt kan skicka erbjudande.
-  // Endast i urvalsläget (showSelectionColumn) — i granskning/kontrakt ska
-  // checkboxarna börja tomma så användaren själv väljer SMS-mottagare.
+  // Förvalja endast i läget "Klara för erbjudande" (autoSelectTopApplicants).
+  // På publicerade annonser börjar checkboxarna tomma.
   useEffect(() => {
     if (hasInitializedSelection.current) return;
-    if (!showSelectionColumn) {
+    if (!showSelectionColumn || !autoSelectTopApplicants) {
       hasInitializedSelection.current = true;
       return;
     }
@@ -57,7 +58,7 @@ export function HousingApplicantsTable({
     setSelectedApplicants(initial);
     onSelectionChange?.(Array.from(initial));
     hasInitializedSelection.current = true;
-  }, [applicants, offeredApplicantIds, showSelectionColumn, onSelectionChange]);
+  }, [applicants, offeredApplicantIds, showSelectionColumn, autoSelectTopApplicants, onSelectionChange]);
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
     const newSelected = new Set(selectedApplicants);
