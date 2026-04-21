@@ -346,7 +346,7 @@ export function HousingApplicantsTable({
                     <div className="space-y-1">
                       <div>
                         <Badge variant={applicant.creditReport.status === "Godkänd/låg risk" ? "success" : "warning"}>
-                          {applicant.creditReport.status === "Godkänd/låg risk" ? "Inga anmärkningar" : "Anmärkningar"}
+                          {applicant.creditReport.status === "Godkänd/låg risk" ? "Inga anm." : "Anmärkningar"}
                         </Badge>
                       </div>
                       {applicant.creditReport.date && (
