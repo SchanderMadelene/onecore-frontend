@@ -383,18 +383,49 @@ export function HousingApplicantsTable({
                       </div>
                     </TableCell>
                   )}
-                  {!showSelectionColumn && !historyMode && !contractMode && applicant.offerResponse && (
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div>{getOfferResponseBadge(applicant.offerResponse.status)}</div>
-                        {applicant.offerResponse.date && (
-                          <div className="text-xs text-muted-foreground">
-                            {applicant.offerResponse.date}
+                  {!showSelectionColumn && !historyMode && !contractMode && applicant.offerResponse && (() => {
+                    const currentStatus = responseOverrides[applicant.id] ?? applicant.offerResponse.status;
+                    const isOverridden = responseOverrides[applicant.id] !== undefined;
+                    const dateLabel = isOverridden
+                      ? new Date().toLocaleDateString('sv-SE')
+                      : applicant.offerResponse.date;
+                    return (
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className="space-y-1">
+                            <div>{getOfferResponseBadge(currentStatus)}</div>
+                            {dateLabel && (
+                              <div className="text-xs text-muted-foreground">
+                                {dateLabel}
+                                {isOverridden && " · manuellt"}
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    </TableCell>
-                  )}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="outline" size="icon" className="h-8 w-8 ml-auto">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => handleManualResponse(applicant, "Accepterat")}
+                                disabled={currentStatus === "Accepterat"}
+                              >
+                                Tacka ja
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleManualResponse(applicant, "Nekat")}
+                                disabled={currentStatus === "Nekat"}
+                              >
+                                Tacka nej
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </TableCell>
+                    );
+                  })()}
                   {historyMode && (
                     <TableCell>
                       {isWinner ? (
