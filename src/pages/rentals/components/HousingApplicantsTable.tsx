@@ -282,11 +282,18 @@ export function HousingApplicantsTable({
                     </div>
                   </TableCell>
                   <TableCell>
-                    {applicant.creditReport.date && (
-                      <Badge variant={applicant.creditReport.status === "Godkänd/låg risk" ? "success" : "warning"}>
-                        {applicant.creditReport.date}
-                      </Badge>
-                    )}
+                    <div className="space-y-1">
+                      <div>
+                        <Badge variant={applicant.creditReport.status === "Godkänd/låg risk" ? "success" : "warning"}>
+                          {applicant.creditReport.status === "Godkänd/låg risk" ? "Inga anmärkningar" : "Anmärkningar"}
+                        </Badge>
+                      </div>
+                      {applicant.creditReport.date && (
+                        <div className="text-xs text-muted-foreground">
+                          {applicant.creditReport.date}
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="space-y-1">
