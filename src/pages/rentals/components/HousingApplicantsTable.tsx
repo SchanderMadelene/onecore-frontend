@@ -237,7 +237,7 @@ export function HousingApplicantsTable({
             {!contractMode && !showSelectionColumn && !historyMode && <TableHead className="whitespace-nowrap">Erbjudande</TableHead>}
             {!showSelectionColumn && !contractMode && !historyMode && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
             {!showSelectionColumn && !historyMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
-            {historyMode && <TableHead className="whitespace-nowrap">Resultat</TableHead>}
+            {historyMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
