@@ -6,6 +6,7 @@ import { getDistrictByArea } from "../utils/area-district";
 import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
 import { HousingRowActions } from "./HousingRowActions";
+import { getHousingObjectNumber } from "../utils/object-number";
 
 export function PublishedHousingTable() {
   const navigate = useNavigate();
@@ -14,7 +15,12 @@ export function PublishedHousingTable() {
   const publishedHousings = filterHousingByStatus(publishedHousingSpaces, 'published');
 
   const columns = [
-    { key: "address", label: "Adress", render: (h: any) => <span className="font-medium">{h.address}</span> },
+    { key: "address", label: "Adress", render: (h: any) => (
+      <div>
+        <div className="font-medium">{h.address}</div>
+        <div className="text-sm text-muted-foreground">{getHousingObjectNumber(h.id)}</div>
+      </div>
+    ) },
     { key: "area", label: "Område", render: (h: any) => h.area, hideOnMobile: true },
     { key: "district", label: "Distrikt", render: (h: any) => getDistrictByArea(h.area), hideOnMobile: true },
     { key: "rentalType", label: "Hyresobjektstyp", render: (h: any) => <BuildingTypeBadge type={getRentalObjectType(h.id)} />, hideOnMobile: true },
@@ -37,6 +43,7 @@ export function PublishedHousingTable() {
   const mobileCardRenderer = (housing: any) => (
     <div>
       <div className="font-medium">{housing.address}</div>
+      <div className="text-sm text-muted-foreground">{getHousingObjectNumber(housing.id)}</div>
       <div className="text-sm text-muted-foreground">{housing.area}</div>
       <div className="grid grid-cols-[auto_auto] gap-x-4 gap-y-1 mt-2 justify-start">
         <span className="text-sm text-muted-foreground">Rum:</span>
