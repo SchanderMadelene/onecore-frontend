@@ -75,29 +75,21 @@ export function HousingHeader({
           </div>
           <div className="flex items-center gap-2">
             {housing && isPublished && <HousingApplicationDialog housingSpace={housing} />}
-            {!hasOffers && (
-              <Button
-                onClick={onCreateOffer}
-                disabled={isCreatingOffer || !hasSelectedApplicants}
-                className="flex items-center gap-1"
-              >
-                <PlusCircle className="h-4 w-4" />
-                <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
+            {canEarlyUnpublish ? (
+              <Button onClick={() => setEarlyOpen(true)}>
+                Tidigarelägg avpublicering
               </Button>
-            )}
-            {canEarlyUnpublish && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" aria-label="Fler åtgärder">
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setEarlyOpen(true); }}>
-                    Tidigarelägg avpublicering
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+            ) : (
+              !hasOffers && (
+                <Button
+                  onClick={onCreateOffer}
+                  disabled={isCreatingOffer || !hasSelectedApplicants}
+                  className="flex items-center gap-1"
+                >
+                  <PlusCircle className="h-4 w-4" />
+                  <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
+                </Button>
+              )
             )}
           </div>
         </div>
