@@ -23,7 +23,7 @@ const HousingDetailPage = () => {
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { createOffer, isListingOffered, getOfferForListing } = useHousingOffers();
+  const { createOffer, isListingOffered, getOfferForListing, linkContract, unlinkContract, getLinkedContract } = useHousingOffers();
   const { getHousingStatus } = useHousingStatus();
   
   const { data: listing, isLoading } = useHousingListing(housingId || "");
