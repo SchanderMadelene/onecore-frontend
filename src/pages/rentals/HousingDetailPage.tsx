@@ -156,14 +156,22 @@ const HousingDetailPage = () => {
   );
 
   const displayedApplicants = isContractMode
-    ? listing.applicants.filter(a => top10Ids.has(a.id) && (a.id % 5 === 0 || a.id % 5 === 1))
+    ? listing.applicants.filter(a => top10Ids.has(a.id))
     : listing.applicants;
+
+  // Endast sökande som tackat ja kan kopplas till kontrakt (samma bucket-regel
+  // som i tabellen).
+  const acceptedApplicantIds = new Set(
+    isContractMode
+      ? displayedApplicants.filter(a => a.id % 5 === 0 || a.id % 5 === 1).map(a => a.id)
+      : []
+  );
 
   // Rekommenderad sökande för kontrakt: högst köpoäng bland de som tackat ja
   // OCH har godkända kontroller (profilstatus "Approved").
   const recommendedApplicantId = isContractMode
     ? displayedApplicants
-        .filter(a => a.profileStatus === "Approved")
+        .filter(a => acceptedApplicantIds.has(a.id) && a.profileStatus === "Approved")
         .sort((a, b) => b.queuePoints - a.queuePoints)[0]?.id
     : undefined;
 
