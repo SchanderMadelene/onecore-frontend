@@ -131,9 +131,11 @@ const HousingDetailPage = () => {
     );
   }
 
+  const isHistoryMode = location.state?.activeHousingTab === 'historik' || !!listing.history;
   const status = getHousingStatus(listing);
-  const offerStatus = status === 'published' ? "Publicerad" : 
-                    status === 'ready_for_offer' ? "Klara för erbjudande" : 
+  const offerStatus = isHistoryMode ? "Historik" :
+                    status === 'published' ? "Publicerad" :
+                    status === 'ready_for_offer' ? "Klara för erbjudande" :
                     status === 'offered' ? "Erbjudna" : "Publicerad";
   
   // Get active offer for this listing
@@ -159,23 +161,27 @@ const HousingDetailPage = () => {
           onBack={handleBack}
           onCreateOffer={handleOpenOfferDialog}
           isCreatingOffer={false}
+          readOnly={isHistoryMode}
         />
 
         <div className="space-y-8">
           <section>
             <h2 className="text-xl font-semibold mb-4">
-              {isContractMode ? 'Sökande som tackat ja' : 'Intresseanmälningar'}
+              {isHistoryMode ? 'Sökande i denna uthyrning' :
+               isContractMode ? 'Sökande som tackat ja' : 'Intresseanmälningar'}
             </h2>
             <HousingApplicantsTable 
               applicants={displayedApplicants}
               housingAddress={listing.address}
               listingId={listing.id}
               showOfferColumns={false}
-              showSelectionColumn={!activeOffer && !isContractMode}
+              showSelectionColumn={!activeOffer && !isContractMode && !isHistoryMode}
               onSelectionChange={setSelectedApplicants}
               offeredApplicantIds={activeOffer?.selectedApplicants || []}
               contractMode={isContractMode}
-              autoSelectTopApplicants={status === 'ready_for_offer'}
+              autoSelectTopApplicants={status === 'ready_for_offer' && !isHistoryMode}
+              historyMode={isHistoryMode}
+              contractWinnerName={listing.history?.contractedTo}
             />
           </section>
 
@@ -184,38 +190,40 @@ const HousingDetailPage = () => {
             applicantCount={displayedApplicants.length}
           />
 
-          <section>
-            <Notes
-              entityType="housing"
-              entityId={housingId}
-              title="Noteringar för bostad"
-              placeholder="Skriv en notering om denna bostad..."
-              emptyMessage="Inga noteringar har lagts till för denna bostad ännu."
-              categories={["Underhåll", "Klagomål", "Allmänt", "Uthyrning"]}
-              showCategory={true}
-            />
-          </section>
+          {!isHistoryMode && (
+            <section>
+              <Notes
+                entityType="housing"
+                entityId={housingId}
+                title="Noteringar för bostad"
+                placeholder="Skriv en notering om denna bostad..."
+                emptyMessage="Inga noteringar har lagts till för denna bostad ännu."
+                categories={["Underhåll", "Klagomål", "Allmänt", "Uthyrning"]}
+                showCategory={true}
+              />
+            </section>
+          )}
         </div>
       </div>
 
-      <SendHousingOfferDialog
-        open={isOfferDialogOpen}
-        onOpenChange={setIsOfferDialogOpen}
-        recipientCount={selectedApplicants.length}
-        housingAddress={listing.address}
-        onConfirm={handleConfirmOffer}
-      />
+      {!isHistoryMode && (
+        <SendHousingOfferDialog
+          open={isOfferDialogOpen}
+          onOpenChange={setIsOfferDialogOpen}
+          recipientCount={selectedApplicants.length}
+          housingAddress={listing.address}
+          onConfirm={handleConfirmOffer}
+        />
+      )}
 
-      {/* Bulk-actions för markerade sökande (SMS/mejl). Visas i alla tre lägen
-          (urval för erbjudande, granska erbjudna, kontrakt). I urvalsläget
-          används samma selection som "Skicka erbjudande". */}
-      <BulkActionBar
-        selectedCount={selectedApplicants.length}
-        onSendSms={() => setSmsOpen(true)}
-        onSendEmail={() => setEmailOpen(true)}
-        onClear={() => setSelectedApplicants([])}
-      />
-
+      {!isHistoryMode && (
+        <BulkActionBar
+          selectedCount={selectedApplicants.length}
+          onSendSms={() => setSmsOpen(true)}
+          onSendEmail={() => setEmailOpen(true)}
+          onClear={() => setSelectedApplicants([])}
+        />
+      )}
       <BulkSmsModal
         open={smsOpen}
         onOpenChange={setSmsOpen}
