@@ -24,9 +24,9 @@ export default function CreateHousingAdPage() {
     defaultValues: {
       housingObjectType: "",
       moveIn: "Omgående",
-      moveInDate: "",
-      availableFrom: "",
-      eventuallyAvailableFrom: "",
+      moveInDate: undefined,
+      availableFrom: undefined,
+      eventuallyAvailableFrom: undefined,
       queue: "Ingen spärr",
       standardNote: "",
       // Detailed description defaults
