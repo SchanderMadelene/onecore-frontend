@@ -49,6 +49,13 @@ export interface HousingListing extends PublishedHousingSpace {
     expiresAt: string;
     selectedApplicants: Array<any>;
   }>;
+  /** Sätts endast för annonser från historik-fliken */
+  history?: {
+    contractedTo: string;
+    contractedToCustomerNumber: string;
+    contractStart: string;
+    signedAt: string;
+  };
 }
 
 export const useHousingListing = (id: string) => {
@@ -440,7 +447,13 @@ export const useHousingListing = (id: string) => {
             offerResponse: { status: "Väntar på svar" as const }
           }
         ],
-        offers: []
+        offers: [],
+        history: history ? {
+          contractedTo: history.contractedTo,
+          contractedToCustomerNumber: history.contractedToCustomerNumber,
+          contractStart: history.contractStart,
+          signedAt: history.signedAt,
+        } : undefined,
       } as HousingListing);
     }
   });
