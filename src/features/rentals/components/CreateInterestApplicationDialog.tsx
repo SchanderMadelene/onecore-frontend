@@ -139,7 +139,8 @@ export const CreateInterestApplicationDialog = ({ parkingSpace, open: controlled
                 <>
                   <CustomerInformation 
                     customer={selectedCustomer} 
-                    tenantValidation={tenantValidation.data} 
+                    tenantValidation={tenantValidation.data}
+                    onClear={resetForm}
                   />
                   
                   <ValidationAlerts tenantValidation={tenantValidation.data} />
