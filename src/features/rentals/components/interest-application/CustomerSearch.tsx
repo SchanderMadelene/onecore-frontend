@@ -52,6 +52,10 @@ export const CustomerSearch = ({
                       {customer.customerNumber} | {customer.personalNumber}
                     </p>
                   </div>
+                  {/* TODO: Stäm av med användaren – ersätt binär badge (Hyresgäst/Sökande)
+                      med fulla customerRoles renderade som Tag-komponenter. Möjliga roller:
+                      Hyresgäst, Sökande, Andrahandshyresgäst, Kontaktperson, Tidigare hyresgäst,
+                      Nyttjare, God man. Se mem://data-model/customer-roles. */}
                   <Badge variant={customer.customerType === "tenant" ? "default" : "secondary"}>
                     {customer.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
                   </Badge>
