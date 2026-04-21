@@ -19,6 +19,9 @@ interface HousingOffersContextType {
   isListingOffered: (listingId: string) => boolean;
   markEarlyUnpublished: (listingId: string) => void;
   isEarlyUnpublished: (listingId: string) => boolean;
+  linkContract: (listingId: string, applicantId: number) => void;
+  unlinkContract: (listingId: string) => void;
+  getLinkedContract: (listingId: string) => number | undefined;
 }
 
 const HousingOffersContext = createContext<HousingOffersContextType | undefined>(undefined);
@@ -57,6 +60,7 @@ const MOCK_OFFERS: HousingOffer[] = [
 export function HousingOffersProvider({ children }: { children: ReactNode }) {
   const [offers, setOffers] = useState<HousingOffer[]>(MOCK_OFFERS);
   const [earlyUnpublished, setEarlyUnpublished] = useState<Set<string>>(new Set());
+  const [linkedContracts, setLinkedContracts] = useState<Record<string, number>>({});
 
   const createOffer = (listingId: string, selectedApplicants: number[]) => {
     const newOffer: HousingOffer = {
@@ -65,17 +69,11 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
       sentAt: new Date().toISOString(),
       status: 'active'
     };
-    
     setOffers(prev => [...prev, newOffer]);
   };
 
-  const getOfferForListing = (listingId: string) => {
-    return offers.find(offer => offer.listingId === listingId);
-  };
-
-  const isListingOffered = (listingId: string) => {
-    return offers.some(offer => offer.listingId === listingId);
-  };
+  const getOfferForListing = (listingId: string) => offers.find(offer => offer.listingId === listingId);
+  const isListingOffered = (listingId: string) => offers.some(offer => offer.listingId === listingId);
 
   const markEarlyUnpublished = (listingId: string) => {
     setEarlyUnpublished(prev => {
@@ -84,8 +82,19 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
       return next;
     });
   };
-
   const isEarlyUnpublished = (listingId: string) => earlyUnpublished.has(listingId);
+
+  const linkContract = (listingId: string, applicantId: number) => {
+    setLinkedContracts(prev => ({ ...prev, [listingId]: applicantId }));
+  };
+  const unlinkContract = (listingId: string) => {
+    setLinkedContracts(prev => {
+      const next = { ...prev };
+      delete next[listingId];
+      return next;
+    });
+  };
+  const getLinkedContract = (listingId: string) => linkedContracts[listingId];
 
   return (
     <HousingOffersContext.Provider value={{
@@ -95,6 +104,9 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
       isListingOffered,
       markEarlyUnpublished,
       isEarlyUnpublished,
+      linkContract,
+      unlinkContract,
+      getLinkedContract,
     }}>
       {children}
     </HousingOffersContext.Provider>
