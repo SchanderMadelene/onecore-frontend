@@ -122,13 +122,10 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
           control={control}
           name="moveInDate"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col">
               <FormLabel className="text-sm font-medium">Inflyttning</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
-                  <CalendarIcon className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-                </div>
+                <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj datum" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -141,13 +138,10 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
           control={control}
           name="availableFrom"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col">
               <FormLabel className="text-sm font-medium">Tillgänglig från</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
-                  <CalendarIcon className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-                </div>
+                <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj datum" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -158,13 +152,10 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
           control={control}
           name="eventuallyAvailableFrom"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col">
               <FormLabel className="text-sm font-medium">Eventuellt tillgänglig från</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input {...field} placeholder="dd-mm-yy" className="h-12 pr-10" />
-                  <CalendarIcon className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-                </div>
+                <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj datum" />
               </FormControl>
               <FormMessage />
             </FormItem>

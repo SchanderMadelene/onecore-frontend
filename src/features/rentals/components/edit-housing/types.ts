@@ -2,9 +2,9 @@
 export interface EditHousingFormData {
   housingObjectType: string;
   moveIn: string;
-  moveInDate: string;
-  availableFrom: string;
-  eventuallyAvailableFrom: string;
+  moveInDate?: Date;
+  availableFrom?: Date;
+  eventuallyAvailableFrom?: Date;
   // Publication period
   publishFrom?: Date;
   publishTo?: Date;

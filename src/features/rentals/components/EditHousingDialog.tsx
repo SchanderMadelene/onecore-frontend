@@ -45,9 +45,9 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
     defaultValues: {
       housingObjectType: "Standard, Poängfri, Korttidskontrakt, Lätt att ...",
       moveIn: "Omgående",
-      moveInDate: "dd-mm-yy",
-      availableFrom: "dd-mm-yy",
-      eventuallyAvailableFrom: "dd-mm-yy",
+      moveInDate: undefined,
+      availableFrom: undefined,
+      eventuallyAvailableFrom: undefined,
       publishFrom: undefined,
       publishTo: undefined,
       publishUntilFurtherNotice: false,
