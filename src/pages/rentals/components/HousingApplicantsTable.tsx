@@ -232,9 +232,9 @@ export function HousingApplicantsTable({
 
   const getOfferStatusBadge = (applicantId: number) => {
     if (offeredApplicantIds.includes(applicantId)) {
-      return <Badge variant="info">Erbjudande skickat</Badge>;
+      return <Badge variant="info">Skickat</Badge>;
     }
-    return <Badge variant="muted">Inget erbjudande</Badge>;
+    return <Badge variant="muted">Ej skickat</Badge>;
   };
 
   const getOfferResponseBadge = (status: "Accepterat" | "Nekat" | "Väntar på svar") => {
