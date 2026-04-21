@@ -242,7 +242,14 @@ export function HousingApplicantsTable({
         </TableHeader>
         <TableBody>
           {applicants.length > 0 ? applicants
-            .sort((a, b) => b.queuePoints - a.queuePoints)
+            .slice()
+            .sort((a, b) => {
+              if (historyMode && contractWinnerName) {
+                if (a.name === contractWinnerName) return -1;
+                if (b.name === contractWinnerName) return 1;
+              }
+              return b.queuePoints - a.queuePoints;
+            })
             .map((applicant) => {
               const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
               return (
