@@ -43,6 +43,25 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
     
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+    
+    /* Subtila status-toner (för badges, tags, mjuka markeringar) */
+    --success-soft: 152 68% 94%;
+    --success-soft-foreground: 158 64% 22%;
+    
+    --warning-soft: 48 96% 89%;
+    --warning-soft-foreground: 28 73% 26%;
+    
+    --info-soft: 204 94% 94%;
+    --info-soft-foreground: 201 90% 27%;
+    
+    --destructive-soft: 0 93% 94%;
+    --destructive-soft-foreground: 0 70% 35%;
+    
+    --purple-soft: 270 95% 95%;
+    --purple-soft-foreground: 272 72% 35%;
+    
     /* Highlight - Logotypens blå, för notiser & framhävningar */
     --highlight: 240 100% 50%;
     --highlight-foreground: 0 0% 100%;
