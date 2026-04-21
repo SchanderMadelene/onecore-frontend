@@ -11,6 +11,10 @@ interface CustomerInformationProps {
 }
 
 export const CustomerInformation = ({ customer, tenantValidation }: CustomerInformationProps) => {
+  // TODO: Stäm av med användaren – ersätt binär badge (Hyresgäst/Sökande) med
+  // fulla customerRoles renderade som Tag-komponenter. Möjliga roller:
+  // Hyresgäst, Sökande, Andrahandshyresgäst, Kontaktperson, Tidigare hyresgäst,
+  // Nyttjare, God man. Se mem://data-model/customer-roles.
   const badge = {
     label: customer.customerType === "tenant" ? "Hyresgäst" : "Sökande",
     variant: customer.customerType === "tenant" ? "default" : "secondary"
