@@ -44,9 +44,14 @@ type ActionDef =
   | { key: string; label: string; kind: "new-app" }
   | { key: string; label: string; kind: "edit" }
   | { key: string; label: string; kind: "navigate" }
+  | { key: string; label: string; kind: "early-unpublish"; disabled?: boolean }
   | { key: string; label: string; kind: "confirm"; destructive?: boolean; confirm: ConfirmSpec };
 
-function getActions(tab: HousingActionTab, address: string): { primary: ActionDef[]; menu: ActionDef[] } {
+function getActions(
+  tab: HousingActionTab,
+  address: string,
+  seekers: number,
+): { primary: ActionDef[]; menu: ActionDef[] } {
   const unpublish: ActionDef = {
     key: "unpublish",
     label: "Avbryt uthyrning",
@@ -60,6 +65,12 @@ function getActions(tab: HousingActionTab, address: string): { primary: ActionDe
       successTitle: "Uthyrning avbruten",
       destructive: true,
     },
+  };
+  const earlyUnpublish: ActionDef = {
+    key: "early-unpublish",
+    label: "Tidigarelägg avpublicering",
+    kind: "early-unpublish",
+    disabled: seekers === 0,
   };
   const publish: ActionDef = {
     key: "publish",
@@ -110,7 +121,7 @@ function getActions(tab: HousingActionTab, address: string): { primary: ActionDe
 
   switch (tab) {
     case "publicerade":
-      return { primary: [newApp, unpublish], menu: [newApp, edit, unpublish] };
+      return { primary: [newApp, unpublish], menu: [newApp, edit, earlyUnpublish, unpublish] };
     case "behovAvPublicering":
       return { primary: [publish, remove], menu: [publish, edit, remove] };
     case "klaraForErbjudande":
