@@ -317,12 +317,12 @@ export function HousingApplicantsTable({
                       )}
                     </div>
                   </TableCell>
-                  {!contractMode && !showSelectionColumn && (
+                  {!contractMode && !showSelectionColumn && !historyMode && (
                     <TableCell>
                       {getOfferStatusBadge(applicant.id)}
                     </TableCell>
                   )}
-                  {!showSelectionColumn && !contractMode && applicant.viewingBooked && (
+                  {!showSelectionColumn && !contractMode && !historyMode && applicant.viewingBooked && (
                     <TableCell>
                       <div className="space-y-1">
                         <div>{getViewingBookedBadge(applicant.viewingBooked.status)}</div>
@@ -334,7 +334,7 @@ export function HousingApplicantsTable({
                       </div>
                     </TableCell>
                   )}
-                  {!showSelectionColumn && applicant.offerResponse && (
+                  {!showSelectionColumn && !historyMode && applicant.offerResponse && (
                     <TableCell>
                       <div className="space-y-1">
                         <div>{getOfferResponseBadge(applicant.offerResponse.status)}</div>
@@ -344,6 +344,15 @@ export function HousingApplicantsTable({
                           </div>
                         )}
                       </div>
+                    </TableCell>
+                  )}
+                  {historyMode && (
+                    <TableCell>
+                      {isWinner ? (
+                        <Badge variant="success">Tilldelad kontrakt</Badge>
+                      ) : (
+                        <span className="text-sm text-muted-foreground">Ej tilldelad</span>
+                      )}
                     </TableCell>
                   )}
                 </TableRow>
@@ -357,7 +366,8 @@ export function HousingApplicantsTable({
                   </TableRow>
                 )}
               </>
-            )) : (
+              );
+            }) : (
               <TableRow>
                 <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
