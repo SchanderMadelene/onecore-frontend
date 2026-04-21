@@ -125,7 +125,7 @@ function getActions(
     case "behovAvPublicering":
       return { primary: [publish, remove], menu: [publish, edit, remove] };
     case "klaraForErbjudande":
-      return { primary: [createOffer], menu: [createOffer, viewApplicants] };
+      return { primary: [createOffer], menu: [newApp, unpublish] };
     case "erbjudna":
       return { primary: [viewOffer], menu: [viewOffer, withdraw] };
     case "historik":
