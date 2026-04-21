@@ -28,7 +28,7 @@ export type HousingActionTab =
 interface HousingRowActionsProps {
   housing: HousingSpace | UnpublishedHousingSpace;
   tab: HousingActionTab;
-  variant?: "row" | "mobile";
+  variant?: "row" | "mobile" | "detail";
 }
 
 type ConfirmSpec = {
@@ -193,42 +193,64 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
   const containerClass =
     variant === "row"
       ? "flex items-center justify-end gap-2"
-      : "flex items-center justify-end gap-2 mt-3";
+      : variant === "detail"
+        ? "flex items-center gap-2 flex-wrap"
+        : "flex items-center justify-end gap-2 mt-3";
 
   return (
     <>
       <div className={containerClass} onClick={stop}>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" onClick={stop} aria-label="Fler åtgärder">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" onClick={stop}>
-            {menu.map((item, idx) => {
-              const isDestructive = item.kind === "confirm" && item.destructive;
-              const prevDestructive =
-                idx > 0 && menu[idx - 1].kind === "confirm" && (menu[idx - 1] as any).destructive;
-              const showSeparator = isDestructive && !prevDestructive && idx > 0;
-              const isDisabled = item.kind === "early-unpublish" && item.disabled;
-              return (
-                <div key={item.key}>
-                  {showSeparator && <DropdownMenuSeparator />}
-                  <DropdownMenuItem
-                    className={isDestructive ? "text-destructive focus:text-destructive" : ""}
-                    disabled={isDisabled}
-                    onSelect={(e) => {
-                      e.preventDefault();
-                      handleMenu(item);
-                    }}
-                  >
-                    {item.label}
-                  </DropdownMenuItem>
-                </div>
-              );
-            })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {variant === "detail" ? (
+          menu.map((item) => {
+            const isDestructive = item.kind === "confirm" && item.destructive;
+            const isDisabled = item.kind === "early-unpublish" && item.disabled;
+            return (
+              <Button
+                key={item.key}
+                variant={isDestructive ? "destructive" : "outline"}
+                disabled={isDisabled}
+                onClick={(e) => {
+                  stop(e);
+                  handleMenu(item);
+                }}
+              >
+                {item.label}
+              </Button>
+            );
+          })
+        ) : (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" onClick={stop} aria-label="Fler åtgärder">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" onClick={stop}>
+              {menu.map((item, idx) => {
+                const isDestructive = item.kind === "confirm" && item.destructive;
+                const prevDestructive =
+                  idx > 0 && menu[idx - 1].kind === "confirm" && (menu[idx - 1] as any).destructive;
+                const showSeparator = isDestructive && !prevDestructive && idx > 0;
+                const isDisabled = item.kind === "early-unpublish" && item.disabled;
+                return (
+                  <div key={item.key}>
+                    {showSeparator && <DropdownMenuSeparator />}
+                    <DropdownMenuItem
+                      className={isDestructive ? "text-destructive focus:text-destructive" : ""}
+                      disabled={isDisabled}
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        handleMenu(item);
+                      }}
+                    >
+                      {item.label}
+                    </DropdownMenuItem>
+                  </div>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
       </div>
 
