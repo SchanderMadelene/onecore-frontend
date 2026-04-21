@@ -135,11 +135,14 @@ function getActions(
 
 export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowActionsProps) {
   const navigate = useNavigate();
+  const { markEarlyUnpublished } = useHousingOffers();
   const [editOpen, setEditOpen] = useState(false);
   const [newAppOpen, setNewAppOpen] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmSpec | null>(null);
   const [pending, setPending] = useState(false);
   const [cancelRentalOpen, setCancelRentalOpen] = useState(false);
+  const [earlyUnpublishOpen, setEarlyUnpublishOpen] = useState(false);
+  const [earlyUnpublishPending, setEarlyUnpublishPending] = useState(false);
 
   const seekers = (housing as HousingSpace).seekers ?? 0;
 
@@ -156,9 +159,25 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
     setConfirm(null);
   };
 
+  const runEarlyUnpublish = async () => {
+    setEarlyUnpublishPending(true);
+    await new Promise((r) => setTimeout(r, 400));
+    markEarlyUnpublished(housing.id);
+    toast({
+      title: "Annons flyttad till Klara för erbjudande",
+      description: housing.address,
+    });
+    setEarlyUnpublishPending(false);
+    setEarlyUnpublishOpen(false);
+  };
+
   const handleMenu = (a: ActionDef) => {
     if (a.kind === "edit") setEditOpen(true);
     else if (a.kind === "navigate") goDetail();
+    else if (a.kind === "early-unpublish") {
+      if (a.disabled) return;
+      setEarlyUnpublishOpen(true);
+    }
     else if (a.kind === "confirm") {
       if (a.key === "unpublish" && seekers > 0) {
         setCancelRentalOpen(true);
@@ -169,7 +188,7 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
     else if (a.kind === "new-app") setNewAppOpen(true);
   };
 
-  const { menu } = getActions(tab, housing.address);
+  const { menu } = getActions(tab, housing.address, seekers);
 
   const containerClass =
     variant === "row"
