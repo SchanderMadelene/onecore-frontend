@@ -393,6 +393,30 @@ export function HousingApplicantsTable({
                       )}
                     </TableCell>
                   )}
+                  {contractMode && (
+                    <TableCell className="text-right">
+                      {isLinked ? (
+                        <div className="flex items-center justify-end gap-2">
+                          <Badge variant="success">Kontrakt kopplat</Badge>
+                          {onUnlinkContract && (
+                            <Button variant="ghost" size="sm" onClick={onUnlinkContract}>
+                              Ta bort
+                            </Button>
+                          )}
+                        </div>
+                      ) : linkedContractApplicantId ? (
+                        <span className="text-sm text-muted-foreground">—</span>
+                      ) : (
+                        <Button
+                          variant={isRecommended ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => onLinkContract?.(applicant.id)}
+                        >
+                          Koppla kontrakt
+                        </Button>
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
