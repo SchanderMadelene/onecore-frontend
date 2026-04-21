@@ -21,8 +21,40 @@ interface HousingOffersContextType {
 
 const HousingOffersContext = createContext<HousingOffersContextType | undefined>(undefined);
 
+const MOCK_OFFERS: HousingOffer[] = [
+  {
+    listingId: "234-234-234-1011",
+    selectedApplicants: [4, 8, 11, 14, 1, 6, 10, 15, 5, 2],
+    sentAt: "2026-04-15T09:30:00.000Z",
+    status: "active",
+    responses: [
+      { applicantId: 4, response: "accepted", respondedAt: "2026-04-16T10:12:00.000Z" },
+      { applicantId: 8, response: "declined", respondedAt: "2026-04-16T14:05:00.000Z" },
+    ],
+  },
+  {
+    listingId: "234-234-234-1013",
+    selectedApplicants: [11, 4, 8, 14, 6, 1, 15, 10, 5, 12],
+    sentAt: "2026-04-12T08:00:00.000Z",
+    status: "active",
+    responses: [
+      { applicantId: 11, response: "accepted", respondedAt: "2026-04-13T09:00:00.000Z" },
+      { applicantId: 4, response: "accepted", respondedAt: "2026-04-13T11:20:00.000Z" },
+      { applicantId: 6, response: "declined", respondedAt: "2026-04-14T16:45:00.000Z" },
+    ],
+  },
+  {
+    listingId: "234-234-234-1015",
+    selectedApplicants: [8, 11, 4, 14, 1, 6, 15, 10, 12, 5],
+    sentAt: "2026-04-18T13:15:00.000Z",
+    status: "active",
+    responses: [],
+  },
+];
+
 export function HousingOffersProvider({ children }: { children: ReactNode }) {
-  const [offers, setOffers] = useState<HousingOffer[]>([]);
+  const [offers, setOffers] = useState<HousingOffer[]>(MOCK_OFFERS);
+
 
   const createOffer = (listingId: string, selectedApplicants: number[]) => {
     const newOffer: HousingOffer = {
