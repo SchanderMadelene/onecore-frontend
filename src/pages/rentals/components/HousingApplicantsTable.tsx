@@ -237,7 +237,7 @@ export function HousingApplicantsTable({
       <div className="border rounded-lg overflow-hidden bg-card">
         <Table className={contractMode ? "table-fixed" : undefined}>
         <TableHeader>
-          <TableRow>
+          <TableRow className={contractMode ? "bg-secondary/50" : undefined}>
             {!historyMode && !contractMode && <TableHead className="w-12">Val</TableHead>}
             <TableHead className="whitespace-nowrap">Namn</TableHead>
             <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
@@ -250,7 +250,7 @@ export function HousingApplicantsTable({
             {!showSelectionColumn && !contractMode && !historyMode && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
             {!showSelectionColumn && !historyMode && !contractMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
             {historyMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
-            {contractMode && <TableHead className="w-[180px] whitespace-nowrap text-right bg-secondary/50">Kontrakt</TableHead>}
+            {contractMode && <TableHead className="w-[180px] whitespace-nowrap text-right">Kontrakt</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
