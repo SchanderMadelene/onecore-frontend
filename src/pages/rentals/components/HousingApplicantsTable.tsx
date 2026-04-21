@@ -241,7 +241,13 @@ export function HousingApplicantsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {applicants.length > 0 ? applicants
+          {(() => {
+            const historyOfferedIds = new Set(
+              historyMode
+                ? applicants.slice().sort((a, b) => b.queuePoints - a.queuePoints).slice(0, 10).map(a => a.id)
+                : []
+            );
+            return applicants.length > 0 ? applicants
             .slice()
             .sort((a, b) => {
               if (historyMode && contractWinnerName) {
@@ -252,6 +258,7 @@ export function HousingApplicantsTable({
             })
             .map((applicant) => {
               const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
+              const wasOffered = historyOfferedIds.has(applicant.id);
               return (
               <>
                 <TableRow key={applicant.id} className={isWinner ? "bg-success/5" : undefined}>
@@ -357,13 +364,8 @@ export function HousingApplicantsTable({
                     <TableCell>
                       {isWinner ? (
                         <Badge variant="success">Tackat ja — tilldelad</Badge>
-                      ) : applicant.offerResponse?.status === "Nekat" ? (
-                        <div className="space-y-1">
-                          <Badge variant="destructive">Tackat nej</Badge>
-                          {applicant.offerResponse.date && (
-                            <div className="text-xs text-muted-foreground">{applicant.offerResponse.date}</div>
-                          )}
-                        </div>
+                      ) : wasOffered ? (
+                        <Badge variant="destructive">Tackat nej</Badge>
                       ) : (
                         <span className="text-sm text-muted-foreground">Inget erbjudande</span>
                       )}
@@ -387,7 +389,8 @@ export function HousingApplicantsTable({
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>
-            )}
+            );
+          })()}
         </TableBody>
       </Table>
     </div>
