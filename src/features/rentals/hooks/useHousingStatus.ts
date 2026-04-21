@@ -4,7 +4,7 @@ import { PublishedHousingSpace } from "../data/published-housing";
 export type HousingStatus = 'published' | 'ready_for_offer' | 'offered' | 'history';
 
 export function useHousingStatus() {
-  const { isListingOffered } = useHousingOffers();
+  const { isListingOffered, isEarlyUnpublished } = useHousingOffers();
 
   const getHousingStatus = (housing: PublishedHousingSpace): HousingStatus => {
     const currentDate = new Date();
@@ -13,6 +13,11 @@ export function useHousingStatus() {
     // Check if offer has been sent
     if (isListingOffered(housing.id)) {
       return 'offered';
+    }
+    
+    // Manually moved to "ready for offer" before publication ended
+    if (isEarlyUnpublished(housing.id)) {
+      return 'ready_for_offer';
     }
     
     // Check if publication period has expired
