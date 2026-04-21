@@ -1,40 +1,51 @@
 
 
-## Audit av hover-states i hela systemet
+## Förenklad förhandsgranskning – inline-modal istället för ny tab
 
 ### Mål
-Hitta och åtgärda alla ställen där `variant="ghost"` används på ikon-knappar som ligger på tonade ytor (kort, dialoger, paneler, badges-rader), och ersätta dem med den nya `variant="subtle"`. Säkerställer konsekvens enligt den nya Core-regeln.
+Ersätt den nuvarande "öppna ny tab"-lösningen med en modal som öppnas direkt i applikationen och visar förhandsgranskningen som en inramad "Mimer.nu"-vy.
 
-### Process
+### Förändringar
 
-**1. Inventering (read-only sökning)**
-- Sök igenom hela `src/` efter `variant="ghost"` i kombination med `size="icon"`.
-- Sök även efter ghost-knappar utan explicit `size="icon"` men med ikoner som barn (X, Trash, Pencil, MoreHorizontal, ChevronDown, etc.).
-- Kategorisera träffar i tre grupper:
-  - **A. På tonad yta** (inuti `Card`, `Dialog`, `Popover`, `bg-muted`, `bg-secondary`, badge-rader) → ska bli `subtle`.
-  - **B. På ren `bg-background`** (t.ex. tabellrader, navbar, toolbars) → behåller `ghost` (rätt kontrast).
-  - **C. Tveksamma fall** → listas separat för avstämning.
+**1. Ny komponent: `PreviewHousingAdDialog.tsx`**
+Plats: `src/features/rentals/components/PreviewHousingAdDialog.tsx`
+- Stor `Dialog` (max-w-5xl, max-h-[90vh], scrollbar i body, sticky footer enligt vår dialog-standard).
+- Header: "Förhandsgranskning – så här visas annonsen på Mimer.nu" + liten beskrivning.
+- Body: en inramad "browser-chrome"-container (ljusgrå topplist med tre prickar + adressfält som visar `mimer.nu/lediga-objekt/...`) som ramar in själva annonsvyn — gör det visuellt tydligt att det är en extern webbplats-preview.
+- Annonsvyn: återanvänder exakt samma JSX/markup som dagens `HousingAdPreviewPage`, men extraherad till en ren presentationskomponent `MimerAdPreview` (props: `housing`, `form`) så vi kan använda den både i modalen och (om vi vill) på den fristående sidan.
+- Footer: en "Stäng"-knapp.
 
-**2. Refaktorering**
-- Byt grupp A till `variant="subtle"`.
-- Lämna grupp B orört.
-- Återkom med grupp C som en kort fråga innan ändring.
+**2. Refaktorering: extrahera `MimerAdPreview`**
+Plats: `src/features/rentals/components/preview/MimerAdPreview.tsx`
+- Flytta all rendering (header, hero, fakta-dl, beskrivning, dokument, CTA, footer) från `HousingAdPreviewPage` hit.
+- Tar emot `housing` och `form` som props istället för att läsa från `sessionStorage`.
 
-**3. Övriga hover-inkonsekvenser**
-Under inventeringen noterar jag även:
-- Råa `<button>`-element med egen hover-styling som borde använda `Button`-komponenten.
-- `hover:bg-accent` / `hover:bg-gray-*` hårdkodade klasser som avviker från systemet.
-Dessa rapporteras som en separat lista — inte automatiska ändringar.
+**3. Uppdatera `EditHousingDialog.tsx`**
+- Ta bort `handlePreview` med `window.open` och `sessionStorage`.
+- Lägg till lokalt state `previewOpen`.
+- "Förhandsgranska"-knappen sätter `previewOpen=true`.
+- Rendera `<PreviewHousingAdDialog open={previewOpen} onOpenChange={setPreviewOpen} housingSpace={housingSpace} formValues={form.getValues()} />` (form-värden läses live när modalen öppnas).
 
-### Långsiktigt (förebyggande)
-- **Memory-regeln** (redan sparad): `Icon buttons on tinted surfaces use variant="subtle", never ghost`. Den ligger i Core och appliceras automatiskt på alla framtida ändringar.
-- **Förslag på lint-regel** (separat task om du vill): ESLint-regel som varnar vid `variant="ghost"` + `size="icon"` inuti `Dialog`/`Card`-kontext. Kräver custom rule, så jag tar det bara om du vill.
+**4. Städning**
+- Ta bort routen `/rentals/housing/:housingId/preview` från `src/App.tsx`.
+- Ta bort filen `src/pages/rentals/HousingAdPreviewPage.tsx` (innehållet lever vidare i `MimerAdPreview`).
+- Behåll `src/assets/preview-housing-placeholder.jpg` — används i `MimerAdPreview`.
 
-### Leverans
-1. Lista med alla filer som ändras (grupp A) innan jag rör dem — du godkänner omfattningen.
-2. Refaktorering i en sammanhängande commit-batch.
-3. Separat rapport om grupp C + eventuella råa `<button>`-fynd.
+### Visuell detalj – "browser frame"
+För att signalera att det är en extern sajt:
+```text
+┌─────────────────────────────────────────┐
+│ ● ● ●   🔒 mimer.nu/lediga-objekt/...   │  ← ljusgrå topplist
+├─────────────────────────────────────────┤
+│                                         │
+│         [ MimerAdPreview ]              │
+│                                         │
+└─────────────────────────────────────────┘
+```
+Topplisten: `bg-muted` med tre färgade prickar (röd/gul/grön) och ett pill-formad adressfält i `bg-background`.
 
 ### Påverkan
-Endast visuella hover-ändringar på ikon-knappar. Ingen funktionell logik ändras. Inga nya beroenden.
+- Ingen routing eller ny tab — allt sker inline.
+- Snabbare flöde för användaren, ingen popup-blockering, ingen sessionStorage-koppling.
+- `MimerAdPreview` blir återanvändbar om vi senare vill visa förhandsgranskning från andra ställen (t.ex. publiceringsflödet).
 
