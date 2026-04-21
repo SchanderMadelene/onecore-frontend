@@ -210,11 +210,13 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
               const prevDestructive =
                 idx > 0 && menu[idx - 1].kind === "confirm" && (menu[idx - 1] as any).destructive;
               const showSeparator = isDestructive && !prevDestructive && idx > 0;
+              const isDisabled = item.kind === "early-unpublish" && item.disabled;
               return (
                 <div key={item.key}>
                   {showSeparator && <DropdownMenuSeparator />}
                   <DropdownMenuItem
                     className={isDestructive ? "text-destructive focus:text-destructive" : ""}
+                    disabled={isDisabled}
                     onSelect={(e) => {
                       e.preventDefault();
                       handleMenu(item);
@@ -259,6 +261,20 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
       <CancelRentalDialog
         subject={{ id: housing.id, address: housing.address, seekers }}
         kind="housing"
+        open={cancelRentalOpen}
+        onOpenChange={setCancelRentalOpen}
+      />
+
+      <ConfirmDialog
+        open={earlyUnpublishOpen}
+        onOpenChange={(v) => !v && setEarlyUnpublishOpen(false)}
+        title="Tidigarelägg avpublicering"
+        description={`Vill du avsluta publiceringen av ${housing.address} i förtid? Annonsen flyttas till "Klara för erbjudande" och nya intresseanmälningar kan inte längre lämnas.`}
+        confirmLabel="Tidigarelägg avpublicering"
+        pendingLabel="Avpublicerar..."
+        isPending={earlyUnpublishPending}
+        onConfirm={runEarlyUnpublish}
+      />
         open={cancelRentalOpen}
         onOpenChange={setCancelRentalOpen}
       />
