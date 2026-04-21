@@ -55,10 +55,33 @@ export const useHousingListing = (id: string) => {
   return useQuery({
     queryKey: ['housingListing', id],
     queryFn: () => {
-      const housing = publishedHousingSpaces.find(h => h.id === id);
-      if (!housing) {
+      const published = publishedHousingSpaces.find(h => h.id === id);
+      const unpublished = !published ? unpublishedHousingSpaces.find(h => h.id === id) : undefined;
+      const history = !published && !unpublished ? historyHousingSpaces.find(h => h.id === id) : undefined;
+
+      const source = published ?? unpublished ?? history;
+      if (!source) {
         throw new Error('Bostadsannons hittades inte');
       }
+
+      // Normalisera till PublishedHousingSpace-form så detaljsidan kan rendera
+      // annonser från alla flikar (publicerade, behov av publicering, historik).
+      const housing: PublishedHousingSpace = {
+        id: source.id,
+        address: source.address,
+        area: source.area,
+        type: (source as any).type ?? "Lägenhet",
+        size: (source as any).size ?? "",
+        rent: (source as any).rent ?? "",
+        rooms: (source as any).rooms ?? 0,
+        floor: (source as any).floor ?? "",
+        seekers: (source as any).seekers ?? (history?.applicants ?? 0),
+        publishedFrom: (source as any).publishedFrom ?? "",
+        publishedTo: (source as any).publishedTo ?? "",
+        availableFrom: (source as any).availableFrom ?? "",
+        preferredMoveOutDate: (source as any).preferredMoveOutDate ?? "",
+        description: (source as any).description ?? "",
+      };
 
       // Mock implementation med mockdata för sökande
       return Promise.resolve({
