@@ -96,7 +96,10 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className={`${isMobile ? 'max-w-[95vw] max-h-[95vh] m-2' : 'max-w-4xl max-h-[90vh]'} overflow-y-auto`}>
+      <DialogContent
+        onClick={(e) => e.stopPropagation()}
+        className={`${isMobile ? 'max-w-[95vw] max-h-[95vh] m-2' : 'max-w-4xl max-h-[90vh]'} overflow-y-auto`}
+      >
         <DialogHeader className={isMobile ? "pb-4" : ""}>
           <DialogTitle className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold`}>
             Redigera Annons
