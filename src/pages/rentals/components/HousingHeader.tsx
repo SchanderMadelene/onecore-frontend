@@ -13,6 +13,8 @@ interface HousingHeaderProps {
   onBack: () => void;
   onCreateOffer: () => void;
   isCreatingOffer: boolean;
+  /** Read-only läge för historik-annonser: dölj alla actions */
+  readOnly?: boolean;
 }
 
 const STATUS_TO_TAB: Record<string, HousingActionTab> = {
@@ -30,9 +32,10 @@ export function HousingHeader({
   onBack,
   onCreateOffer,
   isCreatingOffer,
+  readOnly = false,
 }: HousingHeaderProps) {
   const tab = STATUS_TO_TAB[offerStatus] ?? "publicerade";
-  const showSendOffer = tab === "klaraForErbjudande" && !hasOffers;
+  const showSendOffer = !readOnly && tab === "klaraForErbjudande" && !hasOffers;
 
   return (
     <>
@@ -51,26 +54,28 @@ export function HousingHeader({
               {offerStatus}
             </Badge>
           </div>
-          <div className="flex items-center gap-2">
-            {showSendOffer && (
-              <Button
-                onClick={onCreateOffer}
-                disabled={isCreatingOffer || !hasSelectedApplicants}
-                className="flex items-center gap-1"
-              >
-                <PlusCircle className="h-4 w-4" />
-                <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
-              </Button>
-            )}
-            {housing && (
-              <HousingRowActions
-                housing={housing}
-                tab={tab}
-                variant="detail"
-                hidePrimary={tab === "klaraForErbjudande"}
-              />
-            )}
-          </div>
+          {!readOnly && (
+            <div className="flex items-center gap-2">
+              {showSendOffer && (
+                <Button
+                  onClick={onCreateOffer}
+                  disabled={isCreatingOffer || !hasSelectedApplicants}
+                  className="flex items-center gap-1"
+                >
+                  <PlusCircle className="h-4 w-4" />
+                  <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
+                </Button>
+              )}
+              {housing && (
+                <HousingRowActions
+                  housing={housing}
+                  tab={tab}
+                  variant="detail"
+                  hidePrimary={tab === "klaraForErbjudande"}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>
