@@ -372,10 +372,20 @@ export function HousingApplicantsTable({
                   )}
                   {!showSelectionColumn && !contractMode && !historyMode && applicant.viewingBooked && (
                     <TableCell>
-                      {getViewingBookedBadge(applicant.viewingBooked.status)}
+                      {offeredApplicantIds.includes(applicant.id)
+                        ? getViewingBookedBadge(applicant.viewingBooked.status)
+                        : <span className="text-sm text-muted-foreground">—</span>}
                     </TableCell>
                   )}
                   {!showSelectionColumn && !historyMode && !contractMode && applicant.offerResponse && (() => {
+                    const hasOffer = offeredApplicantIds.includes(applicant.id);
+                    if (!hasOffer) {
+                      return (
+                        <TableCell>
+                          <span className="text-sm text-muted-foreground">—</span>
+                        </TableCell>
+                      );
+                    }
                     const currentStatus = responseOverrides[applicant.id] ?? applicant.offerResponse.status;
                     const isOverridden = responseOverrides[applicant.id] !== undefined;
                     const dateLabel = isOverridden
