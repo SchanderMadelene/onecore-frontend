@@ -9,7 +9,12 @@ interface NotesSectionProps {
 export const NotesSection = ({ notes, onNotesChange }: NotesSectionProps) => {
   return (
     <div className="space-y-2">
-      <Label htmlFor="notes">Anteckningar (valfritt)</Label>
+      <div className="space-y-1">
+        <Label htmlFor="notes">Interna anteckningar (valfritt)</Label>
+        <p className="text-xs text-muted-foreground">
+          Syns endast internt för uthyrningspersonal, inte för den sökande.
+        </p>
+      </div>
       <textarea
         id="notes"
         placeholder="Lägg till eventuella anteckningar..."
