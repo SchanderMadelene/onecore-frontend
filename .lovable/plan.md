@@ -1,64 +1,30 @@
 
-## Mål
-Byt menyetiketten "Avpublicera" → "Avbryt uthyrning" på bilplatsannonser. Om annonsen har ≥1 intresseanmälan ska användaren först få en dialog som föreslår att kontakta de sökande, med val för kanal (SMS/e-post) och fritextmeddelande.
 
-## Flöde
+## Fixa disabled-knapp + förtydliga Anteckningar
 
-```text
-[⋯ → Avbryt uthyrning]
-        │
-        ▼
- Har annonsen sökande?
-   ├─ Nej → ConfirmDialog "Avbryt uthyrning" → bekräfta → klar
-   └─ Ja  → CancelRentalDialog
-                 │
-                 ├─ [Avbryt uthyrning och skicka]  (primär, destruktiv)
-                 ├─ [Avbryt utan att meddela]      (ghost-länk)
-                 └─ [Stäng]
+### Problem
+1. **"Lägg till"-knappen är disabled** för giltiga sökande i `CreateHousingApplicationDialog` eftersom valideringen kräver att kunden har ett kontrakt i distriktet — vilket strider mot vår regel att bostadsanmälningar inte ska ha det kravet.
+2. **"Anteckningar (valfritt)"** är otydligt — användaren vet inte om det syns för sökanden eller är internt.
+
+### Ändringar
+
+**1. `src/features/rentals/components/CreateHousingApplicationDialog.tsx`**
+Förenkla `canSubmit` så att enbart vald kund + ingen pågående mutation krävs:
+```ts
+const canSubmit = selectedCustomer && !createApplication.isPending;
 ```
+Ta bort `tenantHasValidContractForTheDistrict()`-helpern (oanvänd efter ändringen).
 
-## Ny dialog: `CancelRentalDialog`
-Plats: `src/features/rentals/components/CancelRentalDialog.tsx`
+**2. `src/features/rentals/components/housing-application/ValidationAlerts.tsx`**
+Granska och säkerställ att eventuella varningar visas som informativa (inte blockerande) — om de redan är det, ingen ändring.
 
-Innehåll uppifrån och ned:
-1. **Rubrik:** "Avbryt uthyrning"
-2. **Beskrivning:** "Annonsen för {adress} har {N} intresseanmälningar. Vi rekommenderar att du meddelar de sökande att uthyrningen avbryts."
-3. **Mottagarsammanfattning** (read-only kort):
-   - "{N} sökande" + liten lista (max 5 namn + "…och X till")
-   - Två badges: antal med telefon resp. e-post
-4. **Kanal** (`RadioGroup`, default = SMS):
-   - SMS ({n med telefon})
-   - E-post ({n med e-post})
-   - Båda
-5. **Meddelande** (`Textarea`, fritext, förifyllt med en kort default-text):
-   - SMS-fält när SMS/Båda valt
-   - Ämne + brödtext när E-post/Båda valt
-   - Variabler `{namn}`, `{adress}`, `{annonsid}` ersätts live i förhandsgranskning
-6. **Footer:**
-   - Ghost-länk: "Avbryt utan att meddela sökande"
-   - Primär destruktiv: "Avbryt uthyrning och skicka" (pending: "Skickar till N sökande…")
-   - Cancel: "Stäng"
+**3. `src/features/rentals/components/interest-application/NotesSection.tsx`**
+Förtydliga fältet:
+- Label: `"Interna anteckningar (valfritt)"`
+- Hjälptext under label (eller som `text-xs text-muted-foreground`): `"Syns endast internt för uthyrningspersonal, inte för den sökande."`
+- Behåll placeholder.
 
-Vid bekräftelse: stänger annonsen + två toasts (uthyrning avbruten / meddelanden köade till N sökande). Vid "utan att meddela": endast stänger annonsen.
+### Påverkan
+- Endast bostadsflödet ändras. Bilplats-dialogen (`CreateInterestApplicationDialog`) behåller sin striktare validering eftersom distriktskravet gäller där.
+- `NotesSection` används i båda flödena, så förtydligandet kommer båda till del — vilket är korrekt eftersom semantiken är densamma.
 
-> Inga nya mallar skapas i `messageTemplates.ts`. Default-texten ligger som konstant i `CancelRentalDialog.tsx`.
-
-## Ändringar i `ParkingRowActions.tsx`
-- Menyetikett `"Avpublicera"` → `"Avbryt uthyrning"`
-- `parkingSpace.seekers > 0` → öppna `CancelRentalDialog`
-- `seekers === 0` → behåll `ConfirmDialog` med texterna "Avbryt uthyrning" / "Avbryter…" / toast "Uthyrning avbruten"
-- `confirmClose` (för `behovAvPublicering`) får samma etikettbyte för konsekvens
-
-## Mock-data
-Ny helper `src/features/rentals/data/mockParkingApplicants.ts` som returnerar anonymiserade svenska namn + telefon/e-post baserat på `parkingSpace.id` och `seekers`.
-
-## Designregler som följs
-- Standard `Dialog`-layout (flex-col, sticky footer)
-- Inga ikoner i text-CTA
-- Destruktiv primär: `variant="destructive"`
-- All mockdata anonymiserad
-
-## Filer
-- Ny: `src/features/rentals/components/CancelRentalDialog.tsx`
-- Ny: `src/features/rentals/data/mockParkingApplicants.ts`
-- Ändrad: `src/features/rentals/components/ParkingRowActions.tsx`
