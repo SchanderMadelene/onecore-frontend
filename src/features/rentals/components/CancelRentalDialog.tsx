@@ -130,7 +130,7 @@ export function CancelRentalDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col gap-0 p-0">
+      <DialogContent onClick={(e) => e.stopPropagation()} className="max-w-2xl max-h-[90vh] flex flex-col gap-0 p-0">
         <DialogHeader className="p-6 pb-4">
           <DialogTitle>Avbryt uthyrning</DialogTitle>
           <DialogDescription>
