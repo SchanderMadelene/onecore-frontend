@@ -127,7 +127,7 @@ function getActions(
     case "klaraForErbjudande":
       return { primary: [createOffer], menu: [newApp, unpublish] };
     case "erbjudna":
-      return { primary: [viewOffer], menu: [viewOffer, withdraw] };
+      return { primary: [viewOffer], menu: [viewOffer, withdraw, unpublish] };
     case "historik":
       return { primary: [], menu: [viewAd] };
   }
