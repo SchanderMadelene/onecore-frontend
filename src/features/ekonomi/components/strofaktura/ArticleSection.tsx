@@ -158,7 +158,7 @@ export function ArticleSection({
               {invoiceRows.length > 1 && (
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="subtle"
                   size="icon"
                   onClick={() => handleRemoveRow(index)}
                   className="shrink-0 h-9 w-9"

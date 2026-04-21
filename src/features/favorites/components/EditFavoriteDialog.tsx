@@ -172,7 +172,7 @@ export function EditFavoriteDialog({
                       />
                     </div>
                     <Button
-                      variant="ghost"
+                      variant="subtle"
                       size="sm"
                       onClick={() => handleRemoveParameter(key)}
                       className="mt-1"

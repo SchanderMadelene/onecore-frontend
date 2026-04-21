@@ -45,7 +45,7 @@ export function StewardColumn({
             <div className="font-bold text-lg">{kvvArea.kvvArea}</div>
             {onReassignArea && (
               <Button 
-                variant="ghost" 
+                variant="subtle" 
                 size="icon" 
                 className="h-7 w-7 -mt-1 -mr-2"
                 onClick={() => setShowAssignDialog(true)}

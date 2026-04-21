@@ -71,7 +71,7 @@ export const ComponentCard = ({ component }: ComponentCardProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant="ghost" 
+          variant="subtle" 
           size="icon" 
           className="h-8 w-8"
           onClick={(e) => e.stopPropagation()}

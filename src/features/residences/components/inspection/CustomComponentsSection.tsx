@@ -86,10 +86,10 @@ export function CustomComponentsSection({
                 <span className="text-sm font-medium">{comp.label}</span>
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="subtle"
                   size="sm"
                   onClick={() => onRemove(comp.id)}
-                  className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                  className="h-8 w-8 p-0 hover:text-destructive"
                 >
                   <X className="h-3.5 w-3.5" />
                 </Button>

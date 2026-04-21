@@ -76,7 +76,7 @@ export function AdditionalInfoSection({
                   </div>
                   <Button
                     type="button"
-                    variant="ghost"
+                    variant="subtle"
                     size="icon"
                     className="h-6 w-6 shrink-0"
                     onClick={() => removeFile(index)}
