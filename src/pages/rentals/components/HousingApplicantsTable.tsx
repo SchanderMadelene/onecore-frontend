@@ -24,6 +24,14 @@ interface HousingApplicantsTableProps {
   historyMode?: boolean;
   /** Namnet på den sökande som tilldelades kontraktet (historik) */
   contractWinnerName?: string;
+  /** Kontrakt-läge: id på sökande där kontrakt redan kopplats */
+  linkedContractApplicantId?: number;
+  /** Kontrakt-läge: id på rekommenderad sökande (högst köpoäng + godkänd) */
+  recommendedApplicantId?: number;
+  /** Kontrakt-läge: callback för att koppla kontrakt till sökande */
+  onLinkContract?: (applicantId: number) => void;
+  /** Kontrakt-läge: callback för att ta bort kopplat kontrakt */
+  onUnlinkContract?: () => void;
 }
 
 export function HousingApplicantsTable({ 
@@ -38,6 +46,10 @@ export function HousingApplicantsTable({
   autoSelectTopApplicants = false,
   historyMode = false,
   contractWinnerName,
+  linkedContractApplicantId,
+  recommendedApplicantId,
+  onLinkContract,
+  onUnlinkContract,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
