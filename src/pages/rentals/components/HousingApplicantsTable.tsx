@@ -241,7 +241,13 @@ export function HousingApplicantsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {applicants.length > 0 ? applicants
+          {(() => {
+            const historyOfferedIds = new Set(
+              historyMode
+                ? applicants.slice().sort((a, b) => b.queuePoints - a.queuePoints).slice(0, 10).map(a => a.id)
+                : []
+            );
+            return applicants.length > 0 ? applicants
             .slice()
             .sort((a, b) => {
               if (historyMode && contractWinnerName) {
@@ -252,6 +258,7 @@ export function HousingApplicantsTable({
             })
             .map((applicant) => {
               const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
+              const wasOffered = historyOfferedIds.has(applicant.id);
               return (
               <>
                 <TableRow key={applicant.id} className={isWinner ? "bg-success/5" : undefined}>
