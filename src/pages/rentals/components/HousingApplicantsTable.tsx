@@ -272,8 +272,6 @@ export function HousingApplicantsTable({
             .map((applicant) => {
               const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
               const wasOffered = historyOfferedIds.has(applicant.id);
-              return (
-              <>
               const isLinked = contractMode && linkedContractApplicantId === applicant.id;
               const isRecommended = contractMode && !linkedContractApplicantId && recommendedApplicantId === applicant.id;
               return (
