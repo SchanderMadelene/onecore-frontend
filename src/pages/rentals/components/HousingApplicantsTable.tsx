@@ -220,11 +220,10 @@ export function HousingApplicantsTable({
   const getViewingBookedBadge = (status: "Ja" | "Nej" | "Väntar på svar") => {
     switch (status) {
       case "Ja":
-        return <Badge variant="success">Ja</Badge>;
+        return <Badge variant="success">Bokad</Badge>;
       case "Nej":
-        return <Badge variant="destructive">Nej</Badge>;
       case "Väntar på svar":
-        return <Badge variant="warning">Väntar</Badge>;
+        return <Badge variant="muted">Inget svar</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
