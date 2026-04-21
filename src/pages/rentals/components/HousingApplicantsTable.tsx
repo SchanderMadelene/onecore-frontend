@@ -105,13 +105,13 @@ export function HousingApplicantsTable({
     switch (status) {
       case "Current":
       case "Gällande":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Gällande</Badge>;
+        return <Badge variant="success">Gällande</Badge>;
       case "Upcoming":
       case "Kommande":
-        return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Kommande</Badge>;
+        return <Badge variant="info">Kommande</Badge>;
       case "AboutToEnd":
       case "Uppsagt":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Uppsagt</Badge>;
+        return <Badge variant="destructive">Uppsagt</Badge>;
       default:
         return <Badge variant="outline">{formatLeaseStatus(status)}</Badge>;
     }
@@ -120,11 +120,11 @@ export function HousingApplicantsTable({
   const getProfileStatusBadge = (status: "Approved" | "PartiallyApproved" | "NotApproved") => {
     switch (status) {
       case "Approved":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd</Badge>;
+        return <Badge variant="success">Godkänd</Badge>;
       case "PartiallyApproved":
-        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Delvis godkänd</Badge>;
+        return <Badge variant="warning">Delvis godkänd</Badge>;
       case "NotApproved":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Ej godkänd</Badge>;
+        return <Badge variant="destructive">Ej godkänd</Badge>;
       default:
         return <Badge variant="outline">Okänd</Badge>;
     }
@@ -133,19 +133,20 @@ export function HousingApplicantsTable({
   const getHousingReferenceBadge = (status: "Godkänd" | "Ej godkänd" | "Kontaktad - ej svar" | "Referens krävs ej" | "Ej behandlad") => {
     switch (status) {
       case "Godkänd":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd</Badge>;
+        return <Badge variant="success">Godkänd</Badge>;
       case "Ej godkänd":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Ej godkänd</Badge>;
+        return <Badge variant="destructive">Ej godkänd</Badge>;
       case "Kontaktad - ej svar":
-        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Kontaktad - ej svar</Badge>;
+        return <Badge variant="warning">Kontaktad - ej svar</Badge>;
       case "Referens krävs ej":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Referens krävs ej</Badge>;
+        return <Badge variant="success">Referens krävs ej</Badge>;
       case "Ej behandlad":
-        return <Badge variant="outline" className="bg-gray-50 text-gray-700 hover:bg-gray-50 border-gray-200">Ej behandlad</Badge>;
+        return <Badge variant="muted">Ej behandlad</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
   };
+
 
   const getCreditReportBadge = (status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig" | "-") => {
     switch (status) {
@@ -181,11 +182,11 @@ export function HousingApplicantsTable({
   const getViewingBookedBadge = (status: "Ja" | "Nej" | "Väntar på svar") => {
     switch (status) {
       case "Ja":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Ja</Badge>;
+        return <Badge variant="success">Ja</Badge>;
       case "Nej":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Nej</Badge>;
+        return <Badge variant="destructive">Nej</Badge>;
       case "Väntar på svar":
-        return <Badge variant="outline" className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200">Väntar på svar</Badge>;
+        return <Badge variant="warning">Väntar på svar</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -193,23 +194,24 @@ export function HousingApplicantsTable({
 
   const getOfferStatusBadge = (applicantId: number) => {
     if (offeredApplicantIds.includes(applicantId)) {
-      return <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">Erbjudande skickat</Badge>;
+      return <Badge variant="info">Erbjudande skickat</Badge>;
     }
-    return <Badge variant="outline" className="bg-gray-50 text-gray-700 hover:bg-gray-50 border-gray-200">Inget erbjudande</Badge>;
+    return <Badge variant="muted">Inget erbjudande</Badge>;
   };
 
   const getOfferResponseBadge = (status: "Accepterat" | "Nekat" | "Väntar på svar") => {
     switch (status) {
       case "Accepterat":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Ja</Badge>;
+        return <Badge variant="success">Ja</Badge>;
       case "Nekat":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Nej</Badge>;
+        return <Badge variant="destructive">Nej</Badge>;
       case "Väntar på svar":
-        return <Badge variant="outline" className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200">Väntar på svar</Badge>;
+        return <Badge variant="warning">Väntar på svar</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
   };
+
 
   return (
     <>
@@ -281,9 +283,9 @@ export function HousingApplicantsTable({
                   </TableCell>
                   <TableCell>
                     {applicant.creditReport.date && (
-                      <div className="text-sm">
+                      <Badge variant={applicant.creditReport.status === "Godkänd/låg risk" ? "success" : "warning"}>
                         {applicant.creditReport.date}
-                      </div>
+                      </Badge>
                     )}
                   </TableCell>
                   <TableCell>
