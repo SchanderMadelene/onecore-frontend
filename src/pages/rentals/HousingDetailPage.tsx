@@ -141,12 +141,22 @@ const HousingDetailPage = () => {
   // Get active offer for this listing
   const activeOffer = getOfferForListing(housingId);
 
-  // Kontrakt-läge: visa endast sökande som tackat ja
+  // Kontrakt-läge: visa endast sökande som tackat ja på erbjudandet.
+  // Spegla logiken från historik-/erbjudande-vyn: topp 10 efter köpoäng fick
+  // erbjudandet, och deterministiska "buckets" avgör svaret (samma id % 5-regel
+  // som i HousingApplicantsTable). Bucket 0 och 1 = "Tackat ja".
   const isContractMode = location.state?.activeHousingTab === 'kontrakt';
 
-  // Show all applicants with offer information
+  const top10Ids = new Set(
+    listing.applicants
+      .slice()
+      .sort((a, b) => b.queuePoints - a.queuePoints)
+      .slice(0, 10)
+      .map(a => a.id)
+  );
+
   const displayedApplicants = isContractMode
-    ? listing.applicants.filter(a => a.offerResponse?.status === 'Accepterat')
+    ? listing.applicants.filter(a => top10Ids.has(a.id) && (a.id % 5 === 0 || a.id % 5 === 1))
     : listing.applicants;
 
   return (
