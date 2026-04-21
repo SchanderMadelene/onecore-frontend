@@ -394,30 +394,44 @@ export function HousingApplicantsTable({
                       )}
                     </TableCell>
                   )}
-                  {contractMode && (
-                    <TableCell className="text-right">
-                      {isLinked ? (
-                        <div className="flex items-center justify-end gap-2">
-                          <Badge variant="success">Kontrakt kopplat</Badge>
-                          {onUnlinkContract && (
-                            <Button variant="ghost" size="sm" onClick={onUnlinkContract}>
-                              Ta bort
+                  {contractMode && (() => {
+                    const bucket = applicant.id % 5;
+                    const hasAccepted = bucket === 0 || bucket === 1;
+                    const responseBadge = hasAccepted
+                      ? <Badge variant="success">Tackat ja</Badge>
+                      : (bucket === 2 || bucket === 3)
+                        ? <Badge variant="destructive">Tackat nej</Badge>
+                        : <Badge variant="muted">Inget svar</Badge>;
+                    return (
+                      <>
+                        <TableCell>{responseBadge}</TableCell>
+                        <TableCell className="text-right">
+                          {isLinked ? (
+                            <div className="flex items-center justify-end gap-2">
+                              <Badge variant="success">Kontrakt kopplat</Badge>
+                              {onUnlinkContract && (
+                                <Button variant="ghost" size="sm" onClick={onUnlinkContract}>
+                                  Ta bort
+                                </Button>
+                              )}
+                            </div>
+                          ) : linkedContractApplicantId ? (
+                            <span className="text-sm text-muted-foreground">—</span>
+                          ) : hasAccepted ? (
+                            <Button
+                              variant={isRecommended ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => onLinkContract?.(applicant.id)}
+                            >
+                              Koppla kontrakt
                             </Button>
+                          ) : (
+                            <span className="text-sm text-muted-foreground">—</span>
                           )}
-                        </div>
-                      ) : linkedContractApplicantId ? (
-                        <span className="text-sm text-muted-foreground">—</span>
-                      ) : (
-                        <Button
-                          variant={isRecommended ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => onLinkContract?.(applicant.id)}
-                        >
-                          Koppla kontrakt
-                        </Button>
-                      )}
-                    </TableCell>
-                  )}
+                        </TableCell>
+                      </>
+                    );
+                  })()}
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
