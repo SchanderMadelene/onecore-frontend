@@ -1,16 +1,18 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { User, X } from "lucide-react";
 import type { Customer } from "../types/parking";
 import type { TenantValidation } from "@/features/tenants/hooks/useTenantValidation";
 
 interface CustomerInformationProps {
   customer: Customer;
   tenantValidation: TenantValidation;
+  onClear?: () => void;
 }
 
-export const CustomerInformation = ({ customer, tenantValidation }: CustomerInformationProps) => {
+export const CustomerInformation = ({ customer, tenantValidation, onClear }: CustomerInformationProps) => {
   // TODO: Stäm av med användaren – ersätt binär badge (Hyresgäst/Sökande) med
   // fulla customerRoles renderade som Tag-komponenter. Möjliga roller:
   // Hyresgäst, Sökande, Andrahandshyresgäst, Kontaktperson, Tidigare hyresgäst,
@@ -34,9 +36,23 @@ export const CustomerInformation = ({ customer, tenantValidation }: CustomerInfo
               <h3 className="font-semibold text-foreground text-lg">
                 {fullName}
               </h3>
-              <Badge variant={badge.variant}>
-                {badge.label}
-              </Badge>
+              <div className="flex items-center gap-2">
+                <Badge variant={badge.variant}>
+                  {badge.label}
+                </Badge>
+                {onClear && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                    onClick={onClear}
+                    aria-label="Ta bort vald kund"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
             
             <div className="space-y-1 text-sm">

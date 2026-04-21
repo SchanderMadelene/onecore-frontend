@@ -111,7 +111,7 @@ export const CreateHousingApplicationDialog = ({
               {tenantValidation.isLoading && <CustomerInfoLoading />}
               
               {tenantValidation.data && <>
-                  <CustomerInformation customer={selectedCustomer} tenantValidation={tenantValidation.data} />
+                  <CustomerInformation customer={selectedCustomer} tenantValidation={tenantValidation.data} onClear={resetForm} />
                   
                   <ValidationAlerts tenantValidation={tenantValidation.data} />
 
