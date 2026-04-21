@@ -238,7 +238,7 @@ export function HousingApplicantsTable({
         <Table>
         <TableHeader>
           <TableRow>
-            {!historyMode && <TableHead className="w-12">Val</TableHead>}
+            {!historyMode && !contractMode && <TableHead className="w-12">Val</TableHead>}
             <TableHead className="whitespace-nowrap">Namn</TableHead>
             <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
             <TableHead className="whitespace-nowrap">Köpoäng</TableHead>
@@ -277,7 +277,7 @@ export function HousingApplicantsTable({
               return (
               <>
                 <TableRow key={applicant.id} className={isWinner || isLinked ? "bg-success/5" : undefined}>
-                  {!historyMode && (
+                  {!historyMode && !contractMode && (
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
                         <Checkbox
