@@ -450,9 +450,9 @@ export function HousingApplicantsTable({
                     const bucket = applicant.id % 5;
                     const hasAccepted = bucket === 0 || bucket === 1;
                     const responseBadge = hasAccepted
-                      ? <Badge variant="success">Tackat ja</Badge>
+                      ? <Badge variant="success">Ja</Badge>
                       : (bucket === 2 || bucket === 3)
-                        ? <Badge variant="destructive">Tackat nej</Badge>
+                        ? <Badge variant="destructive">Nej</Badge>
                         : <Badge variant="muted">Inget svar</Badge>;
                     return (
                       <>
