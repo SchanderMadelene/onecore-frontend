@@ -24,6 +24,14 @@ interface HousingApplicantsTableProps {
   historyMode?: boolean;
   /** Namnet på den sökande som tilldelades kontraktet (historik) */
   contractWinnerName?: string;
+  /** Kontrakt-läge: id på sökande där kontrakt redan kopplats */
+  linkedContractApplicantId?: number;
+  /** Kontrakt-läge: id på rekommenderad sökande (högst köpoäng + godkänd) */
+  recommendedApplicantId?: number;
+  /** Kontrakt-läge: callback för att koppla kontrakt till sökande */
+  onLinkContract?: (applicantId: number) => void;
+  /** Kontrakt-läge: callback för att ta bort kopplat kontrakt */
+  onUnlinkContract?: () => void;
 }
 
 export function HousingApplicantsTable({ 
@@ -38,6 +46,10 @@ export function HousingApplicantsTable({
   autoSelectTopApplicants = false,
   historyMode = false,
   contractWinnerName,
+  linkedContractApplicantId,
+  recommendedApplicantId,
+  onLinkContract,
+  onUnlinkContract,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
@@ -236,8 +248,9 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap">Betalningshistorik</TableHead>
             {!contractMode && !showSelectionColumn && !historyMode && <TableHead className="whitespace-nowrap">Erbjudande</TableHead>}
             {!showSelectionColumn && !contractMode && !historyMode && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
-            {!showSelectionColumn && !historyMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
+            {!showSelectionColumn && !historyMode && !contractMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
             {historyMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
+            {contractMode && <TableHead className="whitespace-nowrap text-right">Kontrakt</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -259,9 +272,11 @@ export function HousingApplicantsTable({
             .map((applicant) => {
               const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
               const wasOffered = historyOfferedIds.has(applicant.id);
+              const isLinked = contractMode && linkedContractApplicantId === applicant.id;
+              const isRecommended = contractMode && !linkedContractApplicantId && recommendedApplicantId === applicant.id;
               return (
               <>
-                <TableRow key={applicant.id} className={isWinner ? "bg-success/5" : undefined}>
+                <TableRow key={applicant.id} className={isWinner || isLinked ? "bg-success/5" : undefined}>
                   {!historyMode && (
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
@@ -375,6 +390,30 @@ export function HousingApplicantsTable({
                         })()
                       ) : (
                         <span className="text-sm text-muted-foreground">Inget erbjudande</span>
+                      )}
+                    </TableCell>
+                  )}
+                  {contractMode && (
+                    <TableCell className="text-right">
+                      {isLinked ? (
+                        <div className="flex items-center justify-end gap-2">
+                          <Badge variant="success">Kontrakt kopplat</Badge>
+                          {onUnlinkContract && (
+                            <Button variant="ghost" size="sm" onClick={onUnlinkContract}>
+                              Ta bort
+                            </Button>
+                          )}
+                        </div>
+                      ) : linkedContractApplicantId ? (
+                        <span className="text-sm text-muted-foreground">—</span>
+                      ) : (
+                        <Button
+                          variant={isRecommended ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => onLinkContract?.(applicant.id)}
+                        >
+                          Koppla kontrakt
+                        </Button>
                       )}
                     </TableCell>
                   )}
