@@ -175,6 +175,7 @@ const HousingDetailPage = () => {
               onSelectionChange={setSelectedApplicants}
               offeredApplicantIds={activeOffer?.selectedApplicants || []}
               contractMode={isContractMode}
+              autoSelectTopApplicants={status === 'ready_for_offer'}
             />
           </section>
 
