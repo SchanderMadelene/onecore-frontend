@@ -363,7 +363,7 @@ export function HousingApplicantsTable({
                       </div>
                     </TableCell>
                   )}
-                  {!showSelectionColumn && !historyMode && applicant.offerResponse && (
+                  {!showSelectionColumn && !historyMode && !contractMode && applicant.offerResponse && (
                     <TableCell>
                       <div className="space-y-1">
                         <div>{getOfferResponseBadge(applicant.offerResponse.status)}</div>
