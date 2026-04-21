@@ -206,9 +206,9 @@ export function HousingApplicantsTable({
   const getPaymentHistoryBadge = (status: "Inga anmärkningar" | "Behöver kontrolleras" | "-") => {
     switch (status) {
       case "Inga anmärkningar":
-        return <Badge variant="success">Inga anmärkningar</Badge>;
+        return <Badge variant="success">Inga anm.</Badge>;
       case "Behöver kontrolleras":
-        return <Badge variant="warning">Behöver kontrolleras</Badge>;
+        return <Badge variant="warning">Behöver kontroll</Badge>;
       case "-":
         return null;
       default:
@@ -224,7 +224,7 @@ export function HousingApplicantsTable({
       case "Nej":
         return <Badge variant="destructive">Nej</Badge>;
       case "Väntar på svar":
-        return <Badge variant="warning">Väntar på svar</Badge>;
+        return <Badge variant="warning">Väntar</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
