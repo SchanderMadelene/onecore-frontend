@@ -44,10 +44,28 @@ export default {
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
+          soft: "hsl(var(--success-soft))",
+          "soft-foreground": "hsl(var(--success-soft-foreground))",
         },
         warning: {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
+          soft: "hsl(var(--warning-soft))",
+          "soft-foreground": "hsl(var(--warning-soft-foreground))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+          soft: "hsl(var(--info-soft))",
+          "soft-foreground": "hsl(var(--info-soft-foreground))",
+        },
+        "destructive-soft": {
+          DEFAULT: "hsl(var(--destructive-soft))",
+          foreground: "hsl(var(--destructive-soft-foreground))",
+        },
+        "purple-soft": {
+          DEFAULT: "hsl(var(--purple-soft))",
+          foreground: "hsl(var(--purple-soft-foreground))",
         },
         highlight: {
           DEFAULT: "hsl(var(--highlight))",
