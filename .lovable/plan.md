@@ -1,51 +1,54 @@
 
 
-## Förenklad förhandsgranskning – inline-modal istället för ny tab
+## Problem
 
-### Mål
-Ersätt den nuvarande "öppna ny tab"-lösningen med en modal som öppnas direkt i applikationen och visar förhandsgranskningen som en inramad "Mimer.nu"-vy.
+Nuvarande lösning på annonssidans header staplar alla actions som primärknappar bredvid varandra:
+`[Ny anmälan] [Avbryt uthyrning] [⊕ Skicka erbjudande]`
 
-### Förändringar
+Det skapar tre problem:
+1. **Visuell hierarki saknas** — den röda destructive-knappen "Avbryt uthyrning" konkurrerar med (och drar fokus från) den faktiska primära åtgärden "Skicka erbjudande".
+2. **Skalbarhet** — när status är "Publicerade" blir det fyra knappar i rad (Ny anmälan, Redigera, Tidigarelägg avpublicering, Avbryt uthyrning). Det blir en knappsoppa.
+3. **Bryter mot etablerat mönster** — i tabellraderna har vi medvetet en "primär text-knapp + more-icon"-struktur (se memory `table-action-layout-pattern`). Detaljsidan bör följa samma logik, inte motsatsen.
 
-**1. Ny komponent: `PreviewHousingAdDialog.tsx`**
-Plats: `src/features/rentals/components/PreviewHousingAdDialog.tsx`
-- Stor `Dialog` (max-w-5xl, max-h-[90vh], scrollbar i body, sticky footer enligt vår dialog-standard).
-- Header: "Förhandsgranskning – så här visas annonsen på Mimer.nu" + liten beskrivning.
-- Body: en inramad "browser-chrome"-container (ljusgrå topplist med tre prickar + adressfält som visar `mimer.nu/lediga-objekt/...`) som ramar in själva annonsvyn — gör det visuellt tydligt att det är en extern webbplats-preview.
-- Annonsvyn: återanvänder exakt samma JSX/markup som dagens `HousingAdPreviewPage`, men extraherad till en ren presentationskomponent `MimerAdPreview` (props: `housing`, `form`) så vi kan använda den både i modalen och (om vi vill) på den fristående sidan.
-- Footer: en "Stäng"-knapp.
+## Föreslagen lösning
 
-**2. Refaktorering: extrahera `MimerAdPreview`**
-Plats: `src/features/rentals/components/preview/MimerAdPreview.tsx`
-- Flytta all rendering (header, hero, fakta-dl, beskrivning, dokument, CTA, footer) från `HousingAdPreviewPage` hit.
-- Tar emot `housing` och `form` som props istället för att läsa från `sessionStorage`.
+Återinför **samma mönster som tabellraderna** på detaljsidan: **en primär action + en more-icon med resten**. Regeln "alla menyactions ska finnas på detaljsidan" uppfylls fortfarande — men menyn finns kvar som meny, inte som knapprad.
 
-**3. Uppdatera `EditHousingDialog.tsx`**
-- Ta bort `handlePreview` med `window.open` och `sessionStorage`.
-- Lägg till lokalt state `previewOpen`.
-- "Förhandsgranska"-knappen sätter `previewOpen=true`.
-- Rendera `<PreviewHousingAdDialog open={previewOpen} onOpenChange={setPreviewOpen} housingSpace={housingSpace} formValues={form.getValues()} />` (form-värden läses live när modalen öppnas).
+### Layout per status
 
-**4. Städning**
-- Ta bort routen `/rentals/housing/:housingId/preview` från `src/App.tsx`.
-- Ta bort filen `src/pages/rentals/HousingAdPreviewPage.tsx` (innehållet lever vidare i `MimerAdPreview`).
-- Behåll `src/assets/preview-housing-placeholder.jpg` — används i `MimerAdPreview`.
-
-### Visuell detalj – "browser frame"
-För att signalera att det är en extern sajt:
 ```text
-┌─────────────────────────────────────────┐
-│ ● ● ●   🔒 mimer.nu/lediga-objekt/...   │  ← ljusgrå topplist
-├─────────────────────────────────────────┤
-│                                         │
-│         [ MimerAdPreview ]              │
-│                                         │
-└─────────────────────────────────────────┘
+Publicerade:          [Ny anmälan]        [⋯]   ← menyn: Redigera, Tidigarelägg avpubl., Avbryt uthyrning
+Behov av publicering: [Publicera]         [⋯]   ← menyn: Redigera, Ta bort
+Klara för erbjudande: [⊕ Skicka erbjudande] [⋯] ← menyn: Ny anmälan, Avbryt uthyrning
+Erbjudna:             [Visa erbjudande]   [⋯]   ← menyn: Avbryt uthyrning
+Historik:             [Visa annons]              ← ingen meny
 ```
-Topplisten: `bg-muted` med tre färgade prickar (röd/gul/grön) och ett pill-formad adressfält i `bg-background`.
 
-### Påverkan
-- Ingen routing eller ny tab — allt sker inline.
-- Snabbare flöde för användaren, ingen popup-blockering, ingen sessionStorage-koppling.
-- `MimerAdPreview` blir återanvändbar om vi senare vill visa förhandsgranskning från andra ställen (t.ex. publiceringsflödet).
+Den primära actionknappen är alltid **default-variant** (mörk/fylld), aldrig destructive. Destructive actions (Avbryt uthyrning, Ta bort, Återkalla) bor alltid i more-menyn där de får sin röda färg och separator — precis som i tabellen.
+
+### "Skicka erbjudande" som specialfall
+
+På "Klara för erbjudande" är primäråtgärden kontextuell (kräver minst en vald sökande, har egen disabled-logik och ikon). Den behåller sitt egna `<Button>` i `HousingHeader` med `disabled={!hasSelectedApplicants}`. `HousingRowActions` renderar då bara more-iconen för den statusen (inte sin egen primärknapp), så vi inte dubblerar.
+
+## Tekniska ändringar
+
+**`src/features/rentals/components/HousingRowActions.tsx`**
+- `variant="detail"` ändras till att rendera `[primary[0]-as-Button] + [DropdownMenu med menu]` istället för en flex-rad av knappar.
+- Ny prop `hidePrimary?: boolean` så `HousingHeader` kan stänga av den inbyggda primärknappen för status `klaraForErbjudande` (där headern själv renderar "Skicka erbjudande").
+- Primärknappen i detail-läget använder samma `handleMenu`-routing som befintliga menyklick.
+
+**`src/pages/rentals/components/HousingHeader.tsx`**
+- Tar bort `flex-wrap` och stapling — layouten blir alltid `[primär] [⋯]`.
+- För `klaraForErbjudande`: rendera `<HousingRowActions ... hidePrimary />` följt av "Skicka erbjudande"-knappen.
+- För övriga statusar: rendera bara `<HousingRowActions ... />` (som själv inkluderar både primär + meny).
+
+**Memory-uppdatering**
+- Uppdatera `mem://features/rentals/detail-page-action-parity` så regeln formuleras korrekt: "Alla actions från radens more-meny ska vara **åtkomliga** på detaljsidan — primäråtgärden som knapp, övriga via more-icon. Destructive-actions ligger alltid i menyn, aldrig som primärknapp."
+
+## Resultat
+
+- Tydlig visuell hierarki: en primär åtgärd dominerar, sekundära är ett klick bort.
+- Konsekvens med tabellrader (samma mönster överallt).
+- Inga röda knappar som stjäl fokus från det användaren faktiskt ska göra.
+- Skalbart — fungerar oavsett om statusen har 2 eller 5 actions.
 
