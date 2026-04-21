@@ -99,10 +99,10 @@ export const CreateHousingApplicationDialog = ({
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="max-w-2xl max-h-[90vh] p-0">
+      <DialogContent className="max-w-2xl max-h-[90vh] p-0" onClick={(e) => e.stopPropagation()}>
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="text-xl font-semibold text-left">
-            Ny bostadsansökan, {housingSpace.address}
+            Ny intresseanmälan, {housingSpace.address}
           </DialogTitle>
         </DialogHeader>
 
