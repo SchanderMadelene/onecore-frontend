@@ -10,6 +10,7 @@ import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { ParkingRowActions } from "../ParkingRowActions";
 import { useNavigate } from "react-router-dom";
 import type { ParkingSpace } from "../types/parking";
+import { getObjectNumber } from "../../utils/object-number";
 
 export const PublishedParkingTab = () => {
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ export const PublishedParkingTab = () => {
       render: (space: ParkingSpace) => (
         <div>
           <div className="font-medium">{space.address}</div>
-          <div className="text-sm text-muted-foreground">{space.id}</div>
+          <div className="text-sm text-muted-foreground">{getObjectNumber(space.id)}</div>
         </div>
       ),
     },
@@ -163,7 +164,7 @@ export const PublishedParkingTab = () => {
     <div className="space-y-2">
       <div>
         <div className="font-medium">{space.address}</div>
-        <div className="text-sm text-muted-foreground">{space.id}</div>
+        <div className="text-sm text-muted-foreground">{getObjectNumber(space.id)}</div>
       </div>
       <div className="grid grid-cols-[auto_auto] gap-x-4 gap-y-1 justify-start text-sm">
         <span className="text-muted-foreground">Område:</span>
