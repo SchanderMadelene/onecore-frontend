@@ -20,6 +20,7 @@ import { BasicInfoSection } from "./edit-housing/BasicInfoSection";
 import { EditableFormSection } from "./edit-housing/EditableFormSection";
 import { DetailedDescriptionTab } from "./edit-housing/DetailedDescriptionTab";
 import { PlanritningTab } from "./edit-housing/PlanritningTab";
+import { PreviewHousingAdDialog } from "./PreviewHousingAdDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { EditHousingFormData } from "./edit-housing/types";
 
@@ -32,6 +33,7 @@ interface EditHousingDialogProps {
 
 export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenChange, hideTrigger }: EditHousingDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = (v: boolean) => {
     if (onOpenChange) onOpenChange(v);
@@ -87,23 +89,7 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
   };
 
   const handlePreview = () => {
-    const payload = {
-      housing: housingSpace,
-      form: form.getValues(),
-    };
-    try {
-      sessionStorage.setItem(
-        `housing-ad-preview:${housingSpace.id}`,
-        JSON.stringify(payload),
-      );
-      window.open(
-        `/rentals/housing/${housingSpace.id}/preview`,
-        "_blank",
-        "noopener,noreferrer",
-      );
-    } catch (e) {
-      toast.error("Kunde inte öppna förhandsgranskning");
-    }
+    setPreviewOpen(true);
   };
 
   return (
@@ -191,6 +177,12 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
           )}
         </DialogFooter>
       </DialogContent>
+      <PreviewHousingAdDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        housingSpace={housingSpace}
+        formValues={form.getValues()}
+      />
     </Dialog>
   );
 }

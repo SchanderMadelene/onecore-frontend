@@ -1,15 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import placeholderImg from "@/assets/preview-housing-placeholder.jpg";
 import type { EditHousingFormData } from "@/features/rentals/components/edit-housing/types";
 import type { HousingSpace } from "@/features/rentals/components/types/housing";
 
-interface PreviewPayload {
+interface MimerAdPreviewProps {
   housing: HousingSpace;
   form: Partial<EditHousingFormData>;
 }
-
-const STORAGE_PREFIX = "housing-ad-preview:";
 
 const formatDate = (d?: Date | string) => {
   if (!d) return "0000-00-00";
@@ -18,32 +14,7 @@ const formatDate = (d?: Date | string) => {
   return date.toISOString().slice(0, 10);
 };
 
-const HousingAdPreviewPage = () => {
-  const { housingId } = useParams<{ housingId: string }>();
-  const [payload, setPayload] = useState<PreviewPayload | null>(null);
-
-  useEffect(() => {
-    if (!housingId) return;
-    document.title = "Förhandsgranskning – Mimer";
-    try {
-      const raw = sessionStorage.getItem(`${STORAGE_PREFIX}${housingId}`);
-      if (raw) setPayload(JSON.parse(raw));
-    } catch (e) {
-      console.error("Failed to parse preview payload", e);
-    }
-  }, [housingId]);
-
-  if (!payload) {
-    return (
-      <div className="min-h-screen flex items-center justify-center font-sans text-sm text-gray-600">
-        Förhandsgranskningen kunde inte hittas. Stäng fliken och öppna förhandsgranskningen igen.
-      </div>
-    );
-  }
-
-  const { housing, form } = payload;
-
-  // Derive display values from form + housing
+export const MimerAdPreview = ({ housing, form }: MimerAdPreviewProps) => {
   const heading = form.mainHeading?.trim() || housing.address;
   const features: string[] = [];
   if (form.tvViaFiber) features.push("Internetuppkoppling via Fibra");
@@ -68,7 +39,7 @@ const HousingAdPreviewPage = () => {
   const lastApplicationDate = formatDate(form.publishTo);
 
   return (
-    <div className="min-h-screen bg-white font-sans text-[15px] leading-relaxed text-gray-900">
+    <div className="bg-white font-sans text-[15px] leading-relaxed text-gray-900">
       {/* Header */}
       <header className="border-b border-gray-200">
         <div className="mx-auto flex max-w-[1100px] items-center justify-between px-6 py-4">
@@ -78,7 +49,7 @@ const HousingAdPreviewPage = () => {
               ▾m
             </span>
           </div>
-          <nav className="flex items-center gap-7 text-[14px] text-gray-800">
+          <nav className="hidden items-center gap-7 text-[14px] text-gray-800 md:flex">
             <a href="#" className="border-b-2 border-gray-900 pb-1 font-medium">Sök ledigt</a>
             <a href="#" className="hover:text-gray-600">Hyra och bo</a>
             <a href="#" className="hover:text-gray-600">Nyproduktion</a>
@@ -91,7 +62,6 @@ const HousingAdPreviewPage = () => {
         </div>
       </header>
 
-      {/* Main */}
       <main className="mx-auto max-w-[1000px] px-6 pb-20 pt-10">
         <div className="mb-3">
           <a href="#" className="text-[14px] text-gray-700 underline-offset-2 hover:underline">
@@ -100,18 +70,16 @@ const HousingAdPreviewPage = () => {
           <div className="mt-3 h-px w-32 bg-gray-300" />
         </div>
 
-        {/* Title */}
         <div className="mb-4 flex items-start justify-between">
-          <h1 className="text-[32px] font-bold uppercase tracking-tight text-[#00a3a1]">
+          <h1 className="text-[28px] font-bold uppercase tracking-tight text-[#00a3a1] md:text-[32px]">
             {heading.toUpperCase()}
           </h1>
-          <div className="flex h-12 w-12 items-center justify-center rounded bg-[#f5b800] text-2xl font-bold text-gray-900">
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded bg-[#f5b800] text-2xl font-bold text-gray-900">
             E
           </div>
         </div>
 
-        {/* Hero + facts */}
-        <div className="mb-10 grid grid-cols-[1fr_320px] gap-0 overflow-hidden">
+        <div className="mb-10 grid grid-cols-1 gap-0 overflow-hidden md:grid-cols-[1fr_320px]">
           <img
             src={placeholderImg}
             alt={`Bild på ${heading}`}
@@ -139,9 +107,7 @@ const HousingAdPreviewPage = () => {
           </dl>
         </div>
 
-        {/* Two columns */}
-        <div className="grid grid-cols-2 gap-12">
-          {/* Left */}
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
           <div>
             <section className="mb-10">
               <h2 className="mb-4 text-[15px] font-bold uppercase tracking-wide text-gray-900">
@@ -155,10 +121,7 @@ const HousingAdPreviewPage = () => {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#"
-                className="mt-4 inline-block text-[14px] text-gray-900 underline"
-              >
+              <a href="#" className="mt-4 inline-block text-[14px] text-gray-900 underline">
                 Läs mer om vad som gäller för lägenhetsunderhåll här.
               </a>
             </section>
@@ -182,7 +145,7 @@ const HousingAdPreviewPage = () => {
                 <h2 className="mb-3 text-[15px] font-bold uppercase tracking-wide text-gray-900">
                   Ytterligare information
                 </h2>
-                <p className="text-[14px] whitespace-pre-line">{additionalInfo}</p>
+                <p className="whitespace-pre-line text-[14px]">{additionalInfo}</p>
               </section>
             )}
 
@@ -191,7 +154,7 @@ const HousingAdPreviewPage = () => {
                 <h2 className="mb-3 text-[15px] font-bold uppercase tracking-wide text-gray-900">
                   Parkera bilen
                 </h2>
-                <p className="text-[14px] whitespace-pre-line">{form.parkingInfo}</p>
+                <p className="whitespace-pre-line text-[14px]">{form.parkingInfo}</p>
               </section>
             )}
 
@@ -200,12 +163,11 @@ const HousingAdPreviewPage = () => {
                 <h2 className="mb-3 text-[15px] font-bold uppercase tracking-wide text-gray-900">
                   Bilplatser till besökare
                 </h2>
-                <p className="text-[14px] whitespace-pre-line">{form.visitorParkingInfo}</p>
+                <p className="whitespace-pre-line text-[14px]">{form.visitorParkingInfo}</p>
               </section>
             )}
           </div>
 
-          {/* Right */}
           <div>
             <section>
               <h2 className="mb-4 text-[15px] font-bold uppercase tracking-wide text-gray-900">
@@ -268,7 +230,6 @@ const HousingAdPreviewPage = () => {
           </div>
         </div>
 
-        {/* CTA */}
         <div className="mt-16 bg-[#efeae3] px-6 py-12 text-center">
           <h3 className="mb-6 text-[16px] font-bold text-gray-900">Vill du bo här?</h3>
           <button className="bg-[#a0287d] px-8 py-3 text-[14px] font-semibold text-white">
@@ -280,9 +241,8 @@ const HousingAdPreviewPage = () => {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="bg-[#00a3a1] px-6 py-12 text-white">
-        <div className="mx-auto grid max-w-[1000px] grid-cols-3 gap-8 text-[13px]">
+        <div className="mx-auto grid max-w-[1000px] grid-cols-1 gap-8 text-[13px] md:grid-cols-3">
           <div>
             <h4 className="mb-3 font-bold uppercase">Kontakta oss</h4>
             <p>Bostads AB Mimer</p>
@@ -316,5 +276,3 @@ const HousingAdPreviewPage = () => {
     </div>
   );
 };
-
-export default HousingAdPreviewPage;
