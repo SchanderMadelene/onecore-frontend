@@ -150,13 +150,13 @@ export function HousingApplicantsTable({
   const getCreditReportBadge = (status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig" | "-") => {
     switch (status) {
       case "Godkänd/låg risk":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Godkänd/låg risk</Badge>;
+        return <Badge variant="success">Godkänd/låg risk</Badge>;
       case "Förhöjd risk":
-        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Förhöjd risk</Badge>;
+        return <Badge variant="warning">Förhöjd risk</Badge>;
       case "Hög risk":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200">Hög risk</Badge>;
+        return <Badge variant="warning">Hög risk</Badge>;
       case "Ingen uppgift tillgänglig":
-        return <Badge variant="outline" className="bg-white text-gray-700 hover:bg-white border-gray-200">Ingen uppgift tillgänglig</Badge>;
+        return <Badge variant="muted">Ingen uppgift tillgänglig</Badge>;
       case "-":
         return null;
       default:
@@ -167,15 +167,16 @@ export function HousingApplicantsTable({
   const getPaymentHistoryBadge = (status: "Inga anmärkningar" | "Behöver kontrolleras" | "-") => {
     switch (status) {
       case "Inga anmärkningar":
-        return <Badge variant="outline" className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200">Inga anmärkningar</Badge>;
+        return <Badge variant="success">Inga anmärkningar</Badge>;
       case "Behöver kontrolleras":
-        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 hover:bg-yellow-50 border-yellow-200">Behöver kontrolleras</Badge>;
+        return <Badge variant="warning">Behöver kontrolleras</Badge>;
       case "-":
         return null;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
   };
+
 
   const getViewingBookedBadge = (status: "Ja" | "Nej" | "Väntar på svar") => {
     switch (status) {
