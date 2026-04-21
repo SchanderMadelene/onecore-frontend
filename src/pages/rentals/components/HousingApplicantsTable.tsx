@@ -274,7 +274,11 @@ export function HousingApplicantsTable({
               const wasOffered = historyOfferedIds.has(applicant.id);
               return (
               <>
-                <TableRow key={applicant.id} className={isWinner ? "bg-success/5" : undefined}>
+              const isLinked = contractMode && linkedContractApplicantId === applicant.id;
+              const isRecommended = contractMode && !linkedContractApplicantId && recommendedApplicantId === applicant.id;
+              return (
+              <>
+                <TableRow key={applicant.id} className={isWinner || isLinked ? "bg-success/5" : undefined}>
                   {!historyMode && (
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
