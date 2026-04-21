@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { publishedHousingSpaces, type PublishedHousingSpace } from "../data/published-housing";
+import { unpublishedHousingSpaces } from "../data/unpublished-housing";
+import { historyHousingSpaces } from "../data/history-housing";
 
 export interface HousingApplicant {
   id: number;
