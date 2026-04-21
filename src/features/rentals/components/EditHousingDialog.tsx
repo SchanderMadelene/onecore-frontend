@@ -86,6 +86,26 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
     setOpen(false);
   };
 
+  const handlePreview = () => {
+    const payload = {
+      housing: housingSpace,
+      form: form.getValues(),
+    };
+    try {
+      sessionStorage.setItem(
+        `housing-ad-preview:${housingSpace.id}`,
+        JSON.stringify(payload),
+      );
+      window.open(
+        `/rentals/housing/${housingSpace.id}/preview`,
+        "_blank",
+        "noopener,noreferrer",
+      );
+    } catch (e) {
+      toast.error("Kunde inte öppna förhandsgranskning");
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {!hideTrigger && (
@@ -155,13 +175,13 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
               >
                 Spara/uppdatera annons
               </Button>
-              <Button variant="outline" onClick={() => setOpen(false)} className="w-full">
+              <Button variant="outline" onClick={handlePreview} className="w-full">
                 Förhandsgranska
               </Button>
             </div>
           ) : (
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setOpen(false)} className="px-8">
+              <Button variant="outline" onClick={handlePreview} className="px-8">
                 Förhandsgranska
               </Button>
               <Button onClick={form.handleSubmit(onSubmit)} className="px-8 bg-black hover:bg-gray-800 text-white">
