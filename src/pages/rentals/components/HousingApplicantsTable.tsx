@@ -372,14 +372,7 @@ export function HousingApplicantsTable({
                   )}
                   {!showSelectionColumn && !contractMode && !historyMode && applicant.viewingBooked && (
                     <TableCell>
-                      <div className="space-y-1">
-                        <div>{getViewingBookedBadge(applicant.viewingBooked.status)}</div>
-                        {applicant.viewingBooked.date && (
-                          <div className="text-xs text-muted-foreground">
-                            {applicant.viewingBooked.date}
-                          </div>
-                        )}
-                      </div>
+                      {getViewingBookedBadge(applicant.viewingBooked.status)}
                     </TableCell>
                   )}
                   {!showSelectionColumn && !historyMode && !contractMode && applicant.offerResponse && (() => {
