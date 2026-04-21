@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, PlusCircle } from "lucide-react";
+import { ArrowLeft, PlusCircle, MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { HousingApplicationDialog } from "@/features/rentals/components/HousingApplicationDialog";
 import { ConfirmDialog } from "@/shared/common";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
@@ -69,11 +75,6 @@ export function HousingHeader({
           </div>
           <div className="flex items-center gap-2">
             {housing && isPublished && <HousingApplicationDialog housingSpace={housing} />}
-            {canEarlyUnpublish && (
-              <Button variant="outline" onClick={() => setEarlyOpen(true)}>
-                Tidigarelägg avpublicering
-              </Button>
-            )}
             {!hasOffers && (
               <Button
                 onClick={onCreateOffer}
@@ -83,6 +84,20 @@ export function HousingHeader({
                 <PlusCircle className="h-4 w-4" />
                 <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
               </Button>
+            )}
+            {canEarlyUnpublish && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon" aria-label="Fler åtgärder">
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setEarlyOpen(true); }}>
+                    Tidigarelägg avpublicering
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
         </div>
