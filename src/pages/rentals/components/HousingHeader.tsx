@@ -51,8 +51,7 @@ export function HousingHeader({
               {offerStatus}
             </Badge>
           </div>
-          <div className="flex items-center gap-2 flex-wrap justify-end">
-            {housing && <HousingRowActions housing={housing} tab={tab} variant="detail" />}
+          <div className="flex items-center gap-2">
             {showSendOffer && (
               <Button
                 onClick={onCreateOffer}
@@ -62,6 +61,14 @@ export function HousingHeader({
                 <PlusCircle className="h-4 w-4" />
                 <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
               </Button>
+            )}
+            {housing && (
+              <HousingRowActions
+                housing={housing}
+                tab={tab}
+                variant="detail"
+                hidePrimary={tab === "klaraForErbjudande"}
+              />
             )}
           </div>
         </div>

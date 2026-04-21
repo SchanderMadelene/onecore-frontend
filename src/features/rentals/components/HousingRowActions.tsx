@@ -29,6 +29,7 @@ interface HousingRowActionsProps {
   housing: HousingSpace | UnpublishedHousingSpace;
   tab: HousingActionTab;
   variant?: "row" | "mobile" | "detail";
+  hidePrimary?: boolean;
 }
 
 type ConfirmSpec = {
@@ -133,7 +134,7 @@ function getActions(
   }
 }
 
-export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowActionsProps) {
+export function HousingRowActions({ housing, tab, variant = "row", hidePrimary = false }: HousingRowActionsProps) {
   const navigate = useNavigate();
   const { markEarlyUnpublished } = useHousingOffers();
   const [editOpen, setEditOpen] = useState(false);
@@ -188,37 +189,30 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
     else if (a.kind === "new-app") setNewAppOpen(true);
   };
 
-  const { menu } = getActions(tab, housing.address, seekers);
+  const { primary, menu } = getActions(tab, housing.address, seekers);
+  const detailPrimary = primary[0];
 
   const containerClass =
     variant === "row"
       ? "flex items-center justify-end gap-2"
       : variant === "detail"
-        ? "flex items-center gap-2 flex-wrap"
+        ? "flex items-center gap-2"
         : "flex items-center justify-end gap-2 mt-3";
 
   return (
     <>
       <div className={containerClass} onClick={stop}>
-        {variant === "detail" ? (
-          menu.map((item) => {
-            const isDestructive = item.kind === "confirm" && item.destructive;
-            const isDisabled = item.kind === "early-unpublish" && item.disabled;
-            return (
-              <Button
-                key={item.key}
-                variant={isDestructive ? "destructive" : "outline"}
-                disabled={isDisabled}
-                onClick={(e) => {
-                  stop(e);
-                  handleMenu(item);
-                }}
-              >
-                {item.label}
-              </Button>
-            );
-          })
-        ) : (
+        {variant === "detail" && !hidePrimary && detailPrimary && (
+          <Button
+            onClick={(e) => {
+              stop(e);
+              handleMenu(detailPrimary);
+            }}
+          >
+            {detailPrimary.label}
+          </Button>
+        )}
+        {menu.length > 0 && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" onClick={stop} aria-label="Fler åtgärder">
@@ -251,7 +245,6 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
             </DropdownMenuContent>
           </DropdownMenu>
         )}
-
       </div>
 
       <EditHousingDialog
