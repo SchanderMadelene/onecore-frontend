@@ -43,7 +43,7 @@ export const ConfirmDialog = ({
 }: ConfirmDialogProps) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className={className}>
+      <AlertDialogContent onClick={(e) => e.stopPropagation()} className={className}>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription asChild={typeof description !== "string"}>
