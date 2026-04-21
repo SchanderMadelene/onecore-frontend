@@ -365,7 +365,14 @@ export function HousingApplicantsTable({
                       {isWinner ? (
                         <Badge variant="success">Tackat ja — tilldelad</Badge>
                       ) : wasOffered ? (
-                        <Badge variant="destructive">Tackat nej</Badge>
+                        // Deterministisk fördelning: ~40% tackar ja (men ej tilldelade),
+                        // ~40% tackar nej, ~20% inget svar.
+                        (() => {
+                          const bucket = applicant.id % 5;
+                          if (bucket === 0 || bucket === 1) return <Badge variant="success">Tackat ja</Badge>;
+                          if (bucket === 2 || bucket === 3) return <Badge variant="destructive">Tackat nej</Badge>;
+                          return <Badge variant="muted">Inget svar</Badge>;
+                        })()
                       ) : (
                         <span className="text-sm text-muted-foreground">Inget erbjudande</span>
                       )}
