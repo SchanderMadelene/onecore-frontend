@@ -29,6 +29,7 @@ interface HousingRowActionsProps {
   housing: HousingSpace | UnpublishedHousingSpace;
   tab: HousingActionTab;
   variant?: "row" | "mobile" | "detail";
+  hidePrimary?: boolean;
 }
 
 type ConfirmSpec = {
