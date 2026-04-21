@@ -134,7 +134,7 @@ function getActions(
   }
 }
 
-export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowActionsProps) {
+export function HousingRowActions({ housing, tab, variant = "row", hidePrimary = false }: HousingRowActionsProps) {
   const navigate = useNavigate();
   const { markEarlyUnpublished } = useHousingOffers();
   const [editOpen, setEditOpen] = useState(false);
