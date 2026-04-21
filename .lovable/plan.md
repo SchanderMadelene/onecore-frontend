@@ -1,30 +1,12 @@
 
 
-## Fixa disabled-knapp + förtydliga Anteckningar
+## Lägg till TODO-kommentar om kundroller
 
-### Problem
-1. **"Lägg till"-knappen är disabled** för giltiga sökande i `CreateHousingApplicationDialog` eftersom valideringen kräver att kunden har ett kontrakt i distriktet — vilket strider mot vår regel att bostadsanmälningar inte ska ha det kravet.
-2. **"Anteckningar (valfritt)"** är otydligt — användaren vet inte om det syns för sökanden eller är internt.
+### Ändring
+I `src/features/rentals/components/interest-application/CustomerInformation.tsx`, lägg till en TODO-kommentar ovanför `badge`-konstanten som dokumenterar att den binära visningen ("Hyresgäst"/"Sökande") ska utökas till att visa fulla `customerRoles` (Hyresgäst, Sökande, Andrahandshyresgäst, Kontaktperson, Tidigare hyresgäst, Nyttjare, God man) som `Tag`-komponenter — att stämmas av med användaren innan implementation.
 
-### Ändringar
-
-**1. `src/features/rentals/components/CreateHousingApplicationDialog.tsx`**
-Förenkla `canSubmit` så att enbart vald kund + ingen pågående mutation krävs:
-```ts
-const canSubmit = selectedCustomer && !createApplication.isPending;
-```
-Ta bort `tenantHasValidContractForTheDistrict()`-helpern (oanvänd efter ändringen).
-
-**2. `src/features/rentals/components/housing-application/ValidationAlerts.tsx`**
-Granska och säkerställ att eventuella varningar visas som informativa (inte blockerande) — om de redan är det, ingen ändring.
-
-**3. `src/features/rentals/components/interest-application/NotesSection.tsx`**
-Förtydliga fältet:
-- Label: `"Interna anteckningar (valfritt)"`
-- Hjälptext under label (eller som `text-xs text-muted-foreground`): `"Syns endast internt för uthyrningspersonal, inte för den sökande."`
-- Behåll placeholder.
+Samma kommentar läggs i `src/features/rentals/components/interest-application/CustomerSearch.tsx` där badge-visningen sker i sökresultaten, så att båda ställena fångas vid framtida genomgång.
 
 ### Påverkan
-- Endast bostadsflödet ändras. Bilplats-dialogen (`CreateInterestApplicationDialog`) behåller sin striktare validering eftersom distriktskravet gäller där.
-- `NotesSection` används i båda flödena, så förtydligandet kommer båda till del — vilket är korrekt eftersom semantiken är densamma.
+Ingen funktionell förändring — endast kodkommentarer som påminnelse.
 
