@@ -14,6 +14,7 @@ import { toast } from "@/hooks/use-toast";
 import { CreateHousingApplicationDialog } from "./CreateHousingApplicationDialog";
 import { EditHousingDialog } from "./EditHousingDialog";
 import { CancelRentalDialog } from "./CancelRentalDialog";
+import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import type { HousingSpace } from "./types/housing";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 
@@ -43,9 +44,14 @@ type ActionDef =
   | { key: string; label: string; kind: "new-app" }
   | { key: string; label: string; kind: "edit" }
   | { key: string; label: string; kind: "navigate" }
+  | { key: string; label: string; kind: "early-unpublish"; disabled?: boolean }
   | { key: string; label: string; kind: "confirm"; destructive?: boolean; confirm: ConfirmSpec };
 
-function getActions(tab: HousingActionTab, address: string): { primary: ActionDef[]; menu: ActionDef[] } {
+function getActions(
+  tab: HousingActionTab,
+  address: string,
+  seekers: number,
+): { primary: ActionDef[]; menu: ActionDef[] } {
   const unpublish: ActionDef = {
     key: "unpublish",
     label: "Avbryt uthyrning",
@@ -59,6 +65,12 @@ function getActions(tab: HousingActionTab, address: string): { primary: ActionDe
       successTitle: "Uthyrning avbruten",
       destructive: true,
     },
+  };
+  const earlyUnpublish: ActionDef = {
+    key: "early-unpublish",
+    label: "Tidigarelägg avpublicering",
+    kind: "early-unpublish",
+    disabled: seekers === 0,
   };
   const publish: ActionDef = {
     key: "publish",
@@ -109,7 +121,7 @@ function getActions(tab: HousingActionTab, address: string): { primary: ActionDe
 
   switch (tab) {
     case "publicerade":
-      return { primary: [newApp, unpublish], menu: [newApp, edit, unpublish] };
+      return { primary: [newApp, unpublish], menu: [newApp, edit, earlyUnpublish, unpublish] };
     case "behovAvPublicering":
       return { primary: [publish, remove], menu: [publish, edit, remove] };
     case "klaraForErbjudande":
@@ -123,11 +135,14 @@ function getActions(tab: HousingActionTab, address: string): { primary: ActionDe
 
 export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowActionsProps) {
   const navigate = useNavigate();
+  const { markEarlyUnpublished } = useHousingOffers();
   const [editOpen, setEditOpen] = useState(false);
   const [newAppOpen, setNewAppOpen] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmSpec | null>(null);
   const [pending, setPending] = useState(false);
   const [cancelRentalOpen, setCancelRentalOpen] = useState(false);
+  const [earlyUnpublishOpen, setEarlyUnpublishOpen] = useState(false);
+  const [earlyUnpublishPending, setEarlyUnpublishPending] = useState(false);
 
   const seekers = (housing as HousingSpace).seekers ?? 0;
 
@@ -144,9 +159,25 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
     setConfirm(null);
   };
 
+  const runEarlyUnpublish = async () => {
+    setEarlyUnpublishPending(true);
+    await new Promise((r) => setTimeout(r, 400));
+    markEarlyUnpublished(housing.id);
+    toast({
+      title: "Annons flyttad till Klara för erbjudande",
+      description: housing.address,
+    });
+    setEarlyUnpublishPending(false);
+    setEarlyUnpublishOpen(false);
+  };
+
   const handleMenu = (a: ActionDef) => {
     if (a.kind === "edit") setEditOpen(true);
     else if (a.kind === "navigate") goDetail();
+    else if (a.kind === "early-unpublish") {
+      if (a.disabled) return;
+      setEarlyUnpublishOpen(true);
+    }
     else if (a.kind === "confirm") {
       if (a.key === "unpublish" && seekers > 0) {
         setCancelRentalOpen(true);
@@ -157,7 +188,7 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
     else if (a.kind === "new-app") setNewAppOpen(true);
   };
 
-  const { menu } = getActions(tab, housing.address);
+  const { menu } = getActions(tab, housing.address, seekers);
 
   const containerClass =
     variant === "row"
@@ -179,11 +210,13 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
               const prevDestructive =
                 idx > 0 && menu[idx - 1].kind === "confirm" && (menu[idx - 1] as any).destructive;
               const showSeparator = isDestructive && !prevDestructive && idx > 0;
+              const isDisabled = item.kind === "early-unpublish" && item.disabled;
               return (
                 <div key={item.key}>
                   {showSeparator && <DropdownMenuSeparator />}
                   <DropdownMenuItem
                     className={isDestructive ? "text-destructive focus:text-destructive" : ""}
+                    disabled={isDisabled}
                     onSelect={(e) => {
                       e.preventDefault();
                       handleMenu(item);
@@ -230,6 +263,17 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
         kind="housing"
         open={cancelRentalOpen}
         onOpenChange={setCancelRentalOpen}
+      />
+
+      <ConfirmDialog
+        open={earlyUnpublishOpen}
+        onOpenChange={(v) => !v && setEarlyUnpublishOpen(false)}
+        title="Tidigarelägg avpublicering"
+        description={`Vill du avsluta publiceringen av ${housing.address} i förtid? Annonsen flyttas till "Klara för erbjudande" och nya intresseanmälningar kan inte längre lämnas.`}
+        confirmLabel="Tidigarelägg avpublicering"
+        pendingLabel="Avpublicerar..."
+        isPending={earlyUnpublishPending}
+        onConfirm={runEarlyUnpublish}
       />
     </>
   );

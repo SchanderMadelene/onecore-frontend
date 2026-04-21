@@ -17,6 +17,8 @@ interface HousingOffersContextType {
   createOffer: (listingId: string, selectedApplicants: number[]) => void;
   getOfferForListing: (listingId: string) => HousingOffer | undefined;
   isListingOffered: (listingId: string) => boolean;
+  markEarlyUnpublished: (listingId: string) => void;
+  isEarlyUnpublished: (listingId: string) => boolean;
 }
 
 const HousingOffersContext = createContext<HousingOffersContextType | undefined>(undefined);
@@ -54,7 +56,7 @@ const MOCK_OFFERS: HousingOffer[] = [
 
 export function HousingOffersProvider({ children }: { children: ReactNode }) {
   const [offers, setOffers] = useState<HousingOffer[]>(MOCK_OFFERS);
-
+  const [earlyUnpublished, setEarlyUnpublished] = useState<Set<string>>(new Set());
 
   const createOffer = (listingId: string, selectedApplicants: number[]) => {
     const newOffer: HousingOffer = {
@@ -75,12 +77,24 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
     return offers.some(offer => offer.listingId === listingId);
   };
 
+  const markEarlyUnpublished = (listingId: string) => {
+    setEarlyUnpublished(prev => {
+      const next = new Set(prev);
+      next.add(listingId);
+      return next;
+    });
+  };
+
+  const isEarlyUnpublished = (listingId: string) => earlyUnpublished.has(listingId);
+
   return (
     <HousingOffersContext.Provider value={{
       offers,
       createOffer,
       getOfferForListing,
-      isListingOffered
+      isListingOffered,
+      markEarlyUnpublished,
+      isEarlyUnpublished,
     }}>
       {children}
     </HousingOffersContext.Provider>

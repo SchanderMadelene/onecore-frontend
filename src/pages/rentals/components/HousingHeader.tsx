@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, PlusCircle } from "lucide-react";
 import { HousingApplicationDialog } from "@/features/rentals/components/HousingApplicationDialog";
+import { ConfirmDialog } from "@/shared/common";
+import { useHousingOffers } from "@/contexts/HousingOffersContext";
+import { toast } from "@/hooks/use-toast";
 import type { HousingSpace } from "@/features/rentals/components/types/housing";
 
 interface HousingHeaderProps {
@@ -25,6 +29,27 @@ export function HousingHeader({
   onCreateOffer,
   isCreatingOffer
 }: HousingHeaderProps) {
+  const { markEarlyUnpublished } = useHousingOffers();
+  const [earlyOpen, setEarlyOpen] = useState(false);
+  const [earlyPending, setEarlyPending] = useState(false);
+
+  const isPublished = offerStatus === "Publicerad";
+  const seekers = housing?.seekers ?? 0;
+  const canEarlyUnpublish = isPublished && !hasOffers && seekers > 0;
+
+  const handleEarlyUnpublish = async () => {
+    if (!housing) return;
+    setEarlyPending(true);
+    await new Promise((r) => setTimeout(r, 400));
+    markEarlyUnpublished(housing.id);
+    toast({
+      title: "Annons flyttad till Klara för erbjudande",
+      description: housing.address,
+    });
+    setEarlyPending(false);
+    setEarlyOpen(false);
+  };
+
   return (
     <>
       <div className="flex items-center gap-2 mb-4">
@@ -43,9 +68,14 @@ export function HousingHeader({
             </Badge>
           </div>
           <div className="flex items-center gap-2">
-            {housing && offerStatus === "Publicerad" && <HousingApplicationDialog housingSpace={housing} />}
+            {housing && isPublished && <HousingApplicationDialog housingSpace={housing} />}
+            {canEarlyUnpublish && (
+              <Button variant="outline" onClick={() => setEarlyOpen(true)}>
+                Tidigarelägg avpublicering
+              </Button>
+            )}
             {!hasOffers && (
-              <Button 
+              <Button
                 onClick={onCreateOffer}
                 disabled={isCreatingOffer || !hasSelectedApplicants}
                 className="flex items-center gap-1"
@@ -57,6 +87,17 @@ export function HousingHeader({
           </div>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={earlyOpen}
+        onOpenChange={(v) => !v && setEarlyOpen(false)}
+        title="Tidigarelägg avpublicering"
+        description={`Vill du avsluta publiceringen av ${housingAddress} i förtid? Annonsen flyttas till "Klara för erbjudande" och nya intresseanmälningar kan inte längre lämnas.`}
+        confirmLabel="Tidigarelägg avpublicering"
+        pendingLabel="Avpublicerar..."
+        isPending={earlyPending}
+        onConfirm={handleEarlyUnpublish}
+      />
     </>
   );
 }
