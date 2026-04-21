@@ -4,8 +4,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { CompactProfileForm } from "@/features/rentals/components/residence-profile/CompactProfileForm";
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, MoreVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 import type { HousingApplicant } from "@/features/rentals/hooks/useHousingListing";
+
+type OfferResponseStatus = "Accepterat" | "Nekat" | "Väntar på svar";
 
 
 interface HousingApplicantsTableProps {
