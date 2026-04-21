@@ -190,7 +190,17 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
   };
 
   const { primary, menu } = getActions(tab, housing.address, seekers);
-  const detailPrimary = primary[0];
+
+  // Detail-läge: om ingen primär finns men menyn bara har ett objekt,
+  // lyft det till en knapp istället för att gömma det bakom ⋯.
+  let detailPrimary = primary[0];
+  let detailMenu = menu;
+  if (variant === "detail" && !detailPrimary && menu.length === 1) {
+    detailPrimary = menu[0];
+    detailMenu = [];
+  }
+  const primaryIsDestructive =
+    detailPrimary?.kind === "confirm" && (detailPrimary as any).destructive;
 
   const containerClass =
     variant === "row"
@@ -204,6 +214,7 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
       <div className={containerClass} onClick={stop}>
         {variant === "detail" && !hidePrimary && detailPrimary && (
           <Button
+            variant={primaryIsDestructive ? "destructive" : "default"}
             onClick={(e) => {
               stop(e);
               handleMenu(detailPrimary);
@@ -212,7 +223,7 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
             {detailPrimary.label}
           </Button>
         )}
-        {menu.length > 0 && (
+        {(variant !== "detail" ? menu : detailMenu).length > 0 && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" onClick={stop} aria-label="Fler åtgärder">
@@ -220,10 +231,10 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" onClick={stop}>
-              {menu.map((item, idx) => {
+              {(variant !== "detail" ? menu : detailMenu).map((item, idx, arr) => {
                 const isDestructive = item.kind === "confirm" && item.destructive;
                 const prevDestructive =
-                  idx > 0 && menu[idx - 1].kind === "confirm" && (menu[idx - 1] as any).destructive;
+                  idx > 0 && arr[idx - 1].kind === "confirm" && (arr[idx - 1] as any).destructive;
                 const showSeparator = isDestructive && !prevDestructive && idx > 0;
                 const isDisabled = item.kind === "early-unpublish" && item.disabled;
                 return (
