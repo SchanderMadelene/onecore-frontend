@@ -237,7 +237,7 @@ export function HousingApplicantsTable({
             {!contractMode && !showSelectionColumn && !historyMode && <TableHead className="whitespace-nowrap">Erbjudande</TableHead>}
             {!showSelectionColumn && !contractMode && !historyMode && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
             {!showSelectionColumn && !historyMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
-            {historyMode && <TableHead className="whitespace-nowrap">Resultat</TableHead>}
+            {historyMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -356,9 +356,16 @@ export function HousingApplicantsTable({
                   {historyMode && (
                     <TableCell>
                       {isWinner ? (
-                        <Badge variant="success">Tilldelad kontrakt</Badge>
+                        <Badge variant="success">Tackat ja — tilldelad</Badge>
+                      ) : applicant.offerResponse?.status === "Nekat" ? (
+                        <div className="space-y-1">
+                          <Badge variant="destructive">Tackat nej</Badge>
+                          {applicant.offerResponse.date && (
+                            <div className="text-xs text-muted-foreground">{applicant.offerResponse.date}</div>
+                          )}
+                        </div>
                       ) : (
-                        <span className="text-sm text-muted-foreground">Ej tilldelad</span>
+                        <span className="text-sm text-muted-foreground">Inget erbjudande</span>
                       )}
                     </TableCell>
                   )}
