@@ -275,9 +275,6 @@ export function HousingRowActions({ housing, tab, variant = "row" }: HousingRowA
         isPending={earlyUnpublishPending}
         onConfirm={runEarlyUnpublish}
       />
-        open={cancelRentalOpen}
-        onOpenChange={setCancelRentalOpen}
-      />
     </>
   );
 }
