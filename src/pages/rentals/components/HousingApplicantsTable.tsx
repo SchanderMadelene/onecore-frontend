@@ -356,9 +356,16 @@ export function HousingApplicantsTable({
                   {historyMode && (
                     <TableCell>
                       {isWinner ? (
-                        <Badge variant="success">Tilldelad kontrakt</Badge>
+                        <Badge variant="success">Tackat ja — tilldelad</Badge>
+                      ) : applicant.offerResponse?.status === "Nekat" ? (
+                        <div className="space-y-1">
+                          <Badge variant="destructive">Tackat nej</Badge>
+                          {applicant.offerResponse.date && (
+                            <div className="text-xs text-muted-foreground">{applicant.offerResponse.date}</div>
+                          )}
+                        </div>
                       ) : (
-                        <span className="text-sm text-muted-foreground">Ej tilldelad</span>
+                        <span className="text-sm text-muted-foreground">Inget erbjudande</span>
                       )}
                     </TableCell>
                   )}
