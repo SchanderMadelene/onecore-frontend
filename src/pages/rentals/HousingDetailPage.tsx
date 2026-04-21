@@ -159,6 +159,27 @@ const HousingDetailPage = () => {
     ? listing.applicants.filter(a => top10Ids.has(a.id) && (a.id % 5 === 0 || a.id % 5 === 1))
     : listing.applicants;
 
+  // Rekommenderad sökande för kontrakt: högst köpoäng bland de som tackat ja
+  // OCH har godkända kontroller (profilstatus "Approved").
+  const recommendedApplicantId = isContractMode
+    ? displayedApplicants
+        .filter(a => a.profileStatus === "Approved")
+        .sort((a, b) => b.queuePoints - a.queuePoints)[0]?.id
+    : undefined;
+
+  const linkedContractApplicantId = isContractMode ? getLinkedContract(housingId) : undefined;
+
+  const handleLinkContract = (applicantId: number) => {
+    linkContract(housingId, applicantId);
+    const applicant = displayedApplicants.find(a => a.id === applicantId);
+    sonnerToast.success(`Kontrakt kopplat till ${applicant?.name ?? "sökande"}`);
+  };
+
+  const handleUnlinkContract = () => {
+    unlinkContract(housingId);
+    sonnerToast.success("Kontraktskoppling borttagen");
+  };
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="p-6">
@@ -192,6 +213,10 @@ const HousingDetailPage = () => {
               autoSelectTopApplicants={status === 'ready_for_offer' && !isHistoryMode}
               historyMode={isHistoryMode}
               contractWinnerName={listing.history?.contractedTo}
+              linkedContractApplicantId={linkedContractApplicantId}
+              recommendedApplicantId={recommendedApplicantId}
+              onLinkContract={handleLinkContract}
+              onUnlinkContract={handleUnlinkContract}
             />
           </section>
 
