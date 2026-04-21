@@ -226,7 +226,7 @@ export function HousingApplicantsTable({
         <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-12">Val</TableHead>
+            {!historyMode && <TableHead className="w-12">Val</TableHead>}
             <TableHead className="whitespace-nowrap">Namn</TableHead>
             <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
             <TableHead className="whitespace-nowrap">Köpoäng</TableHead>
@@ -234,28 +234,33 @@ export function HousingApplicantsTable({
             <TableHead className="whitespace-nowrap">Boendereferens</TableHead>
             <TableHead className="whitespace-nowrap">Kreditupplysning</TableHead>
             <TableHead className="whitespace-nowrap">Betalningshistorik</TableHead>
-            {!contractMode && !showSelectionColumn && <TableHead className="whitespace-nowrap">Erbjudande</TableHead>}
-            {!showSelectionColumn && !contractMode && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
-            {!showSelectionColumn && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
+            {!contractMode && !showSelectionColumn && !historyMode && <TableHead className="whitespace-nowrap">Erbjudande</TableHead>}
+            {!showSelectionColumn && !contractMode && !historyMode && <TableHead className="whitespace-nowrap">Visning bokad</TableHead>}
+            {!showSelectionColumn && !historyMode && <TableHead className="whitespace-nowrap">Svar på erbjudande</TableHead>}
+            {historyMode && <TableHead className="whitespace-nowrap">Resultat</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
           {applicants.length > 0 ? applicants
             .sort((a, b) => b.queuePoints - a.queuePoints)
-            .map((applicant) => (
+            .map((applicant) => {
+              const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
+              return (
               <>
-                <TableRow key={applicant.id}>
-                  <TableCell className="py-3">
-                    <div className="flex items-center gap-2">
-                      <Checkbox
-                        checked={selectedApplicants.has(String(applicant.id))}
-                        onCheckedChange={(checked) =>
-                          handleApplicantSelection(String(applicant.id), checked as boolean)
-                        }
-                        className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                      />
-                    </div>
-                  </TableCell>
+                <TableRow key={applicant.id} className={isWinner ? "bg-success/5" : undefined}>
+                  {!historyMode && (
+                    <TableCell className="py-3">
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          checked={selectedApplicants.has(String(applicant.id))}
+                          onCheckedChange={(checked) =>
+                            handleApplicantSelection(String(applicant.id), checked as boolean)
+                          }
+                          className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                        />
+                      </div>
+                    </TableCell>
+                  )}
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <Button
