@@ -55,7 +55,7 @@ const getMockDataByType = (type: ListingType): ListingWithOffer[] => {
       address: "Stenhamravägen 12",
       area: "Centrum",
       type: "Garage m el",
-      queueType: "Kronologisk",
+      queueType: "Extern",
       rent: "650 kr/mån",
       seekers: 8,
       publishedFrom: "2024-01-15",
