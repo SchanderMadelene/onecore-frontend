@@ -1,6 +1,7 @@
 export * from './useParkingSpaceListing';
 export * from './useParkingSpaceListings';
 export * from './useParkingSpaceListingsByType';
+export * from './useStorageSpaceListingsByType';
 export * from './useParkingSpaceActions';
 export * from './useHousingListing';
 export * from './useHousingStatus';

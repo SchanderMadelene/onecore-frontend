@@ -11,6 +11,7 @@ export {
   useParkingSpaceListings,
   type ParkingSpaceForPublishing,
   useParkingSpaceListingsByType,
+  useStorageSpaceListingsByType,
   type ListingType,
   useCloseParkingSpaceListing,
   useDeleteParkingSpaceListing,
