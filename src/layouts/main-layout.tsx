@@ -86,6 +86,9 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
                 if (!isDesktop) setIsSidebarOpen(false);
               }}
               showRentals={features.showRentals}
+              showRentalsHousing={features.showRentalsHousing}
+              showRentalsParking={features.showRentalsParking}
+              showRentalsStorage={features.showRentalsStorage}
               showDesignSystem={features.showDesignSystem}
               showProperties={features.showProperties}
               showTenants={features.showTenants}

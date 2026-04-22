@@ -1,89 +1,67 @@
-
 import { PageLayout } from "@/layouts";
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Car, Home, Archive, Key } from "lucide-react";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { Key } from "lucide-react";
 import { ParkingSpacesTable, HousingSpacesTable, StorageSpacesTable } from "@/features/rentals";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { RentalsHeader } from "./components/RentalsHeader";
 
-const RentalsPage = () => {
+type RentalsSection = "housing" | "parking" | "storage";
+
+interface RentalsPageProps {
+  section?: RentalsSection;
+}
+
+const sectionMeta: Record<RentalsSection, { title: string; subtitle: string; toggle: keyof ReturnType<typeof useFeatureToggles>["features"] }> = {
+  housing: { title: "Bostad", subtitle: "Hantera bostadsannonser, intresseanmälningar och tilldelning", toggle: "showRentalsHousing" },
+  parking: { title: "Bilplats", subtitle: "Hantera bilplatsannonser, intresseanmälningar och tilldelning", toggle: "showRentalsParking" },
+  storage: { title: "Förråd", subtitle: "Hantera förrådsannonser, intresseanmälningar och tilldelning", toggle: "showRentalsStorage" },
+};
+
+const RentalsPage = ({ section }: RentalsPageProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
   const { features } = useFeatureToggles();
 
-  // Bestäm vilken flik som ska vara default baserat på vilka som är aktiverade
-  const getDefaultTab = () => {
-    if (features.showRentalsHousing) return "bostad";
-    if (features.showRentalsParking) return "bilplats";
-    if (features.showRentalsStorage) return "forrad";
-    return "bostad"; // fallback
-  };
+  // Toppnivåsidan /rentals — redirecta till första aktiva sektion
+  if (!section) {
+    if (features.showRentalsHousing) return <Navigate to="/rentals/housing" replace />;
+    if (features.showRentalsParking) return <Navigate to="/rentals/parking" replace />;
+    if (features.showRentalsStorage) return <Navigate to="/rentals/storage" replace />;
 
-  const currentTab = searchParams.get("tab") || getDefaultTab();
+    return (
+      <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
+        <div className="w-full">
+          <RentalsHeader />
+          <div className="flex items-center justify-center h-[400px] text-muted-foreground border rounded-md">
+            <div className="text-center">
+              <Key className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
+              <p>Inga uthyrningssektioner är aktiverade</p>
+              <p className="text-sm mt-2">Aktivera bostad, bilplats eller förråd i inställningarna</p>
+            </div>
+          </div>
+        </div>
+      </PageLayout>
+    );
+  }
 
-  const handleTabChange = (value: string) => {
-    setSearchParams({ tab: value });
-  };
+  const meta = sectionMeta[section];
+  const isEnabled = features[meta.toggle];
+
+  if (!isEnabled) {
+    return <Navigate to="/rentals" replace />;
+  }
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full">
-        <RentalsHeader />
-        
-        <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid grid-cols-3 mb-6">
-            {features.showRentalsHousing && (
-              <TabsTrigger value="bostad" className="flex items-center gap-2">
-                <Home size={18} />
-                <span>Bostad</span>
-              </TabsTrigger>
-            )}
-            {features.showRentalsParking && (
-              <TabsTrigger value="bilplats" className="flex items-center gap-2">
-                <Car size={18} />
-                <span>Bilplats</span>
-              </TabsTrigger>
-            )}
-            {features.showRentalsStorage && (
-              <TabsTrigger value="forrad" className="flex items-center gap-2">
-                <Archive size={18} />
-                <span>Förråd</span>
-              </TabsTrigger>
-            )}
-          </TabsList>
-          
-          {features.showRentalsHousing && (
-            <TabsContent value="bostad">
-              <HousingSpacesTable />
-            </TabsContent>
-          )}
-          
-          {features.showRentalsParking && (
-            <TabsContent value="bilplats">
-              <ParkingSpacesTable />
-            </TabsContent>
-          )}
-          
-          {features.showRentalsStorage && (
-            <TabsContent value="forrad">
-              <StorageSpacesTable />
-            </TabsContent>
-          )}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold">{meta.title}</h1>
+          <p className="text-muted-foreground mt-1">{meta.subtitle}</p>
+        </div>
 
-          {/* Visa meddelande om inga sektioner är aktiverade */}
-          {!features.showRentalsHousing && !features.showRentalsParking && !features.showRentalsStorage && (
-            <div className="flex items-center justify-center h-[400px] text-muted-foreground border rounded-md">
-              <div className="text-center">
-                <Key className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-                <p>Inga uthyrningssektioner är aktiverade</p>
-                <p className="text-sm mt-2">Aktivera bostad, bilplats eller förråd i inställningarna</p>
-              </div>
-            </div>
-          )}
-        </Tabs>
+        {section === "housing" && <HousingSpacesTable />}
+        {section === "parking" && <ParkingSpacesTable />}
+        {section === "storage" && <StorageSpacesTable />}
       </div>
     </PageLayout>
   );

@@ -19,6 +19,9 @@ export interface TreeItemProps {
 export interface TreeViewProps {
   onNavigate?: () => void;
   showRentals: boolean;
+  showRentalsHousing?: boolean;
+  showRentalsParking?: boolean;
+  showRentalsStorage?: boolean;
   showDesignSystem: boolean;
   showProperties: boolean;
   showTenants: boolean;

@@ -167,6 +167,30 @@ const AppRoutes = () => {
         } 
       />
       <Route 
+        path="/rentals/housing" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <RentalsPage section="housing" />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/parking" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <RentalsPage section="parking" />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/storage" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <RentalsPage section="storage" />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
         path="/rentals/create-housing-ad" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>

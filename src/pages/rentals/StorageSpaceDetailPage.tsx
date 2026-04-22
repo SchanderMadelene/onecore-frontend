@@ -34,9 +34,7 @@ const StorageSpaceDetailPage = () => {
   const createOffer = useCreateOffer();
 
   const handleBack = () => {
-    const searchParams = new URLSearchParams(location.state?.from || "");
-    const tab = searchParams.get("tab") || "forrad";
-    navigate(`/rentals?tab=${tab}`);
+    navigate(`/rentals/storage`);
   };
 
   const handleCreateOffer = () => {
@@ -67,7 +65,7 @@ const StorageSpaceDetailPage = () => {
         <div className="p-6">
           <div className="text-center">
             <p className="text-muted-foreground">Ogiltigt förråds-ID</p>
-            <Button onClick={() => navigate("/rentals?tab=forrad")} className="mt-4">
+            <Button onClick={() => navigate("/rentals/storage")} className="mt-4">
               Tillbaka till förråd
             </Button>
           </div>

@@ -8,6 +8,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 export function TreeView({ 
   onNavigate, 
   showRentals, 
+  showRentalsHousing = true,
+  showRentalsParking = true,
+  showRentalsStorage = true,
   showDesignSystem,
   showProperties,
   showTenants,
@@ -47,6 +50,17 @@ export function TreeView({
       if (node.id === "design-system") return showDesignSystem;
       return true;
     }).map(node => {
+      if (node.id === "rentals" && node.children) {
+        return {
+          ...node,
+          children: node.children.filter(child => {
+            if (child.id === "rentals-housing") return showRentalsHousing;
+            if (child.id === "rentals-parking") return showRentalsParking;
+            if (child.id === "rentals-storage") return showRentalsStorage;
+            return true;
+          })
+        };
+      }
       if (node.id === "properties" && node.children) {
         return {
           ...node,
@@ -65,7 +79,7 @@ export function TreeView({
       }
       return node;
     });
-  }, [showRentals, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showAllInspections, showFavorites, showBuildings, showApartments, showEntrances]);
+  }, [showRentals, showRentalsHousing, showRentalsParking, showRentalsStorage, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showAllInspections, showFavorites, showBuildings, showApartments, showEntrances]);
 
   return (
     <div className={`${isMobile ? 'p-2' : 'p-4'} h-full overflow-y-auto bg-white`}>
