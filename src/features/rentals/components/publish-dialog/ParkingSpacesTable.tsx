@@ -11,7 +11,7 @@ interface ParkingSpacesTableProps {
   isLoading: boolean;
   onSelectAll: (checked: boolean) => void;
   onSelectSpace: (index: number, checked: boolean) => void;
-  onQueueTypeChange: (index: number, queueType: 'intern' | 'external' | 'poangfri', checked: boolean) => void;
+  onQueueTypeChange: (index: number, queueType: 'intern' | 'external', checked: boolean) => void;
 }
 
 export const ParkingSpacesTable = ({

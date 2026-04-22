@@ -13,7 +13,6 @@ export interface StorageSpaceForPublishing {
   queueTypes: {
     intern: boolean;
     external: boolean;
-    poangfri: boolean;
   };
   selected: boolean;
 }
@@ -33,7 +32,7 @@ export const useStorageSpaceListings = (type: 'published' | 'available' = 'avail
           rentIncl: "120kr/mån",
           rentExcl: "120kr/mån",
           publications: 1,
-          queueTypes: { intern: true, external: false, poangfri: false },
+          queueTypes: { intern: true, external: false },
           selected: false
         },
         {
@@ -46,7 +45,7 @@ export const useStorageSpaceListings = (type: 'published' | 'available' = 'avail
           rentIncl: "95kr/mån",
           rentExcl: "95kr/mån",
           publications: 1,
-          queueTypes: { intern: true, external: false, poangfri: false },
+          queueTypes: { intern: true, external: false },
           selected: false
         },
         {
@@ -59,7 +58,7 @@ export const useStorageSpaceListings = (type: 'published' | 'available' = 'avail
           rentIncl: "85kr/mån",
           rentExcl: "85kr/mån",
           publications: 1,
-          queueTypes: { intern: false, external: false, poangfri: true },
+          queueTypes: { intern: false, external: true },
           selected: false
         },
       ] as StorageSpaceForPublishing[]);

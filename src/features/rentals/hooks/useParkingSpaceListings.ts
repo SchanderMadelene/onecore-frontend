@@ -12,7 +12,6 @@ export interface ParkingSpaceForPublishing {
   queueTypes: {
     intern: boolean;
     external: boolean;
-    poangfri: boolean;
   };
   selected: boolean;
 }
@@ -32,7 +31,7 @@ export const useParkingSpaceListings = (type: 'published' | 'available' = 'avail
           rentIncl: "540kr/mån",
           rentExcl: "540kr/mån",
           publications: 1,
-          queueTypes: { intern: true, external: false, poangfri: false },
+          queueTypes: { intern: true, external: false },
           selected: false
         },
         {
@@ -44,7 +43,7 @@ export const useParkingSpaceListings = (type: 'published' | 'available' = 'avail
           rentIncl: "540kr/mån",
           rentExcl: "540kr/mån",
           publications: 1,
-          queueTypes: { intern: true, external: false, poangfri: false },
+          queueTypes: { intern: true, external: false },
           selected: false
         },
         {
@@ -56,7 +55,7 @@ export const useParkingSpaceListings = (type: 'published' | 'available' = 'avail
           rentIncl: "450kr/mån",
           rentExcl: "450kr/mån",
           publications: 1,
-          queueTypes: { intern: true, external: false, poangfri: false },
+          queueTypes: { intern: true, external: false },
           selected: false
         },
         {
@@ -68,7 +67,7 @@ export const useParkingSpaceListings = (type: 'published' | 'available' = 'avail
           rentIncl: "350kr/mån",
           rentExcl: "350kr/mån",
           publications: 1,
-          queueTypes: { intern: false, external: false, poangfri: true },
+          queueTypes: { intern: false, external: true },
           selected: false
         },
         {
@@ -80,7 +79,7 @@ export const useParkingSpaceListings = (type: 'published' | 'available' = 'avail
           rentIncl: "595kr/mån",
           rentExcl: "595kr/mån",
           publications: 1,
-          queueTypes: { intern: true, external: false, poangfri: false },
+          queueTypes: { intern: true, external: false },
           selected: false
         }
       ] as ParkingSpaceForPublishing[]);
