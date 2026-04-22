@@ -18,6 +18,7 @@ export const navigationNodes: TreeNode[] = [
     id: "rentals",
     label: "Uthyrning",
     icon: "key",
+    path: "/rentals",
     children: [
       {
         id: "rentals-housing",
