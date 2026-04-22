@@ -69,7 +69,7 @@ const getMockDataByType = (type: StorageListingType): StorageSpace[] => {
       area: "Centrum",
       type: "Lägenhetsförråd",
       size: "1,8 m²",
-      queueType: "Poängfri",
+      queueType: "Extern",
       rent: "85 kr/mån",
       seekers: 2,
       publishedFrom: "2024-01-25",

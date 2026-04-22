@@ -39,7 +39,7 @@ export const PublishParkingSpacesDialog = () => {
     setSelectedCount(updated.filter(space => space.selected).length);
   };
 
-  const handleQueueTypeChange = (index: number, queueType: 'intern' | 'external' | 'poangfri', checked: boolean) => {
+  const handleQueueTypeChange = (index: number, queueType: 'intern' | 'external', checked: boolean) => {
     const updated = [...parkingSpaces];
     updated[index] = { 
       ...updated[index], 

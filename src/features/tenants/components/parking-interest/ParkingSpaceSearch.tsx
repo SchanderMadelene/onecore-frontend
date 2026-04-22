@@ -155,10 +155,7 @@ export const ParkingSpaceSearch = ({
                             <Badge variant="secondary" className="text-xs">Intern</Badge>
                           )}
                           {space.queueTypes.external && (
-                            <Badge variant="secondary" className="text-xs">Extern</Badge>
-                          )}
-                          {space.queueTypes.poangfri && (
-                            <Badge variant="secondary" className="text-xs">Poängfri</Badge>
+                            <Badge variant="secondary" className="text-xs">Extern (poängfri)</Badge>
                           )}
                         </div>
                       </div>
