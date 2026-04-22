@@ -1,16 +1,2 @@
-import { mockPropertyDetails } from "@/entities/property/data";
-
-export interface Building {
-  id: string;
-  propertyId: string;
-  name: string;
-}
-
-// Extract all buildings from property details
-export const mockBuildings: Building[] = Object.values(mockPropertyDetails).flatMap(property => 
-  property.buildings.map(building => ({
-    id: building.id,
-    propertyId: property.id,
-    name: building.name
-  }))
-);
+// Re-export from features layer (single source of truth)
+export { mockBuildings, type Building } from "@/features/buildings/data/buildings";
