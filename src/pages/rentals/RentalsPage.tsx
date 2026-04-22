@@ -7,12 +7,12 @@ import { ArrowLeft, Car, Home, Archive } from "lucide-react";
 import { ParkingSpacesTable, HousingSpacesTable, StorageSpacesTable } from "@/features/rentals";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
-type RentalType = "bostad" | "bilplats" | "forrad";
+type RentalType = "housing" | "parking" | "storage";
 
 const TYPE_META: Record<RentalType, { title: string; icon: React.ReactNode; toggleKey: keyof ReturnType<typeof useFeatureToggles>["features"] }> = {
-  bostad: { title: "Bostad", icon: <Home className="h-5 w-5" />, toggleKey: "showRentalsHousing" },
-  bilplats: { title: "Bilplats", icon: <Car className="h-5 w-5" />, toggleKey: "showRentalsParking" },
-  forrad: { title: "Förråd", icon: <Archive className="h-5 w-5" />, toggleKey: "showRentalsStorage" },
+  housing: { title: "Bostad", icon: <Home className="h-5 w-5" />, toggleKey: "showRentalsHousing" },
+  parking: { title: "Bilplats", icon: <Car className="h-5 w-5" />, toggleKey: "showRentalsParking" },
+  storage: { title: "Förråd", icon: <Archive className="h-5 w-5" />, toggleKey: "showRentalsStorage" },
 };
 
 const RentalsPage = () => {
@@ -22,7 +22,7 @@ const RentalsPage = () => {
   const { features } = useFeatureToggles();
 
   const segment = location.pathname.split("/")[2] as RentalType | undefined;
-  const type: RentalType = (segment && segment in TYPE_META) ? segment : "bostad";
+  const type: RentalType = (segment && segment in TYPE_META) ? segment : "housing";
   const meta = TYPE_META[type];
   const isEnabled = features[meta.toggleKey];
 
@@ -48,9 +48,9 @@ const RentalsPage = () => {
               <p className="text-sm mt-2">Aktivera sektionen i inställningarna</p>
             </div>
           </div>
-        ) : type === "bostad" ? (
+        ) : type === "housing" ? (
           <HousingSpacesTable />
-        ) : type === "bilplats" ? (
+        ) : type === "parking" ? (
           <ParkingSpacesTable />
         ) : (
           <StorageSpacesTable />
