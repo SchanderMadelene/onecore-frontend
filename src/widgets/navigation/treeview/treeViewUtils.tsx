@@ -58,6 +58,10 @@ export const getNodeIcon = (iconName?: string): ReactNode => {
       return <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />;
     case "clipboard-list":
       return <ClipboardList className="h-4 w-4 text-muted-foreground" />;
+    case "car":
+      return <Car className="h-4 w-4 text-muted-foreground" />;
+    case "archive":
+      return <Archive className="h-4 w-4 text-muted-foreground" />;
     case "door-open":
       return <DoorOpen className="h-4 w-4 text-muted-foreground" />;
     case "monitor":
