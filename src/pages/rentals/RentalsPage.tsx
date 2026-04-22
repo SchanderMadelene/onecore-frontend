@@ -1,10 +1,10 @@
 import { PageLayout } from "@/layouts";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { Key } from "lucide-react";
 import { ParkingSpacesTable, HousingSpacesTable, StorageSpacesTable } from "@/features/rentals";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { RentalsHeader } from "./components/RentalsHeader";
+import { RentalsOverview } from "./RentalsOverview";
 
 type RentalsSection = "housing" | "parking" | "storage";
 
@@ -22,23 +22,13 @@ const RentalsPage = ({ section }: RentalsPageProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { features } = useFeatureToggles();
 
-  // Toppnivåsidan /rentals — redirecta till första aktiva sektion
+  // Toppnivåsidan /rentals — visa samlingsöversikt
   if (!section) {
-    if (features.showRentalsHousing) return <Navigate to="/rentals/housing" replace />;
-    if (features.showRentalsParking) return <Navigate to="/rentals/parking" replace />;
-    if (features.showRentalsStorage) return <Navigate to="/rentals/storage" replace />;
-
     return (
       <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
         <div className="w-full">
           <RentalsHeader />
-          <div className="flex items-center justify-center h-[400px] text-muted-foreground border rounded-md">
-            <div className="text-center">
-              <Key className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-              <p>Inga uthyrningssektioner är aktiverade</p>
-              <p className="text-sm mt-2">Aktivera bostad, bilplats eller förråd i inställningarna</p>
-            </div>
-          </div>
+          <RentalsOverview />
         </div>
       </PageLayout>
     );
