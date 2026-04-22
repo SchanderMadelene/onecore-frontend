@@ -1,84 +1,54 @@
 
 
-## Plan: Åtgärda konsekvensbrister #3, #4, #6
+## Plan: Återskapa Uthyrning → Förråd
 
-### #3 — Semantisk badge i OfferedHousingTable (mobil)
-**Fil:** `src/features/rentals/components/OfferedHousingTable.tsx`
+Förråd ska följa exakt samma mönster som Bilplats (per memory `cross-domain-logic-reuse` och `queue-types-model`). Inga visuella avvikelser från befintliga uthyrningsvyer.
 
-Byt ut den hårdkodade Tailwind-färgade badgen mot semantisk variant.
+### 1. Datalager för förråd
+Skapa `src/features/rentals/data/storage-spaces.ts` med anonymiserad svensk mockdata för ~6–10 förråd (t.ex. "Källarförråd", "Vindsförråd", "Loftförråd") på adresser som redan finns i bostads-/bilplatsmocken. Fält matchar `ParkingSpace`-formen: `id` (F-001…), `address`, `area`, `type` (Källarförråd/Vindsförråd/Loft), `queueType` (Intern/Extern), `rent` (150–400 kr/mån), `seekers`, `publishedFrom`, `publishedTo`.
 
-```tsx
-// Före
-<Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-  Väntar på svar
-</Badge>
+Lägg till typ `StorageSpace` i `src/features/rentals/types/storage.ts` (samma form som `ParkingSpace`).
 
-// Efter
-<Badge variant="warning">Väntar</Badge>
-```
+### 2. Hook för listningar per status
+Skapa `src/features/rentals/hooks/useStorageSpaceListingsByType.ts` som speglar `useParkingSpaceListingsByType` 1:1 (samma `ListingType`-union: `published | ready-for-offer | offered | history | needs-republish`). Returnerar mockdata uppdelat på status — ingen backend-fetch behövs (förråd finns inte i Tenfast än, samma fallback-mönster som parking).
 
-(Använder också den förkortade texten "Väntar" för konsekvens med tidigare badge-förkortningar.)
+### 3. Tabellkomponent + flikar
+Skapa `src/features/rentals/components/StorageSpacesTable.tsx` som klonar `ParkingSpacesTable` strukturellt:
+- Använder `MobileTabs` med samma fem flikar
+- Återanvänder befintliga tab-komponenter (`PublishedParkingTab`, `ReadyForOfferTab`, `OfferedTab`, `HistoryTab`, `NeedsRepublishTab`) parametriserade via en ny prop `domain: "parking" | "storage"` så att de hämtar rätt hook och visar rätt rubrik. Detta undviker dubblerad UI-kod.
 
-### #4 — Semantisk status-badge i HousingHeader
-**Fil:** `src/pages/rentals/components/HousingHeader.tsx`
+Alternativt (om tab-komponenterna är för tätt kopplade till parking): skapa tunna `Storage*Tab.tsx`-wrappers som anropar samma underliggande listkomponent med storage-hooken. Beslutas vid implementation efter att ha läst tab-filerna.
 
-Ersätt ad-hoc styling med semantisk variant.
+Exportera `StorageSpacesTable` från `src/features/rentals/components/index.ts` och `src/features/rentals/index.ts`.
 
-```tsx
-// Före
-<Badge variant="outline" className="bg-primary/10 text-primary font-normal">
-  {offerStatus}
-</Badge>
+### 4. Routing i `RentalsPage`
+Ersätt placeholder-kortet ("Aktiva förrådskontrakt 89 / Lediga förråd 15") med `<StorageSpacesTable />` när `type === "forrad"`.
 
-// Efter
-<Badge variant="info">{offerStatus}</Badge>
-```
+### 5. Overview-KPIer
+I `RentalsOverview.tsx`: byt ut hårdkodade `storageMetrics` (`loss: 0`, KPIs `"—"`) mot riktiga värden via `useStorageSpaceListingsByType` — exakt samma beräkning som `parkingMetrics`. Då tänds Förråd-kortet med korrekt hyresbortfall, totalantal och KPI-räkningar.
 
-### #6 — Extrahera duplicerad toolbar i HousingSpacesTable
-**Fil:** `src/features/rentals/components/HousingSpacesTable.tsx`
+### Tekniska detaljer
+- Återanvänder `ParkingSpace`-typen där möjligt; ny `StorageSpace`-typ delar form
+- Endast två kötyper: Intern, Extern (per memory)
+- Mockdata följer anonymiseringspolicy: fiktiva adresser, 4-siffriga IDs, inga personnummer
+- Inga ändringar i `App.tsx`, sidomeny, eller delade komponenter
 
-Skapa en intern komponent `HousingTabToolbar` som tar `placeholder` som prop. Eliminerar ~80 rader duplicering över sex flikar.
+### Filer
 
-```tsx
-function HousingTabToolbar({ placeholder, onCreateHousingAd }: {
-  placeholder: string;
-  onCreateHousingAd: () => void;
-}) {
-  return (
-    <div className="flex flex-col sm:flex-row justify-between gap-4">
-      <div className="relative">
-        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-        <Input placeholder={placeholder} className="pl-9 w-full sm:w-[300px]" />
-      </div>
-      <div className="flex gap-2">
-        <Button variant="outline" onClick={onCreateHousingAd}>
-          Ny bostadsannons
-        </Button>
-        <ApplicantProfileModal />
-      </div>
-    </div>
-  );
-}
-```
+**Nya:**
+- `src/features/rentals/types/storage.ts`
+- `src/features/rentals/data/storage-spaces.ts`
+- `src/features/rentals/hooks/useStorageSpaceListingsByType.ts`
+- `src/features/rentals/components/StorageSpacesTable.tsx`
 
-Notera: `UserPlus`-ikonen tas bort från "Ny bostadsannons" eftersom primära/sekundära textknappar inte ska ha ikoner (Core-regel).
+**Ändrade:**
+- `src/features/rentals/components/tabs/*.tsx` (acceptera `domain`-prop) eller nya Storage-tab-wrappers
+- `src/features/rentals/components/index.ts`, `src/features/rentals/index.ts`
+- `src/pages/rentals/RentalsPage.tsx` (rendera `StorageSpacesTable`)
+- `src/pages/rentals/RentalsOverview.tsx` (riktiga `storageMetrics`)
 
-Varje flik blir då:
-```tsx
-{
-  value: "publicerade",
-  label: "Publicerade",
-  content: (
-    <div className="flex flex-col space-y-4">
-      <HousingTabToolbar placeholder="Sök publicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
-      <PublishedHousingTable />
-    </div>
-  )
-}
-```
-
-### Påverkan
-- 3 filer ändras
-- Ingen funktionsförändring — endast visuell konsekvens och kodrensning
-- Inga nya delade komponenter (`HousingTabToolbar` lever lokalt i `HousingSpacesTable.tsx` enligt återanvändningsprincipen)
+### Out of scope
+- Detaljvy för enskilt förråd (`StorageDetailPage`) — tas i nästa iteration när tabellen är på plats
+- Backend-koppling (Tenfast har inte förråd än)
+- Erbjudande-/kontraktsflöde specifikt för förråd (återanvänder parkingens flöde tills behov uppstår)
 
