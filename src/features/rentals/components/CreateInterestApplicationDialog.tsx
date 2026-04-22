@@ -125,7 +125,7 @@ export const CreateInterestApplicationDialog = ({ parkingSpace, kind = "parking"
         </DialogHeader>
 
         <FormWrapper onSubmit={handleSubmit} maxHeight="70vh">
-          <ObjectInformation parkingSpace={parkingSpace} />
+          <ObjectInformation parkingSpace={parkingSpace} kind={kind} />
 
           <CustomerSearch 
             searchQuery={searchQuery}

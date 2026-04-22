@@ -5,9 +5,11 @@ import type { ParkingSpace } from "../types/parking";
 
 interface ObjectInformationProps {
   parkingSpace: ParkingSpace;
+  kind?: "parking" | "storage";
 }
 
-export const ObjectInformation = ({ parkingSpace }: ObjectInformationProps) => {
+export const ObjectInformation = ({ parkingSpace, kind = "parking" }: ObjectInformationProps) => {
+  const typeLabel = kind === "storage" ? "Förrådstyp" : "Bilplatstyp";
   return (
     <div className="space-y-3">
       <h3 className="text-lg font-semibold">Objektsinformation</h3>
@@ -27,7 +29,7 @@ export const ObjectInformation = ({ parkingSpace }: ObjectInformationProps) => {
               <p className="font-medium">{parkingSpace.area}</p>
             </div>
             <div>
-              <Label className="text-sm text-muted-foreground">Bilplatstyp</Label>
+              <Label className="text-sm text-muted-foreground">{typeLabel}</Label>
               <p className="font-medium">{parkingSpace.type}</p>
             </div>
             <div>
