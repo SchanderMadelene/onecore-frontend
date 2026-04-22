@@ -50,9 +50,7 @@ export function HousingHeader({
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-2">
             <h1 className="text-3xl font-bold tracking-tight">{housingAddress}</h1>
-            <Badge variant="outline" className="bg-primary/10 text-primary font-normal">
-              {offerStatus}
-            </Badge>
+            <Badge variant="info">{offerStatus}</Badge>
           </div>
           {!readOnly && (
             <div className="flex items-center gap-2">

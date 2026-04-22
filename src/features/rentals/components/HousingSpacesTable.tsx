@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, UserPlus } from "lucide-react";
+import { Search } from "lucide-react";
 import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
 import { PublishedHousingTable } from "./PublishedHousingTable";
 import { OfferedHousingTable } from "./OfferedHousingTable";
@@ -12,6 +12,29 @@ import { ApplicantProfileModal } from "./ApplicantProfileModal";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
+
+function HousingTabToolbar({
+  placeholder,
+  onCreateHousingAd,
+}: {
+  placeholder: string;
+  onCreateHousingAd: () => void;
+}) {
+  return (
+    <div className="flex flex-col sm:flex-row justify-between gap-4">
+      <div className="relative">
+        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+        <Input placeholder={placeholder} className="pl-9 w-full sm:w-[300px]" />
+      </div>
+      <div className="flex gap-2">
+        <Button variant="outline" onClick={onCreateHousingAd}>
+          Ny bostadsannons
+        </Button>
+        <ApplicantProfileModal />
+      </div>
+    </div>
+  );
+}
 
 export function HousingSpacesTable() {
   const navigate = useNavigate();
@@ -39,19 +62,7 @@ export function HousingSpacesTable() {
       label: "Publicerade",
       content: (
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Sök publicerad bostad..." className="pl-9 w-full sm:w-[300px]" />
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
-                <UserPlus className="h-4 w-4" />
-                Ny bostadsannons
-              </Button>
-              <ApplicantProfileModal />
-            </div>
-          </div>
+          <HousingTabToolbar placeholder="Sök publicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
           <PublishedHousingTable />
         </div>
       )
@@ -61,19 +72,7 @@ export function HousingSpacesTable() {
       label: "Klara för erbjudande",
       content: (
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Sök bostad klar för erbjudande..." className="pl-9 w-full sm:w-[300px]" />
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
-                <UserPlus className="h-4 w-4" />
-                Ny bostadsannons
-              </Button>
-              <ApplicantProfileModal />
-            </div>
-          </div>
+          <HousingTabToolbar placeholder="Sök bostad klar för erbjudande..." onCreateHousingAd={handleCreateHousingAd} />
           <ReadyForOfferHousingTable />
         </div>
       )
@@ -83,19 +82,7 @@ export function HousingSpacesTable() {
       label: "Erbjudna",
       content: (
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Sök erbjuden bostad..." className="pl-9 w-full sm:w-[300px]" />
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
-                <UserPlus className="h-4 w-4" />
-                Ny bostadsannons
-              </Button>
-              <ApplicantProfileModal />
-            </div>
-          </div>
+          <HousingTabToolbar placeholder="Sök erbjuden bostad..." onCreateHousingAd={handleCreateHousingAd} />
           <OfferedHousingTable />
         </div>
       )
@@ -105,19 +92,7 @@ export function HousingSpacesTable() {
       label: "Kontrakt",
       content: (
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Sök bostad för kontrakt..." className="pl-9 w-full sm:w-[300px]" />
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
-                <UserPlus className="h-4 w-4" />
-                Ny bostadsannons
-              </Button>
-              <ApplicantProfileModal />
-            </div>
-          </div>
+          <HousingTabToolbar placeholder="Sök bostad för kontrakt..." onCreateHousingAd={handleCreateHousingAd} />
           <ContractHousingTable />
         </div>
       )
@@ -127,19 +102,7 @@ export function HousingSpacesTable() {
       label: "Historik",
       content: (
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Sök i historik..." className="pl-9 w-full sm:w-[300px]" />
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
-                <UserPlus className="h-4 w-4" />
-                Ny bostadsannons
-              </Button>
-              <ApplicantProfileModal />
-            </div>
-          </div>
+          <HousingTabToolbar placeholder="Sök i historik..." onCreateHousingAd={handleCreateHousingAd} />
           <HistoryHousingTable />
         </div>
       )
@@ -149,19 +112,7 @@ export function HousingSpacesTable() {
       label: "Behov av publicering",
       content: (
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Sök opublicerad bostad..." className="pl-9 w-full sm:w-[300px]" />
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2" onClick={handleCreateHousingAd}>
-                <UserPlus className="h-4 w-4" />
-                Ny bostadsannons
-              </Button>
-              <ApplicantProfileModal />
-            </div>
-          </div>
+          <HousingTabToolbar placeholder="Sök opublicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
           <UnpublishedHousingTable />
         </div>
       )

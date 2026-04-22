@@ -76,9 +76,7 @@ export function OfferedHousingTable() {
         <div className="text-sm text-muted-foreground">{getHousingObjectNumber(housing.id)}</div>
         <div className="text-sm text-muted-foreground">{housing.area}</div>
         <div className="flex items-center gap-2 mt-2">
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-            Väntar på svar
-          </Badge>
+          <Badge variant="warning">Väntar</Badge>
           <span className="text-sm text-muted-foreground">{offer?.selectedApplicants.length || 0} erbjudna</span>
         </div>
         <HousingRowActions housing={housing} tab="erbjudna" variant="mobile" />
