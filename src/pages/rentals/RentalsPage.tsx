@@ -48,9 +48,9 @@ const RentalsPage = () => {
               <p className="text-sm mt-2">Aktivera sektionen i inställningarna</p>
             </div>
           </div>
-        ) : type === "bostad" ? (
+        ) : type === "housing" ? (
           <HousingSpacesTable />
-        ) : type === "bilplats" ? (
+        ) : type === "parking" ? (
           <ParkingSpacesTable />
         ) : (
           <StorageSpacesTable />

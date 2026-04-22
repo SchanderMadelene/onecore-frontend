@@ -221,7 +221,7 @@ const RentalsOverview = () => {
             totalCount={housingMetrics.totalCount}
             kpis={housingMetrics.kpis}
             ctaLabel="Öppna bostad"
-            onClick={() => navigate("/rentals/bostad")}
+            onClick={() => navigate("/rentals/housing")}
           />
           <SectionCard
             title="Bilplats"
@@ -232,7 +232,7 @@ const RentalsOverview = () => {
             totalCount={parkingMetrics.totalCount}
             kpis={parkingMetrics.kpis}
             ctaLabel="Öppna bilplats"
-            onClick={() => navigate("/rentals/bilplats")}
+            onClick={() => navigate("/rentals/parking")}
           />
           <SectionCard
             title="Förråd"
@@ -243,7 +243,7 @@ const RentalsOverview = () => {
             totalCount={storageMetrics.totalCount}
             kpis={storageMetrics.kpis}
             ctaLabel="Öppna förråd"
-            onClick={() => navigate("/rentals/forrad")}
+            onClick={() => navigate("/rentals/storage")}
           />
         </div>
       </div>
