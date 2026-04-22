@@ -162,7 +162,7 @@ const AppRoutes = () => {
         path="/rentals" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <RentalsOverview />
+            <RentalsLayout><RentalsOverview /></RentalsLayout>
           </ProtectedRoute>
         } 
       />
@@ -170,7 +170,7 @@ const AppRoutes = () => {
         path="/rentals/bostad" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <RentalsPage />
+            <RentalsLayout><RentalsPage /></RentalsLayout>
           </ProtectedRoute>
         } 
       />
@@ -178,7 +178,7 @@ const AppRoutes = () => {
         path="/rentals/bilplats" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <RentalsPage />
+            <RentalsLayout><RentalsPage /></RentalsLayout>
           </ProtectedRoute>
         } 
       />
@@ -186,7 +186,7 @@ const AppRoutes = () => {
         path="/rentals/forrad" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <RentalsPage />
+            <RentalsLayout><RentalsPage /></RentalsLayout>
           </ProtectedRoute>
         } 
       />
@@ -194,7 +194,7 @@ const AppRoutes = () => {
         path="/rentals/create-housing-ad" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <CreateHousingAdPage />
+            <RentalsLayout><CreateHousingAdPage /></RentalsLayout>
           </ProtectedRoute>
         } 
       />
@@ -202,7 +202,7 @@ const AppRoutes = () => {
         path="/rentals/parking/:parkingSpaceId" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <ParkingSpaceDetailPage />
+            <RentalsLayout><ParkingSpaceDetailPage /></RentalsLayout>
           </ProtectedRoute>
         } 
       />
@@ -210,7 +210,7 @@ const AppRoutes = () => {
         path="/rentals/housing/:housingId" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <HousingDetailPage />
+            <RentalsLayout><HousingDetailPage /></RentalsLayout>
           </ProtectedRoute>
         } 
       />
@@ -218,7 +218,7 @@ const AppRoutes = () => {
         path="/rentals/residence-profile" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
-            <ResidenceProfilePage />
+            <RentalsLayout><ResidenceProfilePage /></RentalsLayout>
           </ProtectedRoute>
         } 
       />
