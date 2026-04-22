@@ -47,7 +47,7 @@ export const useParkingSpaceListing = (id: number) => {
         address: "Högloftsvägen 12",
         area: "Västerås Centrum",
         type: "Carport",
-        queueType: "Kronologisk",
+        queueType: "Extern",
         rent: "750 kr/mån",
         seekers: 5,
         publishedFrom: "2024-02-01",
