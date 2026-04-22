@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Car, Home, Archive } from "lucide-react";
-import { ParkingSpacesTable, HousingSpacesTable } from "@/features/rentals";
+import { ParkingSpacesTable, HousingSpacesTable, StorageSpacesTable } from "@/features/rentals";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 
 type RentalType = "bostad" | "bilplats" | "forrad";
@@ -53,26 +53,7 @@ const RentalsPage = () => {
         ) : type === "bilplats" ? (
           <ParkingSpacesTable />
         ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle>Förrådsuthyrning</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Översikt av förrådsuthyrningar och lediga förråd.
-              </p>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="bg-muted p-4 rounded-md">
-                  <h3 className="font-medium mb-2">Aktiva förrådskontrakt</h3>
-                  <div className="text-2xl font-bold">89</div>
-                </div>
-                <div className="bg-muted p-4 rounded-md">
-                  <h3 className="font-medium mb-2">Lediga förråd</h3>
-                  <div className="text-2xl font-bold">15</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <StorageSpacesTable />
         )}
       </div>
     </PageLayout>
