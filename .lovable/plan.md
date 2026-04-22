@@ -1,84 +1,38 @@
 
 
-## Plan: Åtgärda konsekvensbrister #3, #4, #6
+## Plan: Snabba upp laddningstiden
 
-### #3 — Semantisk badge i OfferedHousingTable (mobil)
-**Fil:** `src/features/rentals/components/OfferedHousingTable.tsx`
+Tre steg, störst effekt först. Inga visuella ändringar.
 
-Byt ut den hårdkodade Tailwind-färgade badgen mot semantisk variant.
+### 1. Ta bort dubblerad mockdata under `src/entities/`
+`src/entities/property/data/properties/` är en exakt kopia av `src/features/properties/data/properties/`. Vi raderar dubbletten och pekar om `src/entities/property/data/index.ts` att re-exportera från features-lagret (eller tar bort barrelen helt om inget importerar den). Samma genomgång för andra `src/entities/*/data/`-mappar som visar sig vara dubbletter.
 
-```tsx
-// Före
-<Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-  Väntar på svar
-</Badge>
+### 2. Lazy-loada tung mockdata i React Query-hooks
+Hooks som idag importerar mock på toppnivå konverteras till dynamisk import inuti `queryFn`:
 
-// Efter
-<Badge variant="warning">Väntar</Badge>
-```
-
-(Använder också den förkortade texten "Väntar" för konsekvens med tidigare badge-förkortningar.)
-
-### #4 — Semantisk status-badge i HousingHeader
-**Fil:** `src/pages/rentals/components/HousingHeader.tsx`
-
-Ersätt ad-hoc styling med semantisk variant.
-
-```tsx
-// Före
-<Badge variant="outline" className="bg-primary/10 text-primary font-normal">
-  {offerStatus}
-</Badge>
-
-// Efter
-<Badge variant="info">{offerStatus}</Badge>
-```
-
-### #6 — Extrahera duplicerad toolbar i HousingSpacesTable
-**Fil:** `src/features/rentals/components/HousingSpacesTable.tsx`
-
-Skapa en intern komponent `HousingTabToolbar` som tar `placeholder` som prop. Eliminerar ~80 rader duplicering över sex flikar.
-
-```tsx
-function HousingTabToolbar({ placeholder, onCreateHousingAd }: {
-  placeholder: string;
-  onCreateHousingAd: () => void;
-}) {
-  return (
-    <div className="flex flex-col sm:flex-row justify-between gap-4">
-      <div className="relative">
-        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-        <Input placeholder={placeholder} className="pl-9 w-full sm:w-[300px]" />
-      </div>
-      <div className="flex gap-2">
-        <Button variant="outline" onClick={onCreateHousingAd}>
-          Ny bostadsannons
-        </Button>
-        <ApplicantProfileModal />
-      </div>
-    </div>
-  );
+```ts
+// usePropertyDetail.ts (före → efter)
+queryFn: async () => {
+  const { mockPropertyDetails } = await import("../data");
+  return mockPropertyDetails[id];
 }
 ```
 
-Notera: `UserPlus`-ikonen tas bort från "Ny bostadsannons" eftersom primära/sekundära textknappar inte ska ha ikoner (Core-regel).
+Gäller minst: `usePropertyDetail`, `useBuildingDetail`, samt motsvarande hooks för orders, invoices, lease-contracts, barriers och tenants. Barrel-exports (`index.ts`) som drar in alla mockfiler trimmas så att Vite inte traverserar hela trädet vid cold start.
 
-Varje flik blir då:
-```tsx
-{
-  value: "publicerade",
-  label: "Publicerade",
-  content: (
-    <div className="flex flex-col space-y-4">
-      <HousingTabToolbar placeholder="Sök publicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
-      <PublishedHousingTable />
-    </div>
-  )
-}
-```
+### 3. Flytta `HousingOffersProvider` ur rot-trädet
+Provider:n wrappar hela appen i `App.tsx` och initierar uthyrnings-state direkt. Vi flyttar den till uthyrnings-routerns layout (runt `/rentals/*`-routes) så att startsidan slipper kostnaden. Samma genomgång för andra rot-providers som inte används globalt.
 
-### Påverkan
-- 3 filer ändras
-- Ingen funktionsförändring — endast visuell konsekvens och kodrensning
-- Inga nya delade komponenter (`HousingTabToolbar` lever lokalt i `HousingSpacesTable.tsx` enligt återanvändningsprincipen)
+### Tekniska detaljer
+
+- Ingen ändring av API-signaturer på hooks — bara intern implementation
+- Inga UI-ändringar
+- React Query cachar resultatet, så dynamisk import sker en gång per session per nyckel
+- Verifierar att inga andra moduler importerar de raderade `entities/*/data`-filerna innan borttagning
+
+### Out of scope
+
+- Routesplitring (redan på plats via `lazyWithRetry`)
+- Ikon-tree-shaking (Vite hanterar redan)
+- Backend-anrop (allt är mock idag)
 
