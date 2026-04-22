@@ -7,9 +7,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { FeatureTogglesProvider } from "@/contexts/FeatureTogglesContext";
-import { HousingOffersProvider } from "@/contexts/HousingOffersContext";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { RoleProvider } from "@/contexts/RoleContext";
+import { RentalsLayout } from "@/pages/rentals/RentalsLayout";
 
 const isDynamicImportError = (error: unknown): boolean => {
   if (!(error instanceof Error)) return false;
@@ -309,17 +309,15 @@ const App = () => {
       <TooltipProvider>
         <FeatureTogglesProvider>
           <RoleProvider>
-            <HousingOffersProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <AppErrorBoundary>
-                  <Suspense fallback={<AppLoadingSkeleton />}>
-                    <AppRoutes />
-                  </Suspense>
-                </AppErrorBoundary>
-              </BrowserRouter>
-            </HousingOffersProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AppErrorBoundary>
+                <Suspense fallback={<AppLoadingSkeleton />}>
+                  <AppRoutes />
+                </Suspense>
+              </AppErrorBoundary>
+            </BrowserRouter>
           </RoleProvider>
         </FeatureTogglesProvider>
       </TooltipProvider>
