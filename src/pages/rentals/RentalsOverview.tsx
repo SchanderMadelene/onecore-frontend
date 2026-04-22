@@ -129,7 +129,7 @@ export const RentalsOverview = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <SectionCard
         title="Bostad"
         description="Bostadsannonser, intresseanmälningar och tilldelning"
