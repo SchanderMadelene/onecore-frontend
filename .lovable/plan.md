@@ -1,54 +1,45 @@
 
 
-## Plan: Återskapa Uthyrning → Förråd
+## Plan: Byt tillbaka URL-segmenten till engelska
 
-Förråd ska följa exakt samma mönster som Bilplats (per memory `cross-domain-logic-reuse` och `queue-types-model`). Inga visuella avvikelser från befintliga uthyrningsvyer.
+Återställer `/rentals/housing`, `/rentals/parking`, `/rentals/storage` som URL-segment. Visningsetiketter i sidomenyn förblir på svenska (Bostad/Bilplats/Förråd).
 
-### 1. Datalager för förråd
-Skapa `src/features/rentals/data/storage-spaces.ts` med anonymiserad svensk mockdata för ~6–10 förråd (t.ex. "Källarförråd", "Vindsförråd", "Loftförråd") på adresser som redan finns i bostads-/bilplatsmocken. Fält matchar `ParkingSpace`-formen: `id` (F-001…), `address`, `area`, `type` (Källarförråd/Vindsförråd/Loft), `queueType` (Intern/Extern), `rent` (150–400 kr/mån), `seekers`, `publishedFrom`, `publishedTo`.
+### Ändringar
 
-Lägg till typ `StorageSpace` i `src/features/rentals/types/storage.ts` (samma form som `ParkingSpace`).
+**1. `src/widgets/navigation/treeview/data/navigation.ts`**
+Uppdatera path för underposterna:
+- `/rentals/bostad` → `/rentals/housing`
+- `/rentals/bilplats` → `/rentals/parking`
+- `/rentals/forrad` → `/rentals/storage`
 
-### 2. Hook för listningar per status
-Skapa `src/features/rentals/hooks/useStorageSpaceListingsByType.ts` som speglar `useParkingSpaceListingsByType` 1:1 (samma `ListingType`-union: `published | ready-for-offer | offered | history | needs-republish`). Returnerar mockdata uppdelat på status — ingen backend-fetch behövs (förråd finns inte i Tenfast än, samma fallback-mönster som parking).
+Etiketter (`label: "Bostad"` etc.) lämnas oförändrade.
 
-### 3. Tabellkomponent + flikar
-Skapa `src/features/rentals/components/StorageSpacesTable.tsx` som klonar `ParkingSpacesTable` strukturellt:
-- Använder `MobileTabs` med samma fem flikar
-- Återanvänder befintliga tab-komponenter (`PublishedParkingTab`, `ReadyForOfferTab`, `OfferedTab`, `HistoryTab`, `NeedsRepublishTab`) parametriserade via en ny prop `domain: "parking" | "storage"` så att de hämtar rätt hook och visar rätt rubrik. Detta undviker dubblerad UI-kod.
+**2. `src/pages/rentals/RentalsPage.tsx`**
+Byt `RentalType`-union och `TYPE_META`-nycklar:
+- `"bostad"` → `"housing"`
+- `"bilplats"` → `"parking"`
+- `"forrad"` → `"storage"`
 
-Alternativt (om tab-komponenterna är för tätt kopplade till parking): skapa tunna `Storage*Tab.tsx`-wrappers som anropar samma underliggande listkomponent med storage-hooken. Beslutas vid implementation efter att ha läst tab-filerna.
+`meta.title` behåller svenska visningsnamn.
 
-Exportera `StorageSpacesTable` från `src/features/rentals/components/index.ts` och `src/features/rentals/index.ts`.
+**3. Routes i `App.tsx`**
+Verifiera och uppdatera ev. route-definitioner som matchar `/rentals/:type` så att de fungerar mot de nya segmenten. Om routern använder en wildcard/`:type`-param krävs ingen ändring; om explicita paths finns för bostad/bilplats/forrad byts de till engelska.
 
-### 4. Routing i `RentalsPage`
-Ersätt placeholder-kortet ("Aktiva förrådskontrakt 89 / Lediga förråd 15") med `<StorageSpacesTable />` när `type === "forrad"`.
-
-### 5. Overview-KPIer
-I `RentalsOverview.tsx`: byt ut hårdkodade `storageMetrics` (`loss: 0`, KPIs `"—"`) mot riktiga värden via `useStorageSpaceListingsByType` — exakt samma beräkning som `parkingMetrics`. Då tänds Förråd-kortet med korrekt hyresbortfall, totalantal och KPI-räkningar.
+**4. Genomsökning av referenser**
+Sök efter strängar `"/rentals/bostad"`, `"/rentals/bilplats"`, `"/rentals/forrad"` och `?tab=bostad`/`?tab=bilplats`/`?tab=forrad` i hela `src/` och uppdatera alla träffar (t.ex. `CreateHousingAdPage` `navigate('/rentals?tab=bostad')`, ev. breadcrumb-mappningar, favoriter, länkar från overview-kortet).
 
 ### Tekniska detaljer
-- Återanvänder `ParkingSpace`-typen där möjligt; ny `StorageSpace`-typ delar form
-- Endast två kötyper: Intern, Extern (per memory)
-- Mockdata följer anonymiseringspolicy: fiktiva adresser, 4-siffriga IDs, inga personnummer
-- Inga ändringar i `App.tsx`, sidomeny, eller delade komponenter
+- Endast URL-segment ändras — visningstext förblir svensk per befintligt mönster
+- Detaljsidor (`/rentals/parking/:id`, `/rentals/housing/:id`) påverkas inte (redan engelska)
+- Inga sparade favoriter migreras automatiskt; gamla länkar med svenska segment kommer att 404:a (acceptabelt — mock-state)
 
-### Filer
-
-**Nya:**
-- `src/features/rentals/types/storage.ts`
-- `src/features/rentals/data/storage-spaces.ts`
-- `src/features/rentals/hooks/useStorageSpaceListingsByType.ts`
-- `src/features/rentals/components/StorageSpacesTable.tsx`
-
-**Ändrade:**
-- `src/features/rentals/components/tabs/*.tsx` (acceptera `domain`-prop) eller nya Storage-tab-wrappers
-- `src/features/rentals/components/index.ts`, `src/features/rentals/index.ts`
-- `src/pages/rentals/RentalsPage.tsx` (rendera `StorageSpacesTable`)
-- `src/pages/rentals/RentalsOverview.tsx` (riktiga `storageMetrics`)
+### Filer som ändras
+- `src/widgets/navigation/treeview/data/navigation.ts`
+- `src/pages/rentals/RentalsPage.tsx`
+- `src/App.tsx` (vid behov)
+- `src/pages/rentals/CreateHousingAdPage.tsx` och andra filer som länkar till `/rentals/{svenskt-segment}` (identifieras vid implementation)
 
 ### Out of scope
-- Detaljvy för enskilt förråd (`StorageDetailPage`) — tas i nästa iteration när tabellen är på plats
-- Backend-koppling (Tenfast har inte förråd än)
-- Erbjudande-/kontraktsflöde specifikt för förråd (återanvänder parkingens flöde tills behov uppstår)
+- Översättning av visningsetiketter
+- Migrering av sparade favoriter
 
