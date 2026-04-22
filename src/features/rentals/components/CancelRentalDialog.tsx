@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { getMockApplicantsForParking } from "../data/mockParkingApplicants";
 
-export type CancelRentalKind = "parking" | "housing";
+export type CancelRentalKind = "parking" | "housing" | "storage";
 
 interface CancelRentalSubject {
   id: string;
@@ -58,7 +58,7 @@ export function CancelRentalDialog({
   onOpenChange,
   onCancelled,
 }: CancelRentalDialogProps) {
-  const noun = kind === "housing" ? "bostad" : "bilplats";
+  const noun = kind === "housing" ? "bostad" : kind === "storage" ? "förråd" : "bilplats";
 
   const applicants = useMemo(
     () => getMockApplicantsForParking(subject.id, subject.seekers),

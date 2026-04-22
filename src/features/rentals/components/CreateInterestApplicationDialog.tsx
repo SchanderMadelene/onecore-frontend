@@ -16,14 +16,17 @@ import { ValidationAlerts } from "./interest-application/ValidationAlerts";
 import { ApplicationTypeSelection } from "./interest-application/ApplicationTypeSelection";
 import { NotesSection } from "./interest-application/NotesSection";
 
+export type InterestApplicationKind = "parking" | "storage";
+
 interface CreateInterestApplicationDialogProps {
   parkingSpace: ParkingSpace;
+  kind?: InterestApplicationKind;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   hideTrigger?: boolean;
 }
 
-export const CreateInterestApplicationDialog = ({ parkingSpace, open: controlledOpen, onOpenChange, hideTrigger }: CreateInterestApplicationDialogProps) => {
+export const CreateInterestApplicationDialog = ({ parkingSpace, kind = "parking", open: controlledOpen, onOpenChange, hideTrigger }: CreateInterestApplicationDialogProps) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = (v: boolean) => {
