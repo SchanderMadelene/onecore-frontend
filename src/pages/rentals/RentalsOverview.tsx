@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Home, Car, Archive, ArrowRight, Users, Megaphone, FileSignature, RotateCcw } from "lucide-react";
+import { Home, Car, Archive, ArrowRight, Users, Megaphone, FileSignature, RotateCcw, TrendingDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
@@ -22,10 +22,22 @@ interface SectionCardProps {
   icon: React.ComponentType<{ className?: string }>;
   basePath: string;
   stats: SectionStat[];
+  monthlyLoss: number;
+  vacantCount: number;
   enabled: boolean;
 }
 
-const SectionCard = ({ title, description, icon: Icon, basePath, stats, enabled }: SectionCardProps) => {
+// Tolkar t.ex. "8900kr/mån", "650 kr/mån", "1 250 kr/mån"
+const parseRent = (rent: string | undefined): number => {
+  if (!rent) return 0;
+  const digits = rent.replace(/[^\d]/g, "");
+  return digits ? parseInt(digits, 10) : 0;
+};
+
+const formatSEK = (n: number) =>
+  new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 }).format(n);
+
+const SectionCard = ({ title, description, icon: Icon, basePath, stats, monthlyLoss, vacantCount, enabled }: SectionCardProps) => {
   const navigate = useNavigate();
 
   if (!enabled) return null;
@@ -34,7 +46,8 @@ const SectionCard = ({ title, description, icon: Icon, basePath, stats, enabled 
 
   return (
     <Card className="flex flex-col overflow-hidden transition-shadow hover:shadow-md">
-      <div className="flex items-start justify-between gap-4 p-5 border-b">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4 p-5">
         <div className="flex items-start gap-3 min-w-0">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted">
             <Icon className="h-5 w-5 text-foreground" />
@@ -45,12 +58,34 @@ const SectionCard = ({ title, description, icon: Icon, basePath, stats, enabled 
           </div>
         </div>
         <div className="text-right shrink-0">
-          <div className="text-2xl font-semibold tabular-nums">{total}</div>
-          <div className="text-xs text-muted-foreground">objekt totalt</div>
+          <div className="text-sm text-muted-foreground tabular-nums">{total} objekt totalt</div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 border-b">
+      {/* Hyresbortfall – primär metrik */}
+      <div className="flex items-center justify-between gap-4 px-5 py-4 border-y bg-muted/30">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-destructive/10">
+            <TrendingDown className="h-4.5 w-4.5 text-destructive" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-xs uppercase tracking-wide text-muted-foreground font-medium">
+              Hyresbortfall / månad
+            </div>
+            <div className="text-xs text-muted-foreground mt-0.5">
+              {vacantCount} {vacantCount === 1 ? "ledigt objekt" : "lediga objekt"} utan kontrakt
+            </div>
+          </div>
+        </div>
+        <div className="text-right shrink-0">
+          <div className="text-3xl font-bold tabular-nums text-destructive">
+            {formatSEK(monthlyLoss)}
+          </div>
+        </div>
+      </div>
+
+      {/* KPI-grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0">
         {stats.map((stat) => {
           const StatIcon = stat.icon;
           return (
@@ -69,7 +104,7 @@ const SectionCard = ({ title, description, icon: Icon, basePath, stats, enabled 
         })}
       </div>
 
-      <div className="flex items-center justify-end p-3 bg-muted/30 mt-auto">
+      <div className="flex items-center justify-end p-3 bg-muted/30 border-t mt-auto">
         <Button
           variant="ghost"
           size="sm"
@@ -99,13 +134,37 @@ export const RentalsOverview = () => {
   const storageOffered = useStorageSpaceListingsByType("offered");
   const storageNeeds = useStorageSpaceListingsByType("needs-republish");
 
-  // Bostad – från lokala datamoduler
+  // Bostad
   const housingPublishedCount = publishedHousingSpaces.length;
   const housingReadyCount = publishedHousingSpaces.filter(
     (h) => (h.seekers ?? 0) > 0 && new Date(h.publishedTo) <= new Date()
   ).length;
   const housingNeedsCount = unpublishedHousingSpaces.length;
   const housingHistoryCount = historyHousingSpaces.length;
+
+  // Hyresbortfall: månadshyra × antal lediga (utan kontrakt) objekt
+  // Bostad: publicerade + behov av publicering (history räknas inte — där finns kontrakt)
+  const housingVacantRents = [
+    ...publishedHousingSpaces.map((h) => parseRent(h.rent)),
+    ...unpublishedHousingSpaces.map((h: any) => parseRent(h.rent)),
+  ];
+  const housingLoss = housingVacantRents.reduce((s, r) => s + r, 0);
+  const housingVacantCount = housingVacantRents.length;
+
+  const sumRents = (lists: Array<{ data?: Array<{ rent?: string }> }>) => {
+    let total = 0;
+    let count = 0;
+    for (const list of lists) {
+      for (const item of list.data ?? []) {
+        total += parseRent(item.rent);
+        count += 1;
+      }
+    }
+    return { total, count };
+  };
+
+  const parkingLossData = sumRents([parkingPublished, parkingReady, parkingNeeds]);
+  const storageLossData = sumRents([storagePublished, storageReady, storageNeeds]);
 
   const housingStats: SectionStat[] = [
     { label: "Publicerade", value: housingPublishedCount, subtab: "publicerade", icon: Megaphone },
@@ -136,6 +195,8 @@ export const RentalsOverview = () => {
         icon={Home}
         basePath="/rentals/housing"
         stats={housingStats}
+        monthlyLoss={housingLoss}
+        vacantCount={housingVacantCount}
         enabled={features.showRentalsHousing}
       />
       <SectionCard
@@ -144,6 +205,8 @@ export const RentalsOverview = () => {
         icon={Car}
         basePath="/rentals/parking"
         stats={parkingStats}
+        monthlyLoss={parkingLossData.total}
+        vacantCount={parkingLossData.count}
         enabled={features.showRentalsParking}
       />
       <SectionCard
@@ -152,6 +215,8 @@ export const RentalsOverview = () => {
         icon={Archive}
         basePath="/rentals/storage"
         stats={storageStats}
+        monthlyLoss={storageLossData.total}
+        vacantCount={storageLossData.count}
         enabled={features.showRentalsStorage}
       />
     </div>
