@@ -27,7 +27,7 @@ export function TenantContracts({ contracts, compact = false }: TenantContractsP
   const getContractCategory = (type: Contract["type"]) => {
     switch (type) {
       case "housing": return "Korttid";
-      case "parking": return "Poängfri";
+      case "parking": return "Extern";
       default: return "";
     }
   };
