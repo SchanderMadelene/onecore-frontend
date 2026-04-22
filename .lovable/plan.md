@@ -1,54 +1,84 @@
 
 
-## Problem
+## Plan: Åtgärda konsekvensbrister #3, #4, #6
 
-Nuvarande lösning på annonssidans header staplar alla actions som primärknappar bredvid varandra:
-`[Ny anmälan] [Avbryt uthyrning] [⊕ Skicka erbjudande]`
+### #3 — Semantisk badge i OfferedHousingTable (mobil)
+**Fil:** `src/features/rentals/components/OfferedHousingTable.tsx`
 
-Det skapar tre problem:
-1. **Visuell hierarki saknas** — den röda destructive-knappen "Avbryt uthyrning" konkurrerar med (och drar fokus från) den faktiska primära åtgärden "Skicka erbjudande".
-2. **Skalbarhet** — när status är "Publicerade" blir det fyra knappar i rad (Ny anmälan, Redigera, Tidigarelägg avpublicering, Avbryt uthyrning). Det blir en knappsoppa.
-3. **Bryter mot etablerat mönster** — i tabellraderna har vi medvetet en "primär text-knapp + more-icon"-struktur (se memory `table-action-layout-pattern`). Detaljsidan bör följa samma logik, inte motsatsen.
+Byt ut den hårdkodade Tailwind-färgade badgen mot semantisk variant.
 
-## Föreslagen lösning
+```tsx
+// Före
+<Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+  Väntar på svar
+</Badge>
 
-Återinför **samma mönster som tabellraderna** på detaljsidan: **en primär action + en more-icon med resten**. Regeln "alla menyactions ska finnas på detaljsidan" uppfylls fortfarande — men menyn finns kvar som meny, inte som knapprad.
-
-### Layout per status
-
-```text
-Publicerade:          [Ny anmälan]        [⋯]   ← menyn: Redigera, Tidigarelägg avpubl., Avbryt uthyrning
-Behov av publicering: [Publicera]         [⋯]   ← menyn: Redigera, Ta bort
-Klara för erbjudande: [⊕ Skicka erbjudande] [⋯] ← menyn: Ny anmälan, Avbryt uthyrning
-Erbjudna:             [Visa erbjudande]   [⋯]   ← menyn: Avbryt uthyrning
-Historik:             [Visa annons]              ← ingen meny
+// Efter
+<Badge variant="warning">Väntar</Badge>
 ```
 
-Den primära actionknappen är alltid **default-variant** (mörk/fylld), aldrig destructive. Destructive actions (Avbryt uthyrning, Ta bort, Återkalla) bor alltid i more-menyn där de får sin röda färg och separator — precis som i tabellen.
+(Använder också den förkortade texten "Väntar" för konsekvens med tidigare badge-förkortningar.)
 
-### "Skicka erbjudande" som specialfall
+### #4 — Semantisk status-badge i HousingHeader
+**Fil:** `src/pages/rentals/components/HousingHeader.tsx`
 
-På "Klara för erbjudande" är primäråtgärden kontextuell (kräver minst en vald sökande, har egen disabled-logik och ikon). Den behåller sitt egna `<Button>` i `HousingHeader` med `disabled={!hasSelectedApplicants}`. `HousingRowActions` renderar då bara more-iconen för den statusen (inte sin egen primärknapp), så vi inte dubblerar.
+Ersätt ad-hoc styling med semantisk variant.
 
-## Tekniska ändringar
+```tsx
+// Före
+<Badge variant="outline" className="bg-primary/10 text-primary font-normal">
+  {offerStatus}
+</Badge>
 
-**`src/features/rentals/components/HousingRowActions.tsx`**
-- `variant="detail"` ändras till att rendera `[primary[0]-as-Button] + [DropdownMenu med menu]` istället för en flex-rad av knappar.
-- Ny prop `hidePrimary?: boolean` så `HousingHeader` kan stänga av den inbyggda primärknappen för status `klaraForErbjudande` (där headern själv renderar "Skicka erbjudande").
-- Primärknappen i detail-läget använder samma `handleMenu`-routing som befintliga menyklick.
+// Efter
+<Badge variant="info">{offerStatus}</Badge>
+```
 
-**`src/pages/rentals/components/HousingHeader.tsx`**
-- Tar bort `flex-wrap` och stapling — layouten blir alltid `[primär] [⋯]`.
-- För `klaraForErbjudande`: rendera `<HousingRowActions ... hidePrimary />` följt av "Skicka erbjudande"-knappen.
-- För övriga statusar: rendera bara `<HousingRowActions ... />` (som själv inkluderar både primär + meny).
+### #6 — Extrahera duplicerad toolbar i HousingSpacesTable
+**Fil:** `src/features/rentals/components/HousingSpacesTable.tsx`
 
-**Memory-uppdatering**
-- Uppdatera `mem://features/rentals/detail-page-action-parity` så regeln formuleras korrekt: "Alla actions från radens more-meny ska vara **åtkomliga** på detaljsidan — primäråtgärden som knapp, övriga via more-icon. Destructive-actions ligger alltid i menyn, aldrig som primärknapp."
+Skapa en intern komponent `HousingTabToolbar` som tar `placeholder` som prop. Eliminerar ~80 rader duplicering över sex flikar.
 
-## Resultat
+```tsx
+function HousingTabToolbar({ placeholder, onCreateHousingAd }: {
+  placeholder: string;
+  onCreateHousingAd: () => void;
+}) {
+  return (
+    <div className="flex flex-col sm:flex-row justify-between gap-4">
+      <div className="relative">
+        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+        <Input placeholder={placeholder} className="pl-9 w-full sm:w-[300px]" />
+      </div>
+      <div className="flex gap-2">
+        <Button variant="outline" onClick={onCreateHousingAd}>
+          Ny bostadsannons
+        </Button>
+        <ApplicantProfileModal />
+      </div>
+    </div>
+  );
+}
+```
 
-- Tydlig visuell hierarki: en primär åtgärd dominerar, sekundära är ett klick bort.
-- Konsekvens med tabellrader (samma mönster överallt).
-- Inga röda knappar som stjäl fokus från det användaren faktiskt ska göra.
-- Skalbart — fungerar oavsett om statusen har 2 eller 5 actions.
+Notera: `UserPlus`-ikonen tas bort från "Ny bostadsannons" eftersom primära/sekundära textknappar inte ska ha ikoner (Core-regel).
+
+Varje flik blir då:
+```tsx
+{
+  value: "publicerade",
+  label: "Publicerade",
+  content: (
+    <div className="flex flex-col space-y-4">
+      <HousingTabToolbar placeholder="Sök publicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
+      <PublishedHousingTable />
+    </div>
+  )
+}
+```
+
+### Påverkan
+- 3 filer ändras
+- Ingen funktionsförändring — endast visuell konsekvens och kodrensning
+- Inga nya delade komponenter (`HousingTabToolbar` lever lokalt i `HousingSpacesTable.tsx` enligt återanvändningsprincipen)
 
