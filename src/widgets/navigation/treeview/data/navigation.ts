@@ -18,7 +18,26 @@ export const navigationNodes: TreeNode[] = [
     id: "rentals",
     label: "Uthyrning",
     icon: "key",
-    path: "/rentals",
+    children: [
+      {
+        id: "rentals-housing",
+        label: "Bostad",
+        icon: "home",
+        path: "/rentals/housing",
+      },
+      {
+        id: "rentals-parking",
+        label: "Bilplats",
+        icon: "car",
+        path: "/rentals/parking",
+      },
+      {
+        id: "rentals-storage",
+        label: "Förråd",
+        icon: "archive",
+        path: "/rentals/storage",
+      },
+    ],
   },
   {
     id: "barriers",
