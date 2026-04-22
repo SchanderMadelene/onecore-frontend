@@ -71,11 +71,18 @@ export function CreateFavoriteDialog({
         if (propertyPurpose !== "all") params.purpose = propertyPurpose;
         break;
       
-      case "rentals":
-        url = `/rentals?tab=${rentalType}`;
+      case "rentals": {
+        const sectionMap: Record<string, string> = {
+          bostad: "housing",
+          bilplats: "parking",
+          forrad: "storage",
+        };
+        const section = sectionMap[rentalType] ?? "housing";
+        url = `/rentals/${section}`;
         params.tab = rentalType;
         params.status = rentalStatus;
         break;
+      }
       
       case "tenants":
         url = "/tenants";
