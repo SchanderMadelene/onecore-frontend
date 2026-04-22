@@ -76,6 +76,7 @@ const AllPropertiesPage = lazyWithRetry(() => import("./pages/properties/AllProp
 const RentalsPage = lazyWithRetry(() => import("./pages/rentals/RentalsPage"));
 const CreateHousingAdPage = lazyWithRetry(() => import("./pages/rentals/CreateHousingAdPage"));
 const ParkingSpaceDetailPage = lazyWithRetry(() => import("./pages/rentals/ParkingSpaceDetailPage"));
+const StorageSpaceDetailPage = lazyWithRetry(() => import("./pages/rentals/StorageSpaceDetailPage"));
 const HousingDetailPage = lazyWithRetry(() => import("./pages/rentals/HousingDetailPage"));
 const ResidenceProfilePage = lazyWithRetry(() => import("./pages/rentals/ResidenceProfilePage"));
 const TurnoverPage = lazyWithRetry(() => import("./pages/turnover/TurnoverPage"));
@@ -178,6 +179,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <ParkingSpaceDetailPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/storage/:storageSpaceId" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <StorageSpaceDetailPage />
           </ProtectedRoute>
         } 
       />
