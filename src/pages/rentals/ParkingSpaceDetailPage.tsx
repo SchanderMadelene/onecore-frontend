@@ -24,9 +24,7 @@ const ParkingSpaceDetailPage = () => {
 
   const handleBack = () => {
     // Försök att gå tillbaka till rätt flik baserat på state eller default till publicerade
-    const searchParams = new URLSearchParams(location.state?.from || "");
-    const tab = searchParams.get("tab") || "publicerade";
-    navigate(`/rentals?tab=${tab}`);
+    navigate(`/rentals/parking`);
   };
 
   const handleCreateOffer = () => {

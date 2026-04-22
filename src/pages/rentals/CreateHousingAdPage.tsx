@@ -55,9 +55,9 @@ export default function CreateHousingAdPage() {
   });
 
   const handleBack = () => {
-    // Navigate back to rentals page with bostad tab and the specific housing sub-tab
+    // Navigate back to rentals housing page with the specific housing sub-tab
     const activeHousingTab = location.state?.activeHousingTab || "behovAvPublicering";
-    navigate('/rentals?tab=bostad', { 
+    navigate('/rentals/housing', { 
       state: { activeHousingTab }
     });
   };
