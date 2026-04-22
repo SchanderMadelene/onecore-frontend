@@ -27,6 +27,7 @@ interface ParkingRowActionsProps {
   parkingSpace: ParkingSpace;
   tab: ParkingActionTab;
   variant?: "row" | "mobile";
+  assetType?: "parking" | "storage";
 }
 
 const TAB_TO_QUERY: Record<ParkingActionTab, string> = {
@@ -37,7 +38,7 @@ const TAB_TO_QUERY: Record<ParkingActionTab, string> = {
   behovAvPublicering: "?tab=behovAvPublicering",
 };
 
-export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: ParkingRowActionsProps) {
+export function ParkingRowActions({ parkingSpace, tab, variant = "row", assetType = "parking" }: ParkingRowActionsProps) {
   const navigate = useNavigate();
   const closeListing = useCloseParkingSpaceListing();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -48,7 +49,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
 
   const stop = (e: React.MouseEvent | React.SyntheticEvent) => e.stopPropagation();
   const goDetail = () =>
-    navigate(`/rentals/parking/${parkingSpace.id}`, { state: { from: TAB_TO_QUERY[tab] } });
+    navigate(`/rentals/${assetType}/${parkingSpace.id}`, { state: { from: TAB_TO_QUERY[tab] } });
 
   const handleCancelRental = async () => {
     setPending(true);

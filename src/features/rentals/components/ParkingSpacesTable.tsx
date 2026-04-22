@@ -18,31 +18,11 @@ export function ParkingSpacesTable() {
   };
 
   const tabs = [
-    {
-      value: "publicerade",
-      label: "Publicerade",
-      content: <PublishedParkingTab />
-    },
-    {
-      value: "klaraForErbjudande",
-      label: "Klara för erbjudande",
-      content: <ReadyForOfferTab />
-    },
-    {
-      value: "erbjudna",
-      label: "Erbjudna",
-      content: <OfferedTab />
-    },
-    {
-      value: "historik",
-      label: "Historik",
-      content: <HistoryTab />
-    },
-    {
-      value: "behovAvPublicering",
-      label: "Behov av publicering",
-      content: <NeedsRepublishTab />
-    }
+    { value: "publicerade", label: "Publicerade", content: <PublishedParkingTab assetType="parking" /> },
+    { value: "klaraForErbjudande", label: "Klara för erbjudande", content: <ReadyForOfferTab assetType="parking" /> },
+    { value: "erbjudna", label: "Erbjudna", content: <OfferedTab assetType="parking" /> },
+    { value: "historik", label: "Historik", content: <HistoryTab assetType="parking" /> },
+    { value: "behovAvPublicering", label: "Behov av publicering", content: <NeedsRepublishTab assetType="parking" /> },
   ];
 
   return (

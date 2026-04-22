@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { PublishParkingSpacesDialog } from "../PublishParkingSpacesDialog";
 import { SyncParkingSpacesDialog } from "../SyncParkingSpacesDialog";
-import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
+import { useAssetListingsByType } from "../../hooks/useAssetListingsByType";
 import { Loader2, Car } from "lucide-react";
 import { useState, useMemo } from "react";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
@@ -11,10 +11,16 @@ import { ParkingRowActions } from "../ParkingRowActions";
 import { useNavigate } from "react-router-dom";
 import type { ParkingSpace } from "../types/parking";
 import { getObjectNumber } from "../../utils/object-number";
+import { ASSET_COPY, type AssetType } from "../../utils/asset-type";
 
-export const PublishedParkingTab = () => {
+interface Props {
+  assetType?: AssetType;
+}
+
+export const PublishedParkingTab = ({ assetType = "parking" }: Props) => {
   const navigate = useNavigate();
-  const { data: publishedSpaces, isLoading, error } = useParkingSpaceListingsByType('published');
+  const copy = ASSET_COPY[assetType];
+  const { data: publishedSpaces, isLoading, error } = useAssetListingsByType(assetType, 'published');
   const [filters, setFilters] = useState({
     address: "",
     area: "",
@@ -58,7 +64,7 @@ export const PublishedParkingTab = () => {
     return (
       <div className="flex items-center justify-center h-[200px]">
         <Loader2 className="h-6 w-6 animate-spin mr-2" />
-        <span>Hämtar publicerade bilplatser...</span>
+        <span>Hämtar publicerade {copy.plural}...</span>
       </div>
     );
   }
@@ -68,7 +74,7 @@ export const PublishedParkingTab = () => {
       <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
         <div className="text-center">
           <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-          <p>Kunde inte hämta bilplatser</p>
+          <p>Kunde inte hämta {copy.plural}</p>
           <p className="text-sm mt-2">Kontrollera din anslutning och försök igen</p>
         </div>
       </div>
@@ -81,17 +87,19 @@ export const PublishedParkingTab = () => {
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+            <Input placeholder={`Sök ${copy.singular}...`} className="pl-9 w-full sm:w-[300px]" />
           </div>
-          <div className="flex gap-2">
-            <PublishParkingSpacesDialog />
-            <SyncParkingSpacesDialog />
-          </div>
+          {assetType === "parking" && (
+            <div className="flex gap-2">
+              <PublishParkingSpacesDialog />
+              <SyncParkingSpacesDialog />
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
           <div className="text-center">
             <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-            <p>Inga publicerade bilplatser</p>
+            <p>Inga publicerade {copy.plural}</p>
           </div>
         </div>
       </div>
@@ -101,7 +109,7 @@ export const PublishedParkingTab = () => {
   const columns = [
     {
       key: "address",
-      label: "Bilplats",
+      label: assetType === "storage" ? "Förråd" : "Bilplats",
       className: "w-[250px] whitespace-nowrap",
       filterOptions: filterOptions.addresses,
       filterValue: filters.address,
@@ -127,7 +135,7 @@ export const PublishedParkingTab = () => {
     },
     {
       key: "type",
-      label: "Bilplatstyp",
+      label: copy.typeColumnLabel,
       className: "whitespace-nowrap",
       hideOnMobile: true,
       filterOptions: filterOptions.types,
@@ -156,7 +164,7 @@ export const PublishedParkingTab = () => {
       label: "",
       className: "text-right whitespace-nowrap",
       hideOnMobile: true,
-      render: (space: ParkingSpace) => <ParkingRowActions parkingSpace={space} tab="publicerade" />,
+      render: (space: ParkingSpace) => <ParkingRowActions parkingSpace={space} tab="publicerade" assetType={assetType} />,
     },
   ];
 
@@ -176,7 +184,7 @@ export const PublishedParkingTab = () => {
         <span className="text-muted-foreground">Sökande:</span>
         <span>{space.seekers}</span>
       </div>
-      <ParkingRowActions parkingSpace={space} tab="publicerade" variant="mobile" />
+      <ParkingRowActions parkingSpace={space} tab="publicerade" variant="mobile" assetType={assetType} />
     </div>
   );
 
@@ -185,12 +193,14 @@ export const PublishedParkingTab = () => {
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+          <Input placeholder={`Sök ${copy.singular}...`} className="pl-9 w-full sm:w-[300px]" />
         </div>
-        <div className="flex gap-2">
-          <PublishParkingSpacesDialog />
-          <SyncParkingSpacesDialog />
-        </div>
+        {assetType === "parking" && (
+          <div className="flex gap-2">
+            <PublishParkingSpacesDialog />
+            <SyncParkingSpacesDialog />
+          </div>
+        )}
       </div>
 
       <ResponsiveTable
@@ -199,7 +209,7 @@ export const PublishedParkingTab = () => {
         keyExtractor={(space) => space.id}
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
-        onRowClick={(space) => navigate(`/rentals/parking/${space.id}`, { state: { from: "?tab=publicerade" } })}
+        onRowClick={(space) => navigate(`/rentals/${copy.routeSegment}/${space.id}`, { state: { from: "?tab=publicerade" } })}
       />
       <p className="text-sm text-muted-foreground">{filteredSpaces.length} annonser</p>
     </div>
