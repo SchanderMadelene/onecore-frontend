@@ -1,5 +1,6 @@
 // Components
 export * from './ParkingSpacesTable';
+export * from './StorageSpacesTable';
 export * from './HousingSpacesTable';
 export * from './FilterableTableHead';
 export * from './CustomerInfoLoading';

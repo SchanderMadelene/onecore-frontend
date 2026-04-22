@@ -18,6 +18,7 @@ import { publishedHousingSpaces } from "@/features/rentals/data/published-housin
 import { unpublishedHousingSpaces } from "@/features/rentals/data/unpublished-housing";
 import { useHousingStatus } from "@/features/rentals/hooks/useHousingStatus";
 import { useParkingSpaceListingsByType } from "@/features/rentals/hooks/useParkingSpaceListingsByType";
+import { useStorageSpaceListingsByType } from "@/features/rentals/hooks/useStorageSpaceListingsByType";
 
 const parseRent = (rent?: string): number => {
   if (!rent) return 0;
@@ -176,17 +177,29 @@ const RentalsOverview = () => {
     };
   }, [publishedParking, readyForOfferParking, offeredParking, needsRepublishParking]);
 
-  const storageMetrics = {
-    loss: 0,
-    vacantCount: 0,
-    totalCount: 0,
-    kpis: [
-      { label: "Publicerade", value: "—", icon: <Megaphone className="h-4 w-4" /> },
-      { label: "Klara för erbjudande", value: "—", icon: <Users className="h-4 w-4" /> },
-      { label: "Erbjudna", value: "—", icon: <FileText className="h-4 w-4" /> },
-      { label: "Behov av publicering", value: "—", icon: <RotateCcw className="h-4 w-4" /> },
-    ],
-  };
+  const { data: publishedStorage = [] } = useStorageSpaceListingsByType("published");
+  const { data: readyForOfferStorage = [] } = useStorageSpaceListingsByType("ready-for-offer");
+  const { data: offeredStorage = [] } = useStorageSpaceListingsByType("offered");
+  const { data: needsRepublishStorage = [] } = useStorageSpaceListingsByType("needs-republish");
+
+  const storageMetrics = useMemo(() => {
+    const vacant = [...publishedStorage, ...readyForOfferStorage, ...needsRepublishStorage];
+    return {
+      loss: vacant.reduce((s, p) => s + parseRent(p.rent), 0),
+      vacantCount: vacant.length,
+      totalCount:
+        publishedStorage.length +
+        readyForOfferStorage.length +
+        offeredStorage.length +
+        needsRepublishStorage.length,
+      kpis: [
+        { label: "Publicerade", value: publishedStorage.length, icon: <Megaphone className="h-4 w-4" /> },
+        { label: "Klara för erbjudande", value: readyForOfferStorage.length, icon: <Users className="h-4 w-4" /> },
+        { label: "Erbjudna", value: offeredStorage.length, icon: <FileText className="h-4 w-4" /> },
+        { label: "Behov av publicering", value: needsRepublishStorage.length, icon: <RotateCcw className="h-4 w-4" /> },
+      ],
+    };
+  }, [publishedStorage, readyForOfferStorage, offeredStorage, needsRepublishStorage]);
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
