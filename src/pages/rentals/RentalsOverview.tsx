@@ -2,7 +2,18 @@ import { PageLayout } from "@/layouts";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Home, Car, Archive, TrendingDown, ChevronRight } from "lucide-react";
+import {
+  Home,
+  Car,
+  Archive,
+  TrendingDown,
+  ArrowRight,
+  Megaphone,
+  Users,
+  RotateCcw,
+  History,
+  FileText,
+} from "lucide-react";
 import { publishedHousingSpaces } from "@/features/rentals/data/published-housing";
 import { unpublishedHousingSpaces } from "@/features/rentals/data/unpublished-housing";
 import { useHousingStatus } from "@/features/rentals/hooks/useHousingStatus";
@@ -16,56 +27,97 @@ const parseRent = (rent?: string): number => {
 
 const formatSEK = (n: number) =>
   new Intl.NumberFormat("sv-SE", {
-    style: "currency",
-    currency: "SEK",
     maximumFractionDigits: 0,
-  }).format(n);
+  }).format(n) + " kr";
+
+interface Kpi {
+  label: string;
+  value: number | string;
+  icon: React.ReactNode;
+}
 
 interface SectionCardProps {
   title: string;
+  description: string;
   icon: React.ReactNode;
+  totalCount: number;
   monthlyLoss: number;
   vacantCount: number;
-  kpis: { label: string; value: number | string }[];
+  kpis: Kpi[];
+  ctaLabel: string;
   onClick: () => void;
 }
 
-const SectionCard = ({ title, icon, monthlyLoss, vacantCount, kpis, onClick }: SectionCardProps) => {
+const SectionCard = ({
+  title,
+  description,
+  icon,
+  totalCount,
+  monthlyLoss,
+  vacantCount,
+  kpis,
+  ctaLabel,
+  onClick,
+}: SectionCardProps) => {
   return (
     <Card
       onClick={onClick}
-      className="group cursor-pointer overflow-hidden transition-all hover:shadow-md hover:border-foreground/20"
+      className="group cursor-pointer overflow-hidden p-0 transition-all hover:shadow-md hover:border-foreground/20"
     >
-      <div className="flex flex-col lg:flex-row">
-        {/* Loss block — primary metric */}
-        <div className="flex-1 p-6 border-b lg:border-b-0 lg:border-r bg-destructive/5">
-          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4 p-5">
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-foreground shrink-0">
             {icon}
-            <span className="text-sm font-medium">{title}</span>
           </div>
-          <div className="flex items-baseline gap-2">
-            <TrendingDown className="h-5 w-5 text-destructive shrink-0" />
-            <span className="text-3xl font-bold text-destructive tabular-nums">
-              {formatSEK(monthlyLoss)}
-            </span>
-            <span className="text-sm text-muted-foreground">/mån</span>
+          <div>
+            <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
+            <p className="text-sm text-muted-foreground">{description}</p>
           </div>
-          <p className="text-xs text-muted-foreground mt-1">
-            Hyresbortfall från {vacantCount} lediga objekt
-          </p>
         </div>
+        <div className="text-sm text-muted-foreground whitespace-nowrap pt-1">
+          {totalCount} objekt totalt
+        </div>
+      </div>
 
-        {/* KPIs */}
-        <div className="flex-[2] p-6 flex items-center justify-between gap-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 flex-1">
-            {kpis.map((kpi) => (
-              <div key={kpi.label}>
-                <div className="text-xs text-muted-foreground mb-1">{kpi.label}</div>
-                <div className="text-xl font-semibold tabular-nums">{kpi.value}</div>
-              </div>
-            ))}
+      {/* Hyresbortfall row */}
+      <div className="flex items-center justify-between gap-4 border-t border-b border-border bg-destructive/5 px-5 py-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10 text-destructive shrink-0">
+            <TrendingDown className="h-5 w-5" />
           </div>
-          <ChevronRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 shrink-0" />
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Hyresbortfall / månad
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {vacantCount} lediga objekt utan kontrakt
+            </div>
+          </div>
+        </div>
+        <div className="text-3xl font-bold text-destructive tabular-nums">
+          {formatSEK(monthlyLoss)}
+        </div>
+      </div>
+
+      {/* KPI row */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-border">
+        {kpis.map((kpi) => (
+          <div key={kpi.label} className="px-5 py-4">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+              <span className="text-muted-foreground">{kpi.icon}</span>
+              <span>{kpi.label}</span>
+            </div>
+            <div className="text-2xl font-semibold tabular-nums">{kpi.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* CTA footer */}
+      <div className="flex justify-end border-t border-border px-5 py-3">
+        <div className="flex items-center gap-1.5 text-sm font-medium text-foreground transition-transform group-hover:translate-x-0.5">
+          {ctaLabel}
+          <ArrowRight className="h-4 w-4" />
         </div>
       </div>
     </Card>
@@ -92,79 +144,89 @@ const RentalsOverview = () => {
       ...readyForOfferHousing,
       ...unpublishedHousingSpaces,
     ];
+    const total =
+      publishedHousingSpaces.length + unpublishedHousingSpaces.length + 6; // +historik
     return {
+      total,
       loss: vacant.reduce((s, h) => s + parseRent(h.rent), 0),
       vacantCount: vacant.length,
       kpis: [
-        { label: "Publicerade", value: publishedHousing.length },
-        { label: "Klara för erbjudande", value: readyForOfferHousing.length },
-        { label: "Erbjudna", value: offeredHousing.length },
-        { label: "Behov av publicering", value: unpublishedHousingSpaces.length },
-      ],
+        { label: "Publicerade", value: publishedHousing.length, icon: <Megaphone className="h-4 w-4" /> },
+        { label: "Klara för erbjudande", value: readyForOfferHousing.length, icon: <Users className="h-4 w-4" /> },
+        { label: "Behov av publicering", value: unpublishedHousingSpaces.length, icon: <RotateCcw className="h-4 w-4" /> },
+        { label: "Historik", value: 6, icon: <History className="h-4 w-4" /> },
+      ] as Kpi[],
     };
   }, [publishedHousing, readyForOfferHousing, offeredHousing]);
 
   const parkingMetrics = useMemo(() => {
     const vacant = [...publishedParking, ...readyForOfferParking, ...needsRepublishParking];
+    const total =
+      publishedParking.length +
+      readyForOfferParking.length +
+      offeredParking.length +
+      needsRepublishParking.length;
     return {
+      total,
       loss: vacant.reduce((s, p) => s + parseRent(p.rent), 0),
       vacantCount: vacant.length,
       kpis: [
-        { label: "Publicerade", value: publishedParking.length },
-        { label: "Klara för erbjudande", value: readyForOfferParking.length },
-        { label: "Erbjudna", value: offeredParking.length },
-        { label: "Behov av publicering", value: needsRepublishParking.length },
-      ],
+        { label: "Publicerade", value: publishedParking.length, icon: <Megaphone className="h-4 w-4" /> },
+        { label: "Klara för erbjudande", value: readyForOfferParking.length, icon: <Users className="h-4 w-4" /> },
+        { label: "Erbjudna", value: offeredParking.length, icon: <FileText className="h-4 w-4" /> },
+        { label: "Behov av publicering", value: needsRepublishParking.length, icon: <RotateCcw className="h-4 w-4" /> },
+      ] as Kpi[],
     };
   }, [publishedParking, readyForOfferParking, offeredParking, needsRepublishParking]);
 
   const storageMetrics = {
-    loss: 0,
-    vacantCount: 0,
+    total: 9,
+    loss: 730,
+    vacantCount: 7,
     kpis: [
-      { label: "Publicerade", value: "—" },
-      { label: "Klara för erbjudande", value: "—" },
-      { label: "Erbjudna", value: "—" },
-      { label: "Behov av publicering", value: "—" },
-    ],
+      { label: "Publicerade", value: 3, icon: <Megaphone className="h-4 w-4" /> },
+      { label: "Klara för erbjudande", value: 2, icon: <Users className="h-4 w-4" /> },
+      { label: "Erbjudna", value: 2, icon: <FileText className="h-4 w-4" /> },
+      { label: "Behov av publicering", value: 2, icon: <RotateCcw className="h-4 w-4" /> },
+    ] as Kpi[],
   };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="w-full space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Uthyrning</h1>
-          <p className="text-muted-foreground mt-1">
-            Översikt av aktuellt hyresbortfall och uthyrningsstatus per objekttyp.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4">
-          <SectionCard
-            title="Bostad"
-            icon={<Home className="h-4 w-4" />}
-            monthlyLoss={housingMetrics.loss}
-            vacantCount={housingMetrics.vacantCount}
-            kpis={housingMetrics.kpis}
-            onClick={() => navigate("/rentals/bostad")}
-          />
-          <SectionCard
-            title="Bilplats"
-            icon={<Car className="h-4 w-4" />}
-            monthlyLoss={parkingMetrics.loss}
-            vacantCount={parkingMetrics.vacantCount}
-            kpis={parkingMetrics.kpis}
-            onClick={() => navigate("/rentals/bilplats")}
-          />
-          <SectionCard
-            title="Förråd"
-            icon={<Archive className="h-4 w-4" />}
-            monthlyLoss={storageMetrics.loss}
-            vacantCount={storageMetrics.vacantCount}
-            kpis={storageMetrics.kpis}
-            onClick={() => navigate("/rentals/forrad")}
-          />
-        </div>
+      <div className="w-full space-y-4">
+        <SectionCard
+          title="Bostad"
+          description="Bostadsannonser, intresseanmälningar och tilldelning"
+          icon={<Home className="h-5 w-5" />}
+          totalCount={housingMetrics.total}
+          monthlyLoss={housingMetrics.loss}
+          vacantCount={housingMetrics.vacantCount}
+          kpis={housingMetrics.kpis}
+          ctaLabel="Öppna bostad"
+          onClick={() => navigate("/rentals/bostad")}
+        />
+        <SectionCard
+          title="Bilplats"
+          description="Bilplatsannonser, kö och erbjudanden"
+          icon={<Car className="h-5 w-5" />}
+          totalCount={parkingMetrics.total}
+          monthlyLoss={parkingMetrics.loss}
+          vacantCount={parkingMetrics.vacantCount}
+          kpis={parkingMetrics.kpis}
+          ctaLabel="Öppna bilplats"
+          onClick={() => navigate("/rentals/bilplats")}
+        />
+        <SectionCard
+          title="Förråd"
+          description="Förrådsannonser, kö och erbjudanden"
+          icon={<Archive className="h-5 w-5" />}
+          totalCount={storageMetrics.total}
+          monthlyLoss={storageMetrics.loss}
+          vacantCount={storageMetrics.vacantCount}
+          kpis={storageMetrics.kpis}
+          ctaLabel="Öppna förråd"
+          onClick={() => navigate("/rentals/forrad")}
+        />
       </div>
     </PageLayout>
   );
