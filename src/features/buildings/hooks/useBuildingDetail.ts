@@ -38,6 +38,8 @@ export const useBuildingDetail = (
       
       if (!propertyKey || !buildingId) return null;
       
+      // Lazy-load heavy mock data only when this hook actually runs.
+      const { mockPropertyDetails } = await import("@/features/properties/data");
       const property = mockPropertyDetails[propertyKey];
       
       if (!property) {
