@@ -1,13 +1,19 @@
 import { Input } from "@/components/ui/input";
 import { Search, Car, Loader2 } from "lucide-react";
-import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
+import { useAssetListingsByType } from "../../hooks/useAssetListingsByType";
 import { useNavigate } from "react-router-dom";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { ParkingRowActions } from "../ParkingRowActions";
 import type { ParkingSpace } from "../types/parking";
+import { ASSET_COPY, type AssetType } from "../../utils/asset-type";
 
-export const HistoryTab = () => {
-  const { data: historySpaces, isLoading, error } = useParkingSpaceListingsByType('history');
+interface Props {
+  assetType?: AssetType;
+}
+
+export const HistoryTab = ({ assetType = "parking" }: Props) => {
+  const copy = ASSET_COPY[assetType];
+  const { data: historySpaces, isLoading, error } = useAssetListingsByType(assetType, 'history');
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -25,7 +31,7 @@ export const HistoryTab = () => {
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+            <Input placeholder={`Sök ${copy.singular}...`} className="pl-9 w-full sm:w-[300px]" />
           </div>
         </div>
         <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
@@ -40,11 +46,11 @@ export const HistoryTab = () => {
 
   const columns = [
     {
-      key: "address", label: "Bilplats", className: "w-[250px] whitespace-nowrap",
+      key: "address", label: assetType === "storage" ? "Förråd" : "Bilplats", className: "w-[250px] whitespace-nowrap",
       render: (s: ParkingSpace) => (<div><div className="font-medium">{s.address}</div><div className="text-sm text-muted-foreground">{s.id}</div></div>),
     },
     { key: "area", label: "Område", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.area },
-    { key: "type", label: "Bilplatstyp", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.type },
+    { key: "type", label: copy.typeColumnLabel, className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.type },
     { key: "queueType", label: "Kötyp", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.queueType },
     { key: "rent", label: "Hyra", className: "whitespace-nowrap", render: (s: ParkingSpace) => <div className="font-medium">{s.rent}</div> },
     { key: "seekers", label: "Sökande", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => <div className="font-medium">{s.seekers}</div> },
@@ -52,7 +58,7 @@ export const HistoryTab = () => {
     { key: "publishedFrom", label: "Publicerad fr.o.m", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.publishedFrom },
     {
       key: "actions", label: "", className: "text-right whitespace-nowrap", hideOnMobile: true,
-      render: (s: ParkingSpace) => <ParkingRowActions parkingSpace={s} tab="historik" />,
+      render: (s: ParkingSpace) => <ParkingRowActions parkingSpace={s} tab="historik" assetType={assetType} />,
     },
   ];
 
@@ -68,7 +74,7 @@ export const HistoryTab = () => {
         <span className="text-muted-foreground">Hyra:</span><span className="font-medium">{s.rent}</span>
         <span className="text-muted-foreground">Sökande:</span><span>{s.seekers}</span>
       </div>
-      <ParkingRowActions parkingSpace={s} tab="historik" variant="mobile" />
+      <ParkingRowActions parkingSpace={s} tab="historik" variant="mobile" assetType={assetType} />
     </div>
   );
 
@@ -77,7 +83,7 @@ export const HistoryTab = () => {
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+          <Input placeholder={`Sök ${copy.singular}...`} className="pl-9 w-full sm:w-[300px]" />
         </div>
       </div>
       <ResponsiveTable
@@ -86,7 +92,7 @@ export const HistoryTab = () => {
         keyExtractor={(s) => s.id}
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
-        onRowClick={(s) => navigate(`/rentals/parking/${s.id}`, { state: { from: "?tab=historik" } })}
+        onRowClick={(s) => navigate(`/rentals/${copy.routeSegment}/${s.id}`, { state: { from: "?tab=historik" } })}
       />
       <p className="text-sm text-muted-foreground">{historySpaces.length} annonser</p>
     </div>
