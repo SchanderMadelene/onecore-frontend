@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { Building } from "@/types/api";
-import { mockPropertyDetails } from "@/features/properties/data";
 
 // Korrigerad mapping som matchar treeData struktur
 const buildingIdMappings: Record<string, string> = {
@@ -39,6 +38,8 @@ export const useBuildingDetail = (
       
       if (!propertyKey || !buildingId) return null;
       
+      // Lazy-load heavy mock data only when this hook actually runs.
+      const { mockPropertyDetails } = await import("@/features/properties/data");
       const property = mockPropertyDetails[propertyKey];
       
       if (!property) {

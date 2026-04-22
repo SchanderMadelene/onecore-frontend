@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Residence, Room } from "@/types/api";
-import { mockResidenceData } from "@/features/residences/data/residences";
-import { mockRoomsData } from "@/features/residences/data/rooms";
 
 const fetchResidence = async (id: string): Promise<Residence> => {
+  // Lazy-load heavy mock data only when this hook actually runs.
+  const { mockResidenceData } = await import("@/features/residences/data/residences");
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 500));
   
@@ -22,7 +22,8 @@ const fetchResidence = async (id: string): Promise<Residence> => {
   throw new Error('Lägenhet hittades inte');
 };
 
-const fetchRooms = async (id: string): Promise<Room[]> => {
+const fetchRooms = async (_id: string): Promise<Room[]> => {
+  const { mockRoomsData } = await import("@/features/residences/data/rooms");
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 500));
   return mockRoomsData.content;

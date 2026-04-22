@@ -1,2 +1,3 @@
-// Re-export from entities layer
-export { mockProperties, mockPropertyDetails, propertyDetails } from '@/entities/property/data';
+// Single source of truth — local mock data
+export { mockProperties, mockPropertyDetails } from "./properties";
+export { mockPropertyDetails as propertyDetails } from "./properties";
