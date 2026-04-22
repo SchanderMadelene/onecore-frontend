@@ -167,7 +167,23 @@ const AppRoutes = () => {
         } 
       />
       <Route 
-        path="/rentals/:type(bostad|bilplats|forrad)" 
+        path="/rentals/bostad" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <RentalsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/bilplats" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <RentalsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/forrad" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <RentalsPage />
