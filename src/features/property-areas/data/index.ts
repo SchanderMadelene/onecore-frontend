@@ -40,6 +40,10 @@ export function getCostCenterName(code: string): string {
   return COST_CENTER_NAMES[code] || code;
 }
 
+export function getCostCenterManagers(code: string): CostCenterManagers | undefined {
+  return COST_CENTER_MANAGERS[code];
+}
+
 export function getBuildingTypeName(code: string): string {
   return BUILDING_TYPES[code] || code;
 }
