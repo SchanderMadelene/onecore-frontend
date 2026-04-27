@@ -18,8 +18,10 @@ import { useStewardAdmin } from '@/features/property-areas/hooks/useStewardAdmin
 import { 
   StewardColumn, 
   PendingChangesPanel, 
-  StewardAdminMobile
+  StewardAdminMobile,
+  PropertyCard
 } from '@/features/property-areas/components/admin';
+import type { PropertyForAdmin } from '@/features/property-areas/types/admin-types';
 
 const StewardAdminPage = () => {
   const navigate = useNavigate();
