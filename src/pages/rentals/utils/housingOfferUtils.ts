@@ -44,12 +44,5 @@ export function getHousingOfferStatus(rounds: HousingOfferRound[]): {
  * Bygger label för Tabs-flikar: "Omgång 1", "Omgång 2 (avbruten)" etc.
  */
 export function getRoundTabLabel(round: HousingOfferRound): string {
-  const suffix: Record<HousingOfferRound["status"], string> = {
-    Active: "",
-    AllDeclined: " (alla nekade)",
-    Expired: " (utgången)",
-    Cancelled: " (avbruten)",
-    Accepted: " (accepterad)",
-  };
-  return `Omgång ${round.roundNumber}${suffix[round.status]}`;
+  return `Omgång ${round.roundNumber}`;
 }
