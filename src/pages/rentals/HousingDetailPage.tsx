@@ -325,14 +325,30 @@ const HousingDetailPage = () => {
                 </Button>
               </div>
             )}
-            <HousingApplicantsTable
-              applicants={displayedApplicants.filter(a => r.selectedApplicants.includes(a.id))}
-              housingAddress={listing.address}
-              listingId={listing.id}
-              showOfferColumns={false}
-              showSelectionColumn={false}
-              offeredApplicantIds={r.selectedApplicants}
-            />
+            {(() => {
+              // Sökande som fått erbjudande i tidigare omgångar (lägre roundNumber) ska visas disabled
+              const prevForThisRound: Record<number, number> = {};
+              for (const a of listing.applicants) {
+                for (let i = 0; i < rounds.length; i++) {
+                  const prev = rounds[i];
+                  if (prev.roundNumber >= r.roundNumber) break;
+                  if (prev.selectedApplicants.includes(a.id)) {
+                    prevForThisRound[a.id] = prev.roundNumber;
+                  }
+                }
+              }
+              return (
+                <HousingApplicantsTable
+                  applicants={displayedApplicants}
+                  housingAddress={listing.address}
+                  listingId={listing.id}
+                  showOfferColumns={false}
+                  showSelectionColumn={false}
+                  offeredApplicantIds={r.selectedApplicants}
+                  previousRoundByApplicant={prevForThisRound}
+                />
+              );
+            })()}
           </TabsContent>
         ))}
         {isSelectingForNewRound && (
