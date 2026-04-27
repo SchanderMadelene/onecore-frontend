@@ -127,14 +127,18 @@ const StewardAdminPage = () => {
               <List className="h-4 w-4 mr-2" />
               Visa lista
             </Button>
-            <Button variant="outline" onClick={handleCancel} disabled={!isDirty}>
-              <X className="h-4 w-4 mr-2" />
-              Avbryt
-            </Button>
-            <Button onClick={handleSave} disabled={!isDirty}>
-              <Save className="h-4 w-4 mr-2" />
-              Spara
-            </Button>
+            {isDirty && (
+              <>
+                <Button variant="outline" onClick={handleCancel}>
+                  <X className="h-4 w-4 mr-2" />
+                  Avbryt
+                </Button>
+                <Button onClick={handleSave}>
+                  <Save className="h-4 w-4 mr-2" />
+                  Spara
+                </Button>
+              </>
+            )}
           </div>
         </div>
         
