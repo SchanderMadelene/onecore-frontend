@@ -24,6 +24,7 @@ const HousingDetailPage = () => {
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [cancelTargetRoundId, setCancelTargetRoundId] = useState<number | null>(null);
   const [smsOpen, setSmsOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
