@@ -471,6 +471,8 @@ const HousingDetailPage = () => {
           recipientCount={selectedApplicants.length}
           housingAddress={listing.address}
           onConfirm={handleConfirmOffer}
+          roundNumber={rounds.length + 1}
+          parallelActiveRounds={activeRounds.length}
         />
       )}
 
