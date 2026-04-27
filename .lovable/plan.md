@@ -1,95 +1,83 @@
-## Manuella erbjudandeomgångar för bostad
+## Mål
 
-Bostadsuthyrning skiljer sig från bilplats: omgångar startas **manuellt** av handläggaren, inte automatiskt. En ny omgång startas typiskt när alla i föregående omgång nekat eller ingen uppfyllde kraven. Vi återanvänder visuella mönstret från bilplats (tabbar "Omgång 1/2/3"), men logiken bakom är manuell.
+Ändra logiken så att **"Starta ny erbjudandeomgång"** är en additiv åtgärd som **inte avbryter** pågående omgångar. Flera omgångar kan vara aktiva samtidigt. "Avbryt omgång" finns kvar som separat sekundär åtgärd per omgång.
 
-### Affärsregler
+---
 
-- En bostadsannons kan ha **flera omgångar** (`offers[]`), inte bara en
-- Endast **en omgång aktiv åt gången** — handläggaren kan inte starta omgång 2 medan omgång 1 fortfarande har sökande som väntar på svar
-- Handläggaren kan **manuellt avbryta** en pågående omgång (t.ex. om alla utvalda är otillgängliga) för att starta en ny
-- Vid val av sökande till ny omgång visas **alla återstående sökande i samma lista**, men de som **redan fått erbjudande tidigare markeras visuellt** (badge/indikator) så handläggaren ser det. De är fortfarande valbara.
-- Statusar för omgång: `Active` | `AllDeclined` | `Expired` | `Cancelled` | `Accepted`
+## Ändringar i flödet
 
-### UI-flöde
+### Före
+- Max **en aktiv omgång** åt gången.
+- Knappen "Starta ny omgång" visades **endast** när föregående omgång var klar (alla nekat / utgått / avbruten).
+- "Avbryt omgång" var en förutsättning för att kunna starta en ny medan en pågick.
 
-1. **Innan första omgången** (status `Klar för erbjudande`): tabell med checkboxar, topp-10 förvalda → "Skicka erbjudande" → omgång 1 skapas
-2. **Pågående omgång** (status `Erbjudande pågår – omgång N`): Tabbar visar omgångarna. Aktiv tab visar de utvalda + deras svar. Knapp "Avbryt omgång" tillgänglig.
-3. **Efter avslutad omgång utan vinnare** (status `Klar för ny omgång`): "Starta ny omgång"-knapp aktiveras. Klick öppnar urvalsläget igen (samma `HousingApplicantsTable` med checkboxar).
-4. **Vid accepterat erbjudande** (status `Tilldelad`): övergång till kontraktsläge (befintlig flik).
+### Efter
+- **Flera aktiva omgångar** tillåts samtidigt.
+- "Starta ny erbjudandeomgång" är **alltid tillgänglig** så länge ingen omgång har status `Accepted` (annonsen är tilldelad).
+- Pågående omgångar fortsätter löpa parallellt — sökande kan fortfarande svara.
+- "Avbryt omgång" finns kvar som **sekundär action per omgång** (visas inne i respektive omgångs tab, inte i page-headern).
 
-### Headerstatus
+---
 
-Utöka `getHousingStatus` (eller lägg till `getOfferRoundStatus`):
-- `Publicerad` — ingen omgång startad, period pågår
-- `Klar för erbjudande` — period slut, ingen omgång startad
-- `Erbjudande pågår — omgång N` — aktiv omgång finns, väntar svar
-- `Klar för ny omgång` — senaste omgång `AllDeclined`/`Expired`/`Cancelled`
-- `Tilldelad` — någon har tackat ja
-- `Historik` — avslutad/kontrakterad
+## UI-ändringar
 
-### Datamodelländringar
+### `HousingHeader.tsx`
+- Byt huvudknappens text från "Starta ny omgång" → **"Starta ny erbjudandeomgång"**.
+- Ta bort "Avbryt omgång"-knappen från headern (flyttas till tab-nivå).
+- Visa knappen så snart `rounds.length > 0` och annonsen inte är `Accepted` (inte längre beroende av `canStartNewRound`).
+- Statusbadge i headern:
+  - Om exakt **1 aktiv omgång** → "Erbjudande pågår — omgång N" (som idag).
+  - Om **flera aktiva omgångar** → "Erbjudande pågår — N omgångar aktiva".
+  - Om alla aktiva är klara/nekade → "Klar för ny omgång".
 
-`HousingOffersContext.tsx`:
-```ts
-interface HousingOfferRound {
-  id: number;
-  roundNumber: number;
-  selectedApplicants: number[];
-  sentAt: string;
-  status: 'Active' | 'AllDeclined' | 'Expired' | 'Cancelled' | 'Accepted';
-  expiresAt: string;
-  responses: Array<{ applicantId: number; response: 'accepted' | 'declined'; respondedAt: string }>;
-}
+### `HousingDetailPage.tsx`
+- Inne i varje omgångs `TabsContent` (när omgången har status `Active`): visa en diskret sekundärknapp **"Avbryt denna omgång"** högst upp till höger som öppnar `ConfirmDialog`.
+- Bekräftelsedialogen blir per omgång (inte global): "Avbryt omgång N? Sökande i denna omgång kommer inte längre kunna svara. Övriga aktiva omgångar påverkas inte."
 
-// Per listing: HousingOfferRound[] istället för en HousingOffer
-offersByListing: Record<string, HousingOfferRound[]>;
-```
+### `HousingApplicantsTable.tsx` — badges för urvalsläge
+- Behåll "Fick omgång N"-badge för avslutade omgångar.
+- Lägg till variant **"Aktivt erbjudande i omgång N"** (annan färg) när sökanden har ett aktivt, ej besvarat erbjudande från en annan omgång — så handläggaren ser att personen redan blivit tillfrågad och fortfarande kan svara.
 
-Nya metoder:
-- `getRoundsForListing(listingId): HousingOfferRound[]`
-- `getActiveRound(listingId): HousingOfferRound | undefined`
-- `canStartNewRound(listingId): boolean` (true om ingen aktiv omgång)
-- `startNewRound(listingId, selectedApplicants[])`
-- `cancelActiveRound(listingId)`
-- `getApplicantsWhoReceivedOffer(listingId): Set<number>` (för att flagga i tabellen)
+---
 
-Behåll `createOffer` som backwards-kompatibel wrapper som anropar `startNewRound`.
+## Logik-ändringar (`HousingOffersContext.tsx`)
 
-### Filer som ändras
+- `canStartNewRound(listingId)`: returnerar `true` om ingen omgång har status `Accepted` (oavsett om det finns aktiva omgångar).
+- `cancelActiveRound(listingId)` → byt namn till **`cancelRound(listingId, roundId)`** (avbryter en specifik omgång, inte "den aktiva").
+- `getActiveRound` (singular) → komplettera med **`getActiveRounds`** (plural) för header-statuslogik.
+- `startNewRound`: oförändrad — skapar en ny omgång utan att röra befintliga.
 
-**Datalager:**
-- `src/shared/contexts/HousingOffersContext.tsx` — ändra `HousingOffer` → `HousingOfferRound[]`, lägg till nya metoder
-- `src/features/rentals/hooks/useHousingStatus.ts` — utöka statusar med `cancelled`/`all_declined`/`assigned`
+### `housingOfferUtils.ts`
+- `getHousingOfferStatus(rounds)` uppdateras:
+  - Räkna antal omgångar med status `Active`.
+  - 1 aktiv → `{ status: "Erbjudande pågår", roundNumber: N }`.
+  - 2+ aktiva → `{ status: "Erbjudande pågår", activeCount: M, roundNumber: undefined }` (header byter format).
+  - 0 aktiva, ingen accepterad → `"Klar för ny omgång"`.
+  - Någon `Accepted` → `"Tilldelad"`.
 
-**UI:**
-- `src/pages/rentals/HousingDetailPage.tsx` — ersätt single-offer-rendering med `Tabs`-mönster (kopiera från `ParkingSpaceDetailPage`), hantera "Starta ny omgång" och "Avbryt omgång"
-- `src/pages/rentals/components/HousingHeader.tsx` — visa `Omgång N`-badge i statusen, knapp "Starta ny omgång" / "Avbryt omgång" beroende på state
-- `src/pages/rentals/components/HousingApplicantsTable.tsx` — lägg till visuell markering (badge "Erbjudande omgång 1") på sökande som fått tidigare erbjudande, så handläggaren ser det vid urval till ny omgång
+### `useHousingStatus.ts`
+- Återspegla samma logik så att tab-fördelning på listsidan fungerar.
 
-**Utility (ny):**
-- `src/pages/rentals/utils/housingOfferUtils.ts` — `getHousingOfferStatus(rounds)` (analogt med `parkingSpaceUtils.ts`)
+---
 
-### Mockdata
+## Mock-data
+- Uppdatera `MOCK_ROUNDS` så minst en annons har **två parallella aktiva omgångar** för att verifiera UI:t.
 
-Uppdatera befintlig `MOCK_OFFERS` i `HousingOffersContext` så att minst en bostad har **flera omgångar** för att kunna demonstrera tabbarna direkt:
-- En annons med omgång 1 (alla nekade) + omgång 2 (aktiv)
-- En annons med omgång 1 (avbruten) + omgång 2 (en accepterat)
-- En annons med endast omgång 1 (pågående)
+---
 
-### Vad som INTE ändras nu
+## Memory
+- Uppdatera `mem://features/rentals/housing-offer-rounds.md` med de nya reglerna:
+  - Flera aktiva omgångar tillåts.
+  - "Starta ny" avbryter inte föregående.
+  - "Avbryt" lever per omgång på tab-nivå.
 
-- `SendHousingOfferDialog` — befintlig dialog återanvänds som-är för bekräftelse
-- `HousingApplicantsTable` selection-logik (auto-select topp-10) — fungerar som idag, även för omgång 2+
-- Kontraktskoppling (linkContract) — orört
-- Bilplatsens flöde — orört
+---
 
-### Acceptanskriterier
-
-1. Bostadsannons utan omgångar visar sökandelistan med checkboxar (som idag)
-2. Efter "Skicka erbjudande" skapas omgång 1, tabbar dyker upp, knappen "Skicka erbjudande" försvinner
-3. Header visar "Erbjudande pågår — omgång 1"
-4. Om alla i omgång 1 nekar → status "Klar för ny omgång", knapp "Starta ny omgång" aktiveras
-5. Klick på "Starta ny omgång" → samma sökandelista visas, men de från omgång 1 är märkta med badge ("Fick omgång 1") och fortfarande valbara
-6. Knapp "Avbryt omgång" finns på aktiv omgång; bekräftelsedialog → omgång markeras `Cancelled`, ny omgång kan startas
-7. Tabbar "Omgång 1, Omgång 2..." fungerar identiskt med bilplats
-8. När någon tackat ja → header byter till "Tilldelad", inga fler omgångar kan startas
+## Filer som påverkas
+- `src/shared/contexts/HousingOffersContext.tsx`
+- `src/pages/rentals/utils/housingOfferUtils.ts`
+- `src/pages/rentals/HousingDetailPage.tsx`
+- `src/pages/rentals/components/HousingHeader.tsx`
+- `src/pages/rentals/components/HousingApplicantsTable.tsx`
+- `src/features/rentals/hooks/useHousingStatus.ts`
+- `mem://features/rentals/housing-offer-rounds.md`
