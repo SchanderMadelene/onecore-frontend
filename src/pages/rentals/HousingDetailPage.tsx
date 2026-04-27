@@ -235,12 +235,21 @@ const HousingDetailPage = () => {
     sonnerToast.success("Kontraktskoppling borttagen");
   };
 
-  // Karta över vilka sökande fått erbjudande i tidigare omgångar (för "Fick omgång N"-badge)
+  // Kartor: senaste omgång en sökande fick erbjudande i, samt om den omgången är aktiv.
+  // Används i urvalsläget för ny omgång för att visa rätt badge.
   const previousRoundByApplicant: Record<number, number> = {};
+  const activeRoundByApplicant: Record<number, number> = {};
   if (isSelectingForNewRound) {
     for (const a of listing.applicants) {
-      const rn = getRoundNumberForApplicant(housingId, a.id);
-      if (rn !== undefined) previousRoundByApplicant[a.id] = rn;
+      // Hitta senaste round som innehåller sökanden
+      for (let i = rounds.length - 1; i >= 0; i--) {
+        const r = rounds[i];
+        if (r.selectedApplicants.includes(a.id)) {
+          previousRoundByApplicant[a.id] = r.roundNumber;
+          if (r.status === 'Active') activeRoundByApplicant[a.id] = r.roundNumber;
+          break;
+        }
+      }
     }
   }
 
