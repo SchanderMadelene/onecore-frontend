@@ -38,8 +38,14 @@ export function useStewardAdmin(selectedCostCenter: string) {
   // Area assignments: kvvArea -> stewardRefNr (mutable state)
   const [areaAssignments, setAreaAssignments] = useState<Map<string, string>>(() => new Map());
   
+  // Property -> KVV-area overrides (from drag-and-drop)
+  const [propertyKvvOverrides, setPropertyKvvOverrides] = useState<Map<string, string>>(() => new Map());
+  
   // Pending area changes
   const [pendingChanges, setPendingChanges] = useState<AreaReassignment[]>([]);
+  
+  // Pending property moves
+  const [pendingPropertyMoves, setPendingPropertyMoves] = useState<PropertyReassignment[]>([]);
   
   // Reset assignments when cost center changes
   useEffect(() => {
@@ -49,6 +55,8 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     setAreaAssignments(newAssignments);
     setPendingChanges([]);
+    setPropertyKvvOverrides(new Map());
+    setPendingPropertyMoves([]);
   }, [selectedCostCenter]);
   
   // Get KVV area info list (for columns/accordion)
