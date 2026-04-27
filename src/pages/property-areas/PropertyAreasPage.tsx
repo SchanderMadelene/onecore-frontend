@@ -201,10 +201,10 @@ const PropertyAreasPage = () => {
                     />
                     <Button 
                       variant="outline" 
-                      onClick={() => navigate('/property-areas/admin')}
+                      onClick={() => navigate('/property-areas')}
                     >
                       <Settings className="h-4 w-4 mr-2" />
-                      Administrera
+                      KVV-områden
                     </Button>
                   </>
                 )}
