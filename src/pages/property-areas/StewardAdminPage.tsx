@@ -47,6 +47,18 @@ const StewardAdminPage = () => {
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+  
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+    const targetKvv = over.data.current?.kvvArea as string | undefined;
+    if (!targetKvv) return;
+    reassignProperty(active.id as string, targetKvv);
+  };
+  
   const handleBack = () => {
     if (isDirty) {
       setShowCancelDialog(true);
