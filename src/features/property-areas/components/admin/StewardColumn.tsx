@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Pencil } from 'lucide-react';
+import { Pencil, Building2, DoorOpen, Car } from 'lucide-react';
 import { PropertyCard } from './PropertyCard';
 import { StewardAssignmentDialog } from './StewardAssignmentDialog';
 import { KvvAreaInfo, PropertyForAdmin } from '../../types/admin-types';
@@ -76,9 +76,30 @@ export function StewardColumn({
               </>
             )}
           </div>
-          <Badge variant="outline" className="w-fit">
-            {properties.length} {properties.length === 1 ? 'fastighet' : 'fastigheter'}
-          </Badge>
+          {(() => {
+            const totalResidences = properties.reduce((sum, p) => sum + (p.residenceCount || 0), 0);
+            const totalParking = properties.reduce((sum, p) => sum + (p.parkingCount || 0), 0);
+            return (
+              <div className="flex items-center gap-3 pt-1 text-sm text-muted-foreground">
+                <span className="inline-flex items-center gap-1" title="Fastigheter">
+                  <Building2 className="h-4 w-4" />
+                  {properties.length}
+                </span>
+                {totalResidences > 0 && (
+                  <span className="inline-flex items-center gap-1" title="Bostäder totalt">
+                    <DoorOpen className="h-4 w-4" />
+                    {totalResidences}
+                  </span>
+                )}
+                {totalParking > 0 && (
+                  <span className="inline-flex items-center gap-1" title="Bilplatser totalt">
+                    <Car className="h-4 w-4" />
+                    {totalParking}
+                  </span>
+                )}
+              </div>
+            );
+          })()}
         </CardHeader>
         
         <CardContent className="flex-1 p-0 overflow-hidden">
