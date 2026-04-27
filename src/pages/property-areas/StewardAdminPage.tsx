@@ -53,13 +53,29 @@ const StewardAdminPage = () => {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
   
+  const [activeProperty, setActiveProperty] = useState<PropertyForAdmin | null>(null);
+  
+  const handleDragStart = (event: DragStartEvent) => {
+    const id = event.active.id as string;
+    for (const list of propertiesByKvvArea.values()) {
+      const found = list.find(p => p.id === id);
+      if (found) {
+        setActiveProperty(found);
+        return;
+      }
+    }
+  };
+  
   const handleDragEnd = (event: DragEndEvent) => {
+    setActiveProperty(null);
     const { active, over } = event;
     if (!over) return;
     const targetKvv = over.data.current?.kvvArea as string | undefined;
     if (!targetKvv) return;
     reassignProperty(active.id as string, targetKvv);
   };
+  
+  const handleDragCancel = () => setActiveProperty(null);
   
   const handleBack = () => {
     if (isDirty) {
