@@ -48,10 +48,12 @@ interface HousingOffersContextType {
   /** Manuella omgångar per listing */
   getRoundsForListing: (listingId: string) => HousingOfferRound[];
   getActiveRound: (listingId: string) => HousingOfferRound | undefined;
+  getActiveRounds: (listingId: string) => HousingOfferRound[];
   getLatestRound: (listingId: string) => HousingOfferRound | undefined;
   canStartNewRound: (listingId: string) => boolean;
   startNewRound: (listingId: string, selectedApplicants: number[]) => void;
-  cancelActiveRound: (listingId: string) => void;
+  /** Avbryt en specifik omgång (påverkar inte övriga aktiva omgångar) */
+  cancelRound: (listingId: string, roundId: number) => void;
   /** Sökande som fått minst ett erbjudande (för markering i tabellen) */
   getApplicantsWhoReceivedOffer: (listingId: string) => Set<number>;
   /** Hämta vilken omgång en sökande senast fick erbjudande i */
