@@ -115,11 +115,17 @@ const HousingDetailPage = () => {
     setActiveTab(undefined);
   };
 
-  const handleCancelActiveRound = () => {
-    if (!housingId) return;
-    cancelActiveRound(housingId);
+  const handleConfirmCancelRound = () => {
+    if (!housingId || cancelTargetRoundId === null) return;
+    cancelRound(housingId, cancelTargetRoundId);
+    const cancelledRound = rounds.find(r => r.id === cancelTargetRoundId);
+    setCancelTargetRoundId(null);
     setIsCancelDialogOpen(false);
-    sonnerToast.success("Omgången har avbrutits — du kan nu starta en ny");
+    sonnerToast.success(
+      cancelledRound
+        ? `Omgång ${cancelledRound.roundNumber} har avbrutits`
+        : "Omgången har avbrutits"
+    );
   };
 
   if (!housingId) {
