@@ -174,11 +174,14 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
     return rounds.length ? rounds[rounds.length - 1] : undefined;
   };
 
+  const getActiveRounds = (listingId: string) =>
+    (roundsByListing[listingId] ?? []).filter(r => r.status === 'Active');
+
   const canStartNewRound = (listingId: string) => {
     const rounds = roundsByListing[listingId] ?? [];
     if (rounds.length === 0) return true;
-    // Får inte starta om aktiv eller accepterad omgång finns
-    return !rounds.some(r => r.status === 'Active' || r.status === 'Accepted');
+    // Endast Accepted blockerar — flera aktiva omgångar tillåts parallellt.
+    return !rounds.some(r => r.status === 'Accepted');
   };
 
   const startNewRound = (listingId: string, selectedApplicants: number[]) => {
@@ -201,14 +204,16 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const cancelActiveRound = (listingId: string) => {
+  const cancelRound = (listingId: string, roundId: number) => {
     setRoundsByListing(prev => {
       const existing = prev[listingId];
       if (!existing) return prev;
       return {
         ...prev,
         [listingId]: existing.map(r =>
-          r.status === 'Active' ? { ...r, status: 'Cancelled' as const } : r,
+          r.id === roundId && r.status === 'Active'
+            ? { ...r, status: 'Cancelled' as const }
+            : r,
         ),
       };
     });
