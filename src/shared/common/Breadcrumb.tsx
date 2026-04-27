@@ -17,6 +17,9 @@ export const PropertyBreadcrumb = () => {
   // Don't render on index or when there's nothing to show
   if (breadcrumbs.length <= 1) return null;
 
+  // Hide breadcrumbs on förvaltningsområden-pages
+  if (location.pathname.startsWith("/property-areas")) return null;
+
   return (
     <Breadcrumb>
       <BreadcrumbList>
