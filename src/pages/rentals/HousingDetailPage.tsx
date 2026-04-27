@@ -10,6 +10,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
+import { RoundSummaryBar } from "./components/RoundSummaryBar";
 import { HousingInfo } from "./components/HousingInfo";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
@@ -252,6 +253,22 @@ const HousingDetailPage = () => {
     }
   }
 
+  // Sökande som tackat nej i någon tidigare omgång — exkluderas från smart förval
+  const declinedInPreviousRoundIds: number[] = Array.from(
+    new Set(
+      rounds.flatMap(r =>
+        r.responses.filter(resp => resp.response === 'declined').map(resp => resp.applicantId)
+      )
+    )
+  );
+
+  // Slå upp namn på sökande som tackat ja i en omgång (för RoundSummaryBar)
+  const getAcceptedName = (round: typeof rounds[number]): string | undefined => {
+    const accepted = round.responses.find(r => r.response === 'accepted');
+    if (!accepted) return undefined;
+    return listing.applicants.find(a => a.id === accepted.applicantId)?.name;
+  };
+
   // ───── Render: vy beroende på läge ─────
   const renderInitialSelectionView = () => (
     <section>
@@ -274,7 +291,7 @@ const HousingDetailPage = () => {
         <div>
           <h2 className="text-xl font-semibold">Välj sökande till omgång {rounds.length + 1}</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Sökande som fått erbjudande i tidigare omgångar är markerade men kan väljas igen.
+            De 5 högst rankade sökandena utan aktivt erbjudande och som inte tackat nej är förvalda. Justera fritt.
           </p>
         </div>
         <Button variant="ghost" onClick={handleCancelNewRoundSelection}>Avbryt urval</Button>
@@ -288,6 +305,9 @@ const HousingDetailPage = () => {
         onSelectionChange={setSelectedApplicants}
         previousRoundByApplicant={previousRoundByApplicant}
         activeRoundByApplicant={activeRoundByApplicant}
+        declinedInPreviousRoundIds={declinedInPreviousRoundIds}
+        autoSelectTopApplicants
+        autoSelectCount={5}
       />
     </section>
   );
@@ -308,49 +328,51 @@ const HousingDetailPage = () => {
             <TabsTrigger value={NEW_ROUND_TAB}>Ny omgång (urval)</TabsTrigger>
           )}
         </TabsList>
-        {rounds.map(r => (
-          <TabsContent key={r.id} value={`round-${r.id}`}>
-            {r.status === 'Active' && !isHistoryMode && !isContractMode && (
-              <div className="flex items-center justify-end mb-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setCancelTargetRoundId(r.id);
-                    setIsCancelDialogOpen(true);
-                  }}
-                >
-                  <XCircle className="h-4 w-4 mr-1" />
-                  Avbryt denna omgång
-                </Button>
-              </div>
-            )}
-            {(() => {
-              // Sökande som fått erbjudande i tidigare omgångar (lägre roundNumber) ska visas disabled
-              const prevForThisRound: Record<number, number> = {};
-              for (const a of listing.applicants) {
-                for (let i = 0; i < rounds.length; i++) {
-                  const prev = rounds[i];
-                  if (prev.roundNumber >= r.roundNumber) break;
-                  if (prev.selectedApplicants.includes(a.id)) {
-                    prevForThisRound[a.id] = prev.roundNumber;
-                  }
-                }
+        {rounds.map(r => {
+          const cancelAction =
+            r.status === 'Active' && !isHistoryMode && !isContractMode ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setCancelTargetRoundId(r.id);
+                  setIsCancelDialogOpen(true);
+                }}
+              >
+                <XCircle className="h-4 w-4 mr-1" />
+                Avbryt denna omgång
+              </Button>
+            ) : null;
+          // Sökande som fått erbjudande i tidigare omgångar (lägre roundNumber) ska visas disabled
+          const prevForThisRound: Record<number, number> = {};
+          for (const a of listing.applicants) {
+            for (let i = 0; i < rounds.length; i++) {
+              const prev = rounds[i];
+              if (prev.roundNumber >= r.roundNumber) break;
+              if (prev.selectedApplicants.includes(a.id)) {
+                prevForThisRound[a.id] = prev.roundNumber;
               }
-              return (
-                <HousingApplicantsTable
-                  applicants={displayedApplicants}
-                  housingAddress={listing.address}
-                  listingId={listing.id}
-                  showOfferColumns={false}
-                  showSelectionColumn={false}
-                  offeredApplicantIds={r.selectedApplicants}
-                  previousRoundByApplicant={prevForThisRound}
-                />
-              );
-            })()}
-          </TabsContent>
-        ))}
+            }
+          }
+          return (
+            <TabsContent key={r.id} value={`round-${r.id}`}>
+              <RoundSummaryBar
+                round={r}
+                acceptedApplicantName={getAcceptedName(r)}
+                actions={cancelAction}
+              />
+              <HousingApplicantsTable
+                applicants={displayedApplicants}
+                housingAddress={listing.address}
+                listingId={listing.id}
+                showOfferColumns={false}
+                showSelectionColumn={false}
+                offeredApplicantIds={r.selectedApplicants}
+                previousRoundByApplicant={prevForThisRound}
+              />
+            </TabsContent>
+          );
+        })}
         {isSelectingForNewRound && (
           <TabsContent value={NEW_ROUND_TAB}>
             {renderNewRoundSelectionView()}
@@ -449,6 +471,8 @@ const HousingDetailPage = () => {
           recipientCount={selectedApplicants.length}
           housingAddress={listing.address}
           onConfirm={handleConfirmOffer}
+          roundNumber={rounds.length + 1}
+          parallelActiveRounds={activeRounds.length}
         />
       )}
 

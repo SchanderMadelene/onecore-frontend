@@ -1,27 +1,47 @@
-## Problem
 
-I sökandetabellen för en omgång visas Oskar Lundgren som nedtonad/disabled, trots att han ingår i omgång 2. Orsaken är att `hasPreviousOffer`-logiken i `HousingApplicantsTable` enbart kollar om sökanden finns i `previousRoundByApplicant` — den tar inte hänsyn till om sökanden också har ett erbjudande i den omgång som visas just nu.
+# Plan: Förbättringar #1, #2 och #4 för erbjudandeomgångar
 
-En sökande som var med i omgång 1 OCH även är med i omgång 2 hamnar därför som "previous" och blir nedtonad i omgång 2:s tabell, fastän raden borde vara fullt aktiv.
+## #1 Smartare förval i ny omgång
 
-## Lösning
+Idag förvaljs ingenting när handläggaren startar omgång 2+. Lägg till automatiskt förval av top-N sökande baserat på köpoäng som **inte** redan har ett aktivt erbjudande och **inte** har tackat nej i tidigare omgång. Handläggaren kan justera fritt.
 
-Uppdatera `HousingApplicantsTable.tsx` så att `hasPreviousOffer` även exkluderar sökande som har ett erbjudande i den aktuella omgången (`offeredApplicantIds`).
+**Var:** `HousingApplicantsTable.tsx` — utöka `autoSelectTopApplicants`-logiken så den även exkluderar sökande med aktivt erbjudande (`activeRoundByApplicant`) och sökande som tackat nej tidigare. När detta gäller en ny omgång (omgång 2+), välj top 5 istället för top 10.
 
-```ts
-const isOfferedThisRound = offeredApplicantIds.includes(applicant.id);
-const hasPreviousOffer =
-  !hasActiveOfferInRound &&
-  !isOfferedThisRound &&
-  previousRoundByApplicant?.[applicant.id] !== undefined;
+**Var:** `HousingDetailPage.tsx` — sätt `autoSelectTopApplicants={true}` även på `renderNewRoundSelectionView`, och skicka in info om vilka som tackat nej i tidigare omgångar (ny prop `declinedInPreviousRoundIds`).
+
+## #2 Sammanfattning per omgång
+
+Lägg till en kompakt statusrad överst i varje omgång-tab som visar:
+```text
+Skickat 15 apr · Går ut 22 apr (om 3 dagar)
+10 sökande · 1 ja · 1 nej · 8 väntar
 ```
 
-Resultat:
-- Omgång 2-tabellen: Oskar (med i både omgång 1 och 2) visas som vanlig rad överst med sitt "Väntar"-svar.
-- Sökande som bara var med i omgång 1 (och inte 2) fortsätter vara nedtonade med "Nej · från omgång 1".
+För avbruten/utgången/accepterad omgång visas relevant variant (t.ex. "Avbruten" / "Accepterad av Anna Andersson").
 
-Inga andra ändringar behövs.
+**Var:** Ny komponent `RoundSummaryBar.tsx` i `src/pages/rentals/components/`. Beräknar svar från `round.responses` + `round.selectedApplicants.length`. Använder `date-fns` för relativa datum (`formatDistanceToNow` med `sv` locale).
 
-## Filer
+**Var:** `HousingDetailPage.tsx` — rendera `<RoundSummaryBar round={r} />` precis ovanför tabellen i varje `TabsContent`, och även "Avbryt denna omgång"-knappen flyttas in i denna rad till höger för bättre layout.
 
-- `src/pages/rentals/components/HousingApplicantsTable.tsx`
+## #4 Bekräftelsedialog kontextualiserar omgångsnummer
+
+`SendHousingOfferDialog` ska visa vilken omgång som skapas, och om det finns parallella aktiva omgångar.
+
+**Var:** `SendHousingOfferDialog.tsx` — ny prop `roundNumber: number` och `parallelActiveRounds?: number`. `DialogTitle` blir t.ex. "Skicka erbjudande för omgång 2". `DialogDescription` utökas med en notering: *"Omgång 1 är fortfarande aktiv parallellt — sökande där påverkas inte."* när `parallelActiveRounds > 0`.
+
+**Var:** `HousingDetailPage.tsx` — skicka in `roundNumber={rounds.length + 1}` och `parallelActiveRounds={activeRounds.length}` till dialogen.
+
+## Tekniska detaljer
+
+- Inga ändringar i datamodellen (`HousingOfferRound` räcker).
+- Inga ändringar i `HousingOffersContext`.
+- Allt är ren UI-logik på toppen av befintlig state.
+- Använder befintliga shadcn-komponenter (Badge, Card-stil) och semantiska färger från designsystemet.
+- Mobilresponsivt: `RoundSummaryBar` använder flex-wrap.
+
+## Filer som kommer ändras
+
+- `src/pages/rentals/components/HousingApplicantsTable.tsx` (smartare förval)
+- `src/pages/rentals/components/RoundSummaryBar.tsx` (NY)
+- `src/pages/rentals/HousingDetailPage.tsx` (binda ihop allt)
+- `src/features/rentals/components/SendHousingOfferDialog.tsx` (kontextuell titel)

@@ -45,6 +45,10 @@ interface HousingApplicantsTableProps {
   previousRoundByApplicant?: Record<number, number>;
   /** Markera sökande som har ett aktivt (öppet) erbjudande i en omgång — högre prioritet än previous */
   activeRoundByApplicant?: Record<number, number>;
+  /** Sökande som tackat nej i tidigare omgång (exkluderas från autoSelect) */
+  declinedInPreviousRoundIds?: number[];
+  /** Antal som ska förvalas av autoSelect (default 10) */
+  autoSelectCount?: number;
 }
 
 export function HousingApplicantsTable({ 
@@ -65,6 +69,8 @@ export function HousingApplicantsTable({
   onUnlinkContract,
   previousRoundByApplicant,
   activeRoundByApplicant,
+  declinedInPreviousRoundIds = [],
+  autoSelectCount = 10,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
@@ -91,8 +97,18 @@ export function HousingApplicantsTable({
     if (applicants.length === 0) return;
 
     const eligible = applicants
-      .filter(a => !offeredApplicantIds.includes(a.id))
-      .slice(0, 10)
+      .slice()
+      .sort((a, b) => b.queuePoints - a.queuePoints)
+      .filter(a => {
+        // Exkludera de som redan har ett aktivt erbjudande i en annan omgång
+        if (activeRoundByApplicant?.[a.id] !== undefined) return false;
+        // Exkludera de som tackat nej i tidigare omgång
+        if (declinedInPreviousRoundIds.includes(a.id)) return false;
+        // Exkludera de som redan är i offeredApplicantIds (befintliga)
+        if (offeredApplicantIds.includes(a.id)) return false;
+        return true;
+      })
+      .slice(0, autoSelectCount)
       .map(a => String(a.id));
 
     if (eligible.length === 0) return;
@@ -101,7 +117,7 @@ export function HousingApplicantsTable({
     setSelectedApplicants(initial);
     onSelectionChange?.(Array.from(initial));
     hasInitializedSelection.current = true;
-  }, [applicants, offeredApplicantIds, showSelectionColumn, autoSelectTopApplicants, onSelectionChange]);
+  }, [applicants, offeredApplicantIds, showSelectionColumn, autoSelectTopApplicants, onSelectionChange, activeRoundByApplicant, declinedInPreviousRoundIds, autoSelectCount]);
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
     const newSelected = new Set(selectedApplicants);
