@@ -14,21 +14,29 @@ export type HousingOfferDisplayStatus =
  */
 export function getHousingOfferStatus(rounds: HousingOfferRound[]): {
   status: HousingOfferDisplayStatus;
+  /** Omgångsnummer när exakt 1 aktiv omgång finns */
   roundNumber?: number;
+  /** Antal aktiva omgångar (>=2 → flera parallella) */
+  activeCount?: number;
 } {
   if (!rounds || rounds.length === 0) {
     return { status: "Klara för erbjudande" };
   }
 
-  const latest = rounds[rounds.length - 1];
-
   if (rounds.some(r => r.status === "Accepted")) {
+    const latest = rounds[rounds.length - 1];
     return { status: "Tilldelad", roundNumber: latest.roundNumber };
   }
-  if (latest.status === "Active") {
-    return { status: "Erbjudande pågår", roundNumber: latest.roundNumber };
+
+  const active = rounds.filter(r => r.status === "Active");
+  if (active.length === 1) {
+    return { status: "Erbjudande pågår", roundNumber: active[0].roundNumber, activeCount: 1 };
   }
-  // AllDeclined / Expired / Cancelled → behöver ny omgång
+  if (active.length > 1) {
+    return { status: "Erbjudande pågår", activeCount: active.length };
+  }
+  // Inga aktiva, ingen accepterad → klar för ny omgång
+  const latest = rounds[rounds.length - 1];
   return { status: "Klar för ny omgång", roundNumber: latest.roundNumber };
 }
 
