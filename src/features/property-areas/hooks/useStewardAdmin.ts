@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { AreaReassignment, PropertyForAdmin, KvvAreaInfo } from '../types/admin-types';
+import { AreaReassignment, PropertyReassignment, PropertyForAdmin, KvvAreaInfo } from '../types/admin-types';
 import { getAllPropertyAreas, getUniqueStewards, getKvvArea } from '../data';
 import { useToast } from '@/hooks/use-toast';
 
