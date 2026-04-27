@@ -326,12 +326,15 @@ const HousingDetailPage = () => {
               </div>
             )}
             <HousingApplicantsTable
-              applicants={listing.applicants.filter(a => r.selectedApplicants.includes(a.id))}
+              applicants={displayedApplicants}
               housingAddress={listing.address}
               listingId={listing.id}
               showOfferColumns={false}
-              showSelectionColumn={false}
+              showSelectionColumn={!isHistoryMode && !isContractMode}
+              onSelectionChange={setSelectedApplicants}
               offeredApplicantIds={r.selectedApplicants}
+              previousRoundByApplicant={previousRoundByApplicant}
+              activeRoundByApplicant={activeRoundByApplicant}
             />
           </TabsContent>
         ))}
