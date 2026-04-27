@@ -3,18 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ChevronDown, ChevronUp, Undo2, ArrowRight } from 'lucide-react';
-import { AreaReassignment } from '../../types/admin-types';
+import { AreaReassignment, PropertyReassignment } from '../../types/admin-types';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface PendingChangesPanelProps {
   changes: AreaReassignment[];
+  propertyMoves?: PropertyReassignment[];
   onUndo: (kvvArea: string) => void;
+  onUndoPropertyMove?: (propertyId: string) => void;
 }
 
-export function PendingChangesPanel({ changes, onUndo }: PendingChangesPanelProps) {
+export function PendingChangesPanel({ changes, propertyMoves = [], onUndo, onUndoPropertyMove }: PendingChangesPanelProps) {
   const [isOpen, setIsOpen] = useState(true);
+  const total = changes.length + propertyMoves.length;
 
-  if (changes.length === 0) return null;
+  if (total === 0) return null;
 
   return (
     <Card className="border-warning bg-warning/10">
