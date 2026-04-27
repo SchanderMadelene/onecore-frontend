@@ -117,7 +117,8 @@ export function useStewardAdmin(selectedCostCenter: string) {
         buildingType: area.buildingType,
         kvvArea: kvvArea,
         stewardRefNr: areaAssignments.get(kvvArea) || area.stewardRefNr,
-        costCenter: area.costCenter
+        costCenter: area.costCenter,
+        residenceCount: (area as any).residenceCount
       });
       grouped.set(kvvArea, properties);
     });
