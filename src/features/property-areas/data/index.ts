@@ -1,4 +1,4 @@
-import { PropertyAreaEntry, Steward, CostCenter, COST_CENTER_NAMES, BUILDING_TYPES } from '../types';
+import { PropertyAreaEntry, Steward, CostCenter, COST_CENTER_NAMES, BUILDING_TYPES, COST_CENTER_MANAGERS, CostCenterManagers } from '../types';
 import { propertyAreaEntries } from './property-areas';
 import { STEWARD_TO_KVV_AREA, getKvvArea, getUniqueKvvAreas } from './kvv-mapping';
 
