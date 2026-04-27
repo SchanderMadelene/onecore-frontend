@@ -411,16 +411,25 @@ const HousingDetailPage = () => {
         />
       )}
 
-      <ConfirmDialog
-        open={isCancelDialogOpen}
-        onOpenChange={setIsCancelDialogOpen}
-        title="Avbryt pågående omgång?"
-        description="Sökande i denna omgång kommer inte längre att kunna svara. Du kan därefter starta en ny omgång med ett nytt urval."
-        confirmLabel="Avbryt omgång"
-        cancelLabel="Behåll"
-        onConfirm={handleCancelActiveRound}
-        variant="destructive"
-      />
+      {(() => {
+        const target = rounds.find(r => r.id === cancelTargetRoundId);
+        const roundLabel = target ? `omgång ${target.roundNumber}` : "omgången";
+        return (
+          <ConfirmDialog
+            open={isCancelDialogOpen}
+            onOpenChange={(open) => {
+              setIsCancelDialogOpen(open);
+              if (!open) setCancelTargetRoundId(null);
+            }}
+            title={`Avbryt ${roundLabel}?`}
+            description="Sökande i denna omgång kommer inte längre att kunna svara. Övriga aktiva omgångar påverkas inte."
+            confirmLabel="Avbryt omgång"
+            cancelLabel="Behåll"
+            onConfirm={handleConfirmCancelRound}
+            variant="destructive"
+          />
+        );
+      })()}
 
       {!isHistoryMode && (
         <BulkActionBar
