@@ -81,19 +81,18 @@ const StewardAdminPage = () => {
       <div className="flex flex-col h-full space-y-4">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={handleBack}>
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold">Administrera förvaltningsområden</h1>
-              <p className="text-muted-foreground text-sm">
-                Byt ansvarig kvartersvärd för KVV-områden
-              </p>
-            </div>
+          <div>
+            <h1 className="text-2xl font-bold">Förvaltningsområden</h1>
+            <p className="text-muted-foreground text-sm">
+              Byt ansvarig kvartersvärd för KVV-områden
+            </p>
           </div>
           
           <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={() => navigate('/property-areas/list')}>
+              <List className="h-4 w-4 mr-2" />
+              Visa lista
+            </Button>
             <Button variant="outline" onClick={handleCancel} disabled={!isDirty}>
               <X className="h-4 w-4 mr-2" />
               Avbryt
