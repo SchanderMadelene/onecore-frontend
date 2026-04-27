@@ -72,6 +72,35 @@ export function PendingChangesPanel({ changes, propertyMoves = [], onUndo, onUnd
                   </Button>
                 </div>
               ))}
+              {propertyMoves.map(move => (
+                <div
+                  key={`prop-${move.propertyId}`}
+                  className="flex items-center justify-between gap-2 p-2 rounded-md bg-background/80"
+                >
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <span className="font-medium text-sm truncate max-w-[160px]">
+                      {move.propertyName}
+                    </span>
+                    <span className="text-muted-foreground text-sm hidden sm:inline">:</span>
+                    <div className="hidden sm:flex items-center gap-1 text-sm text-muted-foreground">
+                      <span>KVV {move.fromKvvArea}</span>
+                      <ArrowRight className="h-3 w-3 flex-shrink-0" />
+                      <span className="text-foreground">KVV {move.toKvvArea}</span>
+                    </div>
+                  </div>
+                  {onUndoPropertyMove && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onUndoPropertyMove(move.propertyId)}
+                      className="flex-shrink-0"
+                    >
+                      <Undo2 className="h-4 w-4 mr-1" />
+                      Ångra
+                    </Button>
+                  )}
+                </div>
+              ))}
             </div>
           </CardContent>
         </CollapsibleContent>
