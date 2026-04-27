@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical } from 'lucide-react';
+import { GripVertical, ArrowRightLeft } from 'lucide-react';
 import { PropertyForAdmin } from '../../types/admin-types';
 import { BuildingTypeBadge } from '../BuildingTypeBadge';
 import { cn } from '@/lib/utils';
@@ -9,9 +9,11 @@ import { cn } from '@/lib/utils';
 interface PropertyCardProps {
   property: PropertyForAdmin;
   draggable?: boolean;
+  isMoved?: boolean;
+  movedFromKvvArea?: string;
 }
 
-export function PropertyCard({ property, draggable = true }: PropertyCardProps) {
+export function PropertyCard({ property, draggable = true, isMoved = false, movedFromKvvArea }: PropertyCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: property.id,
     data: { fromKvvArea: property.kvvArea },
@@ -27,9 +29,10 @@ export function PropertyCard({ property, draggable = true }: PropertyCardProps) 
       ref={setNodeRef}
       style={style}
       className={cn(
-        'p-3 rounded-md border bg-card flex items-start gap-2',
+        'p-3 rounded-md border bg-card flex items-start gap-2 transition-colors',
         draggable && 'cursor-grab active:cursor-grabbing',
-        isDragging && 'opacity-40 shadow-lg z-50 relative'
+        isDragging && 'opacity-40 shadow-lg z-50 relative',
+        isMoved && 'border-primary border-2 bg-primary/5'
       )}
       {...attributes}
       {...listeners}
@@ -44,7 +47,15 @@ export function PropertyCard({ property, draggable = true }: PropertyCardProps) 
         <div className="text-xs text-muted-foreground truncate">
           {property.address}
         </div>
-        <BuildingTypeBadge type={property.buildingType} className="mt-1" />
+        <div className="flex items-center gap-2 mt-1 flex-wrap">
+          <BuildingTypeBadge type={property.buildingType} />
+          {isMoved && movedFromKvvArea && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+              <ArrowRightLeft className="h-3 w-3" />
+              Flyttad från {movedFromKvvArea}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -21,13 +21,15 @@ interface StewardColumnProps {
   properties: PropertyForAdmin[];
   allStewards?: Steward[];
   onReassignArea?: (kvvArea: string, toStewardRefNr: string) => void;
+  movedPropertyOrigins?: Map<string, string>;
 }
 
 export function StewardColumn({ 
   kvvArea, 
   properties, 
   allStewards = [],
-  onReassignArea
+  onReassignArea,
+  movedPropertyOrigins
 }: StewardColumnProps) {
   const [showAssignDialog, setShowAssignDialog] = useState(false);
   
@@ -82,12 +84,17 @@ export function StewardColumn({
         <CardContent className="flex-1 p-0 overflow-hidden">
           <ScrollArea className="h-full px-4 pb-4">
             <div ref={setNodeRef} className="space-y-2 min-h-[120px]">
-              {properties.map(property => (
-                <PropertyCard 
-                  key={property.id} 
-                  property={property}
-                />
-              ))}
+              {properties.map(property => {
+                const movedFrom = movedPropertyOrigins?.get(property.id);
+                return (
+                  <PropertyCard 
+                    key={property.id} 
+                    property={property}
+                    isMoved={!!movedFrom}
+                    movedFromKvvArea={movedFrom}
+                  />
+                );
+              })}
               {properties.length === 0 && (
                 <div className="text-center py-8 text-muted-foreground text-sm border-2 border-dashed border-muted rounded-md">
                   Släpp fastighet här

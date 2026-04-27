@@ -204,15 +204,21 @@ const StewardAdminPage = () => {
             <div className="flex-1 min-h-0">
               <ScrollArea className="h-full w-full">
                 <div className="flex gap-4 p-1 min-h-[500px]">
-                  {kvvAreaList.map(kvvArea => (
-                    <StewardColumn
-                      key={kvvArea.kvvArea}
-                      kvvArea={kvvArea}
-                      properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
-                      allStewards={allStewards}
-                      onReassignArea={reassignArea}
-                    />
-                  ))}
+                  {(() => {
+                    const movedPropertyOrigins = new Map(
+                      pendingPropertyMoves.map(m => [m.propertyId, m.fromKvvArea])
+                    );
+                    return kvvAreaList.map(kvvArea => (
+                      <StewardColumn
+                        key={kvvArea.kvvArea}
+                        kvvArea={kvvArea}
+                        properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
+                        allStewards={allStewards}
+                        onReassignArea={reassignArea}
+                        movedPropertyOrigins={movedPropertyOrigins}
+                      />
+                    ));
+                  })()}
                 </div>
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
