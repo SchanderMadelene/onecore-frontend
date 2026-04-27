@@ -306,8 +306,9 @@ export function HousingApplicantsTable({
               const isLinked = contractMode && linkedContractApplicantId === applicant.id;
               const isRecommended = contractMode && !linkedContractApplicantId && recommendedApplicantId === applicant.id;
               const hasActiveOfferInRound = activeRoundByApplicant?.[applicant.id] !== undefined;
+              const isOfferedThisRound = offeredApplicantIds.includes(applicant.id);
               const hasPreviousOffer =
-                !hasActiveOfferInRound && previousRoundByApplicant?.[applicant.id] !== undefined;
+                !hasActiveOfferInRound && !isOfferedThisRound && previousRoundByApplicant?.[applicant.id] !== undefined;
               const rowClassName = isWinner || isLinked
                 ? "bg-success/5"
                 : hasPreviousOffer
