@@ -197,7 +197,9 @@ const StewardAdminPage = () => {
         ) : (
           <DndContext
             sensors={sensors}
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
+            onDragCancel={handleDragCancel}
           >
             <div className="flex-1 min-h-0">
               <ScrollArea className="h-full w-full">
@@ -215,6 +217,13 @@ const StewardAdminPage = () => {
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
             </div>
+            <DragOverlay dropAnimation={null}>
+              {activeProperty ? (
+                <div className="w-[248px] rotate-2 shadow-2xl ring-2 ring-primary rounded-md">
+                  <PropertyCard property={activeProperty} draggable={false} />
+                </div>
+              ) : null}
+            </DragOverlay>
           </DndContext>
         )}
       </div>
