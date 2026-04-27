@@ -50,7 +50,7 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
         <div className="flex items-center gap-2 mt-1 flex-wrap">
           <BuildingTypeBadge type={property.buildingType} />
           {isMoved && movedFromKvvArea && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+            <span className="inline-flex items-center gap-1 text-sm font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
               <ArrowRightLeft className="h-3 w-3" />
               Flyttad från {movedFromKvvArea}
             </span>
@@ -58,7 +58,7 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
         </div>
         {(typeof property.residenceCount === 'number' && property.residenceCount > 0) ||
         (typeof property.parkingCount === 'number' && property.parkingCount > 0) ? (
-          <div className="flex items-center gap-3 mt-1.5 text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-3 mt-1.5 text-sm text-muted-foreground">
             {typeof property.residenceCount === 'number' && property.residenceCount > 0 && (
               <span className="inline-flex items-center gap-1 text-sm">
                 <DoorOpen className="h-[16px] w-[16px]" />
