@@ -108,20 +108,39 @@ const StewardAdminPage = () => {
         {/* Cost center filter */}
         <Card>
           <CardContent className="py-4">
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-medium">Kostnadställe:</span>
-              <Select value={selectedCostCenter} onValueChange={setSelectedCostCenter}>
-                <SelectTrigger className="w-[240px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {costCenters.map(cc => (
-                    <SelectItem key={cc} value={cc}>
-                      {cc} - {getCostCenterName(cc)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium">Kostnadställe:</span>
+                <Select value={selectedCostCenter} onValueChange={setSelectedCostCenter}>
+                  <SelectTrigger className="w-[240px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {costCenters.map(cc => (
+                      <SelectItem key={cc} value={cc}>
+                        {cc} - {getCostCenterName(cc)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {(() => {
+                const managers = getCostCenterManagers(selectedCostCenter);
+                if (!managers) return null;
+                return (
+                  <div className="flex flex-wrap gap-x-8 gap-y-3">
+                    <div className="flex flex-col">
+                      <span className="text-xs text-muted-foreground">Distriktschef</span>
+                      <span className="text-sm font-medium">{managers.districtManager}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-muted-foreground">Biträdande distriktschef</span>
+                      <span className="text-sm font-medium">{managers.assistantDistrictManager}</span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </CardContent>
         </Card>
