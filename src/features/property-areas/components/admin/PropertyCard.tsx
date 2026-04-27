@@ -49,18 +49,6 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
         </div>
         <div className="flex items-center gap-2 mt-1 flex-wrap">
           <BuildingTypeBadge type={property.buildingType} />
-          {typeof property.residenceCount === 'number' && property.residenceCount > 0 && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
-              <Home className="h-3 w-3" />
-              {property.residenceCount} bost
-            </span>
-          )}
-          {typeof property.parkingCount === 'number' && property.parkingCount > 0 && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
-              <Car className="h-3 w-3" />
-              {property.parkingCount} bilpl
-            </span>
-          )}
           {isMoved && movedFromKvvArea && (
             <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
               <ArrowRightLeft className="h-3 w-3" />
@@ -68,6 +56,23 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
             </span>
           )}
         </div>
+        {(typeof property.residenceCount === 'number' && property.residenceCount > 0) ||
+        (typeof property.parkingCount === 'number' && property.parkingCount > 0) ? (
+          <div className="flex items-center gap-3 mt-1.5 text-[11px] text-muted-foreground">
+            {typeof property.residenceCount === 'number' && property.residenceCount > 0 && (
+              <span className="inline-flex items-center gap-1">
+                <Home className="h-3 w-3" />
+                {property.residenceCount}
+              </span>
+            )}
+            {typeof property.parkingCount === 'number' && property.parkingCount > 0 && (
+              <span className="inline-flex items-center gap-1">
+                <Car className="h-3 w-3" />
+                {property.parkingCount}
+              </span>
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );
