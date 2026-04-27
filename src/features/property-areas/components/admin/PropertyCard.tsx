@@ -61,7 +61,7 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
           <div className="flex items-center gap-3 mt-1.5 text-[11px] text-muted-foreground">
             {typeof property.residenceCount === 'number' && property.residenceCount > 0 && (
               <span className="inline-flex items-center gap-1">
-                <Home className="h-3 w-3" />
+                <Home className="h-[16px] w-[16px]" />
                 {property.residenceCount}
               </span>
             )}
