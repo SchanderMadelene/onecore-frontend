@@ -47,7 +47,7 @@ const StewardAdminPage = () => {
     if (isDirty) {
       setShowCancelDialog(true);
     } else {
-      navigate('/property-areas');
+      navigate('/property-areas/list');
     }
   };
   
@@ -55,14 +55,14 @@ const StewardAdminPage = () => {
     if (isDirty) {
       setShowCancelDialog(true);
     } else {
-      navigate('/property-areas');
+      navigate('/property-areas/list');
     }
   };
   
   const handleConfirmCancel = () => {
     cancelAllChanges();
     setShowCancelDialog(false);
-    navigate('/property-areas');
+    navigate('/property-areas/list');
   };
   
   const handleSave = () => {
