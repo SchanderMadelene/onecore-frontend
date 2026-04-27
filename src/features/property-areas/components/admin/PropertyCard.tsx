@@ -55,6 +55,12 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
               {property.residenceCount} bost
             </span>
           )}
+          {typeof property.parkingCount === 'number' && property.parkingCount > 0 && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
+              <Car className="h-3 w-3" />
+              {property.parkingCount} bilpl
+            </span>
+          )}
           {isMoved && movedFromKvvArea && (
             <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
               <ArrowRightLeft className="h-3 w-3" />
