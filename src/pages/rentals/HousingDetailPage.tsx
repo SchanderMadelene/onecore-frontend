@@ -15,6 +15,7 @@ import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/re
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 import { ConfirmDialog } from "@/shared/common";
+import { XCircle } from "lucide-react";
 import { getHousingOfferStatus, getRoundTabLabel } from "./utils/housingOfferUtils";
 
 const NEW_ROUND_TAB = "__new_round__";
