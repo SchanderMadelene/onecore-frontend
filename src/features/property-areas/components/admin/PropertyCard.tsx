@@ -50,7 +50,7 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
         <div className="flex items-center gap-2 mt-1 flex-wrap">
           <BuildingTypeBadge type={property.buildingType} />
           {isMoved && movedFromKvvArea && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+            <span className="inline-flex items-center gap-1 text-sm font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
               <ArrowRightLeft className="h-3 w-3" />
               Flyttad från {movedFromKvvArea}
             </span>
