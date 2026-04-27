@@ -291,7 +291,7 @@ const HousingDetailPage = () => {
         <div>
           <h2 className="text-xl font-semibold">Välj sökande till omgång {rounds.length + 1}</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Sökande som fått erbjudande i tidigare omgångar är markerade men kan väljas igen.
+            De 5 högst rankade sökandena utan aktivt erbjudande och som inte tackat nej är förvalda. Justera fritt.
           </p>
         </div>
         <Button variant="ghost" onClick={handleCancelNewRoundSelection}>Avbryt urval</Button>
@@ -305,6 +305,9 @@ const HousingDetailPage = () => {
         onSelectionChange={setSelectedApplicants}
         previousRoundByApplicant={previousRoundByApplicant}
         activeRoundByApplicant={activeRoundByApplicant}
+        declinedInPreviousRoundIds={declinedInPreviousRoundIds}
+        autoSelectTopApplicants
+        autoSelectCount={5}
       />
     </section>
   );
