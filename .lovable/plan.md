@@ -1,84 +1,35 @@
+## Mål
 
+På sidan **Administrera förvaltningsområden** (`/property-areas/admin`) ska distriktschef och biträdande distriktschef visas för det valda kostnadsstället, i direkt anslutning till "Kostnadställe:"-dropdownen.
 
-## Plan: Åtgärda konsekvensbrister #3, #4, #6
+## Datamodell
 
-### #3 — Semantisk badge i OfferedHousingTable (mobil)
-**Fil:** `src/features/rentals/components/OfferedHousingTable.tsx`
+I `src/features/property-areas/types/property-area.ts`:
 
-Byt ut den hårdkodade Tailwind-färgade badgen mot semantisk variant.
+- Lägg till en ny struktur `COST_CENTER_MANAGERS` (vid sidan av `COST_CENTER_NAMES`) som mappar kostnadsställe-kod → `{ districtManager: string; assistantDistrictManager: string }`.
+- Fyll med fiktiva, anonymiserade svenska namn för alla fem kostnadsställen (61110–61150) enligt projektets anonymiseringspolicy.
+- Lägg till hjälpfunktionen `getCostCenterManagers(code)` i `src/features/property-areas/data/index.ts` och exportera den från feature-index.
 
-```tsx
-// Före
-<Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-  Väntar på svar
-</Badge>
+## UI
 
-// Efter
-<Badge variant="warning">Väntar</Badge>
-```
+I `src/pages/property-areas/StewardAdminPage.tsx`, kortet med "Kostnadställe:"-dropdownen:
 
-(Använder också den förkortade texten "Väntar" för konsekvens med tidigare badge-förkortningar.)
+- Behåll dropdownen som primärt element (rad 110–124).
+- Lägg till en sektion till höger om dropdownen (eller på ny rad om det inte får plats) som visar två kolumner:
+  - **Distriktschef** — namn under en liten label
+  - **Biträdande distriktschef** — namn under en liten label
+- Layout: `flex-wrap gap-x-8 gap-y-3` så det wrappar snyggt på smala skärmar. Labels i `text-xs text-muted-foreground`, namnen i `text-sm font-medium`.
+- Ingen ikon (enligt projektets ikon-policy för text-baserade element).
+- Värdena uppdateras reaktivt när `selectedCostCenter` ändras via `getCostCenterManagers(selectedCostCenter)`.
 
-### #4 — Semantisk status-badge i HousingHeader
-**Fil:** `src/pages/rentals/components/HousingHeader.tsx`
+## Filer som ändras
 
-Ersätt ad-hoc styling med semantisk variant.
+- `src/features/property-areas/types/property-area.ts` — ny `COST_CENTER_MANAGERS`-konstant
+- `src/features/property-areas/data/index.ts` — ny `getCostCenterManagers`-funktion
+- `src/features/property-areas/index.ts` — exportera `getCostCenterManagers`
+- `src/pages/property-areas/StewardAdminPage.tsx` — visa namnen i kortet
 
-```tsx
-// Före
-<Badge variant="outline" className="bg-primary/10 text-primary font-normal">
-  {offerStatus}
-</Badge>
+## Avgränsningar
 
-// Efter
-<Badge variant="info">{offerStatus}</Badge>
-```
-
-### #6 — Extrahera duplicerad toolbar i HousingSpacesTable
-**Fil:** `src/features/rentals/components/HousingSpacesTable.tsx`
-
-Skapa en intern komponent `HousingTabToolbar` som tar `placeholder` som prop. Eliminerar ~80 rader duplicering över sex flikar.
-
-```tsx
-function HousingTabToolbar({ placeholder, onCreateHousingAd }: {
-  placeholder: string;
-  onCreateHousingAd: () => void;
-}) {
-  return (
-    <div className="flex flex-col sm:flex-row justify-between gap-4">
-      <div className="relative">
-        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-        <Input placeholder={placeholder} className="pl-9 w-full sm:w-[300px]" />
-      </div>
-      <div className="flex gap-2">
-        <Button variant="outline" onClick={onCreateHousingAd}>
-          Ny bostadsannons
-        </Button>
-        <ApplicantProfileModal />
-      </div>
-    </div>
-  );
-}
-```
-
-Notera: `UserPlus`-ikonen tas bort från "Ny bostadsannons" eftersom primära/sekundära textknappar inte ska ha ikoner (Core-regel).
-
-Varje flik blir då:
-```tsx
-{
-  value: "publicerade",
-  label: "Publicerade",
-  content: (
-    <div className="flex flex-col space-y-4">
-      <HousingTabToolbar placeholder="Sök publicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
-      <PublishedHousingTable />
-    </div>
-  )
-}
-```
-
-### Påverkan
-- 3 filer ändras
-- Ingen funktionsförändring — endast visuell konsekvens och kodrensning
-- Inga nya delade komponenter (`HousingTabToolbar` lever lokalt i `HousingSpacesTable.tsx` enligt återanvändningsprincipen)
-
+- Endast på `StewardAdminPage` (där användaren är just nu). Om du vill visa samma info på `PropertyAreasPage` (huvudsidan) eller i admin-mobilvyn säger du till så lägger jag till det i ett eget steg.
+- Namnen blir fiktiv mockdata. När riktig data finns kan vi koppla källan senare.
