@@ -59,30 +59,39 @@ export function useStewardAdmin(selectedCostCenter: string) {
     setPendingPropertyMoves([]);
   }, [selectedCostCenter]);
   
+  // Effective KVV area for a property (after overrides)
+  const effectiveKvvArea = useCallback((propertyId: string, fallback: string) => {
+    return propertyKvvOverrides.get(propertyId) || fallback;
+  }, [propertyKvvOverrides]);
+  
   // Get KVV area info list (for columns/accordion)
   const kvvAreaList = useMemo((): KvvAreaInfo[] => {
     const list: KvvAreaInfo[] = [];
     
+    // Count properties per KVV-area, respecting overrides
+    const counts = new Map<string, number>();
+    filteredAreas.forEach(a => {
+      const original = a.kvvArea || getKvvArea(a.stewardRefNr);
+      if (!original) return;
+      const eff = propertyKvvOverrides.get(a.id) || original;
+      counts.set(eff, (counts.get(eff) || 0) + 1);
+    });
+    
     kvvAreasInCostCenter.forEach((originalData, kvvArea) => {
       const currentStewardRefNr = areaAssignments.get(kvvArea) || originalData.stewardRefNr;
       const currentSteward = allStewards.find(s => s.refNr === currentStewardRefNr);
-      
-      // Count properties in this KVV area
-      const propertyCount = filteredAreas.filter(a => 
-        (a.kvvArea || getKvvArea(a.stewardRefNr)) === kvvArea
-      ).length;
       
       list.push({
         kvvArea,
         stewardRefNr: currentStewardRefNr,
         stewardName: currentSteward?.name || currentStewardRefNr,
         stewardPhone: currentSteward?.phone,
-        propertyCount
+        propertyCount: counts.get(kvvArea) || 0
       });
     });
     
     return list.sort((a, b) => a.kvvArea.localeCompare(b.kvvArea));
-  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards]);
+  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards, propertyKvvOverrides]);
   
   // Get properties grouped by KVV area
   const propertiesByKvvArea = useMemo(() => {
@@ -93,10 +102,11 @@ export function useStewardAdmin(selectedCostCenter: string) {
       grouped.set(area.kvvArea, []);
     });
     
-    // Group properties by their KVV area
+    // Group properties by their (effective) KVV area
     filteredAreas.forEach(area => {
-      const kvvArea = area.kvvArea || getKvvArea(area.stewardRefNr);
-      if (!kvvArea) return;
+      const originalKvv = area.kvvArea || getKvvArea(area.stewardRefNr);
+      if (!originalKvv) return;
+      const kvvArea = propertyKvvOverrides.get(area.id) || originalKvv;
       
       const properties = grouped.get(kvvArea) || [];
       properties.push({
@@ -113,10 +123,10 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     
     return grouped;
-  }, [filteredAreas, kvvAreaList, areaAssignments]);
+  }, [filteredAreas, kvvAreaList, areaAssignments, propertyKvvOverrides]);
   
   // Check if there are unsaved changes
-  const isDirty = pendingChanges.length > 0;
+  const isDirty = pendingChanges.length > 0 || pendingPropertyMoves.length > 0;
   
   // Reassign a KVV area to a new steward
   const reassignArea = useCallback((kvvArea: string, toStewardRefNr: string) => {
