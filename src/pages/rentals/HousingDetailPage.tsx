@@ -300,6 +300,21 @@ const HousingDetailPage = () => {
         </TabsList>
         {rounds.map(r => (
           <TabsContent key={r.id} value={`round-${r.id}`}>
+            {r.status === 'Active' && !isHistoryMode && !isContractMode && (
+              <div className="flex items-center justify-end mb-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setCancelTargetRoundId(r.id);
+                    setIsCancelDialogOpen(true);
+                  }}
+                >
+                  <XCircle className="h-4 w-4 mr-1" />
+                  Avbryt denna omgång
+                </Button>
+              </div>
+            )}
             <HousingApplicantsTable
               applicants={listing.applicants.filter(a => r.selectedApplicants.includes(a.id))}
               housingAddress={listing.address}
