@@ -15,6 +15,7 @@ import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/re
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 import { ConfirmDialog } from "@/shared/common";
+import { XCircle } from "lucide-react";
 import { getHousingOfferStatus, getRoundTabLabel } from "./utils/housingOfferUtils";
 
 const NEW_ROUND_TAB = "__new_round__";
@@ -24,6 +25,7 @@ const HousingDetailPage = () => {
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [cancelTargetRoundId, setCancelTargetRoundId] = useState<number | null>(null);
   const [smsOpen, setSmsOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
@@ -34,11 +36,11 @@ const HousingDetailPage = () => {
   const location = useLocation();
   const {
     startNewRound,
-    cancelActiveRound,
+    cancelRound,
     getRoundsForListing,
-    getActiveRound,
+    getActiveRounds,
     canStartNewRound,
-    getRoundNumberForApplicant,
+    
     linkContract,
     unlinkContract,
     getLinkedContract,
@@ -48,7 +50,7 @@ const HousingDetailPage = () => {
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
   const rounds = housingId ? getRoundsForListing(housingId) : [];
-  const activeRound = housingId ? getActiveRound(housingId) : undefined;
+  const activeRounds = housingId ? getActiveRounds(housingId) : [];
   const offerStatusInfo = getHousingOfferStatus(rounds);
   const canStartNew = housingId ? canStartNewRound(housingId) : false;
 
@@ -115,11 +117,17 @@ const HousingDetailPage = () => {
     setActiveTab(undefined);
   };
 
-  const handleCancelActiveRound = () => {
-    if (!housingId) return;
-    cancelActiveRound(housingId);
+  const handleConfirmCancelRound = () => {
+    if (!housingId || cancelTargetRoundId === null) return;
+    cancelRound(housingId, cancelTargetRoundId);
+    const cancelledRound = rounds.find(r => r.id === cancelTargetRoundId);
+    setCancelTargetRoundId(null);
     setIsCancelDialogOpen(false);
-    sonnerToast.success("Omgången har avbrutits — du kan nu starta en ny");
+    sonnerToast.success(
+      cancelledRound
+        ? `Omgång ${cancelledRound.roundNumber} har avbrutits`
+        : "Omgången har avbrutits"
+    );
   };
 
   if (!housingId) {
@@ -227,12 +235,21 @@ const HousingDetailPage = () => {
     sonnerToast.success("Kontraktskoppling borttagen");
   };
 
-  // Karta över vilka sökande fått erbjudande i tidigare omgångar (för "Fick omgång N"-badge)
+  // Kartor: senaste omgång en sökande fick erbjudande i, samt om den omgången är aktiv.
+  // Används i urvalsläget för ny omgång för att visa rätt badge.
   const previousRoundByApplicant: Record<number, number> = {};
+  const activeRoundByApplicant: Record<number, number> = {};
   if (isSelectingForNewRound) {
     for (const a of listing.applicants) {
-      const rn = getRoundNumberForApplicant(housingId, a.id);
-      if (rn !== undefined) previousRoundByApplicant[a.id] = rn;
+      // Hitta senaste round som innehåller sökanden
+      for (let i = rounds.length - 1; i >= 0; i--) {
+        const r = rounds[i];
+        if (r.selectedApplicants.includes(a.id)) {
+          previousRoundByApplicant[a.id] = r.roundNumber;
+          if (r.status === 'Active') activeRoundByApplicant[a.id] = r.roundNumber;
+          break;
+        }
+      }
     }
   }
 
@@ -271,6 +288,7 @@ const HousingDetailPage = () => {
         showSelectionColumn={true}
         onSelectionChange={setSelectedApplicants}
         previousRoundByApplicant={previousRoundByApplicant}
+        activeRoundByApplicant={activeRoundByApplicant}
       />
     </section>
   );
@@ -293,6 +311,21 @@ const HousingDetailPage = () => {
         </TabsList>
         {rounds.map(r => (
           <TabsContent key={r.id} value={`round-${r.id}`}>
+            {r.status === 'Active' && !isHistoryMode && !isContractMode && (
+              <div className="flex items-center justify-end mb-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setCancelTargetRoundId(r.id);
+                    setIsCancelDialogOpen(true);
+                  }}
+                >
+                  <XCircle className="h-4 w-4 mr-1" />
+                  Avbryt denna omgång
+                </Button>
+              </div>
+            )}
             <HousingApplicantsTable
               applicants={listing.applicants.filter(a => r.selectedApplicants.includes(a.id))}
               housingAddress={listing.address}
@@ -348,17 +381,24 @@ const HousingDetailPage = () => {
         <HousingHeader
           housingAddress={listing.address}
           offerStatus={offerStatus}
-          currentRoundNumber={rounds.length > 0 && !isHistoryMode && !isContractMode ? offerStatusInfo.roundNumber : undefined}
+          currentRoundNumber={
+            rounds.length > 0 && !isHistoryMode && !isContractMode
+              ? offerStatusInfo.roundNumber
+              : undefined
+          }
+          activeRoundsCount={
+            rounds.length > 0 && !isHistoryMode && !isContractMode
+              ? offerStatusInfo.activeCount
+              : undefined
+          }
           housing={listing}
           hasOffers={rounds.length > 0}
           hasSelectedApplicants={selectedApplicants.length > 0}
-          hasActiveRound={!!activeRound && !isHistoryMode && !isContractMode}
           canStartNewRound={canStartNew && rounds.length > 0 && !isHistoryMode && !isContractMode}
           isSelectingForNewRound={isSelectingForNewRound}
           onBack={handleBack}
           onCreateOffer={handleOpenOfferDialog}
           onStartNewRound={handleStartNewRound}
-          onCancelRound={() => setIsCancelDialogOpen(true)}
           isCreatingOffer={false}
           readOnly={isHistoryMode}
         />
@@ -397,16 +437,25 @@ const HousingDetailPage = () => {
         />
       )}
 
-      <ConfirmDialog
-        open={isCancelDialogOpen}
-        onOpenChange={setIsCancelDialogOpen}
-        title="Avbryt pågående omgång?"
-        description="Sökande i denna omgång kommer inte längre att kunna svara. Du kan därefter starta en ny omgång med ett nytt urval."
-        confirmLabel="Avbryt omgång"
-        cancelLabel="Behåll"
-        onConfirm={handleCancelActiveRound}
-        variant="destructive"
-      />
+      {(() => {
+        const target = rounds.find(r => r.id === cancelTargetRoundId);
+        const roundLabel = target ? `omgång ${target.roundNumber}` : "omgången";
+        return (
+          <ConfirmDialog
+            open={isCancelDialogOpen}
+            onOpenChange={(open) => {
+              setIsCancelDialogOpen(open);
+              if (!open) setCancelTargetRoundId(null);
+            }}
+            title={`Avbryt ${roundLabel}?`}
+            description="Sökande i denna omgång kommer inte längre att kunna svara. Övriga aktiva omgångar påverkas inte."
+            confirmLabel="Avbryt omgång"
+            cancelLabel="Behåll"
+            onConfirm={handleConfirmCancelRound}
+            variant="destructive"
+          />
+        );
+      })()}
 
       {!isHistoryMode && (
         <BulkActionBar

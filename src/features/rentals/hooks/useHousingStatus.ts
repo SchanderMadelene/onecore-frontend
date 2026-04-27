@@ -20,11 +20,11 @@ export function useHousingStatus() {
       if (rounds.some(r => r.status === 'Accepted')) {
         return 'assigned';
       }
-      const latest = rounds[rounds.length - 1];
-      if (latest.status === 'Active') {
+      // Minst en aktiv omgång (kan vara flera parallella) → erbjuden
+      if (rounds.some(r => r.status === 'Active')) {
         return 'offered';
       }
-      // AllDeclined / Expired / Cancelled
+      // Alla omgångar är AllDeclined / Expired / Cancelled
       return 'ready_for_new_round';
     }
 

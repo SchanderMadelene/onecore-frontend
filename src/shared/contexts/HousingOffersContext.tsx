@@ -48,10 +48,12 @@ interface HousingOffersContextType {
   /** Manuella omgångar per listing */
   getRoundsForListing: (listingId: string) => HousingOfferRound[];
   getActiveRound: (listingId: string) => HousingOfferRound | undefined;
+  getActiveRounds: (listingId: string) => HousingOfferRound[];
   getLatestRound: (listingId: string) => HousingOfferRound | undefined;
   canStartNewRound: (listingId: string) => boolean;
   startNewRound: (listingId: string, selectedApplicants: number[]) => void;
-  cancelActiveRound: (listingId: string) => void;
+  /** Avbryt en specifik omgång (påverkar inte övriga aktiva omgångar) */
+  cancelRound: (listingId: string, roundId: number) => void;
   /** Sökande som fått minst ett erbjudande (för markering i tabellen) */
   getApplicantsWhoReceivedOffer: (listingId: string) => Set<number>;
   /** Hämta vilken omgång en sökande senast fick erbjudande i */
@@ -128,9 +130,19 @@ const MOCK_ROUNDS: Record<string, HousingOfferRound[]> = {
       id: 1015_1,
       listingId: '234-234-234-1015',
       roundNumber: 1,
-      selectedApplicants: [8, 11, 4, 14, 1, 6, 15, 10, 12, 5],
+      selectedApplicants: [8, 11, 4, 14, 1],
       sentAt: '2026-04-18T13:15:00.000Z',
       expiresAt: '2026-04-25T13:15:00.000Z',
+      status: 'Active',
+      responses: [],
+    },
+    {
+      id: 1015_2,
+      listingId: '234-234-234-1015',
+      roundNumber: 2,
+      selectedApplicants: [6, 15, 10, 12, 5],
+      sentAt: '2026-04-20T10:00:00.000Z',
+      expiresAt: '2026-04-27T10:00:00.000Z',
       status: 'Active',
       responses: [],
     },
@@ -172,11 +184,14 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
     return rounds.length ? rounds[rounds.length - 1] : undefined;
   };
 
+  const getActiveRounds = (listingId: string) =>
+    (roundsByListing[listingId] ?? []).filter(r => r.status === 'Active');
+
   const canStartNewRound = (listingId: string) => {
     const rounds = roundsByListing[listingId] ?? [];
     if (rounds.length === 0) return true;
-    // Får inte starta om aktiv eller accepterad omgång finns
-    return !rounds.some(r => r.status === 'Active' || r.status === 'Accepted');
+    // Endast Accepted blockerar — flera aktiva omgångar tillåts parallellt.
+    return !rounds.some(r => r.status === 'Accepted');
   };
 
   const startNewRound = (listingId: string, selectedApplicants: number[]) => {
@@ -199,14 +214,16 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const cancelActiveRound = (listingId: string) => {
+  const cancelRound = (listingId: string, roundId: number) => {
     setRoundsByListing(prev => {
       const existing = prev[listingId];
       if (!existing) return prev;
       return {
         ...prev,
         [listingId]: existing.map(r =>
-          r.status === 'Active' ? { ...r, status: 'Cancelled' as const } : r,
+          r.id === roundId && r.status === 'Active'
+            ? { ...r, status: 'Cancelled' as const }
+            : r,
         ),
       };
     });
@@ -272,10 +289,11 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
         offers,
         getRoundsForListing,
         getActiveRound,
+        getActiveRounds,
         getLatestRound,
         canStartNewRound,
         startNewRound,
-        cancelActiveRound,
+        cancelRound,
         getApplicantsWhoReceivedOffer,
         getRoundNumberForApplicant,
         createOffer,

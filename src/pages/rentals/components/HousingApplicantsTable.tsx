@@ -43,6 +43,8 @@ interface HousingApplicantsTableProps {
   onUnlinkContract?: () => void;
   /** Markera sökande som fått tidigare erbjudande i en specifik omgång */
   previousRoundByApplicant?: Record<number, number>;
+  /** Markera sökande som har ett aktivt (öppet) erbjudande i en omgång — högre prioritet än previous */
+  activeRoundByApplicant?: Record<number, number>;
 }
 
 export function HousingApplicantsTable({ 
@@ -62,6 +64,7 @@ export function HousingApplicantsTable({
   onLinkContract,
   onUnlinkContract,
   previousRoundByApplicant,
+  activeRoundByApplicant,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
@@ -328,11 +331,15 @@ export function HousingApplicantsTable({
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{applicant.name}</span>
-                          {previousRoundByApplicant?.[applicant.id] !== undefined && (
+                          {activeRoundByApplicant?.[applicant.id] !== undefined ? (
+                            <Badge variant="warning" className="text-xs">
+                              Aktivt erbjudande i omgång {activeRoundByApplicant[applicant.id]}
+                            </Badge>
+                          ) : previousRoundByApplicant?.[applicant.id] !== undefined ? (
                             <Badge variant="muted" className="text-xs">
                               Fick omgång {previousRoundByApplicant[applicant.id]}
                             </Badge>
-                          )}
+                          ) : null}
                         </div>
                         <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
                       </div>
