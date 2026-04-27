@@ -1,31 +1,47 @@
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { PublishedHousingSpace } from "../data/published-housing";
 
-export type HousingStatus = 'published' | 'ready_for_offer' | 'offered' | 'history';
+export type HousingStatus =
+  | 'published'
+  | 'ready_for_offer'
+  | 'offered'
+  | 'ready_for_new_round'
+  | 'assigned'
+  | 'history';
 
 export function useHousingStatus() {
-  const { isListingOffered, isEarlyUnpublished } = useHousingOffers();
+  const { isListingOffered, isEarlyUnpublished, getRoundsForListing } = useHousingOffers();
 
   const getHousingStatus = (housing: PublishedHousingSpace): HousingStatus => {
-    const currentDate = new Date();
-    const publishedToDate = new Date(housing.publishedTo);
-    
-    // Check if offer has been sent
+    const rounds = getRoundsForListing(housing.id);
+
+    if (rounds.length > 0) {
+      // Någon har tackat ja → tilldelad
+      if (rounds.some(r => r.status === 'Accepted')) {
+        return 'assigned';
+      }
+      const latest = rounds[rounds.length - 1];
+      if (latest.status === 'Active') {
+        return 'offered';
+      }
+      // AllDeclined / Expired / Cancelled
+      return 'ready_for_new_round';
+    }
+
+    // Bakåtkompatibilitet: om gammal "isListingOffered" säger ja men inga rounds
     if (isListingOffered(housing.id)) {
       return 'offered';
     }
-    
-    // Manually moved to "ready for offer" before publication ended
+
     if (isEarlyUnpublished(housing.id)) {
       return 'ready_for_offer';
     }
-    
-    // Check if publication period has expired
+
+    const currentDate = new Date();
+    const publishedToDate = new Date(housing.publishedTo);
     if (publishedToDate <= currentDate) {
       return 'ready_for_offer';
     }
-    
-    // Still within publication period
     return 'published';
   };
 
@@ -35,6 +51,6 @@ export function useHousingStatus() {
 
   return {
     getHousingStatus,
-    filterHousingByStatus
+    filterHousingByStatus,
   };
 }
