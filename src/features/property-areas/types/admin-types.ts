@@ -47,4 +47,5 @@ export interface PropertyForAdmin {
   kvvArea?: string;
   stewardRefNr: string;
   costCenter: string;
+  residenceCount?: number;
 }
