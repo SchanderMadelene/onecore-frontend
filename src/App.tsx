@@ -282,10 +282,19 @@ const AppRoutes = () => {
             path="/property-areas" 
             element={
               <ProtectedRoute isEnabled={features.showPropertyAreas}>
+                <StewardAdminPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/property-areas/list" 
+            element={
+              <ProtectedRoute isEnabled={features.showPropertyAreas}>
                 <PropertyAreasPage />
               </ProtectedRoute>
             }
           />
+          {/* Backwards compat: gamla /admin-länken */}
           <Route 
             path="/property-areas/admin" 
             element={
