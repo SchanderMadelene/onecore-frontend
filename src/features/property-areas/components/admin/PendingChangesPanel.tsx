@@ -30,7 +30,7 @@ export function PendingChangesPanel({ changes, propertyMoves = [], onUndo, onUnd
                   Väntande ändringar
                 </CardTitle>
                 <Badge variant="secondary">
-                  {changes.length}
+                  {total}
                 </Badge>
               </div>
               {isOpen ? (
