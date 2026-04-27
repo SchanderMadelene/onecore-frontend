@@ -402,8 +402,8 @@ const HousingDetailPage = () => {
         onOpenChange={setIsCancelDialogOpen}
         title="Avbryt pågående omgång?"
         description="Sökande i denna omgång kommer inte längre att kunna svara. Du kan därefter starta en ny omgång med ett nytt urval."
-        confirmText="Avbryt omgång"
-        cancelText="Behåll"
+        confirmLabel="Avbryt omgång"
+        cancelLabel="Behåll"
         onConfirm={handleCancelActiveRound}
         variant="destructive"
       />
