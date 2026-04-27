@@ -69,6 +69,8 @@ export function HousingApplicantsTable({
   onUnlinkContract,
   previousRoundByApplicant,
   activeRoundByApplicant,
+  declinedInPreviousRoundIds = [],
+  autoSelectCount = 10,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
