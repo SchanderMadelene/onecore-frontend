@@ -149,7 +149,12 @@ const StewardAdminPage = () => {
         </Card>
         
         {/* Pending changes panel */}
-        <PendingChangesPanel changes={pendingChanges} onUndo={undoChange} />
+        <PendingChangesPanel
+          changes={pendingChanges}
+          propertyMoves={pendingPropertyMoves}
+          onUndo={undoChange}
+          onUndoPropertyMove={undoPropertyMove}
+        />
         
         {/* Main content */}
         {isMobile ? (
@@ -160,22 +165,27 @@ const StewardAdminPage = () => {
             onReassignArea={reassignArea}
           />
         ) : (
-          <div className="flex-1 min-h-0">
-            <ScrollArea className="h-full w-full">
-              <div className="flex gap-4 p-1 min-h-[500px]">
-                {kvvAreaList.map(kvvArea => (
-                  <StewardColumn
-                    key={kvvArea.kvvArea}
-                    kvvArea={kvvArea}
-                    properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
-                    allStewards={allStewards}
-                    onReassignArea={reassignArea}
-                  />
-                ))}
-              </div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-          </div>
+          <DndContext
+            sensors={sensors}
+            onDragEnd={handleDragEnd}
+          >
+            <div className="flex-1 min-h-0">
+              <ScrollArea className="h-full w-full">
+                <div className="flex gap-4 p-1 min-h-[500px]">
+                  {kvvAreaList.map(kvvArea => (
+                    <StewardColumn
+                      key={kvvArea.kvvArea}
+                      kvvArea={kvvArea}
+                      properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
+                      allStewards={allStewards}
+                      onReassignArea={reassignArea}
+                    />
+                  ))}
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            </div>
+          </DndContext>
         )}
       </div>
       
