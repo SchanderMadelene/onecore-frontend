@@ -192,6 +192,65 @@ export function useStewardAdmin(selectedCostCenter: string) {
     setPendingChanges(prev => prev.filter(c => c.kvvArea !== kvvArea));
   }, [pendingChanges]);
   
+  // Reassign a single property to a different KVV-area (drag-and-drop)
+  const reassignProperty = useCallback((propertyId: string, toKvvArea: string) => {
+    const property = filteredAreas.find(a => a.id === propertyId);
+    if (!property) return;
+    
+    const originalKvv = property.kvvArea || getKvvArea(property.stewardRefNr);
+    if (!originalKvv) return;
+    
+    const currentKvv = propertyKvvOverrides.get(propertyId) || originalKvv;
+    if (currentKvv === toKvvArea) return;
+    
+    // Update override (or remove it if dragging back to the original area)
+    setPropertyKvvOverrides(prev => {
+      const next = new Map(prev);
+      if (toKvvArea === originalKvv) {
+        next.delete(propertyId);
+      } else {
+        next.set(propertyId, toKvvArea);
+      }
+      return next;
+    });
+    
+    // Update pending moves list
+    setPendingPropertyMoves(prev => {
+      const existingIndex = prev.findIndex(p => p.propertyId === propertyId);
+      
+      // If we're back at the original — remove the pending move
+      if (toKvvArea === originalKvv) {
+        return existingIndex >= 0 ? prev.filter((_, i) => i !== existingIndex) : prev;
+      }
+      
+      if (existingIndex >= 0) {
+        // Update target on existing move (keep original fromKvvArea)
+        return prev.map((p, i) => i === existingIndex
+          ? { ...p, toKvvArea, timestamp: new Date() }
+          : p
+        );
+      }
+      
+      return [...prev, {
+        propertyId,
+        propertyName: property.propertyName,
+        fromKvvArea: originalKvv,
+        toKvvArea,
+        timestamp: new Date()
+      }];
+    });
+  }, [filteredAreas, propertyKvvOverrides]);
+  
+  // Undo a single property move
+  const undoPropertyMove = useCallback((propertyId: string) => {
+    setPropertyKvvOverrides(prev => {
+      const next = new Map(prev);
+      next.delete(propertyId);
+      return next;
+    });
+    setPendingPropertyMoves(prev => prev.filter(p => p.propertyId !== propertyId));
+  }, []);
+  
   // Cancel all changes
   const cancelAllChanges = useCallback(() => {
     const originalAssignments = new Map<string, string>();
@@ -200,28 +259,33 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     setAreaAssignments(originalAssignments);
     setPendingChanges([]);
+    setPropertyKvvOverrides(new Map());
+    setPendingPropertyMoves([]);
   }, [kvvAreasInCostCenter]);
   
   // Save all changes
   const saveChanges = useCallback(() => {
-    // In a real app, this would call an API
+    const totalChanges = pendingChanges.length + pendingPropertyMoves.length;
     toast({
       title: "Ändringar sparade",
-      description: `${pendingChanges.length} ${pendingChanges.length === 1 ? 'område har' : 'områden har'} fått ny ansvarig.`
+      description: `${totalChanges} ${totalChanges === 1 ? 'ändring har' : 'ändringar har'} sparats.`
     });
     
-    // Clear pending changes (keep assignments as they are)
     setPendingChanges([]);
-  }, [pendingChanges, toast]);
+    setPendingPropertyMoves([]);
+  }, [pendingChanges, pendingPropertyMoves, toast]);
   
   return {
     kvvAreaList,
     propertiesByKvvArea,
     allStewards,
     pendingChanges,
+    pendingPropertyMoves,
     isDirty,
     reassignArea,
+    reassignProperty,
     undoChange,
+    undoPropertyMove,
     cancelAllChanges,
     saveChanges
   };
