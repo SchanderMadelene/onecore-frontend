@@ -355,17 +355,24 @@ const HousingDetailPage = () => {
         <HousingHeader
           housingAddress={listing.address}
           offerStatus={offerStatus}
-          currentRoundNumber={rounds.length > 0 && !isHistoryMode && !isContractMode ? offerStatusInfo.roundNumber : undefined}
+          currentRoundNumber={
+            rounds.length > 0 && !isHistoryMode && !isContractMode
+              ? offerStatusInfo.roundNumber
+              : undefined
+          }
+          activeRoundsCount={
+            rounds.length > 0 && !isHistoryMode && !isContractMode
+              ? offerStatusInfo.activeCount
+              : undefined
+          }
           housing={listing}
           hasOffers={rounds.length > 0}
           hasSelectedApplicants={selectedApplicants.length > 0}
-          hasActiveRound={!!activeRound && !isHistoryMode && !isContractMode}
           canStartNewRound={canStartNew && rounds.length > 0 && !isHistoryMode && !isContractMode}
           isSelectingForNewRound={isSelectingForNewRound}
           onBack={handleBack}
           onCreateOffer={handleOpenOfferDialog}
           onStartNewRound={handleStartNewRound}
-          onCancelRound={() => setIsCancelDialogOpen(true)}
           isCreatingOffer={false}
           readOnly={isHistoryMode}
         />
