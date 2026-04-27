@@ -122,6 +122,13 @@ export function useStewardAdmin(selectedCostCenter: string) {
       grouped.set(kvvArea, properties);
     });
     
+    // Sort each column alphabetically by property name for consistent ordering
+    // regardless of whether a property was moved here via drag-and-drop
+    grouped.forEach((properties, key) => {
+      properties.sort((a, b) => a.propertyName.localeCompare(b.propertyName, 'sv'));
+      grouped.set(key, properties);
+    });
+    
     return grouped;
   }, [filteredAreas, kvvAreaList, areaAssignments, propertyKvvOverrides]);
   
