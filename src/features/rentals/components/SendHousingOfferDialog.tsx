@@ -46,6 +46,10 @@ interface SendHousingOfferDialogProps {
   recipientCount: number;
   housingAddress: string;
   onConfirm: (dispatch: HousingOfferDispatch) => void;
+  /** Vilken omgång som skapas (1 = första omgången) */
+  roundNumber?: number;
+  /** Antal andra aktiva omgångar som löper parallellt */
+  parallelActiveRounds?: number;
 }
 
 const offerTemplates = messageTemplates.filter((t) => t.category === "Uthyrning");
