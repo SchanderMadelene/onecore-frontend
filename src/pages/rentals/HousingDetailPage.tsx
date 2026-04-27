@@ -288,6 +288,7 @@ const HousingDetailPage = () => {
         showSelectionColumn={true}
         onSelectionChange={setSelectedApplicants}
         previousRoundByApplicant={previousRoundByApplicant}
+        activeRoundByApplicant={activeRoundByApplicant}
       />
     </section>
   );
