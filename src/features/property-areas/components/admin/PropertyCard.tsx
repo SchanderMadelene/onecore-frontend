@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, ArrowRightLeft } from 'lucide-react';
+import { GripVertical, ArrowRightLeft, Home } from 'lucide-react';
 import { PropertyForAdmin } from '../../types/admin-types';
 import { BuildingTypeBadge } from '../BuildingTypeBadge';
 import { cn } from '@/lib/utils';
