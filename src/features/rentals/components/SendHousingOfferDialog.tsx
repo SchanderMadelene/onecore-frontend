@@ -125,9 +125,24 @@ export function SendHousingOfferDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl flex flex-col max-h-[90vh] p-0 gap-0">
         <DialogHeader className="p-6 pb-4">
-          <DialogTitle>Skicka erbjudande</DialogTitle>
+          <DialogTitle>
+            {roundNumber && roundNumber > 1
+              ? `Skicka erbjudande för omgång ${roundNumber}`
+              : "Skicka erbjudande"}
+          </DialogTitle>
           <DialogDescription>
             Erbjudande till {recipientCount} {recipientCount === 1 ? "sökande" : "sökande"} för {housingAddress}.
+            {parallelActiveRounds > 0 && (
+              <>
+                {" "}
+                <span className="text-warning-foreground font-medium">
+                  {parallelActiveRounds === 1
+                    ? "1 tidigare omgång är fortfarande aktiv parallellt"
+                    : `${parallelActiveRounds} tidigare omgångar är fortfarande aktiva parallellt`}
+                </span>{" "}
+                — sökande där påverkas inte.
+              </>
+            )}
           </DialogDescription>
         </DialogHeader>
 
