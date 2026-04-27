@@ -1,11 +1,12 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { PageLayout } from "@/layouts";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useHousingListing, useHousingStatus } from "@/features/rentals";
 import { toast } from "@/hooks/use-toast";
 import { toast as sonnerToast } from "sonner";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
@@ -13,23 +14,56 @@ import { HousingInfo } from "./components/HousingInfo";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
+import { ConfirmDialog } from "@/shared/common";
+import { getHousingOfferStatus, getRoundTabLabel } from "./utils/housingOfferUtils";
+
+const NEW_ROUND_TAB = "__new_round__";
 
 const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [smsOpen, setSmsOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
+  const [isSelectingForNewRound, setIsSelectingForNewRound] = useState(false);
+
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { createOffer, isListingOffered, getOfferForListing, linkContract, unlinkContract, getLinkedContract } = useHousingOffers();
+  const {
+    startNewRound,
+    cancelActiveRound,
+    getRoundsForListing,
+    getActiveRound,
+    canStartNewRound,
+    getRoundNumberForApplicant,
+    linkContract,
+    unlinkContract,
+    getLinkedContract,
+  } = useHousingOffers();
   const { getHousingStatus } = useHousingStatus();
-  
+
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
-  // Bygg recipient-listan för bulk-SMS/mejl baserat på markerade sökande.
-  // Telefon och e-post mockas tills riktig kunddata är kopplad.
+  const rounds = housingId ? getRoundsForListing(housingId) : [];
+  const activeRound = housingId ? getActiveRound(housingId) : undefined;
+  const offerStatusInfo = getHousingOfferStatus(rounds);
+  const canStartNew = housingId ? canStartNewRound(housingId) : false;
+
+  // Sätt default-tab när rounds finns: senaste omgången, eller "ny omgång"-tab om vi just klickade
+  useEffect(() => {
+    if (isSelectingForNewRound) {
+      setActiveTab(NEW_ROUND_TAB);
+      return;
+    }
+    if (rounds.length > 0 && !activeTab) {
+      setActiveTab(`round-${rounds[rounds.length - 1].id}`);
+    }
+  }, [rounds, isSelectingForNewRound, activeTab]);
+
+  // Bygg recipient-listan för bulk-SMS/mejl baserat på markerade sökande
   const bulkRecipients = useMemo(() => {
     if (!listing) return [];
     return listing.applicants
@@ -43,11 +77,8 @@ const HousingDetailPage = () => {
   }, [listing, selectedApplicants]);
 
   const handleBack = () => {
-    // Navigate back to rentals page with housing tab and the specific housing sub-tab
     const activeHousingTab = location.state?.activeHousingTab || "publicerade";
-    navigate('/rentals?tab=housing', { 
-      state: { activeHousingTab }
-    });
+    navigate('/rentals?tab=housing', { state: { activeHousingTab } });
   };
 
   const handleOpenOfferDialog = () => {
@@ -59,18 +90,36 @@ const HousingDetailPage = () => {
     if (!housingId || selectedApplicants.length === 0) return;
 
     const applicantIds = selectedApplicants.map(id => parseInt(id));
-    createOffer(housingId, applicantIds);
+    startNewRound(housingId, applicantIds);
 
     setIsOfferDialogOpen(false);
+    setIsSelectingForNewRound(false);
+    setSelectedApplicants([]);
+    setActiveTab(undefined); // låt useEffect välja senaste round-tab
 
     toast({
       title: "Erbjudande skickat",
-      description: `Erbjudanden har skickats till ${selectedApplicants.length} valda sökande`
+      description: `Erbjudanden har skickats till ${applicantIds.length} valda sökande`,
     });
+  };
 
-    navigate('/rentals?tab=housing', {
-      state: { activeHousingTab: 'erbjudna' }
-    });
+  const handleStartNewRound = () => {
+    setIsSelectingForNewRound(true);
+    setSelectedApplicants([]);
+    setActiveTab(NEW_ROUND_TAB);
+  };
+
+  const handleCancelNewRoundSelection = () => {
+    setIsSelectingForNewRound(false);
+    setSelectedApplicants([]);
+    setActiveTab(undefined);
+  };
+
+  const handleCancelActiveRound = () => {
+    if (!housingId) return;
+    cancelActiveRound(housingId);
+    setIsCancelDialogOpen(false);
+    sonnerToast.success("Omgången har avbrutits — du kan nu starta en ny");
   };
 
   if (!housingId) {
@@ -79,9 +128,7 @@ const HousingDetailPage = () => {
         <div className="p-6">
           <div className="text-center">
             <p className="text-muted-foreground">Ogiltigt bostads-ID</p>
-            <Button onClick={handleBack} className="mt-4">
-              Tillbaka till bostäder
-            </Button>
+            <Button onClick={handleBack} className="mt-4">Tillbaka till bostäder</Button>
           </div>
         </div>
       </PageLayout>
@@ -92,7 +139,7 @@ const HousingDetailPage = () => {
     return (
       <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
         <div className="p-6">
-          <HousingHeader 
+          <HousingHeader
             housingAddress=""
             offerStatus=""
             housing={undefined}
@@ -111,7 +158,7 @@ const HousingDetailPage = () => {
     return (
       <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
         <div className="p-6">
-          <HousingHeader 
+          <HousingHeader
             housingAddress=""
             offerStatus=""
             housing={undefined}
@@ -122,9 +169,7 @@ const HousingDetailPage = () => {
           />
           <div className="text-center py-8">
             <p className="text-muted-foreground">Bostaden kunde inte hittas</p>
-            <Button onClick={handleBack} className="mt-4">
-              Tillbaka till bostäder
-            </Button>
+            <Button onClick={handleBack} className="mt-4">Tillbaka till bostäder</Button>
           </div>
         </div>
       </PageLayout>
@@ -132,21 +177,19 @@ const HousingDetailPage = () => {
   }
 
   const isHistoryMode = location.state?.activeHousingTab === 'historik' || !!listing.history;
-  const status = getHousingStatus(listing);
-  const offerStatus = isHistoryMode ? "Historik" :
-                    status === 'published' ? "Publicerad" :
-                    status === 'ready_for_offer' ? "Klara för erbjudande" :
-                    status === 'offered' ? "Erbjudna" : "Publicerad";
-  
-  // Get active offer for this listing
-  const activeOffer = getOfferForListing(housingId);
-
-  // Kontrakt-läge: visa endast sökande som tackat ja på erbjudandet.
-  // Spegla logiken från historik-/erbjudande-vyn: topp 10 efter köpoäng fick
-  // erbjudandet, och deterministiska "buckets" avgör svaret (samma id % 5-regel
-  // som i HousingApplicantsTable). Bucket 0 och 1 = "Tackat ja".
   const isContractMode = location.state?.activeHousingTab === 'kontrakt';
+  const status = getHousingStatus(listing);
 
+  // Statuslabel för header. För omgångsstatusar inkluderar vi roundNumber via separat prop.
+  const offerStatus =
+    isHistoryMode ? "Historik" :
+    isContractMode ? "Kontrakt" :
+    rounds.length > 0 ? offerStatusInfo.status :
+    status === 'published' ? "Publicerad" :
+    status === 'ready_for_offer' ? "Klara för erbjudande" :
+    "Klara för erbjudande";
+
+  // Sökande-urval för kontraktsläge (oförändrad logik)
   const top10Ids = new Set(
     listing.applicants
       .slice()
@@ -159,16 +202,12 @@ const HousingDetailPage = () => {
     ? listing.applicants.filter(a => top10Ids.has(a.id))
     : listing.applicants;
 
-  // Endast sökande som tackat ja kan kopplas till kontrakt (samma bucket-regel
-  // som i tabellen).
   const acceptedApplicantIds = new Set(
     isContractMode
       ? displayedApplicants.filter(a => a.id % 5 === 0 || a.id % 5 === 1).map(a => a.id)
       : []
   );
 
-  // Rekommenderad sökande för kontrakt: högst köpoäng bland de som tackat ja
-  // OCH har godkända kontroller (profilstatus "Approved").
   const recommendedApplicantId = isContractMode
     ? displayedApplicants
         .filter(a => acceptedApplicantIds.has(a.id) && a.profileStatus === "Approved")
@@ -188,47 +227,146 @@ const HousingDetailPage = () => {
     sonnerToast.success("Kontraktskoppling borttagen");
   };
 
+  // Karta över vilka sökande fått erbjudande i tidigare omgångar (för "Fick omgång N"-badge)
+  const previousRoundByApplicant: Record<number, number> = {};
+  if (isSelectingForNewRound) {
+    for (const a of listing.applicants) {
+      const rn = getRoundNumberForApplicant(housingId, a.id);
+      if (rn !== undefined) previousRoundByApplicant[a.id] = rn;
+    }
+  }
+
+  // ───── Render: vy beroende på läge ─────
+  const renderInitialSelectionView = () => (
+    <section>
+      <h2 className="text-xl font-semibold mb-4">Intresseanmälningar</h2>
+      <HousingApplicantsTable
+        applicants={displayedApplicants}
+        housingAddress={listing.address}
+        listingId={listing.id}
+        showOfferColumns={false}
+        showSelectionColumn={true}
+        onSelectionChange={setSelectedApplicants}
+        autoSelectTopApplicants={status === 'ready_for_offer'}
+      />
+    </section>
+  );
+
+  const renderNewRoundSelectionView = () => (
+    <section>
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h2 className="text-xl font-semibold">Välj sökande till omgång {rounds.length + 1}</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Sökande som fått erbjudande i tidigare omgångar är markerade men kan väljas igen.
+          </p>
+        </div>
+        <Button variant="ghost" onClick={handleCancelNewRoundSelection}>Avbryt urval</Button>
+      </div>
+      <HousingApplicantsTable
+        applicants={displayedApplicants}
+        housingAddress={listing.address}
+        listingId={listing.id}
+        showOfferColumns={false}
+        showSelectionColumn={true}
+        onSelectionChange={setSelectedApplicants}
+        previousRoundByApplicant={previousRoundByApplicant}
+      />
+    </section>
+  );
+
+  const renderRoundsTabsView = () => (
+    <section>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold">Erbjudandeomgångar</h2>
+        </div>
+        <TabsList className="mb-4 flex-wrap h-auto">
+          {rounds.map(r => (
+            <TabsTrigger key={r.id} value={`round-${r.id}`}>
+              {getRoundTabLabel(r)}
+            </TabsTrigger>
+          ))}
+          {isSelectingForNewRound && (
+            <TabsTrigger value={NEW_ROUND_TAB}>Ny omgång (urval)</TabsTrigger>
+          )}
+        </TabsList>
+        {rounds.map(r => (
+          <TabsContent key={r.id} value={`round-${r.id}`}>
+            <HousingApplicantsTable
+              applicants={listing.applicants.filter(a => r.selectedApplicants.includes(a.id))}
+              housingAddress={listing.address}
+              listingId={listing.id}
+              showOfferColumns={false}
+              showSelectionColumn={false}
+              offeredApplicantIds={r.selectedApplicants}
+            />
+          </TabsContent>
+        ))}
+        {isSelectingForNewRound && (
+          <TabsContent value={NEW_ROUND_TAB}>
+            {renderNewRoundSelectionView()}
+          </TabsContent>
+        )}
+      </Tabs>
+    </section>
+  );
+
+  const renderApplicantsSection = () => {
+    if (isHistoryMode || isContractMode) {
+      return (
+        <section>
+          <h2 className="text-xl font-semibold mb-4">
+            {isHistoryMode ? 'Sökande i denna uthyrning' : 'Sökande som tackat ja'}
+          </h2>
+          <HousingApplicantsTable
+            applicants={displayedApplicants}
+            housingAddress={listing.address}
+            listingId={listing.id}
+            showOfferColumns={false}
+            showSelectionColumn={false}
+            contractMode={isContractMode}
+            historyMode={isHistoryMode}
+            contractWinnerName={listing.history?.contractedTo}
+            linkedContractApplicantId={linkedContractApplicantId}
+            recommendedApplicantId={recommendedApplicantId}
+            onLinkContract={handleLinkContract}
+            onUnlinkContract={handleUnlinkContract}
+          />
+        </section>
+      );
+    }
+    if (rounds.length === 0) {
+      return renderInitialSelectionView();
+    }
+    return renderRoundsTabsView();
+  };
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="p-6">
-        <HousingHeader 
+        <HousingHeader
           housingAddress={listing.address}
           offerStatus={offerStatus}
+          currentRoundNumber={rounds.length > 0 && !isHistoryMode && !isContractMode ? offerStatusInfo.roundNumber : undefined}
           housing={listing}
-          hasOffers={listing.offers.length > 0 || isListingOffered(housingId)}
+          hasOffers={rounds.length > 0}
           hasSelectedApplicants={selectedApplicants.length > 0}
+          hasActiveRound={!!activeRound && !isHistoryMode && !isContractMode}
+          canStartNewRound={canStartNew && rounds.length > 0 && !isHistoryMode && !isContractMode}
+          isSelectingForNewRound={isSelectingForNewRound}
           onBack={handleBack}
           onCreateOffer={handleOpenOfferDialog}
+          onStartNewRound={handleStartNewRound}
+          onCancelRound={() => setIsCancelDialogOpen(true)}
           isCreatingOffer={false}
           readOnly={isHistoryMode}
         />
 
         <div className="space-y-8">
-          <section>
-            <h2 className="text-xl font-semibold mb-4">
-              {isHistoryMode ? 'Sökande i denna uthyrning' :
-               isContractMode ? 'Sökande som tackat ja' : 'Intresseanmälningar'}
-            </h2>
-            <HousingApplicantsTable 
-              applicants={displayedApplicants}
-              housingAddress={listing.address}
-              listingId={listing.id}
-              showOfferColumns={false}
-              showSelectionColumn={!activeOffer && !isContractMode && !isHistoryMode}
-              onSelectionChange={setSelectedApplicants}
-              offeredApplicantIds={activeOffer?.selectedApplicants || []}
-              contractMode={isContractMode}
-              autoSelectTopApplicants={status === 'ready_for_offer' && !isHistoryMode}
-              historyMode={isHistoryMode}
-              contractWinnerName={listing.history?.contractedTo}
-              linkedContractApplicantId={linkedContractApplicantId}
-              recommendedApplicantId={recommendedApplicantId}
-              onLinkContract={handleLinkContract}
-              onUnlinkContract={handleUnlinkContract}
-            />
-          </section>
+          {renderApplicantsSection()}
 
-          <HousingInfo 
+          <HousingInfo
             housing={listing}
             applicantCount={displayedApplicants.length}
           />
@@ -258,6 +396,17 @@ const HousingDetailPage = () => {
           onConfirm={handleConfirmOffer}
         />
       )}
+
+      <ConfirmDialog
+        open={isCancelDialogOpen}
+        onOpenChange={setIsCancelDialogOpen}
+        title="Avbryt pågående omgång?"
+        description="Sökande i denna omgång kommer inte längre att kunna svara. Du kan därefter starta en ny omgång med ett nytt urval."
+        confirmText="Avbryt omgång"
+        cancelText="Behåll"
+        onConfirm={handleCancelActiveRound}
+        variant="destructive"
+      />
 
       {!isHistoryMode && (
         <BulkActionBar
