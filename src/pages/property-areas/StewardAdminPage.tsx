@@ -33,9 +33,12 @@ const StewardAdminPage = () => {
     propertiesByKvvArea,
     allStewards,
     pendingChanges,
+    pendingPropertyMoves,
     isDirty,
     reassignArea,
+    reassignProperty,
     undoChange,
+    undoPropertyMove,
     cancelAllChanges,
     saveChanges
   } = useStewardAdmin(selectedCostCenter);
