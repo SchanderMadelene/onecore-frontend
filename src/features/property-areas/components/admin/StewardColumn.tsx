@@ -21,13 +21,15 @@ interface StewardColumnProps {
   properties: PropertyForAdmin[];
   allStewards?: Steward[];
   onReassignArea?: (kvvArea: string, toStewardRefNr: string) => void;
+  movedPropertyOrigins?: Map<string, string>;
 }
 
 export function StewardColumn({ 
   kvvArea, 
   properties, 
   allStewards = [],
-  onReassignArea
+  onReassignArea,
+  movedPropertyOrigins
 }: StewardColumnProps) {
   const [showAssignDialog, setShowAssignDialog] = useState(false);
   
