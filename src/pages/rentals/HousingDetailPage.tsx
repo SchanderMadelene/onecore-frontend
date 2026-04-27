@@ -34,9 +34,9 @@ const HousingDetailPage = () => {
   const location = useLocation();
   const {
     startNewRound,
-    cancelActiveRound,
+    cancelRound,
     getRoundsForListing,
-    getActiveRound,
+    getActiveRounds,
     canStartNewRound,
     getRoundNumberForApplicant,
     linkContract,
@@ -48,7 +48,7 @@ const HousingDetailPage = () => {
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
   const rounds = housingId ? getRoundsForListing(housingId) : [];
-  const activeRound = housingId ? getActiveRound(housingId) : undefined;
+  const activeRounds = housingId ? getActiveRounds(housingId) : [];
   const offerStatusInfo = getHousingOfferStatus(rounds);
   const canStartNew = housingId ? canStartNewRound(housingId) : false;
 
