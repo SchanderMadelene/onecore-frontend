@@ -40,7 +40,7 @@ const HousingDetailPage = () => {
     getRoundsForListing,
     getActiveRounds,
     canStartNewRound,
-    getRoundNumberForApplicant,
+    
     linkContract,
     unlinkContract,
     getLinkedContract,
