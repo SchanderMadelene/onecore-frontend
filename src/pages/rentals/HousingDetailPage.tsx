@@ -10,6 +10,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
+import { RoundSummaryBar } from "./components/RoundSummaryBar";
 import { HousingInfo } from "./components/HousingInfo";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
