@@ -299,9 +299,17 @@ export function HousingApplicantsTable({
               const wasOffered = historyOfferedIds.has(applicant.id);
               const isLinked = contractMode && linkedContractApplicantId === applicant.id;
               const isRecommended = contractMode && !linkedContractApplicantId && recommendedApplicantId === applicant.id;
+              const hasActiveOfferInRound = activeRoundByApplicant?.[applicant.id] !== undefined;
+              const hasPreviousOffer =
+                !hasActiveOfferInRound && previousRoundByApplicant?.[applicant.id] !== undefined;
+              const rowClassName = isWinner || isLinked
+                ? "bg-success/5"
+                : hasPreviousOffer
+                  ? "bg-muted/40 text-muted-foreground"
+                  : undefined;
               return (
               <>
-                <TableRow key={applicant.id} className={isWinner || isLinked ? "bg-success/5" : undefined}>
+                <TableRow key={applicant.id} className={rowClassName}>
                   {!historyMode && !contractMode && (
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
@@ -310,6 +318,7 @@ export function HousingApplicantsTable({
                           onCheckedChange={(checked) =>
                             handleApplicantSelection(String(applicant.id), checked as boolean)
                           }
+                          disabled={hasPreviousOffer}
                           className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
                       </div>
@@ -331,15 +340,11 @@ export function HousingApplicantsTable({
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{applicant.name}</span>
-                          {activeRoundByApplicant?.[applicant.id] !== undefined ? (
+                          {hasActiveOfferInRound && (
                             <Badge variant="warning" className="text-xs">
-                              Aktivt erbjudande i omgång {activeRoundByApplicant[applicant.id]}
+                              Aktivt erbjudande i omgång {activeRoundByApplicant![applicant.id]}
                             </Badge>
-                          ) : previousRoundByApplicant?.[applicant.id] !== undefined ? (
-                            <Badge variant="muted" className="text-xs">
-                              Fick omgång {previousRoundByApplicant[applicant.id]}
-                            </Badge>
-                          ) : null}
+                          )}
                         </div>
                         <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
                       </div>
