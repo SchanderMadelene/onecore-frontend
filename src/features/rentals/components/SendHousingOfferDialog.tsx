@@ -60,6 +60,8 @@ export function SendHousingOfferDialog({
   recipientCount,
   housingAddress,
   onConfirm,
+  roundNumber,
+  parallelActiveRounds = 0,
 }: SendHousingOfferDialogProps) {
   const defaultDeadline = useMemo(() => addDays(new Date(), 5), []);
   const defaultShowing = useMemo(() => {
