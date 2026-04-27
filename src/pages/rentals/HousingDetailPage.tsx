@@ -328,49 +328,51 @@ const HousingDetailPage = () => {
             <TabsTrigger value={NEW_ROUND_TAB}>Ny omgång (urval)</TabsTrigger>
           )}
         </TabsList>
-        {rounds.map(r => (
-          <TabsContent key={r.id} value={`round-${r.id}`}>
-            {r.status === 'Active' && !isHistoryMode && !isContractMode && (
-              <div className="flex items-center justify-end mb-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setCancelTargetRoundId(r.id);
-                    setIsCancelDialogOpen(true);
-                  }}
-                >
-                  <XCircle className="h-4 w-4 mr-1" />
-                  Avbryt denna omgång
-                </Button>
-              </div>
-            )}
-            {(() => {
-              // Sökande som fått erbjudande i tidigare omgångar (lägre roundNumber) ska visas disabled
-              const prevForThisRound: Record<number, number> = {};
-              for (const a of listing.applicants) {
-                for (let i = 0; i < rounds.length; i++) {
-                  const prev = rounds[i];
-                  if (prev.roundNumber >= r.roundNumber) break;
-                  if (prev.selectedApplicants.includes(a.id)) {
-                    prevForThisRound[a.id] = prev.roundNumber;
-                  }
-                }
+        {rounds.map(r => {
+          const cancelAction =
+            r.status === 'Active' && !isHistoryMode && !isContractMode ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setCancelTargetRoundId(r.id);
+                  setIsCancelDialogOpen(true);
+                }}
+              >
+                <XCircle className="h-4 w-4 mr-1" />
+                Avbryt denna omgång
+              </Button>
+            ) : null;
+          // Sökande som fått erbjudande i tidigare omgångar (lägre roundNumber) ska visas disabled
+          const prevForThisRound: Record<number, number> = {};
+          for (const a of listing.applicants) {
+            for (let i = 0; i < rounds.length; i++) {
+              const prev = rounds[i];
+              if (prev.roundNumber >= r.roundNumber) break;
+              if (prev.selectedApplicants.includes(a.id)) {
+                prevForThisRound[a.id] = prev.roundNumber;
               }
-              return (
-                <HousingApplicantsTable
-                  applicants={displayedApplicants}
-                  housingAddress={listing.address}
-                  listingId={listing.id}
-                  showOfferColumns={false}
-                  showSelectionColumn={false}
-                  offeredApplicantIds={r.selectedApplicants}
-                  previousRoundByApplicant={prevForThisRound}
-                />
-              );
-            })()}
-          </TabsContent>
-        ))}
+            }
+          }
+          return (
+            <TabsContent key={r.id} value={`round-${r.id}`}>
+              <RoundSummaryBar
+                round={r}
+                acceptedApplicantName={getAcceptedName(r)}
+                actions={cancelAction}
+              />
+              <HousingApplicantsTable
+                applicants={displayedApplicants}
+                housingAddress={listing.address}
+                listingId={listing.id}
+                showOfferColumns={false}
+                showSelectionColumn={false}
+                offeredApplicantIds={r.selectedApplicants}
+                previousRoundByApplicant={prevForThisRound}
+              />
+            </TabsContent>
+          );
+        })}
         {isSelectingForNewRound && (
           <TabsContent value={NEW_ROUND_TAB}>
             {renderNewRoundSelectionView()}
