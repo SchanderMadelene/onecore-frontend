@@ -331,11 +331,15 @@ export function HousingApplicantsTable({
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{applicant.name}</span>
-                          {previousRoundByApplicant?.[applicant.id] !== undefined && (
+                          {activeRoundByApplicant?.[applicant.id] !== undefined ? (
+                            <Badge variant="warning" className="text-xs">
+                              Aktivt erbjudande i omgång {activeRoundByApplicant[applicant.id]}
+                            </Badge>
+                          ) : previousRoundByApplicant?.[applicant.id] !== undefined ? (
                             <Badge variant="muted" className="text-xs">
                               Fick omgång {previousRoundByApplicant[applicant.id]}
                             </Badge>
-                          )}
+                          ) : null}
                         </div>
                         <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
                       </div>
