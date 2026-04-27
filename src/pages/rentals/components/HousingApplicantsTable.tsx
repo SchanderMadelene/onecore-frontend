@@ -408,6 +408,19 @@ export function HousingApplicantsTable({
                   {!showSelectionColumn && !historyMode && !contractMode && applicant.offerResponse && (() => {
                     const hasOffer = offeredApplicantIds.includes(applicant.id);
                     if (!hasOffer) {
+                      const prevRound = previousRoundByApplicant?.[applicant.id];
+                      if (prevRound !== undefined) {
+                        return (
+                          <TableCell>
+                            <div className="space-y-1">
+                              <div>{getOfferResponseBadge("Nekat")}</div>
+                              <div className="text-xs text-muted-foreground">
+                                från omgång {prevRound}
+                              </div>
+                            </div>
+                          </TableCell>
+                        );
+                      }
                       return (
                         <TableCell>
                           <span className="text-sm text-muted-foreground">—</span>
