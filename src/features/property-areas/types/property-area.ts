@@ -44,6 +44,19 @@ export const COST_CENTER_NAMES: Record<string, string> = {
   "61150": "Mimer Student"
 };
 
+export interface CostCenterManagers {
+  districtManager: string;
+  assistantDistrictManager: string;
+}
+
+export const COST_CENTER_MANAGERS: Record<string, CostCenterManagers> = {
+  "61110": { districtManager: "Karin Lindqvist", assistantDistrictManager: "Johan Bergman" },
+  "61120": { districtManager: "Anders Holm", assistantDistrictManager: "Sara Nyström" },
+  "61130": { districtManager: "Mikael Sundberg", assistantDistrictManager: "Eva Lundgren" },
+  "61140": { districtManager: "Helena Forsberg", assistantDistrictManager: "Per Wallin" },
+  "61150": { districtManager: "Camilla Ek", assistantDistrictManager: "Tobias Strand" }
+};
+
 export const BUILDING_TYPES: Record<string, string> = {
   "STD": "Standard",
   "BLOCK": "Block",
