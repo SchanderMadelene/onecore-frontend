@@ -43,6 +43,8 @@ interface HousingApplicantsTableProps {
   onUnlinkContract?: () => void;
   /** Markera sökande som fått tidigare erbjudande i en specifik omgång */
   previousRoundByApplicant?: Record<number, number>;
+  /** Markera sökande som har ett aktivt (öppet) erbjudande i en omgång — högre prioritet än previous */
+  activeRoundByApplicant?: Record<number, number>;
 }
 
 export function HousingApplicantsTable({ 
