@@ -292,6 +292,12 @@ export function HousingApplicantsTable({
                 if (a.name === contractWinnerName) return -1;
                 if (b.name === contractWinnerName) return 1;
               }
+              // Sökande med erbjudande i denna omgång hamnar överst
+              if (!showSelectionColumn && offeredApplicantIds.length > 0) {
+                const aOffered = offeredApplicantIds.includes(a.id) ? 1 : 0;
+                const bOffered = offeredApplicantIds.includes(b.id) ? 1 : 0;
+                if (aOffered !== bOffered) return bOffered - aOffered;
+              }
               return b.queuePoints - a.queuePoints;
             })
             .map((applicant) => {
