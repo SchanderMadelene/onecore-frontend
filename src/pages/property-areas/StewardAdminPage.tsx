@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragStartEvent, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { PageLayout } from '@/layouts';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,8 +18,10 @@ import { useStewardAdmin } from '@/features/property-areas/hooks/useStewardAdmin
 import { 
   StewardColumn, 
   PendingChangesPanel, 
-  StewardAdminMobile
+  StewardAdminMobile,
+  PropertyCard
 } from '@/features/property-areas/components/admin';
+import type { PropertyForAdmin } from '@/features/property-areas/types/admin-types';
 
 const StewardAdminPage = () => {
   const navigate = useNavigate();
@@ -51,13 +53,29 @@ const StewardAdminPage = () => {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
   
+  const [activeProperty, setActiveProperty] = useState<PropertyForAdmin | null>(null);
+  
+  const handleDragStart = (event: DragStartEvent) => {
+    const id = event.active.id as string;
+    for (const list of propertiesByKvvArea.values()) {
+      const found = list.find(p => p.id === id);
+      if (found) {
+        setActiveProperty(found);
+        return;
+      }
+    }
+  };
+  
   const handleDragEnd = (event: DragEndEvent) => {
+    setActiveProperty(null);
     const { active, over } = event;
     if (!over) return;
     const targetKvv = over.data.current?.kvvArea as string | undefined;
     if (!targetKvv) return;
     reassignProperty(active.id as string, targetKvv);
   };
+  
+  const handleDragCancel = () => setActiveProperty(null);
   
   const handleBack = () => {
     if (isDirty) {
@@ -179,7 +197,9 @@ const StewardAdminPage = () => {
         ) : (
           <DndContext
             sensors={sensors}
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
+            onDragCancel={handleDragCancel}
           >
             <div className="flex-1 min-h-0">
               <ScrollArea className="h-full w-full">
@@ -197,6 +217,13 @@ const StewardAdminPage = () => {
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
             </div>
+            <DragOverlay dropAnimation={null}>
+              {activeProperty ? (
+                <div className="w-[248px] rotate-2 shadow-2xl ring-2 ring-primary rounded-md">
+                  <PropertyCard property={activeProperty} draggable={false} />
+                </div>
+              ) : null}
+            </DragOverlay>
           </DndContext>
         )}
       </div>
