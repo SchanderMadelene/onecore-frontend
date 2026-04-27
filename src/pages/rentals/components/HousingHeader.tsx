@@ -1,20 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, PlusCircle, RotateCcw, XCircle } from "lucide-react";
+import { ArrowLeft, PlusCircle, RotateCcw } from "lucide-react";
 import { HousingRowActions, type HousingActionTab } from "@/features/rentals/components/HousingRowActions";
 import type { HousingSpace } from "@/features/rentals/components/types/housing";
 
 interface HousingHeaderProps {
   housingAddress: string;
   offerStatus: string;
-  /** Aktuellt omgångsnummer (visas som chip bredvid statusen) */
+  /** Aktuellt omgångsnummer (visas som chip när exakt 1 aktiv omgång finns) */
   currentRoundNumber?: number;
+  /** Antal parallellt aktiva omgångar (visas som chip när >1) */
+  activeRoundsCount?: number;
   housing?: HousingSpace;
   hasOffers: boolean;
   hasSelectedApplicants?: boolean;
-  /** Aktiv (pågående) omgång finns */
-  hasActiveRound?: boolean;
-  /** Sant när handläggaren kan starta en ny omgång (alla i föregående har nekat/utgått/avbrutits) */
+  /** Sant när handläggaren kan starta en ny omgång (annonsen ej tilldelad) */
   canStartNewRound?: boolean;
   /** Sant medan handläggaren håller på att välja sökande till ny omgång (visa "Skicka erbjudande") */
   isSelectingForNewRound?: boolean;
@@ -23,8 +23,6 @@ interface HousingHeaderProps {
   onCreateOffer: () => void;
   /** Starta ny omgång (öppna urvalsläget) */
   onStartNewRound?: () => void;
-  /** Avbryt aktiv omgång */
-  onCancelRound?: () => void;
   isCreatingOffer: boolean;
   /** Read-only läge för historik-annonser: dölj alla actions */
   readOnly?: boolean;
@@ -43,16 +41,15 @@ export function HousingHeader({
   housingAddress,
   offerStatus,
   currentRoundNumber,
+  activeRoundsCount,
   housing,
   hasOffers,
   hasSelectedApplicants = false,
-  hasActiveRound = false,
   canStartNewRound = false,
   isSelectingForNewRound = false,
   onBack,
   onCreateOffer,
   onStartNewRound,
-  onCancelRound,
   isCreatingOffer,
   readOnly = false,
 }: HousingHeaderProps) {
@@ -64,8 +61,10 @@ export function HousingHeader({
   const showSendOffer =
     !readOnly && ((tab === "klaraForErbjudande" && !hasOffers) || isSelectingForNewRound);
 
-  const showStartNewRound = !readOnly && canStartNewRound && !isSelectingForNewRound;
-  const showCancelRound = !readOnly && hasActiveRound;
+  // "Starta ny erbjudandeomgång" visas alltid när det finns omgångar och annonsen
+  // inte är tilldelad — oavsett om en omgång pågår eller ej. Knappen avbryter inget.
+  const showStartNewRound =
+    !readOnly && canStartNewRound && hasOffers && !isSelectingForNewRound;
 
   return (
     <>
@@ -81,9 +80,11 @@ export function HousingHeader({
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-3xl font-bold tracking-tight">{housingAddress}</h1>
             <Badge variant="info">{offerStatus}</Badge>
-            {currentRoundNumber !== undefined && (
+            {activeRoundsCount !== undefined && activeRoundsCount > 1 ? (
+              <Badge variant="muted">{activeRoundsCount} omgångar aktiva</Badge>
+            ) : currentRoundNumber !== undefined ? (
               <Badge variant="muted">Omgång {currentRoundNumber}</Badge>
-            )}
+            ) : null}
           </div>
           {!readOnly && (
             <div className="flex items-center gap-2">
@@ -100,17 +101,7 @@ export function HousingHeader({
               {showStartNewRound && (
                 <Button onClick={onStartNewRound} className="flex items-center gap-1">
                   <RotateCcw className="h-4 w-4" />
-                  <span>Starta ny omgång</span>
-                </Button>
-              )}
-              {showCancelRound && (
-                <Button
-                  onClick={onCancelRound}
-                  variant="outline"
-                  className="flex items-center gap-1"
-                >
-                  <XCircle className="h-4 w-4" />
-                  <span>Avbryt omgång</span>
+                  <span>Starta ny erbjudandeomgång</span>
                 </Button>
               )}
               {housing && (
