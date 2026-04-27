@@ -253,6 +253,22 @@ const HousingDetailPage = () => {
     }
   }
 
+  // Sökande som tackat nej i någon tidigare omgång — exkluderas från smart förval
+  const declinedInPreviousRoundIds: number[] = Array.from(
+    new Set(
+      rounds.flatMap(r =>
+        r.responses.filter(resp => resp.response === 'declined').map(resp => resp.applicantId)
+      )
+    )
+  );
+
+  // Slå upp namn på sökande som tackat ja i en omgång (för RoundSummaryBar)
+  const getAcceptedName = (round: typeof rounds[number]): string | undefined => {
+    const accepted = round.responses.find(r => r.response === 'accepted');
+    if (!accepted) return undefined;
+    return listing.applicants.find(a => a.id === accepted.applicantId)?.name;
+  };
+
   // ───── Render: vy beroende på läge ─────
   const renderInitialSelectionView = () => (
     <section>
