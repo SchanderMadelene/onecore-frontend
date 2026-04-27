@@ -3,18 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ChevronDown, ChevronUp, Undo2, ArrowRight } from 'lucide-react';
-import { AreaReassignment } from '../../types/admin-types';
+import { AreaReassignment, PropertyReassignment } from '../../types/admin-types';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface PendingChangesPanelProps {
   changes: AreaReassignment[];
+  propertyMoves?: PropertyReassignment[];
   onUndo: (kvvArea: string) => void;
+  onUndoPropertyMove?: (propertyId: string) => void;
 }
 
-export function PendingChangesPanel({ changes, onUndo }: PendingChangesPanelProps) {
+export function PendingChangesPanel({ changes, propertyMoves = [], onUndo, onUndoPropertyMove }: PendingChangesPanelProps) {
   const [isOpen, setIsOpen] = useState(true);
+  const total = changes.length + propertyMoves.length;
 
-  if (changes.length === 0) return null;
+  if (total === 0) return null;
 
   return (
     <Card className="border-warning bg-warning/10">
@@ -27,7 +30,7 @@ export function PendingChangesPanel({ changes, onUndo }: PendingChangesPanelProp
                   Väntande ändringar
                 </CardTitle>
                 <Badge variant="secondary">
-                  {changes.length}
+                  {total}
                 </Badge>
               </div>
               {isOpen ? (
@@ -67,6 +70,35 @@ export function PendingChangesPanel({ changes, onUndo }: PendingChangesPanelProp
                     <Undo2 className="h-4 w-4 mr-1" />
                     Ångra
                   </Button>
+                </div>
+              ))}
+              {propertyMoves.map(move => (
+                <div
+                  key={`prop-${move.propertyId}`}
+                  className="flex items-center justify-between gap-2 p-2 rounded-md bg-background/80"
+                >
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <span className="font-medium text-sm truncate max-w-[160px]">
+                      {move.propertyName}
+                    </span>
+                    <span className="text-muted-foreground text-sm hidden sm:inline">:</span>
+                    <div className="hidden sm:flex items-center gap-1 text-sm text-muted-foreground">
+                      <span>KVV {move.fromKvvArea}</span>
+                      <ArrowRight className="h-3 w-3 flex-shrink-0" />
+                      <span className="text-foreground">KVV {move.toKvvArea}</span>
+                    </div>
+                  </div>
+                  {onUndoPropertyMove && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onUndoPropertyMove(move.propertyId)}
+                      className="flex-shrink-0"
+                    >
+                      <Undo2 className="h-4 w-4 mr-1" />
+                      Ångra
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>

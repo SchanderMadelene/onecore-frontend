@@ -12,6 +12,15 @@ export interface AreaReassignment {
   timestamp: Date;
 }
 
+// Ändring av en fastighets KVV-tillhörighet (drag-and-drop)
+export interface PropertyReassignment {
+  propertyId: string;
+  propertyName: string;
+  fromKvvArea: string;
+  toKvvArea: string;
+  timestamp: Date;
+}
+
 // Information om ett KVV-område
 export interface KvvAreaInfo {
   kvvArea: string;

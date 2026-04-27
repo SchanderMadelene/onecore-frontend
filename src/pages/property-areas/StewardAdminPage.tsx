@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { PageLayout } from '@/layouts';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,15 +34,30 @@ const StewardAdminPage = () => {
     propertiesByKvvArea,
     allStewards,
     pendingChanges,
+    pendingPropertyMoves,
     isDirty,
     reassignArea,
+    reassignProperty,
     undoChange,
+    undoPropertyMove,
     cancelAllChanges,
     saveChanges
   } = useStewardAdmin(selectedCostCenter);
   
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
+  
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+  
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+    const targetKvv = over.data.current?.kvvArea as string | undefined;
+    if (!targetKvv) return;
+    reassignProperty(active.id as string, targetKvv);
+  };
   
   const handleBack = () => {
     if (isDirty) {
@@ -145,7 +161,12 @@ const StewardAdminPage = () => {
         </Card>
         
         {/* Pending changes panel */}
-        <PendingChangesPanel changes={pendingChanges} onUndo={undoChange} />
+        <PendingChangesPanel
+          changes={pendingChanges}
+          propertyMoves={pendingPropertyMoves}
+          onUndo={undoChange}
+          onUndoPropertyMove={undoPropertyMove}
+        />
         
         {/* Main content */}
         {isMobile ? (
@@ -156,22 +177,27 @@ const StewardAdminPage = () => {
             onReassignArea={reassignArea}
           />
         ) : (
-          <div className="flex-1 min-h-0">
-            <ScrollArea className="h-full w-full">
-              <div className="flex gap-4 p-1 min-h-[500px]">
-                {kvvAreaList.map(kvvArea => (
-                  <StewardColumn
-                    key={kvvArea.kvvArea}
-                    kvvArea={kvvArea}
-                    properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
-                    allStewards={allStewards}
-                    onReassignArea={reassignArea}
-                  />
-                ))}
-              </div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-          </div>
+          <DndContext
+            sensors={sensors}
+            onDragEnd={handleDragEnd}
+          >
+            <div className="flex-1 min-h-0">
+              <ScrollArea className="h-full w-full">
+                <div className="flex gap-4 p-1 min-h-[500px]">
+                  {kvvAreaList.map(kvvArea => (
+                    <StewardColumn
+                      key={kvvArea.kvvArea}
+                      kvvArea={kvvArea}
+                      properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
+                      allStewards={allStewards}
+                      onReassignArea={reassignArea}
+                    />
+                  ))}
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            </div>
+          </DndContext>
         )}
       </div>
       

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDroppable } from '@dnd-kit/core';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { Pencil } from 'lucide-react';
 import { PropertyCard } from './PropertyCard';
 import { StewardAssignmentDialog } from './StewardAssignmentDialog';
 import { KvvAreaInfo, PropertyForAdmin } from '../../types/admin-types';
+import { cn } from '@/lib/utils';
 
 interface Steward {
   refNr: string;
@@ -28,6 +30,11 @@ export function StewardColumn({
   onReassignArea
 }: StewardColumnProps) {
   const [showAssignDialog, setShowAssignDialog] = useState(false);
+  
+  const { setNodeRef, isOver } = useDroppable({
+    id: `kvv-${kvvArea.kvvArea}`,
+    data: { kvvArea: kvvArea.kvvArea },
+  });
 
   const handleAssign = (newStewardRefNr: string) => {
     if (onReassignArea) {
@@ -38,7 +45,10 @@ export function StewardColumn({
   return (
     <>
       <Card 
-        className="flex-shrink-0 w-[280px] flex flex-col h-full"
+        className={cn(
+          'flex-shrink-0 w-[280px] flex flex-col h-full transition-colors',
+          isOver && 'ring-2 ring-primary ring-offset-2 bg-primary/5'
+        )}
       >
         <CardHeader className="pb-3 space-y-1">
           <div className="flex items-start justify-between">
@@ -71,7 +81,7 @@ export function StewardColumn({
         
         <CardContent className="flex-1 p-0 overflow-hidden">
           <ScrollArea className="h-full px-4 pb-4">
-            <div className="space-y-2">
+            <div ref={setNodeRef} className="space-y-2 min-h-[120px]">
               {properties.map(property => (
                 <PropertyCard 
                   key={property.id} 
@@ -79,8 +89,8 @@ export function StewardColumn({
                 />
               ))}
               {properties.length === 0 && (
-                <div className="text-center py-8 text-muted-foreground text-sm">
-                  Inga fastigheter
+                <div className="text-center py-8 text-muted-foreground text-sm border-2 border-dashed border-muted rounded-md">
+                  Släpp fastighet här
                 </div>
               )}
             </div>

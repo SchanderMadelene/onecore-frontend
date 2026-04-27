@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { AreaReassignment, PropertyForAdmin, KvvAreaInfo } from '../types/admin-types';
+import { AreaReassignment, PropertyReassignment, PropertyForAdmin, KvvAreaInfo } from '../types/admin-types';
 import { getAllPropertyAreas, getUniqueStewards, getKvvArea } from '../data';
 import { useToast } from '@/hooks/use-toast';
 
@@ -38,8 +38,14 @@ export function useStewardAdmin(selectedCostCenter: string) {
   // Area assignments: kvvArea -> stewardRefNr (mutable state)
   const [areaAssignments, setAreaAssignments] = useState<Map<string, string>>(() => new Map());
   
+  // Property -> KVV-area overrides (from drag-and-drop)
+  const [propertyKvvOverrides, setPropertyKvvOverrides] = useState<Map<string, string>>(() => new Map());
+  
   // Pending area changes
   const [pendingChanges, setPendingChanges] = useState<AreaReassignment[]>([]);
+  
+  // Pending property moves
+  const [pendingPropertyMoves, setPendingPropertyMoves] = useState<PropertyReassignment[]>([]);
   
   // Reset assignments when cost center changes
   useEffect(() => {
@@ -49,32 +55,43 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     setAreaAssignments(newAssignments);
     setPendingChanges([]);
+    setPropertyKvvOverrides(new Map());
+    setPendingPropertyMoves([]);
   }, [selectedCostCenter]);
+  
+  // Effective KVV area for a property (after overrides)
+  const effectiveKvvArea = useCallback((propertyId: string, fallback: string) => {
+    return propertyKvvOverrides.get(propertyId) || fallback;
+  }, [propertyKvvOverrides]);
   
   // Get KVV area info list (for columns/accordion)
   const kvvAreaList = useMemo((): KvvAreaInfo[] => {
     const list: KvvAreaInfo[] = [];
     
+    // Count properties per KVV-area, respecting overrides
+    const counts = new Map<string, number>();
+    filteredAreas.forEach(a => {
+      const original = a.kvvArea || getKvvArea(a.stewardRefNr);
+      if (!original) return;
+      const eff = propertyKvvOverrides.get(a.id) || original;
+      counts.set(eff, (counts.get(eff) || 0) + 1);
+    });
+    
     kvvAreasInCostCenter.forEach((originalData, kvvArea) => {
       const currentStewardRefNr = areaAssignments.get(kvvArea) || originalData.stewardRefNr;
       const currentSteward = allStewards.find(s => s.refNr === currentStewardRefNr);
-      
-      // Count properties in this KVV area
-      const propertyCount = filteredAreas.filter(a => 
-        (a.kvvArea || getKvvArea(a.stewardRefNr)) === kvvArea
-      ).length;
       
       list.push({
         kvvArea,
         stewardRefNr: currentStewardRefNr,
         stewardName: currentSteward?.name || currentStewardRefNr,
         stewardPhone: currentSteward?.phone,
-        propertyCount
+        propertyCount: counts.get(kvvArea) || 0
       });
     });
     
     return list.sort((a, b) => a.kvvArea.localeCompare(b.kvvArea));
-  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards]);
+  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards, propertyKvvOverrides]);
   
   // Get properties grouped by KVV area
   const propertiesByKvvArea = useMemo(() => {
@@ -85,10 +102,11 @@ export function useStewardAdmin(selectedCostCenter: string) {
       grouped.set(area.kvvArea, []);
     });
     
-    // Group properties by their KVV area
+    // Group properties by their (effective) KVV area
     filteredAreas.forEach(area => {
-      const kvvArea = area.kvvArea || getKvvArea(area.stewardRefNr);
-      if (!kvvArea) return;
+      const originalKvv = area.kvvArea || getKvvArea(area.stewardRefNr);
+      if (!originalKvv) return;
+      const kvvArea = propertyKvvOverrides.get(area.id) || originalKvv;
       
       const properties = grouped.get(kvvArea) || [];
       properties.push({
@@ -105,10 +123,10 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     
     return grouped;
-  }, [filteredAreas, kvvAreaList, areaAssignments]);
+  }, [filteredAreas, kvvAreaList, areaAssignments, propertyKvvOverrides]);
   
   // Check if there are unsaved changes
-  const isDirty = pendingChanges.length > 0;
+  const isDirty = pendingChanges.length > 0 || pendingPropertyMoves.length > 0;
   
   // Reassign a KVV area to a new steward
   const reassignArea = useCallback((kvvArea: string, toStewardRefNr: string) => {
@@ -174,6 +192,65 @@ export function useStewardAdmin(selectedCostCenter: string) {
     setPendingChanges(prev => prev.filter(c => c.kvvArea !== kvvArea));
   }, [pendingChanges]);
   
+  // Reassign a single property to a different KVV-area (drag-and-drop)
+  const reassignProperty = useCallback((propertyId: string, toKvvArea: string) => {
+    const property = filteredAreas.find(a => a.id === propertyId);
+    if (!property) return;
+    
+    const originalKvv = property.kvvArea || getKvvArea(property.stewardRefNr);
+    if (!originalKvv) return;
+    
+    const currentKvv = propertyKvvOverrides.get(propertyId) || originalKvv;
+    if (currentKvv === toKvvArea) return;
+    
+    // Update override (or remove it if dragging back to the original area)
+    setPropertyKvvOverrides(prev => {
+      const next = new Map(prev);
+      if (toKvvArea === originalKvv) {
+        next.delete(propertyId);
+      } else {
+        next.set(propertyId, toKvvArea);
+      }
+      return next;
+    });
+    
+    // Update pending moves list
+    setPendingPropertyMoves(prev => {
+      const existingIndex = prev.findIndex(p => p.propertyId === propertyId);
+      
+      // If we're back at the original — remove the pending move
+      if (toKvvArea === originalKvv) {
+        return existingIndex >= 0 ? prev.filter((_, i) => i !== existingIndex) : prev;
+      }
+      
+      if (existingIndex >= 0) {
+        // Update target on existing move (keep original fromKvvArea)
+        return prev.map((p, i) => i === existingIndex
+          ? { ...p, toKvvArea, timestamp: new Date() }
+          : p
+        );
+      }
+      
+      return [...prev, {
+        propertyId,
+        propertyName: property.propertyName,
+        fromKvvArea: originalKvv,
+        toKvvArea,
+        timestamp: new Date()
+      }];
+    });
+  }, [filteredAreas, propertyKvvOverrides]);
+  
+  // Undo a single property move
+  const undoPropertyMove = useCallback((propertyId: string) => {
+    setPropertyKvvOverrides(prev => {
+      const next = new Map(prev);
+      next.delete(propertyId);
+      return next;
+    });
+    setPendingPropertyMoves(prev => prev.filter(p => p.propertyId !== propertyId));
+  }, []);
+  
   // Cancel all changes
   const cancelAllChanges = useCallback(() => {
     const originalAssignments = new Map<string, string>();
@@ -182,28 +259,33 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     setAreaAssignments(originalAssignments);
     setPendingChanges([]);
+    setPropertyKvvOverrides(new Map());
+    setPendingPropertyMoves([]);
   }, [kvvAreasInCostCenter]);
   
   // Save all changes
   const saveChanges = useCallback(() => {
-    // In a real app, this would call an API
+    const totalChanges = pendingChanges.length + pendingPropertyMoves.length;
     toast({
       title: "Ändringar sparade",
-      description: `${pendingChanges.length} ${pendingChanges.length === 1 ? 'område har' : 'områden har'} fått ny ansvarig.`
+      description: `${totalChanges} ${totalChanges === 1 ? 'ändring har' : 'ändringar har'} sparats.`
     });
     
-    // Clear pending changes (keep assignments as they are)
     setPendingChanges([]);
-  }, [pendingChanges, toast]);
+    setPendingPropertyMoves([]);
+  }, [pendingChanges, pendingPropertyMoves, toast]);
   
   return {
     kvvAreaList,
     propertiesByKvvArea,
     allStewards,
     pendingChanges,
+    pendingPropertyMoves,
     isDirty,
     reassignArea,
+    reassignProperty,
     undoChange,
+    undoPropertyMove,
     cancelAllChanges,
     saveChanges
   };
