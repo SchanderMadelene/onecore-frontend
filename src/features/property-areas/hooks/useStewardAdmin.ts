@@ -118,7 +118,8 @@ export function useStewardAdmin(selectedCostCenter: string) {
         kvvArea: kvvArea,
         stewardRefNr: areaAssignments.get(kvvArea) || area.stewardRefNr,
         costCenter: area.costCenter,
-        residenceCount: (area as any).residenceCount
+        residenceCount: (area as any).residenceCount,
+        parkingCount: (area as any).parkingCount
       });
       grouped.set(kvvArea, properties);
     });

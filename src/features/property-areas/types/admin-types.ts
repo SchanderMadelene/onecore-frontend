@@ -48,4 +48,5 @@ export interface PropertyForAdmin {
   stewardRefNr: string;
   costCenter: string;
   residenceCount?: number;
+  parkingCount?: number;
 }

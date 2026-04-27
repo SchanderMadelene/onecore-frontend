@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, ArrowRightLeft, Home } from 'lucide-react';
+import { GripVertical, ArrowRightLeft, Home, Car } from 'lucide-react';
 import { PropertyForAdmin } from '../../types/admin-types';
 import { BuildingTypeBadge } from '../BuildingTypeBadge';
 import { cn } from '@/lib/utils';
@@ -53,6 +53,12 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
             <span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
               <Home className="h-3 w-3" />
               {property.residenceCount} bost
+            </span>
+          )}
+          {typeof property.parkingCount === 'number' && property.parkingCount > 0 && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
+              <Car className="h-3 w-3" />
+              {property.parkingCount} bilpl
             </span>
           )}
           {isMoved && movedFromKvvArea && (
