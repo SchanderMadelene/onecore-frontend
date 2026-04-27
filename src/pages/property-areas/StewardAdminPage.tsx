@@ -10,7 +10,8 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   getUniqueCostCenters, 
-  getCostCenterName 
+  getCostCenterName,
+  getCostCenterManagers
 } from '@/features/property-areas';
 import { useStewardAdmin } from '@/features/property-areas/hooks/useStewardAdmin';
 import { 
