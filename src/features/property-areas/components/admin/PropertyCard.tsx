@@ -67,7 +67,7 @@ export function PropertyCard({ property, draggable = true, isMoved = false, move
             )}
             {typeof property.parkingCount === 'number' && property.parkingCount > 0 && (
               <span className="inline-flex items-center gap-1">
-                <Car className="h-3 w-3" />
+                <Car className="h-[16px] w-[16px]" />
                 {property.parkingCount}
               </span>
             )}
