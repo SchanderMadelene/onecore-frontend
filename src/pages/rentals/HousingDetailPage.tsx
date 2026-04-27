@@ -236,12 +236,11 @@ const HousingDetailPage = () => {
   };
 
   // Kartor: senaste omgång en sökande fick erbjudande i, samt om den omgången är aktiv.
-  // Används i urvalsläget för ny omgång för att visa rätt badge.
+  // Visas alltid när rounds finns så att användaren ser vilka som redan fått/har aktivt erbjudande.
   const previousRoundByApplicant: Record<number, number> = {};
   const activeRoundByApplicant: Record<number, number> = {};
-  if (isSelectingForNewRound) {
+  if (rounds.length > 0) {
     for (const a of listing.applicants) {
-      // Hitta senaste round som innehåller sökanden
       for (let i = rounds.length - 1; i >= 0; i--) {
         const r = rounds[i];
         if (r.selectedApplicants.includes(a.id)) {
@@ -327,12 +326,15 @@ const HousingDetailPage = () => {
               </div>
             )}
             <HousingApplicantsTable
-              applicants={listing.applicants.filter(a => r.selectedApplicants.includes(a.id))}
+              applicants={displayedApplicants}
               housingAddress={listing.address}
               listingId={listing.id}
               showOfferColumns={false}
-              showSelectionColumn={false}
+              showSelectionColumn={!isHistoryMode && !isContractMode}
+              onSelectionChange={setSelectedApplicants}
               offeredApplicantIds={r.selectedApplicants}
+              previousRoundByApplicant={previousRoundByApplicant}
+              activeRoundByApplicant={activeRoundByApplicant}
             />
           </TabsContent>
         ))}
