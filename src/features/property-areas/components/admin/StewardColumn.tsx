@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDroppable } from '@dnd-kit/core';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { Pencil } from 'lucide-react';
 import { PropertyCard } from './PropertyCard';
 import { StewardAssignmentDialog } from './StewardAssignmentDialog';
 import { KvvAreaInfo, PropertyForAdmin } from '../../types/admin-types';
+import { cn } from '@/lib/utils';
 
 interface Steward {
   refNr: string;
