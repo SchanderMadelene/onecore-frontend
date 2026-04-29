@@ -1,5 +1,28 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useMemo, useState, ReactNode } from 'react';
 
+export type HousingRoundStatus = 'Active' | 'AllDeclined' | 'Expired' | 'Cancelled' | 'Accepted';
+
+export interface HousingOfferRoundResponse {
+  applicantId: number;
+  response: 'accepted' | 'declined';
+  respondedAt: string;
+}
+
+export interface HousingOfferRound {
+  id: number;
+  roundNumber: number;
+  status: HousingRoundStatus;
+  selectedApplicants: number[];
+  sentAt: string;
+  expiresAt: string;
+  responses: HousingOfferRoundResponse[];
+}
+
+/**
+ * Bakåtkompatibel form av en "offer" så att äldre komponenter
+ * (t.ex. OfferedHousingTable) kan fortsätta läsa `offers` som ett
+ * platt array över alla rondar för alla listings.
+ */
 export interface HousingOffer {
   listingId: string;
   selectedApplicants: number[];
@@ -13,10 +36,32 @@ export interface HousingOffer {
 }
 
 interface HousingOffersContextType {
+  /** Bakåtkompatibel platt vy av alla rondar over alla listings */
   offers: HousingOffer[];
-  createOffer: (listingId: string, selectedApplicants: number[]) => void;
-  getOfferForListing: (listingId: string) => HousingOffer | undefined;
+
+  /** Skapar en ny erbjudandeomgång för en bostadsannons */
+  startNewRound: (listingId: string, applicantIds: number[]) => void;
+  /** Avbryter en specifik omgång (sätter status Cancelled). Påverkar inte andra parallella aktiva. */
+  cancelRound: (listingId: string, roundId: number) => void;
+
+  /** Alla rondar för en listing, sorterade efter roundNumber stigande */
+  getRoundsForListing: (listingId: string) => HousingOfferRound[];
+  /** Aktiva rondar (status === 'Active') för en listing */
+  getActiveRounds: (listingId: string) => HousingOfferRound[];
+  /** Senaste rondnumret som sökanden ingått i (för "Fick omgång N"-badge) */
+  getRoundNumberForApplicant: (listingId: string, applicantId: number) => number | undefined;
+  /** Map av applicantId → senaste rondnummer för rondar med roundNumber < beforeRound */
+  getPreviousRoundsByApplicant: (listingId: string, beforeRound: number) => Record<number, number>;
+
+  /** Sant om listingen har minst en rond */
   isListingOffered: (listingId: string) => boolean;
+  /** Sant om listingen är tilldelad (någon rond är Accepted) */
+  isListingAssigned: (listingId: string) => boolean;
+  /** Sant om en ny omgång kan startas (ingen rond är Accepted) */
+  canStartNewRound: (listingId: string) => boolean;
+  /** Hämta första rondens "offer-form" (bakåtkompatibilitet) */
+  getOfferForListing: (listingId: string) => HousingOffer | undefined;
+
   markEarlyUnpublished: (listingId: string) => void;
   isEarlyUnpublished: (listingId: string) => boolean;
   linkContract: (listingId: string, applicantId: number) => void;
@@ -26,54 +71,180 @@ interface HousingOffersContextType {
 
 const HousingOffersContext = createContext<HousingOffersContextType | undefined>(undefined);
 
-const MOCK_OFFERS: HousingOffer[] = [
-  {
-    listingId: "234-234-234-1011",
-    selectedApplicants: [4, 8, 11, 14, 1, 6, 10, 15, 5, 2],
-    sentAt: "2026-04-15T09:30:00.000Z",
-    status: "active",
-    responses: [
-      { applicantId: 4, response: "accepted", respondedAt: "2026-04-16T10:12:00.000Z" },
-      { applicantId: 8, response: "declined", respondedAt: "2026-04-16T14:05:00.000Z" },
-    ],
-  },
-  {
-    listingId: "234-234-234-1013",
-    selectedApplicants: [11, 4, 8, 14, 6, 1, 15, 10, 5, 12],
-    sentAt: "2026-04-12T08:00:00.000Z",
-    status: "active",
-    responses: [
-      { applicantId: 11, response: "accepted", respondedAt: "2026-04-13T09:00:00.000Z" },
-      { applicantId: 4, response: "accepted", respondedAt: "2026-04-13T11:20:00.000Z" },
-      { applicantId: 6, response: "declined", respondedAt: "2026-04-14T16:45:00.000Z" },
-    ],
-  },
-  {
-    listingId: "234-234-234-1015",
-    selectedApplicants: [8, 11, 4, 14, 1, 6, 15, 10, 12, 5],
-    sentAt: "2026-04-18T13:15:00.000Z",
-    status: "active",
-    responses: [],
-  },
-];
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+const addDaysIso = (iso: string, days: number) =>
+  new Date(new Date(iso).getTime() + days * DAY_MS).toISOString();
+
+/**
+ * Mock-data: visar olika scenarier direkt i UI:t.
+ * - 1011: omgång 1 aktiv (vanligt fall)
+ * - 1013: omgång 1 alla nekade + omgång 2 aktiv (parallell historik)
+ * - 1015: omgång 1 aktiv (inga svar än)
+ */
+const MOCK_ROUNDS_BY_LISTING: Record<string, HousingOfferRound[]> = {
+  "234-234-234-1011": [
+    {
+      id: 1011001,
+      roundNumber: 1,
+      status: "Active",
+      selectedApplicants: [4, 8, 11, 14, 1, 6, 10, 15, 5, 2],
+      sentAt: "2026-04-15T09:30:00.000Z",
+      expiresAt: addDaysIso("2026-04-15T09:30:00.000Z", 7),
+      responses: [
+        { applicantId: 4, response: "accepted", respondedAt: "2026-04-16T10:12:00.000Z" },
+        { applicantId: 8, response: "declined", respondedAt: "2026-04-16T14:05:00.000Z" },
+      ],
+    },
+  ],
+  "234-234-234-1013": [
+    {
+      id: 1013001,
+      roundNumber: 1,
+      status: "AllDeclined",
+      selectedApplicants: [11, 4, 8, 14, 6, 1, 15, 10, 5, 12],
+      sentAt: "2026-04-08T08:00:00.000Z",
+      expiresAt: addDaysIso("2026-04-08T08:00:00.000Z", 7),
+      responses: [
+        { applicantId: 11, response: "declined", respondedAt: "2026-04-09T09:00:00.000Z" },
+        { applicantId: 4, response: "declined", respondedAt: "2026-04-09T11:20:00.000Z" },
+        { applicantId: 6, response: "declined", respondedAt: "2026-04-10T16:45:00.000Z" },
+      ],
+    },
+    {
+      id: 1013002,
+      roundNumber: 2,
+      status: "Active",
+      selectedApplicants: [3, 7, 9, 13, 16, 17, 18, 19, 20, 21],
+      sentAt: "2026-04-18T10:00:00.000Z",
+      expiresAt: addDaysIso("2026-04-18T10:00:00.000Z", 7),
+      responses: [],
+    },
+  ],
+  "234-234-234-1015": [
+    {
+      id: 1015001,
+      roundNumber: 1,
+      status: "Active",
+      selectedApplicants: [8, 11, 4, 14, 1, 6, 15, 10, 12, 5],
+      sentAt: "2026-04-18T13:15:00.000Z",
+      expiresAt: addDaysIso("2026-04-18T13:15:00.000Z", 7),
+      responses: [],
+    },
+  ],
+};
+
+function deriveOffersArray(
+  roundsByListing: Record<string, HousingOfferRound[]>
+): HousingOffer[] {
+  const offers: HousingOffer[] = [];
+  for (const [listingId, rounds] of Object.entries(roundsByListing)) {
+    for (const r of rounds) {
+      offers.push({
+        listingId,
+        selectedApplicants: r.selectedApplicants,
+        sentAt: r.sentAt,
+        status: r.status === "Active" ? "active" : "completed",
+        responses: r.responses,
+      });
+    }
+  }
+  return offers;
+}
 
 export function HousingOffersProvider({ children }: { children: ReactNode }) {
-  const [offers, setOffers] = useState<HousingOffer[]>(MOCK_OFFERS);
+  const [roundsByListing, setRoundsByListing] = useState<Record<string, HousingOfferRound[]>>(
+    MOCK_ROUNDS_BY_LISTING
+  );
   const [earlyUnpublished, setEarlyUnpublished] = useState<Set<string>>(new Set());
   const [linkedContracts, setLinkedContracts] = useState<Record<string, number>>({});
 
-  const createOffer = (listingId: string, selectedApplicants: number[]) => {
-    const newOffer: HousingOffer = {
-      listingId,
-      selectedApplicants,
-      sentAt: new Date().toISOString(),
-      status: 'active'
-    };
-    setOffers(prev => [...prev, newOffer]);
+  const offers = useMemo(() => deriveOffersArray(roundsByListing), [roundsByListing]);
+
+  const getRoundsForListing = (listingId: string): HousingOfferRound[] => {
+    const rounds = roundsByListing[listingId] ?? [];
+    return [...rounds].sort((a, b) => a.roundNumber - b.roundNumber);
   };
 
-  const getOfferForListing = (listingId: string) => offers.find(offer => offer.listingId === listingId);
-  const isListingOffered = (listingId: string) => offers.some(offer => offer.listingId === listingId);
+  const getActiveRounds = (listingId: string) =>
+    getRoundsForListing(listingId).filter(r => r.status === "Active");
+
+  const isListingOffered = (listingId: string) =>
+    (roundsByListing[listingId]?.length ?? 0) > 0;
+
+  const isListingAssigned = (listingId: string) =>
+    (roundsByListing[listingId] ?? []).some(r => r.status === "Accepted");
+
+  const canStartNewRound = (listingId: string) => !isListingAssigned(listingId);
+
+  const startNewRound = (listingId: string, applicantIds: number[]) => {
+    setRoundsByListing(prev => {
+      const existing = prev[listingId] ?? [];
+      const nextNumber = existing.reduce((m, r) => Math.max(m, r.roundNumber), 0) + 1;
+      const sentAt = new Date().toISOString();
+      const newRound: HousingOfferRound = {
+        id: Date.now(),
+        roundNumber: nextNumber,
+        status: "Active",
+        selectedApplicants: applicantIds,
+        sentAt,
+        expiresAt: addDaysIso(sentAt, 7),
+        responses: [],
+      };
+      return { ...prev, [listingId]: [...existing, newRound] };
+    });
+  };
+
+  const cancelRound = (listingId: string, roundId: number) => {
+    setRoundsByListing(prev => {
+      const list = prev[listingId];
+      if (!list) return prev;
+      return {
+        ...prev,
+        [listingId]: list.map(r =>
+          r.id === roundId && r.status === "Active" ? { ...r, status: "Cancelled" } : r
+        ),
+      };
+    });
+  };
+
+  const getRoundNumberForApplicant = (listingId: string, applicantId: number) => {
+    const rounds = roundsByListing[listingId] ?? [];
+    let latest: number | undefined;
+    for (const r of rounds) {
+      if (r.selectedApplicants.includes(applicantId)) {
+        if (latest === undefined || r.roundNumber > latest) latest = r.roundNumber;
+      }
+    }
+    return latest;
+  };
+
+  const getPreviousRoundsByApplicant = (listingId: string, beforeRound: number) => {
+    const rounds = roundsByListing[listingId] ?? [];
+    const map: Record<number, number> = {};
+    for (const r of rounds) {
+      if (r.roundNumber >= beforeRound) continue;
+      for (const id of r.selectedApplicants) {
+        if (map[id] === undefined || r.roundNumber > map[id]) {
+          map[id] = r.roundNumber;
+        }
+      }
+    }
+    return map;
+  };
+
+  const getOfferForListing = (listingId: string): HousingOffer | undefined => {
+    const rounds = getRoundsForListing(listingId);
+    if (rounds.length === 0) return undefined;
+    const r = rounds[0];
+    return {
+      listingId,
+      selectedApplicants: r.selectedApplicants,
+      sentAt: r.sentAt,
+      status: r.status === "Active" ? "active" : "completed",
+      responses: r.responses,
+    };
+  };
 
   const markEarlyUnpublished = (listingId: string) => {
     setEarlyUnpublished(prev => {
@@ -97,17 +268,26 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
   const getLinkedContract = (listingId: string) => linkedContracts[listingId];
 
   return (
-    <HousingOffersContext.Provider value={{
-      offers,
-      createOffer,
-      getOfferForListing,
-      isListingOffered,
-      markEarlyUnpublished,
-      isEarlyUnpublished,
-      linkContract,
-      unlinkContract,
-      getLinkedContract,
-    }}>
+    <HousingOffersContext.Provider
+      value={{
+        offers,
+        startNewRound,
+        cancelRound,
+        getRoundsForListing,
+        getActiveRounds,
+        getRoundNumberForApplicant,
+        getPreviousRoundsByApplicant,
+        isListingOffered,
+        isListingAssigned,
+        canStartNewRound,
+        getOfferForListing,
+        markEarlyUnpublished,
+        isEarlyUnpublished,
+        linkContract,
+        unlinkContract,
+        getLinkedContract,
+      }}
+    >
       {children}
     </HousingOffersContext.Provider>
   );
