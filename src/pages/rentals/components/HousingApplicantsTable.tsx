@@ -41,6 +41,8 @@ interface HousingApplicantsTableProps {
   onLinkContract?: (applicantId: number) => void;
   /** Kontrakt-läge: callback för att ta bort kopplat kontrakt */
   onUnlinkContract?: () => void;
+  /** Map applicantId → senaste tidigare omgångsnummer (badge "Fick omgång N") */
+  previousRoundByApplicant?: Record<number, number>;
 }
 
 export function HousingApplicantsTable({ 
