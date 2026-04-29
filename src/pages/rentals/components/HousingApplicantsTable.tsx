@@ -326,7 +326,14 @@ export function HousingApplicantsTable({
                         }
                       </Button>
                       <div>
-                        <div className="font-medium">{applicant.name}</div>
+                        <div className="font-medium flex items-center gap-2">
+                          {applicant.name}
+                          {previousRoundByApplicant?.[applicant.id] !== undefined && (
+                            <Badge variant="muted">
+                              Fick omgång {previousRoundByApplicant[applicant.id]}
+                            </Badge>
+                          )}
+                        </div>
                         <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
                       </div>
                     </div>
