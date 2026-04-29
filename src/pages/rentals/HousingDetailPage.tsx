@@ -430,8 +430,8 @@ const HousingDetailPage = () => {
         onOpenChange={(open) => { if (!open) setCancelRoundId(null); }}
         title="Avbryt denna omgång?"
         description="Sökande i denna omgång kommer inte längre kunna svara. Andra parallella omgångar påverkas inte."
-        confirmText="Avbryt omgång"
-        cancelText="Behåll"
+        confirmLabel="Avbryt omgång"
+        cancelLabel="Behåll"
         variant="destructive"
         onConfirm={handleConfirmCancelRound}
       />
