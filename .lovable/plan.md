@@ -1,116 +1,98 @@
+# Återinför erbjudandeomgångar för bostad
 
+Återskapar funktionaliteten som försvann (troligen via en revert/branch-byte). Specen är den som vi enades om 27 april — efter dina två justeringar:
 
-## Plan: Uthyrning Förråd (speglar bilplats)
+1. **Omgång 1 skapas manuellt** via befintliga "Skicka erbjudande" från "Klara för erbjudande" (inte automatiskt).
+2. **Parallella omgångar tillåts** — "Starta ny erbjudandeomgång" avbryter aldrig pågående omgångar, utan lägger till en ny parallell.
 
-Skapa en komplett förrådsuthyrningsmodul som följer exakt samma mönster som bilplats — samma 6 faser, samma komponentstruktur, samma cross-domain-logik. Befintlig stub i `RentalsPage.tsx` (statiska siffror) ersätts med fullt flöde.
+## Mål
 
-### Faser (identiska med bilplats)
+På bostadsannonsens detaljsida ska handläggaren kunna:
+- Skicka omgång 1 (som idag) → annons hamnar i "Erbjudna".
+- Starta omgång 2, 3, … manuellt utifrån svarsstatus, med valfritt urval (sökande från tidigare omgångar är markerade men valbara).
+- Köra flera omgångar parallellt; varje omgång kan avbrytas individuellt.
+- Bläddra mellan omgångar via tabbar (samma mönster som bilplats).
+
+## Datamodell
+
+`src/shared/contexts/HousingOffersContext.tsx` byter från en `HousingOffer` per listing till en array av rounds:
 
 ```text
-1. Behov av     2. Publicerade   3. Klara för    4. Erbjudna   5. Kontrakt   6. Historik
-   publicering →                    erbjudande  →             →             →
+HousingOfferRound {
+  id: number
+  roundNumber: number          // 1, 2, 3...
+  status: 'Active' | 'AllDeclined' | 'Expired' | 'Cancelled' | 'Accepted'
+  selectedApplicants: number[]
+  sentAt: string
+  expiresAt: string            // sentAt + 7 dagar (default)
+  responses: { applicantId, response: 'accepted'|'declined', respondedAt }[]
+}
 ```
 
-### Domänspecifika egenskaper för förråd
+Intern lagring: `roundsByListing: Record<string, HousingOfferRound[]>`.
 
-- **Förrådstyper:** Källarförråd, Vindsförråd, Lägenhetsförråd, Externt förråd
-- **Storlek:** m² eller m³ (t.ex. "3 m²", "2,5 m²") — visas som metadata
-- **Hyresnivå:** Lägre än bilplats (typiskt 80–250 kr/mån)
-- **Kötyper:** Intern / Extern / Poängfri (samma som bilplats)
-- **Anmälningstyp:** Byte vs Hyra flera (samma logik som bilplats — många hyresgäster har redan ett förråd)
-- **Synk:** Automatisk synk av interna förråd från fastighetssystemet
+Nya/ändrade metoder i contexten:
+- `startNewRound(listingId, applicantIds)` — skapar nästa rond, `roundNumber = max+1`.
+- `cancelRound(listingId, roundId)` — sätter status `Cancelled` på en specifik rond (inte alla).
+- `getRoundsForListing(listingId)` → `HousingOfferRound[]`.
+- `getActiveRounds(listingId)` → rondar med status `Active`.
+- `canStartNewRound(listingId)` → `false` bara om någon rond är `Accepted` (= tilldelad).
+- `getRoundNumberForApplicant(listingId, applicantId)` → senaste rondnumret där sökanden ingick (för badge).
+- Bakåtkompatibel `offers`-array deriveras (platt array av alla rondar) så `OfferedHousingTable` fortsätter fungera.
+- Behåll `linkContract` / `unlinkContract` / `getLinkedContract` oförändrade.
+- Behåll `markEarlyUnpublished` / `isEarlyUnpublished` oförändrade.
+- Mock-data uppdateras: t.ex. listing `234-234-234-1013` får omgång 1 (alla nekade) + omgång 2 (aktiv) för att visa parallella/historiska scenarier direkt.
 
-### Filer som skapas
+## Statusderivering
 
-**Types & data**
-- `src/features/rentals/types/storage.ts` — `StorageSpace`, `StorageApplication` interfaces
-- `src/features/rentals/components/types/storage.ts` — komponentlokal typ med `offer?`-fält
-- `src/features/rentals/data/mockStorageApplicants.ts` — anonymiserad mockdata
+Ny utility `src/pages/rentals/utils/housingOfferUtils.ts`:
+- `getListingOfferStatus(rounds)` → `'no_offers' | 'offering' | 'assigned'`.
+- `getRoundTabLabel(round)` → `"Omgång 1"`, `"Omgång 2 (alla nekade)"`, `"Omgång 3 (avbruten)"` osv.
 
-**Hooks** (speglar `useParkingSpace*`)
-- `src/features/rentals/hooks/useStorageSpaceListing.ts`
-- `src/features/rentals/hooks/useStorageSpaceListings.ts`
-- `src/features/rentals/hooks/useStorageSpaceListingsByType.ts`
-- `src/features/rentals/hooks/useStorageSpaceActions.ts` — close, delete, syncInternal
+`useHousingStatus`-hooken uppdateras så att en listing med `rounds.length > 0` räknas som `offered` (= "Erbjudna"-fliken), och blir `assigned` när en rond är `Accepted`.
 
-**Tab-komponenter** (i ny mapp `components/tabs-storage/` för tydlig separation)
-- `PublishedStorageTab.tsx`
-- `ReadyForOfferStorageTab.tsx`
-- `OfferedStorageTab.tsx`
-- `HistoryStorageTab.tsx`
-- `NeedsRepublishStorageTab.tsx`
+## UI
 
-**Tabell- och radkomponenter**
-- `StorageSpacesTable.tsx` — wrapper med MobileTabs (5 flikar)
-- `StorageRowActions.tsx` — speglar `ParkingRowActions`
-- `StorageApplicationDialog.tsx` — wrapper kring `CreateInterestApplicationDialog`
-- `StorageSpaceDetail.tsx` — detaljvy med action-paritet
-- `PublishStorageSpacesDialog.tsx`
-- `SyncStorageSpacesDialog.tsx`
+### `HousingHeader`
+- Chip till höger: enskilt "Omgång N" eller "N omgångar aktiva" om >1.
+- Primärknappar:
+  - Inga rondar än → **"Skicka erbjudande"** (oförändrat — skapar omgång 1).
+  - Minst en rond finns + `canStartNewRound` → **"Starta ny erbjudandeomgång"** (öppnar urvalsläge för nästa rond, **utan att avbryta** existerande aktiva).
+  - I urvalsläge → **"Skicka erbjudande"** (disabled tills urval finns) + **"Avbryt urval"**.
+- "Tilldelad" → inga primäraction-knappar för rondhantering.
 
-**Pages**
-- `src/pages/rentals/StorageSpaceDetailPage.tsx`
+### `HousingDetailPage`
+- Tab-mönstret från `ParkingSpaceDetailPage` återanvänds.
+- Tabs när rondar finns: en flik per rond (`getRoundTabLabel`) + extra "Ny omgång (urval)" när handläggaren startar nytt urval.
+- Per rond-tab:
+  - Visar `HousingApplicantsTable` med `offeredApplicantIds = round.selectedApplicants` (markerar deltagare överst).
+  - `previousRoundByApplicant` = sökande i tidigare (lägre `roundNumber`) rondar — dimmas, men bara om de inte också är med i denna rond (logiken som finns i `HousingApplicantsTable` redan).
+  - För `Active`-rondar: knapp **"Avbryt denna omgång"** (ConfirmDialog → `cancelRound(listingId, roundId)`). Påverkar inte andra parallella aktiva rondar.
+- Urvalsvy ("Ny omgång"):
+  - Rubrik: *"Välj sökande till omgång {nästa nummer}"*
+  - `HousingApplicantsTable` med `showSelectionColumn={true}`, alla sökande synliga, badge "Fick omgång N" på dem som tidigare fått erbjudande (men fortsatt valbara).
+  - Bekräftelse går via befintlig `SendHousingOfferDialog` → `startNewRound(...)`.
 
-**Header**
-- `src/pages/rentals/components/StorageSpaceHeader.tsx` — speglar ParkingSpaceHeader med semantisk `variant="info"` status-badge
+### `HousingApplicantsTable`
+- Stödjer redan det mesta. Säkerställ att `previousRoundByApplicant`-prop finns och att "Fick omgång N"-badge visas i urvalsläge utan att blockera checkbox.
 
-### Filer som ändras
+## Kontraktsläge & historik
+- Oförändrat: `kontrakt`-fliken visar de som tackat ja (över alla rondar).
+- `historik`-läget oförändrat (read-only).
 
-**`src/pages/rentals/RentalsPage.tsx`**
-Ersätt den statiska Card-stubben i `TabsContent value="forrad"` med:
-```tsx
-<TabsContent value="forrad">
-  <StorageSpacesTable />
-</TabsContent>
-```
+## Filer som ändras
 
-**`src/features/rentals/components/index.ts`** — exportera nya komponenter
-**`src/features/rentals/hooks/index.ts`** — exportera nya hooks
-**`src/features/rentals/types/index.ts`** — exportera storage-typer
-**`src/features/rentals/index.ts`** — top-level exports
-**`src/App.tsx`** (eller routerfilen) — ny route `/rentals/storage/:id` → `StorageSpaceDetailPage`
+- `src/shared/contexts/HousingOffersContext.tsx` — refaktor till rounds-modell + nya metoder, härledd `offers` för bakåtkompatibilitet.
+- `src/pages/rentals/utils/housingOfferUtils.ts` — ny fil (status + tab-label).
+- `src/features/rentals/hooks/useHousingStatus.ts` — använd ny utility.
+- `src/pages/rentals/HousingDetailPage.tsx` — tab-navigering, urvalsläge, "Starta ny omgång"-flöde.
+- `src/pages/rentals/components/HousingHeader.tsx` — nya primärknappar + chip.
+- `src/pages/rentals/components/HousingApplicantsTable.tsx` — säkerställ `previousRoundByApplicant`-stöd och "Fick omgång N"-badge.
+- `mem://features/rentals/housing-offer-rounds.md` — återskapa memory-filen som indexet redan refererar till.
 
-**`src/features/rentals/components/CreateInterestApplicationDialog.tsx`** — generaliseras till att acceptera både `parkingSpace` och `storageSpace` (eller en gemensam `subject`-prop med `kind: "parking" | "storage"`). Återanvänder validering (`useTenantValidation`) — samma "Byte vs Hyra flera"-logik.
+## Avgränsningar (out of scope)
 
-**`src/shared/contexts/HousingOffersContext.tsx`** — alternativt: extrahera en gemensam `OffersContext` som hanterar både parking och storage. **Förslag:** behåll separat `StorageOffersContext` initialt för minsta blast-radius; konsolidering kan göras senare.
-
-### Återanvändning (cross-domain logic reuse)
-
-Följer befintlig princip — dessa komponenter används som-de-är utan ny variant:
-- `CancelRentalDialog` (har redan `kind`-prop, lägg till `"storage"`)
-- `ConfirmDialog`, `BulkActionBar`, `Notes`, `ResponsiveTable`
-- `SendHousingOfferDialog`-mönster (kan generaliseras eller dupliceras minimalt)
-- `getOfferStatus`, `createMockSpace` i `pages/rentals/utils/` — generaliseras
-
-### Mockdata-strategi
-
-8–12 anonymiserade förråd fördelade på faserna:
-- 3 publicerade (olika kötyper)
-- 2 klara för erbjudande
-- 2 erbjudna
-- 1 i kontraktsfas
-- 2 i historik
-- 2 i behov av publicering
-
-### Feature toggle
-
-`showRentalsStorage` finns redan och används i `RentalsPage.tsx` — ingen ändring krävs där. Innehållet i fliken aktiveras automatiskt när togglen är på.
-
-### Konsekvens & UX
-
-- Status-badge i `StorageSpaceHeader`: semantisk `variant="info"` (matchar #4-fixen)
-- Mobile cards följer standardmönstret (rubrik fet, metadata-grid, actions)
-- Tabellåtgärder: `variant="outline"` ikonknappar
-- Inga ikoner på primära textknappar
-- Action-paritet mellan radens ⋯-meny och detaljsidans header
-
-### Out of scope (för senare iterationer)
-- Erbjudandeomgångar (hålls för det tidigare diskuterade arbetet)
-- Konsolidering av Parking/Storage offer-contexts till en gemensam abstraktion
-- Sammanslagning av `tabs/` och `tabs-storage/` till generisk komponent
-
-### Påverkan
-- ~20 nya filer, ~6 ändrade filer
-- Ingen påverkan på bostads- eller bilplatsflödet
-- Aktiveras endast när `showRentalsStorage` är på
-
+- Inga ändringar i bilplats- eller förrådsflödet.
+- Inga automatiska påminnelser, ingen automatisk förlängning av svarstid.
+- Inga nya förbättringar utöver den ursprungliga implementationen (de 8 förslagen från 27 april #5830 hålls för en separat iteration).
+- `HousingOffer`-typen i sin gamla form behålls inte — komponenter som läser från `offers` gör det via den deriverade arrayen.

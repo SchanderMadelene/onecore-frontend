@@ -41,12 +41,14 @@ interface HousingApplicantsTableProps {
   onLinkContract?: (applicantId: number) => void;
   /** Kontrakt-läge: callback för att ta bort kopplat kontrakt */
   onUnlinkContract?: () => void;
+  /** Map applicantId → senaste tidigare omgångsnummer (badge "Fick omgång N") */
+  previousRoundByApplicant?: Record<number, number>;
 }
 
-export function HousingApplicantsTable({ 
-  applicants, 
-  housingAddress, 
-  listingId, 
+export function HousingApplicantsTable({
+  applicants,
+  housingAddress,
+  listingId,
   showOfferColumns = false,
   showSelectionColumn = true,
   onSelectionChange,
@@ -59,6 +61,7 @@ export function HousingApplicantsTable({
   recommendedApplicantId,
   onLinkContract,
   onUnlinkContract,
+  previousRoundByApplicant,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
@@ -323,7 +326,14 @@ export function HousingApplicantsTable({
                         }
                       </Button>
                       <div>
-                        <div className="font-medium">{applicant.name}</div>
+                        <div className="font-medium flex items-center gap-2">
+                          {applicant.name}
+                          {previousRoundByApplicant?.[applicant.id] !== undefined && (
+                            <Badge variant="muted">
+                              Fick omgång {previousRoundByApplicant[applicant.id]}
+                            </Badge>
+                          )}
+                        </div>
                         <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
                       </div>
                     </div>
