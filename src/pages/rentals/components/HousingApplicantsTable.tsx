@@ -45,10 +45,10 @@ interface HousingApplicantsTableProps {
   previousRoundByApplicant?: Record<number, number>;
 }
 
-export function HousingApplicantsTable({ 
-  applicants, 
-  housingAddress, 
-  listingId, 
+export function HousingApplicantsTable({
+  applicants,
+  housingAddress,
+  listingId,
   showOfferColumns = false,
   showSelectionColumn = true,
   onSelectionChange,
@@ -61,6 +61,7 @@ export function HousingApplicantsTable({
   recommendedApplicantId,
   onLinkContract,
   onUnlinkContract,
+  previousRoundByApplicant,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
