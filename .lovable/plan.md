@@ -1,84 +1,69 @@
+## Plan: Återskapa Förråd som spegling av Bilplats
 
+Förråd ska följa exakt samma mönster som Bilplats (samma 6 faser, samma flikar, samma detaljvy, samma actions) — utan att duplicera hela kodbasen. Vi inför en `assetType: "parking" | "storage"` som propageras genom befintliga parking-komponenter och styr terminologi, ikon, mock-data och navigationsvägar.
 
-## Plan: Åtgärda konsekvensbrister #3, #4, #6
+### 1. Datalager (nya filer)
 
-### #3 — Semantisk badge i OfferedHousingTable (mobil)
-**Fil:** `src/features/rentals/components/OfferedHousingTable.tsx`
+- `src/features/rentals/types/storage.ts` — `StorageSpace` (samma fält som ParkingSpace, fältet `type` håller "Förråd inomhus" / "Förråd utomhus" / "Källarförråd" / "Vindsförråd")
+- `src/features/rentals/hooks/useStorageSpaceListingsByType.ts` — speglar parking-hooken med egen mock-data; anonymiserade svenska adresser; kötyper enligt memory `queue-types-model` (Intern + Extern, ingen "Poängfri")
+- `src/features/rentals/hooks/useStorageSpaceListing.ts` — speglar `useParkingSpaceListing` för detaljvy
 
-Byt ut den hårdkodade Tailwind-färgade badgen mot semantisk variant.
+### 2. Konfigurations-modul (ny fil)
 
-```tsx
-// Före
-<Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-  Väntar på svar
-</Badge>
+`src/features/rentals/utils/asset-config.ts`:
 
-// Efter
-<Badge variant="warning">Väntar</Badge>
+```ts
+export type AssetType = "parking" | "storage";
+export const ASSET_CONFIG = {
+  parking: {
+    noun: "bilplats", nounPlural: "bilplatser", capitalized: "Bilplats",
+    routeSegment: "parking", icon: "car",
+    detailRoute: (id) => `/rentals/parking/${id}`,
+  },
+  storage: {
+    noun: "förråd", nounPlural: "förråd", capitalized: "Förråd",
+    routeSegment: "storage", icon: "archive",
+    detailRoute: (id) => `/rentals/storage/${id}`,
+  },
+};
 ```
 
-(Använder också den förkortade texten "Väntar" för konsekvens med tidigare badge-förkortningar.)
+### 3. Generalisera komponenter (lägga till `assetType`-prop)
 
-### #4 — Semantisk status-badge i HousingHeader
-**Fil:** `src/pages/rentals/components/HousingHeader.tsx`
+Följande filer får en `assetType`-prop som default `"parking"` (för bakåtkompatibilitet) och slår upp terminologi/route via `ASSET_CONFIG`:
 
-Ersätt ad-hoc styling med semantisk variant.
+- `ParkingSpacesTable.tsx` → propagera till alla flikar
+- `tabs/PublishedParkingTab.tsx`, `ReadyForOfferTab.tsx`, `OfferedTab.tsx`, `HistoryTab.tsx`, `NeedsRepublishTab.tsx` — välja rätt hook (parking vs storage), rätt etiketter ("bilplats"/"förråd"), rätt navigationspath
+- `ParkingRowActions.tsx` — `goDetail` använder rätt route, dialog-texter blir generiska
+- `ParkingSpaceDetail.tsx` + `ParkingSpaceInfo.tsx` + `ParkingSpaceHeader.tsx` — etiketter, ikon
+- `PublishParkingSpacesDialog.tsx`, `SyncParkingSpacesDialog.tsx`, `ParkingApplicationDialog.tsx` — texter
+- `CancelRentalDialog.tsx` — utöka `kind` till `"parking" | "housing" | "storage"` (noun = "förråd")
 
-```tsx
-// Före
-<Badge variant="outline" className="bg-primary/10 text-primary font-normal">
-  {offerStatus}
-</Badge>
+Filerna behåller sina parking-namn för att inte bryta refs; bara internt logik blir generisk.
 
-// Efter
-<Badge variant="info">{offerStatus}</Badge>
-```
+### 4. Routing & sida
 
-### #6 — Extrahera duplicerad toolbar i HousingSpacesTable
-**Fil:** `src/features/rentals/components/HousingSpacesTable.tsx`
+- `src/pages/rentals/RentalsPage.tsx` — för `type === "forrad"` rendera `<ParkingSpacesTable assetType="storage" />` istället för dagens stub-card
+- `src/App.tsx` — lägga till route `/rentals/storage/:storageSpaceId` som renderar `ParkingSpaceDetailPage` med `assetType="storage"` (alternativt en tunn wrapper-page)
+- `ParkingSpaceDetailPage.tsx` — läsa `assetType` från route-kontext, välja rätt hook + etiketter
 
-Skapa en intern komponent `HousingTabToolbar` som tar `placeholder` som prop. Eliminerar ~80 rader duplicering över sex flikar.
+### 5. Översiktssidan (`RentalsOverview.tsx`)
 
-```tsx
-function HousingTabToolbar({ placeholder, onCreateHousingAd }: {
-  placeholder: string;
-  onCreateHousingAd: () => void;
-}) {
-  return (
-    <div className="flex flex-col sm:flex-row justify-between gap-4">
-      <div className="relative">
-        <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-        <Input placeholder={placeholder} className="pl-9 w-full sm:w-[300px]" />
-      </div>
-      <div className="flex gap-2">
-        <Button variant="outline" onClick={onCreateHousingAd}>
-          Ny bostadsannons
-        </Button>
-        <ApplicantProfileModal />
-      </div>
-    </div>
-  );
-}
-```
+Ersätt `storageMetrics`-stubben med riktiga värden via `useStorageSpaceListingsByType` så Förråd-kortet visar samma KPI-siffror som Bilplats.
 
-Notera: `UserPlus`-ikonen tas bort från "Ny bostadsannons" eftersom primära/sekundära textknappar inte ska ha ikoner (Core-regel).
+### 6. Memory
 
-Varje flik blir då:
-```tsx
-{
-  value: "publicerade",
-  label: "Publicerade",
-  content: (
-    <div className="flex flex-col space-y-4">
-      <HousingTabToolbar placeholder="Sök publicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
-      <PublishedHousingTable />
-    </div>
-  )
-}
-```
+Uppdatera `mem://features/rentals/cross-domain-logic-reuse` med detaljerna: parking-komponenter accepterar `assetType`-prop, storage återanvänder dem fullt ut.
 
-### Påverkan
-- 3 filer ändras
-- Ingen funktionsförändring — endast visuell konsekvens och kodrensning
-- Inga nya delade komponenter (`HousingTabToolbar` lever lokalt i `HousingSpacesTable.tsx` enligt återanvändningsprincipen)
+### Teknisk anteckning (för utvecklare)
 
+- Inga komponenter byter namn, för att undvika större refactor av imports
+- Mock-data för storage hålls separat i hook-filen
+- URL-segment förblir engelska (`/rentals/storage/...`), label på svenska (Förråd)
+- Default `assetType="parking"` säkerställer att inga befintliga anrop bryts
+
+### Inte med i denna plan
+
+- Ingen ny design — visuellt identiskt med Bilplats
+- Inget nytt feature-toggle (`showRentalsStorage` finns redan)
+- Ingen ändring av Bostads-flödet
