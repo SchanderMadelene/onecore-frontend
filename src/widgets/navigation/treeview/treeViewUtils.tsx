@@ -21,7 +21,9 @@ import {
   Key,
   ShieldX,
   ArrowRightLeft,
-  ClipboardList
+  ClipboardList,
+  Car,
+  Archive
 } from "lucide-react";
 
 export const getNodeIcon = (iconName?: string): ReactNode => {
@@ -58,6 +60,10 @@ export const getNodeIcon = (iconName?: string): ReactNode => {
       return <ClipboardList className="h-4 w-4 text-muted-foreground" />;
     case "door-open":
       return <DoorOpen className="h-4 w-4 text-muted-foreground" />;
+    case "car":
+      return <Car className="h-4 w-4 text-muted-foreground" />;
+    case "archive":
+      return <Archive className="h-4 w-4 text-muted-foreground" />;
     case "monitor":
       return <Monitor className="h-4 w-4 text-blue-600" />;
     case "mail":
