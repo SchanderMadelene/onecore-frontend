@@ -15,6 +15,7 @@ import { ParkingApplicationDialog } from "./ParkingApplicationDialog";
 import { CancelRentalDialog } from "./CancelRentalDialog";
 import { useCloseParkingSpaceListing } from "../hooks/useParkingSpaceActions";
 import type { ParkingSpace } from "./types/parking";
+import { getAssetConfig, type AssetType } from "../utils/asset-config";
 
 export type ParkingActionTab =
   | "publicerade"
@@ -27,6 +28,7 @@ interface ParkingRowActionsProps {
   parkingSpace: ParkingSpace;
   tab: ParkingActionTab;
   variant?: "row" | "mobile";
+  assetType?: AssetType;
 }
 
 const TAB_TO_QUERY: Record<ParkingActionTab, string> = {
@@ -37,8 +39,9 @@ const TAB_TO_QUERY: Record<ParkingActionTab, string> = {
   behovAvPublicering: "?tab=behovAvPublicering",
 };
 
-export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: ParkingRowActionsProps) {
+export function ParkingRowActions({ parkingSpace, tab, variant = "row", assetType = "parking" }: ParkingRowActionsProps) {
   const navigate = useNavigate();
+  const cfg = getAssetConfig(assetType);
   const closeListing = useCloseParkingSpaceListing();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmClose, setConfirmClose] = useState(false);
@@ -48,7 +51,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
 
   const stop = (e: React.MouseEvent | React.SyntheticEvent) => e.stopPropagation();
   const goDetail = () =>
-    navigate(`/rentals/parking/${parkingSpace.id}`, { state: { from: TAB_TO_QUERY[tab] } });
+    navigate(cfg.detailRoute(parkingSpace.id), { state: { from: TAB_TO_QUERY[tab] } });
 
   const handleCancelRental = async () => {
     setPending(true);
@@ -134,7 +137,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
         open={confirmDelete}
         onOpenChange={setConfirmDelete}
         title="Avbryt uthyrning"
-        description={`Vill du avbryta uthyrningen av bilplats ${parkingSpace.address} (hyresid ${parkingSpace.id})?`}
+        description={`Vill du avbryta uthyrningen av ${cfg.noun} ${parkingSpace.address} (hyresid ${parkingSpace.id})?`}
         onConfirm={handleCancelRental}
         variant="destructive"
         confirmLabel="Avbryt uthyrning"
@@ -144,7 +147,7 @@ export function ParkingRowActions({ parkingSpace, tab, variant = "row" }: Parkin
 
       <CancelRentalDialog
         subject={parkingSpace}
-        kind="parking"
+        kind={assetType === "storage" ? "storage" : "parking"}
         open={cancelRentalOpen}
         onOpenChange={setCancelRentalOpen}
       />
