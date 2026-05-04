@@ -79,7 +79,7 @@ const ParkingSpaceDetailPage = () => {
     return (
       <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
         <div className="p-6">
-          <ParkingSpaceHeader 
+          <ParkingSpaceHeader assetType={assetType} 
             spaceAddress=""
             offerStatus=""
             space={{}}
@@ -98,7 +98,7 @@ const ParkingSpaceDetailPage = () => {
     return (
       <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
         <div className="p-6">
-          <ParkingSpaceHeader 
+          <ParkingSpaceHeader assetType={assetType} 
             spaceAddress=""
             offerStatus=""
             space={{}}
@@ -124,7 +124,7 @@ const ParkingSpaceDetailPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="p-6">
-        <ParkingSpaceHeader 
+        <ParkingSpaceHeader assetType={assetType} 
           spaceAddress={space.address}
           offerStatus={offerStatus}
           space={space}
