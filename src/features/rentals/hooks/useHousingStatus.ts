@@ -9,34 +9,41 @@ import { PublishedHousingSpace } from "../data/published-housing";
  */
 export type HousingStatus =
   | 'published'        // publishedTo > idag, inga rondar, inte early-unpublished
-  | 'ready_for_offer'  // early-unpublished ELLER publishedTo passerat, OCH inga rondar
-  | 'offered'          // minst en rond finns OCH ingen är Accepted
-  | 'contract'         // någon rond är Accepted, ej historik
-  | 'history';         // listing.history finns (mock)
+  | 'ready_for_offer'  // alla rondar döda ELLER (publishedTo passerat OCH inga rondar) ELLER early-unpublished
+  | 'offered'          // minst en levande rond (Active) OCH ingen Awarded OCH inget signerat kontrakt
+  | 'contract'         // någon rond är Awarded OCH inget signerat kontrakt
+  | 'history';         // signerat kontrakt finns ELLER listing.history (mock)
 
 export function useHousingStatus() {
-  const { isEarlyUnpublished, getRoundsForListing } = useHousingOffers();
+  const { isEarlyUnpublished, getRoundsForListing, getSignedContract } = useHousingOffers();
 
   const getHousingStatus = (housing: PublishedHousingSpace): HousingStatus => {
-    // Historik trumfar allt (mock-flag på listingen)
-    if ((housing as any).history) {
+    // Historik trumfar allt: signerat kontrakt eller mock-flag
+    if (getSignedContract(housing.id) || (housing as any).history) {
       return 'history';
     }
 
     const rounds = getRoundsForListing(housing.id);
-    const hasAccepted = rounds.some(r => r.status === 'Accepted');
-    const hasAnyRound = rounds.length > 0;
+    const hasAwarded = rounds.some(r => r.status === 'Awarded');
+    const hasLiveRound = rounds.some(r => r.status === 'Active');
 
-    if (hasAccepted) {
+    if (hasAwarded) {
       return 'contract';
     }
 
-    if (hasAnyRound) {
+    if (hasLiveRound) {
       return 'offered';
     }
 
+    // Inga levande rondar — falla tillbaka till tidsbaserad logik
     const currentDate = new Date();
     const publishedToDate = new Date(housing.publishedTo);
+
+    // Om annonsen har döda rondar (Cancelled/Expired/AllDeclined) räknas det
+    // som "Klara för erbjudande" så admin kan starta en ny omgång.
+    if (rounds.length > 0) {
+      return 'ready_for_offer';
+    }
 
     if (isEarlyUnpublished(housing.id) || publishedToDate <= currentDate) {
       return 'ready_for_offer';
