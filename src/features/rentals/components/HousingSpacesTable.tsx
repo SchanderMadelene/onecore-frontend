@@ -30,7 +30,6 @@ function HousingTabToolbar({
 }
 
 export function HousingSpacesTable() {
-  const navigate = useNavigate();
   const location = useLocation();
   const [currentTab, setCurrentTab] = useState("publicerade");
 
@@ -38,16 +37,9 @@ export function HousingSpacesTable() {
   useEffect(() => {
     if (location.state?.activeHousingTab) {
       setCurrentTab(location.state.activeHousingTab);
-      // Clear the state to prevent it from persisting
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
-
-  const handleCreateHousingAd = () => {
-    navigate('/rentals/create-housing-ad', {
-      state: { activeHousingTab: currentTab }
-    });
-  };
 
   const { filterHousingByStatus } = useHousingStatus();
   const counts = {
