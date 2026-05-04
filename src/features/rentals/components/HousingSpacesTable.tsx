@@ -7,7 +7,7 @@ import { OfferedHousingTable } from "./OfferedHousingTable";
 import { ContractHousingTable } from "./ContractHousingTable";
 import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { HistoryHousingTable } from "./HistoryHousingTable";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 import { publishedHousingSpaces } from "@/features/rentals/data/published-housing";
