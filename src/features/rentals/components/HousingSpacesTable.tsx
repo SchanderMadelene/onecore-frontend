@@ -1,5 +1,4 @@
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { UnpublishedHousingTable } from "./UnpublishedHousingTable";
@@ -8,7 +7,6 @@ import { OfferedHousingTable } from "./OfferedHousingTable";
 import { ContractHousingTable } from "./ContractHousingTable";
 import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { HistoryHousingTable } from "./HistoryHousingTable";
-import { ApplicantProfileModal } from "./ApplicantProfileModal";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
