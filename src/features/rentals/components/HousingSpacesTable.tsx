@@ -12,6 +12,9 @@ import { ApplicantProfileModal } from "./ApplicantProfileModal";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
+import { publishedHousingSpaces } from "@/features/rentals/data/published-housing";
+import { unpublishedHousingSpaces } from "@/features/rentals/data/unpublished-housing";
+import { useHousingStatus } from "@/features/rentals/hooks/useHousingStatus";
 
 function HousingTabToolbar({
   placeholder,
