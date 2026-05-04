@@ -19,6 +19,7 @@ import { unpublishedHousingSpaces } from "@/features/rentals/data/unpublished-ho
 import { useHousingStatus } from "@/features/rentals/hooks/useHousingStatus";
 import { useParkingSpaceListingsByType } from "@/features/rentals/hooks/useParkingSpaceListingsByType";
 import { useStorageSpaceListingsByType } from "@/features/rentals/hooks/useStorageSpaceListingsByType";
+import { ApplicantProfileModal } from "@/features/rentals/components/ApplicantProfileModal";
 
 const parseRent = (rent?: string): number => {
   if (!rent) return 0;
@@ -173,11 +174,14 @@ const RentalsOverview = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="w-full space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Uthyrning</h1>
-          <p className="mt-1 text-muted-foreground">
-            Översikt av aktuellt hyresbortfall och uthyrningsstatus per objekttyp.
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Uthyrning</h1>
+            <p className="mt-1 text-muted-foreground">
+              Översikt av aktuellt hyresbortfall och uthyrningsstatus per objekttyp.
+            </p>
+          </div>
+          <ApplicantProfileModal />
         </div>
 
         <div className="grid grid-cols-1 gap-4">
