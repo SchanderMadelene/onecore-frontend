@@ -110,7 +110,7 @@ export function HousingSpacesTable() {
     },
     {
       value: "kontrakt",
-      label: `Erbjud kontrakt (${counts.kontrakt})`,
+      label: `Erbjud kontrakt`,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök bostad för kontrakt..." onCreateHousingAd={handleCreateHousingAd} />
