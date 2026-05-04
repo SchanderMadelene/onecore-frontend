@@ -42,13 +42,28 @@ const HousingDetailPage = () => {
       }));
   }, [listing, selectedApplicants]);
 
+  const activeHousingTab = location.state?.activeHousingTab || "publicerade";
+
   const handleBack = () => {
-    // Navigate back to rentals page with bostad tab and the specific housing sub-tab
-    const activeHousingTab = location.state?.activeHousingTab || "publicerade";
-    navigate('/rentals?tab=bostad', { 
+    navigate('/rentals/bostad', {
       state: { activeHousingTab }
     });
   };
+
+  const handleTabChange = (value: string) => {
+    navigate('/rentals/bostad', {
+      state: { activeHousingTab: value }
+    });
+  };
+
+  const housingTabs = [
+    { value: "publicerade", label: "Publicerade" },
+    { value: "klaraForErbjudande", label: "Klara för erbjudande" },
+    { value: "erbjudna", label: "Erbjudna" },
+    { value: "kontrakt", label: "Kontrakt" },
+    { value: "historik", label: "Historik" },
+    { value: "behovAvPublicering", label: "Behov av publicering" },
+  ];
 
   const handleOpenOfferDialog = () => {
     if (!housingId || selectedApplicants.length === 0) return;
