@@ -147,10 +147,10 @@ const RentalsOverview = () => {
         offeredParking.length +
         needsRepublishParking.length,
       kpis: [
-        { label: "Publicerade", value: publishedParking.length, icon: <Megaphone className="h-4 w-4" /> },
-        { label: "Klara för erbjudande", value: readyForOfferParking.length, icon: <Users className="h-4 w-4" /> },
+        { label: "Publicera", value: needsRepublishParking.length, icon: <RotateCcw className="h-4 w-4" /> },
+        { label: "Publicerat nu", value: publishedParking.length, icon: <Megaphone className="h-4 w-4" /> },
+        { label: "Erbjud", value: readyForOfferParking.length, icon: <Users className="h-4 w-4" /> },
         { label: "Erbjudna", value: offeredParking.length, icon: <FileText className="h-4 w-4" /> },
-        { label: "Behov av publicering", value: needsRepublishParking.length, icon: <RotateCcw className="h-4 w-4" /> },
       ],
     };
   }, [publishedParking, readyForOfferParking, offeredParking, needsRepublishParking]);
