@@ -207,6 +207,14 @@ const AppRoutes = () => {
         } 
       />
       <Route 
+        path="/rentals/storage/:parkingSpaceId" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <ParkingSpaceDetailPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
         path="/rentals/housing/:housingId" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
