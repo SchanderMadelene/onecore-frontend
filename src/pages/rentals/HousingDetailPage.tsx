@@ -278,9 +278,35 @@ const HousingDetailPage = () => {
     isContractMode ? 'Sökande som tackat ja' :
     'Intresseanmälningar';
 
+  const housingTabs: { value: string; label: string }[] = [
+    { value: "behovAvPublicering", label: "Publicera" },
+    { value: "publicerade", label: "Publicerat nu" },
+    { value: "klaraForErbjudande", label: "Erbjud visning" },
+    { value: "erbjudna", label: "Visning" },
+    { value: "kontrakt", label: "Erbjud kontrakt" },
+    { value: "historik", label: "Historik" },
+  ];
+  const currentHousingTab = activeHousingTab ?? "publicerade";
+
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="p-6">
+        <Tabs
+          value={currentHousingTab}
+          onValueChange={(value) =>
+            navigate('/rentals/housing', { state: { activeHousingTab: value } })
+          }
+          className="w-full mb-6"
+        >
+          <TabsList className="grid min-h-[44px]" style={{ gridTemplateColumns: `repeat(${housingTabs.length}, 1fr)` }}>
+            {housingTabs.map((t) => (
+              <TabsTrigger key={t.value} value={t.value} className="min-h-[40px] px-2 text-xs sm:text-sm sm:px-3">
+                {t.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+
         <HousingHeader
           housingAddress={listing.address}
           offerStatus={offerStatus}
@@ -298,7 +324,6 @@ const HousingDetailPage = () => {
           onCancelSelection={handleCancelSelection}
           activeRoundsCount={activeRounds.length}
           latestRoundNumber={latestRound?.roundNumber}
-          sourceTabLabel={sourceTabLabel}
         />
 
         <div className="space-y-8">
