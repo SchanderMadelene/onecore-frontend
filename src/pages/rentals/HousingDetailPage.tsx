@@ -13,6 +13,7 @@ import { HousingInfo } from "./components/HousingInfo";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -42,13 +43,28 @@ const HousingDetailPage = () => {
       }));
   }, [listing, selectedApplicants]);
 
+  const activeHousingTab = location.state?.activeHousingTab || "publicerade";
+
   const handleBack = () => {
-    // Navigate back to rentals page with bostad tab and the specific housing sub-tab
-    const activeHousingTab = location.state?.activeHousingTab || "publicerade";
-    navigate('/rentals?tab=bostad', { 
+    navigate('/rentals/bostad', {
       state: { activeHousingTab }
     });
   };
+
+  const handleTabChange = (value: string) => {
+    navigate('/rentals/bostad', {
+      state: { activeHousingTab: value }
+    });
+  };
+
+  const housingTabs = [
+    { value: "publicerade", label: "Publicerade" },
+    { value: "klaraForErbjudande", label: "Klara för erbjudande" },
+    { value: "erbjudna", label: "Erbjudna" },
+    { value: "kontrakt", label: "Kontrakt" },
+    { value: "historik", label: "Historik" },
+    { value: "behovAvPublicering", label: "Behov av publicering" },
+  ];
 
   const handleOpenOfferDialog = () => {
     if (!housingId || selectedApplicants.length === 0) return;
@@ -68,7 +84,7 @@ const HousingDetailPage = () => {
       description: `Erbjudanden har skickats till ${selectedApplicants.length} valda sökande`
     });
 
-    navigate('/rentals?tab=bostad', {
+    navigate('/rentals/bostad', {
       state: { activeHousingTab: 'erbjudna' }
     });
   };
@@ -191,6 +207,16 @@ const HousingDetailPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="p-6">
+        <Tabs value={activeHousingTab} onValueChange={handleTabChange} className="w-full mb-6">
+          <TabsList className="grid min-h-[44px]" style={{ gridTemplateColumns: `repeat(${housingTabs.length}, 1fr)` }}>
+            {housingTabs.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value} className="min-h-[40px] px-2 text-xs sm:text-sm sm:px-3">
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+
         <HousingHeader 
           housingAddress={listing.address}
           offerStatus={offerStatus}
@@ -202,6 +228,7 @@ const HousingDetailPage = () => {
           isCreatingOffer={false}
           readOnly={isHistoryMode}
         />
+
 
         <div className="space-y-8">
           <section>

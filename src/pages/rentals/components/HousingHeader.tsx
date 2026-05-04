@@ -39,11 +39,11 @@ export function HousingHeader({
 
   return (
     <>
-      <div className="flex items-center gap-2 mb-4">
-        <Button variant="ghost" size="icon" onClick={onBack}>
+      <div className="mb-4">
+        <Button variant="outline" size="sm" onClick={onBack} className="gap-2">
           <ArrowLeft className="h-4 w-4" />
+          Tillbaka
         </Button>
-        <h2 className="text-lg font-semibold text-muted-foreground">Bostäder</h2>
       </div>
 
       <div className="mb-6">
