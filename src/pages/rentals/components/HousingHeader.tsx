@@ -86,7 +86,9 @@ export function HousingHeader({
         <Button variant="ghost" size="icon" onClick={onBack}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h2 className="text-lg font-semibold text-muted-foreground">Bostäder</h2>
+        <h2 className="text-lg font-semibold text-muted-foreground">
+          Bostäder{sourceTabLabel ? ` · ${sourceTabLabel}` : ""}
+        </h2>
       </div>
 
       <div className="mb-6">
