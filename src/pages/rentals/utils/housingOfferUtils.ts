@@ -4,7 +4,7 @@ export type ListingOfferStatus = 'no_offers' | 'offering' | 'assigned';
 
 export function getListingOfferStatus(rounds: HousingOfferRound[]): ListingOfferStatus {
   if (rounds.length === 0) return 'no_offers';
-  if (rounds.some(r => r.status === 'Accepted')) return 'assigned';
+  if (rounds.some(r => r.status === 'Awarded')) return 'assigned';
   return 'offering';
 }
 
@@ -13,7 +13,7 @@ export function getRoundTabLabel(round: HousingOfferRound): string {
   switch (round.status) {
     case 'Active':
       return base;
-    case 'Accepted':
+    case 'Awarded':
       return `${base} (tilldelad)`;
     case 'AllDeclined':
       return `${base} (alla nekade)`;
