@@ -81,27 +81,6 @@ const SectionCard = ({
         </div>
       </div>
 
-      <div className="border-b bg-destructive/5 px-6 py-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-background/80 text-destructive">
-              <TrendingDown className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                Hyresbortfall / månad
-              </div>
-              <p className="text-lg text-muted-foreground">
-                {vacantCount} lediga objekt utan kontrakt
-              </p>
-            </div>
-          </div>
-          <div className="text-right text-4xl font-semibold tracking-tight text-destructive tabular-nums sm:text-5xl">
-            {formatSEK(monthlyLoss)}
-          </div>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 divide-y sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
         {kpis.map((kpi) => (
           <div key={kpi.label} className="px-6 py-5">
