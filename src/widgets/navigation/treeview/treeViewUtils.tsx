@@ -21,7 +21,9 @@ import {
   Key,
   ShieldX,
   ArrowRightLeft,
-  ClipboardList
+  ClipboardList,
+  Car,
+  Archive
 } from "lucide-react";
 
 export const getNodeIcon = (iconName?: string): ReactNode => {
