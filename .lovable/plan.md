@@ -1,14 +1,17 @@
 ## Mål
-Ta bort badgen "Klar för tilldelning" / "Väntar svar" från Erbjudna-fliken. Svarskolumnerna (Tackat ja / Tackat nej / Väntar) räcker som information per rad.
+Byt kolumnetikett från "Önskad avflyttning" till **"Ev. tillgänglig"** för att matcha formulärfältet "Eventuellt tillgänglig från" (datum då sittande hyresgäst ev. flyttar tidigare).
 
 ## Ändringar
+Byt `label: "Önskad avflyttning"` → `label: "Ev. tillgänglig"` i sex tabellkomponenter:
 
-**`src/features/rentals/components/OfferedHousingTable.tsx`**
-- Desktop-tabellen: ta bort badge-renderingen på rad ~62–68 (cellen som visar "Klar för tilldelning" eller inget).
-- Mobilkortet: ta bort badge-renderingen på rad ~119–125 (visade antingen "Klar för tilldelning" eller "Väntar svar").
-- Rensa oanvända imports (`Badge`) och hjälp-anrop (`aggregateFor`) om de blir oanvända efter borttagningen — annars behåll.
+- `src/features/rentals/components/UnpublishedHousingTable.tsx`
+- `src/features/rentals/components/ReadyForOfferHousingTable.tsx`
+- `src/features/rentals/components/PublishedHousingTable.tsx`
+- `src/features/rentals/components/OfferedHousingTable.tsx`
+- `src/features/rentals/components/ContractHousingTable.tsx`
+- `src/features/rentals/components/HistoryHousingTable.tsx`
+
+Ingen ändring av datafält (`preferredMoveOutDate` behålls som teknisk nyckel) eller formulärlabels.
 
 ## Påverkan
-- Inga andra filer berörs.
-- Ingen ändring av domänlogik eller status-härledning.
-- Signalen om vilka annonser som är redo för tilldelning kommer i Step 3 via knappar/actions, inte via badges.
+Endast presentationsändring. Inga datamodeller, hooks eller business-logik berörs.

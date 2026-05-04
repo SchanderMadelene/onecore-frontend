@@ -29,7 +29,7 @@ export function ReadyForOfferHousingTable() {
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
     { key: "seekers", label: "Sökande", render: (h: any) => h.seekers },
     { key: "publishedTo", label: "Publicerad till", render: (h: any) => new Date(h.publishedTo).toLocaleDateString('sv-SE'), hideOnMobile: true },
-    { key: "preferredMoveOutDate", label: "Önskad avflyttning", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
+    { key: "preferredMoveOutDate", label: "Ev. tillgänglig", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
     {
       key: "actions",
       label: "",
