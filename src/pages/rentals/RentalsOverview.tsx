@@ -128,10 +128,10 @@ const RentalsOverview = () => {
         offeredHousing.length +
         unpublishedHousingSpaces.length,
       kpis: [
-        { label: "Publicerade", value: publishedHousing.length, icon: <Megaphone className="h-4 w-4" /> },
-        { label: "Klara för erbjudande", value: readyForOfferHousing.length, icon: <Users className="h-4 w-4" /> },
-        { label: "Behov av publicering", value: unpublishedHousingSpaces.length, icon: <RotateCcw className="h-4 w-4" /> },
-        { label: "Historik", value: offeredHousing.length, icon: <FileClock className="h-4 w-4" /> },
+        { label: "Publicera", value: unpublishedHousingSpaces.length, icon: <RotateCcw className="h-4 w-4" /> },
+        { label: "Publicerat nu", value: publishedHousing.length, icon: <Megaphone className="h-4 w-4" /> },
+        { label: "Erbjud visning", value: readyForOfferHousing.length, icon: <Users className="h-4 w-4" /> },
+        { label: "Visning", value: offeredHousing.length, icon: <FileText className="h-4 w-4" /> },
       ],
     };
   }, [publishedHousing, readyForOfferHousing, offeredHousing]);
