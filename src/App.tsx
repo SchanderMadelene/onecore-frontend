@@ -73,6 +73,7 @@ const AllTenantsPage = lazyWithRetry(() => import("./pages/tenants/AllTenantsPag
 const DesignSystemPage = lazyWithRetry(() => import("./pages/design-system/DesignSystemPage"));
 const NotFound = lazyWithRetry(() => import("./pages/NotFound"));
 const AllPropertiesPage = lazyWithRetry(() => import("./pages/properties/AllPropertiesPage"));
+const RentalsOverview = lazyWithRetry(() => import("./pages/rentals/RentalsOverview"));
 const RentalsPage = lazyWithRetry(() => import("./pages/rentals/RentalsPage"));
 const CreateHousingAdPage = lazyWithRetry(() => import("./pages/rentals/CreateHousingAdPage"));
 const ParkingSpaceDetailPage = lazyWithRetry(() => import("./pages/rentals/ParkingSpaceDetailPage"));
@@ -160,6 +161,30 @@ const AppRoutes = () => {
       />
       <Route 
         path="/rentals" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <RentalsOverview />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/bostad" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <RentalsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/bilplats" 
+        element={
+          <ProtectedRoute isEnabled={features.showRentals}>
+            <RentalsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/rentals/forrad" 
         element={
           <ProtectedRoute isEnabled={features.showRentals}>
             <RentalsPage />
