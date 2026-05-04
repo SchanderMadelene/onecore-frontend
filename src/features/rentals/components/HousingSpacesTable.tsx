@@ -42,11 +42,7 @@ export function HousingSpacesTable() {
     }
   }, [location.state]);
 
-  const handleCreateHousingAd = () => {
-    navigate('/rentals/create-housing-ad', {
-      state: { activeHousingTab: currentTab }
-    });
-  };
+
 
   const tabs = [
     {
