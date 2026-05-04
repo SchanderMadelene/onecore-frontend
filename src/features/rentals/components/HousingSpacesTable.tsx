@@ -63,7 +63,7 @@ export function HousingSpacesTable() {
       label: `Publicera (${counts.behovAvPublicering})`,
       content: (
         <div className="flex flex-col space-y-4">
-          <HousingTabToolbar placeholder="Sök opublicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
+          <HousingTabToolbar placeholder="Sök opublicerad bostad..." />
           <UnpublishedHousingTable />
         </div>
       )
@@ -73,7 +73,7 @@ export function HousingSpacesTable() {
       label: `Publicerat nu (${counts.publicerade})`,
       content: (
         <div className="flex flex-col space-y-4">
-          <HousingTabToolbar placeholder="Sök publicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
+          <HousingTabToolbar placeholder="Sök publicerad bostad..." />
           <PublishedHousingTable />
         </div>
       )
@@ -83,7 +83,7 @@ export function HousingSpacesTable() {
       label: `Erbjud visning (${counts.klaraForErbjudande})`,
       content: (
         <div className="flex flex-col space-y-4">
-          <HousingTabToolbar placeholder="Sök bostad klar för erbjudande..." onCreateHousingAd={handleCreateHousingAd} />
+          <HousingTabToolbar placeholder="Sök bostad klar för erbjudande..." />
           <ReadyForOfferHousingTable />
         </div>
       )
@@ -93,7 +93,7 @@ export function HousingSpacesTable() {
       label: `Visning (${counts.erbjudna})`,
       content: (
         <div className="flex flex-col space-y-4">
-          <HousingTabToolbar placeholder="Sök erbjuden bostad..." onCreateHousingAd={handleCreateHousingAd} />
+          <HousingTabToolbar placeholder="Sök erbjuden bostad..." />
           <OfferedHousingTable />
         </div>
       )
@@ -103,7 +103,7 @@ export function HousingSpacesTable() {
       label: `Erbjud kontrakt`,
       content: (
         <div className="flex flex-col space-y-4">
-          <HousingTabToolbar placeholder="Sök bostad för kontrakt..." onCreateHousingAd={handleCreateHousingAd} />
+          <HousingTabToolbar placeholder="Sök bostad för kontrakt..." />
           <ContractHousingTable />
         </div>
       )
@@ -113,7 +113,7 @@ export function HousingSpacesTable() {
       label: "Historik",
       content: (
         <div className="flex flex-col space-y-4">
-          <HousingTabToolbar placeholder="Sök i historik..." onCreateHousingAd={handleCreateHousingAd} />
+          <HousingTabToolbar placeholder="Sök i historik..." />
           <HistoryHousingTable />
         </div>
       )
