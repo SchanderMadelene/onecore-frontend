@@ -28,7 +28,7 @@ function HousingTabToolbar({
 }
 
 export function HousingSpacesTable() {
-  const navigate = useNavigate();
+  
   const location = useLocation();
   const [currentTab, setCurrentTab] = useState("publicerade");
 
