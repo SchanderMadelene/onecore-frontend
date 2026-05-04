@@ -58,12 +58,12 @@ const HousingDetailPage = () => {
   };
 
   const housingTabs = [
-    { value: "publicerade", label: "Publicerade" },
-    { value: "klaraForErbjudande", label: "Klara för erbjudande" },
-    { value: "erbjudna", label: "Erbjudna" },
-    { value: "kontrakt", label: "Kontrakt" },
+    { value: "behovAvPublicering", label: "Publicera" },
+    { value: "publicerade", label: "Publicerat nu" },
+    { value: "klaraForErbjudande", label: "Erbjud visning" },
+    { value: "erbjudna", label: "Visning" },
+    { value: "kontrakt", label: "Erbjud kontrakt" },
     { value: "historik", label: "Historik" },
-    { value: "behovAvPublicering", label: "Behov av publicering" },
   ];
 
   const handleOpenOfferDialog = () => {
