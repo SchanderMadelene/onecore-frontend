@@ -325,6 +325,21 @@ export function HousingApplicantsTable({
                           <ChevronRight className="h-4 w-4" />
                         }
                       </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8 shrink-0"
+                        asChild
+                      >
+                        <a
+                          href={`/tenants/detail/${applicant.nationalRegistrationNumber}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Öppna kundkort"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      </Button>
                       <div>
                         <div className="font-medium flex items-center gap-2">
                           {applicant.name}
