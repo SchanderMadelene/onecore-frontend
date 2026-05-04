@@ -19,6 +19,7 @@ import { unpublishedHousingSpaces } from "@/features/rentals/data/unpublished-ho
 import { useHousingStatus } from "@/features/rentals/hooks/useHousingStatus";
 import { useParkingSpaceListingsByType } from "@/features/rentals/hooks/useParkingSpaceListingsByType";
 import { useStorageSpaceListingsByType } from "@/features/rentals/hooks/useStorageSpaceListingsByType";
+import { ApplicantProfileModal } from "@/features/rentals/components/ApplicantProfileModal";
 
 const parseRent = (rent?: string): number => {
   if (!rent) return 0;
