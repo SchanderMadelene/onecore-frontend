@@ -55,6 +55,7 @@ export function HousingHeader({
   onCancelSelection,
   activeRoundsCount = 0,
   latestRoundNumber,
+  sourceTabLabel,
 }: HousingHeaderProps) {
   const tab = STATUS_TO_TAB[offerStatus] ?? "publicerade";
 
