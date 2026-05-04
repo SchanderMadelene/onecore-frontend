@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, PlusCircle } from "lucide-react";
 import { ParkingApplicationDialog } from "@/features/rentals/components/ParkingApplicationDialog";
+import { getAssetConfig, type AssetType } from "@/features/rentals/utils/asset-config";
 
 interface ParkingSpaceHeaderProps {
   spaceAddress: string;
@@ -12,6 +13,7 @@ interface ParkingSpaceHeaderProps {
   onBack: () => void;
   onCreateOffer: () => void;
   isCreatingOffer: boolean;
+  assetType?: AssetType;
 }
 
 export function ParkingSpaceHeader({
@@ -21,15 +23,17 @@ export function ParkingSpaceHeader({
   hasOffers,
   onBack,
   onCreateOffer,
-  isCreatingOffer
+  isCreatingOffer,
+  assetType = "parking",
 }: ParkingSpaceHeaderProps) {
+  const cfg = getAssetConfig(assetType);
   return (
     <>
       <div className="flex items-center gap-2 mb-4">
         <Button variant="ghost" size="icon" onClick={onBack}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h2 className="text-lg font-semibold text-muted-foreground">Bilplatser</h2>
+        <h2 className="text-lg font-semibold text-muted-foreground">{cfg.capitalizedPlural}</h2>
       </div>
 
       <div className="mb-6">
