@@ -59,10 +59,29 @@ export function HousingSpacesTable() {
     });
   };
 
+  const { filterHousingByStatus } = useHousingStatus();
+  const counts = {
+    behovAvPublicering: unpublishedHousingSpaces.length,
+    publicerade: filterHousingByStatus(publishedHousingSpaces, "published").length,
+    klaraForErbjudande: filterHousingByStatus(publishedHousingSpaces, "ready_for_offer").length,
+    erbjudna: filterHousingByStatus(publishedHousingSpaces, "offered").length,
+    kontrakt: filterHousingByStatus(publishedHousingSpaces, "contract").length,
+  };
+
   const tabs = [
     {
+      value: "behovAvPublicering",
+      label: `Publicera (${counts.behovAvPublicering})`,
+      content: (
+        <div className="flex flex-col space-y-4">
+          <HousingTabToolbar placeholder="Sök opublicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
+          <UnpublishedHousingTable />
+        </div>
+      )
+    },
+    {
       value: "publicerade",
-      label: "Publicerade",
+      label: `Publicerat nu (${counts.publicerade})`,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök publicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
@@ -72,7 +91,7 @@ export function HousingSpacesTable() {
     },
     {
       value: "klaraForErbjudande",
-      label: "Klara för erbjudande",
+      label: `Erbjud visning (${counts.klaraForErbjudande})`,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök bostad klar för erbjudande..." onCreateHousingAd={handleCreateHousingAd} />
@@ -82,7 +101,7 @@ export function HousingSpacesTable() {
     },
     {
       value: "erbjudna",
-      label: "Erbjudna",
+      label: `Visning (${counts.erbjudna})`,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök erbjuden bostad..." onCreateHousingAd={handleCreateHousingAd} />
@@ -92,7 +111,7 @@ export function HousingSpacesTable() {
     },
     {
       value: "kontrakt",
-      label: "Kontrakt",
+      label: `Erbjud kontrakt (${counts.kontrakt})`,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök bostad för kontrakt..." onCreateHousingAd={handleCreateHousingAd} />
@@ -107,16 +126,6 @@ export function HousingSpacesTable() {
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök i historik..." onCreateHousingAd={handleCreateHousingAd} />
           <HistoryHousingTable />
-        </div>
-      )
-    },
-    {
-      value: "behovAvPublicering",
-      label: "Behov av publicering",
-      content: (
-        <div className="flex flex-col space-y-4">
-          <HousingTabToolbar placeholder="Sök opublicerad bostad..." onCreateHousingAd={handleCreateHousingAd} />
-          <UnpublishedHousingTable />
         </div>
       )
     }
