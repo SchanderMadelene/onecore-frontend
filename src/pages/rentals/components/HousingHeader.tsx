@@ -83,7 +83,7 @@ export function HousingHeader({
   return (
     <>
       <div className="mb-4">
-        <Button variant="ghost" size="sm" onClick={onBack} className="-ml-2 h-8 px-2 text-muted-foreground hover:text-foreground">
+        <Button variant="outline" size="sm" onClick={onBack} className="h-8">
           <ArrowLeft className="h-4 w-4 mr-1" />
           Tillbaka
         </Button>
