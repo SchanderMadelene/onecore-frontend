@@ -54,18 +54,9 @@ export function OfferedHousingTable() {
 
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => (
-      <div className="flex items-center gap-2 flex-wrap">
-        <div>
-          <div className="font-medium">{h.address}</div>
-          <div className="text-sm text-muted-foreground">{getHousingObjectNumber(h.id)}</div>
-        </div>
-        {(() => {
-          const agg = aggregateFor(h.id);
-          if (agg.accepted > 0 && !agg.hasAwarded) {
-            return <Badge variant="success">Klar för tilldelning</Badge>;
-          }
-          return null;
-        })()}
+      <div>
+        <div className="font-medium">{h.address}</div>
+        <div className="text-sm text-muted-foreground">{getHousingObjectNumber(h.id)}</div>
       </div>
     ) },
     { key: "area", label: "Område", render: (h: any) => h.area, hideOnMobile: true },
