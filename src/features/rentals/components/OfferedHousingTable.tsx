@@ -108,11 +108,6 @@ export function OfferedHousingTable() {
         <div className="text-sm text-muted-foreground">{getHousingObjectNumber(housing.id)}</div>
         <div className="text-sm text-muted-foreground">{housing.area}</div>
         <div className="flex items-center gap-2 mt-2 flex-wrap">
-          {agg.accepted > 0 && !agg.hasAwarded ? (
-            <Badge variant="success">Klar för tilldelning</Badge>
-          ) : (
-            <Badge variant="warning">Väntar svar</Badge>
-          )}
           <span className="text-sm text-muted-foreground">
             {agg.accepted} ja · {agg.declined} nej · {agg.pending} väntar
           </span>
