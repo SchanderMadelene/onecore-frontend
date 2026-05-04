@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+
 import { useNavigate } from "react-router-dom";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { publishedHousingSpaces } from "../data/published-housing";
