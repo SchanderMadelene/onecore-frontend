@@ -1,20 +1,31 @@
 import { Input } from "@/components/ui/input";
-import { Search, Car, Loader2 } from "lucide-react";
+import { Search, Car, Archive, Loader2 } from "lucide-react";
 import { useParkingSpaceListingsByType } from "../../hooks/useParkingSpaceListingsByType";
+import { useStorageSpaceListingsByType } from "../../hooks/useStorageSpaceListingsByType";
 import { useNavigate } from "react-router-dom";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
 import { ParkingRowActions } from "../ParkingRowActions";
 import type { ParkingSpace } from "../types/parking";
+import { getAssetConfig, type AssetType } from "../../utils/asset-config";
 
-export const NeedsRepublishTab = () => {
-  const { data: needsRepublishSpaces, isLoading, error } = useParkingSpaceListingsByType('needs-republish');
+interface Props { assetType?: AssetType }
+
+export const NeedsRepublishTab = ({ assetType = "parking" }: Props) => {
   const navigate = useNavigate();
+  const cfg = getAssetConfig(assetType);
+  const isStorage = assetType === "storage";
+  const parkingQuery = useParkingSpaceListingsByType("needs-republish");
+  const storageQuery = useStorageSpaceListingsByType("needs-republish");
+  const { data: needsRepublishSpaces, isLoading, error } = isStorage ? storageQuery : parkingQuery;
+
+  const EmptyIcon = isStorage ? Archive : Car;
+  const typeLabel = isStorage ? "Förrådstyp" : "Bilplatstyp";
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[200px]">
         <Loader2 className="h-6 w-6 animate-spin mr-2" />
-        <span>Hämtar bilplatser som behöver publiceras...</span>
+        <span>Hämtar {cfg.nounPlural} som behöver publiceras...</span>
       </div>
     );
   }
@@ -25,13 +36,13 @@ export const NeedsRepublishTab = () => {
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+            <Input placeholder={`Sök ${cfg.noun}...`} className="pl-9 w-full sm:w-[300px]" />
           </div>
         </div>
         <div className="flex items-center justify-center h-[200px] text-muted-foreground border rounded-md">
           <div className="text-center">
-            <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-            <p>Inga bilplatser behöver publiceras</p>
+            <EmptyIcon className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
+            <p>Inga {cfg.nounPlural} behöver publiceras</p>
           </div>
         </div>
       </div>
@@ -40,11 +51,11 @@ export const NeedsRepublishTab = () => {
 
   const columns = [
     {
-      key: "address", label: "Bilplats", className: "w-[250px] whitespace-nowrap",
+      key: "address", label: cfg.capitalized, className: "w-[250px] whitespace-nowrap",
       render: (s: ParkingSpace) => (<div><div className="font-medium">{s.address}</div><div className="text-sm text-muted-foreground">{s.id}</div></div>),
     },
     { key: "area", label: "Område", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.area },
-    { key: "type", label: "Bilplatstyp", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.type },
+    { key: "type", label: typeLabel, className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.type },
     { key: "queueType", label: "Kötyp", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.queueType },
     { key: "rent", label: "Hyra", className: "whitespace-nowrap", render: (s: ParkingSpace) => <div className="font-medium">{s.rent}</div> },
     { key: "seekers", label: "Sökande", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => <div className="font-medium">{s.seekers}</div> },
@@ -52,7 +63,7 @@ export const NeedsRepublishTab = () => {
     { key: "publishedFrom", label: "Publicerad fr.o.m", className: "whitespace-nowrap", hideOnMobile: true, render: (s: ParkingSpace) => s.publishedFrom },
     {
       key: "actions", label: "", className: "text-right whitespace-nowrap", hideOnMobile: true,
-      render: (s: ParkingSpace) => <ParkingRowActions parkingSpace={s} tab="behovAvPublicering" />,
+      render: (s: ParkingSpace) => <ParkingRowActions parkingSpace={s} tab="behovAvPublicering" assetType={assetType} />,
     },
   ];
 
@@ -68,7 +79,7 @@ export const NeedsRepublishTab = () => {
         <span className="text-muted-foreground">Hyra:</span><span className="font-medium">{s.rent}</span>
         <span className="text-muted-foreground">Sökande:</span><span>{s.seekers}</span>
       </div>
-      <ParkingRowActions parkingSpace={s} tab="behovAvPublicering" variant="mobile" />
+      <ParkingRowActions parkingSpace={s} tab="behovAvPublicering" variant="mobile" assetType={assetType} />
     </div>
   );
 
@@ -77,7 +88,7 @@ export const NeedsRepublishTab = () => {
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Sök bilplats..." className="pl-9 w-full sm:w-[300px]" />
+          <Input placeholder={`Sök ${cfg.noun}...`} className="pl-9 w-full sm:w-[300px]" />
         </div>
       </div>
       <ResponsiveTable
@@ -86,7 +97,7 @@ export const NeedsRepublishTab = () => {
         keyExtractor={(s) => s.id}
         mobileCardRenderer={mobileCardRenderer}
         rowClassName="group"
-        onRowClick={(s) => navigate(`/rentals/parking/${s.id}`, { state: { from: "?tab=behovAvPublicering" } })}
+        onRowClick={(s) => navigate(cfg.detailRoute(s.id), { state: { from: "?tab=behovAvPublicering" } })}
       />
       <p className="text-sm text-muted-foreground">{needsRepublishSpaces.length} annonser</p>
     </div>
