@@ -124,7 +124,7 @@ const HousingDetailPage = () => {
     });
 
     if (wasFirstRound) {
-      navigate('/rentals?tab=bostad', {
+      navigate('/rentals/housing', {
         state: { activeHousingTab: 'erbjudna' }
       });
     }
