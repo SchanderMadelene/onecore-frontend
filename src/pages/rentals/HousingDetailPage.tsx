@@ -199,7 +199,8 @@ const HousingDetailPage = () => {
   const status = getHousingStatus(listing);
   const offerStatus =
     isHistoryMode ? "Historik" :
-    status === 'assigned' ? "Tilldelad" :
+    status === 'history' ? "Historik" :
+    status === 'contract' ? "Kontrakt" :
     status === 'published' ? "Publicerad" :
     status === 'ready_for_offer' ? "Klara för erbjudande" :
     status === 'offered' ? "Erbjudna" : "Publicerad";
