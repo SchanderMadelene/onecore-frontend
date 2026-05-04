@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import {
   Archive,
   Car,
-  ChevronRight,
+
   FileClock,
   FileText,
   Home,
@@ -56,7 +56,6 @@ const SectionCard = ({
   monthlyLoss,
   vacantCount,
   totalCount,
-  ctaLabel,
   kpis,
   onClick,
 }: SectionCardProps) => {
@@ -178,7 +177,6 @@ const RentalsOverview = () => {
             vacantCount={housingMetrics.vacantCount}
             totalCount={housingMetrics.totalCount}
             kpis={housingMetrics.kpis}
-            ctaLabel="Öppna bostad"
             onClick={() => navigate("/rentals/bostad")}
           />
           <SectionCard
@@ -189,7 +187,6 @@ const RentalsOverview = () => {
             vacantCount={parkingMetrics.vacantCount}
             totalCount={parkingMetrics.totalCount}
             kpis={parkingMetrics.kpis}
-            ctaLabel="Öppna bilplats"
             onClick={() => navigate("/rentals/bilplats")}
           />
           <SectionCard
@@ -200,7 +197,6 @@ const RentalsOverview = () => {
             vacantCount={storageMetrics.vacantCount}
             totalCount={storageMetrics.totalCount}
             kpis={storageMetrics.kpis}
-            ctaLabel="Öppna förråd"
             onClick={() => navigate("/rentals/forrad")}
           />
         </div>
