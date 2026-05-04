@@ -298,6 +298,7 @@ const HousingDetailPage = () => {
           onCancelSelection={handleCancelSelection}
           activeRoundsCount={activeRounds.length}
           latestRoundNumber={latestRound?.roundNumber}
+          sourceTabLabel={sourceTabLabel}
         />
 
         <div className="space-y-8">
