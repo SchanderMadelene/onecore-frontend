@@ -160,10 +160,10 @@ const RentalsOverview = () => {
     vacantCount: 0,
     totalCount: 0,
     kpis: [
-      { label: "Publicerade", value: "—", icon: <Megaphone className="h-4 w-4" /> },
-      { label: "Klara för erbjudande", value: "—", icon: <Users className="h-4 w-4" /> },
+      { label: "Publicera", value: "—", icon: <RotateCcw className="h-4 w-4" /> },
+      { label: "Publicerat nu", value: "—", icon: <Megaphone className="h-4 w-4" /> },
+      { label: "Erbjud", value: "—", icon: <Users className="h-4 w-4" /> },
       { label: "Erbjudna", value: "—", icon: <FileText className="h-4 w-4" /> },
-      { label: "Behov av publicering", value: "—", icon: <RotateCcw className="h-4 w-4" /> },
     ],
   };
 
