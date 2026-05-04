@@ -45,7 +45,6 @@ interface SectionCardProps {
   monthlyLoss: number;
   vacantCount: number;
   totalCount: number;
-  ctaLabel: string;
   kpis: KPIItem[];
   onClick: () => void;
 }
