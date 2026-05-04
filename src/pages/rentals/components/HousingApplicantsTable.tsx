@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { CompactProfileForm } from "@/features/rentals/components/residence-profile/CompactProfileForm";
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, ChevronRight, MoreHorizontal } from "lucide-react";
+import { ChevronDown, ChevronRight, MoreHorizontal, ExternalLink } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -323,7 +323,21 @@ export function HousingApplicantsTable({
                         }
                       </Button>
                       <div>
-                        <div className="font-medium">{applicant.name}</div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-medium">{applicant.name}</span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(`/tenants/detail/${applicant.nationalRegistrationNumber}`, "_blank");
+                            }}
+                            title="Öppna kundkort"
+                          >
+                            <ExternalLink className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
                         <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
                       </div>
                     </div>
