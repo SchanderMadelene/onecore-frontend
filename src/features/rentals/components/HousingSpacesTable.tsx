@@ -16,22 +16,14 @@ import { useHousingStatus } from "@/features/rentals/hooks/useHousingStatus";
 
 function HousingTabToolbar({
   placeholder,
-  onCreateHousingAd,
 }: {
   placeholder: string;
-  onCreateHousingAd: () => void;
 }) {
   return (
     <div className="flex flex-col sm:flex-row justify-between gap-4">
       <div className="relative">
         <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
         <Input placeholder={placeholder} className="pl-9 w-full sm:w-[300px]" />
-      </div>
-      <div className="flex gap-2">
-        <Button variant="outline" onClick={onCreateHousingAd}>
-          Ny bostadsannons
-        </Button>
-        <ApplicantProfileModal />
       </div>
     </div>
   );
