@@ -6,16 +6,14 @@ import { BuildingTypeBadge } from "@/features/property-areas/components/Building
 
 import { publishedHousingSpaces } from "../data/published-housing";
 import { getHousingObjectNumber } from "../utils/object-number";
+import { useHousingStatus } from "../hooks/useHousingStatus";
 
 export function ContractHousingTable() {
   const navigate = useNavigate();
+  const { filterHousingByStatus } = useHousingStatus();
 
-  // Annonser där publiceringsperioden har passerat (redo för kontraktsskrivning)
-  const today = new Date();
-  const contractHousings = publishedHousingSpaces.filter((h) => {
-    const publishedTo = new Date(h.publishedTo);
-    return publishedTo < today;
-  });
+  // Annonser där minst en rond är Accepted (lifecycle-status === 'contract')
+  const contractHousings = filterHousingByStatus(publishedHousingSpaces, 'contract');
 
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => (
