@@ -82,13 +82,11 @@ export function HousingHeader({
 
   return (
     <>
-      <div className="flex items-center gap-2 mb-4">
-        <Button variant="ghost" size="icon" onClick={onBack}>
-          <ArrowLeft className="h-4 w-4" />
+      <div className="mb-4">
+        <Button variant="ghost" size="sm" onClick={onBack} className="-ml-2 h-8 px-2 text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4 mr-1" />
+          Tillbaka{sourceTabLabel ? ` till ${sourceTabLabel}` : ""}
         </Button>
-        <h2 className="text-lg font-semibold text-muted-foreground">
-          Bostäder{sourceTabLabel ? ` · ${sourceTabLabel}` : ""}
-        </h2>
       </div>
 
       <div className="mb-6">
