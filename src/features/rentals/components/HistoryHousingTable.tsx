@@ -26,7 +26,7 @@ export function HistoryHousingTable() {
     { key: "contractedTo", label: "Tilldelad", render: (h: any) => h.contractedTo },
     { key: "contractStart", label: "Kontraktstart", render: (h: any) => new Date(h.contractStart).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "signedAt", label: "Tecknat", render: (h: any) => new Date(h.signedAt).toLocaleDateString('sv-SE'), hideOnMobile: true },
-    { key: "preferredMoveOutDate", label: "Önskad avflyttning", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
+    { key: "preferredMoveOutDate", label: "Ev. tillgänglig", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
     { key: "applicants", label: "Sökande", render: (h: any) => h.applicants, hideOnMobile: true },
     {
       key: "actions",
