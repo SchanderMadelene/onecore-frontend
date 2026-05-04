@@ -208,9 +208,9 @@ const HousingDetailPage = () => {
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="p-6">
         <Tabs value={activeHousingTab} onValueChange={handleTabChange} className="w-full mb-6">
-          <TabsList className="grid min-h-[44px]" style={{ gridTemplateColumns: `repeat(${housingTabs.length}, 1fr)` }}>
+          <TabsList className="grid h-11" style={{ gridTemplateColumns: `repeat(${housingTabs.length}, 1fr)` }}>
             {housingTabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value} className="min-h-[40px] px-2 text-xs sm:text-sm sm:px-3">
+              <TabsTrigger key={tab.value} value={tab.value} className="h-full px-2 text-xs sm:text-sm sm:px-3">
                 {tab.label}
               </TabsTrigger>
             ))}
