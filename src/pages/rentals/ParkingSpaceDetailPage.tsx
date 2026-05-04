@@ -31,10 +31,10 @@ const ParkingSpaceDetailPage = () => {
   const createOffer = useCreateOffer();
 
   const handleBack = () => {
-    // Försök att gå tillbaka till rätt flik baserat på state eller default till publicerade
+    // Återgå till rätt sektion (bilplats/förråd) i sidomenyn
     const searchParams = new URLSearchParams(location.state?.from || "");
-    const tab = searchParams.get("tab") || "publicerade";
-    navigate(`/rentals?tab=${tab}`);
+    const subtab = searchParams.get("tab") || "publicerade";
+    navigate(`/rentals/${assetType === "storage" ? "forrad" : "bilplats"}?subtab=${subtab}`);
   };
 
   const handleCreateOffer = () => {
@@ -65,9 +65,9 @@ const ParkingSpaceDetailPage = () => {
       <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
         <div className="p-6">
           <div className="text-center">
-            <p className="text-muted-foreground">Ogiltigt bilplats-ID</p>
+            <p className="text-muted-foreground">Ogiltigt {cfg.noun}-ID</p>
             <Button onClick={handleBack} className="mt-4">
-              Tillbaka till bilplatser
+              Tillbaka till {cfg.nounPlural}
             </Button>
           </div>
         </div>
@@ -88,7 +88,7 @@ const ParkingSpaceDetailPage = () => {
             onCreateOffer={() => {}}
             isCreatingOffer={false}
           />
-          <div className="text-center py-8">Laddar bilplatsdetaljer...</div>
+          <div className="text-center py-8">Laddar {cfg.noun}sdetaljer...</div>
         </div>
       </PageLayout>
     );
@@ -108,9 +108,9 @@ const ParkingSpaceDetailPage = () => {
             isCreatingOffer={false}
           />
           <div className="text-center py-8">
-            <p className="text-muted-foreground">Bilplatsen kunde inte hittas</p>
+            <p className="text-muted-foreground">{cfg.capitalized}en kunde inte hittas</p>
             <Button onClick={handleBack} className="mt-4">
-              Tillbaka till bilplatser
+              Tillbaka till {cfg.nounPlural}
             </Button>
           </div>
         </div>
@@ -178,11 +178,11 @@ const ParkingSpaceDetailPage = () => {
 
           <section>
             <Notes
-              entityType="parkingSpace"
+              entityType={assetType === "storage" ? "storageSpace" : "parkingSpace"}
               entityId={parkingSpaceId}
-              title="Noteringar för bilplats"
-              placeholder="Skriv en notering om denna bilplats..."
-              emptyMessage="Inga noteringar har lagts till för denna bilplats ännu."
+              title={`Noteringar för ${cfg.noun}`}
+              placeholder={`Skriv en notering om detta ${cfg.noun}...`}
+              emptyMessage={`Inga noteringar har lagts till för detta ${cfg.noun} ännu.`}
               categories={["Underhåll", "Klagomål", "Allmänt", "Uthyrning"]}
               showCategory={true}
             />
