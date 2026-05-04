@@ -84,7 +84,7 @@ const HousingDetailPage = () => {
 
   const handleBack = () => {
     const activeHousingTab = location.state?.activeHousingTab || "publicerade";
-    navigate('/rentals?tab=bostad', {
+    navigate('/rentals/housing', {
       state: { activeHousingTab }
     });
   };
