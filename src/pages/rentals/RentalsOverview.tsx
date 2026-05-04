@@ -92,13 +92,6 @@ const SectionCard = ({
           </div>
         ))}
       </div>
-
-      <div className="flex justify-end px-6 py-5">
-        <div className="inline-flex items-center gap-2 text-2xl font-medium tracking-tight text-foreground">
-          <span>{ctaLabel}</span>
-          <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-        </div>
-      </div>
     </Card>
   );
 };
