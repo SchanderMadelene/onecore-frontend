@@ -65,7 +65,6 @@ export function HousingSpacesTable() {
     publicerade: filterHousingByStatus(publishedHousingSpaces, "published").length,
     klaraForErbjudande: filterHousingByStatus(publishedHousingSpaces, "ready_for_offer").length,
     erbjudna: filterHousingByStatus(publishedHousingSpaces, "offered").length,
-    kontrakt: filterHousingByStatus(publishedHousingSpaces, "contract").length,
   };
 
   const tabs = [
