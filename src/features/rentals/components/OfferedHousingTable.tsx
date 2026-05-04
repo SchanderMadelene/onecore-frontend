@@ -10,51 +10,92 @@ import { BuildingTypeBadge } from "@/features/property-areas/components/Building
 import { HousingRowActions } from "./HousingRowActions";
 import { getHousingObjectNumber } from "../utils/object-number";
 
+interface OfferAggregate {
+  selected: number;
+  accepted: number;
+  declined: number;
+  pending: number;
+  hasAwarded: boolean;
+  earliestSent?: string;
+}
+
 export function OfferedHousingTable() {
   const navigate = useNavigate();
-  const { offers } = useHousingOffers();
+  const { getRoundsForListing } = useHousingOffers();
   const { filterHousingByStatus } = useHousingStatus();
 
   const offeredHousings = filterHousingByStatus(publishedHousingSpaces, 'offered');
 
+  const aggregateFor = (listingId: string): OfferAggregate => {
+    const rounds = getRoundsForListing(listingId);
+    let selected = 0;
+    let accepted = 0;
+    let declined = 0;
+    let earliestSent: string | undefined;
+    let hasAwarded = false;
+
+    for (const r of rounds) {
+      if (r.status === 'Awarded') hasAwarded = true;
+      // Räkna bara levande/relevanta rondar för "väntar"
+      if (r.status === 'Active') {
+        selected += r.selectedApplicants.length;
+      }
+      // Räkna alla svar (även från döda rondar för historik-visning)
+      for (const resp of r.responses) {
+        if (resp.response === 'accepted') accepted++;
+        else if (resp.response === 'declined') declined++;
+      }
+      if (!earliestSent || r.sentAt < earliestSent) earliestSent = r.sentAt;
+    }
+
+    const pending = Math.max(0, selected - accepted - declined);
+    return { selected, accepted, declined, pending, hasAwarded, earliestSent };
+  };
+
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => (
-      <div>
-        <div className="font-medium">{h.address}</div>
-        <div className="text-sm text-muted-foreground">{getHousingObjectNumber(h.id)}</div>
+      <div className="flex items-center gap-2 flex-wrap">
+        <div>
+          <div className="font-medium">{h.address}</div>
+          <div className="text-sm text-muted-foreground">{getHousingObjectNumber(h.id)}</div>
+        </div>
+        {(() => {
+          const agg = aggregateFor(h.id);
+          if (agg.accepted > 0 && !agg.hasAwarded) {
+            return <Badge variant="success">Klar för tilldelning</Badge>;
+          }
+          return null;
+        })()}
       </div>
     ) },
     { key: "area", label: "Område", render: (h: any) => h.area, hideOnMobile: true },
     { key: "district", label: "Distrikt", render: (h: any) => getDistrictByArea(h.area), hideOnMobile: true },
     { key: "rentalType", label: "Hyresobjektstyp", render: (h: any) => <BuildingTypeBadge type={getRentalObjectType(h.id)} />, hideOnMobile: true },
     { key: "rooms", label: "Rum", render: (h: any) => h.rooms, hideOnMobile: true },
-    { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
-    {
-      key: "offered",
-      label: "Erbjudna",
-      render: (h: any) => {
-        const offer = offers.find(o => o.listingId === h.id);
-        return `${offer?.selectedApplicants.length || 0} st`;
-      }
-    },
     {
       key: "accepted",
       label: "Tackat ja",
-      render: (h: any) => {
-        const offer = offers.find(o => o.listingId === h.id);
-        const total = offer?.selectedApplicants.length || 0;
-        const seed = h.id.split("").reduce((a: number, c: string) => a + c.charCodeAt(0), 0);
-        const accepted = total === 0 ? 0 : seed % (total + 1);
-        return `${accepted} st`;
-      }
+      render: (h: any) => `${aggregateFor(h.id).accepted} st`,
+    },
+    {
+      key: "declined",
+      label: "Tackat nej",
+      render: (h: any) => `${aggregateFor(h.id).declined} st`,
+      hideOnMobile: true,
+    },
+    {
+      key: "pending",
+      label: "Väntar",
+      render: (h: any) => `${aggregateFor(h.id).pending} st`,
+      hideOnMobile: true,
     },
     {
       key: "sentAt",
       label: "Skickat",
       render: (h: any) => {
-        const offer = offers.find(o => o.listingId === h.id);
-        return offer?.sentAt ? new Date(offer.sentAt).toLocaleDateString('sv-SE') : '-';
+        const sent = aggregateFor(h.id).earliestSent;
+        return sent ? new Date(sent).toLocaleDateString('sv-SE') : '-';
       },
       hideOnMobile: true
     },
@@ -69,15 +110,21 @@ export function OfferedHousingTable() {
   ];
 
   const mobileCardRenderer = (housing: any) => {
-    const offer = offers.find(o => o.listingId === housing.id);
+    const agg = aggregateFor(housing.id);
     return (
       <div>
         <div className="font-medium">{housing.address}</div>
         <div className="text-sm text-muted-foreground">{getHousingObjectNumber(housing.id)}</div>
         <div className="text-sm text-muted-foreground">{housing.area}</div>
-        <div className="flex items-center gap-2 mt-2">
-          <Badge variant="warning">Väntar</Badge>
-          <span className="text-sm text-muted-foreground">{offer?.selectedApplicants.length || 0} erbjudna</span>
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          {agg.accepted > 0 && !agg.hasAwarded ? (
+            <Badge variant="success">Klar för tilldelning</Badge>
+          ) : (
+            <Badge variant="warning">Väntar svar</Badge>
+          )}
+          <span className="text-sm text-muted-foreground">
+            {agg.accepted} ja · {agg.declined} nej · {agg.pending} väntar
+          </span>
         </div>
         <HousingRowActions housing={housing} tab="erbjudna" variant="mobile" />
       </div>

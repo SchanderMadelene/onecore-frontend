@@ -1,88 +1,156 @@
 
-# Steg 1 — En enda källa för status (A)
+# Steg 2 — Tilldelningsflöde, svar och historik-overlay
 
-Mål: göra `useHousingStatus` till **den enda** routern för vilken flik en bostadsannons hamnar på. Inga egna filter i tabellerna. Detta löser problemen "samma annons på flera flikar" och "kontrakt-fliken är en egen ö" — utan att röra rondlogik, tilldelning eller historik-overlays (det blir steg 2 & 3).
+Bygger den datalogik som krävs för att en bostadsannons ska kunna ta sig genom hela kedjan **Erbjudna → Kontrakt → Historik** baserat på faktiska händelser, inte slumpsimulering. Knappar och UI för admin-actions byggs i steg 3.
 
-## Ny lifecycle-status
+## Domänmodell (förtydligad)
+
+Tre distinkta händelser:
+
+1. **Svar från Mina sidor** — sökande tackar ja eller nej. Påverkar inte rondens status. Flera kan tacka ja.
+2. **Tilldelning** — admin väljer **en** av dem som tackat ja (efter telefonkontakt). Detta flyttar annonsen till "Kontrakt".
+3. **Kontraktskoppling** — admin kopplar kontraktet på Kontrakt-fliken. Samma handling = annonsen flyttas till "Historik". (Enligt beslut: koppla = signera = flytta.)
+
+Konsekvenser av tilldelning: övriga aktiva parallella rondar för samma annons stängs (`Cancelled`).
+
+## Datamodell
+
+`HousingOfferRound` utökas:
 
 ```text
-HousingLifecycleStatus =
-  | 'unpublished'        // Behov av publicering (UnpublishedHousingSpace)
-  | 'published'          // publishedTo > idag, inga rondar, inte early-unpublished
-  | 'ready_for_offer'    // early-unpublished ELLER publishedTo passerat,
-                         //   OCH inga rondar
-  | 'offered'            // minst en rond finns OCH ingen är Accepted
-  | 'contract'           // någon rond är Accepted, ej signerad/historik
-  | 'history'            // listing.history finns (mock) — signering kommer i steg 2
+HousingOfferRound {
+  id, roundNumber, sentAt, expiresAt
+  selectedApplicants: number[]
+  responses: [{ applicantId, response: 'accepted'|'declined', respondedAt, source }]
+  awardedApplicantId?: number
+  awardedAt?: string
+  status: 'Active' | 'AllDeclined' | 'Expired' | 'Cancelled' | 'Awarded'
+}
 ```
 
-> Notera: `'assigned'` slås ihop med `'contract'` i steg 1 — vi behöver inte särskilja kopplat/icke-kopplat kontrakt på fliknivå (det är fortfarande "Kontrakt"-fliken). `linkContract` påverkar inte fliktillhörighet.
+På listing-nivå (overlay i contexten):
+```text
+contractsByListing: Record<listingId, { applicantId, contractedTo, signedAt }>
+```
 
-## Beteende per flik (efter steg 1)
+## Lifecycle-status (uppdaterad i useHousingStatus)
 
-| Flik | Källa | Filter |
-|---|---|---|
-| Behov av publicering | `unpublishedHousingSpaces` | (oförändrat) |
-| Publicerade | `publishedHousingSpaces` | status === `'published'` |
-| Klara för erbjudande | `publishedHousingSpaces` | status === `'ready_for_offer'` |
-| Erbjudna | `publishedHousingSpaces` | status === `'offered'` |
-| Kontrakt | `publishedHousingSpaces` | status === `'contract'` |
-| Historik | `historyHousingSpaces` (oförändrad mock) | (oförändrat — sammanfogning med riktig signering kommer i steg 2) |
+```text
+'history'         → contractsByListing[id] finns ELLER listing.history (mock)
+'contract'        → någon rond är 'Awarded' OCH inget signerat kontrakt
+'offered'         → minst en levande rond (Active eller med svar) OCH ingen Awarded
+'ready_for_offer' → alla rondar är Cancelled/Expired/AllDeclined
+                    ELLER (publishedTo passerat OCH inga rondar)
+                    ELLER early-unpublished
+'published'       → publishedTo > idag, inga rondar, inte early-unpublished
+```
 
-Eftersom ingen rond i mockdatan har status `Accepted` idag kommer "Kontrakt"-fliken att vara **tom** efter steg 1 — det är korrekt, för i steg 2 lägger vi till `acceptOffer` som markerar rondar Accepted, vilket flyttar in listings i den fliken.
+Disjunkt — varje annons hamnar på exakt en flik.
+
+## Nya context-metoder
+
+```ts
+recordResponse(listingId, applicantId, response: 'accepted'|'declined', source: 'mina_sidor'|'admin'): void
+awardOffer(listingId, roundId, applicantId): void
+unawardOffer(listingId, roundId): void
+signContract(listingId, applicantId, contractedTo): void   // ersätter linkContract
+unsignContract(listingId): void                            // ersätter unlinkContract
+```
+
+**`recordResponse`**
+- Hittar den aktiva ronden där applicantId ingår.
+- Appendar response. Om samma applicant redan svarat: ersätt (admin kan ha registrerat fel).
+- Om alla i `selectedApplicants` har nekat → rond-status `AllDeclined`.
+
+**`awardOffer`**
+- Sätter `awardedApplicantId` + `awardedAt` på ronden, status → `Awarded`.
+- Stänger övriga aktiva rondar för listingen → `Cancelled`.
+
+**`unawardOffer`**
+- Rensar `awardedApplicantId/awardedAt`, status → tillbaka till `Active`.
+- Övriga rondar förblir `Cancelled` (admin får starta nya manuellt).
+
+**`signContract` / `unsignContract`**
+- Sätter/rensar entry i `contractsByListing`.
+- Bakåtkompatibel: `linkContract`/`unlinkContract`/`getLinkedContract` blir alias som mappar mot detta. (Befintliga anrop på Kontrakt-fliken fortsätter fungera men flyttar nu annonsen till Historik som en sidoeffekt — vilket är önskat enligt din spec.)
+
+## Derivering av `Expired`
+
+Read-time utility i contexten:
+
+```ts
+getDerivedRoundStatus(round): HousingRoundStatus
+  if status !== 'Active' → return status
+  if expiresAt <= now → 'Expired'
+  else → 'Active'
+```
+
+Anropas av `getRoundsForListing`, `getActiveRounds` och i `useHousingStatus`. Ingen state-mutation — en rond som "går ut" syns korrekt vid nästa render utan timer.
+
+## Fall-back när alla rondar är döda (F)
+
+Hanteras direkt av lifecycle-reglerna ovan: om inga rondar har derived status `Active` eller `Awarded` → annonsen faller tillbaka till `'ready_for_offer'`. Handläggaren kan då starta en ny omgång.
+
+## Mock-data
+
+För att flikarna ska visa rimligt innehåll direkt:
+
+| Listing | Scenario |
+|---|---|
+| 1011 | Omgång 1 aktiv, 2 sökande har tackat ja, ingen tilldelad. → "Erbjudna" + "Klar för tilldelning"-badge |
+| 1013 | Omgång 1 AllDeclined, omgång 2 aktiv, 1 har tackat ja. → "Erbjudna" |
+| 1015 | Omgång 1 aktiv, en sökande tilldelad (Awarded). → "Kontrakt" |
+| (ny) | Listing med signerat kontrakt → "Historik" (visas via overlay i steg 5) |
+
+## OfferedHousingTable — riktiga räkningar (E)
+
+Tre nya kolumner/aggregat (sammanslaget över alla rondar för listingen):
+
+- **Tackat ja**: antal `accepted`-responses
+- **Tackat nej**: antal `declined`-responses  
+- **Väntar**: `selectedApplicants.length − svarat`
+
+Plus visuellt: `Badge variant="success"` "Klar för tilldelning" på rader där minst en har tackat ja men ingen är tilldelad. Det är signalen för admin att ringa.
 
 ## Filer som ändras
 
 ```text
+src/shared/contexts/HousingOffersContext.tsx
+  + recordResponse / awardOffer / unawardOffer
+  + signContract / unsignContract (linkContract som alias)
+  + getDerivedRoundStatus (intern utility, även exporterad)
+  + contractsByListing-overlay
+  ~ HousingOfferRound utökas: awardedApplicantId, awardedAt, 'Awarded'-status
+  ~ getRoundsForListing/getActiveRounds använder derived status
+  ~ MOCK_ROUNDS_BY_LISTING uppdateras enligt tabellen ovan
+
 src/features/rentals/hooks/useHousingStatus.ts
-  - Byter HousingStatus till HousingLifecycleStatus enligt ovan
-  - Tar bort 'assigned' (slås ihop med 'contract')
-  - 'offered' kräver minst en rond (rounds.length > 0), inget Accepted
-  - 'contract' = någon rond Accepted (förbereder steg 2; kommer initialt vara false)
-  - 'history' = !!listing.history
-  - Behåller filterHousingByStatus-API:t (samma signatur)
-
-src/features/rentals/components/PublishedHousingTable.tsx
-  - Oförändrad (använder redan filterHousingByStatus('published'))
-
-src/features/rentals/components/ReadyForOfferHousingTable.tsx
-  - Oförändrad (använder redan filterHousingByStatus('ready_for_offer'))
+  ~ Ny lifecycle: history > contract > offered > ready_for_offer > published
+  ~ Använder getDerivedRoundStatus
+  ~ contract = någon Awarded utan signerat kontrakt
+  ~ history = signerat kontrakt eller listing.history
 
 src/features/rentals/components/OfferedHousingTable.tsx
-  - Oförändrad logik, men nu garanterat disjunkt mot 'contract'
-
-src/features/rentals/components/ContractHousingTable.tsx
-  - TAR BORT egen filter (publishedTo < today)
-  - Använder filterHousingByStatus('contract')
-
-src/features/rentals/components/HistoryHousingTable.tsx
-  - Oförändrad i steg 1 (egen mock-källa behålls)
-
-src/pages/rentals/utils/housingOfferUtils.ts
-  - getListingOfferStatus uppdateras till att returnera samma terminologi
-    ('no_offers' | 'offering' | 'assigned' kvar tills vidare; mappas internt)
+  ~ Tackat ja/nej/väntar från riktiga responses
+  ~ "Klar för tilldelning"-badge när hasAccepted && !hasAwarded
 ```
 
-## Påverkan på detaljsidan
+## Verifiering efter steg 2
 
-`HousingDetailPage` läser status via `getHousingStatus(listing)` redan idag. Den enda förändringen i steg 1 är att `'assigned'`-grenen i mappningen till `offerStatus`-badge kan tas bort eller mappas till "Kontrakt". `kontrakt`/`historik`-läge styrs fortfarande av `location.state.activeHousingTab` — den routing-städningen kommer i steg 3 (D).
+- `1011` ligger i "Erbjudna" med "Klar för tilldelning"-badge och "2 av X tackat ja".
+- `1013` ligger i "Erbjudna" (omgång 2 aktiv, 1 har tackat ja).
+- `1015` ligger i "Kontrakt" tack vare Awarded.
+- "Klara för erbjudande" innehåller annonser från steg 1 + ev. en där alla rondar är döda.
+- Kontrakt-flikens befintliga `getLinkedContract`-läsning fortsätter fungera (bakåtkompatibel).
+- Inga UI-knappar för admin-actions ännu (det är steg 3).
 
-## Verifiering
+## Vad som INTE byggs i steg 2
 
-- "Publicerade" innehåller bara annonser där `publishedTo > idag` OCH inga rondar OCH inte early-unpublished.
-- "Klara för erbjudande" innehåller annonser med passerat datum eller early-unpublished, **utan** rondar.
-- "Erbjudna" innehåller annonser med minst en rond, oavsett publishedTo.
-- "Kontrakt" är tom efter steg 1 (förväntat).
-- Inga annonser dyker upp i två flikar samtidigt.
-- Befintliga rondar i mockdatan (`1011`, `1013`, `1015`) hamnar fortfarande under "Erbjudna".
+- Knappar för "Registrera ja/nej" (Mina sidor-mock från admin-vy) → steg 3.
+- Knapp för "Tilldela kontrakt" på rondens sökanderad → steg 3.
+- Kontrakt-flikens action-kolumn och rad-actions (`HousingActionTab "kontrakt"`) → steg 3.
+- Detaljsidans "kontrakt"-läge med riktiga responses (slumplogiken `id % 5` lever kvar tills steg 3) → steg 3.
+- Sammanslagning av `historyHousingSpaces` med signerade overlays i `HistoryHousingTable` → steg 5.
+- Detaljsidans vy-routing via lifecycle-status → steg 4.
 
-## Out of scope för detta steg
-
-- `acceptOffer` / `declineOffer` / `signContract` — kommer i steg 2.
-- Derivering av rond-status från `expiresAt` / responses — steg 2.
-- Faktiska "tackat ja"-räkningar i `OfferedHousingTable` — steg 2 (E).
-- Ny tab i `HousingActionTab` (`"kontrakt"`) — steg 2 (C).
-- Detaljsidans vy-routing via status — steg 3 (D).
-- Historik-overlay — steg 2.
-
-Säg till om något i scope-avgränsningen ska justeras.
+Säg till om något ska justeras innan jag implementerar.
