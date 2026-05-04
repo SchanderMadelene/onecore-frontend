@@ -27,6 +27,8 @@ interface HousingHeaderProps {
   activeRoundsCount?: number;
   /** Senaste rondnummer (för chip när bara en omgång är aktiv) */
   latestRoundNumber?: number;
+  /** Etikett för tabben man kom från (visas i breadcrumb) */
+  sourceTabLabel?: string;
 }
 
 const STATUS_TO_TAB: Record<string, HousingActionTab> = {
