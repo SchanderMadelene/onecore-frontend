@@ -82,9 +82,8 @@ const SectionCard = ({
       <div className="grid grid-cols-1 divide-y sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
         {kpis.map((kpi) => (
           <div key={kpi.label} className="px-6 py-5">
-            <div className="mb-3 flex items-center gap-2 text-muted-foreground">
-              <span className="shrink-0">{kpi.icon}</span>
-              <span className="text-lg">{kpi.label}</span>
+            <div className="mb-3 text-lg text-muted-foreground">
+              {kpi.label}
             </div>
             <div className="text-3xl font-semibold leading-none tabular-nums">{kpi.value}</div>
           </div>
