@@ -128,10 +128,10 @@ const RentalsOverview = () => {
         offeredHousing.length +
         unpublishedHousingSpaces.length,
       kpis: [
-        { label: "Publicerade", value: publishedHousing.length, icon: <Megaphone className="h-4 w-4" /> },
-        { label: "Klara för erbjudande", value: readyForOfferHousing.length, icon: <Users className="h-4 w-4" /> },
-        { label: "Behov av publicering", value: unpublishedHousingSpaces.length, icon: <RotateCcw className="h-4 w-4" /> },
-        { label: "Historik", value: offeredHousing.length, icon: <FileClock className="h-4 w-4" /> },
+        { label: "Publicera", value: unpublishedHousingSpaces.length, icon: <RotateCcw className="h-4 w-4" /> },
+        { label: "Publicerat nu", value: publishedHousing.length, icon: <Megaphone className="h-4 w-4" /> },
+        { label: "Erbjud visning", value: readyForOfferHousing.length, icon: <Users className="h-4 w-4" /> },
+        { label: "Visning", value: offeredHousing.length, icon: <FileText className="h-4 w-4" /> },
       ],
     };
   }, [publishedHousing, readyForOfferHousing, offeredHousing]);
@@ -147,10 +147,10 @@ const RentalsOverview = () => {
         offeredParking.length +
         needsRepublishParking.length,
       kpis: [
-        { label: "Publicerade", value: publishedParking.length, icon: <Megaphone className="h-4 w-4" /> },
-        { label: "Klara för erbjudande", value: readyForOfferParking.length, icon: <Users className="h-4 w-4" /> },
+        { label: "Publicera", value: needsRepublishParking.length, icon: <RotateCcw className="h-4 w-4" /> },
+        { label: "Publicerat nu", value: publishedParking.length, icon: <Megaphone className="h-4 w-4" /> },
+        { label: "Erbjud", value: readyForOfferParking.length, icon: <Users className="h-4 w-4" /> },
         { label: "Erbjudna", value: offeredParking.length, icon: <FileText className="h-4 w-4" /> },
-        { label: "Behov av publicering", value: needsRepublishParking.length, icon: <RotateCcw className="h-4 w-4" /> },
       ],
     };
   }, [publishedParking, readyForOfferParking, offeredParking, needsRepublishParking]);
@@ -160,10 +160,10 @@ const RentalsOverview = () => {
     vacantCount: 0,
     totalCount: 0,
     kpis: [
-      { label: "Publicerade", value: "—", icon: <Megaphone className="h-4 w-4" /> },
-      { label: "Klara för erbjudande", value: "—", icon: <Users className="h-4 w-4" /> },
+      { label: "Publicera", value: "—", icon: <RotateCcw className="h-4 w-4" /> },
+      { label: "Publicerat nu", value: "—", icon: <Megaphone className="h-4 w-4" /> },
+      { label: "Erbjud", value: "—", icon: <Users className="h-4 w-4" /> },
       { label: "Erbjudna", value: "—", icon: <FileText className="h-4 w-4" /> },
-      { label: "Behov av publicering", value: "—", icon: <RotateCcw className="h-4 w-4" /> },
     ],
   };
 
