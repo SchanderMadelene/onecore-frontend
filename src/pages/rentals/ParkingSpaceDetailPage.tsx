@@ -4,6 +4,8 @@ import { PageLayout } from "@/layouts";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParkingSpaceListing, useCreateOffer } from "@/features/rentals";
+import { useStorageSpaceListing } from "@/features/rentals/hooks/useStorageSpaceListing";
+import { getAssetConfig, type AssetType } from "@/features/rentals/utils/asset-config";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Notes } from "@/components/common";
@@ -18,8 +20,14 @@ const ParkingSpaceDetailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  
-  const { data: listing, isLoading } = useParkingSpaceListing(parseInt(parkingSpaceId || "0"));
+
+  // Avgör assetType från URL-segmentet (/rentals/parking eller /rentals/storage)
+  const assetType: AssetType = location.pathname.includes("/rentals/storage/") ? "storage" : "parking";
+  const cfg = getAssetConfig(assetType);
+
+  const parkingQuery = useParkingSpaceListing(parseInt(parkingSpaceId || "0"));
+  const storageQuery = useStorageSpaceListing(parseInt(parkingSpaceId || "0"));
+  const { data: listing, isLoading } = assetType === "storage" ? storageQuery : parkingQuery;
   const createOffer = useCreateOffer();
 
   const handleBack = () => {
