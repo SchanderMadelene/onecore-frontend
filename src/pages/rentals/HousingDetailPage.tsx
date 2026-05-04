@@ -207,6 +207,16 @@ const HousingDetailPage = () => {
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
       <div className="p-6">
+        <Tabs value={activeHousingTab} onValueChange={handleTabChange} className="w-full mb-6">
+          <TabsList className="grid min-h-[44px]" style={{ gridTemplateColumns: `repeat(${housingTabs.length}, 1fr)` }}>
+            {housingTabs.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value} className="min-h-[40px] px-2 text-xs sm:text-sm sm:px-3">
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+
         <HousingHeader 
           housingAddress={listing.address}
           offerStatus={offerStatus}
@@ -218,6 +228,7 @@ const HousingDetailPage = () => {
           isCreatingOffer={false}
           readOnly={isHistoryMode}
         />
+
 
         <div className="space-y-8">
           <section>
