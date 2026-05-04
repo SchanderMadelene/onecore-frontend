@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import {
   Archive,
   Car,
-  ChevronRight,
+
   FileClock,
   FileText,
   Home,
@@ -45,7 +45,6 @@ interface SectionCardProps {
   monthlyLoss: number;
   vacantCount: number;
   totalCount: number;
-  ctaLabel: string;
   kpis: KPIItem[];
   onClick: () => void;
 }
@@ -57,7 +56,6 @@ const SectionCard = ({
   monthlyLoss,
   vacantCount,
   totalCount,
-  ctaLabel,
   kpis,
   onClick,
 }: SectionCardProps) => {
@@ -91,13 +89,6 @@ const SectionCard = ({
             <div className="text-3xl font-semibold leading-none tabular-nums">{kpi.value}</div>
           </div>
         ))}
-      </div>
-
-      <div className="flex justify-end px-6 py-5">
-        <div className="inline-flex items-center gap-2 text-2xl font-medium tracking-tight text-foreground">
-          <span>{ctaLabel}</span>
-          <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-        </div>
       </div>
     </Card>
   );
@@ -186,7 +177,6 @@ const RentalsOverview = () => {
             vacantCount={housingMetrics.vacantCount}
             totalCount={housingMetrics.totalCount}
             kpis={housingMetrics.kpis}
-            ctaLabel="Öppna bostad"
             onClick={() => navigate("/rentals/bostad")}
           />
           <SectionCard
@@ -197,7 +187,6 @@ const RentalsOverview = () => {
             vacantCount={parkingMetrics.vacantCount}
             totalCount={parkingMetrics.totalCount}
             kpis={parkingMetrics.kpis}
-            ctaLabel="Öppna bilplats"
             onClick={() => navigate("/rentals/bilplats")}
           />
           <SectionCard
@@ -208,7 +197,6 @@ const RentalsOverview = () => {
             vacantCount={storageMetrics.vacantCount}
             totalCount={storageMetrics.totalCount}
             kpis={storageMetrics.kpis}
-            ctaLabel="Öppna förråd"
             onClick={() => navigate("/rentals/forrad")}
           />
         </div>
