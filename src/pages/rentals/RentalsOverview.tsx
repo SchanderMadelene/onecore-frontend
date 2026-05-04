@@ -63,7 +63,7 @@ const SectionCard = ({
   return (
     <Card
       onClick={onClick}
-      className="group cursor-pointer overflow-hidden border-border bg-background transition-all hover:border-foreground/10 hover:shadow-md"
+      className="group cursor-pointer overflow-hidden border-border bg-background"
     >
       <div className="border-b px-6 py-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
