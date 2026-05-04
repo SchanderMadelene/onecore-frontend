@@ -83,7 +83,7 @@ const HousingDetailPage = () => {
       description: `Erbjudanden har skickats till ${selectedApplicants.length} valda sökande`
     });
 
-    navigate('/rentals?tab=bostad', {
+    navigate('/rentals/bostad', {
       state: { activeHousingTab: 'erbjudna' }
     });
   };
