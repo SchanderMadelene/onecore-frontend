@@ -27,6 +27,8 @@ interface HousingHeaderProps {
   activeRoundsCount?: number;
   /** Senaste rondnummer (för chip när bara en omgång är aktiv) */
   latestRoundNumber?: number;
+  /** Etikett för tabben man kom från (visas i breadcrumb) */
+  sourceTabLabel?: string;
 }
 
 const STATUS_TO_TAB: Record<string, HousingActionTab> = {
@@ -53,6 +55,7 @@ export function HousingHeader({
   onCancelSelection,
   activeRoundsCount = 0,
   latestRoundNumber,
+  sourceTabLabel,
 }: HousingHeaderProps) {
   const tab = STATUS_TO_TAB[offerStatus] ?? "publicerade";
 
@@ -83,7 +86,9 @@ export function HousingHeader({
         <Button variant="ghost" size="icon" onClick={onBack}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h2 className="text-lg font-semibold text-muted-foreground">Bostäder</h2>
+        <h2 className="text-lg font-semibold text-muted-foreground">
+          Bostäder{sourceTabLabel ? ` · ${sourceTabLabel}` : ""}
+        </h2>
       </div>
 
       <div className="mb-6">

@@ -208,6 +208,17 @@ const HousingDetailPage = () => {
   // Kontrakt-läge: top 10 efter köpoäng spegling (oförändrat)
   const isContractMode = location.state?.activeHousingTab === 'kontrakt';
 
+  const TAB_LABELS: Record<string, string> = {
+    behovAvPublicering: "Publicera",
+    publicerade: "Publicerat nu",
+    klaraForErbjudande: "Erbjud visning",
+    erbjudna: "Visning",
+    kontrakt: "Erbjud kontrakt",
+    historik: "Historik",
+  };
+  const activeHousingTab = location.state?.activeHousingTab as string | undefined;
+  const sourceTabLabel = activeHousingTab ? TAB_LABELS[activeHousingTab] : undefined;
+
   const top10Ids = new Set(
     listing.applicants
       .slice()
@@ -287,6 +298,7 @@ const HousingDetailPage = () => {
           onCancelSelection={handleCancelSelection}
           activeRoundsCount={activeRounds.length}
           latestRoundNumber={latestRound?.roundNumber}
+          sourceTabLabel={sourceTabLabel}
         />
 
         <div className="space-y-8">
