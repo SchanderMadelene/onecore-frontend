@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, PlusCircle } from "lucide-react";
 import { HousingRowActions, type HousingActionTab } from "@/features/rentals/components/HousingRowActions";
+import { PreviewHousingAdDialog } from "@/features/rentals/components/PreviewHousingAdDialog";
 import type { HousingSpace } from "@/features/rentals/components/types/housing";
+import type { UnpublishedHousingSpace } from "@/features/rentals/components/types/unpublished-housing";
 
 interface HousingHeaderProps {
   housingAddress: string;
