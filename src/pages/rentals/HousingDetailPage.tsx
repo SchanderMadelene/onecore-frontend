@@ -46,6 +46,21 @@ const HousingDetailPage = () => {
 
   const { data: listing, isLoading } = useHousingListing(housingId || "");
 
+  const roundsForHooks = housingId ? getRoundsForListing(housingId) : [];
+  const activeRoundsForHooks = roundsForHooks.filter(r => r.status === 'Active');
+
+  const declinedInPreviousRoundIds = useMemo(() => {
+    const set = new Set<number>();
+    roundsForHooks.forEach(r => r.responses.forEach(resp => { if (resp.response === 'declined') set.add(resp.applicantId); }));
+    return Array.from(set);
+  }, [roundsForHooks]);
+
+  const activeRoundApplicantIds = useMemo(() => {
+    const set = new Set<number>();
+    activeRoundsForHooks.forEach(r => r.selectedApplicants.forEach(id => set.add(id)));
+    return Array.from(set);
+  }, [activeRoundsForHooks]);
+
   const bulkRecipients = useMemo(() => {
     if (!listing) return [];
     return listing.applicants
