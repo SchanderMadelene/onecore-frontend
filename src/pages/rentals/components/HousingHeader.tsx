@@ -39,6 +39,7 @@ export function HousingHeader({
 }: HousingHeaderProps) {
   const tab = STATUS_TO_TAB[offerStatus] ?? "publicerade";
   const showSendOffer = !readOnly && tab === "klaraForErbjudande" && !hasOffers;
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   return (
     <>
@@ -51,9 +52,21 @@ export function HousingHeader({
 
       <div className="mb-6">
         <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-bold tracking-tight">{housingAddress}</h1>
-            <Badge variant="info">{offerStatus}</Badge>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-3xl font-bold tracking-tight">{housingAddress}</h1>
+              <Badge variant="info">{offerStatus}</Badge>
+            </div>
+            {housing && (
+              <Button
+                variant="link"
+                size="sm"
+                className="px-0 h-auto mt-1"
+                onClick={() => setPreviewOpen(true)}
+              >
+                Förhandsgranska annons
+              </Button>
+            )}
           </div>
           {!readOnly && (
             <div className="flex items-center gap-2">
@@ -79,6 +92,15 @@ export function HousingHeader({
           )}
         </div>
       </div>
+
+      {housing && (
+        <PreviewHousingAdDialog
+          open={previewOpen}
+          onOpenChange={setPreviewOpen}
+          housingSpace={housing as unknown as UnpublishedHousingSpace}
+          formValues={{}}
+        />
+      )}
     </>
   );
 }
