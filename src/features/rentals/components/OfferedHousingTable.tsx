@@ -30,6 +30,7 @@ export function OfferedHousingTable() {
     { key: "rooms", label: "Rum", render: (h: any) => h.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
+    { key: "publishedFrom", label: "Publicerad från", render: (h: any) => h.publishedFrom ? new Date(h.publishedFrom).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
     {
       key: "offered",
       label: "Erbjudna",
