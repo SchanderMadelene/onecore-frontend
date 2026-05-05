@@ -23,6 +23,7 @@ export function HistoryHousingTable() {
     { key: "rooms", label: "Rum", render: (h: any) => h.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
+    { key: "publishedFrom", label: "Publicerad från", render: (h: any) => (h as any).publishedFrom ? new Date((h as any).publishedFrom).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
     { key: "contractedTo", label: "Tilldelad", render: (h: any) => h.contractedTo },
     { key: "contractStart", label: "Kontraktstart", render: (h: any) => new Date(h.contractStart).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "signedAt", label: "Tecknat", render: (h: any) => new Date(h.signedAt).toLocaleDateString('sv-SE'), hideOnMobile: true },
