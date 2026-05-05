@@ -61,6 +61,10 @@ export function HousingApplicantsTable({
   offeredApplicantIds = [],
   contractMode = false,
   autoSelectTopApplicants = false,
+  autoSelectCount = 10,
+  declinedInPreviousRoundIds = [],
+  activeRoundApplicantIds = [],
+  previousRoundApplicantIds = [],
   historyMode = false,
   contractWinnerName,
   linkedContractApplicantId,
@@ -82,8 +86,7 @@ export function HousingApplicantsTable({
     );
   };
 
-  // Förvalja endast i läget "Klara för erbjudande" (autoSelectTopApplicants).
-  // På publicerade annonser börjar checkboxarna tomma.
+  // Smart förval: filtrera bort icke-valbara, sortera efter köpoäng, ta top N.
   useEffect(() => {
     if (hasInitializedSelection.current) return;
     if (!showSelectionColumn || !autoSelectTopApplicants) {
@@ -94,18 +97,24 @@ export function HousingApplicantsTable({
 
     const eligible = applicants
       .filter(a => !offeredApplicantIds.includes(a.id))
+      .filter(a => !declinedInPreviousRoundIds.includes(a.id))
+      .filter(a => !activeRoundApplicantIds.includes(a.id))
       .slice()
       .sort((a, b) => b.queuePoints - a.queuePoints)
-      .slice(0, 10)
+      .slice(0, autoSelectCount)
       .map(a => String(a.id));
 
-    if (eligible.length === 0) return;
+    if (eligible.length === 0) {
+      hasInitializedSelection.current = true;
+      return;
+    }
 
     const initial = new Set(eligible);
     setSelectedApplicants(initial);
     onSelectionChange?.(Array.from(initial));
     hasInitializedSelection.current = true;
-  }, [applicants, offeredApplicantIds, showSelectionColumn, autoSelectTopApplicants, onSelectionChange]);
+  }, [applicants, offeredApplicantIds, showSelectionColumn, autoSelectTopApplicants, autoSelectCount, declinedInPreviousRoundIds, activeRoundApplicantIds, onSelectionChange]);
+
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
     const newSelected = new Set(selectedApplicants);
