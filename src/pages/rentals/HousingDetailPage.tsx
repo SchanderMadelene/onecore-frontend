@@ -242,11 +242,10 @@ const HousingDetailPage = () => {
           isCreatingOffer={false}
           readOnly={isHistoryMode}
           activeRoundsCount={activeRounds.length}
-          canStartNewRound={isOfferedMode && canStartNewRound(housingId)}
-          onStartNewRound={handleStartNewRound}
           isSelectingForNewRound={isSelectingForNewRound}
           onCancelSelection={handleCancelSelection}
           onSendNewRound={handleOpenOfferDialog}
+          hasSelectedApplicants={selectedApplicants.length > 0}
         />
 
 
