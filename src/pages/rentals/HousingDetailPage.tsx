@@ -250,10 +250,34 @@ const HousingDetailPage = () => {
           />
 
           <section>
-            <h2 className="text-xl font-semibold mb-4">
-              {isHistoryMode ? 'Sökande i denna uthyrning' :
-               isContractMode ? 'Sökande som tackat ja' : 'Intresseanmälningar'}
-            </h2>
+            <div className="flex items-center justify-between mb-4 gap-2">
+              <h2 className="text-xl font-semibold">
+                {isHistoryMode ? 'Sökande i denna uthyrning' :
+                 isContractMode ? 'Sökande som tackat ja' : 'Intresseanmälningar'}
+              </h2>
+              {!isHistoryMode && (
+                <div className="flex items-center gap-2">
+                  {status === 'ready_for_offer' && !(listing.offers.length > 0 || isListingOffered(housingId)) && (
+                    <Button
+                      onClick={handleOpenOfferDialog}
+                      disabled={selectedApplicants.length === 0}
+                      className="flex items-center gap-1"
+                    >
+                      <PlusCircle className="h-4 w-4" />
+                      <span>Skicka erbjudande</span>
+                    </Button>
+                  )}
+                  <HousingRowActions
+                    housing={listing}
+                    tab={(offerStatus === 'Publicerad' ? 'publicerade' :
+                          offerStatus === 'Klara för erbjudande' ? 'klaraForErbjudande' :
+                          offerStatus === 'Erbjudna' ? 'erbjudna' : 'publicerade') as HousingActionTab}
+                    variant="detail"
+                    hidePrimary={offerStatus === 'Klara för erbjudande'}
+                  />
+                </div>
+              )}
+            </div>
             <HousingApplicantsTable 
               applicants={displayedApplicants}
               housingAddress={listing.address}
