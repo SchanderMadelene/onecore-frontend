@@ -76,6 +76,7 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
       propertyOwnerPaidApartmentInsurance: false,
       parkingInfo: "",
       visitorParkingInfo: "",
+      media: [],
     },
   });
 
