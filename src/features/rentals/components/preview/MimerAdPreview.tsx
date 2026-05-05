@@ -80,11 +80,51 @@ export const MimerAdPreview = ({ housing, form }: MimerAdPreviewProps) => {
         </div>
 
         <div className="mb-10 grid grid-cols-1 gap-0 overflow-hidden md:grid-cols-[1fr_320px]">
-          <img
-            src={placeholderImg}
-            alt={`Bild på ${heading}`}
-            className="h-[340px] w-full object-cover"
-          />
+          <div>
+            {(() => {
+              const media = form.media ?? [];
+              const images = media.filter((m) => m.type === "image");
+              const video = media.find((m) => m.type === "video");
+              const hero = images[0];
+              const rest = images.slice(1);
+              return (
+                <>
+                  {hero ? (
+                    <img
+                      src={hero.url}
+                      alt={hero.caption ?? `Bild på ${heading}`}
+                      className="h-[340px] w-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={placeholderImg}
+                      alt={`Bild på ${heading}`}
+                      className="h-[340px] w-full object-cover"
+                    />
+                  )}
+                  {(rest.length > 0 || video) && (
+                    <div className="mt-2 grid grid-cols-5 gap-2">
+                      {rest.map((m) => (
+                        <img
+                          key={m.id}
+                          src={m.url}
+                          alt={m.caption ?? "Bild"}
+                          className="h-16 w-full rounded object-cover"
+                        />
+                      ))}
+                      {video && (
+                        <video
+                          src={video.url}
+                          className="h-16 w-full rounded object-cover"
+                          muted
+                        />
+                      )}
+                    </div>
+                  )}
+                </>
+              );
+            })()}
+          </div>
           <dl className="bg-[#ececec] px-6 py-6 text-[14px]">
             {[
               ["Adress", housing.address],

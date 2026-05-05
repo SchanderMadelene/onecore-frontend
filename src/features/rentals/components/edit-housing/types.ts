@@ -1,5 +1,17 @@
 
+export type MediaItemType = 'image' | 'video';
+
+export interface MediaItem {
+  id: string;
+  type: MediaItemType;
+  url: string;
+  thumbnailUrl?: string;
+  caption?: string;
+  fileName?: string;
+}
+
 export interface EditHousingFormData {
+  media: MediaItem[];
   housingObjectType: string;
   moveIn: string;
   moveInDate?: Date;
