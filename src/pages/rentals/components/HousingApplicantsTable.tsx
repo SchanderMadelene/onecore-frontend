@@ -27,8 +27,16 @@ interface HousingApplicantsTableProps {
   offeredApplicantIds?: number[];
   /** Kontrakt-läge: dölj kolumnerna "Erbjudande" och "Visning bokad" */
   contractMode?: boolean;
-  /** Förvälj de 10 översta sökandena (används endast i "Klara för erbjudande"-läge) */
+  /** Förvälj sökande automatiskt enligt smart logik */
   autoSelectTopApplicants?: boolean;
+  /** Antal som ska förväljas (default 10 för omgång 1, 5 för senare) */
+  autoSelectCount?: number;
+  /** Sökande som redan tackat nej i tidigare omgångar – exkluderas från smart förval */
+  declinedInPreviousRoundIds?: number[];
+  /** Sökande som har aktivt erbjudande i annan parallell omgång – exkluderas från smart förval */
+  activeRoundApplicantIds?: number[];
+  /** Sökande som var med i tidigare omgångar (men inte denna) – dimmas */
+  previousRoundApplicantIds?: number[];
   /** Historik-läge: read-only, ingen selection, markera vinnaren */
   historyMode?: boolean;
   /** Namnet på den sökande som tilldelades kontraktet (historik) */
