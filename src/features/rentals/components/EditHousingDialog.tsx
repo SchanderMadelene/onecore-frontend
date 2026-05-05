@@ -24,6 +24,9 @@ import { MediaTab } from "./edit-housing/MediaTab";
 import { PreviewHousingAdDialog } from "./PreviewHousingAdDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { EditHousingFormData } from "./edit-housing/types";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { setSpaceStatus } from "../data/unpublished-housing-store";
 
 interface EditHousingDialogProps {
   housingSpace: UnpublishedHousingSpace;
