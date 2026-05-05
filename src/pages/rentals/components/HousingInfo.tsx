@@ -1,6 +1,7 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { HousingListing } from "@/features/rentals/hooks/useHousingListing";
 import type { ReactNode } from "react";
+import floorplanExample from "@/assets/floorplan-example.jpg";
 
 interface HousingInfoProps {
   housing: HousingListing;
@@ -69,9 +70,12 @@ export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoP
         <div className="border rounded-lg overflow-hidden">
           <AspectRatio ratio={4 / 3}>
             <img
-              src="/placeholder.svg"
+              src={floorplanExample}
               alt="Planritning för lägenhet"
-              className="w-full h-full object-cover bg-muted"
+              loading="lazy"
+              width={1024}
+              height={768}
+              className="w-full h-full object-contain bg-muted"
             />
           </AspectRatio>
         </div>
