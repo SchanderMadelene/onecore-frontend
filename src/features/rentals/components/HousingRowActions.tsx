@@ -277,6 +277,13 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
         hideTrigger
       />
 
+      <PreviewHousingAdDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        housingSpace={housing as UnpublishedHousingSpace}
+        formValues={{}}
+      />
+
       <ConfirmDialog
         open={!!confirm}
         onOpenChange={(v) => !v && setConfirm(null)}
