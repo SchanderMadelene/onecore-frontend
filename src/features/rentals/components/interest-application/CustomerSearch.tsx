@@ -30,7 +30,7 @@ export const CustomerSearch = ({
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
             id="customer-search"
-            placeholder="Skriv kundnummer eller personnummer..."
+            placeholder="Skriv kundnummer, personnummer eller e-post..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-9"
@@ -50,6 +50,7 @@ export const CustomerSearch = ({
                     <p className="font-medium text-foreground">{customer.firstName} {customer.lastName}</p>
                     <p className="text-sm text-muted-foreground">
                       {customer.customerNumber} | {customer.personalNumber}
+                      {customer.email ? ` | ${customer.email}` : ""}
                     </p>
                   </div>
                   {/* TODO: Stäm av med användaren – ersätt binär badge (Hyresgäst/Sökande)

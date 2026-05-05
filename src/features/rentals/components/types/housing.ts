@@ -11,6 +11,8 @@ export interface HousingSpace {
   floor: string;
   publishedFrom: string;
   publishedTo: string;
+  availableFrom?: string;
+  eventuallyAvailableFrom?: string;
 }
 
 export interface HousingApplicant {

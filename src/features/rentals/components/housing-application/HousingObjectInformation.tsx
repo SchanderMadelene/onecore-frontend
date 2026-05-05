@@ -45,6 +45,22 @@ export const HousingObjectInformation = ({ housingSpace }: HousingObjectInformat
               <Label className="text-sm text-muted-foreground">Våning</Label>
               <p className="font-medium">{housingSpace.floor}</p>
             </div>
+            <div>
+              <Label className="text-sm text-muted-foreground">Ledig från</Label>
+              <p className="font-medium">
+                {housingSpace.availableFrom
+                  ? new Date(housingSpace.availableFrom).toLocaleDateString("sv-SE")
+                  : "-"}
+              </p>
+            </div>
+            <div>
+              <Label className="text-sm text-muted-foreground">Ev tillgänglig från</Label>
+              <p className="font-medium">
+                {housingSpace.eventuallyAvailableFrom
+                  ? new Date(housingSpace.eventuallyAvailableFrom).toLocaleDateString("sv-SE")
+                  : "-"}
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>

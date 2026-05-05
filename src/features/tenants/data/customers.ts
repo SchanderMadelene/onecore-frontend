@@ -36,7 +36,8 @@ export const searchCustomers = (query: string): Customer[] => {
     customer.customerNumber.toLowerCase().includes(searchTerm) ||
     customer.personalNumber.toLowerCase().includes(searchTerm) ||
     customer.firstName.toLowerCase().includes(searchTerm) ||
-    customer.lastName.toLowerCase().includes(searchTerm)
+    customer.lastName.toLowerCase().includes(searchTerm) ||
+    (customer.email?.toLowerCase().includes(searchTerm) ?? false)
   );
 };
 
