@@ -293,6 +293,11 @@ const HousingDetailPage = () => {
                   />
                 </div>
               )}
+              {!isHistoryMode && showRoundsView && !isSelectingForNewRound && canStartNewRound(housingId) && (
+                <Button variant="outline" onClick={handleStartNewRound}>
+                  Starta ny erbjudandeomgång
+                </Button>
+              )}
             </div>
 
             {showRoundsView ? (
