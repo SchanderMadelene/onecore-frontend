@@ -299,22 +299,30 @@ export function HousingApplicantsTable({
                 ? applicants.slice().sort((a, b) => b.queuePoints - a.queuePoints).slice(0, 10).map(a => a.id)
                 : []
             );
-            return applicants.length > 0 ? applicants
-            .slice()
-            .sort((a, b) => {
+            const ineligibleIds = new Set<number>([
+              ...previousRoundApplicantIds,
+              ...activeRoundApplicantIds,
+            ]);
+            const sorted = applicants.slice().sort((a, b) => {
               if (historyMode && contractWinnerName) {
                 if (a.name === contractWinnerName) return -1;
                 if (b.name === contractWinnerName) return 1;
               }
+              const aIneligible = ineligibleIds.has(a.id) ? 1 : 0;
+              const bIneligible = ineligibleIds.has(b.id) ? 1 : 0;
+              if (aIneligible !== bIneligible) return aIneligible - bIneligible;
               return b.queuePoints - a.queuePoints;
-            })
-            .map((applicant, index) => {
+            });
+            let placeCounter = 0;
+            return sorted.length > 0 ? sorted
+            .map((applicant) => {
               const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
               const wasOffered = historyOfferedIds.has(applicant.id);
               const isLinked = contractMode && linkedContractApplicantId === applicant.id;
               const isRecommended = contractMode && !linkedContractApplicantId && recommendedApplicantId === applicant.id;
               const isOfferedThisRound = offeredApplicantIds.includes(applicant.id);
-              const isPreviousOnly = !isOfferedThisRound && previousRoundApplicantIds.includes(applicant.id);
+              const isPreviousOnly = !isOfferedThisRound && ineligibleIds.has(applicant.id);
+              const placeNumber = isPreviousOnly ? null : ++placeCounter;
               const rowClass = [isWinner || isLinked ? "bg-success/5" : "", isPreviousOnly ? "opacity-50" : ""].filter(Boolean).join(" ") || undefined;
               return (
               <>
@@ -327,12 +335,13 @@ export function HousingApplicantsTable({
                           onCheckedChange={(checked) =>
                             handleApplicantSelection(String(applicant.id), checked as boolean)
                           }
+                          disabled={isPreviousOnly}
                           className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                         />
                       </div>
                     </TableCell>
                   )}
-                  <TableCell className="font-medium tabular-nums text-muted-foreground">{index + 1}</TableCell>
+                  <TableCell className="font-medium tabular-nums text-muted-foreground">{placeNumber ?? "—"}</TableCell>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <Button
