@@ -31,6 +31,12 @@ export function ContractHousingTable() {
     { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
     {
+      key: "publishedFrom",
+      label: "Publicerad från",
+      render: (h: any) => h.publishedFrom ? new Date(h.publishedFrom).toLocaleDateString("sv-SE") : "-",
+      hideOnMobile: true,
+    },
+    {
       key: "publishedTo",
       label: "Publicerad t.o.m.",
       render: (h: any) => new Date(h.publishedTo).toLocaleDateString("sv-SE"),
