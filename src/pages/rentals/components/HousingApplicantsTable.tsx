@@ -86,6 +86,8 @@ export function HousingApplicantsTable({
 
     const eligible = applicants
       .filter(a => !offeredApplicantIds.includes(a.id))
+      .slice()
+      .sort((a, b) => b.queuePoints - a.queuePoints)
       .slice(0, 10)
       .map(a => String(a.id));
 
