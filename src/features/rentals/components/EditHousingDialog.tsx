@@ -123,7 +123,7 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
               {isMobile ? "Grund" : "Grundläggande"}
             </TabsTrigger>
             <TabsTrigger value="detaljerad" className={`font-semibold text-muted-foreground ${isMobile ? 'text-xs px-2 py-2' : ''}`}>
-              {isMobile ? "Detaljerad" : "Detaljerad Beskrivning"}
+              {isMobile ? "Detaljerad" : "Detaljerad beskrivning"}
             </TabsTrigger>
             <TabsTrigger value="media" className={`font-semibold text-muted-foreground ${isMobile ? 'text-xs px-2 py-2' : ''}`}>
               Media
