@@ -26,7 +26,7 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
             <FormItem className="flex flex-col">
               <FormLabel className="text-sm font-medium">Publicera från</FormLabel>
               <FormControl>
-                <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj startdatum" />
+                <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj startdatum" disabled />
               </FormControl>
               <FormMessage />
             </FormItem>
