@@ -245,7 +245,6 @@ const HousingDetailPage = () => {
           isSelectingForNewRound={isSelectingForNewRound}
           onCancelSelection={handleCancelSelection}
           onSendNewRound={handleOpenOfferDialog}
-          hasSelectedApplicants={selectedApplicants.length > 0}
         />
 
 
