@@ -27,10 +27,10 @@ export function PublishedHousingTable() {
     { key: "rooms", label: "Rum", render: (h: any) => h.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
-    { key: "seekers", label: "Sökande", render: (h: any) => h.seekers },
     { key: "publishedTo", label: "Publicerad till", render: (h: any) => new Date(h.publishedTo).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "availableFrom", label: "Ledig från", render: (h: any) => new Date(h.availableFrom).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "preferredMoveOutDate", label: "Ev tillgänglig från", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
+    { key: "seekers", label: "Sökande", render: (h: any) => h.seekers },
     {
       key: "actions",
       label: "",
