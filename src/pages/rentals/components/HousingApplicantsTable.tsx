@@ -313,9 +313,12 @@ export function HousingApplicantsTable({
               const wasOffered = historyOfferedIds.has(applicant.id);
               const isLinked = contractMode && linkedContractApplicantId === applicant.id;
               const isRecommended = contractMode && !linkedContractApplicantId && recommendedApplicantId === applicant.id;
+              const isOfferedThisRound = offeredApplicantIds.includes(applicant.id);
+              const isPreviousOnly = !isOfferedThisRound && previousRoundApplicantIds.includes(applicant.id);
+              const rowClass = [isWinner || isLinked ? "bg-success/5" : "", isPreviousOnly ? "opacity-50" : ""].filter(Boolean).join(" ") || undefined;
               return (
               <>
-                <TableRow key={applicant.id} className={isWinner || isLinked ? "bg-success/5" : undefined}>
+                <TableRow key={applicant.id} className={rowClass}>
                   {!historyMode && !contractMode && (
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
