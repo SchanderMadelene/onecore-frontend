@@ -270,20 +270,6 @@ const HousingDetailPage = () => {
               onUnlinkContract={handleUnlinkContract}
             />
           </section>
-
-          {!isHistoryMode && (
-            <section>
-              <Notes
-                entityType="housing"
-                entityId={housingId}
-                title="Noteringar för bostad"
-                placeholder="Skriv en notering om denna bostad..."
-                emptyMessage="Inga noteringar har lagts till för denna bostad ännu."
-                categories={["Underhåll", "Klagomål", "Allmänt", "Uthyrning"]}
-                showCategory={true}
-              />
-            </section>
-          )}
         </div>
       </div>
 
