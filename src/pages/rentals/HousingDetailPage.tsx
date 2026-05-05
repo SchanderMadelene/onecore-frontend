@@ -231,6 +231,11 @@ const HousingDetailPage = () => {
 
 
         <div className="space-y-8">
+          <HousingInfo 
+            housing={listing}
+            applicantCount={displayedApplicants.length}
+          />
+
           <section>
             <h2 className="text-xl font-semibold mb-4">
               {isHistoryMode ? 'Sökande i denna uthyrning' :
@@ -254,11 +259,6 @@ const HousingDetailPage = () => {
               onUnlinkContract={handleUnlinkContract}
             />
           </section>
-
-          <HousingInfo 
-            housing={listing}
-            applicantCount={displayedApplicants.length}
-          />
 
           {!isHistoryMode && (
             <section>
