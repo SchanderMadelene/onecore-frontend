@@ -257,6 +257,7 @@ export function HousingApplicantsTable({
         <TableHeader>
           <TableRow className={contractMode ? "bg-secondary/50" : undefined}>
             {!historyMode && !contractMode && <TableHead className="w-12">Val</TableHead>}
+            <TableHead className="w-12 whitespace-nowrap">Plats</TableHead>
             <TableHead className="whitespace-nowrap">Namn</TableHead>
             <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
             <TableHead className="whitespace-nowrap">Köpoäng</TableHead>
@@ -288,7 +289,7 @@ export function HousingApplicantsTable({
               }
               return b.queuePoints - a.queuePoints;
             })
-            .map((applicant) => {
+            .map((applicant, index) => {
               const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
               const wasOffered = historyOfferedIds.has(applicant.id);
               const isLinked = contractMode && linkedContractApplicantId === applicant.id;
@@ -309,6 +310,7 @@ export function HousingApplicantsTable({
                       </div>
                     </TableCell>
                   )}
+                  <TableCell className="font-medium tabular-nums text-muted-foreground">{index + 1}</TableCell>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <Button
@@ -501,7 +503,7 @@ export function HousingApplicantsTable({
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={11} className="p-0">
+                    <TableCell colSpan={12} className="p-0">
                       <div className="border-t">
                         <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
@@ -512,7 +514,7 @@ export function HousingApplicantsTable({
               );
             }) : (
               <TableRow>
-                <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={12} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>
