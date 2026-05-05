@@ -50,6 +50,7 @@ export const CustomerSearch = ({
                     <p className="font-medium text-foreground">{customer.firstName} {customer.lastName}</p>
                     <p className="text-sm text-muted-foreground">
                       {customer.customerNumber} | {customer.personalNumber}
+                      {customer.email ? ` | ${customer.email}` : ""}
                     </p>
                   </div>
                   {/* TODO: Stäm av med användaren – ersätt binär badge (Hyresgäst/Sökande)
