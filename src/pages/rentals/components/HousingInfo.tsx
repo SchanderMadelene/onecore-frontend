@@ -71,7 +71,12 @@ export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoP
         </div>
       </section>
 
-      {notesSlot && <section>{notesSlot}</section>}
+      {notesSlot && (
+        <section>
+          <h3 className="text-lg font-semibold mb-4">Noteringar</h3>
+          {notesSlot}
+        </section>
+      )}
     </div>
   );
 }
