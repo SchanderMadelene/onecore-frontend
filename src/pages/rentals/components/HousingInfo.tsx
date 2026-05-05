@@ -82,6 +82,13 @@ export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoP
       </section>
 
       {notesSlot && <section>{notesSlot}</section>}
+
+      <PreviewHousingAdDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        housingSpace={housing as unknown as UnpublishedHousingSpace}
+        formValues={{}}
+      />
     </div>
   );
 }
