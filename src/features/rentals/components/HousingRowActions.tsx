@@ -103,6 +103,7 @@ function getActions(
   };
   const newApp: ActionDef = { key: "new-app", label: "Ny intresseanmälan", kind: "new-app" };
   const edit: ActionDef = { key: "edit", label: "Redigera annons", kind: "edit" };
+  const preview: ActionDef = { key: "preview", label: "Förhandsgranska annons", kind: "preview" };
   const createOffer: ActionDef = { key: "create-offer", label: "Skapa erbjudande", kind: "navigate" };
   const viewApplicants: ActionDef = { key: "view-applicants", label: "Visa sökande", kind: "navigate" };
   const viewOffer: ActionDef = { key: "view-offer", label: "Visa erbjudande", kind: "navigate" };
@@ -124,15 +125,15 @@ function getActions(
 
   switch (tab) {
     case "publicerade":
-      return { primary: [newApp, unpublish], menu: [newApp, edit, earlyUnpublish, unpublish] };
+      return { primary: [newApp, unpublish], menu: [newApp, edit, preview, earlyUnpublish, unpublish] };
     case "behovAvPublicering":
-      return { primary: [publish, remove], menu: [publish, edit, remove] };
+      return { primary: [publish, remove], menu: [publish, edit, preview, remove] };
     case "klaraForErbjudande":
-      return { primary: [createOffer], menu: [newApp, unpublish] };
+      return { primary: [createOffer], menu: [newApp, preview, unpublish] };
     case "erbjudna":
-      return { primary: [], menu: [unpublish] };
+      return { primary: [], menu: [preview, unpublish] };
     case "historik":
-      return { primary: [], menu: [viewAd] };
+      return { primary: [], menu: [viewAd, preview] };
   }
 }
 
