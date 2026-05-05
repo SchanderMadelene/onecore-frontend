@@ -108,7 +108,7 @@ export function TenantQueueSystem({ customerNumber, customerName, personalNumber
               </div>
               <Button variant="outline" className="w-full">
                 <Plus className="h-4 w-4 mr-2" />
-                Ny intresseanmälan bostad
+                Ny intresseanmälan
               </Button>
             </div>
           </CardContent>
@@ -156,7 +156,7 @@ export function TenantQueueSystem({ customerNumber, customerName, personalNumber
               </div>
               <Button variant="outline" className="w-full">
                 <Plus className="h-4 w-4 mr-2" />
-                Ny intresseanmälan förråd
+                Ny intresseanmälan
               </Button>
             </div>
           </CardContent>

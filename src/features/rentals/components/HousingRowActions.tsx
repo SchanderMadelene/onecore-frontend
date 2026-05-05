@@ -99,7 +99,7 @@ function getActions(
       destructive: true,
     },
   };
-  const newApp: ActionDef = { key: "new-app", label: "Ny anmälan", kind: "new-app" };
+  const newApp: ActionDef = { key: "new-app", label: "Ny intresseanmälan", kind: "new-app" };
   const edit: ActionDef = { key: "edit", label: "Redigera annons", kind: "edit" };
   const createOffer: ActionDef = { key: "create-offer", label: "Skapa erbjudande", kind: "navigate" };
   const viewApplicants: ActionDef = { key: "view-applicants", label: "Visa sökande", kind: "navigate" };

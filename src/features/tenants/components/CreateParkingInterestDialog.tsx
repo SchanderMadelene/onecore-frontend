@@ -96,7 +96,7 @@ export const CreateParkingInterestDialog = ({
       <DialogTrigger asChild>
         <Button variant="outline" className="w-full">
           <PlusCircle className="h-4 w-4 mr-2" />
-          Ny intresseanmälan bilplats
+          Ny intresseanmälan
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[90vh] p-0">

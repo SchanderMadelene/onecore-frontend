@@ -29,7 +29,7 @@ interface ApplicationDialogShellProps {
 
 export const ApplicationDialogShell = ({
   title,
-  triggerLabel = "Ny anmälan",
+  triggerLabel = "Ny intresseanmälan",
   open: controlledOpen,
   onOpenChange,
   hideTrigger,
