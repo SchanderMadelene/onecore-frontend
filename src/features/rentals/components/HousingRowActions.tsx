@@ -142,6 +142,7 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
   const { markEarlyUnpublished } = useHousingOffers();
   const [editOpen, setEditOpen] = useState(false);
   const [newAppOpen, setNewAppOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmSpec | null>(null);
   const [pending, setPending] = useState(false);
   const [cancelRentalOpen, setCancelRentalOpen] = useState(false);
