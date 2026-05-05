@@ -24,6 +24,9 @@ import { MediaTab } from "./edit-housing/MediaTab";
 import { PreviewHousingAdDialog } from "./PreviewHousingAdDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { EditHousingFormData } from "./edit-housing/types";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { setSpaceStatus } from "../data/unpublished-housing-store";
 
 interface EditHousingDialogProps {
   housingSpace: UnpublishedHousingSpace;
@@ -35,12 +38,14 @@ interface EditHousingDialogProps {
 export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenChange, hideTrigger }: EditHousingDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [reviewed, setReviewed] = useState(housingSpace.status === "ready_to_publish");
   const open = controlledOpen ?? internalOpen;
   const setOpen = (v: boolean) => {
     if (onOpenChange) onOpenChange(v);
     else setInternalOpen(v);
   };
   const isMobile = useIsMobile();
+  const showReviewToggle = housingSpace.status !== "draft";
   
   const form = useForm<EditHousingFormData>({
     defaultValues: {
@@ -81,7 +86,14 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
   });
 
   const onSubmit = (data: EditHousingFormData) => {
-    toast.success("Bostadsannonsen har sparats");
+    if (showReviewToggle) {
+      setSpaceStatus(housingSpace.id, reviewed ? "ready_to_publish" : "needs_review");
+    }
+    toast.success(
+      reviewed && showReviewToggle
+        ? "Annonsen är sparad och markerad som redo att publicera"
+        : "Bostadsannonsen har sparats",
+    );
     setOpen(false);
   };
 
@@ -163,7 +175,25 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
           </TabsContent>
         </Tabs>
 
-        <DialogFooter className={`${isMobile ? 'flex-col gap-2 pt-4' : 'flex justify-between pt-6'} border-t`}>
+        <DialogFooter className={`${isMobile ? 'flex-col gap-2 pt-4' : 'flex sm:justify-between items-start sm:items-center pt-6'} border-t`}>
+          {showReviewToggle ? (
+            <div className="flex items-start gap-2">
+              <Checkbox
+                id="reviewed"
+                checked={reviewed}
+                onCheckedChange={(v) => setReviewed(v === true)}
+                className="mt-0.5"
+              />
+              <div>
+                <Label htmlFor="reviewed" className="cursor-pointer font-medium">
+                  Granskad – redo att publicera
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Annonsen flyttas till "Redo att publicera" när den sparas.
+                </p>
+              </div>
+            </div>
+          ) : <div />}
           {isMobile ? (
             <div className="flex flex-col gap-2 w-full">
               <Button 
