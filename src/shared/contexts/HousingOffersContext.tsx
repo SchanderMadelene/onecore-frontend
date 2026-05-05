@@ -155,7 +155,10 @@ export function HousingOffersProvider({ children }: { children: ReactNode }) {
   const canStartNewRound = (listingId: string) => {
     const rounds = roundsByListing[listingId] ?? [];
     if (rounds.length === 0) return false;
-    return !rounds.some(r => r.status === 'Accepted');
+    if (rounds.some(r => r.status === 'Accepted')) return false;
+    // Blockera även om någon sökande tackat ja i någon omgång
+    if (rounds.some(r => r.responses.some(resp => resp.response === 'accepted'))) return false;
+    return true;
   };
 
   const createOffer = (listingId: string, selectedApplicants: number[]) =>
