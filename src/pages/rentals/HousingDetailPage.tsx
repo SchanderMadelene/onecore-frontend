@@ -269,11 +269,11 @@ const HousingDetailPage = () => {
                   )}
                   <HousingRowActions
                     housing={listing}
-                    tab={(offerStatus === 'Publicerad' ? 'publicerade' :
-                          offerStatus === 'Klara för erbjudande' ? 'klaraForErbjudande' :
-                          offerStatus === 'Erbjudna' ? 'erbjudna' : 'publicerade') as HousingActionTab}
+                    tab={(offerStatus === 'Publicerat nu' ? 'publicerade' :
+                          offerStatus === 'Erbjud visning' ? 'klaraForErbjudande' :
+                          offerStatus === 'Visning' ? 'erbjudna' : 'publicerade') as HousingActionTab}
                     variant="detail"
-                    hidePrimary={offerStatus === 'Klara för erbjudande'}
+                    hidePrimary={offerStatus === 'Erbjud visning'}
                   />
                 </div>
               )}
