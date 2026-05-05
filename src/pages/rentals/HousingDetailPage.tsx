@@ -46,13 +46,13 @@ const HousingDetailPage = () => {
   const activeHousingTab = location.state?.activeHousingTab || "publicerade";
 
   const handleBack = () => {
-    navigate('/rentals/bostad', {
+    navigate('/rentals/housing', {
       state: { activeHousingTab }
     });
   };
 
   const handleTabChange = (value: string) => {
-    navigate('/rentals/bostad', {
+    navigate('/rentals/housing', {
       state: { activeHousingTab: value }
     });
   };
@@ -84,7 +84,7 @@ const HousingDetailPage = () => {
       description: `Erbjudanden har skickats till ${selectedApplicants.length} valda sökande`
     });
 
-    navigate('/rentals/bostad', {
+    navigate('/rentals/housing', {
       state: { activeHousingTab: 'erbjudna' }
     });
   };

@@ -193,7 +193,7 @@ const RentalsOverview = () => {
             vacantCount={housingMetrics.vacantCount}
             totalCount={housingMetrics.totalCount}
             kpis={housingMetrics.kpis}
-            onClick={() => navigate("/rentals/bostad")}
+            onClick={() => navigate("/rentals/housing")}
           />
           <SectionCard
             title="Bilplats"
@@ -203,7 +203,7 @@ const RentalsOverview = () => {
             vacantCount={parkingMetrics.vacantCount}
             totalCount={parkingMetrics.totalCount}
             kpis={parkingMetrics.kpis}
-            onClick={() => navigate("/rentals/bilplats")}
+            onClick={() => navigate("/rentals/parking")}
           />
           <SectionCard
             title="Förråd"
@@ -213,7 +213,7 @@ const RentalsOverview = () => {
             vacantCount={storageMetrics.vacantCount}
             totalCount={storageMetrics.totalCount}
             kpis={storageMetrics.kpis}
-            onClick={() => navigate("/rentals/forrad")}
+            onClick={() => navigate("/rentals/storage")}
           />
         </div>
       </div>
