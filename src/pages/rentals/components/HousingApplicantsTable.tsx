@@ -503,7 +503,7 @@ export function HousingApplicantsTable({
                 </TableRow>
                 {expandedApplicant === String(applicant.id) && (
                   <TableRow>
-                    <TableCell colSpan={11} className="p-0">
+                    <TableCell colSpan={12} className="p-0">
                       <div className="border-t">
                         <CompactProfileForm applicantId={String(applicant.id)} />
                       </div>
@@ -514,7 +514,7 @@ export function HousingApplicantsTable({
               );
             }) : (
               <TableRow>
-                <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={12} className="text-center py-8 text-muted-foreground">
                   Inga intresseanmälningar än
                 </TableCell>
               </TableRow>
