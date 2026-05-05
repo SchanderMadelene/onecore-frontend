@@ -1,6 +1,7 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { HousingListing } from "@/features/rentals/hooks/useHousingListing";
 import type { ReactNode } from "react";
+import floorplanExample from "@/assets/floorplan-example.jpg";
 
 interface HousingInfoProps {
   housing: HousingListing;
