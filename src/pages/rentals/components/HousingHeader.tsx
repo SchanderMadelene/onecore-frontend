@@ -59,9 +59,9 @@ export function HousingHeader({
             </div>
             {housing && (
               <Button
-                variant="link"
+                variant="outline"
                 size="sm"
-                className="px-0 h-auto mt-1"
+                className="mt-2"
                 onClick={() => setPreviewOpen(true)}
               >
                 Förhandsgranska annons
