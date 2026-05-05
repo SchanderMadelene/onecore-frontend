@@ -289,7 +289,7 @@ const HousingDetailPage = () => {
               onSelectionChange={setSelectedApplicants}
               offeredApplicantIds={activeOffer?.selectedApplicants || []}
               contractMode={isContractMode}
-              autoSelectTopApplicants={status === 'ready_for_offer' && !isHistoryMode}
+              autoSelectTopApplicants={(status === 'ready_for_offer' || activeHousingTab === 'klaraForErbjudande') && !isHistoryMode && !isContractMode}
               historyMode={isHistoryMode}
               contractWinnerName={listing.history?.contractedTo}
               linkedContractApplicantId={linkedContractApplicantId}
