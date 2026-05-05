@@ -152,9 +152,9 @@ const HousingDetailPage = () => {
   const isHistoryMode = location.state?.activeHousingTab === 'historik' || !!listing.history;
   const status = getHousingStatus(listing);
   const offerStatus = isHistoryMode ? "Historik" :
-                    status === 'published' ? "Publicerad" :
-                    status === 'ready_for_offer' ? "Klara för erbjudande" :
-                    status === 'offered' ? "Erbjudna" : "Publicerad";
+                    status === 'published' ? "Publicerat nu" :
+                    status === 'ready_for_offer' ? "Erbjud visning" :
+                    status === 'offered' ? "Visning" : "Publicerat nu";
   
   // Get active offer for this listing
   const activeOffer = getOfferForListing(housingId);
