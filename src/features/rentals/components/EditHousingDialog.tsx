@@ -175,7 +175,25 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
           </TabsContent>
         </Tabs>
 
-        <DialogFooter className={`${isMobile ? 'flex-col gap-2 pt-4' : 'flex justify-between pt-6'} border-t`}>
+        <DialogFooter className={`${isMobile ? 'flex-col gap-2 pt-4' : 'flex sm:justify-between items-start sm:items-center pt-6'} border-t`}>
+          {showReviewToggle ? (
+            <div className="flex items-start gap-2">
+              <Checkbox
+                id="reviewed"
+                checked={reviewed}
+                onCheckedChange={(v) => setReviewed(v === true)}
+                className="mt-0.5"
+              />
+              <div>
+                <Label htmlFor="reviewed" className="cursor-pointer font-medium">
+                  Granskad – redo att publicera
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Annonsen flyttas till "Redo att publicera" när den sparas.
+                </p>
+              </div>
+            </div>
+          ) : <div />}
           {isMobile ? (
             <div className="flex flex-col gap-2 w-full">
               <Button 
