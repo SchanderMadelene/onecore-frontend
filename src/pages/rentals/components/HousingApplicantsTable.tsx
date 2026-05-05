@@ -257,6 +257,7 @@ export function HousingApplicantsTable({
         <TableHeader>
           <TableRow className={contractMode ? "bg-secondary/50" : undefined}>
             {!historyMode && !contractMode && <TableHead className="w-12">Val</TableHead>}
+            <TableHead className="w-12 whitespace-nowrap">Plats</TableHead>
             <TableHead className="whitespace-nowrap">Namn</TableHead>
             <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
             <TableHead className="whitespace-nowrap">Köpoäng</TableHead>
