@@ -56,6 +56,12 @@ export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoP
             <p className="font-medium">{new Date(housing.availableFrom).toLocaleDateString('sv-SE')}</p>
           </div>
         </div>
+        <div className="space-y-1 mt-6">
+          <p className="text-sm text-muted-foreground">Webbnotering</p>
+          <p className="text-sm leading-relaxed">
+            Välkommen till denna fantastiska bostad i hjärtat av Bäckby! Här får du en perfekt kombination av modern komfort och naturskön omgivning. Lägenheten erbjuder rymliga ytor, ljusa rum och ett välplanerat kök – idealiskt för både vardag och umgänge.
+          </p>
+        </div>
       </section>
 
       <section>
