@@ -51,44 +51,20 @@ export function HousingHeader({
       </div>
 
       <div className="mb-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold tracking-tight">{housingAddress}</h1>
-              <Badge variant="info">{offerStatus}</Badge>
-            </div>
-            {housing && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-2"
-                onClick={() => setPreviewOpen(true)}
-              >
-                Förhandsgranska annons
-              </Button>
-            )}
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-3xl font-bold tracking-tight">{housingAddress}</h1>
+            <Badge variant="info">{offerStatus}</Badge>
           </div>
-          {!readOnly && (
-            <div className="flex items-center gap-2">
-              {showSendOffer && (
-                <Button
-                  onClick={onCreateOffer}
-                  disabled={isCreatingOffer || !hasSelectedApplicants}
-                  className="flex items-center gap-1"
-                >
-                  <PlusCircle className="h-4 w-4" />
-                  <span>{isCreatingOffer ? "Skickar..." : "Skicka erbjudande"}</span>
-                </Button>
-              )}
-              {housing && (
-                <HousingRowActions
-                  housing={housing}
-                  tab={tab}
-                  variant="detail"
-                  hidePrimary={tab === "klaraForErbjudande"}
-                />
-              )}
-            </div>
+          {housing && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              onClick={() => setPreviewOpen(true)}
+            >
+              Förhandsgranska annons
+            </Button>
           )}
         </div>
       </div>
