@@ -94,7 +94,7 @@ export function UnpublishedHousingTable() {
       render: (s: any) => getStatusBadge(s.status),
       filterOptions: ["Utkast", "Behöver granskning", "Redo att publicera"],
       filterValue: statusFilter,
-      onFilterChange: (v: string) => setStatusFilter(v),
+      onFilter: (v: string) => setStatusFilter(v),
       filterPlaceholder: "Filtrera status",
     },
     { key: "lastModified", label: "Senast ändrad", render: (s: any) => s.lastModified, hideOnMobile: true },
