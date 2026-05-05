@@ -10,6 +10,8 @@ import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
+import { HousingRowActions, type HousingActionTab } from "@/features/rentals/components/HousingRowActions";
+import { PlusCircle } from "lucide-react";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
