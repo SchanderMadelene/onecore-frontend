@@ -20,6 +20,7 @@ import { BasicInfoSection } from "./edit-housing/BasicInfoSection";
 import { EditableFormSection } from "./edit-housing/EditableFormSection";
 import { DetailedDescriptionTab } from "./edit-housing/DetailedDescriptionTab";
 import { PlanritningTab } from "./edit-housing/PlanritningTab";
+import { MediaTab } from "./edit-housing/MediaTab";
 import { PreviewHousingAdDialog } from "./PreviewHousingAdDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { EditHousingFormData } from "./edit-housing/types";
