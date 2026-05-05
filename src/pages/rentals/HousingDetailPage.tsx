@@ -242,8 +242,6 @@ const HousingDetailPage = () => {
           isCreatingOffer={false}
           readOnly={isHistoryMode}
           activeRoundsCount={activeRounds.length}
-          canStartNewRound={isOfferedMode && canStartNewRound(housingId)}
-          onStartNewRound={handleStartNewRound}
           isSelectingForNewRound={isSelectingForNewRound}
           onCancelSelection={handleCancelSelection}
           onSendNewRound={handleOpenOfferDialog}
@@ -294,6 +292,11 @@ const HousingDetailPage = () => {
                     hidePrimary={offerStatus === 'Erbjud visning'}
                   />
                 </div>
+              )}
+              {!isHistoryMode && showRoundsView && !isSelectingForNewRound && canStartNewRound(housingId) && (
+                <Button variant="outline" onClick={handleStartNewRound}>
+                  Starta ny erbjudandeomgång
+                </Button>
               )}
             </div>
 
