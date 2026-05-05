@@ -1,4 +1,8 @@
+import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import { PreviewHousingAdDialog } from "@/features/rentals/components/PreviewHousingAdDialog";
+import type { UnpublishedHousingSpace } from "@/features/rentals/components/types/unpublished-housing";
 import type { HousingListing } from "@/features/rentals/hooks/useHousingListing";
 import type { ReactNode } from "react";
 
@@ -9,10 +13,16 @@ interface HousingInfoProps {
 }
 
 export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoProps) {
+  const [previewOpen, setPreviewOpen] = useState(false);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <section>
-        <h3 className="text-lg font-semibold mb-4">Objektsinformation</h3>
+        <div className="flex items-center justify-between mb-4 gap-2">
+          <h3 className="text-lg font-semibold">Objektsinformation</h3>
+          <Button variant="outline" size="sm" onClick={() => setPreviewOpen(true)}>
+            Förhandsgranska annons
+          </Button>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-1">
             <p className="text-sm text-muted-foreground">Lägenhet</p>
