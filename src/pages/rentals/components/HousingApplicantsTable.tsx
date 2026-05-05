@@ -27,8 +27,16 @@ interface HousingApplicantsTableProps {
   offeredApplicantIds?: number[];
   /** Kontrakt-läge: dölj kolumnerna "Erbjudande" och "Visning bokad" */
   contractMode?: boolean;
-  /** Förvälj de 10 översta sökandena (används endast i "Klara för erbjudande"-läge) */
+  /** Förvälj sökande automatiskt enligt smart logik */
   autoSelectTopApplicants?: boolean;
+  /** Antal som ska förväljas (default 10 för omgång 1, 5 för senare) */
+  autoSelectCount?: number;
+  /** Sökande som redan tackat nej i tidigare omgångar – exkluderas från smart förval */
+  declinedInPreviousRoundIds?: number[];
+  /** Sökande som har aktivt erbjudande i annan parallell omgång – exkluderas från smart förval */
+  activeRoundApplicantIds?: number[];
+  /** Sökande som var med i tidigare omgångar (men inte denna) – dimmas */
+  previousRoundApplicantIds?: number[];
   /** Historik-läge: read-only, ingen selection, markera vinnaren */
   historyMode?: boolean;
   /** Namnet på den sökande som tilldelades kontraktet (historik) */
@@ -53,6 +61,10 @@ export function HousingApplicantsTable({
   offeredApplicantIds = [],
   contractMode = false,
   autoSelectTopApplicants = false,
+  autoSelectCount = 10,
+  declinedInPreviousRoundIds = [],
+  activeRoundApplicantIds = [],
+  previousRoundApplicantIds = [],
   historyMode = false,
   contractWinnerName,
   linkedContractApplicantId,
@@ -74,8 +86,7 @@ export function HousingApplicantsTable({
     );
   };
 
-  // Förvalja endast i läget "Klara för erbjudande" (autoSelectTopApplicants).
-  // På publicerade annonser börjar checkboxarna tomma.
+  // Smart förval: filtrera bort icke-valbara, sortera efter köpoäng, ta top N.
   useEffect(() => {
     if (hasInitializedSelection.current) return;
     if (!showSelectionColumn || !autoSelectTopApplicants) {
@@ -86,18 +97,24 @@ export function HousingApplicantsTable({
 
     const eligible = applicants
       .filter(a => !offeredApplicantIds.includes(a.id))
+      .filter(a => !declinedInPreviousRoundIds.includes(a.id))
+      .filter(a => !activeRoundApplicantIds.includes(a.id))
       .slice()
       .sort((a, b) => b.queuePoints - a.queuePoints)
-      .slice(0, 10)
+      .slice(0, autoSelectCount)
       .map(a => String(a.id));
 
-    if (eligible.length === 0) return;
+    if (eligible.length === 0) {
+      hasInitializedSelection.current = true;
+      return;
+    }
 
     const initial = new Set(eligible);
     setSelectedApplicants(initial);
     onSelectionChange?.(Array.from(initial));
     hasInitializedSelection.current = true;
-  }, [applicants, offeredApplicantIds, showSelectionColumn, autoSelectTopApplicants, onSelectionChange]);
+  }, [applicants, offeredApplicantIds, showSelectionColumn, autoSelectTopApplicants, autoSelectCount, declinedInPreviousRoundIds, activeRoundApplicantIds, onSelectionChange]);
+
 
   const handleApplicantSelection = (applicantId: string, checked: boolean) => {
     const newSelected = new Set(selectedApplicants);
@@ -296,9 +313,12 @@ export function HousingApplicantsTable({
               const wasOffered = historyOfferedIds.has(applicant.id);
               const isLinked = contractMode && linkedContractApplicantId === applicant.id;
               const isRecommended = contractMode && !linkedContractApplicantId && recommendedApplicantId === applicant.id;
+              const isOfferedThisRound = offeredApplicantIds.includes(applicant.id);
+              const isPreviousOnly = !isOfferedThisRound && previousRoundApplicantIds.includes(applicant.id);
+              const rowClass = [isWinner || isLinked ? "bg-success/5" : "", isPreviousOnly ? "opacity-50" : ""].filter(Boolean).join(" ") || undefined;
               return (
               <>
-                <TableRow key={applicant.id} className={isWinner || isLinked ? "bg-success/5" : undefined}>
+                <TableRow key={applicant.id} className={rowClass}>
                   {!historyMode && !contractMode && (
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
