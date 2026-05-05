@@ -220,18 +220,8 @@ const HousingDetailPage = () => {
   const showRoundsView = isOfferedMode && rounds.length > 0 && !isContractMode && !isHistoryMode;
   const currentTabValue = activeRoundTab ?? (isSelectingForNewRound ? NEW_ROUND_TAB : (rounds[rounds.length - 1]?.id ?? ""));
 
-  // Beräkna sökande som tackat nej i tidigare omgångar (för smart förval i ny omgång)
-  const declinedInPreviousRoundIds = useMemo(() => {
-    const set = new Set<number>();
-    rounds.forEach(r => r.responses.forEach(resp => { if (resp.response === 'declined') set.add(resp.applicantId); }));
-    return Array.from(set);
-  }, [rounds]);
 
-  const activeRoundApplicantIds = useMemo(() => {
-    const set = new Set<number>();
-    activeRounds.forEach(r => r.selectedApplicants.forEach(id => set.add(id)));
-    return Array.from(set);
-  }, [activeRounds]);
+
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
