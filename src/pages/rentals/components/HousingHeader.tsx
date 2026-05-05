@@ -21,9 +21,9 @@ interface HousingHeaderProps {
 }
 
 const STATUS_TO_TAB: Record<string, HousingActionTab> = {
-  Publicerad: "publicerade",
-  "Klara för erbjudande": "klaraForErbjudande",
-  Erbjudna: "erbjudna",
+  "Publicerat nu": "publicerade",
+  "Erbjud visning": "klaraForErbjudande",
+  "Visning": "erbjudna",
 };
 
 export function HousingHeader({
