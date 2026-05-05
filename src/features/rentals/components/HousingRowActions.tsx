@@ -178,6 +178,7 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
 
   const handleMenu = (a: ActionDef) => {
     if (a.kind === "edit") setEditOpen(true);
+    else if (a.kind === "preview") setPreviewOpen(true);
     else if (a.kind === "navigate") goDetail();
     else if (a.kind === "early-unpublish") {
       if (a.disabled) return;
