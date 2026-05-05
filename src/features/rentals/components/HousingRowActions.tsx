@@ -14,6 +14,7 @@ import { toast } from "@/hooks/use-toast";
 import { CreateHousingApplicationDialog } from "./CreateHousingApplicationDialog";
 import { EditHousingDialog } from "./EditHousingDialog";
 import { CancelRentalDialog } from "./CancelRentalDialog";
+import { PreviewHousingAdDialog } from "./PreviewHousingAdDialog";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import type { HousingSpace } from "./types/housing";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
@@ -44,6 +45,7 @@ type ConfirmSpec = {
 type ActionDef =
   | { key: string; label: string; kind: "new-app" }
   | { key: string; label: string; kind: "edit" }
+  | { key: string; label: string; kind: "preview" }
   | { key: string; label: string; kind: "navigate" }
   | { key: string; label: string; kind: "early-unpublish"; disabled?: boolean }
   | { key: string; label: string; kind: "confirm"; destructive?: boolean; confirm: ConfirmSpec };
@@ -101,6 +103,7 @@ function getActions(
   };
   const newApp: ActionDef = { key: "new-app", label: "Ny intresseanmälan", kind: "new-app" };
   const edit: ActionDef = { key: "edit", label: "Redigera annons", kind: "edit" };
+  const preview: ActionDef = { key: "preview", label: "Förhandsgranska annons", kind: "preview" };
   const createOffer: ActionDef = { key: "create-offer", label: "Skapa erbjudande", kind: "navigate" };
   const viewApplicants: ActionDef = { key: "view-applicants", label: "Visa sökande", kind: "navigate" };
   const viewOffer: ActionDef = { key: "view-offer", label: "Visa erbjudande", kind: "navigate" };
@@ -122,15 +125,15 @@ function getActions(
 
   switch (tab) {
     case "publicerade":
-      return { primary: [newApp, unpublish], menu: [newApp, edit, earlyUnpublish, unpublish] };
+      return { primary: [newApp, unpublish], menu: [newApp, edit, preview, earlyUnpublish, unpublish] };
     case "behovAvPublicering":
-      return { primary: [publish, remove], menu: [publish, edit, remove] };
+      return { primary: [publish, remove], menu: [publish, edit, preview, remove] };
     case "klaraForErbjudande":
-      return { primary: [createOffer], menu: [newApp, unpublish] };
+      return { primary: [createOffer], menu: [newApp, preview, unpublish] };
     case "erbjudna":
-      return { primary: [], menu: [unpublish] };
+      return { primary: [], menu: [preview, unpublish] };
     case "historik":
-      return { primary: [], menu: [viewAd] };
+      return { primary: [], menu: [viewAd, preview] };
   }
 }
 
@@ -139,6 +142,7 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
   const { markEarlyUnpublished } = useHousingOffers();
   const [editOpen, setEditOpen] = useState(false);
   const [newAppOpen, setNewAppOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmSpec | null>(null);
   const [pending, setPending] = useState(false);
   const [cancelRentalOpen, setCancelRentalOpen] = useState(false);
@@ -174,6 +178,7 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
 
   const handleMenu = (a: ActionDef) => {
     if (a.kind === "edit") setEditOpen(true);
+    else if (a.kind === "preview") setPreviewOpen(true);
     else if (a.kind === "navigate") goDetail();
     else if (a.kind === "early-unpublish") {
       if (a.disabled) return;
@@ -270,6 +275,13 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
         open={newAppOpen}
         onOpenChange={setNewAppOpen}
         hideTrigger
+      />
+
+      <PreviewHousingAdDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        housingSpace={housing as UnpublishedHousingSpace}
+        formValues={{}}
       />
 
       <ConfirmDialog
