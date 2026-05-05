@@ -310,6 +310,7 @@ export function HousingApplicantsTable({
                       </div>
                     </TableCell>
                   )}
+                  <TableCell className="font-medium tabular-nums text-muted-foreground">{index + 1}</TableCell>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <Button
