@@ -14,6 +14,7 @@ import { toast } from "@/hooks/use-toast";
 import { CreateHousingApplicationDialog } from "./CreateHousingApplicationDialog";
 import { EditHousingDialog } from "./EditHousingDialog";
 import { CancelRentalDialog } from "./CancelRentalDialog";
+import { PreviewHousingAdDialog } from "./PreviewHousingAdDialog";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import type { HousingSpace } from "./types/housing";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
