@@ -45,6 +45,7 @@ type ConfirmSpec = {
 type ActionDef =
   | { key: string; label: string; kind: "new-app" }
   | { key: string; label: string; kind: "edit" }
+  | { key: string; label: string; kind: "preview" }
   | { key: string; label: string; kind: "navigate" }
   | { key: string; label: string; kind: "early-unpublish"; disabled?: boolean }
   | { key: string; label: string; kind: "confirm"; destructive?: boolean; confirm: ConfirmSpec };
