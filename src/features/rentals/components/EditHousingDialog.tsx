@@ -38,12 +38,14 @@ interface EditHousingDialogProps {
 export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenChange, hideTrigger }: EditHousingDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [reviewed, setReviewed] = useState(housingSpace.status === "ready_to_publish");
   const open = controlledOpen ?? internalOpen;
   const setOpen = (v: boolean) => {
     if (onOpenChange) onOpenChange(v);
     else setInternalOpen(v);
   };
   const isMobile = useIsMobile();
+  const showReviewToggle = housingSpace.status !== "draft";
   
   const form = useForm<EditHousingFormData>({
     defaultValues: {
