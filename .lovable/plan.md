@@ -1,43 +1,52 @@
-# Manuell granskning av annonser inför publicering
-
-## Bakgrund
-Statuskolumnen finns redan i `UnpublishedHousingTable` med tre värden: `draft`, `needs_review`, `ready_to_publish`. Idag sätts statusen statiskt i mockdatan – det finns inget sätt för användaren att flytta en annons från "Behöver granskning" till "Redo att publicera".
-
 ## Mål
-Default på alla nya annonser är **"Behöver granskning"**. En användare markerar manuellt en annons som granskad – antingen en i taget i `EditHousingDialog`, eller flera samtidigt via bulk-action i tabellen. Statusen `draft` lämnas oförändrad (det är ett tidigare stadie).
+Återinföra manuella erbjudandeomgångar för bostad enligt tidigare spec (`mem://features/rentals/housing-offer-rounds` + chatt 2026-04-27). Idag finns ingen omgångs-logik kvar i koden — bara den enkla "Skicka erbjudande"-flödet.
 
-## Förändringar
+## Flöde (bekräftat tidigare)
+1. **Omgång 1** skapas manuellt från **"Erbjud visning"**: handläggaren markerar sökande (top 10 förvaljs) och klickar **"Skicka erbjudande"** → annonsen flyttas till **"Visning"** (= omgång 1 är aktiv).
+2. **Omgång 2+** initieras manuellt från **"Visning"** via knappen **"Starta ny erbjudandeomgång"** i headern. Avbryter inte tidigare omgångar — kör parallellt.
+3. **Förval i ny omgång**: top 5 efter köpoäng som varken har aktivt erbjudande eller tidigare tackat nej.
+4. **Tilldelad** (någon tackat ja → status `Accepted`) blockerar nya omgångar.
+5. Varje omgång kan avbrytas individuellt utan att påverka andra parallella.
 
-### 1. EditHousingDialog – checkbox "Granskad och redo att publicera"
-- Längst ner i dialogen (i sticky footer-området, vänster om Avbryt/Spara), läggs en `Checkbox` med label **"Granskad – redo att publicera"**.
-- Ikryssad ⇒ status sätts till `ready_to_publish` vid spara.
-- Tom ⇒ status sätts till `needs_review`.
-- Default-state speglar nuvarande status på annonsen. För `draft` döljs checkboxen (utkast måste först färdigställas).
-- Hjälptext under: "Annonsen flyttas till 'Redo att publicera' när den sparas."
+## Tekniska ändringar
 
-### 2. UnpublishedHousingTable – bulk-action "Markera som granskade"
-- Aktivera radvalet (`selectable`) i `ResponsiveTable`.
-- När rader är valda visas `BulkActionBar` med en knapp **"Markera som granskade"**.
-- Bara rader med status `needs_review` påverkas; valda `draft`/`ready_to_publish`-rader ignoreras tyst (eller visas räknat: "3 av 5 markerades som granskade").
-- Bekräftelsedialog (ConfirmDialog) innan ändring: "Markera N annonser som granskade och redo att publicera?".
-- Toast efter utförd action.
+### Datamodell — `src/shared/contexts/HousingOffersContext.tsx`
+- Byt single-offer mot `roundsByListing: Record<string, HousingOfferRound[]>`.
+- `HousingOfferRound`: `{ id, roundNumber, status: 'Active' | 'AllDeclined' | 'Expired' | 'Cancelled' | 'Accepted', selectedApplicants: number[], sentAt, expiresAt, responses }`.
+- Nya metoder: `startNewRound(listingId, applicantIds)`, `cancelRound(listingId, roundId)`, `getRoundsForListing(listingId)`, `canStartNewRound(listingId)`.
+- Behåll en deriverad platt `offers`-array för bakåtkompatibilitet (`OfferedHousingTable` m.fl.).
 
-### 3. Statuskolumnens utseende
-- Behåll befintlig kolumn men förtydliga semantiken via Badge-varianter (utan att lägga till ikoner):
-  - `needs_review` → `variant="warning"` (gul/amber) – idag `outline` som syns dåligt.
-  - `ready_to_publish` → `variant="success"` (grön).
-  - `draft` → `variant="secondary"`.
-- Texten oförändrad.
+### Header — `src/pages/rentals/components/HousingHeader.tsx`
+- På fliken "Visning": visa knapp **"Starta ny erbjudandeomgång"** när `canStartNewRound` är sant och man inte redan är i urvalsläge.
+- I urvalsläge: dölj den, visa **"Skicka erbjudande"** (disabled tills minst en sökande är vald) + **"Avbryt urval"**.
+- Chip i rubriken: "Omgång N" eller "N omgångar aktiva".
 
-### 4. Filter (lätt tillägg)
-- Lägg till en filter-dropdown ovanför tabellen: "Status: Alla / Utkast / Behöver granskning / Redo att publicera". Använd ResponsiveTables native filtering-API (memory: Native Filtering API). Default = Alla.
+### Detaljsida — `src/pages/rentals/HousingDetailPage.tsx`
+- State: `isSelectingForNewRound`, `activeRoundTab`.
+- Tabs över sökandelistan: en flik per omgång (`Omgång 1`, `Omgång 2`…) + extra `Ny omgång (urval)` när urvalsläge är aktivt.
+- Per omgångs-tab: `HousingApplicantsTable` med `offeredApplicantIds={round.selectedApplicants}` och dim-information för sökande från tidigare omgångar.
+
+### Ny komponent — `src/pages/rentals/components/RoundSummaryBar.tsx`
+Sammanfattningsrad ovanför tabellen i varje omgång-tab:
+- Statusbadge (Pågår / Accepterad / Alla nekade / Avbruten).
+- Skickat-/utgångsdatum med relativ tid.
+- Svar-räkning: "X ja · Y nej · Z väntar".
+- Knapp **"Avbryt denna omgång"** (med ConfirmDialog) för aktiva omgångar.
+
+### Tabell — `src/pages/rentals/components/HousingApplicantsTable.tsx`
+- Nya props: `previousRoundByApplicant`, `activeRoundByApplicant`, `declinedInPreviousRoundIds`, `autoSelectCount`.
+- Smart förval i urvalsläge för omgång 2+: top N efter köpoäng som varken har aktivt erbjudande, redan är i denna omgång eller tackat nej tidigare.
+- Sökande som var med i tidigare omgång (men inte nuvarande) dimmas; sökande som är med i båda dimmas inte.
+
+### Bekräftelsedialog — `src/features/rentals/components/SendHousingOfferDialog.tsx`
+- Nya props: `roundNumber`, `parallelActiveRounds`.
+- Titel: "Skicka erbjudande för omgång N".
+- Varning när `parallelActiveRounds > 0`: "Omgång X är fortfarande aktiv parallellt — sökande där påverkas inte."
+
+### Mockdata
+Lägg in 1–2 annonser i "Visning"-fliken som har omgång 1 + parallell omgång 2 så funktionen är synlig direkt (motsvarande `1013` som vi hade tidigare).
 
 ## Out of scope
-- Ingen automatik som flyttar annonser tillbaka till `needs_review` vid ändringar (kan läggas till senare om användaren vill).
-- Ingen roll-/behörighetshantering kring vem som får granska.
-- Parking/förråd-motsvarigheterna lämnas orörda i denna iteration; samma mönster återanvänds när det är dags.
-
-## Tekniska detaljer
-- `unpublishedHousingSpaces` i `data/unpublished-housing.ts` får ett par fler `needs_review`-rader för att visa flödet i mockdatan.
-- Eftersom mockdatan är statisk implementeras state lokalt med `useState` i `UnpublishedHousingTable` (kopia av arrayen) så att bulk-action och spara från dialogen visuellt uppdaterar listan inom sessionen. Ingen backend ändras.
-- `BulkActionBar` finns redan som shared-komponent och följer mobil-mönstret enligt memory.
+- Tooltips på disabled checkboxes och förbättrade filter (#3, #5 från förra omgången).
+- Förläng-utgångsdatum-knapp (#6).
+- Acceptance-banner (#7) och informativa tab-labels med progress (#8).
