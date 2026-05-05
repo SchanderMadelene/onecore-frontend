@@ -118,12 +118,15 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
         </DialogHeader>
         
         <Tabs defaultValue="grundlaggande" className="w-full">
-          <TabsList className={`grid w-full grid-cols-3 ${isMobile ? 'h-auto' : ''}`}>
+          <TabsList className={`grid w-full grid-cols-4 ${isMobile ? 'h-auto' : ''}`}>
             <TabsTrigger value="grundlaggande" className={`font-semibold ${isMobile ? 'text-xs px-2 py-2' : ''}`}>
               {isMobile ? "Grund" : "Grundläggande"}
             </TabsTrigger>
             <TabsTrigger value="detaljerad" className={`font-semibold text-muted-foreground ${isMobile ? 'text-xs px-2 py-2' : ''}`}>
               {isMobile ? "Detaljerad" : "Detaljerad Beskrivning"}
+            </TabsTrigger>
+            <TabsTrigger value="media" className={`font-semibold text-muted-foreground ${isMobile ? 'text-xs px-2 py-2' : ''}`}>
+              Media
             </TabsTrigger>
             <TabsTrigger value="planritning" className={`font-semibold text-muted-foreground ${isMobile ? 'text-xs px-2 py-2' : ''}`}>
               Planritning
@@ -146,6 +149,12 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <DetailedDescriptionTab control={form.control} />
               </form>
+            </Form>
+          </TabsContent>
+
+          <TabsContent value="media" className={`mt-4 ${isMobile ? 'mt-3' : 'mt-6'}`}>
+            <Form {...form}>
+              <MediaTab control={form.control} />
             </Form>
           </TabsContent>
 
