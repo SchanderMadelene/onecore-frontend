@@ -86,7 +86,14 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
   });
 
   const onSubmit = (data: EditHousingFormData) => {
-    toast.success("Bostadsannonsen har sparats");
+    if (showReviewToggle) {
+      setSpaceStatus(housingSpace.id, reviewed ? "ready_to_publish" : "needs_review");
+    }
+    toast.success(
+      reviewed && showReviewToggle
+        ? "Annonsen är sparad och markerad som redo att publicera"
+        : "Bostadsannonsen har sparats",
+    );
     setOpen(false);
   };
 
