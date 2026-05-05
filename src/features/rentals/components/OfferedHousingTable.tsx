@@ -58,7 +58,7 @@ export function OfferedHousingTable() {
       },
       hideOnMobile: true
     },
-    { key: "preferredMoveOutDate", label: "Önskad avflyttning", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
+    { key: "preferredMoveOutDate", label: "Ev tillgänglig från", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
     {
       key: "actions",
       label: "",

@@ -43,7 +43,7 @@ export function ContractHousingTable() {
     },
     {
       key: "preferredMoveOutDate",
-      label: "Önskad avflyttning",
+      label: "Ev tillgänglig från",
       render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString("sv-SE") : "-",
       hideOnMobile: true,
     },
