@@ -289,7 +289,7 @@ export function HousingApplicantsTable({
               }
               return b.queuePoints - a.queuePoints;
             })
-            .map((applicant) => {
+            .map((applicant, index) => {
               const isWinner = historyMode && contractWinnerName && applicant.name === contractWinnerName;
               const wasOffered = historyOfferedIds.has(applicant.id);
               const isLinked = contractMode && linkedContractApplicantId === applicant.id;
