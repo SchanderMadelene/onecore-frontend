@@ -66,18 +66,11 @@ export function RoundSummaryBar({ round, onCancel, acceptedApplicantName }: Roun
           </div>
         )}
 
-        {isActive && (onCancel || onEditOffer) && (
-          <div className="ml-auto flex items-center gap-2">
-            {onEditOffer && (
-              <Button variant="outline" size="sm" onClick={onEditOffer}>
-                Ändra/uppdatera erbjudande
-              </Button>
-            )}
-            {onCancel && (
-              <Button variant="outline" size="sm" onClick={() => setConfirmOpen(true)}>
-                Avbryt denna omgång
-              </Button>
-            )}
+        {isActive && onCancel && (
+          <div className="ml-auto">
+            <Button variant="outline" size="sm" onClick={() => setConfirmOpen(true)}>
+              Avbryt denna omgång
+            </Button>
           </div>
         )}
       </div>
