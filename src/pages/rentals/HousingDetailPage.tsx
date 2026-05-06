@@ -423,14 +423,30 @@ const HousingDetailPage = () => {
         );
       })()}
 
-      {!isHistoryMode && (
-        <BulkActionBar
-          selectedCount={selectedApplicants.length}
-          onSendSms={() => setSmsOpen(true)}
-          onSendEmail={() => setEmailOpen(true)}
-          onClear={() => setSelectedApplicants([])}
-        />
-      )}
+      {!isHistoryMode && (() => {
+        const currentRound = showRoundsView ? rounds.find(r => r.id === currentTabValue) : undefined;
+        const isActiveRound = !!currentRound
+          && currentRound.status === 'Active'
+          && !currentRound.responses.some(x => x.response === 'accepted');
+        return (
+          <BulkActionBar
+            selectedCount={selectedApplicants.length}
+            onSendSms={() => setSmsOpen(true)}
+            onSendEmail={() => setEmailOpen(true)}
+            onClear={() => setSelectedApplicants([])}
+            alwaysVisible={isActiveRound}
+            contextLabel={currentRound
+              ? `Omgång ${currentRound.roundNumber} · ${currentRound.selectedApplicants.length} sökande`
+              : undefined}
+            onEditOffer={isActiveRound
+              ? () => {
+                  setActiveRoundTab(currentRound!.id);
+                  setIsEditOfferDialogOpen(true);
+                }
+              : undefined}
+          />
+        );
+      })()}
       <BulkSmsModal
         open={smsOpen}
         onOpenChange={setSmsOpen}
