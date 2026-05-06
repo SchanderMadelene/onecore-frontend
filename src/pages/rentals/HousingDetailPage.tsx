@@ -307,7 +307,7 @@ const HousingDetailPage = () => {
             </div>
 
             {showRoundsView ? (
-              <Tabs value={currentTabValue} onValueChange={setActiveRoundTab} className="w-full">
+              <Tabs value={currentTabValue} onValueChange={(v) => { setActiveRoundTab(v); setSelectedApplicants([]); }} className="w-full">
                 <TabsList className="flex flex-wrap h-auto justify-start">
                   {rounds.map(r => (
                     <TabsTrigger key={r.id} value={r.id}>
@@ -334,17 +334,14 @@ const HousingDetailPage = () => {
                       <RoundSummaryBar
                         round={r}
                         onCancel={() => cancelRound(housingId, r.id)}
-                        onEditOffer={() => {
-                          setActiveRoundTab(r.id);
-                          setIsEditOfferDialogOpen(true);
-                        }}
                         acceptedApplicantName={acceptedName}
                       />
                       <HousingApplicantsTable
                         applicants={displayedApplicants}
                         housingAddress={listing.address}
                         listingId={listing.id}
-                        showSelectionColumn={false}
+                        showSelectionColumn={r.status === 'Active' && !r.responses.some(x => x.response === 'accepted')}
+                        onSelectionChange={setSelectedApplicants}
                         offeredApplicantIds={r.selectedApplicants}
                         previousRoundApplicantIds={previousRoundIds}
                       />
@@ -426,14 +423,30 @@ const HousingDetailPage = () => {
         );
       })()}
 
-      {!isHistoryMode && (
-        <BulkActionBar
-          selectedCount={selectedApplicants.length}
-          onSendSms={() => setSmsOpen(true)}
-          onSendEmail={() => setEmailOpen(true)}
-          onClear={() => setSelectedApplicants([])}
-        />
-      )}
+      {!isHistoryMode && (() => {
+        const currentRound = showRoundsView ? rounds.find(r => r.id === currentTabValue) : undefined;
+        const isActiveRound = !!currentRound
+          && currentRound.status === 'Active'
+          && !currentRound.responses.some(x => x.response === 'accepted');
+        return (
+          <BulkActionBar
+            selectedCount={selectedApplicants.length}
+            onSendSms={() => setSmsOpen(true)}
+            onSendEmail={() => setEmailOpen(true)}
+            onClear={() => setSelectedApplicants([])}
+            alwaysVisible={isActiveRound}
+            contextLabel={currentRound
+              ? `Omgång ${currentRound.roundNumber} · ${currentRound.selectedApplicants.length} sökande`
+              : undefined}
+            onEditOffer={isActiveRound
+              ? () => {
+                  setActiveRoundTab(currentRound!.id);
+                  setIsEditOfferDialogOpen(true);
+                }
+              : undefined}
+          />
+        );
+      })()}
       <BulkSmsModal
         open={smsOpen}
         onOpenChange={setSmsOpen}
