@@ -364,7 +364,7 @@ export function SendHousingOfferDialog({
             Avbryt
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmit}>
-            Skicka erbjudande
+            {isEdit ? "Uppdatera erbjudande" : "Skicka erbjudande"}
           </Button>
         </DialogFooter>
       </DialogContent>
