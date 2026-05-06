@@ -18,6 +18,8 @@ export function BulkActionBar({
   onSendSms,
   onSendEmail,
   onClear,
+  onEditOffer,
+  editOfferLabel = "Ändra/uppdatera erbjudande",
   className
 }: BulkActionBarProps) {
   const isMobile = useIsMobile();
