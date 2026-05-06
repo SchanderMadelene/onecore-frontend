@@ -19,7 +19,7 @@ function statusBadge(round: HousingOfferRound, hasAccepted: boolean, allDeclined
   return <Badge variant="info">Pågår</Badge>;
 }
 
-export function RoundSummaryBar({ round, onCancel, onEditOffer, acceptedApplicantName }: RoundSummaryBarProps) {
+export function RoundSummaryBar({ round, onCancel, acceptedApplicantName }: RoundSummaryBarProps) {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const accepted = round.responses.filter(r => r.response === 'accepted').length;
