@@ -61,7 +61,9 @@ export function SendHousingOfferDialog({
   onConfirm,
   roundNumber,
   parallelActiveRounds = 0,
+  mode = "create",
 }: SendHousingOfferDialogProps) {
+  const isEdit = mode === "edit";
   const defaultDeadline = useMemo(() => addDays(new Date(), 5), []);
   const defaultShowing = useMemo(() => {
     const d = addDays(new Date(), 5);
