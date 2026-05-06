@@ -407,6 +407,25 @@ const HousingDetailPage = () => {
         />
       )}
 
+      {!isHistoryMode && (() => {
+        const editingRound = rounds.find(r => r.id === activeRoundTab);
+        if (!editingRound) return null;
+        return (
+          <SendHousingOfferDialog
+            open={isEditOfferDialogOpen}
+            onOpenChange={setIsEditOfferDialogOpen}
+            recipientCount={editingRound.selectedApplicants.length}
+            housingAddress={listing.address}
+            mode="edit"
+            roundNumber={editingRound.roundNumber}
+            onConfirm={() => {
+              setIsEditOfferDialogOpen(false);
+              sonnerToast.success(`Erbjudandet för omgång ${editingRound.roundNumber} har uppdaterats`);
+            }}
+          />
+        );
+      })()}
+
       {!isHistoryMode && (
         <BulkActionBar
           selectedCount={selectedApplicants.length}
