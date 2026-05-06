@@ -307,7 +307,7 @@ const HousingDetailPage = () => {
             </div>
 
             {showRoundsView ? (
-              <Tabs value={currentTabValue} onValueChange={setActiveRoundTab} className="w-full">
+              <Tabs value={currentTabValue} onValueChange={(v) => { setActiveRoundTab(v); setSelectedApplicants([]); }} className="w-full">
                 <TabsList className="flex flex-wrap h-auto justify-start">
                   {rounds.map(r => (
                     <TabsTrigger key={r.id} value={r.id}>
