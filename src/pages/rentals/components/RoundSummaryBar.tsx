@@ -9,7 +9,6 @@ import type { HousingOfferRound } from "@/contexts/HousingOffersContext";
 interface RoundSummaryBarProps {
   round: HousingOfferRound;
   onCancel?: () => void;
-  onEditOffer?: () => void;
   acceptedApplicantName?: string;
 }
 
