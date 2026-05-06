@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Mail, MessageSquare, X } from "lucide-react";
+import { Mail, MessageSquare, X, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/shared/hooks/use-mobile";
 
@@ -8,6 +8,8 @@ interface BulkActionBarProps {
   onSendSms: () => void;
   onSendEmail: () => void;
   onClear: () => void;
+  onEditOffer?: () => void;
+  editOfferLabel?: string;
   className?: string;
 }
 
