@@ -48,6 +48,7 @@ interface SendHousingOfferDialogProps {
   onConfirm: (dispatch: HousingOfferDispatch) => void;
   roundNumber?: number;
   parallelActiveRounds?: number;
+  mode?: "create" | "edit";
 }
 
 const offerTemplates = messageTemplates.filter((t) => t.category === "Uthyrning");
