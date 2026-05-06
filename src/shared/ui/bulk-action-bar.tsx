@@ -10,8 +10,6 @@ interface BulkActionBarProps {
   onClear: () => void;
   onEditOffer?: () => void;
   editOfferLabel?: string;
-  alwaysVisible?: boolean;
-  contextLabel?: string;
   className?: string;
 }
 
@@ -22,14 +20,11 @@ export function BulkActionBar({
   onClear,
   onEditOffer,
   editOfferLabel = "Ändra/uppdatera erbjudande",
-  alwaysVisible = false,
-  contextLabel,
   className
 }: BulkActionBarProps) {
   const isMobile = useIsMobile();
 
-  const hasSelection = selectedCount > 0;
-  if (!hasSelection && !alwaysVisible) return null;
+  if (selectedCount === 0) return null;
 
   return (
     <div className={cn(
@@ -50,26 +45,18 @@ export function BulkActionBar({
               isMobile ? "w-full items-start justify-between" : "items-center"
             )}
           >
-            {hasSelection ? (
-              <>
-                <span className="text-sm font-medium leading-tight">
-                  {selectedCount} {selectedCount === 1 ? "kund vald" : "kunder valda"}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClear}
-                  className="h-8 px-2 shrink-0"
-                >
-                  <X className="h-4 w-4 mr-1" />
-                  Rensa
-                </Button>
-              </>
-            ) : (
-              <span className="text-sm text-muted-foreground leading-tight">
-                {contextLabel ?? ""}
-              </span>
-            )}
+            <span className="text-sm font-medium leading-tight">
+              {selectedCount} {selectedCount === 1 ? "kund vald" : "kunder valda"}
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClear}
+              className="h-8 px-2 shrink-0"
+            >
+              <X className="h-4 w-4 mr-1" />
+              Rensa
+            </Button>
           </div>
 
           <div className={cn("flex items-center gap-2", isMobile && "w-full")}>
@@ -84,31 +71,28 @@ export function BulkActionBar({
                 {editOfferLabel}
               </Button>
             )}
-            {hasSelection && (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onSendSms}
-                  className={cn("h-9", isMobile ? "flex-1" : "flex-none")}
-                >
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Skicka SMS
-                </Button>
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={onSendEmail}
-                  className={cn("h-9", isMobile ? "flex-1" : "flex-none")}
-                >
-                  <Mail className="h-4 w-4 mr-2" />
-                  Skicka mejl
-                </Button>
-              </>
-            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onSendSms}
+              className={cn("h-9", isMobile ? "flex-1" : "flex-none")}
+            >
+              <MessageSquare className="h-4 w-4 mr-2" />
+              Skicka SMS
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={onSendEmail}
+              className={cn("h-9", isMobile ? "flex-1" : "flex-none")}
+            >
+              <Mail className="h-4 w-4 mr-2" />
+              Skicka mejl
+            </Button>
           </div>
         </div>
       </div>
     </div>
   );
 }
+

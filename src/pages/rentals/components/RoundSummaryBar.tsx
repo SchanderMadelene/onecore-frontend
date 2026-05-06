@@ -9,6 +9,7 @@ import type { HousingOfferRound } from "@/contexts/HousingOffersContext";
 interface RoundSummaryBarProps {
   round: HousingOfferRound;
   onCancel?: () => void;
+  onEditOffer?: () => void;
   acceptedApplicantName?: string;
 }
 
@@ -19,7 +20,7 @@ function statusBadge(round: HousingOfferRound, hasAccepted: boolean, allDeclined
   return <Badge variant="info">Pågår</Badge>;
 }
 
-export function RoundSummaryBar({ round, onCancel, acceptedApplicantName }: RoundSummaryBarProps) {
+export function RoundSummaryBar({ round, onCancel, onEditOffer, acceptedApplicantName }: RoundSummaryBarProps) {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const accepted = round.responses.filter(r => r.response === 'accepted').length;
@@ -66,11 +67,18 @@ export function RoundSummaryBar({ round, onCancel, acceptedApplicantName }: Roun
           </div>
         )}
 
-        {isActive && onCancel && (
-          <div className="ml-auto">
-            <Button variant="outline" size="sm" onClick={() => setConfirmOpen(true)}>
-              Avbryt denna omgång
-            </Button>
+        {isActive && (onCancel || onEditOffer) && (
+          <div className="ml-auto flex items-center gap-2">
+            {onEditOffer && (
+              <Button variant="outline" size="sm" onClick={onEditOffer}>
+                Ändra/uppdatera erbjudande
+              </Button>
+            )}
+            {onCancel && (
+              <Button variant="outline" size="sm" onClick={() => setConfirmOpen(true)}>
+                Avbryt denna omgång
+              </Button>
+            )}
           </div>
         )}
       </div>
