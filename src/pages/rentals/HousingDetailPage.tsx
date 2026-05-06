@@ -334,10 +334,6 @@ const HousingDetailPage = () => {
                       <RoundSummaryBar
                         round={r}
                         onCancel={() => cancelRound(housingId, r.id)}
-                        onEditOffer={() => {
-                          setActiveRoundTab(r.id);
-                          setIsEditOfferDialogOpen(true);
-                        }}
                         acceptedApplicantName={acceptedName}
                       />
                       <HousingApplicantsTable
