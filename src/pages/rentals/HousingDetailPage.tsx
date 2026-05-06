@@ -340,7 +340,8 @@ const HousingDetailPage = () => {
                         applicants={displayedApplicants}
                         housingAddress={listing.address}
                         listingId={listing.id}
-                        showSelectionColumn={false}
+                        showSelectionColumn={r.status === 'Active' && !r.responses.some(x => x.response === 'accepted')}
+                        onSelectionChange={setSelectedApplicants}
                         offeredApplicantIds={r.selectedApplicants}
                         previousRoundApplicantIds={previousRoundIds}
                       />
