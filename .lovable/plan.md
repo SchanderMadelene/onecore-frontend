@@ -1,52 +1,41 @@
 ## Mål
-Återinföra manuella erbjudandeomgångar för bostad enligt tidigare spec (`mem://features/rentals/housing-offer-rounds` + chatt 2026-04-27). Idag finns ingen omgångs-logik kvar i koden — bara den enkla "Skicka erbjudande"-flödet.
 
-## Flöde (bekräftat tidigare)
-1. **Omgång 1** skapas manuellt från **"Erbjud visning"**: handläggaren markerar sökande (top 10 förvaljs) och klickar **"Skicka erbjudande"** → annonsen flyttas till **"Visning"** (= omgång 1 är aktiv).
-2. **Omgång 2+** initieras manuellt från **"Visning"** via knappen **"Starta ny erbjudandeomgång"** i headern. Avbryter inte tidigare omgångar — kör parallellt.
-3. **Förval i ny omgång**: top 5 efter köpoäng som varken har aktivt erbjudande eller tidigare tackat nej.
-4. **Tilldelad** (någon tackat ja → status `Accepted`) blockerar nya omgångar.
-5. Varje omgång kan avbrytas individuellt utan att påverka andra parallella.
+På Visning-tabben (aktiv erbjudandeomgång) ska den flytande **BulkActionBar** alltid vara synlig med knappen **"Ändra/uppdatera erbjudande"**. Markerar man sökande tillkommer SMS/Mejl-knapparna och antalet visas. Knappen öppnar `SendHousingOfferDialog` i edit-läge — visningsdatum/tid, visningsvärd och meddelande går att redigera; mottagare och kanal är låsta.
 
-## Tekniska ändringar
+## Ändringar
 
-### Datamodell — `src/shared/contexts/HousingOffersContext.tsx`
-- Byt single-offer mot `roundsByListing: Record<string, HousingOfferRound[]>`.
-- `HousingOfferRound`: `{ id, roundNumber, status: 'Active' | 'AllDeclined' | 'Expired' | 'Cancelled' | 'Accepted', selectedApplicants: number[], sentAt, expiresAt, responses }`.
-- Nya metoder: `startNewRound(listingId, applicantIds)`, `cancelRound(listingId, roundId)`, `getRoundsForListing(listingId)`, `canStartNewRound(listingId)`.
-- Behåll en deriverad platt `offers`-array för bakåtkompatibilitet (`OfferedHousingTable` m.fl.).
+### 1. `src/pages/rentals/components/RoundSummaryBar.tsx`
+- Ta bort `onEditOffer`-prop och edit-knappen som ligger där nu. Behåll endast "Avbryt denna omgång".
 
-### Header — `src/pages/rentals/components/HousingHeader.tsx`
-- På fliken "Visning": visa knapp **"Starta ny erbjudandeomgång"** när `canStartNewRound` är sant och man inte redan är i urvalsläge.
-- I urvalsläge: dölj den, visa **"Skicka erbjudande"** (disabled tills minst en sökande är vald) + **"Avbryt urval"**.
-- Chip i rubriken: "Omgång N" eller "N omgångar aktiva".
+### 2. `src/shared/ui/bulk-action-bar.tsx`
+- Stöd "alltid synlig"-läge:
+  - Ny prop `alwaysVisible?: boolean` — när `true` renderas baren även om `selectedCount === 0`.
+  - När `selectedCount === 0`: dölj "X kund(er) vald" + "Rensa"-knappen samt SMS/Mejl-knapparna. Visa endast `onEditOffer`-knappen (om angiven) och en kontextlabel (skickas via ny prop `contextLabel?: string`, t.ex. "Omgång 2 · 8 sökande").
+  - När `selectedCount > 0`: visa antal, Rensa, SMS, Mejl och edit-knappen som idag.
+- Edit-knappen behåller sin nuvarande styling (`variant="outline"` med Pencil-ikon).
 
-### Detaljsida — `src/pages/rentals/HousingDetailPage.tsx`
-- State: `isSelectingForNewRound`, `activeRoundTab`.
-- Tabs över sökandelistan: en flik per omgång (`Omgång 1`, `Omgång 2`…) + extra `Ny omgång (urval)` när urvalsläge är aktivt.
-- Per omgångs-tab: `HousingApplicantsTable` med `offeredApplicantIds={round.selectedApplicants}` och dim-information för sökande från tidigare omgångar.
+### 3. `src/pages/rentals/HousingDetailPage.tsx`
+- I omgångs-vyn (`showRoundsView`): identifiera den för tillfället visade omgången (`activeRoundTab`). Om dess status är `Active` (ingen accepterad), aktivera bulk-bar i "alltid synlig"-läge.
+- Skicka till `BulkActionBar`:
+  - `alwaysVisible` när villkoret ovan är uppfyllt.
+  - `contextLabel`, t.ex. `"Omgång {n} · {antal} sökande"`.
+  - `onEditOffer` som öppnar `SendHousingOfferDialog` i `mode="edit"` för den aktiva omgången (kopplingen finns redan).
+- Aktivera urvalskolumn på sökandetabellen även i aktiv omgång (`showSelectionColumn={true}`, `onSelectionChange={setSelectedApplicants}`) så att SMS/Mejl-knapparna kan användas vid behov. Urvalet påverkar inte vilka som får erbjudandet.
+- Rensa `selectedApplicants` när användaren byter mellan omgångsflikar för att inte bära över urval mellan omgångar.
 
-### Ny komponent — `src/pages/rentals/components/RoundSummaryBar.tsx`
-Sammanfattningsrad ovanför tabellen i varje omgång-tab:
-- Statusbadge (Pågår / Accepterad / Alla nekade / Avbruten).
-- Skickat-/utgångsdatum med relativ tid.
-- Svar-räkning: "X ja · Y nej · Z väntar".
-- Knapp **"Avbryt denna omgång"** (med ConfirmDialog) för aktiva omgångar.
+## Beteende
 
-### Tabell — `src/pages/rentals/components/HousingApplicantsTable.tsx`
-- Nya props: `previousRoundByApplicant`, `activeRoundByApplicant`, `declinedInPreviousRoundIds`, `autoSelectCount`.
-- Smart förval i urvalsläge för omgång 2+: top N efter köpoäng som varken har aktivt erbjudande, redan är i denna omgång eller tackat nej tidigare.
-- Sökande som var med i tidigare omgång (men inte nuvarande) dimmas; sökande som är med i båda dimmas inte.
+```text
+Visning-tabben → välj en aktiv omgång
+  → BulkActionBar alltid synlig:
+       "Omgång 2 · 8 sökande"      [Ändra/uppdatera erbjudande]
+  → Bocka i en eller flera sökande:
+       "3 kunder valda"  [Rensa]    [Ändra/uppdatera] [SMS] [Mejl]
+  → Klick på "Ändra/uppdatera erbjudande" öppnar modalen i edit-läge.
+```
 
-### Bekräftelsedialog — `src/features/rentals/components/SendHousingOfferDialog.tsx`
-- Nya props: `roundNumber`, `parallelActiveRounds`.
-- Titel: "Skicka erbjudande för omgång N".
-- Varning när `parallelActiveRounds > 0`: "Omgång X är fortfarande aktiv parallellt — sökande där påverkas inte."
+Avbruten/accepterad omgång → ingen baren (samma som idag).
 
-### Mockdata
-Lägg in 1–2 annonser i "Visning"-fliken som har omgång 1 + parallell omgång 2 så funktionen är synlig direkt (motsvarande `1013` som vi hade tidigare).
+## Notering
 
-## Out of scope
-- Tooltips på disabled checkboxes och förbättrade filter (#3, #5 från förra omgången).
-- Förläng-utgångsdatum-knapp (#6).
-- Acceptance-banner (#7) och informativa tab-labels med progress (#8).
+Om edit-knappen senare ska gå att nå även från Erbjud-kontrakt-tabben eller från Historik kan samma `alwaysVisible`-mönster återanvändas — denna plan begränsar sig till Visning-tabben med aktiv omgång.
