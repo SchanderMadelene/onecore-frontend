@@ -127,10 +127,14 @@ export function SendHousingOfferDialog({
       <DialogContent className="max-w-3xl flex flex-col max-h-[90vh] p-0 gap-0">
         <DialogHeader className="p-6 pb-4">
           <DialogTitle>
-            {roundNumber ? `Skicka erbjudande för omgång ${roundNumber}` : "Skicka erbjudande"}
+            {isEdit
+              ? (roundNumber ? `Uppdatera erbjudande för omgång ${roundNumber}` : "Uppdatera erbjudande")
+              : (roundNumber ? `Skicka erbjudande för omgång ${roundNumber}` : "Skicka erbjudande")}
           </DialogTitle>
           <DialogDescription>
-            Erbjudande till {recipientCount} {recipientCount === 1 ? "sökande" : "sökande"} för {housingAddress}.
+            {isEdit
+              ? `Uppdatera visningsinformation och meddelande till ${recipientCount} ${recipientCount === 1 ? "sökande" : "sökande"} för ${housingAddress}. Mottagarna kan inte ändras.`
+              : `Erbjudande till ${recipientCount} ${recipientCount === 1 ? "sökande" : "sökande"} för ${housingAddress}.`}
             {parallelActiveRounds > 0 && (
               <span className="block mt-2 text-warning">
                 {parallelActiveRounds === 1
