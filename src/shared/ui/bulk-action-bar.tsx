@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Mail, MessageSquare, X } from "lucide-react";
+import { Mail, MessageSquare, X, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/shared/hooks/use-mobile";
 
@@ -8,6 +8,8 @@ interface BulkActionBarProps {
   onSendSms: () => void;
   onSendEmail: () => void;
   onClear: () => void;
+  onEditOffer?: () => void;
+  editOfferLabel?: string;
   className?: string;
 }
 
@@ -16,6 +18,8 @@ export function BulkActionBar({
   onSendSms,
   onSendEmail,
   onClear,
+  onEditOffer,
+  editOfferLabel = "Ändra/uppdatera erbjudande",
   className
 }: BulkActionBarProps) {
   const isMobile = useIsMobile();
@@ -56,6 +60,17 @@ export function BulkActionBar({
           </div>
 
           <div className={cn("flex items-center gap-2", isMobile && "w-full")}>
+            {onEditOffer && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onEditOffer}
+                className={cn("h-9", isMobile ? "flex-1" : "flex-none")}
+              >
+                <Pencil className="h-4 w-4 mr-2" />
+                {editOfferLabel}
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"

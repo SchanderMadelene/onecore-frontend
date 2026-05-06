@@ -48,6 +48,7 @@ interface SendHousingOfferDialogProps {
   onConfirm: (dispatch: HousingOfferDispatch) => void;
   roundNumber?: number;
   parallelActiveRounds?: number;
+  mode?: "create" | "edit";
 }
 
 const offerTemplates = messageTemplates.filter((t) => t.category === "Uthyrning");
@@ -60,7 +61,9 @@ export function SendHousingOfferDialog({
   onConfirm,
   roundNumber,
   parallelActiveRounds = 0,
+  mode = "create",
 }: SendHousingOfferDialogProps) {
+  const isEdit = mode === "edit";
   const defaultDeadline = useMemo(() => addDays(new Date(), 5), []);
   const defaultShowing = useMemo(() => {
     const d = addDays(new Date(), 5);
@@ -124,10 +127,14 @@ export function SendHousingOfferDialog({
       <DialogContent className="max-w-3xl flex flex-col max-h-[90vh] p-0 gap-0">
         <DialogHeader className="p-6 pb-4">
           <DialogTitle>
-            {roundNumber ? `Skicka erbjudande för omgång ${roundNumber}` : "Skicka erbjudande"}
+            {isEdit
+              ? (roundNumber ? `Uppdatera erbjudande för omgång ${roundNumber}` : "Uppdatera erbjudande")
+              : (roundNumber ? `Skicka erbjudande för omgång ${roundNumber}` : "Skicka erbjudande")}
           </DialogTitle>
           <DialogDescription>
-            Erbjudande till {recipientCount} {recipientCount === 1 ? "sökande" : "sökande"} för {housingAddress}.
+            {isEdit
+              ? `Uppdatera visningsinformation och meddelande till ${recipientCount} ${recipientCount === 1 ? "sökande" : "sökande"} för ${housingAddress}. Mottagarna kan inte ändras.`
+              : `Erbjudande till ${recipientCount} ${recipientCount === 1 ? "sökande" : "sökande"} för ${housingAddress}.`}
             {parallelActiveRounds > 0 && (
               <span className="block mt-2 text-warning">
                 {parallelActiveRounds === 1
@@ -357,7 +364,7 @@ export function SendHousingOfferDialog({
             Avbryt
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmit}>
-            Skicka erbjudande
+            {isEdit ? "Uppdatera erbjudande" : "Skicka erbjudande"}
           </Button>
         </DialogFooter>
       </DialogContent>
