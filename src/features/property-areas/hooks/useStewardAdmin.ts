@@ -65,6 +65,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
       const uniqueProperties = new Set(propertiesInArea.map(p => p.propertyCode));
       const residenceCount = propertiesInArea.reduce((sum, p) => sum + (p.residenceCount || 0), 0);
       const parkingCount = propertiesInArea.reduce((sum, p) => sum + (p.parkingCount || 0), 0);
+      const entranceCount = propertiesInArea.reduce((sum, p) => sum + (p.entranceCount || 0), 0);
       
       list.push({
         kvvArea,
@@ -74,6 +75,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
         propertyCount: uniqueProperties.size,
         residenceCount,
         parkingCount,
+        entranceCount,
       });
     });
     
@@ -106,6 +108,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
         costCenter: area.costCenter,
         residenceCount: area.residenceCount,
         parkingCount: area.parkingCount,
+        entranceCount: area.entranceCount,
       });
       grouped.set(kvvArea, properties);
     });

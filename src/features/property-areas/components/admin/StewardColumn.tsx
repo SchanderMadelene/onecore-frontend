@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Pencil, GripVertical, Building2, DoorOpen, Car } from 'lucide-react';
+import { Pencil, GripVertical, Building2, Home, DoorOpen, Car } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { PropertyCard } from './PropertyCard';
@@ -90,6 +90,12 @@ export function StewardColumn({
               <Building2 className="h-3.5 w-3.5" />
               {kvvArea.propertyCount}
             </span>
+            {kvvArea.entranceCount > 0 && (
+              <span className="flex items-center gap-1" title="Uppgångar">
+                <Home className="h-3.5 w-3.5" />
+                {kvvArea.entranceCount}
+              </span>
+            )}
             <span className="flex items-center gap-1" title="Bostäder">
               <DoorOpen className="h-3.5 w-3.5" />
               {kvvArea.residenceCount}

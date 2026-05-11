@@ -21,6 +21,7 @@ export interface KvvAreaInfo {
   propertyCount: number;
   residenceCount: number;
   parkingCount: number;
+  entranceCount: number;
 }
 
 export interface StewardInfo {
@@ -42,4 +43,5 @@ export interface PropertyForAdmin {
   costCenter: string;
   residenceCount?: number;
   parkingCount?: number;
+  entranceCount?: number;
 }
