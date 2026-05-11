@@ -87,7 +87,6 @@ const FavoritesPage = lazyWithRetry(() => import("./pages/favorites/FavoritesPag
 const LeaseContractsPage = lazyWithRetry(() => import("./pages/lease-contracts/LeaseContractsPage"));
 const StrofakturaUnderlagPage = lazyWithRetry(() => import("./pages/strofaktura/StrofakturaUnderlagPage"));
 const PropertyAreasPage = lazyWithRetry(() => import("./pages/property-areas/PropertyAreasPage"));
-const StewardAdminPage = lazyWithRetry(() => import("./pages/property-areas/StewardAdminPage"));
 const IconComparisonPage = lazyWithRetry(() => import("./pages/IconComparisonPage"));
 
 type AppErrorBoundaryProps = { children: React.ReactNode };
@@ -294,14 +293,7 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-          <Route 
-            path="/property-areas/admin" 
-            element={
-              <ProtectedRoute isEnabled={features.showPropertyAreas}>
-                <StewardAdminPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/property-areas/admin" element={<Navigate to="/property-areas" replace />} />
       <Route path="/icon-test" element={<IconComparisonPage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="*" element={<NotFound />} />
