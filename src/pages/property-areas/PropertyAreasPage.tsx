@@ -35,8 +35,8 @@ const PropertyAreasPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const costCenters = getUniqueCostCenters();
-  const [selectedCostCenter, setSelectedCostCenter] = useState(costCenters[0] || "all");
-  const district = getDistrictManagers(selectedCostCenter);
+  const [selectedCostCenter, setSelectedCostCenter] = useState<string>("all");
+  const district = selectedCostCenter === "all" ? undefined : getDistrictManagers(selectedCostCenter);
 
   const {
     kvvAreaList,
@@ -99,6 +99,7 @@ const PropertyAreasPage = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="all">Alla kostnadsställen</SelectItem>
                     {costCenters.map((cc) => (
                       <SelectItem key={cc} value={cc}>
                         {cc} - {getCostCenterName(cc)}
