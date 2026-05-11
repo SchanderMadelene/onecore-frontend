@@ -99,6 +99,7 @@ const PropertyAreasPage = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="all">Alla kostnadsställen</SelectItem>
                     {costCenters.map((cc) => (
                       <SelectItem key={cc} value={cc}>
                         {cc} - {getCostCenterName(cc)}
