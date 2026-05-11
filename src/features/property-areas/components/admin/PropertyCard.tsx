@@ -1,5 +1,5 @@
 import React from 'react';
-import { GripVertical, DoorOpen, Car } from 'lucide-react';
+import { GripVertical, Home, DoorOpen, Car } from 'lucide-react';
 import { PropertyForAdmin } from '../../types/admin-types';
 import { BuildingTypeBadge } from '../BuildingTypeBadge';
 
