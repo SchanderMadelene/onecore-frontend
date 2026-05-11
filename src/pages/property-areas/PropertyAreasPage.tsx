@@ -3,6 +3,7 @@ import { PageLayout } from "@/layouts";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Building2, Home, DoorOpen, Car } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -121,6 +122,43 @@ const PropertyAreasPage = () => {
                   </div>
                 </>
               )}
+
+              {(() => {
+                const totals = kvvAreaList.reduce(
+                  (acc, k) => ({
+                    properties: acc.properties + k.propertyCount,
+                    entrances: acc.entrances + k.entranceCount,
+                    residences: acc.residences + k.residenceCount,
+                    parking: acc.parking + k.parkingCount,
+                  }),
+                  { properties: 0, entrances: 0, residences: 0, parking: 0 }
+                );
+                return (
+                  <div className="flex flex-col sm:ml-auto">
+                    <span className="text-xs text-muted-foreground">
+                      {selectedCostCenter === "all" ? "Totalt" : "Distriktet totalt"}
+                    </span>
+                    <div className="flex items-center gap-4 text-sm font-medium mt-0.5">
+                      <span className="flex items-center gap-1.5" title="Fastigheter">
+                        <Building2 className="h-4 w-4 text-muted-foreground" />
+                        {totals.properties}
+                      </span>
+                      <span className="flex items-center gap-1.5" title="Uppgångar">
+                        <Home className="h-4 w-4 text-muted-foreground" />
+                        {totals.entrances}
+                      </span>
+                      <span className="flex items-center gap-1.5" title="Bostäder">
+                        <DoorOpen className="h-4 w-4 text-muted-foreground" />
+                        {totals.residences}
+                      </span>
+                      <span className="flex items-center gap-1.5" title="Bilplatser">
+                        <Car className="h-4 w-4 text-muted-foreground" />
+                        {totals.parking}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </CardContent>
         </Card>
