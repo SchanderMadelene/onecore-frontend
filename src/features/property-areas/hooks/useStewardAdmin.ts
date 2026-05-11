@@ -108,6 +108,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
         costCenter: area.costCenter,
         residenceCount: area.residenceCount,
         parkingCount: area.parkingCount,
+        entranceCount: area.entranceCount,
       });
       grouped.set(kvvArea, properties);
     });
