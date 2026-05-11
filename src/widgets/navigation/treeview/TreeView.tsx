@@ -55,9 +55,17 @@ export function TreeView({
             children: showBuildings ? propertyNode.children?.map(buildingNode => {
               // If entrances are hidden, flatten entrance children up to building level
               const processedBuilding = showEntrances ? buildingNode : flattenEntrances(buildingNode);
+              const buildingChildren = processedBuilding.children?.map((child: any) => {
+                // Entrance node: keep visible but optionally hide its apartment children
+                if (child.icon === "home") {
+                  return { ...child, children: showApartments ? child.children : [] };
+                }
+                // Direct apartment under building (when entrances flattened or no entrance level)
+                return showApartments ? child : null;
+              }).filter(Boolean);
               return {
                 ...processedBuilding,
-                children: showApartments ? processedBuilding.children : []
+                children: buildingChildren ?? []
               };
             }) : []
           }))
