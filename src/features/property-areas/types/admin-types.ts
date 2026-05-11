@@ -43,4 +43,5 @@ export interface PropertyForAdmin {
   costCenter: string;
   residenceCount?: number;
   parkingCount?: number;
+  entranceCount?: number;
 }
