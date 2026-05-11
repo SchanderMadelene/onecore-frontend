@@ -90,6 +90,12 @@ export function StewardColumn({
               <Building2 className="h-3.5 w-3.5" />
               {kvvArea.propertyCount}
             </span>
+            {kvvArea.entranceCount > 0 && (
+              <span className="flex items-center gap-1" title="Uppgångar">
+                <Home className="h-3.5 w-3.5" />
+                {kvvArea.entranceCount}
+              </span>
+            )}
             <span className="flex items-center gap-1" title="Bostäder">
               <DoorOpen className="h-3.5 w-3.5" />
               {kvvArea.residenceCount}
