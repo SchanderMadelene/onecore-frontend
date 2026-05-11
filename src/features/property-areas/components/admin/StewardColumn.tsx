@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Pencil, GripVertical, Building2, DoorOpen, Car } from 'lucide-react';
+import { Pencil, GripVertical, Building2, Home, DoorOpen, Car } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { PropertyCard } from './PropertyCard';
