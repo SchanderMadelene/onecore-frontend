@@ -93,7 +93,7 @@ const PropertyAreasPage = () => {
           <CardContent className="py-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium">Kostnadställe:</span>
+                <span className="text-sm font-medium">Kostnadsställe/distrikt:</span>
                 <Select value={selectedCostCenter} onValueChange={setSelectedCostCenter}>
                   <SelectTrigger className="w-[240px]">
                     <SelectValue />
