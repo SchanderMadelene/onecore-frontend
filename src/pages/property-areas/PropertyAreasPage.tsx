@@ -1,229 +1,163 @@
-import React, { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { PageLayout } from "@/layouts";
-import { 
-  PropertyAreasTable, 
-  getAllPropertyAreas, 
-  getUniqueCostCenters, 
-  getUniqueStewards,
-  getUniqueBuildingTypes,
-  getUniqueKvvAreas,
-  getCostCenterName,
-  getBuildingTypeName,
-  type PropertyAreaEntry 
-} from "@/features/property-areas";
-import { ColumnSelector, ALL_COLUMNS, DEFAULT_VISIBLE_COLUMNS } from "@/features/property-areas/components/ColumnSelector";
-import { Input } from "@/components/ui/input";
-import { SaveAsFavoriteButton } from "@/components/common";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ExportButton } from "@/components/ui/export-button";
-import { Search, Settings } from "lucide-react";
-import { ClearFiltersButton } from "@/shared/common";
-import { exportToExcel, ExcelColumn } from "@/utils/excelExport";
-import { useToast } from "@/hooks/use-toast";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/hooks/use-toast";
+import {
+  getUniqueCostCenters,
+  getCostCenterName,
+  getDistrictManagers,
+} from "@/features/property-areas";
+import { useStewardAdmin } from "@/features/property-areas/hooks/useStewardAdmin";
+import {
+  StewardColumn,
+  StewardAdminMobile,
+} from "@/features/property-areas/components/admin";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  horizontalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 const PropertyAreasPage = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [costCenterFilter, setCostCenterFilter] = useState("all");
-  const [stewardFilter, setStewardFilter] = useState("all");
-  const [buildingTypeFilter, setBuildingTypeFilter] = useState("all");
-  const [visibleColumns, setVisibleColumns] = useState<string[]>(DEFAULT_VISIBLE_COLUMNS);
 
-  const allEntries = getAllPropertyAreas();
   const costCenters = getUniqueCostCenters();
-  const stewards = getUniqueStewards();
-  const buildingTypes = getUniqueBuildingTypes();
+  const [selectedCostCenter, setSelectedCostCenter] = useState(costCenters[0] || "all");
+  const district = getDistrictManagers(selectedCostCenter);
 
-  const hasActiveFilters = searchQuery !== "" || costCenterFilter !== "all" || stewardFilter !== "all" || buildingTypeFilter !== "all";
+  const {
+    kvvAreaList,
+    propertiesByKvvArea,
+    allStewards,
+    reassignArea,
+  } = useStewardAdmin(selectedCostCenter);
 
-  const clearFilters = () => {
-    setSearchQuery("");
-    setCostCenterFilter("all");
-    setStewardFilter("all");
-    setBuildingTypeFilter("all");
+  // Local order of KVV columns (per cost center)
+  const [orderedIds, setOrderedIds] = useState<string[]>([]);
+  useEffect(() => {
+    setOrderedIds(kvvAreaList.map((k) => k.kvvArea));
+  }, [kvvAreaList]);
+
+  const orderedAreas = orderedIds
+    .map((id) => kvvAreaList.find((k) => k.kvvArea === id))
+    .filter(Boolean) as typeof kvvAreaList;
+
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    setOrderedIds((items) => {
+      const oldIndex = items.indexOf(String(active.id));
+      const newIndex = items.indexOf(String(over.id));
+      if (oldIndex < 0 || newIndex < 0) return items;
+      return arrayMove(items, oldIndex, newIndex);
+    });
   };
 
-  const handleColumnVisibilityChange = (columnKey: string, visible: boolean) => {
-    if (visible) {
-      setVisibleColumns(prev => [...prev, columnKey]);
-    } else {
-      setVisibleColumns(prev => prev.filter(key => key !== columnKey));
-    }
-  };
-
-  const filteredEntries = useMemo(() => {
-    return allEntries.filter(entry => {
-      const matchesSearch = searchQuery === "" ||
-        entry.stewardName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        entry.propertyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        entry.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        entry.propertyCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (entry.stewardPhone && entry.stewardPhone.includes(searchQuery));
-
-      const matchesCostCenter = costCenterFilter === "all" || entry.costCenter === costCenterFilter;
-      const matchesSteward = stewardFilter === "all" || entry.stewardRefNr === stewardFilter;
-      const matchesBuildingType = buildingTypeFilter === "all" || entry.buildingType === buildingTypeFilter;
-
-      return matchesSearch && matchesCostCenter && matchesSteward && matchesBuildingType;
-    });
-  }, [allEntries, searchQuery, costCenterFilter, stewardFilter, buildingTypeFilter]);
-
-  const handleExport = () => {
-    const columns: ExcelColumn<PropertyAreaEntry>[] = [
-      { key: "costCenter", header: "K-ställe" },
-      { key: "kvvArea", header: "KVV-område" },
-      { key: "stewardName", header: "Kvartersvärd" },
-      { key: "stewardPhone", header: "Telefon" },
-      { key: "stewardRefNr", header: "Ref.nr" },
-      { key: "propertyCode", header: "Fastighetsnummer" },
-      { key: "propertyName", header: "Fastighet" },
-      { key: "address", header: "Adress" },
-      { key: "buildingType", header: "Typ" },
-      { key: "residenceCount", header: "Antal bostäder" },
-      { key: "commercialCount", header: "Antal lokaler" },
-      { key: "garageCount", header: "Antal garage" },
-      { key: "parkingCount", header: "Antal p-platser" },
-      { key: "otherCount", header: "Antal övrigt" },
-      { key: "residenceArea", header: "Yta bostad (kvm)" },
-      { key: "commercialArea", header: "Yta lokal (kvm)" },
-      { key: "garageArea", header: "Yta garage (kvm)" },
-      { key: "entranceCount", header: "Antal trappuppgångar" },
-    ];
-
-    const today = new Date().toISOString().split('T')[0];
-    
-    exportToExcel(filteredEntries, columns, {
-      filename: `forvaltningsomraden-${today}`,
-      sheetName: "Förvaltningsområden"
-    });
-
+  const handleReassign = (kvvArea: string, toStewardRefNr: string) => {
+    reassignArea(kvvArea, toStewardRefNr);
+    const newSteward = allStewards.find((s) => s.refNr === toStewardRefNr);
     toast({
-      title: "Export klar",
-      description: `${filteredEntries.length} rader exporterades till Excel`,
+      title: "Ansvarig uppdaterad",
+      description: `${kvvArea} tilldelades ${newSteward?.name ?? toStewardRefNr}.`,
     });
   };
 
   return (
     <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
-      <div className="space-y-6">
+      <div className="flex flex-col h-full space-y-4">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <h1 className="text-3xl font-bold">Förvaltningsområden</h1>
-            <p className="text-muted-foreground mt-1">
-              Överblick över kostnadställen och kvartersvärdar
-            </p>
-          </div>
-          <SaveAsFavoriteButton
-            category="property-areas"
-            pageTitle="Förvaltningsområden"
-            defaultName="Min förvaltningsvy"
-            icon="📍"
-          />
+        <div>
+          <h1 className="text-2xl font-bold">Förvaltningsområden</h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            Byt ansvarig kvartersvärd för KVV-områden
+          </p>
         </div>
 
-        {/* Search and filters */}
+        {/* Cost center + district info */}
         <Card>
-          <CardContent className="pt-6 space-y-4">
-            {/* Sökfält - full bredd */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Sök på kvartersvärd, fastighet, adress, fastighetsnummer eller telefon..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-
-            {/* Filter - egen rad */}
-            <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-center">
-              <Select value={costCenterFilter} onValueChange={setCostCenterFilter}>
-                <SelectTrigger className="w-full sm:w-[180px]">
-                  <SelectValue placeholder="Kostnadställe" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Alla kostnadställen</SelectItem>
-                  {costCenters.map(cc => (
-                    <SelectItem key={cc} value={cc}>
-                      {cc} - {getCostCenterName(cc)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={stewardFilter} onValueChange={setStewardFilter}>
-                <SelectTrigger className="w-full sm:w-[220px]">
-                  <SelectValue placeholder="Kvartersvärd" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Alla kvartersvärdar</SelectItem>
-                  {stewards.map(s => (
-                    <SelectItem key={s.refNr} value={s.refNr}>
-                      {s.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={buildingTypeFilter} onValueChange={setBuildingTypeFilter}>
-                <SelectTrigger className="w-full sm:w-[160px]">
-                  <SelectValue placeholder="Byggnadstyp" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Alla typer</SelectItem>
-                  {buildingTypes.map(type => (
-                    <SelectItem key={type} value={type}>
-                      {getBuildingTypeName(type)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              
-              {hasActiveFilters && (
-                <ClearFiltersButton onClick={clearFilters} />
-              )}
-
-              <div className="sm:ml-auto flex gap-2">
-                {!isMobile && (
-                  <>
-                    <ColumnSelector
-                      columns={ALL_COLUMNS}
-                      visibleColumns={visibleColumns}
-                      onVisibilityChange={handleColumnVisibilityChange}
-                    />
-                    <Button 
-                      variant="outline" 
-                      onClick={() => navigate('/property-areas/admin')}
-                    >
-                      <Settings className="h-4 w-4 mr-2" />
-                      Administrera
-                    </Button>
-                  </>
-                )}
-                <ExportButton 
-                  onExport={handleExport} 
-                  count={filteredEntries.length}
-                  disabled={filteredEntries.length === 0}
-                />
+          <CardContent className="py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium">Kostnadställe:</span>
+                <Select value={selectedCostCenter} onValueChange={setSelectedCostCenter}>
+                  <SelectTrigger className="w-[240px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {costCenters.map((cc) => (
+                      <SelectItem key={cc} value={cc}>
+                        {cc} - {getCostCenterName(cc)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+
+              {district && (
+                <>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-muted-foreground">Distriktschef</span>
+                    <span className="text-sm font-medium">{district.districtManager}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-muted-foreground">Biträdande distriktschef</span>
+                    <span className="text-sm font-medium">{district.deputyDistrictManager}</span>
+                  </div>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Tabell */}
-        <Card>
-          <CardContent className="p-0">
-            <PropertyAreasTable entries={filteredEntries} visibleColumns={visibleColumns} />
-          </CardContent>
-        </Card>
+        {/* Main content */}
+        {isMobile ? (
+          <StewardAdminMobile
+            kvvAreas={orderedAreas}
+            propertiesByKvvArea={propertiesByKvvArea}
+            allStewards={allStewards}
+            onReassignArea={handleReassign}
+          />
+        ) : (
+          <div className="flex-1 min-h-0">
+            <ScrollArea className="h-full w-full">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext items={orderedIds} strategy={horizontalListSortingStrategy}>
+                  <div className="flex gap-4 p-1 min-h-[500px]">
+                    {orderedAreas.map((kvvArea) => (
+                      <StewardColumn
+                        key={kvvArea.kvvArea}
+                        kvvArea={kvvArea}
+                        properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
+                        allStewards={allStewards}
+                        onReassignArea={handleReassign}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
+        )}
       </div>
     </PageLayout>
   );
