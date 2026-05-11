@@ -59,17 +59,21 @@ export function useStewardAdmin(selectedCostCenter: string) {
       const currentStewardRefNr = areaAssignments.get(kvvArea) || originalData.stewardRefNr;
       const currentSteward = allStewards.find(s => s.refNr === currentStewardRefNr);
       
-      // Count properties in this KVV area
-      const propertyCount = filteredAreas.filter(a => 
+      const propertiesInArea = filteredAreas.filter(a => 
         (a.kvvArea || getKvvArea(a.stewardRefNr)) === kvvArea
-      ).length;
+      );
+      const uniqueProperties = new Set(propertiesInArea.map(p => p.propertyCode));
+      const residenceCount = propertiesInArea.reduce((sum, p) => sum + (p.residenceCount || 0), 0);
+      const parkingCount = propertiesInArea.reduce((sum, p) => sum + (p.parkingCount || 0), 0);
       
       list.push({
         kvvArea,
         stewardRefNr: currentStewardRefNr,
         stewardName: currentSteward?.name || currentStewardRefNr,
         stewardPhone: currentSteward?.phone,
-        propertyCount
+        propertyCount: uniqueProperties.size,
+        residenceCount,
+        parkingCount,
       });
     });
     
@@ -99,7 +103,9 @@ export function useStewardAdmin(selectedCostCenter: string) {
         buildingType: area.buildingType,
         kvvArea: kvvArea,
         stewardRefNr: areaAssignments.get(kvvArea) || area.stewardRefNr,
-        costCenter: area.costCenter
+        costCenter: area.costCenter,
+        residenceCount: area.residenceCount,
+        parkingCount: area.parkingCount,
       });
       grouped.set(kvvArea, properties);
     });

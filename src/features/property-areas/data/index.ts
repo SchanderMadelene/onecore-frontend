@@ -1,4 +1,4 @@
-import { PropertyAreaEntry, Steward, CostCenter, COST_CENTER_NAMES, BUILDING_TYPES } from '../types';
+import { PropertyAreaEntry, Steward, CostCenter, COST_CENTER_NAMES, BUILDING_TYPES, DISTRICT_MANAGERS, DistrictManagers } from '../types';
 import { propertyAreaEntries } from './property-areas';
 import { STEWARD_TO_KVV_AREA, getKvvArea, getUniqueKvvAreas } from './kvv-mapping';
 
@@ -42,4 +42,8 @@ export function getCostCenterName(code: string): string {
 
 export function getBuildingTypeName(code: string): string {
   return BUILDING_TYPES[code] || code;
+}
+
+export function getDistrictManagers(costCenter: string): DistrictManagers | undefined {
+  return DISTRICT_MANAGERS[costCenter];
 }

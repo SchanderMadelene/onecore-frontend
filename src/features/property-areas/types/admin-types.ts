@@ -19,6 +19,8 @@ export interface KvvAreaInfo {
   stewardName: string;
   stewardPhone?: string;
   propertyCount: number;
+  residenceCount: number;
+  parkingCount: number;
 }
 
 export interface StewardInfo {
@@ -38,4 +40,6 @@ export interface PropertyForAdmin {
   kvvArea?: string;
   stewardRefNr: string;
   costCenter: string;
+  residenceCount?: number;
+  parkingCount?: number;
 }

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Pencil } from 'lucide-react';
+import { Pencil, GripVertical, Building2, DoorOpen, Car } from 'lucide-react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { PropertyCard } from './PropertyCard';
 import { StewardAssignmentDialog } from './StewardAssignmentDialog';
 import { KvvAreaInfo, PropertyForAdmin } from '../../types/admin-types';
@@ -21,32 +22,52 @@ interface StewardColumnProps {
   onReassignArea?: (kvvArea: string, toStewardRefNr: string) => void;
 }
 
-export function StewardColumn({ 
-  kvvArea, 
-  properties, 
+export function StewardColumn({
+  kvvArea,
+  properties,
   allStewards = [],
-  onReassignArea
+  onReassignArea,
 }: StewardColumnProps) {
   const [showAssignDialog, setShowAssignDialog] = useState(false);
 
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: kvvArea.kvvArea,
+  });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.6 : 1,
+  };
+
   const handleAssign = (newStewardRefNr: string) => {
-    if (onReassignArea) {
-      onReassignArea(kvvArea.kvvArea, newStewardRefNr);
-    }
+    onReassignArea?.(kvvArea.kvvArea, newStewardRefNr);
   };
 
   return (
     <>
-      <Card 
+      <Card
+        ref={setNodeRef}
+        style={style}
         className="flex-shrink-0 w-[280px] flex flex-col h-full"
       >
         <CardHeader className="pb-3 space-y-1">
           <div className="flex items-start justify-between">
-            <div className="font-bold text-lg">{kvvArea.kvvArea}</div>
+            <div className="flex items-center gap-1">
+              <button
+                className="text-muted-foreground hover:text-foreground cursor-grab active:cursor-grabbing -ml-1"
+                {...attributes}
+                {...listeners}
+                aria-label="Dra för att sortera om"
+              >
+                <GripVertical className="h-4 w-4" />
+              </button>
+              <div className="font-bold text-lg">{kvvArea.kvvArea}</div>
+            </div>
             {onReassignArea && (
-              <Button 
-                variant="subtle" 
-                size="icon" 
+              <Button
+                variant="subtle"
+                size="icon"
                 className="h-7 w-7 -mt-1 -mr-2"
                 onClick={() => setShowAssignDialog(true)}
               >
@@ -64,19 +85,29 @@ export function StewardColumn({
               </>
             )}
           </div>
-          <Badge variant="outline" className="w-fit">
-            {properties.length} {properties.length === 1 ? 'fastighet' : 'fastigheter'}
-          </Badge>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground pt-1">
+            <span className="flex items-center gap-1" title="Fastigheter">
+              <Building2 className="h-3.5 w-3.5" />
+              {kvvArea.propertyCount}
+            </span>
+            <span className="flex items-center gap-1" title="Bostäder">
+              <DoorOpen className="h-3.5 w-3.5" />
+              {kvvArea.residenceCount}
+            </span>
+            {kvvArea.parkingCount > 0 && (
+              <span className="flex items-center gap-1" title="P-platser">
+                <Car className="h-3.5 w-3.5" />
+                {kvvArea.parkingCount}
+              </span>
+            )}
+          </div>
         </CardHeader>
-        
+
         <CardContent className="flex-1 p-0 overflow-hidden">
           <ScrollArea className="h-full px-4 pb-4">
             <div className="space-y-2">
-              {properties.map(property => (
-                <PropertyCard 
-                  key={property.id} 
-                  property={property}
-                />
+              {properties.map((property) => (
+                <PropertyCard key={property.id} property={property} />
               ))}
               {properties.length === 0 && (
                 <div className="text-center py-8 text-muted-foreground text-sm">
@@ -87,12 +118,16 @@ export function StewardColumn({
           </ScrollArea>
         </CardContent>
       </Card>
-      
+
       <StewardAssignmentDialog
         open={showAssignDialog}
         onOpenChange={setShowAssignDialog}
         kvvArea={kvvArea.kvvArea}
-        currentSteward={{ refNr: kvvArea.stewardRefNr, name: kvvArea.stewardName, phone: kvvArea.stewardPhone }}
+        currentSteward={{
+          refNr: kvvArea.stewardRefNr,
+          name: kvvArea.stewardName,
+          phone: kvvArea.stewardPhone,
+        }}
         allStewards={allStewards}
         onAssign={handleAssign}
       />
