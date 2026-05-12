@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/shared/hooks/use-mobile";
 
 interface PhotoCaptureProps {
   onPhotoCapture: (photoDataUrl: string) => void;
