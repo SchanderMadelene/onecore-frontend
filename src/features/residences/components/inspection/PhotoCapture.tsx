@@ -50,7 +50,7 @@ export function PhotoCapture({ onPhotoCapture, photoCount, disabled }: PhotoCapt
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
+        {...(isMobile ? { capture: "environment" as const } : {})}
         onChange={handleFileChange}
         className="hidden"
         disabled={disabled}
