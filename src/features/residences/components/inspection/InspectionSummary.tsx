@@ -79,7 +79,7 @@ function collectRemarks(rooms: Room[], inspectionData: Record<string, Inspection
           note: data.componentNotes[key] || "",
           costResponsibility: data.costResponsibility[key],
           costKey: key,
-          cost: data.costs[key] ?? null,
+          cost: calcCost(getDepreciation(key)),
           isCustomComponent: false,
         });
       }
@@ -97,8 +97,9 @@ function collectRemarks(rooms: Room[], inspectionData: Record<string, Inspection
         note: comp.note || "",
         costResponsibility: null,
         costKey: comp.id,
-        cost: data.costs[comp.id] ?? null,
+        cost: calcCost(getDepreciation(comp.type, comp.type)),
         isCustomComponent: true,
+        customType: comp.type,
       });
     });
   });
