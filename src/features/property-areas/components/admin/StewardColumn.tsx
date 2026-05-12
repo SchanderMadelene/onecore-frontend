@@ -3,8 +3,10 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Pencil, GripVertical, Building2, Home, DoorOpen, Car } from 'lucide-react';
-import { useSortable } from '@dnd-kit/sortable';
+import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import { cn } from '@/lib/utils';
 import { PropertyCard } from './PropertyCard';
 import { StewardAssignmentDialog } from './StewardAssignmentDialog';
 import { KvvAreaInfo, PropertyForAdmin } from '../../types/admin-types';
@@ -32,6 +34,12 @@ export function StewardColumn({
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: kvvArea.kvvArea,
+    data: { type: 'column' },
+  });
+
+  const { setNodeRef: setDroppableRef, isOver } = useDroppable({
+    id: `col-${kvvArea.kvvArea}`,
+    data: { type: 'column', kvvArea: kvvArea.kvvArea },
   });
 
   const style: React.CSSProperties = {
@@ -49,7 +57,10 @@ export function StewardColumn({
       <Card
         ref={setNodeRef}
         style={style}
-        className="flex-shrink-0 w-[280px] flex flex-col h-full"
+        className={cn(
+          "flex-shrink-0 w-[280px] flex flex-col h-full transition-shadow",
+          isOver && "ring-2 ring-primary/50"
+        )}
       >
         <CardHeader className="pb-3 space-y-1">
           <div className="flex items-start justify-between">
@@ -111,13 +122,21 @@ export function StewardColumn({
 
         <CardContent className="flex-1 p-0 overflow-hidden">
           <ScrollArea className="h-full px-4 pb-4">
-            <div className="space-y-2">
-              {properties.map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
+            <div ref={setDroppableRef} className="space-y-2 min-h-[120px]">
+              <SortableContext
+                items={properties.map((p) => p.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {properties.map((property) => (
+                  <PropertyCard key={property.id} property={property} kvvArea={kvvArea.kvvArea} />
+                ))}
+              </SortableContext>
               {properties.length === 0 && (
-                <div className="text-center py-8 text-muted-foreground text-sm">
-                  Inga fastigheter
+                <div className={cn(
+                  "text-center py-8 text-muted-foreground text-sm rounded-md border border-dashed",
+                  isOver && "border-primary/50 bg-primary/5"
+                )}>
+                  {isOver ? "Släpp här" : "Inga fastigheter"}
                 </div>
               )}
             </div>

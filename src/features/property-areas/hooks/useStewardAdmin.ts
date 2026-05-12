@@ -41,6 +41,9 @@ export function useStewardAdmin(selectedCostCenter: string) {
   // Pending area changes
   const [pendingChanges, setPendingChanges] = useState<AreaReassignment[]>([]);
   
+  // Per-property KVV overrides (when a card is dragged to another column)
+  const [propertyOverrides, setPropertyOverrides] = useState<Map<string, string>>(() => new Map());
+
   // Reset assignments when cost center changes
   useEffect(() => {
     const newAssignments = new Map<string, string>();
@@ -49,7 +52,15 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     setAreaAssignments(newAssignments);
     setPendingChanges([]);
+    setPropertyOverrides(new Map());
   }, [selectedCostCenter]);
+
+  const resolveKvvArea = useCallback(
+    (area: { id: string; kvvArea?: string; stewardRefNr: string }) => {
+      return propertyOverrides.get(area.id) || area.kvvArea || getKvvArea(area.stewardRefNr);
+    },
+    [propertyOverrides]
+  );
   
   // Get KVV area info list (for columns/accordion)
   const kvvAreaList = useMemo((): KvvAreaInfo[] => {
@@ -59,9 +70,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
       const currentStewardRefNr = areaAssignments.get(kvvArea) || originalData.stewardRefNr;
       const currentSteward = allStewards.find(s => s.refNr === currentStewardRefNr);
       
-      const propertiesInArea = filteredAreas.filter(a => 
-        (a.kvvArea || getKvvArea(a.stewardRefNr)) === kvvArea
-      );
+      const propertiesInArea = filteredAreas.filter(a => resolveKvvArea(a) === kvvArea);
       const uniqueProperties = new Set(propertiesInArea.map(p => p.propertyCode));
       const residenceCount = propertiesInArea.reduce((sum, p) => sum + (p.residenceCount || 0), 0);
       const parkingCount = propertiesInArea.reduce((sum, p) => sum + (p.parkingCount || 0), 0);
@@ -80,7 +89,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     
     return list.sort((a, b) => a.kvvArea.localeCompare(b.kvvArea));
-  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards]);
+  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards, resolveKvvArea]);
   
   // Get properties grouped by KVV area
   const propertiesByKvvArea = useMemo(() => {
@@ -93,7 +102,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
     
     // Group properties by their KVV area
     filteredAreas.forEach(area => {
-      const kvvArea = area.kvvArea || getKvvArea(area.stewardRefNr);
+      const kvvArea = resolveKvvArea(area);
       if (!kvvArea) return;
       
       const properties = grouped.get(kvvArea) || [];
@@ -114,7 +123,16 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     
     return grouped;
-  }, [filteredAreas, kvvAreaList, areaAssignments]);
+  }, [filteredAreas, kvvAreaList, areaAssignments, resolveKvvArea]);
+
+  // Reassign a single property to another KVV area
+  const reassignProperty = useCallback((propertyId: string, toKvvArea: string) => {
+    setPropertyOverrides(prev => {
+      const newMap = new Map(prev);
+      newMap.set(propertyId, toKvvArea);
+      return newMap;
+    });
+  }, []);
   
   // Check if there are unsaved changes
   const isDirty = pendingChanges.length > 0;
@@ -212,6 +230,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
     pendingChanges,
     isDirty,
     reassignArea,
+    reassignProperty,
     undoChange,
     cancelAllChanges,
     saveChanges

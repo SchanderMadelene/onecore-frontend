@@ -18,7 +18,7 @@ import {
 } from "@/features/property-areas/components/admin";
 import {
   DndContext,
-  closestCenter,
+  closestCorners,
   PointerSensor,
   useSensor,
   useSensors,
@@ -44,6 +44,7 @@ const PropertyAreasPage = () => {
     propertiesByKvvArea,
     allStewards,
     reassignArea,
+    reassignProperty,
   } = useStewardAdmin(selectedCostCenter);
 
   // Local order of KVV columns (per cost center)
@@ -61,6 +62,28 @@ const PropertyAreasPage = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
+
+    const activeType = active.data.current?.type;
+
+    // Property card dragged → reassign to target column's KVV area
+    if (activeType === 'property') {
+      const fromKvv = active.data.current?.kvvArea as string | undefined;
+      const overData = over.data.current as { type?: string; kvvArea?: string } | undefined;
+      const toKvv = overData?.kvvArea;
+      if (!toKvv || toKvv === fromKvv) return;
+
+      reassignProperty(String(active.id), toKvv);
+
+      const targetArea = kvvAreaList.find((k) => k.kvvArea === toKvv);
+      const property = propertiesByKvvArea.get(fromKvv ?? '')?.find((p) => p.id === active.id);
+      toast({
+        title: "Fastighet flyttad",
+        description: `${property?.propertyName ?? 'Fastigheten'} flyttades till ${toKvv}${targetArea ? ` (${targetArea.stewardName})` : ''}.`,
+      });
+      return;
+    }
+
+    // Column reorder
     setOrderedIds((items) => {
       const oldIndex = items.indexOf(String(active.id));
       const newIndex = items.indexOf(String(over.id));
@@ -176,7 +199,7 @@ const PropertyAreasPage = () => {
             <ScrollArea className="h-full w-full">
               <DndContext
                 sensors={sensors}
-                collisionDetection={closestCenter}
+                collisionDetection={closestCorners}
                 onDragEnd={handleDragEnd}
               >
                 <SortableContext items={orderedIds} strategy={horizontalListSortingStrategy}>
