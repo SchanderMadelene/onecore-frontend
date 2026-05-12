@@ -15,9 +15,10 @@ import { FileImage } from "lucide-react";
 interface InspectionMoreMenuProps {
   floorplanImage?: string;
   onAddRoom: (name: string) => void;
+  inline?: boolean;
 }
 
-export function InspectionMoreMenu({ floorplanImage, onAddRoom }: InspectionMoreMenuProps) {
+export function InspectionMoreMenu({ floorplanImage, onAddRoom, inline = false }: InspectionMoreMenuProps) {
   const [showFloorplan, setShowFloorplan] = useState(false);
   const [showAddRoom, setShowAddRoom] = useState(false);
   const [newRoomName, setNewRoomName] = useState("");
@@ -32,22 +33,33 @@ export function InspectionMoreMenu({ floorplanImage, onAddRoom }: InspectionMore
 
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
-            <MoreHorizontal className="h-4 w-4" />
-            <span className="sr-only">Fler alternativ</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent side="top" align="start">
-          <DropdownMenuItem onSelect={() => setShowFloorplan(true)} className="py-3 text-base">
+      {inline ? (
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => setShowFloorplan(true)}>
             Se planritning
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setShowAddRoom(true)} className="py-3 text-base">
+          </Button>
+          <Button variant="outline" onClick={() => setShowAddRoom(true)}>
             Lägg till rum/utrymme
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </Button>
+        </div>
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon">
+              <MoreHorizontal className="h-4 w-4" />
+              <span className="sr-only">Fler alternativ</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="top" align="start">
+            <DropdownMenuItem onSelect={() => setShowFloorplan(true)} className="py-3 text-base">
+              Se planritning
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setShowAddRoom(true)} className="py-3 text-base">
+              Lägg till rum/utrymme
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
 
       {/* Floorplan Dialog */}
       <Dialog open={showFloorplan} onOpenChange={setShowFloorplan}>
