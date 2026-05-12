@@ -69,7 +69,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
               left-0 top-14 
               h-[calc(100vh-3.5rem)] 
               transition-transform duration-300 ease-in-out
-              z-[50] lg:z-0
+              z-[50] lg:z-20
               border-r
               shadow-lg lg:shadow-none
               ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
@@ -108,7 +108,7 @@ export const PageLayout = ({ children, isSidebarOpen, setIsSidebarOpen }: PageLa
             overflow-y-auto
             w-full
             relative
-            z-10
+            z-0
           `}
         >
           <PropertyBreadcrumb />
