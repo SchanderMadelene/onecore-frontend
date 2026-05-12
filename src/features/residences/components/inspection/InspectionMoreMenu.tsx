@@ -8,9 +8,29 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/shared/ui/dialog";
-import { Input } from "@/shared/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileImage } from "lucide-react";
+
+const ROOM_OPTIONS = [
+  "Klädkammare",
+  "Entré",
+  "Hall",
+  "Sovrum",
+  "Vardagsrum",
+  "Kök",
+  "Badrum",
+  "WC",
+  "Tvättstuga",
+  "Förråd",
+  "Balkong",
+  "Uteplats",
+  "Altan",
+  "Garderob",
+  "Matplats",
+  "Allrum",
+  "Arbetsrum",
+];
 
 interface InspectionMoreMenuProps {
   floorplanImage?: string;
