@@ -70,9 +70,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
       const currentStewardRefNr = areaAssignments.get(kvvArea) || originalData.stewardRefNr;
       const currentSteward = allStewards.find(s => s.refNr === currentStewardRefNr);
       
-      const propertiesInArea = filteredAreas.filter(a => 
-        (a.kvvArea || getKvvArea(a.stewardRefNr)) === kvvArea
-      );
+      const propertiesInArea = filteredAreas.filter(a => resolveKvvArea(a) === kvvArea);
       const uniqueProperties = new Set(propertiesInArea.map(p => p.propertyCode));
       const residenceCount = propertiesInArea.reduce((sum, p) => sum + (p.residenceCount || 0), 0);
       const parkingCount = propertiesInArea.reduce((sum, p) => sum + (p.parkingCount || 0), 0);
@@ -91,7 +89,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     
     return list.sort((a, b) => a.kvvArea.localeCompare(b.kvvArea));
-  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards]);
+  }, [kvvAreasInCostCenter, areaAssignments, filteredAreas, allStewards, resolveKvvArea]);
   
   // Get properties grouped by KVV area
   const propertiesByKvvArea = useMemo(() => {
@@ -104,7 +102,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
     
     // Group properties by their KVV area
     filteredAreas.forEach(area => {
-      const kvvArea = area.kvvArea || getKvvArea(area.stewardRefNr);
+      const kvvArea = resolveKvvArea(area);
       if (!kvvArea) return;
       
       const properties = grouped.get(kvvArea) || [];
