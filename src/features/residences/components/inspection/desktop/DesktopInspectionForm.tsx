@@ -239,7 +239,7 @@ export function DesktopInspectionForm({
 
       {/* Footer buttons - sticky at bottom */}
       <div className="flex gap-3 justify-end pt-4 border-t mt-4 shrink-0">
-        <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} />
+        <InspectionMoreMenu floorplanImage={floorplanImage} onAddRoom={handleAddRoom} inline />
         <div className="flex-1" />
         <Button variant="outline" onClick={onCancel}>
           Avbryt
