@@ -123,7 +123,16 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     
     return grouped;
-  }, [filteredAreas, kvvAreaList, areaAssignments]);
+  }, [filteredAreas, kvvAreaList, areaAssignments, resolveKvvArea]);
+
+  // Reassign a single property to another KVV area
+  const reassignProperty = useCallback((propertyId: string, toKvvArea: string) => {
+    setPropertyOverrides(prev => {
+      const newMap = new Map(prev);
+      newMap.set(propertyId, toKvvArea);
+      return newMap;
+    });
+  }, []);
   
   // Check if there are unsaved changes
   const isDirty = pendingChanges.length > 0;
