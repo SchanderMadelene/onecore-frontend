@@ -57,7 +57,10 @@ export function StewardColumn({
       <Card
         ref={setNodeRef}
         style={style}
-        className="flex-shrink-0 w-[280px] flex flex-col h-full"
+        className={cn(
+          "flex-shrink-0 w-[280px] flex flex-col h-full transition-shadow",
+          isOver && "ring-2 ring-primary/50"
+        )}
       >
         <CardHeader className="pb-3 space-y-1">
           <div className="flex items-start justify-between">
