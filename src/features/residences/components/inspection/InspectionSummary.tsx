@@ -52,8 +52,9 @@ interface RemarkItem {
   note: string;
   costResponsibility: string | null;
   costKey: string;
-  cost: number | null;
+  cost: number;
   isCustomComponent: boolean;
+  customType?: string;
 }
 
 function collectRemarks(rooms: Room[], inspectionData: Record<string, InspectionRoom>): RemarkItem[] {
