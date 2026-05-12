@@ -230,6 +230,7 @@ export function useStewardAdmin(selectedCostCenter: string) {
     pendingChanges,
     isDirty,
     reassignArea,
+    reassignProperty,
     undoChange,
     cancelAllChanges,
     saveChanges
