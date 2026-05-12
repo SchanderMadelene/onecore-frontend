@@ -78,13 +78,6 @@ const PropertyAreasPage = () => {
       return;
     }
 
-    // Column reorder
-    setOrderedIds((items) => {
-      const oldIndex = items.indexOf(String(active.id));
-      const newIndex = items.indexOf(String(over.id));
-      if (oldIndex < 0 || newIndex < 0) return items;
-      return arrayMove(items, oldIndex, newIndex);
-    });
   };
 
   const handleReassign = (kvvArea: string, toStewardRefNr: string) => {
