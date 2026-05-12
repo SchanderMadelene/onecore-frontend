@@ -45,12 +45,31 @@ export const initialRoomData: InspectionRoom = {
   isHandled: false
 };
 
+// Demo-bilder för att visa hur sparade foton ser ut på en komponent
+const DEMO_PHOTOS = {
+  walls: [
+    "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&q=70",
+    "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=70",
+  ],
+  floor: [
+    "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=400&q=70",
+  ],
+  appliances: [
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=70",
+  ],
+};
+
 export const initializeInspectionData = (rooms: { id: string }[]) => {
   const initialData: Record<string, InspectionRoom> = {};
-  rooms.forEach(room => {
+  rooms.forEach((room, idx) => {
     initialData[room.id] = {
       ...initialRoomData,
       roomId: room.id,
+      // Seedar första rummet med demo-bilder så man ser placeholder-läget
+      componentPhotos:
+        idx === 0
+          ? { ...initialRoomData.componentPhotos, ...DEMO_PHOTOS }
+          : initialRoomData.componentPhotos,
     };
   });
   return initialData;
