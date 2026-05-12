@@ -64,15 +64,12 @@ const DEMO_PHOTOS = {
 
 export const initializeInspectionData = (rooms: { id: string }[]) => {
   const initialData: Record<string, InspectionRoom> = {};
-  rooms.forEach((room, idx) => {
+  rooms.forEach((room) => {
     initialData[room.id] = {
       ...initialRoomData,
       roomId: room.id,
-      // Seedar första rummet med demo-bilder så man ser placeholder-läget
-      componentPhotos:
-        idx === 0
-          ? { ...initialRoomData.componentPhotos, ...DEMO_PHOTOS }
-          : initialRoomData.componentPhotos,
+      // Seedar alla rum med demo-bilder så man ser hur sparade foton ser ut
+      componentPhotos: { ...initialRoomData.componentPhotos, ...DEMO_PHOTOS },
     };
   });
   return initialData;
