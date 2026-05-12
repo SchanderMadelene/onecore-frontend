@@ -24,11 +24,6 @@ import {
   useSensors,
   DragEndEvent,
 } from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  horizontalListSortingStrategy,
-} from "@dnd-kit/sortable";
 
 const PropertyAreasPage = () => {
   const isMobile = useIsMobile();
