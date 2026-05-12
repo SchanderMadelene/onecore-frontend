@@ -123,13 +123,6 @@ export function ComponentDetailSheet({
             </div>
           </div>
 
-          <Separator />
-
-          {/* Create Order Button */}
-          <Button className="w-full" variant="outline">
-            <FileText className="h-4 w-4 mr-2" />
-            Skapa ärende
-          </Button>
         </div>
       </SheetContent>
     </Sheet>
