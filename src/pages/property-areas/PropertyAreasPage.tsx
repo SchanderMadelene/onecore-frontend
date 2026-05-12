@@ -190,19 +190,17 @@ const PropertyAreasPage = () => {
                 collisionDetection={closestCorners}
                 onDragEnd={handleDragEnd}
               >
-                <SortableContext items={orderedIds} strategy={horizontalListSortingStrategy}>
-                  <div className="flex gap-4 p-1 min-h-[500px]">
-                    {orderedAreas.map((kvvArea) => (
-                      <StewardColumn
-                        key={kvvArea.kvvArea}
-                        kvvArea={kvvArea}
-                        properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
-                        allStewards={allStewards}
-                        onReassignArea={handleReassign}
-                      />
-                    ))}
-                  </div>
-                </SortableContext>
+                <div className="flex gap-4 p-1 min-h-[500px]">
+                  {orderedAreas.map((kvvArea) => (
+                    <StewardColumn
+                      key={kvvArea.kvvArea}
+                      kvvArea={kvvArea}
+                      properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
+                      allStewards={allStewards}
+                      onReassignArea={handleReassign}
+                    />
+                  ))}
+                </div>
               </DndContext>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
