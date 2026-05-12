@@ -44,9 +44,11 @@ const PropertyAreasPage = () => {
 
   // Local order of KVV columns (per cost center)
   const [orderedIds, setOrderedIds] = useState<string[]>([]);
+  const kvvAreaKey = kvvAreaList.map((k) => k.kvvArea).join("|");
   useEffect(() => {
-    setOrderedIds(kvvAreaList.map((k) => k.kvvArea));
-  }, [kvvAreaList]);
+    setOrderedIds(kvvAreaKey ? kvvAreaKey.split("|") : []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [kvvAreaKey]);
 
   const orderedAreas = orderedIds
     .map((id) => kvvAreaList.find((k) => k.kvvArea === id))
