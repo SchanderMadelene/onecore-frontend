@@ -34,6 +34,12 @@ export function StewardColumn({
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: kvvArea.kvvArea,
+    data: { type: 'column' },
+  });
+
+  const { setNodeRef: setDroppableRef, isOver } = useDroppable({
+    id: `col-${kvvArea.kvvArea}`,
+    data: { type: 'column', kvvArea: kvvArea.kvvArea },
   });
 
   const style: React.CSSProperties = {
