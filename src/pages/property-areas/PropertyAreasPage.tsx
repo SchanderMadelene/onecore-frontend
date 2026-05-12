@@ -199,7 +199,7 @@ const PropertyAreasPage = () => {
             <ScrollArea className="h-full w-full">
               <DndContext
                 sensors={sensors}
-                collisionDetection={closestCenter}
+                collisionDetection={closestCorners}
                 onDragEnd={handleDragEnd}
               >
                 <SortableContext items={orderedIds} strategy={horizontalListSortingStrategy}>
