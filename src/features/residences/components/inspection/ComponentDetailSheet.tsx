@@ -1,11 +1,10 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { PhotoGallery } from "./PhotoGallery";
 import { ActionChecklist } from "./ActionChecklist";
-import { Camera, Wrench, MessageSquare, Clock, FileText } from "lucide-react";
+import { Camera, Wrench, MessageSquare, Clock } from "lucide-react";
 
 interface ComponentDetailSheetProps {
   isOpen: boolean;
