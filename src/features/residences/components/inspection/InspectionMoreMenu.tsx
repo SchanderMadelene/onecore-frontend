@@ -106,17 +106,19 @@ export function InspectionMoreMenu({ floorplanImage, onAddRoom, inline = false }
             <DialogTitle>Lägg till rum/utrymme</DialogTitle>
           </DialogHeader>
           <div className="space-y-2 py-2">
-            <Label htmlFor="new-room-name">Namn</Label>
-            <Input
-              id="new-room-name"
-              placeholder="t.ex. Klädkammare, Entré..."
-              value={newRoomName}
-              onChange={(e) => setNewRoomName(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleAddRoom();
-              }}
-              autoFocus
-            />
+            <Label htmlFor="new-room-name">Typ av rum/utrymme</Label>
+            <Select value={newRoomName} onValueChange={setNewRoomName}>
+              <SelectTrigger id="new-room-name">
+                <SelectValue placeholder="Välj rum/utrymme..." />
+              </SelectTrigger>
+              <SelectContent>
+                {ROOM_OPTIONS.map((name) => (
+                  <SelectItem key={name} value={name}>
+                    {name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddRoom(false)}>
