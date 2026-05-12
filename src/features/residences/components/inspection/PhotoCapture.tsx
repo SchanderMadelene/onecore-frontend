@@ -12,6 +12,7 @@ interface PhotoCaptureProps {
 
 export function PhotoCapture({ onPhotoCapture, photoCount, disabled }: PhotoCaptureProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
