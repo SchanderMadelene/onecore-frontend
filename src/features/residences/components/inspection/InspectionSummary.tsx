@@ -1,10 +1,40 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import type { Room } from "@/types/api";
 import type { InspectionRoom } from "./types";
-import { COMPONENT_LABELS, getConditionColor, getConditionLabel, hasRemark, getCostResponsibilityLabel } from "./inspection-utils";
+import { COMPONENT_LABELS, hasRemark, getCostResponsibilityLabel } from "./inspection-utils";
+
+// Schablonvärde och avskrivningstid per komponenttyp (mock)
+const COMPONENT_DEPRECIATION: Record<string, { schablon: number; totalYears: number; yearsLeft: number }> = {
+  walls: { schablon: 8000, totalYears: 15, yearsLeft: 6 },
+  floor: { schablon: 25000, totalYears: 20, yearsLeft: 8 },
+  ceiling: { schablon: 5000, totalYears: 15, yearsLeft: 9 },
+  appliances: { schablon: 10000, totalYears: 10, yearsLeft: 3 },
+  kitchenDoors: { schablon: 18000, totalYears: 20, yearsLeft: 12 },
+  baseboards: { schablon: 2000, totalYears: 15, yearsLeft: 7 },
+  interiorDoors: { schablon: 4000, totalYears: 25, yearsLeft: 15 },
+  outlets: { schablon: 500, totalYears: 25, yearsLeft: 10 },
+  switches: { schablon: 500, totalYears: 25, yearsLeft: 10 },
+  windowSills: { schablon: 1500, totalYears: 20, yearsLeft: 8 },
+  windowFrames: { schablon: 6000, totalYears: 30, yearsLeft: 20 },
+  radiators: { schablon: 4000, totalYears: 30, yearsLeft: 18 },
+  ventilation: { schablon: 3000, totalYears: 20, yearsLeft: 10 },
+  shelving: { schablon: 2500, totalYears: 15, yearsLeft: 6 },
+  curtainRods: { schablon: 800, totalYears: 15, yearsLeft: 8 },
+  lighting: { schablon: 2000, totalYears: 15, yearsLeft: 7 },
+  other: { schablon: 1000, totalYears: 10, yearsLeft: 5 },
+};
+
+function getDepreciation(componentKey: string, customType?: string) {
+  return COMPONENT_DEPRECIATION[componentKey] ?? (customType ? COMPONENT_DEPRECIATION[customType] : undefined);
+}
+
+function calcCost(d?: { schablon: number; totalYears: number; yearsLeft: number }) {
+  if (!d || d.totalYears <= 0) return 0;
+  const years = Math.max(0, d.yearsLeft);
+  return Math.round(d.schablon * (years / d.totalYears));
+}
 
 interface InspectionSummaryProps {
   rooms: Room[];
