@@ -122,13 +122,21 @@ export function StewardColumn({
 
         <CardContent className="flex-1 p-0 overflow-hidden">
           <ScrollArea className="h-full px-4 pb-4">
-            <div className="space-y-2">
-              {properties.map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
+            <div ref={setDroppableRef} className="space-y-2 min-h-[120px]">
+              <SortableContext
+                items={properties.map((p) => p.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {properties.map((property) => (
+                  <PropertyCard key={property.id} property={property} kvvArea={kvvArea.kvvArea} />
+                ))}
+              </SortableContext>
               {properties.length === 0 && (
-                <div className="text-center py-8 text-muted-foreground text-sm">
-                  Inga fastigheter
+                <div className={cn(
+                  "text-center py-8 text-muted-foreground text-sm rounded-md border border-dashed",
+                  isOver && "border-primary/50 bg-primary/5"
+                )}>
+                  {isOver ? "Släpp här" : "Inga fastigheter"}
                 </div>
               )}
             </div>
