@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/shared/hooks/use-mobile";
 
 interface PhotoCaptureProps {
   onPhotoCapture: (photoDataUrl: string) => void;
@@ -11,6 +12,7 @@ interface PhotoCaptureProps {
 
 export function PhotoCapture({ onPhotoCapture, photoCount, disabled }: PhotoCaptureProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -48,7 +50,7 @@ export function PhotoCapture({ onPhotoCapture, photoCount, disabled }: PhotoCapt
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
+        {...(isMobile ? { capture: "environment" as const } : {})}
         onChange={handleFileChange}
         className="hidden"
         disabled={disabled}
