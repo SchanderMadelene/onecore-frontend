@@ -31,21 +31,10 @@ export function StewardColumn({
 }: StewardColumnProps) {
   const [showAssignDialog, setShowAssignDialog] = useState(false);
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: kvvArea.kvvArea,
-    data: { type: 'column' },
-  });
-
   const { setNodeRef: setDroppableRef, isOver } = useDroppable({
     id: `col-${kvvArea.kvvArea}`,
     data: { type: 'column', kvvArea: kvvArea.kvvArea },
   });
-
-  const style: React.CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.6 : 1,
-  };
 
   const handleAssign = (newStewardRefNr: string) => {
     onReassignArea?.(kvvArea.kvvArea, newStewardRefNr);
