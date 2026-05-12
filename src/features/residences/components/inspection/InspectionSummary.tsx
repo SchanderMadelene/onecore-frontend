@@ -184,8 +184,8 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
             <h4 className="font-medium text-base mb-3">{roomRemarks[0].roomName}</h4>
 
             <div className="rounded-md border border-border overflow-hidden">
-              {/* Header */}
-              <div className="grid grid-cols-[1fr_60px_90px_90px] items-center gap-2 px-3 py-2 bg-muted/50 text-xs text-muted-foreground">
+              {/* Header (only on sm+) */}
+              <div className="hidden sm:grid grid-cols-[1.5fr_70px_100px_100px] items-center gap-3 px-3 py-2 bg-muted/50 text-xs text-muted-foreground">
                 <span>Komponent</span>
                 <span className="text-right">År kvar</span>
                 <span className="text-right">Schablon</span>
@@ -198,13 +198,14 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
                 return (
                   <div
                     key={remark.costKey}
-                    className={`px-3 py-2 ${
+                    className={`px-3 py-3 ${
                       index < roomRemarks.length - 1 ? 'border-b border-border' : ''
                     }`}
                   >
-                    <div className="grid grid-cols-[1fr_60px_90px_90px] items-center gap-2">
+                    {/* Desktop layout */}
+                    <div className="hidden sm:grid grid-cols-[1.5fr_70px_100px_100px] items-center gap-3">
                       <div className="min-w-0">
-                        <span className="text-sm font-medium">{remark.label}</span>
+                        <div className="text-sm font-medium">{remark.label}</div>
                         {remark.actions.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-1">
                             {remark.actions.map(action => (
@@ -220,7 +221,6 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
                           </p>
                         )}
                       </div>
-
                       <span className="text-sm text-right tabular-nums">
                         {dep ? `${dep.yearsLeft} år` : "—"}
                       </span>
@@ -232,8 +232,48 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
                       </span>
                     </div>
 
+                    {/* Mobile layout: stacked */}
+                    <div className="sm:hidden space-y-2">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <div className="text-sm font-medium">{remark.label}</div>
+                          {remark.costResponsibility && (
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              {getCostResponsibilityLabel(remark.costResponsibility)}
+                            </p>
+                          )}
+                        </div>
+                        <span className="text-sm font-semibold tabular-nums whitespace-nowrap">
+                          {remark.cost.toLocaleString('sv-SE')} kr
+                        </span>
+                      </div>
+                      {remark.actions.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {remark.actions.map(action => (
+                            <Badge key={action} variant="secondary" className="text-xs px-1.5 py-0">
+                              {action}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <span>
+                          År kvar:{" "}
+                          <span className="text-foreground tabular-nums">
+                            {dep ? `${dep.yearsLeft} år` : "—"}
+                          </span>
+                        </span>
+                        <span>
+                          Schablon:{" "}
+                          <span className="text-foreground tabular-nums">
+                            {dep ? `${dep.schablon.toLocaleString('sv-SE')} kr` : "—"}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+
                     {remark.note && (
-                      <p className="text-xs text-muted-foreground mt-1 italic">
+                      <p className="text-xs text-muted-foreground mt-2 italic">
                         {remark.note}
                       </p>
                     )}
@@ -243,11 +283,9 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
 
               {/* Room total */}
               {roomRemarks.some(r => r.cost > 0) && (
-                <div className="grid grid-cols-[1fr_60px_90px_90px] items-center gap-2 px-3 py-2 border-t border-border bg-muted/30">
+                <div className="flex items-center justify-between px-3 py-2 border-t border-border bg-muted/30">
                   <span className="text-sm font-medium">Totalt rum</span>
-                  <span></span>
-                  <span></span>
-                  <span className="text-sm font-semibold text-right tabular-nums">
+                  <span className="text-sm font-semibold tabular-nums">
                     {roomRemarks.reduce((sum, r) => sum + (r.cost || 0), 0).toLocaleString('sv-SE')} kr
                   </span>
                 </div>
