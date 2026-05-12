@@ -41,6 +41,9 @@ export function useStewardAdmin(selectedCostCenter: string) {
   // Pending area changes
   const [pendingChanges, setPendingChanges] = useState<AreaReassignment[]>([]);
   
+  // Per-property KVV overrides (when a card is dragged to another column)
+  const [propertyOverrides, setPropertyOverrides] = useState<Map<string, string>>(() => new Map());
+
   // Reset assignments when cost center changes
   useEffect(() => {
     const newAssignments = new Map<string, string>();
@@ -49,7 +52,15 @@ export function useStewardAdmin(selectedCostCenter: string) {
     });
     setAreaAssignments(newAssignments);
     setPendingChanges([]);
+    setPropertyOverrides(new Map());
   }, [selectedCostCenter]);
+
+  const resolveKvvArea = useCallback(
+    (area: { id: string; kvvArea?: string; stewardRefNr: string }) => {
+      return propertyOverrides.get(area.id) || area.kvvArea || getKvvArea(area.stewardRefNr);
+    },
+    [propertyOverrides]
+  );
   
   // Get KVV area info list (for columns/accordion)
   const kvvAreaList = useMemo((): KvvAreaInfo[] => {

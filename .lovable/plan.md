@@ -1,61 +1,38 @@
-# Återskapa publicerad version av Förvaltningsområden
+## Mål
 
-## Vad som skiljer sig
+Gör fastighetskorten i kanban på `/property-areas` dragbara mellan KVV-kolumner. När ett kort släpps i en annan kolumn flyttas fastigheten till den KVV:n (och därmed dess kvartersvärd).
 
-Publicerad version (`core-symphony.lovable.app/property-areas`) visar **kanban-vyn** med KVV-kolumner som primärvy. Nuvarande preview har ersatt detta med en tabellvy och flyttat kanban till `/property-areas/admin`.
+## Ändringar
 
-Konkreta avvikelser i preview:
+### 1. `useStewardAdmin.ts`
+- Lägg till state `propertyOverrides: Map<propertyId, kvvArea>` som åsidosätter ursprunglig KVV-tillhörighet.
+- Använd overriden i `propertiesByKvvArea`-grupperingen och i räknarna i `kvvAreaList` (propertyCount/residenceCount/parkingCount/entranceCount).
+- Ny funktion `reassignProperty(propertyId, toKvvArea)` som uppdaterar overriden.
+- Nollställ overrides när `selectedCostCenter` byts.
 
-1. `/property-areas` är en tabellvy — i publicerad är det kanban-vyn
-2. Header visar inte distriktschef + biträdande distriktschef inline
-3. Saknar drag-handle på KVV-kolumnerna (omsortering)
-4. KVV-kolumnens header visar "X fastigheter"-badge (fanns inte i publicerad) men saknar aggregerade ikon-counters (fastigheter, bostäder, p-platser)
-5. PropertyCard saknar bostads- och p-platsräknare per fastighet samt drag-handle
-6. Pending changes-panel + Avbryt/Spara-knappar fanns inte i publicerad (auto-save / direkt sparflöde)
-7. Sidomenyn pekar fortfarande på fel route
+### 2. `PropertyCard.tsx`
+- Wrappa kortet med `useSortable({ id: property.id })` från `@dnd-kit/sortable`.
+- Koppla `attributes`/`listeners` till den befintliga `GripVertical`-ikonen (drag-handle).
+- Sätt transform/transition/opacity-style på rotelementet.
 
-## Plan
+### 3. `StewardColumn.tsx`
+- Gör kolumnen till en droppable container via `useDroppable({ id: kvvArea })` (utöver befintlig `useSortable` på själva kolumnen).
+- Wrappa property-listan i `SortableContext` med `verticalListSortingStrategy` och property-id:n.
+- Visuell hover-feedback när något dras över (t.ex. `ring-2 ring-primary/40`).
 
-### 1. Gör kanban till primärvy på `/property-areas`
-- Flytta innehållet i `StewardAdminPage.tsx` till `PropertyAreasPage.tsx` som ny grund
-- Ta bort `/property-areas/admin`-routen (eller låt den redirecta till `/property-areas`)
-- Tabellvy + ColumnSelector + filterkort tas bort från denna sida (tabellen finns redan i andra delar av systemet vid behov)
-
-### 2. Header & filterrad
-- Titel: "Förvaltningsområden", subtitel: "Byt ansvarig kvartersvärd för KVV-områden"
-- En rad: `Kostnadsställe` (Select) + textetiketter "Distriktschef" / "Biträdande distriktschef" med namn bredvid
-- Distriktschef-data hämtas via befintlig kostnadsställe-info eller läggs till i `getCostCenterName`-modulen
-- Ta bort Avbryt/Spara-knappar och `PendingChangesPanel` från denna sida — ändringar sker direkt via `StewardAssignmentDialog` (auto-save mot mock-state)
-
-### 3. KVV-kolumn (StewardColumn)
-- Lägg till drag-handle (GripVertical) i topp-vänster för att kunna ändra ordning på kolumner
-- Ta bort "X fastigheter"-badge i headern
-- Lägg till en ikon-rad: `Building` N (antal fastigheter), `DoorOpen` N (antal bostäder), `Car` N (antal p-platser) — aggregerat från properties
-- Behåll edit-pencil för att byta kvartersvärd
-
-### 4. PropertyCard
-- Lägg till drag-handle (GripVertical) till vänster
-- Lägg till en räknarrad under tag: `DoorOpen` N (bostäder), `Car` N (p-platser, visas bara om > 0)
-- Datan finns redan på `PropertyForAdmin` (residenceCount, parkingCount) eller kan läggas till i typen
-
-### 5. Sortering / drag & drop
-- Ordning på kolumner sparas i lokal state (per kostnadsställe)
-- Använd befintligt dnd-bibliotek om sådant redan finns i projektet, annars enkel hover-baserad reorder via `useState` + drag events (samma mönster som turnover/reorder om det finns)
-
-### 6. Routing & navigation
-- `/property-areas/admin` redirectar till `/property-areas`
-- Sidomenyns "Förvaltningsområden"-länk pekar på `/property-areas`
-- `StewardAdminPage.tsx` kan tas bort när allt flyttats
+### 4. `PropertyAreasPage.tsx`
+- Dela upp DnD-hanteringen så att samma `DndContext` hanterar både kolumn-omsortering och kort-flytt.
+- I `handleDragEnd`: om `active.id` är ett property-id → anropa `reassignProperty(active.id, targetKvvArea)`. Om det är ett kvvArea-id → behåll nuvarande kolumn-omsorteringslogik.
+- Targetkolumnen härleds från `over.data.current` (kolumn-id om släppt på tom yta, annars det andra kortets kolumn).
+- Visa toast: "Fastigheten X flyttades till KVV Y (kvartersvärd Z)".
 
 ## Tekniska detaljer
 
-- Filer som ändras: `src/pages/property-areas/PropertyAreasPage.tsx`, `src/features/property-areas/components/admin/StewardColumn.tsx`, `src/features/property-areas/components/admin/PropertyCard.tsx`, router-fil
-- Filer som tas bort: `src/pages/property-areas/StewardAdminPage.tsx` (innehållet absorberas i PropertyAreasPage)
-- Mock-data: distriktschef + biträdande per kostnadsställe läggs till i `features/property-areas/data` (anonymiserade svenska namn)
-- Inga ikoner på primärknappar (memory-regel) — räknar-ikonerna är dekorativa stat-counters, ej knappar, så tillåtna
-- Mobile-läge (`StewardAdminMobile`) behålls oförändrat
+- ID-kollisioner undviks genom att kolumn-id är `kvvArea`-strängen och property-id är UUID — men för säkerhets skull lägger vi `data: { type: 'column' | 'property', kvvArea }` på sortables/droppables och dispatcher i `handleDragEnd` på `type`.
+- `closestCorners` passar bättre än `closestCenter` när vi mixar kolumner och kort — byt collision-detector.
+- Mobilvyn (`StewardAdminMobile`) berörs inte i denna iteration.
 
-## Frågetecken (kan justeras vid implementation)
+## Frågetecken (kan justeras)
 
-- Om publicerad version har ren auto-save eller om "Spara"-knappen finns någon annanstans — jag tar bort den helt på sidan; säg till om du vill ha tillbaka en sparflöde
-- Tabellvyn (med ColumnSelector + Excel-export) — försvinner från `/property-areas`. Om du vill ha kvar den någonstans, säg vart (t.ex. egen route `/property-areas/lista`)
+- **Persistens:** flytten är bara i lokal state (samma som dagens reassignArea). Säg till om du vill ha en pending-changes-panel + Spara-knapp för kort-flyttar också.
+- **Visuell drop-zone:** ska tomma kolumner ha en tydlig "släpp här"-yta? Föreslår ja, en streckad placeholder när drag pågår.
