@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Pencil, GripVertical, Building2, Home, DoorOpen, Car } from 'lucide-react';
-import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { Pencil, Building2, Home, DoorOpen, Car } from 'lucide-react';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/lib/utils';
 import { PropertyCard } from './PropertyCard';
 import { StewardAssignmentDialog } from './StewardAssignmentDialog';
@@ -32,21 +31,10 @@ export function StewardColumn({
 }: StewardColumnProps) {
   const [showAssignDialog, setShowAssignDialog] = useState(false);
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: kvvArea.kvvArea,
-    data: { type: 'column' },
-  });
-
   const { setNodeRef: setDroppableRef, isOver } = useDroppable({
     id: `col-${kvvArea.kvvArea}`,
     data: { type: 'column', kvvArea: kvvArea.kvvArea },
   });
-
-  const style: React.CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.6 : 1,
-  };
 
   const handleAssign = (newStewardRefNr: string) => {
     onReassignArea?.(kvvArea.kvvArea, newStewardRefNr);
@@ -55,8 +43,6 @@ export function StewardColumn({
   return (
     <>
       <Card
-        ref={setNodeRef}
-        style={style}
         className={cn(
           "flex-shrink-0 w-[280px] flex flex-col h-full transition-shadow",
           isOver && "ring-2 ring-primary/50"
@@ -64,17 +50,7 @@ export function StewardColumn({
       >
         <CardHeader className="pb-3 space-y-1">
           <div className="flex items-start justify-between">
-            <div className="flex items-center gap-1">
-              <button
-                className="text-muted-foreground hover:text-foreground cursor-grab active:cursor-grabbing -ml-1"
-                {...attributes}
-                {...listeners}
-                aria-label="Dra för att sortera om"
-              >
-                <GripVertical className="h-4 w-4" />
-              </button>
-              <div className="font-bold text-lg">{kvvArea.kvvArea}</div>
-            </div>
+            <div className="font-bold text-lg">{kvvArea.kvvArea}</div>
             {onReassignArea && (
               <Button
                 variant="subtle"

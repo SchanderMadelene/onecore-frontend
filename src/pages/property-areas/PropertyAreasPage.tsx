@@ -24,11 +24,6 @@ import {
   useSensors,
   DragEndEvent,
 } from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  horizontalListSortingStrategy,
-} from "@dnd-kit/sortable";
 
 const PropertyAreasPage = () => {
   const isMobile = useIsMobile();
@@ -83,13 +78,6 @@ const PropertyAreasPage = () => {
       return;
     }
 
-    // Column reorder
-    setOrderedIds((items) => {
-      const oldIndex = items.indexOf(String(active.id));
-      const newIndex = items.indexOf(String(over.id));
-      if (oldIndex < 0 || newIndex < 0) return items;
-      return arrayMove(items, oldIndex, newIndex);
-    });
   };
 
   const handleReassign = (kvvArea: string, toStewardRefNr: string) => {
@@ -202,19 +190,17 @@ const PropertyAreasPage = () => {
                 collisionDetection={closestCorners}
                 onDragEnd={handleDragEnd}
               >
-                <SortableContext items={orderedIds} strategy={horizontalListSortingStrategy}>
-                  <div className="flex gap-4 p-1 min-h-[500px]">
-                    {orderedAreas.map((kvvArea) => (
-                      <StewardColumn
-                        key={kvvArea.kvvArea}
-                        kvvArea={kvvArea}
-                        properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
-                        allStewards={allStewards}
-                        onReassignArea={handleReassign}
-                      />
-                    ))}
-                  </div>
-                </SortableContext>
+                <div className="flex gap-4 p-1 min-h-[500px]">
+                  {orderedAreas.map((kvvArea) => (
+                    <StewardColumn
+                      key={kvvArea.kvvArea}
+                      kvvArea={kvvArea}
+                      properties={propertiesByKvvArea.get(kvvArea.kvvArea) || []}
+                      allStewards={allStewards}
+                      onReassignArea={handleReassign}
+                    />
+                  ))}
+                </div>
               </DndContext>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
