@@ -18,7 +18,7 @@ import {
 } from "@/features/property-areas/components/admin";
 import {
   DndContext,
-  closestCenter,
+  closestCorners,
   PointerSensor,
   useSensor,
   useSensors,
