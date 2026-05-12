@@ -185,81 +185,69 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
 
             <div className="rounded-md border border-border overflow-hidden">
               {/* Header */}
-              <div className="grid grid-cols-[1fr_auto_120px] items-center px-3 py-2 bg-muted/50 text-xs text-muted-foreground">
+              <div className="grid grid-cols-[1fr_60px_90px_90px] items-center gap-2 px-3 py-2 bg-muted/50 text-xs text-muted-foreground">
                 <span>Komponent</span>
-                <span className="px-2">Status</span>
-                <span className="text-right">Kostnad (kr)</span>
+                <span className="text-right">År kvar</span>
+                <span className="text-right">Schablon</span>
+                <span className="text-right">Kostnad</span>
               </div>
 
               {/* Rows */}
-              {roomRemarks.map((remark, index) => (
-                <div
-                  key={remark.costKey}
-                  className={`px-3 py-2 ${
-                    index < roomRemarks.length - 1 ? 'border-b border-border' : ''
-                  }`}
-                >
-                  <div className="grid grid-cols-[1fr_auto_120px] items-center gap-2">
-                    <div>
-                      <span className="text-sm font-medium">{remark.label}</span>
-                      {remark.actions.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {remark.actions.map(action => (
-                            <Badge key={action} variant="secondary" className="text-xs px-1.5 py-0">
-                              {action}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-                      {remark.costResponsibility && (
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          {getCostResponsibilityLabel(remark.costResponsibility)}
-                        </p>
-                      )}
+              {roomRemarks.map((remark, index) => {
+                const dep = getDepreciation(remark.componentKey, remark.customType);
+                return (
+                  <div
+                    key={remark.costKey}
+                    className={`px-3 py-2 ${
+                      index < roomRemarks.length - 1 ? 'border-b border-border' : ''
+                    }`}
+                  >
+                    <div className="grid grid-cols-[1fr_60px_90px_90px] items-center gap-2">
+                      <div className="min-w-0">
+                        <span className="text-sm font-medium">{remark.label}</span>
+                        {remark.actions.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {remark.actions.map(action => (
+                              <Badge key={action} variant="secondary" className="text-xs px-1.5 py-0">
+                                {action}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                        {remark.costResponsibility && (
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {getCostResponsibilityLabel(remark.costResponsibility)}
+                          </p>
+                        )}
+                      </div>
+
+                      <span className="text-sm text-right tabular-nums">
+                        {dep ? `${dep.yearsLeft} år` : "—"}
+                      </span>
+                      <span className="text-sm text-right tabular-nums text-muted-foreground">
+                        {dep ? `${dep.schablon.toLocaleString('sv-SE')} kr` : "—"}
+                      </span>
+                      <span className="text-sm font-medium text-right tabular-nums">
+                        {remark.cost.toLocaleString('sv-SE')} kr
+                      </span>
                     </div>
 
-                    <div className="px-2">
-                      {remark.condition ? (
-                        <Badge
-                          variant="outline"
-                          className={`text-xs ${getConditionColor(remark.condition)}`}
-                        >
-                          {getConditionLabel(remark.condition)}
-                        </Badge>
-                      ) : (
-                        <Badge variant="outline" className="text-xs text-muted-foreground">
-                          Detalj
-                        </Badge>
-                      )}
-                    </div>
-
-                    <Input
-                      type="number"
-                      min={0}
-                      placeholder="0"
-                      value={remark.cost ?? ""}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        onCostUpdate(remark.roomId, remark.costKey, val === "" ? null : Number(val));
-                      }}
-                      className="h-8 text-sm text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    />
+                    {remark.note && (
+                      <p className="text-xs text-muted-foreground mt-1 italic">
+                        {remark.note}
+                      </p>
+                    )}
                   </div>
-
-                  {remark.note && (
-                    <p className="text-xs text-muted-foreground mt-1 italic">
-                      {remark.note}
-                    </p>
-                  )}
-                </div>
-              ))}
+                );
+              })}
 
               {/* Room total */}
-              {roomRemarks.some(r => r.cost !== null && r.cost > 0) && (
-                <div className="grid grid-cols-[1fr_auto_120px] items-center px-3 py-2 border-t border-border bg-muted/30">
+              {roomRemarks.some(r => r.cost > 0) && (
+                <div className="grid grid-cols-[1fr_60px_90px_90px] items-center gap-2 px-3 py-2 border-t border-border bg-muted/30">
                   <span className="text-sm font-medium">Totalt rum</span>
                   <span></span>
-                  <span className="text-sm font-semibold text-right pr-3">
+                  <span></span>
+                  <span className="text-sm font-semibold text-right tabular-nums">
                     {roomRemarks.reduce((sum, r) => sum + (r.cost || 0), 0).toLocaleString('sv-SE')} kr
                   </span>
                 </div>
