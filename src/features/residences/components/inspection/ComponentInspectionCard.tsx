@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ChevronRight, Camera, Wrench, MessageSquare } from "lucide-react";
+import { ChevronRight, Camera, Wrench, MessageSquare, Clock } from "lucide-react";
 import { PhotoCapture } from "./PhotoCapture";
 import type { CostResponsibility } from "./types";
 
@@ -17,6 +17,7 @@ interface ComponentInspectionCardProps {
   photoCount: number;
   actions: string[];
   costResponsibility: CostResponsibility;
+  lastInspection?: { condition: string; date: string };
   onConditionChange: (value: string) => void;
   onNoteChange: (value: string) => void;
   onPhotoCapture: (photoDataUrl: string) => void;
