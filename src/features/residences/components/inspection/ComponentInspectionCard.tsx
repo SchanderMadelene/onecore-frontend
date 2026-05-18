@@ -65,8 +65,19 @@ export function ComponentInspectionCard({
   return (
     <div className="border-b border-border last:border-0 py-4">
       {/* Header with indicators */}
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-base font-medium">{label}</h4>
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex flex-col">
+          <h4 className="text-base font-medium">{label}</h4>
+          {lastInspection && (
+            <button
+              onClick={onOpenDetail}
+              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors mt-0.5 -ml-0.5"
+            >
+              <Clock className="h-3 w-3" />
+              <span>Senast: {lastInspection.condition} · {lastInspection.date}</span>
+            </button>
+          )}
+        </div>
         <div className="flex items-center gap-2">
           {photoCount > 0 && (
             <button
