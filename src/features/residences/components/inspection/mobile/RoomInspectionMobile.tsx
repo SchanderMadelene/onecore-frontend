@@ -91,6 +91,7 @@ export function RoomInspectionMobile({
               photoCount={inspectionData.componentPhotos[component.key].length}
               actions={inspectionData.actions[component.key]}
               costResponsibility={inspectionData.costResponsibility[component.key]}
+              lastInspection={component.lastInspection}
               onConditionChange={(value) => onConditionUpdate(component.key, value)}
               onNoteChange={(note) => onComponentNoteUpdate(component.key, note)}
               onPhotoCapture={(photoDataUrl) => onComponentPhotoAdd(component.key, photoDataUrl)}
