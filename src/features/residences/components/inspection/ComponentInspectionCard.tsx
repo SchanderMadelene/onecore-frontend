@@ -33,7 +33,7 @@ const CONDITION_OPTIONS = [
   },
   { 
     value: "Acceptabel", 
-    label: "Acceptabel",
+    label: "OK",
     className: "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600"
   },
   { 
