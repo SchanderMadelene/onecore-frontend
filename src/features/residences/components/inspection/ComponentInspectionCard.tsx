@@ -73,7 +73,7 @@ export function ComponentInspectionCard({
               onClick={onOpenDetail}
               className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors mt-0.5 -ml-0.5"
             >
-              <Clock className="h-3 w-3" />
+              
               <span>Senast: {lastInspection.condition} · {lastInspection.date}</span>
             </button>
           )}
