@@ -1,4 +1,5 @@
 import type { ExtendedInspection, ResidenceInfo } from "../types";
+import demoPhoto from "@/assets/inspection-demo-photo.png";
 
 // Available inspectors for assignment
 export const AVAILABLE_INSPECTORS = [
