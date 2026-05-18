@@ -25,12 +25,13 @@ const COMPONENTS: Array<{
   key: keyof InspectionRoom["conditions"];
   label: string;
   type: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
+  lastInspection?: { condition: string; date: string };
 }> = [
-  { key: "walls", label: "Väggar", type: "walls" },
-  { key: "floor", label: "Golv", type: "floor" },
-  { key: "ceiling", label: "Tak", type: "ceiling" },
-  { key: "appliances", label: "Vitvaror", type: "appliances" },
-  { key: "kitchenDoors", label: "Köksluckor", type: "kitchenDoors" }
+  { key: "walls", label: "Väggar", type: "walls", lastInspection: { condition: "God", date: "2024-01-15" } },
+  { key: "floor", label: "Golv", type: "floor", lastInspection: { condition: "Acceptabel", date: "2024-01-15" } },
+  { key: "ceiling", label: "Tak", type: "ceiling", lastInspection: { condition: "God", date: "2024-01-15" } },
+  { key: "appliances", label: "Vitvaror", type: "appliances", lastInspection: { condition: "God", date: "2023-06-20" } },
+  { key: "kitchenDoors", label: "Köksluckor", type: "kitchenDoors", lastInspection: { condition: "Skadad", date: "2024-01-15" } }
 ];
 
 export function RoomInspectionMobile({
