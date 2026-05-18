@@ -1,4 +1,5 @@
 import type { ExtendedInspection, ResidenceInfo } from "../types";
+import demoPhoto from "@/assets/inspection-demo-photo.png";
 
 // Available inspectors for assignment
 export const AVAILABLE_INSPECTORS = [
@@ -47,13 +48,10 @@ const createEmptyRoomData = (roomId: string) => ({
     kitchenDoors: ""
   },
   componentPhotos: {
-    walls: [
-      "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&q=70",
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=70",
-    ] as string[],
-    floor: ["https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=400&q=70"] as string[],
+    walls: [demoPhoto, demoPhoto] as string[],
+    floor: [demoPhoto] as string[],
     ceiling: [] as string[],
-    appliances: ["https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=70"] as string[],
+    appliances: [demoPhoto] as string[],
     kitchenDoors: [] as string[]
   },
   costResponsibility: {
