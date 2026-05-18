@@ -51,6 +51,7 @@ export function ComponentInspectionCard({
   photoCount,
   actions,
   costResponsibility,
+  lastInspection,
   onConditionChange,
   onNoteChange,
   onPhotoCapture,
