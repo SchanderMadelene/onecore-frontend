@@ -48,10 +48,10 @@ const createEmptyRoomData = (roomId: string) => ({
     kitchenDoors: ""
   },
   componentPhotos: {
-    walls: ["/src/assets/inspection-demo-photo.png", "/src/assets/inspection-demo-photo.png"] as string[],
-    floor: ["/src/assets/inspection-demo-photo.png"] as string[],
+    walls: [demoPhoto, demoPhoto] as string[],
+    floor: [demoPhoto] as string[],
     ceiling: [] as string[],
-    appliances: ["/src/assets/inspection-demo-photo.png"] as string[],
+    appliances: [demoPhoto] as string[],
     kitchenDoors: [] as string[]
   },
   costResponsibility: {
