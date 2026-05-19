@@ -268,6 +268,8 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
-    addCustomRoom
+    addCustomRoom,
+    checklist,
+    setChecklistItem
   };
 }
