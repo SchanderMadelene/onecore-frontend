@@ -55,7 +55,7 @@ export const RoomView = ({
                 ...currentInspection.rooms[room.id],
                 actions: {
                   ...currentInspection.rooms[room.id].actions,
-                  [component]: action
+                  [component]: [action]
                 }
               }
             };

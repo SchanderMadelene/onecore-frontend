@@ -30,41 +30,11 @@ export interface CustomInspectionComponent {
 
 export interface InspectionRoom {
   roomId: string;
-  conditions: {
-    walls: string;
-    floor: string;
-    ceiling: string;
-    appliances: string;
-    kitchenDoors: string;
-  };
-  actions: {
-    walls: string[];
-    floor: string[];
-    ceiling: string[];
-    appliances: string[];
-    kitchenDoors: string[];
-  };
-  componentNotes: {
-    walls: string;
-    floor: string;
-    ceiling: string;
-    appliances: string;
-    kitchenDoors: string;
-  };
-  componentPhotos: {
-    walls: string[];
-    floor: string[];
-    ceiling: string[];
-    appliances: string[];
-    kitchenDoors: string[];
-  };
-  costResponsibility: {
-    walls: CostResponsibility;
-    floor: CostResponsibility;
-    ceiling: CostResponsibility;
-    appliances: CostResponsibility;
-    kitchenDoors: CostResponsibility;
-  };
+  conditions: Record<string, string>;
+  actions: Record<string, string[]>;
+  componentNotes: Record<string, string>;
+  componentPhotos: Record<string, string[]>;
+  costResponsibility: Record<string, CostResponsibility>;
   costs: Record<string, number | null>; // key = component key or custom component id
   customComponents: CustomInspectionComponent[];
   photos: string[];

@@ -2,12 +2,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
 interface ActionChecklistProps {
-  componentType: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
+  componentType: string;
   selectedActions: string[];
   onActionToggle: (action: string) => void;
 }
 
-const ACTION_OPTIONS = {
+const APPLIANCE_ACTIONS = [
+  { value: "repair", label: "Reparation" },
+  { value: "replacement", label: "Byte" },
+  { value: "adjustment", label: "Justering" }
+];
+
+const ACTION_OPTIONS: Record<string, { value: string; label: string }[]> = {
   walls: [
     { value: "painting", label: "Målning" },
     { value: "repair", label: "Reparation" },
@@ -26,11 +32,11 @@ const ACTION_OPTIONS = {
     { value: "sanding", label: "Slipning" },
     { value: "varnishing", label: "Lackering" }
   ],
-  appliances: [
-    { value: "repair", label: "Reparation" },
-    { value: "replacement", label: "Byte" },
-    { value: "adjustment", label: "Justering" }
-  ],
+  appliances: APPLIANCE_ACTIONS,
+  refrigerator: APPLIANCE_ACTIONS,
+  freezer: APPLIANCE_ACTIONS,
+  washingMachine: APPLIANCE_ACTIONS,
+  tumbleDryer: APPLIANCE_ACTIONS,
   kitchenDoors: [
     { value: "painting", label: "Målning" },
     { value: "repair", label: "Reparation" },
@@ -40,7 +46,7 @@ const ACTION_OPTIONS = {
 };
 
 export function ActionChecklist({ componentType, selectedActions, onActionToggle }: ActionChecklistProps) {
-  const actions = ACTION_OPTIONS[componentType];
+  const actions = ACTION_OPTIONS[componentType] ?? APPLIANCE_ACTIONS;
 
   return (
     <div className="space-y-3">

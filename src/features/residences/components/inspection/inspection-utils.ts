@@ -4,6 +4,10 @@ export const COMPONENT_LABELS: Record<string, string> = {
   walls: 'Väggar',
   floor: 'Golv',
   ceiling: 'Tak',
+  refrigerator: 'Kyl',
+  freezer: 'Frys',
+  washingMachine: 'Tvättmaskin',
+  tumbleDryer: 'Torktumlare',
   appliances: 'Vitvaror',
   kitchenDoors: 'Köksluckor',
 };

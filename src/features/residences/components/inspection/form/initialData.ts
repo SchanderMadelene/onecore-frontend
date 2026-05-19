@@ -8,35 +8,50 @@ export const initialRoomData: InspectionRoom = {
     walls: "",
     floor: "",
     ceiling: "",
-    appliances: "",
+    refrigerator: "",
+    freezer: "",
+    washingMachine: "",
+    tumbleDryer: "",
     kitchenDoors: ""
   },
   actions: {
     walls: [],
     floor: [],
     ceiling: [],
-    appliances: [],
+    refrigerator: [],
+    freezer: [],
+    washingMachine: [],
+    tumbleDryer: [],
     kitchenDoors: []
   },
   componentNotes: {
     walls: "",
     floor: "",
     ceiling: "",
-    appliances: "",
+    refrigerator: "",
+    freezer: "",
+    washingMachine: "",
+    tumbleDryer: "",
     kitchenDoors: ""
   },
   componentPhotos: {
     walls: [demoPhoto, demoPhoto],
     floor: [demoPhoto],
     ceiling: [],
-    appliances: [demoPhoto],
+    refrigerator: [demoPhoto],
+    freezer: [],
+    washingMachine: [],
+    tumbleDryer: [],
     kitchenDoors: []
   },
   costResponsibility: {
     walls: null,
     floor: null,
     ceiling: null,
-    appliances: null,
+    refrigerator: null,
+    freezer: null,
+    washingMachine: null,
+    tumbleDryer: null,
     kitchenDoors: null
   },
   costs: {},
@@ -49,7 +64,7 @@ export const initialRoomData: InspectionRoom = {
 const DEMO_PHOTOS = {
   walls: [demoPhoto, demoPhoto],
   floor: [demoPhoto],
-  appliances: [demoPhoto],
+  refrigerator: [demoPhoto],
 };
 
 export const initializeInspectionData = (rooms: { id: string }[]) => {
