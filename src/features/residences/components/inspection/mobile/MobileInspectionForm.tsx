@@ -245,7 +245,7 @@ export function MobileInspectionForm({
                         ? 'ring-2 ring-inset ring-primary bg-primary/5' 
                         : 'hover:ring-1 hover:ring-border'
                     }`} 
-                    onClick={() => { setShowSummary(false); setCurrentRoomIndex(index); }}
+                    onClick={() => { setShowSummary(false); setShowChecklist(false); setCurrentRoomIndex(index); }}
                   >
                     <CardContent className="p-4 text-center space-y-2">
                       <div className="text-sm font-medium leading-tight">{room.name}</div>
