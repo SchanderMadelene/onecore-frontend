@@ -310,7 +310,7 @@ export function MobileInspectionForm({
             variant="outline" 
             size="icon"
             onClick={handlePrevious} 
-            disabled={currentRoomIndex === 0 && !showSummary} 
+            disabled={currentRoomIndex === 0 && !showSummary && !showChecklist} 
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Föregående</span>
@@ -322,9 +322,13 @@ export function MobileInspectionForm({
             <Button onClick={handleSubmit} disabled={!canComplete} className="flex-1">
               Slutför besiktning
             </Button>
-          ) : currentRoomIndex === allRooms.length - 1 ? (
-            <Button onClick={() => setShowSummary(true)} className="flex-1">
+          ) : showChecklist ? (
+            <Button onClick={() => { setShowChecklist(false); setShowSummary(true); }} className="flex-1">
               Sammanställning
+            </Button>
+          ) : currentRoomIndex === allRooms.length - 1 ? (
+            <Button onClick={() => setShowChecklist(true)} className="flex-1">
+              Fortsätt
             </Button>
           ) : (
             <Button 
@@ -341,7 +345,7 @@ export function MobileInspectionForm({
             variant="outline"
             size="icon"
             onClick={handleNext} 
-            disabled={(currentRoomIndex >= allRooms.length - 1 && !showSummary) || showSummary}
+            disabled={showSummary || (currentRoomIndex >= allRooms.length - 1 && !showChecklist && !showSummary && false)}
           >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Nästa</span>
