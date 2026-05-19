@@ -168,7 +168,7 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
                   <p className="text-sm font-medium">{tenantCost.toLocaleString('sv-SE')} kr</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Hyresvärdens ansvar</p>
+                  <p className="text-xs text-muted-foreground">Mimers ansvar</p>
                   <p className="text-sm font-medium">{landlordCost.toLocaleString('sv-SE')} kr</p>
                 </div>
               </div>
