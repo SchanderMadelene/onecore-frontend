@@ -9,7 +9,7 @@ interface ConditionSelectProps {
   onChange: (value: string) => void;
   actions: string[];
   onActionUpdate: (action: string) => void;
-  type: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
+  type: string;
   note: string;
   onNoteChange: (note: string) => void;
 }
