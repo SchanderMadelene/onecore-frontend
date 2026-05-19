@@ -72,6 +72,13 @@ export function RoomInspectionMobile({
     );
   };
 
+  const handleCustomComponentCostResponsibilityUpdate = (id: string, value: CostResponsibility) => {
+    if (!onCustomComponentsUpdate) return;
+    onCustomComponentsUpdate(
+      inspectionData.customComponents.map(c => c.id === id ? { ...c, costResponsibility: value } : c)
+    );
+  };
+
   return (
     <Card>
       <CardContent className="p-4">
@@ -118,6 +125,7 @@ export function RoomInspectionMobile({
               onAdd={handleAddCustomComponent}
               onRemove={handleRemoveCustomComponent}
               onNoteUpdate={handleCustomComponentNoteUpdate}
+              onCostResponsibilityUpdate={handleCustomComponentCostResponsibilityUpdate}
             />
           </div>
         )}
