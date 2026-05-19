@@ -75,7 +75,7 @@ export function ComponentInspectionCard({
               className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors mt-0.5 -ml-0.5"
             >
               
-              <span>Senast: {lastInspection.condition} · {lastInspection.date}</span>
+              <span>Senast: {getConditionLabel(lastInspection.condition)} · {lastInspection.date}</span>
             </button>
           )}
         </div>
