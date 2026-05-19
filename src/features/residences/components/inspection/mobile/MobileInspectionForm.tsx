@@ -273,32 +273,19 @@ export function MobileInspectionForm({
         <ScrollArea ref={scrollAreaRef} className="h-full">
           <div className="px-4 pb-4 pt-4">
             {showSummary ? (
-              <div className="space-y-4">
-                <Card>
-                  <CardContent className="p-4">
-                    <p className="text-sm font-medium mb-2">Är bostaden möblerad vid besiktningstillfället?</p>
-                    <RadioGroup
-                      value={isFurnished ? "yes" : "no"}
-                      onValueChange={(v) => setIsFurnished(v === "yes")}
-                      className="flex gap-4"
-                    >
-                      <div className="flex items-center gap-2">
-                        <RadioGroupItem value="no" id="furnished-no-mobile" />
-                        <Label htmlFor="furnished-no-mobile" className="text-sm">Nej</Label>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <RadioGroupItem value="yes" id="furnished-yes-mobile" />
-                        <Label htmlFor="furnished-yes-mobile" className="text-sm">Ja</Label>
-                      </div>
-                    </RadioGroup>
-                  </CardContent>
-                </Card>
-                <InspectionSummary
-                  rooms={allRooms}
-                  inspectionData={inspectionData}
-                  onCostUpdate={handleCostUpdate}
-                />
-              </div>
+              <InspectionSummary
+                rooms={allRooms}
+                inspectionData={inspectionData}
+                onCostUpdate={handleCostUpdate}
+              />
+            ) : showChecklist ? (
+              <InspectionChecklistStep
+                isFurnished={isFurnished}
+                setIsFurnished={setIsFurnished}
+                checklist={checklist}
+                setChecklistItem={setChecklistItem}
+                idSuffix="mobile"
+              />
             ) : (
               <RoomInspectionMobile 
                 room={currentRoom} 
