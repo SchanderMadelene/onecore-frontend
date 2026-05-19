@@ -164,11 +164,11 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
               <Separator className="my-3" />
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-xs text-muted-foreground">Hyresgästens ansvar</p>
+                  <p className="text-xs text-muted-foreground">Ansvar: Hyresgäst</p>
                   <p className="text-sm font-medium">{tenantCost.toLocaleString('sv-SE')} kr</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Mimers ansvar</p>
+                  <p className="text-xs text-muted-foreground">Ansvar: Mimer</p>
                   <p className="text-sm font-medium">{landlordCost.toLocaleString('sv-SE')} kr</p>
                 </div>
               </div>
