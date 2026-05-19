@@ -44,6 +44,13 @@ const CONDITION_OPTIONS = [
   }
 ];
 
+const APPLIANCE_WARRANTY_YEARS: Record<string, number> = {
+  refrigerator: 5,
+  freezer: 5,
+  washingMachine: 5,
+  tumbleDryer: 5,
+};
+
 export function ComponentInspectionCard({
   componentKey,
   label,
@@ -77,6 +84,11 @@ export function ComponentInspectionCard({
               
               <span>Senast: {getConditionLabel(lastInspection.condition)} · {lastInspection.date}</span>
             </button>
+          )}
+          {APPLIANCE_WARRANTY_YEARS[componentKey] !== undefined && (
+            <span className="text-xs text-muted-foreground mt-0.5">
+              Garantitid: {APPLIANCE_WARRANTY_YEARS[componentKey]} år
+            </span>
           )}
         </div>
         <div className="flex items-center gap-2">
