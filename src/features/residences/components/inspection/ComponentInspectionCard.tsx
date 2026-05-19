@@ -49,7 +49,6 @@ const APPLIANCE_WARRANTY_YEARS: Record<string, number> = {
   freezer: 5,
   washingMachine: 5,
   tumbleDryer: 5,
-  kitchenDoors: 2,
 };
 
 export function ComponentInspectionCard({
