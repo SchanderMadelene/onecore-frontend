@@ -252,10 +252,15 @@ export function DesktopInspectionForm({
           <Button onClick={handleSubmit} disabled={!canComplete}>
             Slutför besiktning
           </Button>
-        ) : (
-          <Button onClick={() => setShowSummary(true)}>
+        ) : showChecklist ? (
+          <Button onClick={() => { setShowChecklist(false); setShowSummary(true); }}>
             <ClipboardList className="h-4 w-4 mr-1" />
             Sammanställning
+          </Button>
+        ) : (
+          <Button onClick={() => setShowChecklist(true)}>
+            Fortsätt
+            <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         )}
       </div>
