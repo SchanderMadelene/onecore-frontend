@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Plus, X } from "lucide-react";
-import type { CustomInspectionComponent, CustomComponentType } from "./types";
+import type { CustomInspectionComponent, CustomComponentType, CostResponsibility } from "./types";
 import { CUSTOM_COMPONENT_TYPES } from "./types";
 
 interface CustomComponentsSectionProps {
@@ -12,6 +14,7 @@ interface CustomComponentsSectionProps {
   onAdd: (type: CustomComponentType) => void;
   onRemove: (id: string) => void;
   onNoteUpdate?: (id: string, note: string) => void;
+  onCostResponsibilityUpdate?: (id: string, value: CostResponsibility) => void;
 }
 
 export function CustomComponentsSection({
@@ -19,6 +22,7 @@ export function CustomComponentsSection({
   onAdd,
   onRemove,
   onNoteUpdate,
+  onCostResponsibilityUpdate,
 }: CustomComponentsSectionProps) {
   const [open, setOpen] = useState(false);
 
@@ -94,11 +98,38 @@ export function CustomComponentsSection({
                   <X className="h-3.5 w-3.5" />
                 </Button>
               </div>
+
+              {onCostResponsibilityUpdate && (
+                <div className="mt-2">
+                  <span className="text-xs text-muted-foreground mb-1.5 block">Kostnadsansvar</span>
+                  <RadioGroup
+                    value={comp.costResponsibility || ""}
+                    onValueChange={(value) =>
+                      onCostResponsibilityUpdate(comp.id, value as CostResponsibility)
+                    }
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="tenant" id={`${comp.id}-tenant`} />
+                      <Label htmlFor={`${comp.id}-tenant`} className="text-sm font-normal cursor-pointer">
+                        Hyresgäst
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="landlord" id={`${comp.id}-landlord`} />
+                      <Label htmlFor={`${comp.id}-landlord`} className="text-sm font-normal cursor-pointer">
+                        Mimer
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+
               <Input
                 placeholder="Anteckning..."
                 value={comp.note || ""}
                 onChange={(e) => onNoteUpdate?.(comp.id, e.target.value)}
-                className="mt-1.5 h-8 text-sm"
+                className="mt-2 h-8 text-sm"
               />
             </div>
           ))}

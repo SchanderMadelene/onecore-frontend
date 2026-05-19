@@ -25,6 +25,7 @@ export interface CustomInspectionComponent {
   type: CustomComponentType;
   label: string;
   note?: string;
+  costResponsibility?: CostResponsibility;
 }
 
 export interface InspectionRoom {
