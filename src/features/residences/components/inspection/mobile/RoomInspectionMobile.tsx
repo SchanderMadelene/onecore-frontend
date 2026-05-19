@@ -96,6 +96,8 @@ export function RoomInspectionMobile({
     );
   };
 
+  const COMPONENTS = getComponentsForRoom(room.roomType?.roomTypeCode);
+
   return (
     <Card>
       <CardContent className="p-4">
