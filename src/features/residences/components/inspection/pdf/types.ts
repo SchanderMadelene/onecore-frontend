@@ -22,6 +22,10 @@ const COMPONENT_LABELS: Record<string, string> = {
   walls: 'Väggar',
   floor: 'Golv',
   ceiling: 'Tak',
+  refrigerator: 'Kyl',
+  freezer: 'Frys',
+  washingMachine: 'Tvättmaskin',
+  tumbleDryer: 'Torktumlare',
   appliances: 'Vitvaror',
   kitchenDoors: 'Köksluckor',
 };
@@ -36,7 +40,7 @@ export function extractCostItems(
   const costItems: CostItem[] = [];
 
   Object.entries(inspection.rooms).forEach(([roomId, room]) => {
-    const components = ['walls', 'floor', 'ceiling', 'appliances', 'kitchenDoors'] as const;
+    const components = ['walls', 'floor', 'ceiling', 'refrigerator', 'freezer', 'washingMachine', 'tumbleDryer', 'appliances', 'kitchenDoors'] as const;
 
     components.forEach((component) => {
       const responsibility = room.costResponsibility?.[component];
