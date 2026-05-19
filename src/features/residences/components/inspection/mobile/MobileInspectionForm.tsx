@@ -13,6 +13,7 @@ import { InspectionProgressIndicator } from "./InspectionProgressIndicator";
 import { RoomInspectionMobile } from "./RoomInspectionMobile";
 import { InspectorSelectionCard } from "./InspectorSelectionCard";
 import { InspectionSummary } from "../InspectionSummary";
+import { InspectionChecklistStep } from "../InspectionChecklistStep";
 import { InspectionMoreMenu } from "../InspectionMoreMenu";
 
 interface MobileInspectionFormProps {
