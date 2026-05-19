@@ -44,6 +44,14 @@ const CONDITION_OPTIONS = [
   }
 ];
 
+const APPLIANCE_WARRANTY_YEARS: Record<string, number> = {
+  refrigerator: 5,
+  freezer: 5,
+  washingMachine: 5,
+  tumbleDryer: 5,
+  kitchenDoors: 2,
+};
+
 export function ComponentInspectionCard({
   componentKey,
   label,
