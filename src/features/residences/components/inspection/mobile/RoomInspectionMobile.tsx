@@ -21,18 +21,35 @@ interface RoomInspectionMobileProps {
   onCustomComponentsUpdate?: (components: CustomInspectionComponent[]) => void;
 }
 
-const COMPONENTS: Array<{
+type ComponentDef = {
   key: keyof InspectionRoom["conditions"];
   label: string;
   type: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
   lastInspection?: { condition: string; date: string };
-}> = [
+};
+
+const BASE_COMPONENTS: ComponentDef[] = [
   { key: "walls", label: "Väggar", type: "walls", lastInspection: { condition: "God", date: "2024-01-15" } },
   { key: "floor", label: "Golv", type: "floor", lastInspection: { condition: "Acceptabel", date: "2024-01-15" } },
   { key: "ceiling", label: "Tak", type: "ceiling", lastInspection: { condition: "God", date: "2024-01-15" } },
-  { key: "appliances", label: "Vitvaror", type: "appliances", lastInspection: { condition: "God", date: "2023-06-20" } },
-  { key: "kitchenDoors", label: "Köksluckor", type: "kitchenDoors", lastInspection: { condition: "Skadad", date: "2024-01-15" } }
 ];
+
+function getComponentsForRoom(roomTypeCode?: string): ComponentDef[] {
+  if (roomTypeCode === "KOK") {
+    return [
+      ...BASE_COMPONENTS,
+      { key: "appliances", label: "Kyl/frys", type: "appliances", lastInspection: { condition: "God", date: "2023-06-20" } },
+      { key: "kitchenDoors", label: "Köksluckor", type: "kitchenDoors", lastInspection: { condition: "Skadad", date: "2024-01-15" } },
+    ];
+  }
+  if (roomTypeCode === "BADRUM") {
+    return [
+      ...BASE_COMPONENTS,
+      { key: "appliances", label: "Tvättmaskin/torktumlare", type: "appliances", lastInspection: { condition: "God", date: "2023-06-20" } },
+    ];
+  }
+  return BASE_COMPONENTS;
+}
 
 export function RoomInspectionMobile({
   room,
