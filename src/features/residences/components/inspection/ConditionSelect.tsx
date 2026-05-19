@@ -81,6 +81,7 @@ export const ConditionSelect = ({
         );
       case "appliances":
       case "kitchenDoors":
+      default:
         return (
           <>
             <Button
