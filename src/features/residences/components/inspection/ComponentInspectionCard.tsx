@@ -148,7 +148,7 @@ export function ComponentInspectionCard({
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="landlord" id={`${componentKey}-landlord`} />
               <Label htmlFor={`${componentKey}-landlord`} className="text-sm font-normal cursor-pointer">
-                Hyresvärd
+                Mimer
               </Label>
             </div>
           </RadioGroup>

@@ -56,7 +56,7 @@ export const hasRemark = (condition: string): boolean => {
 };
 
 export const getCostResponsibilityLabel = (responsibility: string): string => {
-  return responsibility === 'tenant' ? 'Hyresgästens ansvar' : 'Hyresvärdens ansvar';
+  return responsibility === 'tenant' ? 'Hyresgästens ansvar' : 'Mimers ansvar';
 };
 
 import type { InspectionRoom } from "./types";

@@ -173,7 +173,7 @@ export function generateInspectionPdf(options: PdfOptions): jsPDF {
 
         // Visa kostnadsansvar endast för avflyttande
         if (recipient === 'outgoing' && responsibility) {
-          const respText = responsibility === 'tenant' ? 'Hyresgästens ansvar' : 'Hyresvärdens ansvar';
+          const respText = responsibility === 'tenant' ? 'Hyresgästens ansvar' : 'Mimers ansvar';
           doc.text(`    Kostnadsansvar: ${respText}`, MARGIN, yPos);
           yPos += LINE_HEIGHT;
         }
@@ -224,7 +224,7 @@ export function generateInspectionPdf(options: PdfOptions): jsPDF {
         }
         
         // Visa kostnadsansvar
-        const respText = item.responsibility === 'tenant' ? 'Hyresgästens ansvar' : 'Hyresvärdens ansvar';
+        const respText = item.responsibility === 'tenant' ? 'Hyresgästens ansvar' : 'Mimers ansvar';
         doc.text(`   Ansvar: ${respText}`, MARGIN, yPos);
         yPos += LINE_HEIGHT;
         
