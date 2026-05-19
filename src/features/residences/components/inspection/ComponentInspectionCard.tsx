@@ -61,7 +61,7 @@ export function ComponentInspectionCard({
 }: ComponentInspectionCardProps) {
   const [isNoteFocused, setIsNoteFocused] = useState(false);
   const hasLongNote = note.length > 50;
-  const showCostResponsibility = condition === "Skadad" || condition === "Acceptabel";
+  const showCostResponsibility = condition === "Skadad";
 
   return (
     <div className="border-b border-border last:border-0 py-4">
