@@ -101,7 +101,7 @@ export function CustomComponentsSection({
 
               {onCostResponsibilityUpdate && (
                 <div className="mt-2">
-                  <span className="text-xs text-muted-foreground mb-1.5 block">Kostnadsansvar</span>
+                  <span className="text-muted-foreground mb-1.5 block text-sm">Kostnadsansvar</span>
                   <RadioGroup
                     value={comp.costResponsibility || ""}
                     onValueChange={(value) =>
