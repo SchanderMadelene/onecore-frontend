@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ChevronRight, Camera, Wrench, MessageSquare, Clock } from "lucide-react";
 import { PhotoCapture } from "./PhotoCapture";
+import { getConditionLabel } from "./inspection-utils";
 import type { CostResponsibility } from "./types";
 
 interface ComponentInspectionCardProps {
@@ -74,7 +75,7 @@ export function ComponentInspectionCard({
               className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors mt-0.5 -ml-0.5"
             >
               
-              <span>Senast: {lastInspection.condition} · {lastInspection.date}</span>
+              <span>Senast: {getConditionLabel(lastInspection.condition)} · {lastInspection.date}</span>
             </button>
           )}
         </div>

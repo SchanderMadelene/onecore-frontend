@@ -43,7 +43,7 @@ export const getConditionLabel = (condition: string): string => {
     case 'Bra':
       return 'Bra';
     case 'Acceptabel':
-      return 'Acceptabel';
+      return 'OK';
     case 'Skadad':
       return 'Skadad';
     default:
