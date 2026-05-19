@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ChevronRight, Camera, Wrench, MessageSquare, Clock } from "lucide-react";
 import { PhotoCapture } from "./PhotoCapture";
+import { getConditionLabel } from "./inspection-utils";
 import type { CostResponsibility } from "./types";
 
 interface ComponentInspectionCardProps {
