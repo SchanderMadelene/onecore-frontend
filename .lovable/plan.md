@@ -1,4 +1,6 @@
-Byt ut etiketten "Acceptabel" mot "OK" på skickknapparna i `ComponentInspectionCard.tsx`. Värdet i datat (`"Acceptabel"`) behålls oförändrat så att ingen logik, historik eller mock-data påverkas — bara den synliga labeln ändras.
+Ändra `ComponentInspectionCard.tsx` så att "Kostnadsansvar"-sektionen endast visas när skicket är `Skadad`, inte längre när det är `Acceptabel` (OK).
 
 Ändring:
-- `src/features/residences/components/inspection/ComponentInspectionCard.tsx`: i `CONDITION_OPTIONS`, ändra `label: "Acceptabel"` → `label: "OK"` för objektet med `value: "Acceptabel"`.
+- `src/features/residences/components/inspection/ComponentInspectionCard.tsx`: ändra `const showCostResponsibility = condition === "Skadad" || condition === "Acceptabel";` → `const showCostResponsibility = condition === "Skadad";`
+
+Ingen annan logik, data eller mock påverkas.
