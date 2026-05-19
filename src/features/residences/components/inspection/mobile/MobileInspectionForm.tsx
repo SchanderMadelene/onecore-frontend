@@ -38,6 +38,7 @@ export function MobileInspectionForm({
   floorplanImage
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
+  const [showChecklist, setShowChecklist] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [showInspectorSelection, setShowInspectorSelection] = useState(!existingInspection);
   const [customRooms, setCustomRooms] = useState<Room[]>([]);
@@ -62,7 +63,9 @@ export function MobileInspectionForm({
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
-    addCustomRoom
+    addCustomRoom,
+    checklist,
+    setChecklistItem
   } = useInspectionForm(rooms, existingInspection);
 
   const allRooms = [...rooms, ...customRooms];
