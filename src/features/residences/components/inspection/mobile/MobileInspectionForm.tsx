@@ -91,16 +91,22 @@ export function MobileInspectionForm({
   };
 
   const handleNext = () => {
-    if (currentRoomIndex < allRooms.length - 1) {
+    if (showChecklist) {
+      setShowChecklist(false);
+      setShowSummary(true);
+    } else if (currentRoomIndex < allRooms.length - 1) {
       setCurrentRoomIndex(currentRoomIndex + 1);
     } else {
-      setShowSummary(true);
+      setShowChecklist(true);
     }
   };
 
   const handlePrevious = () => {
     if (showSummary) {
       setShowSummary(false);
+      setShowChecklist(true);
+    } else if (showChecklist) {
+      setShowChecklist(false);
     } else if (currentRoomIndex > 0) {
       setCurrentRoomIndex(currentRoomIndex - 1);
     }
@@ -138,7 +144,7 @@ export function MobileInspectionForm({
         viewport.scrollTop = 0;
       }
     }
-  }, [currentRoomIndex, showSummary]);
+  }, [currentRoomIndex, showSummary, showChecklist]);
 
   if (showInspectorSelection) {
     return (
