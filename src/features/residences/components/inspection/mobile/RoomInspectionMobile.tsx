@@ -22,9 +22,9 @@ interface RoomInspectionMobileProps {
 }
 
 type ComponentDef = {
-  key: keyof InspectionRoom["conditions"];
+  key: string;
   label: string;
-  type: "walls" | "floor" | "ceiling" | "appliances" | "kitchenDoors";
+  type: string;
   lastInspection?: { condition: string; date: string };
 };
 
@@ -38,14 +38,16 @@ function getComponentsForRoom(roomTypeCode?: string): ComponentDef[] {
   if (roomTypeCode === "KOK") {
     return [
       ...BASE_COMPONENTS,
-      { key: "appliances", label: "Kyl/frys", type: "appliances", lastInspection: { condition: "God", date: "2023-06-20" } },
+      { key: "refrigerator", label: "Kyl", type: "refrigerator", lastInspection: { condition: "God", date: "2023-06-20" } },
+      { key: "freezer", label: "Frys", type: "freezer", lastInspection: { condition: "God", date: "2023-06-20" } },
       { key: "kitchenDoors", label: "Köksluckor", type: "kitchenDoors", lastInspection: { condition: "Skadad", date: "2024-01-15" } },
     ];
   }
   if (roomTypeCode === "BADRUM") {
     return [
       ...BASE_COMPONENTS,
-      { key: "appliances", label: "Tvättmaskin/torktumlare", type: "appliances", lastInspection: { condition: "God", date: "2023-06-20" } },
+      { key: "washingMachine", label: "Tvättmaskin", type: "washingMachine", lastInspection: { condition: "God", date: "2023-06-20" } },
+      { key: "tumbleDryer", label: "Torktumlare", type: "tumbleDryer", lastInspection: { condition: "God", date: "2023-06-20" } },
     ];
   }
   return BASE_COMPONENTS;
