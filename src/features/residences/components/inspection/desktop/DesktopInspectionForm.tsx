@@ -1,18 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { RoomInspectionMobile } from "../mobile/RoomInspectionMobile";
 import { InspectorSelectionCard } from "../mobile/InspectorSelectionCard";
 import { useInspectionForm } from "@/features/residences/hooks/useInspectionForm";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot, Inspection } from "../types";
-import { CheckCircle2, ClipboardList, ChevronLeft } from "lucide-react";
+import { CheckCircle2, ClipboardList, ChevronLeft, ChevronRight } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { InspectionSummary } from "../InspectionSummary";
+import { InspectionChecklistStep } from "../InspectionChecklistStep";
 import { InspectionMoreMenu } from "../InspectionMoreMenu";
 
 interface DesktopInspectionFormProps {
@@ -59,10 +56,13 @@ export function DesktopInspectionForm({
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
-    addCustomRoom
+    addCustomRoom,
+    checklist,
+    setChecklistItem
   } = useInspectionForm(rooms, existingInspection);
 
   const [showSummary, setShowSummary] = useState(false);
+  const [showChecklist, setShowChecklist] = useState(false);
   const [customRooms, setCustomRooms] = useState<Room[]>([]);
   const allRooms = [...rooms, ...customRooms];
 
@@ -122,34 +122,31 @@ export function DesktopInspectionForm({
         {showSummary ? (
           <>
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={() => setShowSummary(false)}>
+              <Button variant="ghost" size="sm" onClick={() => { setShowSummary(false); setShowChecklist(true); }}>
                 <ChevronLeft className="h-4 w-4 mr-1" />
-                Tillbaka till rum
+                Tillbaka till kontroll
               </Button>
             </div>
-            <Card>
-              <CardContent className="p-4">
-                <p className="text-sm font-medium mb-2">Är bostaden möblerad vid besiktningstillfället?</p>
-                <RadioGroup
-                  value={isFurnished ? "yes" : "no"}
-                  onValueChange={(v) => setIsFurnished(v === "yes")}
-                  className="flex gap-4"
-                >
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem value="no" id="furnished-no-desktop" />
-                    <Label htmlFor="furnished-no-desktop" className="text-sm">Nej</Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem value="yes" id="furnished-yes-desktop" />
-                    <Label htmlFor="furnished-yes-desktop" className="text-sm">Ja</Label>
-                  </div>
-                </RadioGroup>
-              </CardContent>
-            </Card>
             <InspectionSummary
               rooms={allRooms}
               inspectionData={inspectionData}
               onCostUpdate={handleCostUpdate}
+            />
+          </>
+        ) : showChecklist ? (
+          <>
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="sm" onClick={() => setShowChecklist(false)}>
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Tillbaka till rum
+              </Button>
+            </div>
+            <InspectionChecklistStep
+              isFurnished={isFurnished}
+              setIsFurnished={setIsFurnished}
+              checklist={checklist}
+              setChecklistItem={setChecklistItem}
+              idSuffix="desktop"
             />
           </>
         ) : (
@@ -255,10 +252,15 @@ export function DesktopInspectionForm({
           <Button onClick={handleSubmit} disabled={!canComplete}>
             Slutför besiktning
           </Button>
-        ) : (
-          <Button onClick={() => setShowSummary(true)}>
+        ) : showChecklist ? (
+          <Button onClick={() => { setShowChecklist(false); setShowSummary(true); }}>
             <ClipboardList className="h-4 w-4 mr-1" />
             Sammanställning
+          </Button>
+        ) : (
+          <Button onClick={() => setShowChecklist(true)}>
+            Fortsätt
+            <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         )}
       </div>

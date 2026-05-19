@@ -22,6 +22,10 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     hasMainKey: existingInspection?.needsMasterKey || true
   });
   const [expandedRoomIds, setExpandedRoomIds] = useState<string[]>([]);
+  const [checklist, setChecklist] = useState<Record<string, boolean>>({});
+  const setChecklistItem = useCallback((key: string, value: boolean) => {
+    setChecklist(prev => ({ ...prev, [key]: value }));
+  }, []);
   const [inspectionData, setInspectionData] = useState<Record<string, InspectionRoom>>(() => 
     existingInspection?.rooms && Object.keys(existingInspection.rooms).length > 0
       ? existingInspection.rooms
@@ -264,6 +268,8 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
-    addCustomRoom
+    addCustomRoom,
+    checklist,
+    setChecklistItem
   };
 }

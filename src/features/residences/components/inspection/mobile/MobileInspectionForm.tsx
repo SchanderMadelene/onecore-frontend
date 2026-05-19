@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft, ChevronRight, User, ClipboardList } from "lucide-react";
@@ -13,6 +11,7 @@ import { InspectionProgressIndicator } from "./InspectionProgressIndicator";
 import { RoomInspectionMobile } from "./RoomInspectionMobile";
 import { InspectorSelectionCard } from "./InspectorSelectionCard";
 import { InspectionSummary } from "../InspectionSummary";
+import { InspectionChecklistStep } from "../InspectionChecklistStep";
 import { InspectionMoreMenu } from "../InspectionMoreMenu";
 
 interface MobileInspectionFormProps {
@@ -38,6 +37,7 @@ export function MobileInspectionForm({
   floorplanImage
 }: MobileInspectionFormProps) {
   const [currentRoomIndex, setCurrentRoomIndex] = useState(0);
+  const [showChecklist, setShowChecklist] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [showInspectorSelection, setShowInspectorSelection] = useState(!existingInspection);
   const [customRooms, setCustomRooms] = useState<Room[]>([]);
@@ -62,7 +62,9 @@ export function MobileInspectionForm({
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
-    addCustomRoom
+    addCustomRoom,
+    checklist,
+    setChecklistItem
   } = useInspectionForm(rooms, existingInspection);
 
   const allRooms = [...rooms, ...customRooms];
@@ -87,16 +89,22 @@ export function MobileInspectionForm({
   };
 
   const handleNext = () => {
-    if (currentRoomIndex < allRooms.length - 1) {
+    if (showChecklist) {
+      setShowChecklist(false);
+      setShowSummary(true);
+    } else if (currentRoomIndex < allRooms.length - 1) {
       setCurrentRoomIndex(currentRoomIndex + 1);
     } else {
-      setShowSummary(true);
+      setShowChecklist(true);
     }
   };
 
   const handlePrevious = () => {
     if (showSummary) {
       setShowSummary(false);
+      setShowChecklist(true);
+    } else if (showChecklist) {
+      setShowChecklist(false);
     } else if (currentRoomIndex > 0) {
       setCurrentRoomIndex(currentRoomIndex - 1);
     }
@@ -134,7 +142,7 @@ export function MobileInspectionForm({
         viewport.scrollTop = 0;
       }
     }
-  }, [currentRoomIndex, showSummary]);
+  }, [currentRoomIndex, showSummary, showChecklist]);
 
   if (showInspectorSelection) {
     return (
@@ -188,6 +196,10 @@ export function MobileInspectionForm({
             <div className="px-4 pt-8 pb-[34px]">
               <span className="font-medium text-sm">Sammanställning</span>
             </div>
+          ) : showChecklist ? (
+            <div className="px-4 pt-8 pb-[34px]">
+              <span className="font-medium text-sm">Kontroll</span>
+            </div>
           ) : (
             <InspectionProgressIndicator 
               current={completedRooms} 
@@ -200,6 +212,9 @@ export function MobileInspectionForm({
             <Button variant="ghost" size="sm" onClick={() => {
               if (showSummary) {
                 setShowSummary(false);
+                setShowChecklist(true);
+              } else if (showChecklist) {
+                setShowChecklist(false);
               } else {
                 setShowInspectorSelection(true);
               }
@@ -210,8 +225,8 @@ export function MobileInspectionForm({
           </div>
         </div>
 
-        {/* Room Navigation Cards - hide on summary */}
-        {!showSummary && (
+        {/* Room Navigation Cards - hide on summary/checklist */}
+        {!showSummary && !showChecklist && (
           <div className="px-4 py-2">
             <div 
               className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide" 
@@ -228,7 +243,7 @@ export function MobileInspectionForm({
                         ? 'ring-2 ring-inset ring-primary bg-primary/5' 
                         : 'hover:ring-1 hover:ring-border'
                     }`} 
-                    onClick={() => { setShowSummary(false); setCurrentRoomIndex(index); }}
+                    onClick={() => { setShowSummary(false); setShowChecklist(false); setCurrentRoomIndex(index); }}
                   >
                     <CardContent className="p-4 text-center space-y-2">
                       <div className="text-sm font-medium leading-tight">{room.name}</div>
@@ -256,32 +271,19 @@ export function MobileInspectionForm({
         <ScrollArea ref={scrollAreaRef} className="h-full">
           <div className="px-4 pb-4 pt-4">
             {showSummary ? (
-              <div className="space-y-4">
-                <Card>
-                  <CardContent className="p-4">
-                    <p className="text-sm font-medium mb-2">Är bostaden möblerad vid besiktningstillfället?</p>
-                    <RadioGroup
-                      value={isFurnished ? "yes" : "no"}
-                      onValueChange={(v) => setIsFurnished(v === "yes")}
-                      className="flex gap-4"
-                    >
-                      <div className="flex items-center gap-2">
-                        <RadioGroupItem value="no" id="furnished-no-mobile" />
-                        <Label htmlFor="furnished-no-mobile" className="text-sm">Nej</Label>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <RadioGroupItem value="yes" id="furnished-yes-mobile" />
-                        <Label htmlFor="furnished-yes-mobile" className="text-sm">Ja</Label>
-                      </div>
-                    </RadioGroup>
-                  </CardContent>
-                </Card>
-                <InspectionSummary
-                  rooms={allRooms}
-                  inspectionData={inspectionData}
-                  onCostUpdate={handleCostUpdate}
-                />
-              </div>
+              <InspectionSummary
+                rooms={allRooms}
+                inspectionData={inspectionData}
+                onCostUpdate={handleCostUpdate}
+              />
+            ) : showChecklist ? (
+              <InspectionChecklistStep
+                isFurnished={isFurnished}
+                setIsFurnished={setIsFurnished}
+                checklist={checklist}
+                setChecklistItem={setChecklistItem}
+                idSuffix="mobile"
+              />
             ) : (
               <RoomInspectionMobile 
                 room={currentRoom} 
@@ -306,7 +308,7 @@ export function MobileInspectionForm({
             variant="outline" 
             size="icon"
             onClick={handlePrevious} 
-            disabled={currentRoomIndex === 0 && !showSummary} 
+            disabled={currentRoomIndex === 0 && !showSummary && !showChecklist} 
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Föregående</span>
@@ -318,9 +320,13 @@ export function MobileInspectionForm({
             <Button onClick={handleSubmit} disabled={!canComplete} className="flex-1">
               Slutför besiktning
             </Button>
-          ) : currentRoomIndex === allRooms.length - 1 ? (
-            <Button onClick={() => setShowSummary(true)} className="flex-1">
+          ) : showChecklist ? (
+            <Button onClick={() => { setShowChecklist(false); setShowSummary(true); }} className="flex-1">
               Sammanställning
+            </Button>
+          ) : currentRoomIndex === allRooms.length - 1 ? (
+            <Button onClick={() => setShowChecklist(true)} className="flex-1">
+              Fortsätt
             </Button>
           ) : (
             <Button 
@@ -337,7 +343,7 @@ export function MobileInspectionForm({
             variant="outline"
             size="icon"
             onClick={handleNext} 
-            disabled={(currentRoomIndex >= allRooms.length - 1 && !showSummary) || showSummary}
+            disabled={showSummary || (currentRoomIndex >= allRooms.length - 1 && !showChecklist && !showSummary && false)}
           >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Nästa</span>
