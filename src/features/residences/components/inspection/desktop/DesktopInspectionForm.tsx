@@ -56,10 +56,13 @@ export function DesktopInspectionForm({
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
-    addCustomRoom
+    addCustomRoom,
+    checklist,
+    setChecklistItem
   } = useInspectionForm(rooms, existingInspection);
 
   const [showSummary, setShowSummary] = useState(false);
+  const [showChecklist, setShowChecklist] = useState(false);
   const [customRooms, setCustomRooms] = useState<Room[]>([]);
   const allRooms = [...rooms, ...customRooms];
 
