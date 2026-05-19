@@ -1,18 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { RoomInspectionMobile } from "../mobile/RoomInspectionMobile";
 import { InspectorSelectionCard } from "../mobile/InspectorSelectionCard";
 import { useInspectionForm } from "@/features/residences/hooks/useInspectionForm";
 import type { Room } from "@/types/api";
 import type { InspectionRoom as InspectionRoomType, InspectionSubmitData, TenantSnapshot, Inspection } from "../types";
-import { CheckCircle2, ClipboardList, ChevronLeft } from "lucide-react";
+import { CheckCircle2, ClipboardList, ChevronLeft, ChevronRight } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { InspectionSummary } from "../InspectionSummary";
+import { InspectionChecklistStep } from "../InspectionChecklistStep";
 import { InspectionMoreMenu } from "../InspectionMoreMenu";
 
 interface DesktopInspectionFormProps {
