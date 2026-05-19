@@ -134,34 +134,24 @@ export function ComponentInspectionCard({
       {showCostResponsibility && (
         <div className="mb-3">
           <span className="text-sm text-muted-foreground mb-2 block">Kostnadsansvar</span>
-          <div className="relative flex p-1 bg-muted rounded-lg" role="radiogroup">
-            <button
-              type="button"
-              role="radio"
-              aria-checked={costResponsibility === "landlord"}
-              onClick={() => onCostResponsibilityChange("landlord")}
-              className={`relative flex-1 flex items-center justify-center py-2 px-3 text-sm font-medium rounded-md transition-all ${
-                costResponsibility === "landlord"
-                  ? "bg-background text-primary shadow-sm ring-1 ring-border"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Mimers ansvar
-            </button>
-            <button
-              type="button"
-              role="radio"
-              aria-checked={costResponsibility === "tenant"}
-              onClick={() => onCostResponsibilityChange("tenant")}
-              className={`relative flex-1 flex items-center justify-center py-2 px-3 text-sm font-medium rounded-md transition-all ${
-                costResponsibility === "tenant"
-                  ? "bg-background text-primary shadow-sm ring-1 ring-border"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Hyresgästens ansvar
-            </button>
-          </div>
+          <RadioGroup
+            value={costResponsibility || ""}
+            onValueChange={(value) => onCostResponsibilityChange(value as CostResponsibility)}
+            className="flex gap-4"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="tenant" id={`${componentKey}-tenant`} />
+              <Label htmlFor={`${componentKey}-tenant`} className="text-sm font-normal cursor-pointer">
+                Hyresgäst
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="landlord" id={`${componentKey}-landlord`} />
+              <Label htmlFor={`${componentKey}-landlord`} className="text-sm font-normal cursor-pointer">
+                Mimer
+              </Label>
+            </div>
+          </RadioGroup>
         </div>
       )}
 
