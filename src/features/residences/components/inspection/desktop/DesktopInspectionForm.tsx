@@ -122,34 +122,31 @@ export function DesktopInspectionForm({
         {showSummary ? (
           <>
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={() => setShowSummary(false)}>
+              <Button variant="ghost" size="sm" onClick={() => { setShowSummary(false); setShowChecklist(true); }}>
                 <ChevronLeft className="h-4 w-4 mr-1" />
-                Tillbaka till rum
+                Tillbaka till kontroll
               </Button>
             </div>
-            <Card>
-              <CardContent className="p-4">
-                <p className="text-sm font-medium mb-2">Är bostaden möblerad vid besiktningstillfället?</p>
-                <RadioGroup
-                  value={isFurnished ? "yes" : "no"}
-                  onValueChange={(v) => setIsFurnished(v === "yes")}
-                  className="flex gap-4"
-                >
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem value="no" id="furnished-no-desktop" />
-                    <Label htmlFor="furnished-no-desktop" className="text-sm">Nej</Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem value="yes" id="furnished-yes-desktop" />
-                    <Label htmlFor="furnished-yes-desktop" className="text-sm">Ja</Label>
-                  </div>
-                </RadioGroup>
-              </CardContent>
-            </Card>
             <InspectionSummary
               rooms={allRooms}
               inspectionData={inspectionData}
               onCostUpdate={handleCostUpdate}
+            />
+          </>
+        ) : showChecklist ? (
+          <>
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="sm" onClick={() => setShowChecklist(false)}>
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Tillbaka till rum
+              </Button>
+            </div>
+            <InspectionChecklistStep
+              isFurnished={isFurnished}
+              setIsFurnished={setIsFurnished}
+              checklist={checklist}
+              setChecklistItem={setChecklistItem}
+              idSuffix="desktop"
             />
           </>
         ) : (
