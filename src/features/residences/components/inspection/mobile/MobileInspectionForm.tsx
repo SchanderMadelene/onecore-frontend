@@ -198,6 +198,10 @@ export function MobileInspectionForm({
             <div className="px-4 pt-8 pb-[34px]">
               <span className="font-medium text-sm">Sammanställning</span>
             </div>
+          ) : showChecklist ? (
+            <div className="px-4 pt-8 pb-[34px]">
+              <span className="font-medium text-sm">Kontroll</span>
+            </div>
           ) : (
             <InspectionProgressIndicator 
               current={completedRooms} 
@@ -210,6 +214,9 @@ export function MobileInspectionForm({
             <Button variant="ghost" size="sm" onClick={() => {
               if (showSummary) {
                 setShowSummary(false);
+                setShowChecklist(true);
+              } else if (showChecklist) {
+                setShowChecklist(false);
               } else {
                 setShowInspectorSelection(true);
               }
@@ -220,8 +227,8 @@ export function MobileInspectionForm({
           </div>
         </div>
 
-        {/* Room Navigation Cards - hide on summary */}
-        {!showSummary && (
+        {/* Room Navigation Cards - hide on summary/checklist */}
+        {!showSummary && !showChecklist && (
           <div className="px-4 py-2">
             <div 
               className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide" 
