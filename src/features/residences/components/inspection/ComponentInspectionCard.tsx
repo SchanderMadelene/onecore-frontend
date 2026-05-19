@@ -85,6 +85,11 @@ export function ComponentInspectionCard({
               <span>Senast: {getConditionLabel(lastInspection.condition)} · {lastInspection.date}</span>
             </button>
           )}
+          {APPLIANCE_WARRANTY_YEARS[componentKey] !== undefined && (
+            <span className="text-xs text-muted-foreground mt-0.5">
+              Garantitid: {APPLIANCE_WARRANTY_YEARS[componentKey]} år
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           {photoCount > 0 && (
