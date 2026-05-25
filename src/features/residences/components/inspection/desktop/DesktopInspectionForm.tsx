@@ -135,6 +135,8 @@ export function DesktopInspectionForm({
               rooms={allRooms}
               inspectionData={inspectionData}
               onCostUpdate={handleCostUpdate}
+              onCostAdjust={handleCostAdjust}
+              onCostAdjustClear={handleCostAdjustClear}
             />
           </>
         ) : showChecklist ? (
