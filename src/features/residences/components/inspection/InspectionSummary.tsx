@@ -263,7 +263,6 @@ function EditableCost({ remark, onAdjust, onClear, className }: EditableCostProp
         className={cn(
           "w-16 text-right tabular-nums text-sm font-medium bg-transparent border border-transparent rounded px-1.5 py-0.5 outline-none transition-colors",
           "hover:border-input focus:border-ring focus:bg-background",
-          isAdjusted && "text-highlight",
           !canEdit && "opacity-100"
         )}
       />
