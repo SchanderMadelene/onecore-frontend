@@ -13,7 +13,7 @@ const APPLIANCE_ACTIONS = [
   { value: "adjustment", label: "Justering" }
 ];
 
-const ACTION_OPTIONS: Record<string, { value: string; label: string }[]> = {
+export const ACTION_OPTIONS: Record<string, { value: string; label: string }[]> = {
   walls: [
     { value: "painting", label: "Målning" },
     { value: "repair", label: "Reparation" },
@@ -44,6 +44,11 @@ const ACTION_OPTIONS: Record<string, { value: string; label: string }[]> = {
     { value: "adjustment", label: "Justering" }
   ]
 };
+
+export function getActionsForComponent(componentType: string) {
+  return ACTION_OPTIONS[componentType] ?? APPLIANCE_ACTIONS;
+}
+
 
 export function ActionChecklist({ componentType, selectedActions, onActionToggle }: ActionChecklistProps) {
   const actions = ACTION_OPTIONS[componentType] ?? APPLIANCE_ACTIONS;

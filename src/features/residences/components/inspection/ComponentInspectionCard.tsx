@@ -1,17 +1,24 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ChevronRight, Camera, Wrench, MessageSquare, Clock } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ChevronRight, Camera, MessageSquare } from "lucide-react";
 import { PhotoCapture } from "./PhotoCapture";
 import { getConditionLabel } from "./inspection-utils";
+import { getActionsForComponent } from "./ActionChecklist";
 import type { CostResponsibility } from "./types";
 
 interface ComponentInspectionCardProps {
   componentKey: string;
+  componentType: string;
   label: string;
   condition: string;
   note: string;
@@ -24,24 +31,25 @@ interface ComponentInspectionCardProps {
   onPhotoCapture: (photoDataUrl: string) => void;
   onOpenDetail: () => void;
   onCostResponsibilityChange: (value: CostResponsibility) => void;
+  onActionChange: (action: string | null) => void;
 }
 
 const CONDITION_OPTIONS = [
-  { 
-    value: "God", 
+  {
+    value: "God",
     label: "God",
-    className: "bg-green-500 hover:bg-green-600 text-white border-green-600"
+    className: "bg-green-500 hover:bg-green-600 text-white border-green-600",
   },
-  { 
-    value: "Acceptabel", 
+  {
+    value: "Acceptabel",
     label: "OK",
-    className: "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600"
+    className: "bg-yellow-500 hover:bg-yellow-600 text-white border-yellow-600",
   },
-  { 
-    value: "Skadad", 
+  {
+    value: "Skadad",
     label: "Skadad",
-    className: "bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive"
-  }
+    className: "bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive",
+  },
 ];
 
 const APPLIANCE_WARRANTY_YEARS: Record<string, number> = {
@@ -51,8 +59,11 @@ const APPLIANCE_WARRANTY_YEARS: Record<string, number> = {
   tumbleDryer: 5,
 };
 
+const CLEAR_ACTION_VALUE = "__clear__";
+
 export function ComponentInspectionCard({
   componentKey,
+  componentType,
   label,
   condition,
   note,
@@ -64,16 +75,21 @@ export function ComponentInspectionCard({
   onNoteChange,
   onPhotoCapture,
   onOpenDetail,
-  onCostResponsibilityChange
+  onCostResponsibilityChange,
+  onActionChange,
 }: ComponentInspectionCardProps) {
   const [isNoteFocused, setIsNoteFocused] = useState(false);
   const hasLongNote = note.length > 50;
-  const showCostResponsibility = condition === "Skadad";
+  const showDamageFields = condition === "Skadad";
+
+  const actionOptions = getActionsForComponent(componentType);
+  const selectedAction = actions[0] ?? "";
+  const selectedActionLabel = actionOptions.find(a => a.value === selectedAction)?.label;
 
   return (
-    <div className="border-b border-border last:border-0 py-4">
+    <div className="border-b border-border last:border-0 py-6">
       {/* Header with indicators */}
-      <div className="flex items-start justify-between mb-3">
+      <div className="flex items-start justify-between mb-4">
         <div className="flex flex-col">
           <h4 className="text-base font-medium">{label}</h4>
           {lastInspection && (
@@ -100,14 +116,6 @@ export function ComponentInspectionCard({
               <span>{photoCount}</span>
             </button>
           )}
-          {actions.length > 0 && (
-            <button
-              onClick={onOpenDetail}
-              className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded"
-            >
-              <Wrench className="h-4 w-4" />
-            </button>
-          )}
           {hasLongNote && (
             <button
               onClick={onOpenDetail}
@@ -126,14 +134,14 @@ export function ComponentInspectionCard({
       </div>
 
       {/* Condition buttons */}
-      <div className="grid grid-cols-3 gap-2 mb-3">
+      <div className="grid grid-cols-3 gap-2 mb-4">
         {CONDITION_OPTIONS.map((option) => (
           <Button
             key={option.value}
             type="button"
             variant={condition === option.value ? "default" : "outline"}
             size="default"
-            className={`h-10 text-sm font-medium ${condition === option.value ? option.className : ""}`}
+            className={`h-11 text-sm font-medium ${condition === option.value ? option.className : ""}`}
             onClick={() => onConditionChange(option.value)}
           >
             {option.label}
@@ -141,28 +149,75 @@ export function ComponentInspectionCard({
         ))}
       </div>
 
-      {/* Cost responsibility - shown when condition is Skadad or Acceptabel */}
-      {showCostResponsibility && (
-        <div className="mb-3">
-          <span className="text-sm text-muted-foreground mb-2 block">Kostnadsansvar</span>
-          <RadioGroup
-            value={costResponsibility || ""}
-            onValueChange={(value) => onCostResponsibilityChange(value as CostResponsibility)}
-            className="flex gap-4"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="tenant" id={`${componentKey}-tenant`} />
-              <Label htmlFor={`${componentKey}-tenant`} className="text-sm font-normal cursor-pointer">
-                Hyresgäst
+      {/* Damage fields - shown when condition is Skadad */}
+      {showDamageFields && (
+        <div className="space-y-5 mb-5 mt-1">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-foreground">Åtgärd</Label>
+            <Select
+              value={selectedAction || undefined}
+              onValueChange={(value) => {
+                if (value === CLEAR_ACTION_VALUE) {
+                  onActionChange(null);
+                } else {
+                  onActionChange(value);
+                }
+              }}
+            >
+              <SelectTrigger className="h-11">
+                <SelectValue placeholder="Välj åtgärd">
+                  {selectedActionLabel}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {actionOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value} className="py-2.5">
+                    {option.label}
+                  </SelectItem>
+                ))}
+                {selectedAction && (
+                  <SelectItem
+                    value={CLEAR_ACTION_VALUE}
+                    className="text-muted-foreground border-t mt-1 py-2.5"
+                  >
+                    Rensa val
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-foreground">Kostnadsansvar</Label>
+            <RadioGroup
+              value={costResponsibility || ""}
+              onValueChange={(value) => onCostResponsibilityChange(value as CostResponsibility)}
+              className="grid grid-cols-2 gap-2"
+            >
+              <Label
+                htmlFor={`${componentKey}-tenant`}
+                className={`flex items-center gap-2 h-11 px-3 rounded-md border cursor-pointer transition-colors ${
+                  costResponsibility === "tenant"
+                    ? "border-primary bg-primary/5"
+                    : "border-input hover:bg-muted/50"
+                }`}
+              >
+                <RadioGroupItem value="tenant" id={`${componentKey}-tenant`} />
+                <span className="text-sm font-normal">Hyresgäst</span>
               </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="landlord" id={`${componentKey}-landlord`} />
-              <Label htmlFor={`${componentKey}-landlord`} className="text-sm font-normal cursor-pointer">
-                Mimer
+              <Label
+                htmlFor={`${componentKey}-landlord`}
+                className={`flex items-center gap-2 h-11 px-3 rounded-md border cursor-pointer transition-colors ${
+                  costResponsibility === "landlord"
+                    ? "border-primary bg-primary/5"
+                    : "border-input hover:bg-muted/50"
+                }`}
+              >
+                <RadioGroupItem value="landlord" id={`${componentKey}-landlord`} />
+                <span className="text-sm font-normal">Mimer</span>
               </Label>
-            </div>
-          </RadioGroup>
+            </RadioGroup>
+          </div>
         </div>
       )}
 
@@ -175,7 +230,7 @@ export function ComponentInspectionCard({
           onBlur={() => setIsNoteFocused(false)}
           placeholder="Anteckning..."
           className={`flex-1 text-sm resize-none transition-all ${
-            isNoteFocused ? 'min-h-[80px]' : 'min-h-[40px] h-[40px]'
+            isNoteFocused ? 'min-h-[80px]' : 'min-h-[44px] h-[44px]'
           }`}
         />
         <PhotoCapture

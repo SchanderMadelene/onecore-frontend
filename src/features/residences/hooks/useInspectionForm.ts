@@ -54,19 +54,31 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     value: string
   ) => {
     setInspectionData(prev => {
-      const updatedRoom = {
-        ...prev[roomId],
+      const room = prev[roomId];
+      const updatedRoom: InspectionRoom = {
+        ...room,
         conditions: {
-          ...prev[roomId].conditions,
+          ...room.conditions,
           [field]: value
         }
       };
 
-      // Check if all conditions are set to determine if room is handled
+      // Vid "God"/"OK" är åtgärd och kostnadsansvar inte tillämpligt — rensa.
+      if (value !== "Skadad") {
+        updatedRoom.actions = {
+          ...room.actions,
+          [field]: []
+        };
+        updatedRoom.costResponsibility = {
+          ...room.costResponsibility,
+          [field]: null
+        };
+      }
+
       const allConditionsSet = Object.values(updatedRoom.conditions).every(
         condition => condition && condition.trim() !== ""
       );
-      
+
       updatedRoom.isHandled = allConditionsSet;
 
       return {
@@ -76,29 +88,24 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     });
   };
 
+  // Sätter åtgärd för en komponent (single-select). null = ingen åtgärd vald.
   const handleActionUpdate = (
     roomId: string,
     field: keyof InspectionRoom["actions"],
-    action: string
+    action: string | null
   ) => {
-    setInspectionData(prev => {
-      const currentActions = prev[roomId].actions[field];
-      const newActions = currentActions.includes(action)
-        ? currentActions.filter(a => a !== action)
-        : [...currentActions, action];
-
-      return {
-        ...prev,
-        [roomId]: {
-          ...prev[roomId],
-          actions: {
-            ...prev[roomId].actions,
-            [field]: newActions
-          }
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        actions: {
+          ...prev[roomId].actions,
+          [field]: action ? [action] : []
         }
-      };
-    });
+      }
+    }));
   };
+
 
   const handleComponentNoteUpdate = (
     roomId: string,
