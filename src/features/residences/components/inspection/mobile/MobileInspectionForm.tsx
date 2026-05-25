@@ -279,6 +279,8 @@ export function MobileInspectionForm({
                 rooms={allRooms}
                 inspectionData={inspectionData}
                 onCostUpdate={handleCostUpdate}
+                onCostAdjust={handleCostAdjust}
+                onCostAdjustClear={handleCostAdjustClear}
               />
             ) : showChecklist ? (
               <InspectionChecklistStep
