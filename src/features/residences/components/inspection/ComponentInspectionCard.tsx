@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChevronRight, Camera, MessageSquare } from "lucide-react";
+import { ChevronRight, ChevronDown, Camera, MessageSquare } from "lucide-react";
 import { PhotoCapture } from "./PhotoCapture";
 import { getConditionLabel } from "./inspection-utils";
 import { getActionsForComponent } from "./ActionChecklist";
