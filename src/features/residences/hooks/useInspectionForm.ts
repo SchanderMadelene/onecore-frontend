@@ -271,6 +271,8 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handleCostUpdate,
     addCustomRoom,
     checklist,
-    setChecklistItem
+    setChecklistItem,
+    tenantPresent,
+    setTenantPresent
   };
 }
