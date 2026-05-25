@@ -79,12 +79,55 @@ export function ComponentInspectionCard({
   onActionChange,
 }: ComponentInspectionCardProps) {
   const [isNoteFocused, setIsNoteFocused] = useState(false);
+  const [manuallyExpanded, setManuallyExpanded] = useState(false);
   const hasLongNote = note.length > 50;
   const showDamageFields = condition === "Skadad";
 
   const actionOptions = getActionsForComponent(componentType);
   const selectedAction = actions[0] ?? "";
   const selectedActionLabel = actionOptions.find(a => a.value === selectedAction)?.label;
+
+  // Auto-collapse for God/OK; Skadad always expanded; unset always expanded
+  const isOkOrGood = condition === "God" || condition === "Acceptabel";
+  const isCollapsed = isOkOrGood && !manuallyExpanded;
+
+  // If condition changes away from OK/God, reset manual expansion
+  useEffect(() => {
+    if (!isOkOrGood) setManuallyExpanded(false);
+  }, [isOkOrGood]);
+
+  const conditionOption = CONDITION_OPTIONS.find(o => o.value === condition);
+
+  if (isCollapsed && conditionOption) {
+    return (
+      <div className="border-b border-border last:border-0">
+        <button
+          type="button"
+          onClick={() => setManuallyExpanded(true)}
+          className="w-full flex items-center justify-between gap-3 py-4 text-left hover:bg-muted/30 -mx-2 px-2 rounded-md transition-colors"
+        >
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <span
+              className={`inline-flex items-center justify-center h-7 px-3 rounded-full text-xs font-medium shrink-0 ${conditionOption.className}`}
+            >
+              {conditionOption.label}
+            </span>
+            <span className="text-base font-medium truncate">{label}</span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0 text-muted-foreground">
+            {photoCount > 0 && (
+              <span className="flex items-center gap-1 text-xs">
+                <Camera className="h-3.5 w-3.5" />
+                {photoCount}
+              </span>
+            )}
+            {note.length > 0 && <MessageSquare className="h-3.5 w-3.5" />}
+            <ChevronDown className="h-4 w-4" />
+          </div>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="border-b border-border last:border-0 py-6">
