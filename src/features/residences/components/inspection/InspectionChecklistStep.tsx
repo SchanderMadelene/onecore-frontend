@@ -59,7 +59,7 @@ export function InspectionChecklistStep({
         <CardContent className="p-4">
           <p className="text-sm font-medium mb-2">Är bostaden möblerad vid besiktningstillfället?</p>
           <RadioGroup
-            value={isFurnished ? "yes" : "no"}
+            value={isFurnished === true ? "yes" : isFurnished === false ? "no" : ""}
             onValueChange={(v) => setIsFurnished(v === "yes")}
             className="flex gap-4"
           >
