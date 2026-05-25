@@ -55,7 +55,7 @@ export function AdjustCostReasonDialog({
         onOpenChange(next);
       }}
     >
-      <DialogContent className="flex flex-col max-h-[90vh] sm:max-w-md">
+      <DialogContent className="flex flex-col max-h-[90vh] w-[calc(100vw-2rem)] sm:w-full sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Motivera justering</DialogTitle>
           <DialogDescription>
