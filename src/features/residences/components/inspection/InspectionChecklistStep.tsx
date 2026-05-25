@@ -13,7 +13,7 @@ export const CHECKLIST_ITEMS = [
 export type ChecklistKey = typeof CHECKLIST_ITEMS[number]["key"];
 
 interface InspectionChecklistStepProps {
-  isFurnished: boolean;
+  isFurnished: boolean | null;
   setIsFurnished: (v: boolean) => void;
   tenantPresent?: boolean | null;
   setTenantPresent?: (v: boolean) => void;
