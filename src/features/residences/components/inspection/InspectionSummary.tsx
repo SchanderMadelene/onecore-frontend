@@ -1,9 +1,15 @@
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { StickyNote, RotateCcw } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { Room } from "@/types/api";
-import type { InspectionRoom } from "./types";
+import type { InspectionRoom, CostAdjustment } from "./types";
 import { COMPONENT_LABELS, hasRemark, getCostResponsibilityLabel } from "./inspection-utils";
+import { AdjustCostReasonDialog } from "./AdjustCostReasonDialog";
 
 // Schablonvärde och avskrivningstid per komponenttyp (mock)
 const COMPONENT_DEPRECIATION: Record<string, { schablon: number; totalYears: number; yearsLeft: number }> = {
@@ -44,6 +50,8 @@ interface InspectionSummaryProps {
   rooms: Room[];
   inspectionData: Record<string, InspectionRoom>;
   onCostUpdate: (roomId: string, costKey: string, value: number | null) => void;
+  onCostAdjust?: (roomId: string, costKey: string, amount: number, reason: string) => void;
+  onCostAdjustClear?: (roomId: string, costKey: string) => void;
 }
 
 interface RemarkItem {
@@ -56,7 +64,9 @@ interface RemarkItem {
   note: string;
   costResponsibility: string | null;
   costKey: string;
-  cost: number;
+  schablonCost: number;
+  adjustment?: CostAdjustment;
+  effectiveCost: number;
   isCustomComponent: boolean;
   customType?: string;
 }
@@ -68,11 +78,14 @@ function collectRemarks(rooms: Room[], inspectionData: Record<string, Inspection
     const data = inspectionData[room.id];
     if (!data) return;
 
-    // Base components
+    const adjustments = data.costAdjustments || {};
+
     const componentKeys = Object.keys(data.conditions) as Array<keyof typeof data.conditions>;
     componentKeys.forEach(key => {
       const condition = data.conditions[key];
       if (hasRemark(condition)) {
+        const schablon = calcCost(getDepreciation(key));
+        const adj = adjustments[key];
         remarks.push({
           roomId: room.id,
           roomName: room.name,
@@ -83,14 +96,17 @@ function collectRemarks(rooms: Room[], inspectionData: Record<string, Inspection
           note: data.componentNotes[key] || "",
           costResponsibility: data.costResponsibility[key],
           costKey: key,
-          cost: calcCost(getDepreciation(key)),
+          schablonCost: schablon,
+          adjustment: adj,
+          effectiveCost: adj ? adj.amount : schablon,
           isCustomComponent: false,
         });
       }
     });
 
-    // Custom components (always show them as remarks)
     data.customComponents.forEach(comp => {
+      const schablon = calcCost(getDepreciation(comp.type, comp.type));
+      const adj = adjustments[comp.id];
       remarks.push({
         roomId: room.id,
         roomName: room.name,
@@ -101,7 +117,9 @@ function collectRemarks(rooms: Room[], inspectionData: Record<string, Inspection
         note: comp.note || "",
         costResponsibility: null,
         costKey: comp.id,
-        cost: calcCost(getDepreciation(comp.type, comp.type)),
+        schablonCost: schablon,
+        adjustment: adj,
+        effectiveCost: adj ? adj.amount : schablon,
         isCustomComponent: true,
         customType: comp.type,
       });
@@ -111,23 +129,176 @@ function collectRemarks(rooms: Room[], inspectionData: Record<string, Inspection
   return remarks;
 }
 
-export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: InspectionSummaryProps) {
+interface EditableCostProps {
+  remark: RemarkItem;
+  onAdjust?: (amount: number, reason: string) => void;
+  onClear?: () => void;
+  className?: string;
+}
+
+function EditableCost({ remark, onAdjust, onClear, className }: EditableCostProps) {
+  const [value, setValue] = useState(String(remark.effectiveCost));
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [pendingAmount, setPendingAmount] = useState<number | null>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setValue(String(remark.effectiveCost));
+  }, [remark.effectiveCost]);
+
+  const commit = () => {
+    const parsed = parseInt(value.replace(/\s/g, ""), 10);
+    if (isNaN(parsed) || parsed < 0) {
+      setValue(String(remark.effectiveCost));
+      return;
+    }
+    if (parsed === remark.effectiveCost) {
+      setValue(String(parsed));
+      return;
+    }
+    if (!onAdjust) return;
+    if (parsed === remark.schablonCost) {
+      // back to schablon → clear adjustment
+      onClear?.();
+      return;
+    }
+    setPendingAmount(parsed);
+    setDialogOpen(true);
+  };
+
+  const handleCancelDialog = () => {
+    setValue(String(remark.effectiveCost));
+    setPendingAmount(null);
+  };
+
+  const handleConfirmDialog = (reason: string) => {
+    if (pendingAmount != null && onAdjust) {
+      onAdjust(pendingAmount, reason);
+    }
+    setPendingAmount(null);
+  };
+
+  const isAdjusted = !!remark.adjustment;
+  const canEdit = !!onAdjust;
+
+  return (
+    <div className={cn("inline-flex items-center gap-1.5 justify-end", className)}>
+      {isAdjusted && (
+        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+          <PopoverTrigger asChild>
+            <button
+              type="button"
+              className={cn(
+                "inline-flex items-center justify-center rounded-sm p-0.5 transition-colors hover:text-foreground",
+                popoverOpen ? "text-highlight" : "text-muted-foreground"
+              )}
+              aria-label="Visa motivering"
+            >
+              <StickyNote className="h-3.5 w-3.5" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="end" className="w-72 p-3 space-y-2">
+            <div className="space-y-1">
+              <p className="text-xs font-medium">Justerad kostnad</p>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Schablon</span>
+                <span className="tabular-nums">{remark.schablonCost.toLocaleString("sv-SE")} kr</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Justerat</span>
+                <span className="font-medium tabular-nums">{remark.effectiveCost.toLocaleString("sv-SE")} kr</span>
+              </div>
+            </div>
+            <Separator />
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground">Motivering</p>
+              <p className="text-sm whitespace-pre-wrap break-words">{remark.adjustment?.reason}</p>
+            </div>
+            {remark.adjustment && (
+              <p className="text-[11px] text-muted-foreground">
+                {new Date(remark.adjustment.adjustedAt).toLocaleString("sv-SE", {
+                  dateStyle: "short",
+                  timeStyle: "short",
+                })}
+              </p>
+            )}
+            {onClear && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={() => {
+                  onClear();
+                  setPopoverOpen(false);
+                }}
+              >
+                <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
+                Återställ till schablon
+              </Button>
+            )}
+          </PopoverContent>
+        </Popover>
+      )}
+
+      <input
+        ref={inputRef}
+        type="text"
+        inputMode="numeric"
+        value={value}
+        onChange={(e) => setValue(e.target.value.replace(/[^\d]/g, ""))}
+        onFocus={(e) => e.currentTarget.select()}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            (e.target as HTMLInputElement).blur();
+          }
+          if (e.key === "Escape") {
+            setValue(String(remark.effectiveCost));
+            (e.target as HTMLInputElement).blur();
+          }
+        }}
+        disabled={!canEdit}
+        className={cn(
+          "w-16 text-right tabular-nums text-sm font-medium bg-transparent border border-transparent rounded px-1.5 py-0.5 outline-none transition-colors",
+          "hover:border-input focus:border-ring focus:bg-background",
+          isAdjusted && "text-highlight",
+          !canEdit && "opacity-100"
+        )}
+      />
+      <span className="text-sm font-medium tabular-nums shrink-0">kr</span>
+
+      <AdjustCostReasonDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        componentLabel={remark.label}
+        schablon={remark.schablonCost}
+        newAmount={pendingAmount ?? remark.effectiveCost}
+        existingReason={remark.adjustment?.reason}
+        onConfirm={handleConfirmDialog}
+        onCancel={handleCancelDialog}
+      />
+    </div>
+  );
+}
+
+export function InspectionSummary({ rooms, inspectionData, onCostAdjust, onCostAdjustClear }: InspectionSummaryProps) {
   const remarks = collectRemarks(rooms, inspectionData);
 
-  // Group by room
   const groupedByRoom = remarks.reduce<Record<string, RemarkItem[]>>((acc, remark) => {
     if (!acc[remark.roomId]) acc[remark.roomId] = [];
     acc[remark.roomId].push(remark);
     return acc;
   }, {});
 
-  const totalCost = remarks.reduce((sum, r) => sum + (r.cost || 0), 0);
+  const totalCost = remarks.reduce((sum, r) => sum + r.effectiveCost, 0);
   const tenantCost = remarks
     .filter(r => r.costResponsibility === 'tenant')
-    .reduce((sum, r) => sum + (r.cost || 0), 0);
+    .reduce((sum, r) => sum + r.effectiveCost, 0);
   const landlordCost = remarks
     .filter(r => r.costResponsibility === 'landlord')
-    .reduce((sum, r) => sum + (r.cost || 0), 0);
+    .reduce((sum, r) => sum + r.effectiveCost, 0);
 
   if (remarks.length === 0) {
     return (
@@ -144,7 +315,6 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
 
   return (
     <div className="space-y-4">
-      {/* Summary header */}
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
@@ -157,23 +327,22 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
             {totalCost > 0 && (
               <div className="text-right">
                 <p className="text-sm text-muted-foreground">Total kostnad</p>
-                <p className="text-lg font-semibold">{totalCost.toLocaleString('sv-SE')} kr</p>
+                <p className="text-lg font-semibold tabular-nums">{totalCost.toLocaleString('sv-SE')} kr</p>
               </div>
             )}
           </div>
 
-          {/* Cost breakdown by responsibility */}
           {(tenantCost > 0 || landlordCost > 0) && (
             <>
               <Separator className="my-3" />
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-xs text-muted-foreground">Ansvar: Hyresgäst</p>
-                  <p className="text-sm font-medium">{tenantCost.toLocaleString('sv-SE')} kr</p>
+                  <p className="text-sm font-medium tabular-nums">{tenantCost.toLocaleString('sv-SE')} kr</p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Ansvar: Mimer</p>
-                  <p className="text-sm font-medium">{landlordCost.toLocaleString('sv-SE')} kr</p>
+                  <p className="text-sm font-medium tabular-nums">{landlordCost.toLocaleString('sv-SE')} kr</p>
                 </div>
               </div>
             </>
@@ -181,22 +350,19 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
         </CardContent>
       </Card>
 
-      {/* Remarks per room */}
       {Object.entries(groupedByRoom).map(([roomId, roomRemarks]) => (
         <Card key={roomId}>
           <CardContent className="p-4">
             <h4 className="font-medium text-base mb-3">{roomRemarks[0].roomName}</h4>
 
             <div className="rounded-md border border-border overflow-hidden">
-              {/* Header (only on sm+) */}
-              <div className="hidden sm:grid grid-cols-[1.5fr_70px_100px_100px] items-center gap-3 px-3 py-2 bg-muted/50 text-xs text-muted-foreground">
+              <div className="hidden sm:grid grid-cols-[1.5fr_70px_100px_140px] items-center gap-3 px-3 py-2 bg-muted/50 text-xs text-muted-foreground">
                 <span>Komponent</span>
                 <span className="text-right">År kvar</span>
                 <span className="text-right">Schablon</span>
                 <span className="text-right">Kostnad</span>
               </div>
 
-              {/* Rows */}
               {roomRemarks.map((remark, index) => {
                 const dep = getDepreciation(remark.componentKey, remark.customType);
                 return (
@@ -206,8 +372,7 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
                       index < roomRemarks.length - 1 ? 'border-b border-border' : ''
                     }`}
                   >
-                    {/* Desktop layout */}
-                    <div className="hidden sm:grid grid-cols-[1.5fr_70px_100px_100px] items-center gap-3">
+                    <div className="hidden sm:grid grid-cols-[1.5fr_70px_100px_140px] items-center gap-3">
                       <div className="min-w-0">
                         <div className="text-sm font-medium">{remark.label}</div>
                         {remark.actions.length > 0 && (
@@ -231,12 +396,13 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
                       <span className="text-sm text-right tabular-nums text-muted-foreground">
                         {dep ? `${dep.schablon.toLocaleString('sv-SE')} kr` : "—"}
                       </span>
-                      <span className="text-sm font-medium text-right tabular-nums">
-                        {remark.cost.toLocaleString('sv-SE')} kr
-                      </span>
+                      <EditableCost
+                        remark={remark}
+                        onAdjust={onCostAdjust ? (amount, reason) => onCostAdjust(remark.roomId, remark.costKey, amount, reason) : undefined}
+                        onClear={onCostAdjustClear ? () => onCostAdjustClear(remark.roomId, remark.costKey) : undefined}
+                      />
                     </div>
 
-                    {/* Mobile layout: stacked */}
                     <div className="sm:hidden space-y-2">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
@@ -247,9 +413,11 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
                             </p>
                           )}
                         </div>
-                        <span className="text-sm font-semibold tabular-nums whitespace-nowrap">
-                          {remark.cost.toLocaleString('sv-SE')} kr
-                        </span>
+                        <EditableCost
+                          remark={remark}
+                          onAdjust={onCostAdjust ? (amount, reason) => onCostAdjust(remark.roomId, remark.costKey, amount, reason) : undefined}
+                          onClear={onCostAdjustClear ? () => onCostAdjustClear(remark.roomId, remark.costKey) : undefined}
+                        />
                       </div>
                       {remark.actions.length > 0 && (
                         <div className="flex flex-wrap gap-1">
@@ -285,12 +453,11 @@ export function InspectionSummary({ rooms, inspectionData, onCostUpdate }: Inspe
                 );
               })}
 
-              {/* Room total */}
-              {roomRemarks.some(r => r.cost > 0) && (
+              {roomRemarks.some(r => r.effectiveCost > 0) && (
                 <div className="flex items-center justify-between px-3 py-2 border-t border-border bg-muted/30">
                   <span className="text-sm font-medium">Totalt rum</span>
                   <span className="text-sm font-semibold tabular-nums">
-                    {roomRemarks.reduce((sum, r) => sum + (r.cost || 0), 0).toLocaleString('sv-SE')} kr
+                    {roomRemarks.reduce((sum, r) => sum + r.effectiveCost, 0).toLocaleString('sv-SE')} kr
                   </span>
                 </div>
               )}
