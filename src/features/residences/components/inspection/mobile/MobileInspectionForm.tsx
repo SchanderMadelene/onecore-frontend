@@ -62,6 +62,8 @@ export function MobileInspectionForm({
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
+    handleCostAdjust,
+    handleCostAdjustClear,
     addCustomRoom,
     checklist,
     setChecklistItem,
