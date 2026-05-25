@@ -91,7 +91,7 @@ export function AdjustCostReasonDialog({
               placeholder="Beskriv varför kostnaden justerats…"
               rows={4}
               autoFocus
-              className="resize-none w-full"
+              className="resize-none w-full focus-visible:ring-offset-0"
             />
             <p className="text-xs text-muted-foreground">
               Minst {MIN_REASON_LENGTH} tecken. {reason.trim().length}/{MIN_REASON_LENGTH}
