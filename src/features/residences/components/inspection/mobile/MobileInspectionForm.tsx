@@ -127,7 +127,7 @@ export function MobileInspectionForm({
     if (inspectorName.trim()) {
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
-        isFurnished,
+        isFurnished: !!isFurnished,
         inspectionType,
         tenant: createTenantSnapshot()
       });
