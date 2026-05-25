@@ -15,6 +15,8 @@ export type ChecklistKey = typeof CHECKLIST_ITEMS[number]["key"];
 interface InspectionChecklistStepProps {
   isFurnished: boolean;
   setIsFurnished: (v: boolean) => void;
+  tenantPresent?: boolean | null;
+  setTenantPresent?: (v: boolean) => void;
   checklist: Record<string, boolean>;
   setChecklistItem: (key: string, value: boolean) => void;
   idSuffix?: string;
