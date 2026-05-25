@@ -25,12 +25,36 @@ interface InspectionChecklistStepProps {
 export function InspectionChecklistStep({
   isFurnished,
   setIsFurnished,
+  tenantPresent,
+  setTenantPresent,
   checklist,
   setChecklistItem,
   idSuffix = "",
 }: InspectionChecklistStepProps) {
   return (
     <div className="space-y-4">
+      {setTenantPresent && (
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm font-medium mb-2">Var hyresgästen närvarande vid besiktningstillfället?</p>
+            <RadioGroup
+              value={tenantPresent === true ? "yes" : tenantPresent === false ? "no" : ""}
+              onValueChange={(v) => setTenantPresent(v === "yes")}
+              className="flex gap-4"
+            >
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="no" id={`tenant-present-no-${idSuffix}`} />
+                <Label htmlFor={`tenant-present-no-${idSuffix}`} className="text-sm">Nej</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="yes" id={`tenant-present-yes-${idSuffix}`} />
+                <Label htmlFor={`tenant-present-yes-${idSuffix}`} className="text-sm">Ja</Label>
+              </div>
+            </RadioGroup>
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
         <CardContent className="p-4">
           <p className="text-sm font-medium mb-2">Är bostaden möblerad vid besiktningstillfället?</p>
