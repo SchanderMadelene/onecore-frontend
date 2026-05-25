@@ -56,6 +56,8 @@ export function DesktopInspectionForm({
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
+    handleCostAdjust,
+    handleCostAdjustClear,
     addCustomRoom,
     checklist,
     setChecklistItem,
