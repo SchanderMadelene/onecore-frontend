@@ -55,7 +55,7 @@ export function AdjustCostReasonDialog({
         onOpenChange(next);
       }}
     >
-      <DialogContent className="flex flex-col max-h-[90vh] w-[calc(100vw-2rem)] sm:w-full sm:max-w-md">
+      <DialogContent className="flex flex-col max-h-[90vh] sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Motivera justering</DialogTitle>
           <DialogDescription>
@@ -91,7 +91,7 @@ export function AdjustCostReasonDialog({
               placeholder="Beskriv varför kostnaden justerats…"
               rows={4}
               autoFocus
-              className="resize-none w-full focus-visible:ring-offset-0"
+              className="resize-none w-full"
             />
             <p className="text-xs text-muted-foreground">
               Minst {MIN_REASON_LENGTH} tecken. {reason.trim().length}/{MIN_REASON_LENGTH}
