@@ -17,6 +17,7 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
   const [needsMasterKey, setNeedsMasterKey] = useState(existingInspection?.needsMasterKey || false);
   const [inspectionType, setInspectionType] = useState<InspectionType>(existingInspection?.inspectionType || 'moveout_maintenance');
   const [isFurnished, setIsFurnished] = useState(existingInspection?.isFurnished || false);
+  const [tenantPresent, setTenantPresent] = useState<boolean | null>(null);
   const [apartmentInfo, setApartmentInfo] = useState<{ address: string; hasMainKey: boolean }>({
     address: existingInspection?.residence?.address || "Odenplan 5, lägenhet 1001",
     hasMainKey: existingInspection?.needsMasterKey || true
