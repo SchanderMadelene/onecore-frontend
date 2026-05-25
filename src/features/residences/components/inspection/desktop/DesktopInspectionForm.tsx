@@ -99,7 +99,7 @@ export function DesktopInspectionForm({
     if (canComplete) {
       onSave(inspectorName, inspectionData, 'completed', {
         needsMasterKey,
-        isFurnished,
+        isFurnished: !!isFurnished,
         inspectionType,
         tenant: createTenantSnapshot()
       });
@@ -110,7 +110,7 @@ export function DesktopInspectionForm({
     if (inspectorName.trim()) {
       onSave(inspectorName, inspectionData, 'draft', {
         needsMasterKey,
-        isFurnished,
+        isFurnished: !!isFurnished,
         inspectionType,
         tenant: createTenantSnapshot()
       });
