@@ -241,6 +241,45 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     }));
   }, []);
 
+  const handleCostAdjust = useCallback((
+    roomId: string,
+    costKey: string,
+    amount: number,
+    reason: string
+  ) => {
+    setInspectionData(prev => ({
+      ...prev,
+      [roomId]: {
+        ...prev[roomId],
+        costAdjustments: {
+          ...(prev[roomId].costAdjustments || {}),
+          [costKey]: {
+            amount,
+            reason,
+            adjustedAt: new Date().toISOString(),
+          }
+        }
+      }
+    }));
+  }, []);
+
+  const handleCostAdjustClear = useCallback((
+    roomId: string,
+    costKey: string
+  ) => {
+    setInspectionData(prev => {
+      const current = { ...(prev[roomId].costAdjustments || {}) };
+      delete current[costKey];
+      return {
+        ...prev,
+        [roomId]: {
+          ...prev[roomId],
+          costAdjustments: current,
+        }
+      };
+    });
+  }, []);
+
   return {
     inspectorName,
     setInspectorName,
@@ -269,6 +308,8 @@ export function useInspectionForm(rooms: Room[], existingInspection?: Inspection
     handleCostResponsibilityUpdate,
     handleCustomComponentsUpdate,
     handleCostUpdate,
+    handleCostAdjust,
+    handleCostAdjustClear,
     addCustomRoom,
     checklist,
     setChecklistItem,
