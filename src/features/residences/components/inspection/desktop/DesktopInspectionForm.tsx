@@ -58,7 +58,9 @@ export function DesktopInspectionForm({
     handleCostUpdate,
     addCustomRoom,
     checklist,
-    setChecklistItem
+    setChecklistItem,
+    tenantPresent,
+    setTenantPresent
   } = useInspectionForm(rooms, existingInspection);
 
   const [showSummary, setShowSummary] = useState(false);
@@ -144,6 +146,8 @@ export function DesktopInspectionForm({
             <InspectionChecklistStep
               isFurnished={isFurnished}
               setIsFurnished={setIsFurnished}
+              tenantPresent={tenantPresent}
+              setTenantPresent={setTenantPresent}
               checklist={checklist}
               setChecklistItem={setChecklistItem}
               idSuffix="desktop"

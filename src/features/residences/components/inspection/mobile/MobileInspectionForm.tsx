@@ -64,7 +64,9 @@ export function MobileInspectionForm({
     handleCostUpdate,
     addCustomRoom,
     checklist,
-    setChecklistItem
+    setChecklistItem,
+    tenantPresent,
+    setTenantPresent
   } = useInspectionForm(rooms, existingInspection);
 
   const allRooms = [...rooms, ...customRooms];
@@ -280,6 +282,8 @@ export function MobileInspectionForm({
               <InspectionChecklistStep
                 isFurnished={isFurnished}
                 setIsFurnished={setIsFurnished}
+                tenantPresent={tenantPresent}
+                setTenantPresent={setTenantPresent}
                 checklist={checklist}
                 setChecklistItem={setChecklistItem}
                 idSuffix="mobile"
