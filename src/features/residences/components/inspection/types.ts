@@ -28,6 +28,12 @@ export interface CustomInspectionComponent {
   costResponsibility?: CostResponsibility;
 }
 
+export interface CostAdjustment {
+  amount: number;
+  reason: string;
+  adjustedAt: string;
+}
+
 export interface InspectionRoom {
   roomId: string;
   conditions: Record<string, string>;
@@ -35,8 +41,8 @@ export interface InspectionRoom {
   componentNotes: Record<string, string>;
   componentPhotos: Record<string, string[]>;
   costResponsibility: Record<string, CostResponsibility>;
-  costs: Record<string, number | null>; // key = component key or custom component id
-  costAdjustments: Record<string, CostAdjustment>; // manuella justeringar mot schablon
+  costs: Record<string, number | null>;
+  costAdjustments?: Record<string, CostAdjustment>;
   customComponents: CustomInspectionComponent[];
   photos: string[];
   isApproved: boolean;
