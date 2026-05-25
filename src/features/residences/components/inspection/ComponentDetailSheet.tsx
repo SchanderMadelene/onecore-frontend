@@ -3,8 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { PhotoGallery } from "./PhotoGallery";
-import { ActionChecklist } from "./ActionChecklist";
-import { Camera, Wrench, MessageSquare, Clock } from "lucide-react";
+import { Camera, MessageSquare, Clock } from "lucide-react";
 
 interface ComponentDetailSheetProps {
   isOpen: boolean;
@@ -14,12 +13,10 @@ interface ComponentDetailSheetProps {
   condition: string;
   note: string;
   photos: string[];
-  actions: string[];
   componentType: string;
   onNoteChange: (note: string) => void;
   onPhotoAdd: (photoDataUrl: string) => void;
   onPhotoRemove: (index: number) => void;
-  onActionToggle: (action: string) => void;
 }
 
 const CONDITION_CONFIG = {
@@ -35,12 +32,9 @@ export function ComponentDetailSheet({
   condition,
   note,
   photos,
-  actions,
-  componentType,
   onNoteChange,
   onPhotoAdd,
-  onPhotoRemove,
-  onActionToggle
+  onPhotoRemove
 }: ComponentDetailSheetProps) {
   const conditionConfig = condition ? CONDITION_CONFIG[condition as keyof typeof CONDITION_CONFIG] : null;
 
@@ -52,7 +46,6 @@ export function ComponentDetailSheet({
         </SheetHeader>
 
         <div className="space-y-6 py-4">
-          {/* Condition Badge */}
           {condition && conditionConfig && (
             <div>
               <p className="text-sm text-muted-foreground mb-2">Skick</p>
@@ -64,7 +57,6 @@ export function ComponentDetailSheet({
 
           <Separator />
 
-          {/* Photos Section */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Camera className="h-4 w-4 text-muted-foreground" />
@@ -79,22 +71,6 @@ export function ComponentDetailSheet({
 
           <Separator />
 
-          {/* Actions Section */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Wrench className="h-4 w-4 text-muted-foreground" />
-              <h3 className="font-medium">Åtgärder</h3>
-            </div>
-            <ActionChecklist
-              componentType={componentType}
-              selectedActions={actions}
-              onActionToggle={onActionToggle}
-            />
-          </div>
-
-          <Separator />
-
-          {/* Notes Section */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <MessageSquare className="h-4 w-4 text-muted-foreground" />
@@ -110,7 +86,6 @@ export function ComponentDetailSheet({
 
           <Separator />
 
-          {/* History Section */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Clock className="h-4 w-4 text-muted-foreground" />
@@ -121,7 +96,6 @@ export function ComponentDetailSheet({
               <p>• 2023-06-20: God (Erik E.)</p>
             </div>
           </div>
-
         </div>
       </SheetContent>
     </Sheet>
