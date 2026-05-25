@@ -36,6 +36,7 @@ export interface InspectionRoom {
   componentPhotos: Record<string, string[]>;
   costResponsibility: Record<string, CostResponsibility>;
   costs: Record<string, number | null>; // key = component key or custom component id
+  costAdjustments: Record<string, CostAdjustment>; // manuella justeringar mot schablon
   customComponents: CustomInspectionComponent[];
   photos: string[];
   isApproved: boolean;
