@@ -113,6 +113,7 @@ export function RoomInspectionMobile({
             <ComponentInspectionCard
               key={component.key}
               componentKey={component.key}
+              componentType={component.type}
               label={component.label}
               condition={inspectionData.conditions[component.key]}
               note={inspectionData.componentNotes[component.key]}
@@ -125,6 +126,7 @@ export function RoomInspectionMobile({
               onPhotoCapture={(photoDataUrl) => onComponentPhotoAdd(component.key, photoDataUrl)}
               onOpenDetail={() => setOpenDetailComponent(component.key)}
               onCostResponsibilityChange={(value) => onCostResponsibilityUpdate(component.key, value)}
+              onActionChange={(action) => onActionUpdate(component.key, action)}
             />
           ))}
         </div>
@@ -162,14 +164,13 @@ export function RoomInspectionMobile({
             condition={inspectionData.conditions[component.key]}
             note={inspectionData.componentNotes[component.key]}
             photos={inspectionData.componentPhotos[component.key]}
-            actions={inspectionData.actions[component.key]}
             componentType={component.type}
             onNoteChange={(note) => onComponentNoteUpdate(component.key, note)}
             onPhotoAdd={(photoDataUrl) => onComponentPhotoAdd(component.key, photoDataUrl)}
             onPhotoRemove={(index) => onComponentPhotoRemove(component.key, index)}
-            onActionToggle={(action) => onActionUpdate(component.key, action)}
           />
         ))}
+
       </CardContent>
     </Card>
   );
