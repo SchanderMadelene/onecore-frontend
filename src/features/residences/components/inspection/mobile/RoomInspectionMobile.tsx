@@ -13,7 +13,7 @@ interface RoomInspectionMobileProps {
   room: Room;
   inspectionData: InspectionRoom;
   onConditionUpdate: (field: keyof InspectionRoom["conditions"], value: string) => void;
-  onActionUpdate: (field: keyof InspectionRoom["actions"], action: string) => void;
+  onActionUpdate: (field: keyof InspectionRoom["actions"], action: string | null) => void;
   onComponentNoteUpdate: (field: keyof InspectionRoom["componentNotes"], note: string) => void;
   onComponentPhotoAdd: (field: keyof InspectionRoom["componentPhotos"], photoDataUrl: string) => void;
   onComponentPhotoRemove: (field: keyof InspectionRoom["componentPhotos"], index: number) => void;
