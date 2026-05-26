@@ -342,20 +342,8 @@ export function HousingApplicantsTable({
                   )}
                   <TableCell className="font-medium tabular-nums text-muted-foreground">{placeNumber ?? "—"}</TableCell>
                   <TableCell className="font-medium">
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleOpenPanel(applicant);
-                        }}
-                        className="p-1 h-auto"
-                        title="Visa profil"
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                      <div>
+                    <div>
+
                         <div className="flex items-center gap-1.5">
                           <span className="font-medium">{applicant.name}</span>
                           <Button
