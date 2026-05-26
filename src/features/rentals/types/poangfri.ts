@@ -44,6 +44,7 @@ export interface PoangfriListing {
   rent: string;
   description: string;
   publishedAt: string;      // ISO – när annonsen byttes till poängfri
+  availableFrom?: string;   // ISO – när bostaden är inflyttningsklar
   convertedFromAdId?: string; // Standardannonsen den kommer ifrån
   status: PoangfriListingStatus;
   infoText?: string;        // Fritext synlig på Mimer.nu
