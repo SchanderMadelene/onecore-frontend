@@ -73,7 +73,7 @@ export function HousingApplicantsTable({
   onUnlinkContract,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
-  const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
+  const [panelApplicantId, setPanelApplicantId] = useState<string | null>(null);
   const [responseOverrides, setResponseOverrides] = useState<Record<number, OfferResponseStatus>>({});
   const hasInitializedSelection = useRef(false);
 
