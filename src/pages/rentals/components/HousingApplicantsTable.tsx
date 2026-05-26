@@ -128,13 +128,8 @@ export function HousingApplicantsTable({
   };
 
 
-  const handleToggleExpand = (applicant: HousingApplicant) => {
-    const applicantId = String(applicant.id);
-    if (expandedApplicant === applicantId) {
-      setExpandedApplicant(null);
-    } else {
-      setExpandedApplicant(applicantId);
-    }
+  const handleOpenPanel = (applicant: HousingApplicant) => {
+    setPanelApplicantId(String(applicant.id));
   };
 
   const formatLeaseStatus = (status: string) => {
