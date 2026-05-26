@@ -532,15 +532,6 @@ export function HousingApplicantsTable({
                     );
                   })()}
                 </TableRow>
-                {expandedApplicant === String(applicant.id) && (
-                  <TableRow>
-                    <TableCell colSpan={12} className="p-0">
-                      <div className="border-t">
-                        <CompactProfileForm applicantId={String(applicant.id)} />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
               </>
               );
             }) : (
@@ -554,6 +545,12 @@ export function HousingApplicantsTable({
         </TableBody>
       </Table>
     </div>
+
+    <HousingApplicantPanel
+      applicant={applicants.find((a) => String(a.id) === panelApplicantId) ?? null}
+      open={panelApplicantId !== null}
+      onOpenChange={(open) => !open && setPanelApplicantId(null)}
+    />
   </>
   );
 }
