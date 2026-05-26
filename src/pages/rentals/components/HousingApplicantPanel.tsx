@@ -23,6 +23,10 @@ interface HousingApplicantPanelProps {
   applicant: HousingApplicant | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  showOfferResponse?: boolean;
+  offerStatus?: "Accepterat" | "Nekat" | "Väntar på svar";
+  onMarkAccepted?: () => void;
+  onMarkDeclined?: () => void;
 }
 
 const defaults: ProfileFormData = {
@@ -45,6 +49,10 @@ export function HousingApplicantPanel({
   applicant,
   open,
   onOpenChange,
+  showOfferResponse = false,
+  offerStatus,
+  onMarkAccepted,
+  onMarkDeclined,
 }: HousingApplicantPanelProps) {
   const form = useForm<ProfileFormData>({ defaultValues: defaults });
 
