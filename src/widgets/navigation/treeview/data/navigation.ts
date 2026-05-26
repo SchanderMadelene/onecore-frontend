@@ -20,7 +20,20 @@ export const navigationNodes: TreeNode[] = [
     icon: "key",
     path: "/rentals",
     children: [
-      { id: "rentals-bostad", label: "Bostad", icon: "home", path: "/rentals/housing" },
+      {
+        id: "rentals-bostad",
+        label: "Bostad",
+        icon: "home",
+        path: "/rentals/housing",
+        children: [
+          {
+            id: "rentals-bostad-poangfritt",
+            label: "Poängfritt",
+            icon: "sparkles",
+            path: "/rentals/housing/poangfritt",
+          },
+        ],
+      },
       { id: "rentals-bilplats", label: "Bilplats", icon: "car", path: "/rentals/parking" },
       { id: "rentals-forrad", label: "Förråd", icon: "archive", path: "/rentals/storage" },
     ],
