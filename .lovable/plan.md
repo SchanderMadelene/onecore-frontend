@@ -1,58 +1,43 @@
-# Redigerbar kostnad med motivering
+## Mål
+Implementera dokumentets 45 komponenter med rätt åtgärder kopplade. Fasta komponenter behåller sin plats per rum; allt övrigt blir valbart under "Detaljer".
 
-## Beteende
+## 1. Uppdatera åtgärder för befintliga fasta komponenter
+I `ActionChecklist.tsx` – `ACTION_OPTIONS`:
 
-- Kostnadsbeloppet i sammanställningen blir ett inline-redigerbart fält (ser ut som text, blir input vid fokus, höger-alignat, tabular-nums).
-- När användaren ändrar beloppet och lämnar fältet (blur / Enter): om värdet skiljer sig från senast sparade öppnas en liten dialog `AdjustCostReasonDialog` som kräver en motivering (fri text, min ~10 tecken).
-  - **Spara**: justeringen lagras tillsammans med motivering, tidsstämpel och användare.
-  - **Avbryt**: värdet återställs till föregående.
-- En justerad rad markeras med en diskret `StickyNote`-ikon bredvid beloppet. Klick/hover öppnar en `Popover` som visar:
-  - Originalbelopp (schablon)
-  - Justerat belopp
-  - Motivering
-  - Tidsstämpel
-  - Knapp **"Återställ till schablon"** (rensar justeringen utan att kräva motivering).
-- Totaler (rum, hyresgäst, hyresvärd, totalt) räknas på justerat värde när det finns, annars schablon.
+| Nyckel | Åtgärder |
+|---|---|
+| `walls` | Helmålning, Målning väggar/tak, Målning väggar, Helmålning/Spärrmålning, Förbättringsmålning |
+| `ceiling` | (behålls som idag – ärver väggens åtgärder) |
+| `floor` | Slipning, Utbyte, Polering, Slipning/lagning |
+| `kitchenDoors` | Utbyte, Målning, Reparation |
+| `refrigerator`, `freezer` | Utbyte, Reparation |
+| `washingMachine`, `tumbleDryer` | Utbyte, Reparation |
 
-## Datamodell
+Generisk `APPLIANCE_ACTIONS`-fallback bantas till **Utbyte, Reparation** (dokumentets baseline).
 
-Utöka `InspectionRoom` (`types.ts`):
-```ts
-costAdjustments: Record<string, {
-  amount: number;
-  reason: string;
-  adjustedAt: string; // ISO
-}>;
-```
+## 2. Bygg ut "Detaljer" med dokumentets resterande komponenter
+I `types.ts` – ersätt nuvarande `CUSTOM_COMPONENT_TYPES` med dokumentets lista (de som inte redan är fasta):
 
-Initieras till `{}` i `initialData.ts`.
+Kyl/frys, Spis, Häll, Ugn, Micro, Diskmaskin, Diskbänk, Arbetsbänk, Skåpstomme, Sparksockel, Köksblandare, Fläkt, Radiator, Eluttag, Strömbrytare, Armatur, Fönster, Badrumskåp, Väggspegel, Wc-stol, Duschset, Duschslang+munstycke, Badkar, Duschvägg, Kakel, Tvättställ, Vattenlås, Torkreda, Torkhiss, Handdukshängare, Elschema, Brandvarnare, Innedörr, Golvsockel, Hatthylla, Kombimaskin, Lägenhetsdörr, Altantrall.
 
-## Filer
+Varje typ får sin egen åtgärdslista enligt dokumentet (bl.a. Häll = Utbyte/Reparation/Polering; Radiator = Utbyte/Kontroll; Eluttag/Strömbrytare = Utbyte/Justering; Armatur = Utbyte/Byte ljuskälla; **Lägenhetsdörr & Altantrall = endast Reparation**; en del singel-åtgärd-komponenter får bara Utbyte).
 
-**Ny:**
-- `src/features/residences/components/inspection/AdjustCostReasonDialog.tsx` — Dialog enligt vår standard (flex-col, max-h-[90vh], scrollable body, sticky border-t footer). Visar schablon, nytt belopp (readonly i dialogen — sätts inline), textarea för motivering, validering på min-längd.
+## 3. Utöka custom-komponenter med villkor + åtgärd
+Idag har en custom-komponent bara anteckning + kostnadsansvar. För att åtgärdsmodellen ska fungera behöver vi:
+- Lägga till `condition` (God/OK/Skadad) och `actions: string[]` på `CustomInspectionComponent`.
+- I `CustomComponentsSection` återanvända samma UI som `ComponentInspectionCard` (skick-pills, åtgärdsdropdown, kostnadsansvar, auto-collapse vid OK/God).
+- Använda ny hjälpare `getActionsForCustomType(type)` som speglar `getActionsForComponent`.
 
-**Ändras:**
-- `src/features/residences/components/inspection/types.ts` — lägg till `costAdjustments`.
-- `src/features/residences/components/inspection/form/initialData.ts` — initiera `costAdjustments: {}`.
-- `src/features/residences/hooks/useInspectionForm.ts` — nya callbacks:
-  - `handleCostAdjust(roomId, costKey, amount, reason)`
-  - `handleCostAdjustClear(roomId, costKey)`
-- `src/features/residences/components/inspection/InspectionSummary.tsx`:
-  - Ersätt statisk kostnadstext med inline-input (delad komponent inom filen).
-  - Lägg till `StickyNote` + `Popover` för justerade rader.
-  - Använd justerat belopp i alla summor (rum, totalt, hyresgäst/hyresvärd).
-- `src/features/residences/components/inspection/desktop/DesktopInspectionForm.tsx` och `mobile/MobileInspectionForm.tsx` — skicka in de nya callbacks till `InspectionSummary`.
-- `src/features/residences/components/inspection/pdf/generateInspectionPdf.ts` + `pdf/types.ts` — visa justerat belopp i sammanställningen med motivering som fotnot/sub-rad, så att protokollet är spårbart.
+## 4. Konsekvenser
+- Befintliga utkast med custom-komponenter får tomma `condition`/`actions` – ingen migrering behövs (mock-data).
+- Kostnadssammanställningen plockar redan upp `costResponsibility` från custom-komponenter; inga ändringar där.
 
-## UX-detaljer
+## Tekniska filer som berörs
+- `src/features/residences/components/inspection/ActionChecklist.tsx`
+- `src/features/residences/components/inspection/types.ts`
+- `src/features/residences/components/inspection/CustomComponentsSection.tsx`
+- `src/features/residences/hooks/useInspectionForm.ts` (handlers för custom condition/actions)
 
-- Inline-input: ingen ram i viloläge, subtil border på hover/focus, höger-alignerad, suffix " kr" visas som text efter input.
-- Mobil: samma mönster — tap på beloppet aktiverar input, numerisk tangentbord (`inputMode="numeric"`).
-- `StickyNote`-ikon: `h-3.5 w-3.5 text-muted-foreground` bredvid beloppet, blir `text-highlight` när popover är öppen.
-- Popover-knappen "Återställ till schablon" använder `variant="outline"` (vår standard för ikon-/sekundärknappar i tabellkontext).
-
-## Ej i scope
-
-- Persistens mot backend (sparas bara i klient-state som resten av besiktningen).
-- Audit-logg av vem som ändrade (vi sparar fält men kopplar inte mot inloggad användare än).
+## Frågor som dykt upp under planeringen
+- **Kyl/frys** finns både som fast (`refrigerator`+`freezer`) och som egen rad i dokumentet. Förslag: behåll de två fasta i kök, lägg `fridgeFreezer` som custom för lägenheter med kombiskåp.
+- **Tak** behålls med väggens åtgärdsuppsättning (bekräftat).
