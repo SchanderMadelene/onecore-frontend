@@ -1,0 +1,220 @@
+import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Tag } from "@/components/ui/tag";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ResponsiveTable } from "@/components/ui/responsive-table";
+import { PageLayout } from "@/layouts";
+import { Search } from "lucide-react";
+import { format } from "date-fns";
+import { sv } from "date-fns/locale";
+
+import { poangfriListings } from "@/features/rentals/data/poangfri-housing";
+import {
+  PoangfriListing,
+  PoangfriListingStatus,
+  POANGFRI_LISTING_STATUS_LABELS,
+  POANGFRI_LISTING_STATUS_VARIANTS,
+} from "@/features/rentals/types/poangfri";
+
+const formatDate = (iso: string) => {
+  try {
+    return format(new Date(iso), "yyyy-MM-dd", { locale: sv });
+  } catch {
+    return "-";
+  }
+};
+
+const STATUS_FILTERS: { value: PoangfriListingStatus | "all"; label: string }[] = [
+  { value: "all", label: "Alla statusar" },
+  { value: "published", label: "Publicerad" },
+  { value: "in_progress", label: "Pågående kontakt" },
+  { value: "contract_created", label: "Kontrakt skapat" },
+  { value: "unpublished", label: "Avpublicerad" },
+];
+
+export default function PoangfriHousingPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<PoangfriListingStatus | "all">("all");
+  const [area, setArea] = useState<string>("all");
+  const navigate = useNavigate();
+
+  const areas = useMemo(
+    () => Array.from(new Set(poangfriListings.map((l) => l.area))).sort(),
+    []
+  );
+
+  const filtered = useMemo(() => {
+    return poangfriListings.filter((l) => {
+      if (status !== "all" && l.status !== status) return false;
+      if (area !== "all" && l.area !== area) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        const hay = `${l.address} ${l.area} ${l.rentalObjectId}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [search, status, area]);
+
+  const clearFilters = () => {
+    setSearch("");
+    setStatus("all");
+    setArea("all");
+  };
+
+  const hasActiveFilters = search !== "" || status !== "all" || area !== "all";
+
+  const columns = [
+    {
+      key: "address",
+      label: "Objekt",
+      render: (l: PoangfriListing) => (
+        <div className="space-y-0.5">
+          <div className="font-medium">{l.address}</div>
+          <div className="text-xs text-muted-foreground">{l.rentalObjectId}</div>
+        </div>
+      ),
+    },
+    {
+      key: "area",
+      label: "Område",
+      render: (l: PoangfriListing) => <Tag>{l.area}</Tag>,
+    },
+    {
+      key: "type",
+      label: "Typ",
+      hideOnMobile: true,
+      render: (l: PoangfriListing) => (
+        <div className="text-sm">
+          {l.type} · {l.rooms} rok · {l.size}
+        </div>
+      ),
+    },
+    {
+      key: "rent",
+      label: "Hyra",
+      hideOnMobile: true,
+      render: (l: PoangfriListing) => <span className="text-sm">{l.rent}</span>,
+    },
+    {
+      key: "interests",
+      label: "Intressen",
+      render: (l: PoangfriListing) => (
+        <div className="text-sm">
+          <span className="font-medium">{l.interests.length}</span>
+          {l.interests.length > 0 && (
+            <span className="text-muted-foreground">
+              {" "}· {l.interests.filter((i) => i.status === "new").length} nya
+            </span>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: "publishedAt",
+      label: "Publicerad",
+      hideOnMobile: true,
+      render: (l: PoangfriListing) => (
+        <span className="text-sm text-muted-foreground">{formatDate(l.publishedAt)}</span>
+      ),
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (l: PoangfriListing) => (
+        <Badge variant={POANGFRI_LISTING_STATUS_VARIANTS[l.status]}>
+          {POANGFRI_LISTING_STATUS_LABELS[l.status]}
+        </Badge>
+      ),
+    },
+  ];
+
+  return (
+    <PageLayout isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">Poängfri bostad</h1>
+          <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
+            Bostäder som hyrs ut utan kötid. Intresseanmälningar hanteras manuellt –
+            handläggaren kontaktar uppifrån listan och skapar kontrakt direkt när någon
+            tackar ja.
+          </p>
+        </div>
+
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:flex-wrap">
+              <div className="relative w-full sm:w-[280px]">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Sök adress, område, objekts-id..."
+                  className="pl-9"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+
+              <Select value={status} onValueChange={(v) => setStatus(v as PoangfriListingStatus | "all")}>
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {STATUS_FILTERS.map((s) => (
+                    <SelectItem key={s.value} value={s.value}>
+                      {s.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={area} onValueChange={setArea}>
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue placeholder="Område" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla områden</SelectItem>
+                  {areas.map((a) => (
+                    <SelectItem key={a} value={a}>
+                      {a}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {hasActiveFilters && (
+                <Button variant="ghost" size="sm" onClick={clearFilters}>
+                  Rensa filter
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-0">
+            <ResponsiveTable
+              data={filtered}
+              columns={columns}
+              keyExtractor={(l: PoangfriListing) => l.id}
+              emptyMessage="Inga poängfria annonser matchar dina filter"
+              onRowClick={(l: PoangfriListing) =>
+                navigate(`/rentals/housing/poangfritt/${l.id}`)
+              }
+            />
+          </CardContent>
+        </Card>
+      </div>
+    </PageLayout>
+  );
+}
