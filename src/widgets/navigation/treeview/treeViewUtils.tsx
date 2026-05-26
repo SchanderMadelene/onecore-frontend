@@ -23,7 +23,8 @@ import {
   ArrowRightLeft,
   ClipboardList,
   Car,
-  Archive
+  Archive,
+  Sparkles
 } from "lucide-react";
 
 export const getNodeIcon = (iconName?: string): ReactNode => {
@@ -72,6 +73,8 @@ export const getNodeIcon = (iconName?: string): ReactNode => {
       return <Package className="h-4 w-4 text-gray-600" />;
     case "wrench":
       return <Wrench className="h-4 w-4 text-orange-600" />;
+    case "sparkles":
+      return <Sparkles className="h-4 w-4 text-muted-foreground" />;
     default:
       return <LayoutGrid className="h-4 w-4 text-muted-foreground" />;
   }
