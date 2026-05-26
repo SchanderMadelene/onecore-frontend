@@ -79,6 +79,7 @@ const CreateHousingAdPage = lazyWithRetry(() => import("./pages/rentals/CreateHo
 const ParkingSpaceDetailPage = lazyWithRetry(() => import("./pages/rentals/ParkingSpaceDetailPage"));
 const HousingDetailPage = lazyWithRetry(() => import("./pages/rentals/HousingDetailPage"));
 const ResidenceProfilePage = lazyWithRetry(() => import("./pages/rentals/ResidenceProfilePage"));
+const PoangfriHousingPage = lazyWithRetry(() => import("./pages/rentals/PoangfriHousingPage"));
 const TurnoverPage = lazyWithRetry(() => import("./pages/turnover/TurnoverPage"));
 const BarriersPage = lazyWithRetry(() => import("./pages/barriers/BarriersPage"));
 const AllInspectionsPage = lazyWithRetry(() => import("./pages/inspections/AllInspectionsPage"));
