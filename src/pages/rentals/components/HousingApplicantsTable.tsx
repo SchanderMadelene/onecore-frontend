@@ -321,9 +321,13 @@ export function HousingApplicantsTable({
               const rowClass = [isWinner || isLinked ? "bg-success/5" : "", isPreviousOnly ? "opacity-50" : ""].filter(Boolean).join(" ") || undefined;
               return (
               <>
-                <TableRow key={applicant.id} className={rowClass}>
+                <TableRow
+                  key={applicant.id}
+                  className={[rowClass, "cursor-pointer hover:bg-muted/40"].filter(Boolean).join(" ")}
+                  onClick={() => handleOpenPanel(applicant)}
+                >
                   {!historyMode && !contractMode && (
-                    <TableCell className="py-3">
+                    <TableCell className="py-3" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-2">
                         <Checkbox
                           checked={selectedApplicants.has(String(applicant.id))}
@@ -342,13 +346,14 @@ export function HousingApplicantsTable({
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleToggleExpand(applicant)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenPanel(applicant);
+                        }}
                         className="p-1 h-auto"
+                        title="Visa profil"
                       >
-                        {expandedApplicant === String(applicant.id) ?
-                          <ChevronDown className="h-4 w-4" /> :
-                          <ChevronRight className="h-4 w-4" />
-                        }
+                        <ChevronRight className="h-4 w-4" />
                       </Button>
                       <div>
                         <div className="flex items-center gap-1.5">
