@@ -546,11 +546,28 @@ export function HousingApplicantsTable({
       </Table>
     </div>
 
-    <HousingApplicantPanel
-      applicant={applicants.find((a) => String(a.id) === panelApplicantId) ?? null}
-      open={panelApplicantId !== null}
-      onOpenChange={(open) => !open && setPanelApplicantId(null)}
-    />
+    {(() => {
+      const panelApplicant = applicants.find((a) => String(a.id) === panelApplicantId) ?? null;
+      const hasOffer = panelApplicant ? offeredApplicantIds.includes(panelApplicant.id) : false;
+      const currentOfferStatus = panelApplicant
+        ? (responseOverrides[panelApplicant.id] ?? panelApplicant.offerResponse?.status)
+        : undefined;
+      return (
+        <HousingApplicantPanel
+          applicant={panelApplicant}
+          open={panelApplicantId !== null}
+          onOpenChange={(open) => !open && setPanelApplicantId(null)}
+          showOfferResponse={hasOffer && !historyMode && !contractMode}
+          offerStatus={currentOfferStatus}
+          onMarkAccepted={
+            panelApplicant ? () => handleManualResponse(panelApplicant, "Accepterat") : undefined
+          }
+          onMarkDeclined={
+            panelApplicant ? () => handleManualResponse(panelApplicant, "Nekat") : undefined
+          }
+        />
+      );
+    })()}
   </>
   );
 }

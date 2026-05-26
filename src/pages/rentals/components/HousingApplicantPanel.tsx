@@ -23,6 +23,10 @@ interface HousingApplicantPanelProps {
   applicant: HousingApplicant | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  showOfferResponse?: boolean;
+  offerStatus?: "Accepterat" | "Nekat" | "Väntar på svar";
+  onMarkAccepted?: () => void;
+  onMarkDeclined?: () => void;
 }
 
 const defaults: ProfileFormData = {
@@ -45,6 +49,10 @@ export function HousingApplicantPanel({
   applicant,
   open,
   onOpenChange,
+  showOfferResponse = false,
+  offerStatus,
+  onMarkAccepted,
+  onMarkDeclined,
 }: HousingApplicantPanelProps) {
   const form = useForm<ProfileFormData>({ defaultValues: defaults });
 
@@ -114,6 +122,44 @@ export function HousingApplicantPanel({
             className="flex-1 flex flex-col overflow-hidden"
           >
             <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+              {showOfferResponse && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-semibold">Svar på erbjudande</h4>
+                    {offerStatus && (
+                      <Badge
+                        variant={
+                          offerStatus === "Accepterat"
+                            ? "success"
+                            : offerStatus === "Nekat"
+                              ? "destructive"
+                              : "secondary"
+                        }
+                      >
+                        {offerStatus}
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={onMarkAccepted}
+                      disabled={offerStatus === "Accepterat"}
+                    >
+                      Tackat ja
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={onMarkDeclined}
+                      disabled={offerStatus === "Nekat"}
+                    >
+                      Tackat nej
+                    </Button>
+                  </div>
+                </div>
+              )}
               <HousingTypeSection form={form} />
               <CustomerReference
                 customerReferenceReceivedAt={new Date("2024-01-15")}
