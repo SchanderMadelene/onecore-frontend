@@ -1,63 +1,68 @@
+# Sidopanel för sökanderader i standardflödet
 
-# Poängfri bostad – koncept & implementationsplan
+Idag expanderas en rad i `HousingApplicantsTable` inline och visar `CompactProfileForm` (Nuvarande boende, Referenshistorik, Kommentarer) som ett block under raden. Vi byter ut det mot en sidopanel (Sheet) som glider in från höger – samma mönster som po­äng­fri-panelen, men med innehåll anpassat efter standardflödets profil-/referensbehov.
 
-Baserat på vår dialog: vi bygger om poängfri bostad från ett "annons-flöde" till en **enkel, manuell hanteringsyta** där handläggaren har full kontroll och systemet stöttar med struktur, statusar och loggning – inte med automatik.
+Detta ger:
+- Konsekvent interaktion mellan po­äng­fri och standard
+- Mindre vertikal "hoppighet" i listan när man jämför flera sökande snabbt
+- Plats för djupare info utan att stjäla bredd från tabellen
 
-## Kärnkoncept
+## Räckvidd
 
-1. **Förenklad annons** – ett objekt publiceras poängfritt med minimal data (objekt, hyra, infotext). Ingen utgångsdatum, ingen "typ"-dropdown, ingen omgångslogik.
-2. **Intresselistan är aktiv i sig själv** – en anmälan på Mimer.nu räknas som ett aktivt intresse. Ingen "är du fortfarande intresserad?"-kedja behövs. Sökande kan själva ta bort sin anmälan på sajten.
-3. **Manuell hantering, välstrukturerad** – handläggaren ringer/kontaktar uppifrån listan. Systemet håller reda på status, anteckningar och vem som fått vilken kommunikation.
-4. **Topp 3-bekräftelsemejl (valbart)** – när någon når topp 3 kan systemet skicka ett mejl: *"Du ligger högt i kö för X. Avanmäl dig om du inte längre är intresserad."* Inte ett krav på svar, bara en städmekanism.
-5. **Kontraktshändelsen är det enda automatiska** – när kontrakt skapas: avpublicera annons, skicka välkomstmejl, markera övriga som "ej tilldelad", arkivera.
+Påverkar alla flikar i standardflödet (Publicera, Publicerat nu, Erbjud visning, Visning, Erbjud kontrakt, Historik) eftersom samma tabellkomponent används överallt.
 
-## UI-struktur (förslag)
+## UX-beteende
 
-**Placering:** Egen undermeny under "Uthyrning" → "Bostad" → flik **"Poängfritt"** (parallellt med vanliga annonser, eftersom flödet är distinkt).
+- Chevron-ikonen i radens första kolumn blir öppna-/stäng-trigger för panelen
+- Klick på själva raden (utanför actions/checkbox) öppnar också panelen
+- Endast en sökande i taget i panelen; ny rad ersätter
+- Panelen stängs med X, Esc eller klick utanför
+- Selection-checkbox, dropdown-actions, "Koppla kontrakt"-knappen m.m. ligger kvar i raden – panelen är komplement, inte ersättning
 
-**Listvy (alla poängfria objekt):**
-- Tabell med: objekt, adress, hyra, antal intresseanmälningar, status (Publicerad / Pågående kontakt / Kontrakt skapat), publiceringsdatum.
-- Filter: status, område.
+## Panelens struktur
 
-**Detaljvy (per objekt):**
-- Header med objektinfo + status-badge + actions (Avpublicera, Skapa kontrakt).
-- **Intresselista** sorterad efter anmälningsdatum. Per rad:
-  - Namn, kundnummer, anmäld datum.
-  - **Status-tag**: Ny / Topp 3 (bekräftelsemejl skickat) / Kontaktad / Tackat ja / Tackat nej / Ej tilldelad.
-  - **Senaste kommunikation**: kort sammanfattning + tidsstämpel (t.ex. "SMS skickat 12 maj" eller "Ringt 14 maj").
-  - Actions per rad: Logga kontakt, Markera tackat ja/nej, Skapa kontrakt, Anteckning.
-- **Sidopanel (öppnas vid val av sökande)**: full kommunikationshistorik (kronologisk timeline: mejl, SMS, anteckningar, statusbyten), kundkortlänk, snabb-anteckning.
+**Bredd:** `sm:max-w-xl` (något bredare än po­äng­fri-panelen eftersom formuläret är tätare). Flex-column med scrollbar body och sticky border-t footer.
 
-## Vad som byggs (etapper)
+**Header (sticky top, border-b):**
+- Liten meta-rad: ev. statusbadges för erbjudande/visning (när relevant per flik), kö­poäng som muted text
+- Titel: sökandens namn
+- Sub-meta: kundnummer · telefon · mejl
+- Länk "Öppna kundkort" (ExternalLink) – samma som befintlig kolumn
 
-### Etapp 1 – Datamodell & mockdata
-- Typer: `PoangfriListing`, `PoangfriInterest` (med status, anteckningar, kommunikationslogg).
-- Mockdata med svenska, anonymiserade namn enligt projektets konvention.
-- Context/hook: `usePoangfriListings`.
+**Body (scrollbar):**
+Återanvänder existerande sektioner från `residence-profile/form/`:
+- `HousingTypeSection` – Nuvarande boende
+- `CustomerReference` – Referenshistorik
+- `ReviewStatusSection` – Granskningsstatus
+- `HousingReferenceComment` – Kommentar
+- Notes-block för intern­noteringar (om aktuellt – återanvänd `Notes`-komponenten med `entityType="housing-applicant"`)
 
-### Etapp 2 – Listvy
-- Sida `/uthyrning/bostad/poangfritt` (eller integrerad som flik i `HousingSpacesTable`).
-- ResponsiveTable enligt standard, filter enligt etablerat mönster.
+**Footer (sticky bottom, border-t):**
+- "Avbryt" (variant outline) – stänger panelen
+- "Uppdatera profil" (primär) – sparar formuläret
 
-### Etapp 3 – Detaljvy
-- Header + intresselista (ResponsiveTable med inline-statusåtgärder).
-- Sidopanel för kommunikationshistorik (återanvänd `TenantEventLog`-mönstret).
-- Modaler: "Logga kontakt" (typ: telefon/SMS/mejl/möte + anteckning), "Skapa kontrakt" (bekräftelse + auto-effekter).
+## Visuell konsekvens med po­äng­fri-panelen
 
-### Etapp 4 – Topp 3-bekräftelsemejl
-- Knapp "Skicka bekräftelsemejl till topp 3" på objektsnivå (manuell trigger, inte automatisk).
-- Logga mejlet i kommunikationshistoriken per sökande.
+Samma rytm: header med badge ovanför titel, meta som muted text under, body med tydliga sektionsrubriker (`text-sm font-semibold mb-3`), sticky footer. Vi extraherar inte en delad komponent – panelernas innehåll är olika – men de följer samma layout-recept så de upplevs som syskon.
 
-### Etapp 5 – Kontraktshändelsen
-- "Skapa kontrakt"-flöde som visuellt visar vad som händer automatiskt (avpublicera, välkomstmejl, ej-tilldelad till övriga, arkivera).
-- I detta steg: bara mockad effekt + tydlig UI-feedback, ingen riktig backend.
+## Tekniska ändringar
 
-## Frågor innan vi bygger
+1. **Ny komponent:** `src/pages/rentals/components/HousingApplicantPanel.tsx`
+   - Sheet med ovanstående struktur
+   - Wrappar `HousingTypeSection`, `CustomerReference`, `ReviewStatusSection`, `HousingReferenceComment` i ett gemensamt `useForm`
+   - Tar emot `applicant`, `open`, `onOpenChange`, ev. flik-kontext för relevanta statusbadges
 
-**A. Placering bekräftas?** Egen flik "Poängfritt" parallellt med vanliga flikar i `HousingSpacesTable`, eller helt egen sida under sidomenyn?
+2. **Refaktor av `HousingApplicantsTable.tsx`:**
+   - Ersätt `expandedApplicant`-state-driven inline-rendering (raderna 535-543) med Sheet-state: `panelApplicantId`
+   - Chevron-knappen togglar nu panelen i stället för inline-blocket
+   - `onRowClick` (utanför action-zonen) öppnar panelen
+   - Ta bort import av `CompactProfileForm` här (komponenten bevaras tills vidare för ev. andra användningar)
 
-**B. Topp 3-mejl** – ska det vara en **manuell knapp** ("Skicka bekräftelsemejl") eller ska systemet **föreslå** det när någon når topp 3 (notis, inte automatik)?
+3. **Po­äng­fri-panelen:** Inga ändringar. Vi justerar bara så att den nya standardpanelen följer samma header-/footer-recept.
 
-**C. Var ska "Skapa poängfri annons" startas från?** Från objektsidan (lägenheten) eller från en central "Skapa"-knapp i poängfri-vyn?
+## Vad som inte ingår
 
-**D. Etappordning** – börja med Etapp 1+2 (datamodell + listvy) så vi snabbt får något att titta på och iterera vidare från, eller vill du att jag levererar Etapp 1–3 i ett första bygg?
+- Vi byter inte ut formulärlogiken eller fältens innehåll
+- Vi rör inte vilka kolumner som visas i tabellen
+- Inga ändringar i po­äng­fri-flödet
+- Mobilbeteende: Sheet glider in över hela skärmen som idag (default Sheet-beteende) – ingen separat MobileAccordion behövs här eftersom tabellen redan har eget mobilläge i `ResponsiveTable`-mönstret (men `HousingApplicantsTable` använder ren `Table`, så vi behåller dagens mobilfallback oförändrad i denna omgång)

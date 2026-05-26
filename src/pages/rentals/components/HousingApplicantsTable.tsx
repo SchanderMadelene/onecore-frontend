@@ -2,9 +2,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { CompactProfileForm } from "@/features/rentals/components/residence-profile/CompactProfileForm";
+import { HousingApplicantPanel } from "./HousingApplicantPanel";
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, ChevronRight, MoreHorizontal, ExternalLink } from "lucide-react";
+import { ChevronRight, MoreHorizontal, ExternalLink } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,7 +73,7 @@ export function HousingApplicantsTable({
   onUnlinkContract,
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
-  const [expandedApplicant, setExpandedApplicant] = useState<string | null>(null);
+  const [panelApplicantId, setPanelApplicantId] = useState<string | null>(null);
   const [responseOverrides, setResponseOverrides] = useState<Record<number, OfferResponseStatus>>({});
   const hasInitializedSelection = useRef(false);
 
@@ -128,13 +128,8 @@ export function HousingApplicantsTable({
   };
 
 
-  const handleToggleExpand = (applicant: HousingApplicant) => {
-    const applicantId = String(applicant.id);
-    if (expandedApplicant === applicantId) {
-      setExpandedApplicant(null);
-    } else {
-      setExpandedApplicant(applicantId);
-    }
+  const handleOpenPanel = (applicant: HousingApplicant) => {
+    setPanelApplicantId(String(applicant.id));
   };
 
   const formatLeaseStatus = (status: string) => {
@@ -326,9 +321,13 @@ export function HousingApplicantsTable({
               const rowClass = [isWinner || isLinked ? "bg-success/5" : "", isPreviousOnly ? "opacity-50" : ""].filter(Boolean).join(" ") || undefined;
               return (
               <>
-                <TableRow key={applicant.id} className={rowClass}>
+                <TableRow
+                  key={applicant.id}
+                  className={[rowClass, "cursor-pointer hover:bg-muted/40"].filter(Boolean).join(" ")}
+                  onClick={() => handleOpenPanel(applicant)}
+                >
                   {!historyMode && !contractMode && (
-                    <TableCell className="py-3">
+                    <TableCell className="py-3" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-2">
                         <Checkbox
                           checked={selectedApplicants.has(String(applicant.id))}
@@ -347,13 +346,14 @@ export function HousingApplicantsTable({
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleToggleExpand(applicant)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenPanel(applicant);
+                        }}
                         className="p-1 h-auto"
+                        title="Visa profil"
                       >
-                        {expandedApplicant === String(applicant.id) ?
-                          <ChevronDown className="h-4 w-4" /> :
-                          <ChevronRight className="h-4 w-4" />
-                        }
+                        <ChevronRight className="h-4 w-4" />
                       </Button>
                       <div>
                         <div className="flex items-center gap-1.5">
@@ -532,15 +532,6 @@ export function HousingApplicantsTable({
                     );
                   })()}
                 </TableRow>
-                {expandedApplicant === String(applicant.id) && (
-                  <TableRow>
-                    <TableCell colSpan={12} className="p-0">
-                      <div className="border-t">
-                        <CompactProfileForm applicantId={String(applicant.id)} />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
               </>
               );
             }) : (
@@ -554,6 +545,12 @@ export function HousingApplicantsTable({
         </TableBody>
       </Table>
     </div>
+
+    <HousingApplicantPanel
+      applicant={applicants.find((a) => String(a.id) === panelApplicantId) ?? null}
+      open={panelApplicantId !== null}
+      onOpenChange={(open) => !open && setPanelApplicantId(null)}
+    />
   </>
   );
 }
