@@ -19,6 +19,7 @@ import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 
 import { poangfriListings } from "@/features/rentals/data/poangfri-housing";
+import { getDistrictByArea } from "@/features/rentals/utils/area-district";
 import {
   PoangfriListing,
   PoangfriListingStatus,
@@ -92,14 +93,32 @@ export default function PoangfriHousingPage() {
       render: (l: PoangfriListing) => <Tag>{l.area}</Tag>,
     },
     {
+      key: "district",
+      label: "Distrikt",
+      hideOnMobile: true,
+      render: (l: PoangfriListing) => (
+        <span className="text-sm">{getDistrictByArea(l.area)}</span>
+      ),
+    },
+    {
       key: "type",
       label: "Typ",
       hideOnMobile: true,
+      render: (l: PoangfriListing) => <span className="text-sm">{l.type}</span>,
+    },
+    {
+      key: "rooms",
+      label: "Rum",
+      hideOnMobile: true,
       render: (l: PoangfriListing) => (
-        <div className="text-sm">
-          {l.type} · {l.rooms} rok · {l.size}
-        </div>
+        <span className="text-sm tabular-nums">{l.rooms}</span>
       ),
+    },
+    {
+      key: "size",
+      label: "Yta",
+      hideOnMobile: true,
+      render: (l: PoangfriListing) => <span className="text-sm">{l.size}</span>,
     },
     {
       key: "rent",
@@ -108,8 +127,26 @@ export default function PoangfriHousingPage() {
       render: (l: PoangfriListing) => <span className="text-sm">{l.rent}</span>,
     },
     {
+      key: "availableFrom",
+      label: "Ledig från",
+      hideOnMobile: true,
+      render: (l: PoangfriListing) => (
+        <span className="text-sm text-muted-foreground">
+          {l.availableFrom ? formatDate(l.availableFrom) : "–"}
+        </span>
+      ),
+    },
+    {
+      key: "publishedAt",
+      label: "Publicerad",
+      hideOnMobile: true,
+      render: (l: PoangfriListing) => (
+        <span className="text-sm text-muted-foreground">{formatDate(l.publishedAt)}</span>
+      ),
+    },
+    {
       key: "interests",
-      label: "Intressen",
+      label: "Intresseanmälningar",
       render: (l: PoangfriListing) => (
         <div className="text-sm">
           <span className="font-medium">{l.interests.length}</span>
@@ -119,14 +156,6 @@ export default function PoangfriHousingPage() {
             </span>
           )}
         </div>
-      ),
-    },
-    {
-      key: "publishedAt",
-      label: "Publicerad",
-      hideOnMobile: true,
-      render: (l: PoangfriListing) => (
-        <span className="text-sm text-muted-foreground">{formatDate(l.publishedAt)}</span>
       ),
     },
     {
