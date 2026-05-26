@@ -57,14 +57,22 @@ export const POANGFRI_LISTING_STATUS_LABELS: Record<PoangfriListingStatus, strin
   unpublished: "Avpublicerad",
 };
 
-export const POANGFRI_LISTING_STATUS_VARIANTS: Record<
-  PoangfriListingStatus,
-  "default" | "secondary" | "outline" | "destructive"
-> = {
-  published: "default",
-  in_progress: "secondary",
-  contract_created: "outline",
-  unpublished: "outline",
+export type BadgeVariant =
+  | "default"
+  | "secondary"
+  | "outline"
+  | "destructive"
+  | "success"
+  | "muted"
+  | "info"
+  | "warning"
+  | "purple";
+
+export const POANGFRI_LISTING_STATUS_VARIANTS: Record<PoangfriListingStatus, BadgeVariant> = {
+  published: "info",
+  in_progress: "warning",
+  contract_created: "success",
+  unpublished: "muted",
 };
 
 export const POANGFRI_INTEREST_STATUS_LABELS: Record<PoangfriInterestStatus, string> = {
@@ -73,4 +81,20 @@ export const POANGFRI_INTEREST_STATUS_LABELS: Record<PoangfriInterestStatus, str
   accepted: "Tackat ja",
   declined: "Tackat nej",
   not_assigned: "Ej tilldelad",
+};
+
+export const POANGFRI_INTEREST_STATUS_VARIANTS: Record<PoangfriInterestStatus, BadgeVariant> = {
+  new: "info",
+  contacted: "warning",
+  accepted: "success",
+  declined: "destructive",
+  not_assigned: "muted",
+};
+
+export const COMMUNICATION_TYPE_LABELS: Record<CommunicationType, string> = {
+  phone: "Telefon",
+  sms: "SMS",
+  email: "Mejl",
+  meeting: "Möte",
+  note: "Anteckning",
 };
