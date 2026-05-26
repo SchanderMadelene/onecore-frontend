@@ -23,7 +23,8 @@ import {
   ArrowRightLeft,
   ClipboardList,
   Car,
-  Archive
+  Archive,
+  Sparkles
 } from "lucide-react";
 
 export const getNodeIcon = (iconName?: string): ReactNode => {
