@@ -84,17 +84,10 @@ export function RoomInspectionMobile({
     onCustomComponentsUpdate(inspectionData.customComponents.filter(c => c.id !== id));
   };
 
-  const handleCustomComponentNoteUpdate = (id: string, note: string) => {
+  const handleCustomComponentUpdate = (id: string, patch: Partial<CustomInspectionComponent>) => {
     if (!onCustomComponentsUpdate) return;
     onCustomComponentsUpdate(
-      inspectionData.customComponents.map(c => c.id === id ? { ...c, note } : c)
-    );
-  };
-
-  const handleCustomComponentCostResponsibilityUpdate = (id: string, value: CostResponsibility) => {
-    if (!onCustomComponentsUpdate) return;
-    onCustomComponentsUpdate(
-      inspectionData.customComponents.map(c => c.id === id ? { ...c, costResponsibility: value } : c)
+      inspectionData.customComponents.map(c => c.id === id ? { ...c, ...patch } : c)
     );
   };
 
