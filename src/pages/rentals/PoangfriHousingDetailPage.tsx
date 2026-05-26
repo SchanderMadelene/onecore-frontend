@@ -159,12 +159,20 @@ export default function PoangfriHousingDetailPage() {
         )[0]
       : null;
 
+  const rankById = useMemo(() => {
+    const map = new Map<string, number>();
+    sortedInterests.forEach((i, idx) => map.set(i.id, idx + 1));
+    return map;
+  }, [sortedInterests]);
+
   const columns = [
     {
       key: "rank",
       label: "#",
-      render: (_: PoangfriInterest, idx: number) => (
-        <span className="text-sm text-muted-foreground tabular-nums">{idx + 1}</span>
+      render: (i: PoangfriInterest) => (
+        <span className="text-sm text-muted-foreground tabular-nums">
+          {rankById.get(i.id)}
+        </span>
       ),
     },
     {
