@@ -140,8 +140,7 @@ export function RoomInspectionMobile({
               components={inspectionData.customComponents}
               onAdd={handleAddCustomComponent}
               onRemove={handleRemoveCustomComponent}
-              onNoteUpdate={handleCustomComponentNoteUpdate}
-              onCostResponsibilityUpdate={handleCustomComponentCostResponsibilityUpdate}
+              onUpdate={handleCustomComponentUpdate}
             />
           </div>
         )}
