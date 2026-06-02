@@ -4,7 +4,7 @@ import type { CustomerLedger } from "../types/ledger";
 export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => {
   // Default data
   const defaultLedger: CustomerLedger = {
-    invoiceMethod: 'pappersfaktura-kivra',
+    invoiceMethod: 'pappersfaktura',
     balances: {
       overdue: 0.00,
       collections: 0.00,
