@@ -68,7 +68,7 @@ export const CustomerLedger = ({ ledger, invoices }: CustomerLedgerProps) => {
             <div className="space-y-1">
               <InfoRow 
                 label="Alternativ för avisering" 
-                value={getInvoiceMethodLabel()}
+                value="E-faktura, Autogiro, Pappersfaktura, Kivra"
               />
               {ledger.invoiceMethod === 'autogiro' && ledger.autogiroDate && (
                 <InfoRow 
