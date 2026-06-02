@@ -50,7 +50,7 @@ export const getMockLedgerForCustomer = (customerId: string): CustomerLedger => 
       }
     },
     "3": {
-      invoiceMethod: 'e-faktura',
+      invoiceMethod: 'kivra',
       balances: {
         ...defaultLedger.balances,
         credit: 850.00
