@@ -42,9 +42,10 @@ export const CustomerLedger = ({ ledger, invoices }: CustomerLedgerProps) => {
   const getInvoiceMethodLabel = () => {
     switch (ledger.invoiceMethod) {
       case 'e-faktura': return 'E-faktura';
-      case 'pappersfaktura-kivra': return 'Pappersfaktura/Kivra';
       case 'autogiro': return 'Autogiro';
-      default: return 'Pappersfaktura/Kivra';
+      case 'pappersfaktura': return 'Pappersfaktura';
+      case 'kivra': return 'Kivra';
+      default: return 'Pappersfaktura';
     }
   };
 
