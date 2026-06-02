@@ -66,6 +66,11 @@ export const CustomerLedger = ({ ledger, invoices }: CustomerLedgerProps) => {
           {/* Balans och saldon */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
             <div className="space-y-1">
+              {/* 
+                NOTE (Någon av dessa): 
+                Visa alla tillgängliga fakturaalternativ som placeholder-text.
+                I verkligheten skulle detta vara en redigerbar multi-select eller liknande.
+              */}
               <InfoRow 
                 label="Alternativ för avisering" 
                 value="E-faktura, Autogiro, Pappersfaktura, Kivra"
