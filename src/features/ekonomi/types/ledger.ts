@@ -1,4 +1,4 @@
-export type InvoiceMethod = 'e-faktura' | 'pappersfaktura-kivra' | 'autogiro';
+export type InvoiceMethod = 'e-faktura' | 'autogiro' | 'pappersfaktura' | 'kivra';
 
 export interface CustomerLedger {
   invoiceMethod: InvoiceMethod;
