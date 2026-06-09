@@ -89,22 +89,6 @@ export const useParkingSpaceListing = (id: number) => {
             listingId: id,
             offerId: 1,
             protectedIdentity: { level: "sekretessmarkering" as const, since: "2024-02-01" },
-          } as unknown as never,
-          {
-            id: 2,
-            name: "Bert Bertsson",
-            nationalRegistrationNumber: "19901020-5678",
-            contactCode: "P-789012",
-            queuePoints: 300,
-            address: "Stora Gatan 15",
-            housingLeaseStatus: "Upcoming" as const,
-            applicationDate: "2024-01-20",
-            hasParkingSpace: true,
-            status: "Offered" as const,
-            applicationType: "Replace" as const,
-            priority: 1,
-            listingId: id,
-            offerId: 1
           }
         ],
         offers: [
