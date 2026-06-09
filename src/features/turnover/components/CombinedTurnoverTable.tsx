@@ -108,7 +108,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
               <div className="rounded-lg border bg-card p-3 space-y-2.5">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
+                    {renderTenantName(row.moveOut)}
                     <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
                     {row.moveOut.hasTenantNote && (
                       <Badge variant="muted" size="icon" title="Notering på hyresgäst">
@@ -142,7 +142,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     />
                   </div>
                 </div>
-                {row.moveOut.tenantPhone && (
+                {row.moveOut.tenantPhone && !pi.shouldMask(row.moveOut) && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
                     <Button variant="outline" size="icon" className="h-7 w-7" asChild>
@@ -187,7 +187,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
               <div className="rounded-lg border bg-card p-3 space-y-2.5">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
+                    {renderTenantName(row.moveIn)}
                     <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                     {row.moveIn.hasTenantNote && (
                       <Badge variant="muted" size="icon" title="Notering på hyresgäst">
