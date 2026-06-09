@@ -38,6 +38,8 @@ export interface MoveInListEntry {
   hasTenantNote?: boolean;
   tenantId?: string;
   contractStatus?: ContractStatus;
+  /** Skatteverket-skyddad identitet – styr maskning i UI */
+  protectedIdentity?: ProtectedIdentity;
   checklist: MoveInListChecklist;
 }
 
