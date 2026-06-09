@@ -25,9 +25,11 @@ export const mockMoveInListEntries: MoveInListEntry[] = [
     kvvArea: '61113',
     contractNumber: '211-073-07-0201/06',
     apartmentType: '4RK',
-    tenantName: 'Skyddad Identitet',
-    tenantPhone: '070-000 00 00',
+    tenantName: 'Wirén Karin',
+    tenantPhone: '070-555 88 22',
+    tenantId: '19820419-4421',
     date: '2026-01-31',
+    protectedIdentity: { level: 'skyddad-folkbokforing', since: '2023-09-14' },
     checklist: { cleaningStatus: 'not_done', cleaningCount: 0, contactStatus: 'not_contacted', contactAttempts: 0, nameAndIntercomDone: false, welcomeHomeDone: false, inspectionProtocolDone: false, keysHandled: false },
   },
   {
