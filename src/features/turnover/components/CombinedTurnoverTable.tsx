@@ -447,7 +447,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     {row.moveIn ? (
                       <>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveIn.tenantName}</span>
+                          <span className="text-sm">{pi.shouldMask(row.moveIn) ? 'Skyddad identitet' : row.moveIn.tenantName}</span>
+                          {pi.isProtected(row.moveIn) && (
+                            <ProtectedIdentityBadge protectedIdentity={row.moveIn.protectedIdentity} compact />
+                          )}
                           <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                           {row.moveIn.hasTenantNote && (
                             <Badge variant="muted" size="icon" title="Notering på hyresgäst">
@@ -455,7 +458,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                             </Badge>
                           )}
                         </div>
-                        {(row.moveIn.tenantId || row.moveIn.tenantPhone) && (
+                        {(row.moveIn.tenantId || (row.moveIn.tenantPhone && !pi.shouldMask(row.moveIn))) && (
                           <span className="absolute inset-y-0 right-0 flex items-center gap-1 pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
                               {row.moveIn.tenantId && (
                                 <Button variant="outline" size="icon" className="h-6 w-6" asChild>
@@ -464,7 +467,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                                   </a>
                                 </Button>
                               )}
-                              {row.moveIn.tenantPhone && (
+                              {row.moveIn.tenantPhone && !pi.shouldMask(row.moveIn) && (
                                 <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
                                     <Phone className="h-3 w-3" />
