@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import type { ProtectedIdentity } from "@/shared/protected-identity";
+
 
 // Mock data structure based on legacy types
 export interface ParkingSpaceListing {
@@ -28,6 +30,7 @@ export interface ParkingSpaceListing {
     priority: number | null;
     listingId: number;
     offerId?: number;
+    protectedIdentity?: ProtectedIdentity;
   }>;
   offers: Array<{
     id: number;
@@ -70,6 +73,23 @@ export const useParkingSpaceListing = (id: number) => {
             priority: 1,
             listingId: id
           },
+          {
+            id: 2,
+            name: "Bert Bertsson",
+            nationalRegistrationNumber: "19901020-5678",
+            contactCode: "P-789012",
+            queuePoints: 300,
+            address: "Stora Gatan 15",
+            housingLeaseStatus: "Upcoming" as const,
+            applicationDate: "2024-01-20",
+            hasParkingSpace: true,
+            status: "Offered" as const,
+            applicationType: "Replace" as const,
+            priority: 1,
+            listingId: id,
+            offerId: 1,
+            protectedIdentity: { level: "sekretessmarkering" as const, since: "2024-02-01" },
+          } as unknown as never,
           {
             id: 2,
             name: "Bert Bertsson",
