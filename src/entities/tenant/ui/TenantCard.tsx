@@ -6,6 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Phone, Mail, MessageSquare, User, Users, Clock, ChevronDown } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  ProtectedIdentityBadge,
+  useProtectedIdentity,
+  type ProtectedIdentity,
+} from "@/shared/protected-identity";
 
 interface TenantCardProps {
   tenant: {
