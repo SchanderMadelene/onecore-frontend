@@ -6,6 +6,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { Notes } from "@/components/common";
 import { CollapsibleInfoCard } from "@/shared/ui/collapsible-info-card";
+import {
+  ProtectedIdentityBadge,
+  useProtectedIdentity,
+  type ProtectedIdentity,
+} from "@/shared/protected-identity";
 
 interface TenantData {
   firstName: string;
@@ -18,6 +23,7 @@ interface TenantData {
   personalNumber?: string;
   isPrimaryTenant?: boolean;
   relationshipType?: string;
+  protectedIdentity?: ProtectedIdentity;
 }
 
 interface TenantInformationCardProps {
@@ -26,6 +32,8 @@ interface TenantInformationCardProps {
 }
 
 export function TenantInformationCard({ tenant, displayMode = "full" }: TenantInformationCardProps) {
+  const pi = useProtectedIdentity();
+
   const handleCall = (phone: string) => {
     window.location.href = `tel:${phone.replace(/[\s-]/g, '')}`;
   };
@@ -64,78 +72,105 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
 
   const previewContent = (
     <div className="space-y-1">
-      {tenants.map((t, i) => (
-        <div key={i} className="flex items-center justify-between text-sm">
-          <span className="font-medium">{t.firstName} {t.lastName}</span>
-          <span className="text-muted-foreground">{getContractStatus(t.contractStatus)}</span>
-        </div>
-      ))}
+      {tenants.map((t, i) => {
+        const masked = pi.shouldMask(t);
+        return (
+          <div key={i} className="flex items-center justify-between text-sm gap-2">
+            <span className="font-medium flex items-center gap-2 min-w-0">
+              <span className="truncate">
+                {masked ? "Skyddad identitet" : `${t.firstName} ${t.lastName}`}
+              </span>
+              {pi.isProtected(t) && (
+                <ProtectedIdentityBadge protectedIdentity={t.protectedIdentity} compact />
+              )}
+            </span>
+            <span className="text-muted-foreground whitespace-nowrap">{getContractStatus(t.contractStatus)}</span>
+          </div>
+        );
+      })}
     </div>
   );
 
   const renderTenantInfo = (tenantData: TenantData, index: number) => {
     const isSecondaryTenant = tenantData.contractStatus === "temporary";
-    
+    const masked = pi.shouldMask(tenantData);
+    const isProtected = pi.isProtected(tenantData);
+
     return (
       <div key={index} className="space-y-4">
         {isMultipleTenants && (
           <div className="mb-3">
             <h4 className="font-medium text-base">
-              {tenantData.contractStatus === "temporary" 
+              {tenantData.contractStatus === "temporary"
                 ? "Andrahandsuthyrning"
                 : (tenantData.isPrimaryTenant ? "Kontraktsinnehavare" : "Hyresgäst")
               }
             </h4>
           </div>
         )}
-        
+
         <div>
           <p className="text-sm text-muted-foreground">Namn</p>
-          <p className="font-medium">{tenantData.firstName} {tenantData.lastName}</p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className="font-medium">
+              {masked ? "Skyddad identitet" : `${tenantData.firstName} ${tenantData.lastName}`}
+            </p>
+            {isProtected && (
+              <ProtectedIdentityBadge protectedIdentity={tenantData.protectedIdentity} />
+            )}
+          </div>
         </div>
-        
+
         <div>
           <p className="text-sm text-muted-foreground">Kontraktstatus</p>
           <p className="font-medium">{getContractStatus(tenantData.contractStatus)}</p>
         </div>
-        
+
         {tenantData.personalNumber && !isSecondaryTenant && (
           <div>
             <p className="text-sm text-muted-foreground">Personnummer</p>
-            <p className="font-medium">{tenantData.personalNumber}</p>
+            <p className="font-medium">{masked ? "•••" : tenantData.personalNumber}</p>
           </div>
         )}
-        
+
         <div>
           <p className="text-sm text-muted-foreground">Telefon</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{tenantData.phone}</p>
-            <div className="flex gap-2">
-              <Button variant="outline" size="icon" onClick={() => handleCall(tenantData.phone)} title="Ring">
-                <Phone className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="icon" onClick={() => handleSMS(tenantData.phone)} title="Skicka SMS">
-                <MessageSquare className="h-4 w-4" />
-              </Button>
+          {masked ? (
+            <p className="font-medium">•••</p>
+          ) : (
+            <div className="flex items-center gap-2">
+              <p className="font-medium">{tenantData.phone}</p>
+              <div className="flex gap-2">
+                <Button variant="outline" size="icon" onClick={() => handleCall(tenantData.phone)} title="Ring">
+                  <Phone className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" onClick={() => handleSMS(tenantData.phone)} title="Skicka SMS">
+                  <MessageSquare className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-        
+
         <div>
           <p className="text-sm text-muted-foreground">E-post</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{tenantData.email}</p>
-            <Button variant="outline" size="icon" onClick={() => handleEmail(tenantData.email)} title="Skicka e-post">
-              <Mail className="h-4 w-4" />
-            </Button>
-          </div>
+          {masked ? (
+            <p className="font-medium">•••</p>
+          ) : (
+            <div className="flex items-center gap-2">
+              <p className="font-medium">{tenantData.email}</p>
+              <Button variant="outline" size="icon" onClick={() => handleEmail(tenantData.email)} title="Skicka e-post">
+                <Mail className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
-        
+
         <div>
           <p className="text-sm text-muted-foreground">Inflyttningsdatum</p>
           <p className="font-medium">{new Date(tenantData.moveInDate).toLocaleDateString('sv-SE')}</p>
         </div>
-        
+
         {tenantData.moveOutDate && (
           <div>
             <p className="text-sm text-muted-foreground">Utflyttningsdatum</p>

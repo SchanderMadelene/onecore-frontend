@@ -18,6 +18,7 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { ProtectedIdentityBadge, useProtectedIdentity } from '@/shared/protected-identity';
 
 
 interface CombinedTurnoverTableProps {
@@ -37,6 +38,20 @@ interface CombinedTurnoverTableProps {
 export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onInspectionProtocolChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
   const { getNotesForEntry, addNote, toggleImportant } = useTurnoverNotes();
+  const pi = useProtectedIdentity();
+
+  const renderTenantName = (entry: { tenantName: string; protectedIdentity?: any }) => {
+    const masked = pi.shouldMask(entry);
+    return (
+      <>
+        <span className="text-sm font-medium">{masked ? 'Skyddad identitet' : entry.tenantName}</span>
+        {pi.isProtected(entry) && (
+          <ProtectedIdentityBadge protectedIdentity={entry.protectedIdentity} compact />
+        )}
+      </>
+    );
+  };
+
 
   /** Derive residence detail URL from contract number, e.g. "211-080-02-0101/03" → "/properties/211-080/02/0101" */
   const getResidenceUrl = (row: TurnoverRow): string | null => {
@@ -93,7 +108,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
               <div className="rounded-lg border bg-card p-3 space-y-2.5">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-sm font-medium">{row.moveOut.tenantName}</span>
+                    {renderTenantName(row.moveOut)}
                     <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
                     {row.moveOut.hasTenantNote && (
                       <Badge variant="muted" size="icon" title="Notering på hyresgäst">
@@ -127,7 +142,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     />
                   </div>
                 </div>
-                {row.moveOut.tenantPhone && (
+                {row.moveOut.tenantPhone && !pi.shouldMask(row.moveOut) && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveOut.tenantPhone}</span>
                     <Button variant="outline" size="icon" className="h-7 w-7" asChild>
@@ -172,7 +187,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
               <div className="rounded-lg border bg-card p-3 space-y-2.5">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-sm font-medium">{row.moveIn.tenantName}</span>
+                    {renderTenantName(row.moveIn)}
                     <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                     {row.moveIn.hasTenantNote && (
                       <Badge variant="muted" size="icon" title="Notering på hyresgäst">
@@ -220,7 +235,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     />
                   </div>
                 </div>
-                {row.moveIn.tenantPhone && (
+                {row.moveIn.tenantPhone && !pi.shouldMask(row.moveIn) && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
                     <Button variant="outline" size="icon" className="h-7 w-7" asChild>
@@ -341,7 +356,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     {row.moveOut ? (
                       <>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveOut.tenantName}</span>
+                          <span className="text-sm">{pi.shouldMask(row.moveOut) ? 'Skyddad identitet' : row.moveOut.tenantName}</span>
+                          {pi.isProtected(row.moveOut) && (
+                            <ProtectedIdentityBadge protectedIdentity={row.moveOut.protectedIdentity} compact />
+                          )}
                           <SecurityWarningIcon show={row.moveOut.hasSecurityWarning} />
                           {row.moveOut.hasTenantNote && (
                             <Badge variant="muted" size="icon" title="Notering på hyresgäst">
@@ -349,7 +367,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                             </Badge>
                           )}
                         </div>
-                        {(row.moveOut.tenantId || row.moveOut.tenantPhone) && (
+                        {(row.moveOut.tenantId || (row.moveOut.tenantPhone && !pi.shouldMask(row.moveOut))) && (
                           <span className="absolute inset-y-0 right-0 flex items-center gap-1 pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
                               {row.moveOut.tenantId && (
                                 <Button variant="outline" size="icon" className="h-6 w-6" asChild>
@@ -358,7 +376,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                                   </a>
                                 </Button>
                               )}
-                              {row.moveOut.tenantPhone && (
+                              {row.moveOut.tenantPhone && !pi.shouldMask(row.moveOut) && (
                                 <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`tel:${row.moveOut.tenantPhone}`} title={row.moveOut.tenantPhone}>
                                     <Phone className="h-3 w-3" />
@@ -429,7 +447,10 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     {row.moveIn ? (
                       <>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{row.moveIn.tenantName}</span>
+                          <span className="text-sm">{pi.shouldMask(row.moveIn) ? 'Skyddad identitet' : row.moveIn.tenantName}</span>
+                          {pi.isProtected(row.moveIn) && (
+                            <ProtectedIdentityBadge protectedIdentity={row.moveIn.protectedIdentity} compact />
+                          )}
                           <SecurityWarningIcon show={row.moveIn.hasSecurityWarning} />
                           {row.moveIn.hasTenantNote && (
                             <Badge variant="muted" size="icon" title="Notering på hyresgäst">
@@ -437,7 +458,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                             </Badge>
                           )}
                         </div>
-                        {(row.moveIn.tenantId || row.moveIn.tenantPhone) && (
+                        {(row.moveIn.tenantId || (row.moveIn.tenantPhone && !pi.shouldMask(row.moveIn))) && (
                           <span className="absolute inset-y-0 right-0 flex items-center gap-1 pl-4 pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity bg-gradient-to-l from-muted/50 via-muted/50 to-transparent">
                               {row.moveIn.tenantId && (
                                 <Button variant="outline" size="icon" className="h-6 w-6" asChild>
@@ -446,7 +467,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                                   </a>
                                 </Button>
                               )}
-                              {row.moveIn.tenantPhone && (
+                              {row.moveIn.tenantPhone && !pi.shouldMask(row.moveIn) && (
                                 <Button variant="outline" size="icon" className="h-6 w-6" asChild>
                                   <a href={`tel:${row.moveIn.tenantPhone}`} title={row.moveIn.tenantPhone}>
                                     <Phone className="h-3 w-3" />

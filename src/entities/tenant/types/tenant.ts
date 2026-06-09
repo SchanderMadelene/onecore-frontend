@@ -1,4 +1,5 @@
 // Tenant entity types
+import type { ProtectedIdentity } from "@/shared/protected-identity";
 
 export interface Tenant {
   firstName: string;
@@ -30,6 +31,8 @@ export interface Tenant {
   queuePosition?: number;
   relationshipType?: string;
   isPrimaryContractHolder?: boolean;
+  /** Skatteverket-skyddad identitet – styr maskning i UI */
+  protectedIdentity?: ProtectedIdentity;
 }
 
 export interface TenantEvent {

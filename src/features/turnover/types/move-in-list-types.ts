@@ -1,3 +1,5 @@
+import type { ProtectedIdentity } from "@/shared/protected-identity";
+
 export type CleaningStatus = 'not_done' | 'booked' | 'approved' | 'reinspection';
 
 export type ContactStatus = 'not_contacted' | 'not_reached' | 'visit_booked' | 'visit_done';
@@ -36,6 +38,8 @@ export interface MoveInListEntry {
   hasTenantNote?: boolean;
   tenantId?: string;
   contractStatus?: ContractStatus;
+  /** Skatteverket-skyddad identitet – styr maskning i UI */
+  protectedIdentity?: ProtectedIdentity;
   checklist: MoveInListChecklist;
 }
 

@@ -3,6 +3,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { ApplicantActions } from "@/features/rentals/components/ApplicantActions";
 import { OfferActions } from "@/features/rentals/components/OfferActions";
+import {
+  ProtectedIdentityBadge,
+  useProtectedIdentity,
+  type ProtectedIdentity,
+} from "@/shared/protected-identity";
 
 interface Applicant {
   id: number;
@@ -19,6 +24,7 @@ interface Applicant {
   priority: number | null;
   listingId: number;
   offerId?: number;
+  protectedIdentity?: ProtectedIdentity;
 }
 
 interface Offer {
@@ -42,6 +48,8 @@ export function ApplicantsTable({
   listingId, 
   showOfferColumns = false 
 }: ApplicantsTableProps) {
+  const pi = useProtectedIdentity();
+
   const formatLeaseStatus = (status: string) => {
     const statusMap: Record<string, string> = {
       "Current": "Gällande",
@@ -115,12 +123,24 @@ export function ApplicantsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {applicants.length > 0 ? applicants.map((applicant) => (
+          {applicants.length > 0 ? applicants.map((applicant) => {
+            const masked = pi.shouldMask(applicant);
+            const isProtected = pi.isProtected(applicant);
+            return (
             <TableRow key={applicant.id}>
               <TableCell className="font-medium">
-                <div>
-                  <div>{applicant.name}</div>
-                  <div className="text-sm text-muted-foreground">{applicant.nationalRegistrationNumber}</div>
+                <div className="flex items-start gap-2">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span>{masked ? "Skyddad identitet" : applicant.name}</span>
+                      {isProtected && (
+                        <ProtectedIdentityBadge protectedIdentity={applicant.protectedIdentity} compact />
+                      )}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {masked ? "•••" : applicant.nationalRegistrationNumber}
+                    </div>
+                  </div>
                 </div>
               </TableCell>
               <TableCell>{applicant.contactCode}</TableCell>
@@ -164,7 +184,8 @@ export function ApplicantsTable({
                 ) : null}
               </TableCell>
             </TableRow>
-          )) : (
+            );
+          }) : (
             <TableRow>
               <TableCell colSpan={showOfferColumns ? 13 : 11} className="text-center py-8 text-muted-foreground">
                 Inga intresseanmälningar än

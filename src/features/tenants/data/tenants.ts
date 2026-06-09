@@ -127,7 +127,12 @@ export const mockLisaNilsson = {
   },
   loginCount: 23,
   lastLogin: "2024-06-07T14:45:00",
-  isPrimaryTenant: true
+  isPrimaryTenant: true,
+  protectedIdentity: {
+    level: "skyddad-folkbokforing" as const,
+    since: "2023-09-14",
+    note: "All kontakt sker via Skatteverkets förmedling.",
+  },
 };
 
 // Pär Gustafsson - Privat kund
@@ -219,7 +224,11 @@ export const mockSeekers = [
     loginCount: 32,
     lastLogin: "2024-06-08T19:20:00",
     queuePosition: 123,
-    housingInterests: ["1 rum och kök"]
+    housingInterests: ["1 rum och kök"],
+    protectedIdentity: {
+      level: "sekretessmarkering" as const,
+      since: "2024-02-01",
+    },
   }
 ];
 
