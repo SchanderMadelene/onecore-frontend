@@ -8,7 +8,7 @@ import {
   LayoutDashboard, MessageSquare, Calendar, Bell, FileImage, Wallet, 
   StickyNote, Car, Archive, Building2, Box, Settings, ShieldX, DollarSign, 
   Lock, Eye, TrendingUp, Code, Star, RotateCcw, MapPin, ChevronDown,
-  DoorOpen, LucideIcon
+  DoorOpen, LucideIcon, Shield
 } from "lucide-react";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { useRole } from "@/contexts/RoleContext";
@@ -187,7 +187,7 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Kunder */}
-        <ToggleSection title="Kunder" icon={Users} toggleKeys={['showTenants', 'showTenantContracts', 'showTenantQueue', 'showTenantCases', 'showTenantLedger', 'showTenantNotes', 'showTenantKeys', 'showTenantEvents', 'showTenantDocuments']}>
+        <ToggleSection title="Kunder" icon={Users} toggleKeys={['showTenants', 'showTenantContracts', 'showTenantQueue', 'showTenantCases', 'showTenantLedger', 'showTenantNotes', 'showTenantKeys', 'showTenantEvents', 'showTenantDocuments', 'showProtectedIdentity']}>
           <ToggleItem id="tenants" icon={Users} label="Kunder" description="Visa kundfunktioner" checked={features.showTenants} disabled={navDisabled} onToggle={() => handleFeatureToggle('showTenants')} />
           <div className="pl-4 border-l space-y-1">
             <ToggleItem id="tenant-contracts" icon={FileText} label="Hyreskontrakt" description="Visa hyreskontrakt på kundkort" checked={features.showTenantContracts} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantContracts')} />
@@ -198,6 +198,7 @@ export function BetaSettings() {
             <ToggleItem id="tenant-keys" icon={Key} label="Nyckelknippa" description="Visa nyckelknippa på kundkort" checked={features.showTenantKeys} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantKeys')} />
             <ToggleItem id="tenant-events" icon={Bell} label="Händelselogg" description="Visa händelselogg på kundkort" checked={features.showTenantEvents} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantEvents')} />
             <ToggleItem id="tenant-documents" icon={FileText} label="Dokument" description="Visa dokument på kundkort" checked={features.showTenantDocuments} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showTenantDocuments')} />
+            <ToggleItem id="protected-identity" icon={Shield} label="Skyddad identitet" description="Aktivera visning och maskering av skyddad identitet för kunder och sökande" checked={features.showProtectedIdentity} disabled={!features.showTenants || navDisabled} onToggle={() => handleFeatureToggle('showProtectedIdentity')} />
           </div>
         </ToggleSection>
 

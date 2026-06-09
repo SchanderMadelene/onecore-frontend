@@ -69,6 +69,8 @@ interface FeatureToggles {
   showStrofakturaUnderlag: boolean;
   // Property areas page
   showPropertyAreas: boolean;
+  // Protected identity (skyddad identitet)
+  showProtectedIdentity: boolean;
 }
 
 interface FeatureTogglesContextType {
@@ -145,6 +147,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showStrofakturaUnderlag: true,
   // Property areas page
   showPropertyAreas: true,
+  // Protected identity (skyddad identitet)
+  showProtectedIdentity: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);
