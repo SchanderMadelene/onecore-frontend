@@ -40,12 +40,16 @@ interface TenantCardProps {
     registrationDate?: string;
     queuePosition?: number;
     housingInterests?: string[];
+    protectedIdentity?: ProtectedIdentity;
   };
 }
 
 export function TenantCard({ tenant }: TenantCardProps) {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
+  const pi = useProtectedIdentity();
+  const masked = pi.shouldMask(tenant);
+  const isProtected = pi.isProtected(tenant);
 
   const handleCall = () => {
     window.location.href = `tel:${tenant.phone.replace(/[\s-]/g, '')}`;
