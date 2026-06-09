@@ -69,6 +69,8 @@ interface FeatureToggles {
   showStrofakturaUnderlag: boolean;
   // Property areas page
   showPropertyAreas: boolean;
+  // Protected identity (skyddad identitet)
+  showProtectedIdentity: boolean;
 }
 
 interface FeatureTogglesContextType {
