@@ -184,7 +184,8 @@ export function ApplicantsTable({
                 ) : null}
               </TableCell>
             </TableRow>
-          )) : (
+            );
+          }) : (
             <TableRow>
               <TableCell colSpan={showOfferColumns ? 13 : 11} className="text-center py-8 text-muted-foreground">
                 Inga intresseanmälningar än
