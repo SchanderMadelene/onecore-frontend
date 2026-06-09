@@ -75,19 +75,21 @@ export function TenantCard({ tenant }: TenantCardProps) {
       <div className="space-y-4">
         <div>
           <p className="text-sm text-muted-foreground">Namn</p>
-          <p className="font-medium">{tenant.firstName} {tenant.lastName}</p>
+          <p className="font-medium">
+            {masked ? "Skyddad identitet" : `${tenant.firstName} ${tenant.lastName}`}
+          </p>
         </div>
-        
+
         <div>
           <p className="text-sm text-muted-foreground">Personnummer</p>
-          <p className="font-medium">{tenant.personalNumber}</p>
+          <p className="font-medium">{masked ? "•••" : tenant.personalNumber}</p>
         </div>
 
         <div>
           <p className="text-sm text-muted-foreground">Bostadsadress</p>
-          <p className="font-medium">{tenant.address}</p>
+          <p className="font-medium">{masked ? "•••" : tenant.address}</p>
         </div>
-        
+
         <div>
           <p className="text-sm text-muted-foreground">Kundnummer</p>
           <p className="font-medium">{formatPersonalNumber(tenant.personalNumber)}</p>
@@ -96,53 +98,62 @@ export function TenantCard({ tenant }: TenantCardProps) {
         <div>
           <p className="text-sm text-muted-foreground">Typ/roll</p>
           <p className="font-medium">
-            {tenant.customerRoles && tenant.customerRoles.length > 0 
-              ? tenant.customerRoles.join(", ") 
+            {tenant.customerRoles && tenant.customerRoles.length > 0
+              ? tenant.customerRoles.join(", ")
               : (tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande")}
           </p>
         </div>
       </div>
-      
+
       <div className="space-y-4">
         <div>
           <p className="text-sm text-muted-foreground">E-post</p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{tenant.email}</p>
-            <Button variant="outline" size="icon" onClick={handleEmail} title="Skicka e-post">
-              <Mail className="h-4 w-4" />
-            </Button>
-          </div>
+          {masked ? (
+            <p className="font-medium">•••</p>
+          ) : (
+            <div className="flex items-center gap-2">
+              <p className="font-medium">{tenant.email}</p>
+              <Button variant="outline" size="icon" onClick={handleEmail} title="Skicka e-post">
+                <Mail className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
-        
+
         <div>
           <p className="text-sm text-muted-foreground">Telefon</p>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <p className="font-medium">{tenant.phone}</p>
-              <div className="flex gap-2">
-                <Button variant="outline" size="icon" onClick={handleCall} title="Ring">
-                  <Phone className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleSMS} title="Skicka SMS">
-                  <MessageSquare className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            {tenant.additionalPhones?.map((phone, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <p className="font-medium">{phone}</p>
+          {masked ? (
+            <p className="font-medium">•••</p>
+          ) : (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <p className="font-medium">{tenant.phone}</p>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="icon" onClick={() => window.location.href = `tel:${phone.replace(/[\s-]/g, '')}`} title="Ring">
+                  <Button variant="outline" size="icon" onClick={handleCall} title="Ring">
                     <Phone className="h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={() => window.location.href = `sms:${phone.replace(/[\s-]/g, '')}`} title="Skicka SMS">
+                  <Button variant="outline" size="icon" onClick={handleSMS} title="Skicka SMS">
                     <MessageSquare className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
-            ))}
-          </div>
+              {tenant.additionalPhones?.map((phone, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <p className="font-medium">{phone}</p>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="icon" onClick={() => window.location.href = `tel:${phone.replace(/[\s-]/g, '')}`} title="Ring">
+                      <Phone className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="icon" onClick={() => window.location.href = `sms:${phone.replace(/[\s-]/g, '')}`} title="Skicka SMS">
+                      <MessageSquare className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+
 
         <div>
           <p className="text-sm text-muted-foreground">God man/Förvaltarskap</p>
