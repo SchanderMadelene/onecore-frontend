@@ -147,6 +147,8 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showStrofakturaUnderlag: true,
   // Property areas page
   showPropertyAreas: true,
+  // Protected identity (skyddad identitet)
+  showProtectedIdentity: false,
 };
 
 const FeatureTogglesContext = createContext<FeatureTogglesContextType | undefined>(undefined);

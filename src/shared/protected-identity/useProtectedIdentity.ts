@@ -1,4 +1,5 @@
 import { useRole, type UserRole } from "@/shared/contexts/RoleContext";
+import { useFeatureToggles } from "@/shared/contexts/FeatureTogglesContext";
 import type { ProtectedPerson } from "./types";
 
 /**
@@ -28,13 +29,15 @@ export interface ProtectedIdentityApi {
 
 export function useProtectedIdentity(): ProtectedIdentityApi {
   const { currentRole } = useRole();
+  const { features } = useFeatureToggles();
   const roleSeesUnmasked = ROLES_WITH_UNMASKED_ACCESS.includes(currentRole);
+  const featureEnabled = features.showProtectedIdentity;
 
   const isProtected = (person?: ProtectedPerson | null) =>
-    !!person?.protectedIdentity;
+    featureEnabled && !!person?.protectedIdentity;
 
   const shouldMask = (person?: ProtectedPerson | null) =>
-    isProtected(person) && !roleSeesUnmasked;
+    featureEnabled && isProtected(person) && !roleSeesUnmasked;
 
   return {
     role: currentRole,
