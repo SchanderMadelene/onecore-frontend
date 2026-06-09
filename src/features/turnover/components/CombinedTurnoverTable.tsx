@@ -18,6 +18,7 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { ProtectedIdentityBadge, useProtectedIdentity } from '@/shared/protected-identity';
 
 
 interface CombinedTurnoverTableProps {
@@ -37,6 +38,20 @@ interface CombinedTurnoverTableProps {
 export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningStatusChange, onCleaningCountChange, onCleaningBookedDateChange, onWelcomeHomeChange, onInspectionProtocolChange, onContactStatusChange, onContactAttemptsChange, onVisitBookedDateChange, onQuickMoveInChange }: CombinedTurnoverTableProps) {
   const isMobile = useIsMobile();
   const { getNotesForEntry, addNote, toggleImportant } = useTurnoverNotes();
+  const pi = useProtectedIdentity();
+
+  const renderTenantName = (entry: { tenantName: string; protectedIdentity?: any }) => {
+    const masked = pi.shouldMask(entry);
+    return (
+      <>
+        <span className="text-sm font-medium">{masked ? 'Skyddad identitet' : entry.tenantName}</span>
+        {pi.isProtected(entry) && (
+          <ProtectedIdentityBadge protectedIdentity={entry.protectedIdentity} compact />
+        )}
+      </>
+    );
+  };
+
 
   /** Derive residence detail URL from contract number, e.g. "211-080-02-0101/03" → "/properties/211-080/02/0101" */
   const getResidenceUrl = (row: TurnoverRow): string | null => {
