@@ -241,12 +241,19 @@ export function TenantCard({ tenant }: TenantCardProps) {
             <div className="w-full cursor-pointer px-4 py-3.5">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <span className="text-base font-medium">
-                    {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-medium">
+                      {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+                    </span>
+                    {isProtected && (
+                      <ProtectedIdentityBadge protectedIdentity={tenant.protectedIdentity} compact />
+                    )}
+                  </div>
                   <div className="space-y-1 mt-2">
-                    <p className="text-sm font-medium">{tenant.address}</p>
-                    <p className="text-sm text-muted-foreground">{formatPersonalNumber(tenant.personalNumber)} • {tenant.phone}</p>
+                    <p className="text-sm font-medium">{masked ? "Skyddad identitet" : tenant.address}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatPersonalNumber(tenant.personalNumber)} • {masked ? "•••" : tenant.phone}
+                    </p>
                   </div>
                 </div>
                 <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -267,8 +274,11 @@ export function TenantCard({ tenant }: TenantCardProps) {
   return (
     <Card>
       <CardHeader className="pb-4">
-        <CardTitle>
-          {tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}
+        <CardTitle className="flex items-center gap-3">
+          <span>{tenant.customerType === "tenant" ? "Hyresgäst" : "Sökande"}</span>
+          {isProtected && (
+            <ProtectedIdentityBadge protectedIdentity={tenant.protectedIdentity} />
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent>
