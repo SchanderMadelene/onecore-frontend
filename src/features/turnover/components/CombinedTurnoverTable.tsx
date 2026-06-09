@@ -235,7 +235,7 @@ export function CombinedTurnoverTable({ entries, onChecklistChange, onCleaningSt
                     />
                   </div>
                 </div>
-                {row.moveIn.tenantPhone && (
+                {row.moveIn.tenantPhone && !pi.shouldMask(row.moveIn) && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">{row.moveIn.tenantPhone}</span>
                     <Button variant="outline" size="icon" className="h-7 w-7" asChild>
