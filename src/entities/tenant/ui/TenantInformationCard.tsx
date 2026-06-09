@@ -6,6 +6,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { Notes } from "@/components/common";
 import { CollapsibleInfoCard } from "@/shared/ui/collapsible-info-card";
+import {
+  ProtectedIdentityBadge,
+  useProtectedIdentity,
+  type ProtectedIdentity,
+} from "@/shared/protected-identity";
 
 interface TenantData {
   firstName: string;
@@ -18,6 +23,7 @@ interface TenantData {
   personalNumber?: string;
   isPrimaryTenant?: boolean;
   relationshipType?: string;
+  protectedIdentity?: ProtectedIdentity;
 }
 
 interface TenantInformationCardProps {
@@ -26,6 +32,8 @@ interface TenantInformationCardProps {
 }
 
 export function TenantInformationCard({ tenant, displayMode = "full" }: TenantInformationCardProps) {
+  const pi = useProtectedIdentity();
+
   const handleCall = (phone: string) => {
     window.location.href = `tel:${phone.replace(/[\s-]/g, '')}`;
   };
