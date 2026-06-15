@@ -404,12 +404,15 @@ export default function AllInspectionsPage() {
         </Card>
 
         <Tabs defaultValue="ongoing" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="ongoing">
               Pågående ({ongoingInspections.length})
             </TabsTrigger>
             <TabsTrigger value="mine">
               Mina besiktningar ({myInspections.length})
+            </TabsTrigger>
+            <TabsTrigger value="unregistered">
+              Ej registrerade (0)
             </TabsTrigger>
             <TabsTrigger value="completed">
               Avslutade ({completedInspections.length})
@@ -422,6 +425,10 @@ export default function AllInspectionsPage() {
 
           <TabsContent value="mine" className="space-y-4">
             {renderInspectionTable(myInspections, "Mina besiktningar")}
+          </TabsContent>
+
+          <TabsContent value="unregistered" className="space-y-4">
+            {renderInspectionTable([], "Ej registrerade besiktningar")}
           </TabsContent>
 
           <TabsContent value="completed" className="space-y-4">
