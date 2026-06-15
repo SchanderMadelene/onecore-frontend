@@ -146,9 +146,10 @@ export default function AllInspectionsPage() {
   };
 
   // Filter inspections by category and apply filters
-  const ongoingInspections = sortInspections(filterInspections(inspections.filter(inspection => !inspection.isCompleted)));
+  const unregisteredInspections = sortInspections(filterInspections(inspections.filter(inspection => !inspection.isCompleted && !inspection.scheduledDate)));
+  const ongoingInspections = sortInspections(filterInspections(inspections.filter(inspection => !inspection.isCompleted && !!inspection.scheduledDate)));
   const myInspections = sortInspections(filterInspections(inspections.filter(inspection => 
-    inspection.inspectedBy === CURRENT_USER && !inspection.isCompleted
+    inspection.inspectedBy === CURRENT_USER && !inspection.isCompleted && !!inspection.scheduledDate
   )));
   const completedInspections = filterInspections(inspections.filter(inspection => inspection.isCompleted));
 
