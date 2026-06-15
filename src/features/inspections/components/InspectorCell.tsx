@@ -68,7 +68,7 @@ export function InspectorCell({ inspection, readOnly = false, onUpdate }: Inspec
         value={inspection.assignedInspector || 'none'}
         onValueChange={handleValueChange}
       >
-        <SelectTrigger className="w-40">
+        <SelectTrigger className="w-44">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
