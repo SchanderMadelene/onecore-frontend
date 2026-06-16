@@ -93,6 +93,18 @@ export default function PoangfriHousingDetailPage() {
 
   const logTarget = sortedInterests.find((i) => i.id === logTargetId) ?? null;
   const contractTarget = sortedInterests.find((i) => i.id === contractTargetId) ?? null;
+  const acknowledgeTarget = sortedInterests.find((i) => i.id === acknowledgeTargetId) ?? null;
+
+  const acknowledgeInterest = (interestId: string) => {
+    updateInterest(interestId, (i) => ({
+      ...i,
+      status: "acknowledged",
+      acknowledgedAt: new Date().toISOString(),
+      acknowledgedBy: HANDLAGGARE,
+    }));
+    toast.success("Sökande kvitterad");
+    setAcknowledgeTargetId(null);
+  };
 
   const updateInterest = (
     interestId: string,
