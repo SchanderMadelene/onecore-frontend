@@ -380,7 +380,7 @@ export default function PoangfriHousingDetailPage() {
         open={logOpen}
         onOpenChange={setLogOpen}
         interestName={logTarget?.name ?? ""}
-        currentStatus={logTarget?.status ?? "new"}
+        currentStatus={logTarget?.status ?? "unhandled"}
         onSubmit={handleLogSubmit}
       />
 

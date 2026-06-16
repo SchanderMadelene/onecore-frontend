@@ -147,16 +147,17 @@ export default function PoangfriHousingPage() {
     {
       key: "interests",
       label: "Intresseanmälningar",
-      render: (l: PoangfriListing) => (
-        <div className="text-sm">
-          <span className="font-medium">{l.interests.length}</span>
-          {l.interests.length > 0 && (
-            <span className="text-muted-foreground">
-              {" "}· {l.interests.filter((i) => i.status === "new").length} nya
-            </span>
-          )}
-        </div>
-      ),
+      render: (l: PoangfriListing) => {
+        const unhandled = l.interests.filter((i) => i.status === "unhandled").length;
+        return (
+          <div className="text-sm flex items-center gap-2">
+            <span className="font-medium">{l.interests.length}</span>
+            {unhandled > 0 && (
+              <Badge variant="warning">{unhandled} obehandlade</Badge>
+            )}
+          </div>
+        );
+      },
     },
     {
       key: "status",
