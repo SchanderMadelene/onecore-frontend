@@ -280,39 +280,56 @@ export default function PoangfriHousingDetailPage() {
           )}
         </div>
 
-        <Card>
-          <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                  Publicerad
-                </p>
-                <p className="text-sm">{formatDate(listing.publishedAt)}</p>
+        <HousingInfo
+          housing={{
+            id: listing.rentalObjectId,
+            address: listing.address,
+            area: listing.area,
+            type: listing.type,
+            size: listing.size,
+            rent: listing.rent,
+            rooms: listing.rooms,
+            floor: listing.floor,
+            publishedFrom: listing.publishedAt,
+            publishedTo: listing.publishedAt,
+            availableFrom: listing.availableFrom ?? listing.publishedAt,
+            seekers: listing.interests.length,
+          } as any}
+          applicantCount={listing.interests.length}
+          notesSlot={
+            <Notes
+              entityType="poangfri-housing"
+              entityId={listing.id}
+              title="Noteringar för bostad"
+              placeholder="Skriv en notering om denna bostad..."
+              emptyMessage="Inga noteringar har lagts till för denna bostad ännu."
+              categories={["Underhåll", "Klagomål", "Allmänt", "Uthyrning"]}
+              showCategory={true}
+            />
+          }
+        />
+
+        {(listing.description || listing.infoText || listing.convertedFromAdId) && (
+          <Card>
+            <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                {listing.convertedFromAdId && (
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      Konverterad från
+                    </p>
+                    <p className="text-sm">{listing.convertedFromAdId}</p>
+                  </div>
+                )}
+                {listing.description && (
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                      Beskrivning
+                    </p>
+                    <p className="text-sm leading-relaxed">{listing.description}</p>
+                  </div>
+                )}
               </div>
-              {listing.convertedFromAdId && (
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                    Konverterad från
-                  </p>
-                  <p className="text-sm">{listing.convertedFromAdId}</p>
-                </div>
-              )}
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                  Antal intresseanmälningar
-                </p>
-                <p className="text-sm font-medium">{listing.interests.length}</p>
-              </div>
-            </div>
-            <div className="space-y-3">
-              {listing.description && (
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                    Beskrivning
-                  </p>
-                  <p className="text-sm leading-relaxed">{listing.description}</p>
-                </div>
-              )}
               {listing.infoText && (
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wide">
@@ -321,9 +338,9 @@ export default function PoangfriHousingDetailPage() {
                   <p className="text-sm leading-relaxed">{listing.infoText}</p>
                 </div>
               )}
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
         <div>
           <div className="flex items-center justify-between mb-3">
