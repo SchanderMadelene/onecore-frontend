@@ -142,6 +142,7 @@ export const poangfriListings: PoangfriListing[] = [
         email: "adam.wikstrom@example.se",
         phone: "070-999 22 31",
         registeredAt: "2026-04-13T12:00:00.000Z",
+        desiredMoveInDate: "2026-07-01T00:00:00.000Z",
         status: "new",
         communications: [],
       },
