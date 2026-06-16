@@ -407,17 +407,21 @@ export default function AllInspectionsPage() {
 
         <Tabs defaultValue="unregistered" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="unregistered">
-              Ej registrerade ({unregisteredInspections.length})
+            <TabsTrigger value="unregistered" className="group gap-2">
+              Ej registrerade
+              <TabCount count={unregisteredInspections.length} hideWhenZero={false} />
             </TabsTrigger>
-            <TabsTrigger value="ongoing">
-              Pågående ({ongoingInspections.length})
+            <TabsTrigger value="ongoing" className="group gap-2">
+              Pågående
+              <TabCount count={ongoingInspections.length} hideWhenZero={false} />
             </TabsTrigger>
-            <TabsTrigger value="mine">
-              Mina besiktningar ({myInspections.length})
+            <TabsTrigger value="mine" className="group gap-2">
+              Mina besiktningar
+              <TabCount count={myInspections.length} hideWhenZero={false} />
             </TabsTrigger>
-            <TabsTrigger value="completed">
-              Avslutade ({completedInspections.length})
+            <TabsTrigger value="completed" className="group gap-2">
+              Avslutade
+              <TabCount count={completedInspections.length} hideWhenZero={false} />
             </TabsTrigger>
           </TabsList>
 
