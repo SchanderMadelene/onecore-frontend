@@ -1,4 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabCount } from "@/shared/ui/tab-count";
 
 interface TenantDetailTabsProps {
   defaultValue: string;
@@ -20,8 +21,9 @@ export const TenantDetailTabs = ({ defaultValue, children, hasActiveCases, custo
         <TabsTrigger value="queue">
           Uthyrning
         </TabsTrigger>
-        <TabsTrigger value="cases" disabled={isApplicantOnly}>
-          {hasActiveCases ? "Ärenden (2)" : "Ärenden"}
+        <TabsTrigger value="cases" disabled={isApplicantOnly} className="group gap-2">
+          Ärenden
+          {hasActiveCases && <TabCount count={2} />}
         </TabsTrigger>
         <TabsTrigger value="ledger" disabled={isApplicantOnly}>
           Fakturor & betalningar
