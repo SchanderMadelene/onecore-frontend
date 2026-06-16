@@ -309,38 +309,6 @@ export default function PoangfriHousingDetailPage() {
           }
         />
 
-        {(listing.description || listing.infoText || listing.convertedFromAdId) && (
-          <Card>
-            <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                {listing.convertedFromAdId && (
-                  <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                      Konverterad från
-                    </p>
-                    <p className="text-sm">{listing.convertedFromAdId}</p>
-                  </div>
-                )}
-                {listing.description && (
-                  <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                      Beskrivning
-                    </p>
-                    <p className="text-sm leading-relaxed">{listing.description}</p>
-                  </div>
-                )}
-              </div>
-              {listing.infoText && (
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                    Info till sökande
-                  </p>
-                  <p className="text-sm leading-relaxed">{listing.infoText}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
 
         <div>
           <div className="flex items-center justify-between mb-3">
