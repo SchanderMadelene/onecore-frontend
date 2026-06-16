@@ -199,21 +199,13 @@ export default function PoangfriHousingPage() {
 
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "ready_to_publish" | "published_now")}>
           <TabsList className="bg-muted/60">
-            <TabsTrigger value="ready_to_publish" className="relative gap-2">
+            <TabsTrigger value="ready_to_publish" className="group gap-2">
               Att publicera
-              {readyToPublishCount > 0 && (
-                <Badge variant="warning" className="ml-1 text-[10px] px-1.5 py-0">
-                  {readyToPublishCount}
-                </Badge>
-              )}
+              <TabCount count={readyToPublishCount} />
             </TabsTrigger>
-            <TabsTrigger value="published_now" className="relative gap-2">
+            <TabsTrigger value="published_now" className="group gap-2">
               Publicerade nu
-              {publishedNowCount > 0 && (
-                <Badge variant="default" className="ml-1 text-[10px] px-1.5 py-0">
-                  {publishedNowCount}
-                </Badge>
-              )}
+              <TabCount count={publishedNowCount} />
             </TabsTrigger>
           </TabsList>
         </Tabs>
