@@ -47,6 +47,7 @@ const STATUS_FILTERS: { value: PoangfriListingStatus | "all"; label: string }[] 
 
 export default function PoangfriHousingPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState<"ready_to_publish" | "published_now">("ready_to_publish");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<PoangfriListingStatus | "all">("all");
   const [area, setArea] = useState<string>("all");
@@ -57,8 +58,20 @@ export default function PoangfriHousingPage() {
     []
   );
 
+  const readyToPublishCount = useMemo(
+    () => poangfriListings.filter((l) => l.status === "ready_to_publish").length,
+    []
+  );
+
+  const publishedNowCount = useMemo(
+    () => poangfriListings.filter((l) => l.status !== "ready_to_publish").length,
+    []
+  );
+
   const filtered = useMemo(() => {
     return poangfriListings.filter((l) => {
+      if (activeTab === "ready_to_publish" && l.status !== "ready_to_publish") return false;
+      if (activeTab === "published_now" && l.status === "ready_to_publish") return false;
       if (status !== "all" && l.status !== status) return false;
       if (area !== "all" && l.area !== area) return false;
       if (search) {
@@ -68,7 +81,7 @@ export default function PoangfriHousingPage() {
       }
       return true;
     });
-  }, [search, status, area]);
+  }, [search, status, area, activeTab]);
 
   const clearFilters = () => {
     setSearch("");
@@ -184,6 +197,27 @@ export default function PoangfriHousingPage() {
           </p>
         </div>
 
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "ready_to_publish" | "published_now")}>
+          <TabsList className="bg-muted/60">
+            <TabsTrigger value="ready_to_publish" className="relative gap-2">
+              Att publicera
+              {readyToPublishCount > 0 && (
+                <Badge variant="warning" className="ml-1 text-[10px] px-1.5 py-0">
+                  {readyToPublishCount}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="published_now" className="relative gap-2">
+              Publicerade nu
+              {publishedNowCount > 0 && (
+                <Badge variant="default" className="ml-1 text-[10px] px-1.5 py-0">
+                  {publishedNowCount}
+                </Badge>
+              )}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
         <Card>
           <CardContent className="pt-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:flex-wrap">
@@ -239,7 +273,11 @@ export default function PoangfriHousingPage() {
               data={filtered}
               columns={columns}
               keyExtractor={(l: PoangfriListing) => l.id}
-              emptyMessage="Inga poängfria annonser matchar dina filter"
+              emptyMessage={
+                activeTab === "ready_to_publish"
+                  ? "Inga annonser väntar på publicering"
+                  : "Inga publicerade annonser matchar dina filter"
+              }
               onRowClick={(l: PoangfriListing) =>
                 navigate(`/rentals/housing/poangfritt/${l.id}`)
               }
