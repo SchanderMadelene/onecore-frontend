@@ -9,6 +9,7 @@ import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { HistoryHousingTable } from "./HistoryHousingTable";
 import { useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabCount } from "@/shared/ui/tab-count";
 import { useState, useEffect } from "react";
 import { publishedHousingSpaces } from "@/features/rentals/data/published-housing";
 import { unpublishedHousingSpaces } from "@/features/rentals/data/unpublished-housing";
