@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tag } from "@/components/ui/tag";
 import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { Notes } from "@/components/common";
+import { HousingInfo } from "./components/HousingInfo";
 import { ArrowLeft } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
