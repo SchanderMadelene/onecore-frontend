@@ -209,6 +209,30 @@ export default function PoangfriHousingDetailPage() {
       ),
     },
     {
+      key: "desiredMoveIn",
+      label: "Önskad inflytt",
+      hideOnMobile: true,
+      render: (i: PoangfriInterest) =>
+        i.desiredMoveInDate ? (
+          <span className="text-sm">{formatDate(i.desiredMoveInDate)}</span>
+        ) : (
+          <span className="text-xs text-muted-foreground">—</span>
+        ),
+    },
+    {
+      key: "viewingBooked",
+      label: "Visning bokad",
+      hideOnMobile: true,
+      render: (i: PoangfriInterest) =>
+        i.viewingBookedAt ? (
+          <span className="text-sm">
+            {format(new Date(i.viewingBookedAt), "yyyy-MM-dd HH:mm", { locale: sv })}
+          </span>
+        ) : (
+          <span className="text-xs text-muted-foreground">—</span>
+        ),
+    },
+    {
       key: "lastComm",
       label: "Senaste kontakt",
       hideOnMobile: true,
