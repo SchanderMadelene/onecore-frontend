@@ -133,6 +133,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                   <SelectItem value="payment">Betalning</SelectItem>
                   <SelectItem value="support">Support</SelectItem>
                   <SelectItem value="communication">Kommunikation</SelectItem>
+                  <SelectItem value="rentals">Uthyrning</SelectItem>
                 </SelectContent>
               </Select>
             </div>
