@@ -4,6 +4,7 @@ import { ResponsiveTable } from "@/components/ui/responsive-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabCount } from "@/shared/ui/tab-count";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Eye, ChevronUp, ChevronDown, Play, PlayCircle, Search } from "lucide-react";
 import { ClearFiltersButton } from "@/shared/common";
