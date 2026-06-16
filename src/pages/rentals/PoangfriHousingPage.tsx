@@ -17,6 +17,7 @@ import { PageLayout } from "@/layouts";
 import { Search } from "lucide-react";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 
 import { poangfriListings } from "@/features/rentals/data/poangfri-housing";
 import { getDistrictByArea } from "@/features/rentals/utils/area-district";
@@ -37,6 +38,7 @@ const formatDate = (iso: string) => {
 
 const STATUS_FILTERS: { value: PoangfriListingStatus | "all"; label: string }[] = [
   { value: "all", label: "Alla statusar" },
+  { value: "ready_to_publish", label: "Att publicera" },
   { value: "published", label: "Publicerad" },
   { value: "in_progress", label: "Pågående kontakt" },
   { value: "contract_created", label: "Kontrakt skapat" },
