@@ -1,11 +1,12 @@
 export type PoangfriListingStatus =
-  | "published"        // Publicerad, intresselista växer
-  | "in_progress"      // Pågående kontakt med sökande
-  | "contract_created" // Kontrakt skapat, ärendet stängt
-  | "unpublished";     // Avpublicerad utan kontrakt
+  | "published"             // Publicerad, intresselista växer
+  | "in_progress"           // Pågående kontakt med sökande
+  | "contract_created"      // Kontrakt skapat, ärendet stängt
+  | "unpublished";          // Avpublicerad utan kontrakt
 
 export type PoangfriInterestStatus =
-  | "new"            // Ny anmälan
+  | "unhandled"      // Obehandlad – kräver kvittering av handläggare
+  | "acknowledged"   // Kvitterad – aktivt under handläggning
   | "contacted"      // Handläggaren har försökt nå
   | "accepted"       // Tackat ja muntligt
   | "declined"       // Tackat nej
@@ -25,12 +26,15 @@ export interface PoangfriInterest {
   id: string;
   name: string;
   customerNumber: string;
+  personalNumber?: string;     // Koppling till kundkort (demo: matchar tenant)
   email: string;
   phone: string;
-  registeredAt: string; // ISO – anmäld på Mimer.nu
-  desiredMoveInDate?: string; // ISO – önskat inflyttningsdatum angivet av sökande
-  viewingBookedAt?: string;   // ISO – tid för bokad visning
+  registeredAt: string;        // ISO – anmäld på Mimer.nu
+  desiredMoveInDate?: string;  // ISO – önskat inflyttningsdatum angivet av sökande
+  viewingBookedAt?: string;    // ISO – tid för bokad visning
   status: PoangfriInterestStatus;
+  acknowledgedAt?: string;     // ISO – när handläggare kvitterade
+  acknowledgedBy?: string;     // Handläggarens namn
   communications: CommunicationEntry[];
 }
 
@@ -39,17 +43,19 @@ export interface PoangfriListing {
   rentalObjectId: string;   // Kopplad lägenhet (kontraktsnummer/objekts-id)
   address: string;
   area: string;
-  type: string;             // Lägenhet / Korridorrum etc
+  type: string;
   size: string;
   rooms: number;
   floor: string;
   rent: string;
   description: string;
-  publishedAt: string;      // ISO – när annonsen byttes till poängfri
-  availableFrom?: string;   // ISO – när bostaden är inflyttningsklar
-  convertedFromAdId?: string; // Standardannonsen den kommer ifrån
+  publishedAt: string;            // ISO – när annonsen byttes till poängfri
+  availableFrom?: string;         // ISO – när bostaden är inflyttningsklar
+  convertedFromAdId?: string;     // Standardannonsen den kommer ifrån
+  outgoingTenantPersonalNumber?: string; // Avflyttande hyresgäst – för händelselogg
+  outgoingTenantName?: string;
   status: PoangfriListingStatus;
-  infoText?: string;        // Fritext synlig på Mimer.nu
+  infoText?: string;
   interests: PoangfriInterest[];
 }
 
@@ -79,7 +85,8 @@ export const POANGFRI_LISTING_STATUS_VARIANTS: Record<PoangfriListingStatus, Bad
 };
 
 export const POANGFRI_INTEREST_STATUS_LABELS: Record<PoangfriInterestStatus, string> = {
-  new: "Ny",
+  unhandled: "Obehandlad",
+  acknowledged: "Kvitterad",
   contacted: "Kontaktad",
   accepted: "Tackat ja",
   declined: "Tackat nej",
@@ -87,8 +94,9 @@ export const POANGFRI_INTEREST_STATUS_LABELS: Record<PoangfriInterestStatus, str
 };
 
 export const POANGFRI_INTEREST_STATUS_VARIANTS: Record<PoangfriInterestStatus, BadgeVariant> = {
-  new: "info",
-  contacted: "warning",
+  unhandled: "warning",
+  acknowledged: "info",
+  contacted: "info",
   accepted: "success",
   declined: "destructive",
   not_assigned: "muted",
