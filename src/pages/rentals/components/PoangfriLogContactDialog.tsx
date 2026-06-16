@@ -52,7 +52,11 @@ export function PoangfriLogContactDialog({
     if (open) {
       setType("phone");
       setSummary("");
-      setNewStatus(currentStatus === "new" ? "contacted" : currentStatus);
+      setNewStatus(
+        currentStatus === "unhandled" || currentStatus === "acknowledged"
+          ? "contacted"
+          : currentStatus
+      );
     }
   }, [open, currentStatus]);
 
@@ -102,7 +106,7 @@ export function PoangfriLogContactDialog({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {(["new", "contacted", "accepted", "declined", "not_assigned"] as PoangfriInterestStatus[]).map(
+                {(["acknowledged", "contacted", "accepted", "declined", "not_assigned"] as PoangfriInterestStatus[]).map(
                   (s) => (
                     <SelectItem key={s} value={s}>
                       {POANGFRI_INTEREST_STATUS_LABELS[s]}

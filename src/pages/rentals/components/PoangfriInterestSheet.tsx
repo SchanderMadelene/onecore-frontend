@@ -26,6 +26,7 @@ interface PoangfriInterestSheetProps {
   onCreateContract: () => void;
   onMarkAccepted: () => void;
   onMarkDeclined: () => void;
+  onAcknowledge?: () => void;
 }
 
 const TYPE_ICONS: Record<CommunicationType, React.ComponentType<{ className?: string }>> = {
@@ -52,6 +53,7 @@ export function PoangfriInterestSheet({
   onCreateContract,
   onMarkAccepted,
   onMarkDeclined,
+  onAcknowledge,
 }: PoangfriInterestSheetProps) {
   if (!interest) return null;
 
@@ -86,6 +88,9 @@ export function PoangfriInterestSheet({
 
         <div className="flex-1 overflow-y-auto px-6 py-4">
           <div className="flex flex-col gap-2 mb-6">
+            {interest.status === "unhandled" && onAcknowledge && (
+              <Button onClick={onAcknowledge}>Kvittera sökande</Button>
+            )}
             <Button onClick={onLogContact} variant="outline">
               Logga kontakt
             </Button>
@@ -105,7 +110,9 @@ export function PoangfriInterestSheet({
                 Tackat nej
               </Button>
             </div>
-            <Button onClick={onCreateContract}>Skapa kontrakt</Button>
+            {interest.status !== "unhandled" && (
+              <Button onClick={onCreateContract}>Skapa kontrakt</Button>
+            )}
           </div>
 
           <Separator className="mb-4" />

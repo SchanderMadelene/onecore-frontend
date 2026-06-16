@@ -51,13 +51,22 @@ export default function PoangfriHousingDetailPage() {
   const [logTargetId, setLogTargetId] = useState<string | null>(null);
   const [contractTargetId, setContractTargetId] = useState<string | null>(null);
   const [unpublishOpen, setUnpublishOpen] = useState(false);
+  const [acknowledgeTargetId, setAcknowledgeTargetId] = useState<string | null>(null);
 
   const sortedInterests = useMemo(() => {
     if (!listing) return [];
-    return [...listing.interests].sort(
-      (a, b) => new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime()
-    );
+    return [...listing.interests].sort((a, b) => {
+      // Obehandlade alltid överst
+      if (a.status === "unhandled" && b.status !== "unhandled") return -1;
+      if (b.status === "unhandled" && a.status !== "unhandled") return 1;
+      return new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime();
+    });
   }, [listing]);
+
+  const unhandledCount = useMemo(
+    () => listing?.interests.filter((i) => i.status === "unhandled").length ?? 0,
+    [listing]
+  );
 
   if (!listing) {
     return (
@@ -84,6 +93,18 @@ export default function PoangfriHousingDetailPage() {
 
   const logTarget = sortedInterests.find((i) => i.id === logTargetId) ?? null;
   const contractTarget = sortedInterests.find((i) => i.id === contractTargetId) ?? null;
+  const acknowledgeTarget = sortedInterests.find((i) => i.id === acknowledgeTargetId) ?? null;
+
+  const acknowledgeInterest = (interestId: string) => {
+    updateInterest(interestId, (i) => ({
+      ...i,
+      status: "acknowledged",
+      acknowledgedAt: new Date().toISOString(),
+      acknowledgedBy: HANDLAGGARE,
+    }));
+    toast.success("Sökande kvitterad");
+    setAcknowledgeTargetId(null);
+  };
 
   const updateInterest = (
     interestId: string,
@@ -258,6 +279,23 @@ export default function PoangfriHousingDetailPage() {
         </Badge>
       ),
     },
+    {
+      key: "action",
+      label: "",
+      render: (i: PoangfriInterest) =>
+        i.status === "unhandled" ? (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              setAcknowledgeTargetId(i.id);
+            }}
+          >
+            Kvittera
+          </Button>
+        ) : null,
+    },
   ];
 
   return (
@@ -335,10 +373,17 @@ export default function PoangfriHousingDetailPage() {
 
 
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold">Intresselista</h2>
+          <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-semibold">Intresselista</h2>
+              {unhandledCount > 0 && (
+                <Badge variant="warning">
+                  {unhandledCount} obehandlade
+                </Badge>
+              )}
+            </div>
             <p className="text-sm text-muted-foreground">
-              Sorterad efter anmälningsdatum – äldst först
+              Obehandlade visas överst – övriga sorterade efter anmälningsdatum
             </p>
           </div>
           <Card>
@@ -374,13 +419,16 @@ export default function PoangfriHousingDetailPage() {
         onMarkDeclined={() => {
           if (selectedInterest) markStatus(selectedInterest.id, "declined");
         }}
+        onAcknowledge={() => {
+          if (selectedInterest) setAcknowledgeTargetId(selectedInterest.id);
+        }}
       />
 
       <PoangfriLogContactDialog
         open={logOpen}
         onOpenChange={setLogOpen}
         interestName={logTarget?.name ?? ""}
-        currentStatus={logTarget?.status ?? "new"}
+        currentStatus={logTarget?.status ?? "unhandled"}
         onSubmit={handleLogSubmit}
       />
 
@@ -417,6 +465,24 @@ export default function PoangfriHousingDetailPage() {
         confirmLabel="Avpublicera"
         variant="destructive"
         onConfirm={handleUnpublish}
+      />
+      <ConfirmDialog
+        open={!!acknowledgeTarget}
+        onOpenChange={(open) => !open && setAcknowledgeTargetId(null)}
+        title="Kvittera sökande"
+        description={
+          <div className="space-y-2">
+            <p>
+              Markera <strong>{acknowledgeTarget?.name}</strong> som kvitterad.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Kvitteringen visar att du har sett anmälan och tar över handläggningen.
+              Den loggas i sökandens händelselogg på kundkortet.
+            </p>
+          </div>
+        }
+        confirmLabel="Kvittera"
+        onConfirm={() => acknowledgeTarget && acknowledgeInterest(acknowledgeTarget.id)}
       />
     </PageLayout>
   );

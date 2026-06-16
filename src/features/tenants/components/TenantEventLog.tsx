@@ -94,6 +94,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
       case 'payment': return 'Betalning';
       case 'support': return 'Support';
       case 'communication': return 'Kommunikation';
+      case 'rentals': return 'Uthyrning';
       default: return 'Övrigt';
     }
   };
@@ -132,6 +133,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
                   <SelectItem value="payment">Betalning</SelectItem>
                   <SelectItem value="support">Support</SelectItem>
                   <SelectItem value="communication">Kommunikation</SelectItem>
+                  <SelectItem value="rentals">Uthyrning</SelectItem>
                 </SelectContent>
               </Select>
             </div>
