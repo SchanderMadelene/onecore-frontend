@@ -122,8 +122,9 @@ export function HousingSpacesTable() {
       <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
         <TabsList className="grid mb-8 h-11" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
           {tabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value} className="h-full px-2 text-xs sm:text-sm sm:px-3">
+            <TabsTrigger key={tab.value} value={tab.value} className="group h-full gap-2 px-2 text-xs sm:text-sm sm:px-3">
               {tab.label}
+              {tab.count !== undefined && <TabCount count={tab.count} hideWhenZero={false} variant="neutral" />}
             </TabsTrigger>
           ))}
         </TabsList>
