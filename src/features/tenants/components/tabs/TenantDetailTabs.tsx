@@ -1,4 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabCount } from "@/shared/ui/tab-count";
 
 interface TenantDetailTabsProps {
   defaultValue: string;
