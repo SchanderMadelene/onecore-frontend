@@ -419,6 +419,9 @@ export default function PoangfriHousingDetailPage() {
         onMarkDeclined={() => {
           if (selectedInterest) markStatus(selectedInterest.id, "declined");
         }}
+        onAcknowledge={() => {
+          if (selectedInterest) setAcknowledgeTargetId(selectedInterest.id);
+        }}
       />
 
       <PoangfriLogContactDialog
