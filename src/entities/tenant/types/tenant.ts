@@ -38,7 +38,7 @@ export interface Tenant {
 export interface TenantEvent {
   id: string;
   timestamp: string;
-  type: 'system' | 'login' | 'profile_change' | 'contract' | 'payment' | 'support' | 'communication';
+  type: 'system' | 'login' | 'profile_change' | 'contract' | 'payment' | 'support' | 'communication' | 'rentals';
   title: string;
   description: string;
   user?: string;
