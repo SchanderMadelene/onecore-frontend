@@ -279,6 +279,23 @@ export default function PoangfriHousingDetailPage() {
         </Badge>
       ),
     },
+    {
+      key: "action",
+      label: "",
+      render: (i: PoangfriInterest) =>
+        i.status === "unhandled" ? (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              setAcknowledgeTargetId(i.id);
+            }}
+          >
+            Kvittera
+          </Button>
+        ) : null,
+    },
   ];
 
   return (
