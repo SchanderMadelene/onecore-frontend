@@ -1,4 +1,5 @@
 export type PoangfriListingStatus =
+  | "ready_to_publish"      // Konverterad från standardflöde, väntar på publicering
   | "published"             // Publicerad, intresselista växer
   | "in_progress"           // Pågående kontakt med sökande
   | "contract_created"      // Kontrakt skapat, ärendet stängt
@@ -60,6 +61,7 @@ export interface PoangfriListing {
 }
 
 export const POANGFRI_LISTING_STATUS_LABELS: Record<PoangfriListingStatus, string> = {
+  ready_to_publish: "Att publicera",
   published: "Publicerad",
   in_progress: "Pågående kontakt",
   contract_created: "Kontrakt skapat",
@@ -78,6 +80,7 @@ export type BadgeVariant =
   | "purple";
 
 export const POANGFRI_LISTING_STATUS_VARIANTS: Record<PoangfriListingStatus, BadgeVariant> = {
+  ready_to_publish: "warning",
   published: "info",
   in_progress: "warning",
   contract_created: "success",
