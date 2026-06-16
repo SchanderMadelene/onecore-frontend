@@ -28,6 +28,8 @@ export interface PoangfriInterest {
   email: string;
   phone: string;
   registeredAt: string; // ISO – anmäld på Mimer.nu
+  desiredMoveInDate?: string; // ISO – önskat inflyttningsdatum angivet av sökande
+  viewingBookedAt?: string;   // ISO – tid för bokad visning
   status: PoangfriInterestStatus;
   communications: CommunicationEntry[];
 }
