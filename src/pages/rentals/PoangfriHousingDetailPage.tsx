@@ -51,13 +51,22 @@ export default function PoangfriHousingDetailPage() {
   const [logTargetId, setLogTargetId] = useState<string | null>(null);
   const [contractTargetId, setContractTargetId] = useState<string | null>(null);
   const [unpublishOpen, setUnpublishOpen] = useState(false);
+  const [acknowledgeTargetId, setAcknowledgeTargetId] = useState<string | null>(null);
 
   const sortedInterests = useMemo(() => {
     if (!listing) return [];
-    return [...listing.interests].sort(
-      (a, b) => new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime()
-    );
+    return [...listing.interests].sort((a, b) => {
+      // Obehandlade alltid överst
+      if (a.status === "unhandled" && b.status !== "unhandled") return -1;
+      if (b.status === "unhandled" && a.status !== "unhandled") return 1;
+      return new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime();
+    });
   }, [listing]);
+
+  const unhandledCount = useMemo(
+    () => listing?.interests.filter((i) => i.status === "unhandled").length ?? 0,
+    [listing]
+  );
 
   if (!listing) {
     return (
