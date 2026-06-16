@@ -94,6 +94,7 @@ export const TenantEventLog = ({ personalNumber }: TenantEventLogProps) => {
       case 'payment': return 'Betalning';
       case 'support': return 'Support';
       case 'communication': return 'Kommunikation';
+      case 'rentals': return 'Uthyrning';
       default: return 'Övrigt';
     }
   };

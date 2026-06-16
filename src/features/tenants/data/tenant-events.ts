@@ -1,5 +1,6 @@
 // Mock data för kundhandelselogg
 import { getRecentMessages } from "./communication-log";
+import { getPoangfriEvents } from "@/features/rentals/utils/poangfri-events";
 
 export interface TenantEvent {
   id: string;
@@ -121,6 +122,10 @@ const getCommunicationEvents = (personalNumber: string): TenantEvent[] => {
 
 // Funktion för att hämta händelser för en specifik kund
 export const getTenantEvents = (personalNumber: string): TenantEvent[] => {
-  const events = [...mockTenantEvents, ...getCommunicationEvents(personalNumber)];
+  const events = [
+    ...mockTenantEvents,
+    ...getCommunicationEvents(personalNumber),
+    ...getPoangfriEvents(personalNumber),
+  ];
   return events.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 };
