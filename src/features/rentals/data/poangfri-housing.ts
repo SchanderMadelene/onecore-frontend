@@ -25,6 +25,8 @@ export const poangfriListings: PoangfriListing[] = [
         email: "elin.sandgren@example.se",
         phone: "070-412 88 21",
         registeredAt: "2026-04-23T08:14:00.000Z",
+        desiredMoveInDate: "2026-05-01T00:00:00.000Z",
+        viewingBookedAt: "2026-04-26T15:00:00.000Z",
         status: "new",
         communications: [],
       },
@@ -35,6 +37,7 @@ export const poangfriListings: PoangfriListing[] = [
         email: "marcus.holmberg@example.se",
         phone: "073-221 09 55",
         registeredAt: "2026-04-23T09:02:00.000Z",
+        desiredMoveInDate: "2026-06-01T00:00:00.000Z",
         status: "new",
         communications: [],
       },
@@ -74,6 +77,8 @@ export const poangfriListings: PoangfriListing[] = [
         email: "johanna.berglund@example.se",
         phone: "070-100 44 12",
         registeredAt: "2026-04-11T07:30:00.000Z",
+        desiredMoveInDate: "2026-05-15T00:00:00.000Z",
+        viewingBookedAt: "2026-04-22T10:30:00.000Z",
         status: "contacted",
         communications: [
           {
@@ -99,6 +104,8 @@ export const poangfriListings: PoangfriListing[] = [
         email: "pontus.friberg@example.se",
         phone: "073-887 21 03",
         registeredAt: "2026-04-11T10:12:00.000Z",
+        desiredMoveInDate: "2026-05-15T00:00:00.000Z",
+        viewingBookedAt: "2026-04-19T13:00:00.000Z",
         status: "accepted",
         communications: [
           {
@@ -135,6 +142,7 @@ export const poangfriListings: PoangfriListing[] = [
         email: "adam.wikstrom@example.se",
         phone: "070-999 22 31",
         registeredAt: "2026-04-13T12:00:00.000Z",
+        desiredMoveInDate: "2026-07-01T00:00:00.000Z",
         status: "new",
         communications: [],
       },
