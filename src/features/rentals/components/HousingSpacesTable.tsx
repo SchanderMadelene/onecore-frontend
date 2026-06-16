@@ -9,6 +9,7 @@ import { ReadyForOfferHousingTable } from "./ReadyForOfferHousingTable";
 import { HistoryHousingTable } from "./HistoryHousingTable";
 import { useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabCount } from "@/shared/ui/tab-count";
 import { useState, useEffect } from "react";
 import { publishedHousingSpaces } from "@/features/rentals/data/published-housing";
 import { unpublishedHousingSpaces } from "@/features/rentals/data/unpublished-housing";
@@ -49,10 +50,11 @@ export function HousingSpacesTable() {
     erbjudna: filterHousingByStatus(publishedHousingSpaces, "offered").length,
   };
 
-  const tabs = [
+  const tabs: { value: string; label: string; count?: number; content: JSX.Element }[] = [
     {
       value: "behovAvPublicering",
-      label: `Publicera (${counts.behovAvPublicering})`,
+      label: "Publicera",
+      count: counts.behovAvPublicering,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök opublicerad bostad..." />
@@ -62,7 +64,8 @@ export function HousingSpacesTable() {
     },
     {
       value: "publicerade",
-      label: `Publicerat nu (${counts.publicerade})`,
+      label: "Publicerat nu",
+      count: counts.publicerade,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök publicerad bostad..." />
@@ -72,7 +75,8 @@ export function HousingSpacesTable() {
     },
     {
       value: "klaraForErbjudande",
-      label: `Erbjud visning (${counts.klaraForErbjudande})`,
+      label: "Erbjud visning",
+      count: counts.klaraForErbjudande,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök bostad klar för erbjudande..." />
@@ -82,7 +86,8 @@ export function HousingSpacesTable() {
     },
     {
       value: "erbjudna",
-      label: `Visning (${counts.erbjudna})`,
+      label: "Visning",
+      count: counts.erbjudna,
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök erbjuden bostad..." />
@@ -92,7 +97,7 @@ export function HousingSpacesTable() {
     },
     {
       value: "kontrakt",
-      label: `Erbjud kontrakt`,
+      label: "Erbjud kontrakt",
       content: (
         <div className="flex flex-col space-y-4">
           <HousingTabToolbar placeholder="Sök bostad för kontrakt..." />
@@ -117,8 +122,9 @@ export function HousingSpacesTable() {
       <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
         <TabsList className="grid mb-8 h-11" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
           {tabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value} className="h-full px-2 text-xs sm:text-sm sm:px-3">
+            <TabsTrigger key={tab.value} value={tab.value} className="group h-full gap-2 px-2 text-xs sm:text-sm sm:px-3">
               {tab.label}
+              {tab.count !== undefined && <TabCount count={tab.count} hideWhenZero={false} variant="neutral" />}
             </TabsTrigger>
           ))}
         </TabsList>
