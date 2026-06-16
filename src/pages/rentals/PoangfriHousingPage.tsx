@@ -18,6 +18,7 @@ import { Search } from "lucide-react";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import { TabCount } from "@/shared/ui/tab-count";
 
 import { poangfriListings } from "@/features/rentals/data/poangfri-housing";
 import { getDistrictByArea } from "@/features/rentals/utils/area-district";
