@@ -21,8 +21,9 @@ export const TenantDetailTabs = ({ defaultValue, children, hasActiveCases, custo
         <TabsTrigger value="queue">
           Uthyrning
         </TabsTrigger>
-        <TabsTrigger value="cases" disabled={isApplicantOnly}>
-          {hasActiveCases ? "Ärenden (2)" : "Ärenden"}
+        <TabsTrigger value="cases" disabled={isApplicantOnly} className="group gap-2">
+          Ärenden
+          {hasActiveCases && <TabCount count={2} />}
         </TabsTrigger>
         <TabsTrigger value="ledger" disabled={isApplicantOnly}>
           Fakturor & betalningar
