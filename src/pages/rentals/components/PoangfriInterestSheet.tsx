@@ -17,6 +17,7 @@ import {
   POANGFRI_INTEREST_STATUS_VARIANTS,
   COMMUNICATION_TYPE_LABELS,
 } from "@/features/rentals/types/poangfri";
+import { ApplicantProfileModal } from "@/features/rentals/components/ApplicantProfileModal";
 
 interface PoangfriInterestSheetProps {
   interest: PoangfriInterest | null;
@@ -94,6 +95,10 @@ export function PoangfriInterestSheet({
             <Button onClick={onLogContact} variant="outline">
               Logga kontakt
             </Button>
+            <ApplicantProfileModal
+              customerNumber={interest.customerNumber}
+              customerName={interest.name}
+            />
             <div className="grid grid-cols-2 gap-2">
               <Button
                 onClick={onMarkAccepted}
