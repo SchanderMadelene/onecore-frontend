@@ -505,6 +505,35 @@ export default function PoangfriHousingDetailPage() {
         confirmLabel="Kvittera"
         onConfirm={() => acknowledgeTarget && acknowledgeInterest(acknowledgeTarget.id)}
       />
+
+      {!isClosed && (
+        <BulkActionBar
+          selectedCount={selectedInterestIds.length}
+          onSendSms={() => setSmsOpen(true)}
+          onSendEmail={() => setEmailOpen(true)}
+          onClear={() => setSelectedInterestIds([])}
+        />
+      )}
+
+      <BulkSmsModal
+        open={smsOpen}
+        onOpenChange={setSmsOpen}
+        recipients={bulkRecipients}
+        onSend={async (_message, sentTo) => {
+          await new Promise((r) => setTimeout(r, 300));
+          toast.success(`SMS skickat till ${sentTo.length} sökande`);
+        }}
+      />
+
+      <BulkEmailModal
+        open={emailOpen}
+        onOpenChange={setEmailOpen}
+        recipients={bulkRecipients}
+        onSend={async (_subject, _body, sentTo) => {
+          await new Promise((r) => setTimeout(r, 300));
+          toast.success(`Mejl skickat till ${sentTo.length} sökande`);
+        }}
+      />
     </PageLayout>
   );
 }
