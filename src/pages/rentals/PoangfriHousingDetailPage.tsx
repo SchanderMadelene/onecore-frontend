@@ -13,6 +13,8 @@ import { ArrowLeft } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
 import { toast } from "sonner";
+import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
+import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 
 import { poangfriListings as initialListings } from "@/features/rentals/data/poangfri-housing";
 import {
