@@ -90,6 +90,19 @@ export default function PoangfriHousingDetailPage() {
   const isClosed =
     listing.status === "contract_created" || listing.status === "unpublished";
 
+  const bulkRecipients = useMemo(
+    () =>
+      listing.interests
+        .filter((i) => selectedInterestIds.includes(i.id))
+        .map((i) => ({
+          id: i.id,
+          name: i.name,
+          phone: i.phone,
+          email: i.email,
+        })),
+    [listing.interests, selectedInterestIds]
+  );
+
   const selectedInterest =
     sortedInterests.find((i) => i.id === selectedInterestId) ?? null;
   const selectedRank = selectedInterest
