@@ -17,6 +17,7 @@ import {
   POANGFRI_INTEREST_STATUS_VARIANTS,
   COMMUNICATION_TYPE_LABELS,
 } from "@/features/rentals/types/poangfri";
+import { ApplicantProfileModal } from "@/features/rentals/components/ApplicantProfileModal";
 
 interface PoangfriInterestSheetProps {
   interest: PoangfriInterest | null;
