@@ -95,6 +95,10 @@ export function PoangfriInterestSheet({
             <Button onClick={onLogContact} variant="outline">
               Logga kontakt
             </Button>
+            <ApplicantProfileModal
+              customerNumber={interest.customerNumber}
+              customerName={interest.name}
+            />
             <div className="grid grid-cols-2 gap-2">
               <Button
                 onClick={onMarkAccepted}
