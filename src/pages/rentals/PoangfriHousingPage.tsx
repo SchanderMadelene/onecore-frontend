@@ -199,7 +199,7 @@ export default function PoangfriHousingPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "ready_to_publish" | "published_now")}>
-          <TabsList className="grid h-11 grid-cols-2">
+          <TabsList className="inline-flex h-11">
             <TabsTrigger value="ready_to_publish" className="group h-full gap-2 px-2 text-xs sm:text-sm sm:px-3">
               Att publicera
               <TabCount count={readyToPublishCount} hideWhenZero={false} variant="neutral" />
