@@ -54,6 +54,9 @@ export default function PoangfriHousingDetailPage() {
   const [contractTargetId, setContractTargetId] = useState<string | null>(null);
   const [unpublishOpen, setUnpublishOpen] = useState(false);
   const [acknowledgeTargetId, setAcknowledgeTargetId] = useState<string | null>(null);
+  const [selectedInterestIds, setSelectedInterestIds] = useState<string[]>([]);
+  const [smsOpen, setSmsOpen] = useState(false);
+  const [emailOpen, setEmailOpen] = useState(false);
 
   const sortedInterests = useMemo(() => {
     if (!listing) return [];
