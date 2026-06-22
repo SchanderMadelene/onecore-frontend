@@ -225,7 +225,7 @@ export default function PoangfriHousingDetailPage() {
       hideOnMobile: true,
       render: (i: PoangfriInterest) => (
         <span className="text-sm text-muted-foreground">
-          {formatDate(i.registeredAt)}
+          {format(new Date(i.registeredAt), "yyyy-MM-dd HH:mm", { locale: sv })}
         </span>
       ),
     },
