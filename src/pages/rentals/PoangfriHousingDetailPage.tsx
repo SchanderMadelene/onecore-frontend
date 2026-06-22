@@ -412,6 +412,9 @@ export default function PoangfriHousingDetailPage() {
                 keyExtractor={(i: PoangfriInterest) => i.id}
                 emptyMessage="Inga intresseanmälningar än"
                 onRowClick={(i: PoangfriInterest) => setSelectedInterestId(i.id)}
+                selectable={!isClosed}
+                selectedKeys={selectedInterestIds}
+                onSelectionChange={setSelectedInterestIds}
               />
             </CardContent>
           </Card>
