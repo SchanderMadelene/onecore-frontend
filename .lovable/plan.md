@@ -1,14 +1,22 @@
-## Problem
-"Publicerade nu" (inaktiv tabb) ser fortfarande blek ut mot den ljusgrå bakgrunden. Förra ändringen satte `text-foreground/60` vilket inte räcker.
+## Mål
 
-## Lösning
-Öka kontrasten på inaktiva tabbar i `src/shared/ui/tabs.tsx`:
-- Byt `text-foreground/60` → `text-foreground/85` (nästan full svärta, men fortfarande visuellt urskiljbar från aktiv tabb som har vit bakgrund + skugga).
-- Lägg till hover-state `hover:text-foreground` för tydlig affordance.
+Återanvänd samma bulk-funktion som finns på standardflödet för bostad (`HousingDetailPage.tsx`) på poängfritt-detaljsidan, så att handläggaren kan markera flera sökande i intresselistan och skicka SMS eller mejl.
 
-Den aktiva tabben skiljs då primärt via bakgrund/skugga (vit kapsel), inte via textfärg — vilket matchar mönstret i referensbilden där "Publicerade nu" är fullt läsbar.
+## Vad som redan finns att återanvända
 
-Ingen ändring i `TabCount` eller övriga tabbsidor.
+- `BulkActionBar` (`src/shared/ui/bulk-action-bar`) – flytande bar längst ner med antal valda + knappar för SMS/Mejl/Rensa.
+- `BulkSmsModal` och `BulkEmailModal` från `@/features/communication`.
+- `ResponsiveTable` har redan inbyggt selection-stöd via `selectable`, `selectedKeys`, `onSelectionChange`.
 
-### Fil
-- `src/shared/ui/tabs.tsx` — uppdatera `TabsTrigger`-klasser.
+## Ändringar (endast `src/pages/rentals/PoangfriHousingDetailPage.tsx`)
+
+1. Ny state: `selectedInterestIds: string[]`, `smsOpen`, `emailOpen`.
+2. Skicka `selectable`, `selectedKeys={selectedInterestIds}`, `onSelectionChange={setSelectedInterestIds}` till `ResponsiveTable`. Dölj selection när annonsen är stängd (`isClosed`) – då finns ingen poäng med att kontakta.
+3. Bygg `bulkRecipients` av valda sökande (`{ id, name, phone, email }`) från `listing.interests`.
+4. Rendera `<BulkActionBar>` (när inte `isClosed`) med `onSendSms`, `onSendEmail`, `onClear`.
+5. Rendera `<BulkSmsModal>` och `<BulkEmailModal>` med samma toast-bekräftelser som standardflödet ("SMS skickat till X sökande" / "Mejl skickat till X sökande").
+6. Rad-klick (`onRowClick`) behålls för att öppna sheet – checkbox-kolumnen från `ResponsiveTable` hanterar markering separat.
+
+## Inga andra filer ändras
+
+Standardflödet, delade komponenter och datamodellen rörs inte.

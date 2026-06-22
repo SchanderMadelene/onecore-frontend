@@ -13,6 +13,8 @@ import { ArrowLeft } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { sv } from "date-fns/locale";
 import { toast } from "sonner";
+import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
+import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 
 import { poangfriListings as initialListings } from "@/features/rentals/data/poangfri-housing";
 import {
@@ -52,6 +54,9 @@ export default function PoangfriHousingDetailPage() {
   const [contractTargetId, setContractTargetId] = useState<string | null>(null);
   const [unpublishOpen, setUnpublishOpen] = useState(false);
   const [acknowledgeTargetId, setAcknowledgeTargetId] = useState<string | null>(null);
+  const [selectedInterestIds, setSelectedInterestIds] = useState<string[]>([]);
+  const [smsOpen, setSmsOpen] = useState(false);
+  const [emailOpen, setEmailOpen] = useState(false);
 
   const sortedInterests = useMemo(() => {
     if (!listing) return [];
@@ -84,6 +89,19 @@ export default function PoangfriHousingDetailPage() {
 
   const isClosed =
     listing.status === "contract_created" || listing.status === "unpublished";
+
+  const bulkRecipients = useMemo(
+    () =>
+      listing.interests
+        .filter((i) => selectedInterestIds.includes(i.id))
+        .map((i) => ({
+          id: i.id,
+          name: i.name,
+          phone: i.phone,
+          email: i.email,
+        })),
+    [listing.interests, selectedInterestIds]
+  );
 
   const selectedInterest =
     sortedInterests.find((i) => i.id === selectedInterestId) ?? null;
@@ -394,6 +412,9 @@ export default function PoangfriHousingDetailPage() {
                 keyExtractor={(i: PoangfriInterest) => i.id}
                 emptyMessage="Inga intresseanmälningar än"
                 onRowClick={(i: PoangfriInterest) => setSelectedInterestId(i.id)}
+                selectable={!isClosed}
+                selectedKeys={selectedInterestIds}
+                onSelectionChange={setSelectedInterestIds}
               />
             </CardContent>
           </Card>
@@ -483,6 +504,35 @@ export default function PoangfriHousingDetailPage() {
         }
         confirmLabel="Kvittera"
         onConfirm={() => acknowledgeTarget && acknowledgeInterest(acknowledgeTarget.id)}
+      />
+
+      {!isClosed && (
+        <BulkActionBar
+          selectedCount={selectedInterestIds.length}
+          onSendSms={() => setSmsOpen(true)}
+          onSendEmail={() => setEmailOpen(true)}
+          onClear={() => setSelectedInterestIds([])}
+        />
+      )}
+
+      <BulkSmsModal
+        open={smsOpen}
+        onOpenChange={setSmsOpen}
+        recipients={bulkRecipients}
+        onSend={async (_message, sentTo) => {
+          await new Promise((r) => setTimeout(r, 300));
+          toast.success(`SMS skickat till ${sentTo.length} sökande`);
+        }}
+      />
+
+      <BulkEmailModal
+        open={emailOpen}
+        onOpenChange={setEmailOpen}
+        recipients={bulkRecipients}
+        onSend={async (_subject, _body, sentTo) => {
+          await new Promise((r) => setTimeout(r, 300));
+          toast.success(`Mejl skickat till ${sentTo.length} sökande`);
+        }}
       />
     </PageLayout>
   );
