@@ -34,7 +34,7 @@ export const TabCount = React.forwardRef<HTMLSpanElement, TabCountProps>(
 
     const inactive =
       variant === "muted"
-        ? "bg-warning/30 text-warning-foreground"
+        ? "bg-warning/30 text-foreground"
         : "bg-foreground/15 text-foreground";
 
     return (
