@@ -18,6 +18,11 @@ import {
   COMMUNICATION_TYPE_LABELS,
 } from "@/features/rentals/types/poangfri";
 import { ApplicantProfileModal } from "@/features/rentals/components/ApplicantProfileModal";
+import {
+  HousingReferenceBadge,
+  CreditReportBadge,
+  PaymentHistoryBadge,
+} from "./poangfri-status-badges";
 
 interface PoangfriInterestSheetProps {
   interest: PoangfriInterest | null;
