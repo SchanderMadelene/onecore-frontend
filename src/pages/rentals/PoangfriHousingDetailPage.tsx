@@ -30,6 +30,11 @@ import {
 } from "@/features/rentals/types/poangfri";
 import { PoangfriLogContactDialog } from "./components/PoangfriLogContactDialog";
 import { PoangfriInterestSheet } from "./components/PoangfriInterestSheet";
+import {
+  HousingReferenceBadge,
+  CreditReportBadge,
+  PaymentHistoryBadge,
+} from "./components/poangfri-status-badges";
 
 const HANDLAGGARE = "Karin Lundqvist";
 
@@ -267,6 +272,60 @@ export default function PoangfriHousingDetailPage() {
           <span className="text-sm">
             {format(new Date(i.viewingBookedAt), "yyyy-MM-dd HH:mm", { locale: sv })}
           </span>
+        ) : (
+          <span className="text-xs text-muted-foreground">—</span>
+        ),
+    },
+    {
+      key: "housingReference",
+      label: "Boendereferens",
+      hideOnMobile: true,
+      render: (i: PoangfriInterest) =>
+        i.housingReference ? (
+          <div className="space-y-1">
+            <HousingReferenceBadge status={i.housingReference.status} />
+            {i.housingReference.date && (
+              <div className="text-xs text-muted-foreground">
+                {i.housingReference.date}
+              </div>
+            )}
+          </div>
+        ) : (
+          <span className="text-xs text-muted-foreground">—</span>
+        ),
+    },
+    {
+      key: "creditReport",
+      label: "Kreditupplysning",
+      hideOnMobile: true,
+      render: (i: PoangfriInterest) =>
+        i.creditReport ? (
+          <div className="space-y-1">
+            <CreditReportBadge status={i.creditReport.status} />
+            {i.creditReport.date && (
+              <div className="text-xs text-muted-foreground">
+                {i.creditReport.date}
+              </div>
+            )}
+          </div>
+        ) : (
+          <span className="text-xs text-muted-foreground">—</span>
+        ),
+    },
+    {
+      key: "paymentHistory",
+      label: "Betalningshistorik",
+      hideOnMobile: true,
+      render: (i: PoangfriInterest) =>
+        i.paymentHistory ? (
+          <div className="space-y-1">
+            <PaymentHistoryBadge status={i.paymentHistory.status} />
+            {i.paymentHistory.date && (
+              <div className="text-xs text-muted-foreground">
+                {i.paymentHistory.date}
+              </div>
+            )}
+          </div>
         ) : (
           <span className="text-xs text-muted-foreground">—</span>
         ),

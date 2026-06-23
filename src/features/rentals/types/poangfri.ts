@@ -37,6 +37,18 @@ export interface PoangfriInterest {
   acknowledgedAt?: string;     // ISO – när handläggare kvitterade
   acknowledgedBy?: string;     // Handläggarens namn
   communications: CommunicationEntry[];
+  housingReference?: {
+    status: "Godkänd" | "Ej godkänd" | "Kontaktad - ej svar" | "Referens krävs ej" | "Ej behandlad";
+    date?: string; // YYYY-MM-DD
+  };
+  creditReport?: {
+    status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig";
+    date?: string;
+  };
+  paymentHistory?: {
+    status: "Inga anmärkningar" | "Behöver kontrolleras";
+    date?: string;
+  };
 }
 
 export interface PoangfriListing {
