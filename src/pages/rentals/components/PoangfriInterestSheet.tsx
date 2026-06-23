@@ -93,7 +93,52 @@ export function PoangfriInterestSheet({
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto px-6 py-4">
+          {(interest.housingReference || interest.creditReport || interest.paymentHistory) && (
+            <div className="mb-6 rounded-md border bg-muted/30 px-4 py-3 space-y-2">
+              {interest.housingReference && (
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs text-muted-foreground">Boendereferens</span>
+                  <div className="flex items-center gap-2">
+                    {interest.housingReference.date && (
+                      <span className="text-xs text-muted-foreground tabular-nums">
+                        {interest.housingReference.date}
+                      </span>
+                    )}
+                    <HousingReferenceBadge status={interest.housingReference.status} />
+                  </div>
+                </div>
+              )}
+              {interest.creditReport && (
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs text-muted-foreground">Kreditupplysning</span>
+                  <div className="flex items-center gap-2">
+                    {interest.creditReport.date && (
+                      <span className="text-xs text-muted-foreground tabular-nums">
+                        {interest.creditReport.date}
+                      </span>
+                    )}
+                    <CreditReportBadge status={interest.creditReport.status} />
+                  </div>
+                </div>
+              )}
+              {interest.paymentHistory && (
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs text-muted-foreground">Betalningshistorik</span>
+                  <div className="flex items-center gap-2">
+                    {interest.paymentHistory.date && (
+                      <span className="text-xs text-muted-foreground tabular-nums">
+                        {interest.paymentHistory.date}
+                      </span>
+                    )}
+                    <PaymentHistoryBadge status={interest.paymentHistory.status} />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="flex flex-col gap-2 mb-6">
+
             {interest.status === "unhandled" && onAcknowledge && (
               <Button onClick={onAcknowledge}>Kvittera sökande</Button>
             )}
