@@ -1,22 +1,64 @@
 ## Mål
+På intresselistan i poängfri-detaljvyn: visa samma tre informationskolumner som standardflödet har för en sökande – **Boendereferens**, **Kreditupplysning** och **Betalningshistorik** – med samma badge-utseende och datum under.
 
-Återanvänd samma bulk-funktion som finns på standardflödet för bostad (`HousingDetailPage.tsx`) på poängfritt-detaljsidan, så att handläggaren kan markera flera sökande i intresselistan och skicka SMS eller mejl.
+## Var
+- `src/features/rentals/types/poangfri.ts` – utöka `PoangfriInterest` med fälten.
+- `src/features/rentals/data/poangfri-housing.ts` – fyll på mockdatan för befintliga sökande.
+- `src/pages/rentals/PoangfriHousingDetailPage.tsx` – lägg till tre kolumner i `ResponsiveTable`.
+- `src/pages/rentals/components/PoangfriInterestSheet.tsx` – visa samma tre status­raderna även i sökande-sheeten (header-sektionen), så informationen syns vid öppning.
 
-## Vad som redan finns att återanvända
+## Vad
 
-- `BulkActionBar` (`src/shared/ui/bulk-action-bar`) – flytande bar längst ner med antal valda + knappar för SMS/Mejl/Rensa.
-- `BulkSmsModal` och `BulkEmailModal` från `@/features/communication`.
-- `ResponsiveTable` har redan inbyggt selection-stöd via `selectable`, `selectedKeys`, `onSelectionChange`.
+### 1. Typ-utökning (`poangfri.ts`)
+Lägg till på `PoangfriInterest`:
+```ts
+housingReference: {
+  status: "Godkänd" | "Ej godkänd" | "Kontaktad - ej svar" | "Referens krävs ej" | "Ej behandlad";
+  date?: string; // YYYY-MM-DD
+};
+creditReport: {
+  status: "Godkänd/låg risk" | "Förhöjd risk" | "Hög risk" | "Ingen uppgift tillgänglig";
+  date?: string;
+};
+paymentHistory: {
+  status: "Inga anmärkningar" | "Behöver kontrolleras";
+  date?: string;
+};
+```
+Återanvänd exakt samma statussträngar som standardflödet för konsekvent rendering.
 
-## Ändringar (endast `src/pages/rentals/PoangfriHousingDetailPage.tsx`)
+### 2. Mockdata
+Fyll på varje befintlig `PoangfriInterest` i `poangfri-housing.ts` med rimliga, varierade värden (anonymiserade, svenska datum). Blanda godkända/varningar för att spegla verkliga handläggningsbehov.
 
-1. Ny state: `selectedInterestIds: string[]`, `smsOpen`, `emailOpen`.
-2. Skicka `selectable`, `selectedKeys={selectedInterestIds}`, `onSelectionChange={setSelectedInterestIds}` till `ResponsiveTable`. Dölj selection när annonsen är stängd (`isClosed`) – då finns ingen poäng med att kontakta.
-3. Bygg `bulkRecipients` av valda sökande (`{ id, name, phone, email }`) från `listing.interests`.
-4. Rendera `<BulkActionBar>` (när inte `isClosed`) med `onSendSms`, `onSendEmail`, `onClear`.
-5. Rendera `<BulkSmsModal>` och `<BulkEmailModal>` med samma toast-bekräftelser som standardflödet ("SMS skickat till X sökande" / "Mejl skickat till X sökande").
-6. Rad-klick (`onRowClick`) behålls för att öppna sheet – checkbox-kolumnen från `ResponsiveTable` hanterar markering separat.
+### 3. Tabellkolumner (poängfri detaljvy)
+Lägg till tre kolumner mellan "Anmäld" och "Status" i `columns`-arrayen i `PoangfriHousingDetailPage.tsx`:
+- `housingReference` – badge + litet datum
+- `creditReport` – badge ("Inga anm." / "Anmärkningar")
+- `paymentHistory` – badge + datum
 
-## Inga andra filer ändras
+Markera `hideOnMobile: true` (samma mönster som övriga sekundärfält i listan) eftersom mobilkortet redan blir tätt och statusarna visas i sheeten där.
 
-Standardflödet, delade komponenter och datamodellen rörs inte.
+Återanvänd Badge-varianter direkt – inga nya komponenter:
+- `success` / `warning` / `destructive` / `muted` enligt mappningen i standardflödet.
+
+### 4. Sheet (`PoangfriInterestSheet.tsx`)
+Direkt under header-blocket (efter "Anmäld …", före åtgärdsknapparna), rendera en kompakt sektion med tre rader:
+
+```
+Boendereferens         [badge]   datum
+Kreditupplysning       [badge]   datum
+Betalningshistorik     [badge]   datum
+```
+
+Layout: `space-y-2`, etikett i `text-xs text-muted-foreground` till vänster, badge + datum till höger – matchar tonen i resten av sheeten (label-värde-mönster).
+
+## Tekniska detaljer
+- Skapa en liten lokal helper `getStatusBadge` i sheet- och tabellfilen som speglar standardflödets mappning ordagrant (samma etiketter och varianter). Inga delade extraktioner just nu – undviker att röra standardflödets fil.
+- Inga ändringar i datalager utöver mock; inga API/RLS-ändringar.
+- `ResponsiveTable` mobilkort: kolumnerna är `hideOnMobile`, så ingen ändring av mobilkortet behövs – sheeten täcker mobilanvändaren.
+
+## Påverkade filer
+- `src/features/rentals/types/poangfri.ts`
+- `src/features/rentals/data/poangfri-housing.ts`
+- `src/pages/rentals/PoangfriHousingDetailPage.tsx`
+- `src/pages/rentals/components/PoangfriInterestSheet.tsx`
