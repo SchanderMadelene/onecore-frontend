@@ -30,6 +30,11 @@ import {
 } from "@/features/rentals/types/poangfri";
 import { PoangfriLogContactDialog } from "./components/PoangfriLogContactDialog";
 import { PoangfriInterestSheet } from "./components/PoangfriInterestSheet";
+import {
+  HousingReferenceBadge,
+  CreditReportBadge,
+  PaymentHistoryBadge,
+} from "./components/poangfri-status-badges";
 
 const HANDLAGGARE = "Karin Lundqvist";
 
