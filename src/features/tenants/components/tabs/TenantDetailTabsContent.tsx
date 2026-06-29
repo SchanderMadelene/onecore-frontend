@@ -5,6 +5,7 @@ import { TenantNotes } from "@/features/tenants/components/TenantNotes";
 import { TenantOrders } from "@/features/tenants/components/TenantOrders";
 import { TenantEventLog } from "@/features/tenants/components/TenantEventLog";
 import { TenantDocuments } from "@/features/tenants/components/TenantDocuments";
+import { TenantRelatedContacts } from "@/features/tenants/components/TenantRelatedContacts";
 import { CustomerLedger, getMockLedgerForCustomer, getMockInvoicesForCustomer } from "@/features/ekonomi";
 import { TenantKeys } from "@/features/tenants/components/TenantKeys";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
@@ -117,6 +118,10 @@ export const TenantDetailTabsContent = ({ contracts, personalNumber, customerNum
         >
           <TenantDocuments />
         </FeatureGatedTabContent>
+      </TabsContent>
+
+      <TabsContent value="related-contacts">
+        <TenantRelatedContacts />
       </TabsContent>
     </>
   );

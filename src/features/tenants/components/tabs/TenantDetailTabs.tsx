@@ -40,6 +40,9 @@ export const TenantDetailTabs = ({ defaultValue, children, hasActiveCases, custo
         <TabsTrigger value="documents">
           Dokument
         </TabsTrigger>
+        <TabsTrigger value="related-contacts">
+          Relaterade kontakter
+        </TabsTrigger>
       </TabsList>
       {children}
     </Tabs>
