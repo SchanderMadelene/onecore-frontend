@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabLayout } from "@/components/ui/tab-layout";
 import { Notes } from "@/components/common";
+import { TenantRelatedContacts } from "@/features/tenants/components/TenantRelatedContacts";
 import { CollapsibleInfoCard } from "@/shared/ui/collapsible-info-card";
 import {
   ProtectedIdentityBadge,
@@ -190,6 +191,7 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
         <TabsList className="bg-slate-100/70 p-1 rounded-lg overflow-x-auto">
           <TabsTrigger value="info">Information</TabsTrigger>
           <TabsTrigger value="notes">Noteringar</TabsTrigger>
+          <TabsTrigger value="related-contacts">Relaterade kontakter</TabsTrigger>
         </TabsList>
 
         <TabsContent value="info">
@@ -214,6 +216,10 @@ export function TenantInformationCard({ tenant, displayMode = "full" }: TenantIn
               emptyMessage="Inga noteringar har lagts till för denna hyresgäst ännu."
             />
           </TabLayout>
+        </TabsContent>
+
+        <TabsContent value="related-contacts">
+          <TenantRelatedContacts />
         </TabsContent>
       </Tabs>
     </CollapsibleInfoCard>
