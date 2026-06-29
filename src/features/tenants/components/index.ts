@@ -16,6 +16,7 @@ export { TenantEventLog } from './TenantEventLog';
 export { TenantDocuments } from './TenantDocuments';
 export { TenantKeys } from './TenantKeys';
 export { TenantSelectionFilters } from './TenantSelectionFilters';
+export { TenantRelatedContacts } from './TenantRelatedContacts';
 
 // Tabs
 export { TenantDetailTabs, TenantDetailTabsContent } from './tabs';

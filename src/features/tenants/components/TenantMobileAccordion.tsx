@@ -3,6 +3,7 @@ import { TenantQueueSystem } from "./TenantQueueSystem";
 import { TenantNotes } from "./TenantNotes";
 import { TenantOrders } from "./TenantOrders";
 import { TenantEventLog } from "./TenantEventLog";
+import { TenantRelatedContacts } from "./TenantRelatedContacts";
 import { CustomerLedger, getMockLedgerForCustomer, getMockInvoicesForCustomer } from "@/features/ekonomi";
 import { useFeatureToggles } from "@/contexts/FeatureTogglesContext";
 import { MobileAccordion as GenericMobileAccordion, MobileAccordionItem } from "@/shared/ui/mobile-accordion";
@@ -142,6 +143,11 @@ export function TenantMobileAccordion({ contracts, hasActiveCases, customerNumbe
           </p>
         </div>
       )
+    },
+    {
+      id: "related-contacts",
+      title: "Relaterade kontakter",
+      content: <TenantRelatedContacts />
     }
   ];
   
