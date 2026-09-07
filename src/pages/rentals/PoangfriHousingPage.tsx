@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useMemo, useCallback } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -46,13 +46,32 @@ const STATUS_FILTERS: { value: PoangfriListingStatus | "all"; label: string }[] 
   { value: "unpublished", label: "Avpublicerad" },
 ];
 
+const VALID_TABS = ["ready_to_publish", "published_now"] as const;
+type PoangfriTab = (typeof VALID_TABS)[number];
+
 export default function PoangfriHousingPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState<"ready_to_publish" | "published_now">("ready_to_publish");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<PoangfriListingStatus | "all">("all");
   const [area, setArea] = useState<string>("all");
   const navigate = useNavigate();
+
+  const activeTab: PoangfriTab = useMemo(() => {
+    const tab = searchParams.get("tab");
+    return VALID_TABS.includes(tab as PoangfriTab) ? (tab as PoangfriTab) : "ready_to_publish";
+  }, [searchParams]);
+
+  const setActiveTab = useCallback(
+    (tab: PoangfriTab) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("tab", tab);
+        return next;
+      });
+    },
+    [setSearchParams]
+  );
 
   const areas = useMemo(
     () => Array.from(new Set(poangfriListings.map((l) => l.area))).sort(),
