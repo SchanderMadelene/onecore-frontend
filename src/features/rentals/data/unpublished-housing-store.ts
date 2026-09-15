@@ -61,7 +61,8 @@ const toPublished = (s: UnpublishedHousingSpace): PublishedHousingSpace => {
     rent: s.rent,
     rooms: s.rooms,
     floor: s.floor,
-    seekers: 0,
+    // Mockdata: nypublicerade annonser får samma sökandelista som övriga annonser
+    seekers: MOCK_APPLICANT_COUNT,
     publishedFrom: iso(from),
     publishedTo: iso(to),
     availableFrom: s.availableFrom ?? iso(to),
