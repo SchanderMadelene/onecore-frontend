@@ -42,6 +42,8 @@ export function HousingSpacesTable() {
   }, [location.state]);
 
   const { filterHousingByStatus } = useHousingStatus();
+  const unpublishedHousingSpaces = useUnpublishedSpaces();
+  const publishedHousingSpaces = usePublishedSpaces();
   const counts = {
     behovAvPublicering: unpublishedHousingSpaces.length,
     publicerade: filterHousingByStatus(publishedHousingSpaces, "published").length,
