@@ -43,6 +43,7 @@ import { publishedHousingSpaces as publishedSeed, type PublishedHousingSpace } f
 /** Antal sökande i mockdatan för en annons (se useHousingListing) */
 const MOCK_APPLICANT_COUNT = 16;
 
+let publishVersion = 0;
 let publishedExtra: PublishedHousingSpace[] = [];
 let publishedSnapshot: PublishedHousingSpace[] = [...publishedSeed];
 
@@ -81,8 +82,19 @@ export function publishSpaces(ids: string[]) {
   spaces = spaces.filter((s) => !idSet.has(s.id));
   publishedExtra = [...toMove.map(toPublished), ...publishedExtra];
   rebuildPublished();
+  publishVersion++;
   emit();
   return toMove.length;
+}
+
+/** Icke-reaktiv läsning av publicerade annonser (inkl. nyligen publicerade) */
+export function getPublishedSpaces(): PublishedHousingSpace[] {
+  return publishedSnapshot;
+}
+
+/** Ökar varje gång publiceringsläget ändras – används som cache-nyckel */
+export function getPublishVersion() {
+  return publishVersion;
 }
 
 export function usePublishedSpaces() {

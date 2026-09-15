@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { publishedHousingSpaces, type PublishedHousingSpace } from "../data/published-housing";
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
 import { historyHousingSpaces } from "../data/history-housing";
+import { getPublishedSpaces, getPublishVersion } from "../data/unpublished-housing-store";
 
 export interface HousingApplicant {
   id: number;
@@ -59,10 +60,13 @@ export interface HousingListing extends PublishedHousingSpace {
 }
 
 export const useHousingListing = (id: string) => {
+  const publishVersion = getPublishVersion();
   return useQuery({
-    queryKey: ['housingListing', id],
+    queryKey: ['housingListing', id, publishVersion],
     queryFn: () => {
-      const published = publishedHousingSpaces.find(h => h.id === id);
+      const published =
+        getPublishedSpaces().find(h => h.id === id) ??
+        publishedHousingSpaces.find(h => h.id === id);
       const unpublished = !published ? unpublishedHousingSpaces.find(h => h.id === id) : undefined;
       const history = !published && !unpublished ? historyHousingSpaces.find(h => h.id === id) : undefined;
 
