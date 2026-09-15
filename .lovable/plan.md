@@ -2,15 +2,10 @@
 
 ## Varför den är låst
 
-Fältet är hårdkodat låst i redigeringsformuläret för bostadsannonser. Det är ingen regel eller status som styr det – datumväljaren är helt enkelt satt till "inaktiverad" i koden, till skillnad från "Publicera till" som bara låses när "Publicera tillsvidare" är ikryssad.
+Låset är avsiktligt. 2026-05-05 gavs instruktionen att inputen "Publicera från" kan vara disabled, och den sattes då medvetet till inaktiverad. Det är ingen bugg och inget som bör ändras utan ny instruktion.
 
 ## Förslag
 
-Lås upp "Publicera från" så att den fungerar som övriga datumfält:
+Ingen ändring i koden. Fältet förblir låst enligt tidigare beslut.
 
-- Redan publicerad annons: startdatumet är passerat och ska fortsatt visas låst, men med en kort förklaring under fältet ("Annonsen är redan publicerad").
-- Annons som inte är publicerad (Utkast / Behöver granskning / Redo att publicera): fältet går att ändra.
-
-## Tekniskt
-
-`src/features/rentals/components/edit-housing/EditableFormSection.tsx`: byt `disabled` på `publishFrom`-DatePicker mot en prop, t.ex. `isPublished`, som skickas in från `EditHousingDialog.tsx` utifrån annonsens status. Visa hjälptexten endast när fältet är låst.
+Om du i stället vill låsa upp det: gör det bara för annonser som inte är publicerade ännu (Utkast / Behöver granskning / Redo att publicera), och visa en hjälptext "Annonsen är redan publicerad" för publicerade annonser där fältet fortsatt är låst. Tekniskt: prop `isPublished` in till `EditableFormSection.tsx` från `EditHousingDialog.tsx` baserat på annonsens status.
