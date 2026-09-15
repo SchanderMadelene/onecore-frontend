@@ -44,6 +44,12 @@ const formatDate = (iso: string) =>
 const formatRelative = (iso: string) =>
   formatDistanceToNow(new Date(iso), { addSuffix: true, locale: sv });
 
+const hasAllChecksApproved = (i: PoangfriInterest) =>
+  (i.housingReference?.status === "Godkänd" ||
+    i.housingReference?.status === "Referens krävs ej") &&
+  i.creditReport?.status === "Godkänd/låg risk" &&
+  i.paymentHistory?.status === "Inga anmärkningar";
+
 export default function PoangfriHousingDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -66,9 +72,21 @@ export default function PoangfriHousingDetailPage() {
   const sortedInterests = useMemo(() => {
     if (!listing) return [];
     return [...listing.interests].sort((a, b) => {
-      // Obehandlade alltid överst
-      if (a.status === "unhandled" && b.status !== "unhandled") return -1;
-      if (b.status === "unhandled" && a.status !== "unhandled") return 1;
+      // 1. Önskat inflyttningsdatum – tidigast först, saknat datum sist
+      const aMove = a.desiredMoveInDate
+        ? new Date(a.desiredMoveInDate).getTime()
+        : Number.POSITIVE_INFINITY;
+      const bMove = b.desiredMoveInDate
+        ? new Date(b.desiredMoveInDate).getTime()
+        : Number.POSITIVE_INFINITY;
+      if (aMove !== bMove) return aMove - bMove;
+
+      // 2. Alla kontroller godkända först
+      const aChecks = hasAllChecksApproved(a) ? 0 : 1;
+      const bChecks = hasAllChecksApproved(b) ? 0 : 1;
+      if (aChecks !== bChecks) return aChecks - bChecks;
+
+      // 3. Anmälningsdatum – äldst först
       return new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime();
     });
   }, [listing]);
@@ -460,7 +478,8 @@ export default function PoangfriHousingDetailPage() {
               )}
             </div>
             <p className="text-sm text-muted-foreground">
-              Obehandlade visas överst – övriga sorterade efter anmälningsdatum
+              Rangordnad efter önskat inflyttningsdatum, därefter godkända
+              kontroller och anmälningsdatum
             </p>
           </div>
           <Card>
