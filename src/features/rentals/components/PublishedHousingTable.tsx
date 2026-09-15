@@ -1,4 +1,4 @@
-import { publishedHousingSpaces } from "../data/published-housing";
+import { usePublishedSpaces } from "../data/unpublished-housing-store";
 import { useNavigate } from "react-router-dom";
 import { useHousingStatus } from "../hooks/useHousingStatus";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
@@ -11,6 +11,7 @@ import { getHousingObjectNumber } from "../utils/object-number";
 export function PublishedHousingTable() {
   const navigate = useNavigate();
   const { filterHousingByStatus } = useHousingStatus();
+  const publishedHousingSpaces = usePublishedSpaces();
 
   const publishedHousings = filterHousingByStatus(publishedHousingSpaces, 'published');
 
