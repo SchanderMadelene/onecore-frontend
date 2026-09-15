@@ -40,6 +40,9 @@ export function useUnpublishedSpaces() {
 // --- Publicering: flyttar annons från "Behov av publicering" till "Publicerade" ---
 import { publishedHousingSpaces as publishedSeed, type PublishedHousingSpace } from "./published-housing";
 
+/** Antal sökande i mockdatan för en annons (se useHousingListing) */
+const MOCK_APPLICANT_COUNT = 16;
+
 let publishedExtra: PublishedHousingSpace[] = [];
 let publishedSnapshot: PublishedHousingSpace[] = [...publishedSeed];
 
@@ -61,7 +64,8 @@ const toPublished = (s: UnpublishedHousingSpace): PublishedHousingSpace => {
     rent: s.rent,
     rooms: s.rooms,
     floor: s.floor,
-    seekers: 0,
+    // Mockdata: nypublicerade annonser får samma sökandelista som övriga annonser
+    seekers: MOCK_APPLICANT_COUNT,
     publishedFrom: iso(from),
     publishedTo: iso(to),
     availableFrom: s.availableFrom ?? iso(to),
