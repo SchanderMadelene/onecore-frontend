@@ -85,6 +85,16 @@ export function publishSpaces(ids: string[]) {
   return toMove.length;
 }
 
+/** Icke-reaktiv läsning av publicerade annonser (inkl. nyligen publicerade) */
+export function getPublishedSpaces(): PublishedHousingSpace[] {
+  return publishedSnapshot;
+}
+
+/** Ökar varje gång publiceringsläget ändras – används som cache-nyckel */
+export function getPublishVersion() {
+  return publishVersion;
+}
+
 export function usePublishedSpaces() {
   return useSyncExternalStore(
     (l) => {
