@@ -43,6 +43,7 @@ import { publishedHousingSpaces as publishedSeed, type PublishedHousingSpace } f
 /** Antal sökande i mockdatan för en annons (se useHousingListing) */
 const MOCK_APPLICANT_COUNT = 16;
 
+let publishVersion = 0;
 let publishedExtra: PublishedHousingSpace[] = [];
 let publishedSnapshot: PublishedHousingSpace[] = [...publishedSeed];
 
