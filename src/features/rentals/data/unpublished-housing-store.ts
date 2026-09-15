@@ -82,6 +82,7 @@ export function publishSpaces(ids: string[]) {
   spaces = spaces.filter((s) => !idSet.has(s.id));
   publishedExtra = [...toMove.map(toPublished), ...publishedExtra];
   rebuildPublished();
+  publishVersion++;
   emit();
   return toMove.length;
 }
