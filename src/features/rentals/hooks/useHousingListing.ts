@@ -95,9 +95,10 @@ export const useHousingListing = (id: string) => {
       };
 
       // Mock implementation med mockdata för sökande
+      // Opublicerade annonser ("Publicera"-fliken) kan inte ha sökande
       return Promise.resolve({
         ...housing,
-        applicants: [
+        applicants: unpublished ? [] : [
           {
             id: 1,
             name: "Maria Andersson",
