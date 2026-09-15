@@ -36,3 +36,58 @@ export function useUnpublishedSpaces() {
     () => spaces,
   );
 }
+
+// --- Publicering: flyttar annons från "Behov av publicering" till "Publicerade" ---
+import { publishedHousingSpaces as publishedSeed, type PublishedHousingSpace } from "./published-housing";
+
+let publishedExtra: PublishedHousingSpace[] = [];
+let publishedSnapshot: PublishedHousingSpace[] = [...publishedSeed];
+
+const rebuildPublished = () => {
+  publishedSnapshot = [...publishedExtra, ...publishedSeed];
+};
+
+const toPublished = (s: UnpublishedHousingSpace): PublishedHousingSpace => {
+  const from = new Date();
+  const to = new Date();
+  to.setDate(to.getDate() + 14);
+  const iso = (d: Date) => d.toISOString().slice(0, 10);
+  return {
+    id: s.id,
+    address: s.address,
+    area: s.area,
+    type: s.type,
+    size: s.size,
+    rent: s.rent,
+    rooms: s.rooms,
+    floor: s.floor,
+    seekers: 0,
+    publishedFrom: iso(from),
+    publishedTo: iso(to),
+    availableFrom: s.availableFrom ?? iso(to),
+    preferredMoveOutDate: s.preferredMoveOutDate ?? "",
+    description: s.description ?? "",
+  };
+};
+
+export function publishSpaces(ids: string[]) {
+  const idSet = new Set(ids);
+  const toMove = spaces.filter((s) => idSet.has(s.id));
+  if (toMove.length === 0) return 0;
+  spaces = spaces.filter((s) => !idSet.has(s.id));
+  publishedExtra = [...toMove.map(toPublished), ...publishedExtra];
+  rebuildPublished();
+  emit();
+  return toMove.length;
+}
+
+export function usePublishedSpaces() {
+  return useSyncExternalStore(
+    (l) => {
+      listeners.add(l);
+      return () => listeners.delete(l);
+    },
+    () => publishedSnapshot,
+    () => publishedSnapshot,
+  );
+}

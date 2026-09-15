@@ -18,6 +18,7 @@ import { PreviewHousingAdDialog } from "./PreviewHousingAdDialog";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import type { HousingSpace } from "./types/housing";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
+import { publishSpaces } from "../data/unpublished-housing-store";
 
 export type HousingActionTab =
   | "publicerade"
@@ -159,6 +160,9 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
     if (!confirm) return;
     setPending(true);
     await new Promise((r) => setTimeout(r, 500));
+    if (confirm.confirmLabel === "Publicera") {
+      publishSpaces([housing.id]);
+    }
     toast({ title: confirm.successTitle, description: housing.address });
     setPending(false);
     setConfirm(null);
