@@ -7,3 +7,4 @@
 - [x] Typkontroll grön, verifierat i Playwright (modal + detaljsida Skolgatan 9)
 - [x] Visningssektionen ihopfällbar/expanderbar (även desktop, öppen som standard, sammanfattning syns ihopfälld)
 - [x] Ersätt annonsförhandsgranskningar med länk till annonsen på Mimer.nu under Objektsinformation
+- [ ] Ta bort sammanfattningsraden för erbjudandeomgången från annonsdetaljen
