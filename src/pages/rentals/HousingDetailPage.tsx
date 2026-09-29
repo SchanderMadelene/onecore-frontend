@@ -30,6 +30,8 @@ const HousingDetailPage = () => {
   const [emailOpen, setEmailOpen] = useState(false);
   const [isSelectingForNewRound, setIsSelectingForNewRound] = useState(false);
   const [activeRoundTab, setActiveRoundTab] = useState<string | undefined>(undefined);
+  const [linkContractApplicantId, setLinkContractApplicantId] = useState<number | null>(null);
+  const [linkContractPending, setLinkContractPending] = useState(false);
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
