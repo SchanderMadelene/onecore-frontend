@@ -29,7 +29,12 @@ export function HistoryHousingTable({ filters }: { filters: HousingFiltersState 
     { key: "size", label: "Yta", render: (h: any) => h.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (h: any) => h.rent },
     { key: "publishedFrom", label: "Publicerad från", render: (h: any) => (h as any).publishedFrom ? new Date((h as any).publishedFrom).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
-    { key: "contractedTo", label: "Tilldelad", render: (h: any) => h.contractedTo },
+    { key: "contractedTo", label: "Tilldelad", render: (h: any) => (
+      <div>
+        <div className="font-medium">{h.contractedTo}</div>
+        <div className="text-sm text-muted-foreground">{h.contractedToCustomerNumber}</div>
+      </div>
+    ) },
     { key: "contractStart", label: "Kontraktstart", render: (h: any) => new Date(h.contractStart).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "signedAt", label: "Tecknat", render: (h: any) => new Date(h.signedAt).toLocaleDateString('sv-SE'), hideOnMobile: true },
     { key: "preferredMoveOutDate", label: "Ev tillgänglig från", render: (h: any) => h.preferredMoveOutDate ? new Date(h.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
