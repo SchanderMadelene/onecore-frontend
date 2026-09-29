@@ -246,6 +246,36 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
         isPending={pending}
         onConfirm={runBulkReview}
       />
+
+      <ConfirmDialog
+        open={publishOpen}
+        onOpenChange={(v) => {
+          setPublishOpen(v);
+          if (!v) setPublishMethod(null);
+        }}
+        title="Publicera annonser"
+        description={
+          unified ? (
+            <div className="space-y-4">
+              <p>
+                {publishableSelected.length === selected.length
+                  ? `Publicera ${publishableSelected.length} ${publishableSelected.length === 1 ? "annons" : "annonser"}?`
+                  : `${publishableSelected.length} av ${selected.length} valda annonser kan publiceras. Övriga är inte redo att publicera.`}
+              </p>
+              <RentalMethodPicker value={publishMethod} onChange={setPublishMethod} idPrefix="bulk-method" />
+            </div>
+          ) : (
+            publishableSelected.length === selected.length
+              ? `Publicera ${publishableSelected.length} ${publishableSelected.length === 1 ? "annons" : "annonser"}?`
+              : `${publishableSelected.length} av ${selected.length} valda annonser kan publiceras. Övriga är inte redo att publicera.`
+          )
+        }
+        confirmLabel="Publicera"
+        pendingLabel="Publicerar..."
+        confirmDisabled={unified && !publishMethod}
+        isPending={publishPending}
+        onConfirm={runBulkPublish}
+      />
     </>
   );
 }
