@@ -209,10 +209,24 @@ const HousingDetailPage = () => {
 
   const linkedContractApplicantId = isContractMode ? getLinkedContract(housingId) : undefined;
 
+  const linkContractApplicant = displayedApplicants.find(a => a.id === linkContractApplicantId) ?? null;
+
   const handleLinkContract = (applicantId: number) => {
-    linkContract(housingId, applicantId);
-    const applicant = displayedApplicants.find(a => a.id === applicantId);
-    sonnerToast.success(`Kontrakt kopplat till ${applicant?.name ?? "sökande"}`);
+    setLinkContractApplicantId(applicantId);
+  };
+
+  const handleConfirmLinkContract = async () => {
+    if (!housingId || !linkContractApplicant) return;
+    setLinkContractPending(true);
+    await new Promise((r) => setTimeout(r, 400));
+    linkContract(housingId, linkContractApplicant.id);
+    moveToHistory(listing, linkContractApplicant);
+    setLinkContractPending(false);
+    setLinkContractApplicantId(null);
+    sonnerToast.success(`Kontrakt kopplat till ${linkContractApplicant.name}`, {
+      description: "Annonsen har flyttats till fliken Historik",
+    });
+    navigate('/rentals/housing', { state: { activeHousingTab: 'historik' } });
   };
 
   const showRoundsView = isOfferedMode && rounds.length > 0 && !isContractMode && !isHistoryMode;
