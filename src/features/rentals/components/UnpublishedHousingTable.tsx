@@ -26,15 +26,12 @@ import { RentalMethodPicker } from "./RentalMethodPicker";
 import type { RentalMethod } from "../data/published-housing";
 
 const STATUS_LABEL: Record<UnpublishedHousingSpace["status"], string> = {
-  draft: "Utkast",
   needs_review: "Behöver granskning",
   ready_to_publish: "Redo att publicera",
 };
 
 const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
   switch (status) {
-    case "draft":
-      return <Badge variant="secondary">Utkast</Badge>;
     case "needs_review":
       return <Badge variant="warning">Behöver granskning</Badge>;
     case "ready_to_publish":
@@ -62,7 +59,6 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
     let result = applyHousingFilters(spaces, filters);
     if (statusFilter) {
       const map: Record<string, UnpublishedHousingSpace["status"]> = {
-        "Utkast": "draft",
         "Behöver granskning": "needs_review",
         "Redo att publicera": "ready_to_publish",
       };
@@ -144,7 +140,7 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
       key: "status",
       label: "Status",
       render: (s: any) => getStatusBadge(s.status),
-      filterOptions: ["Utkast", "Behöver granskning", "Redo att publicera"],
+      filterOptions: ["Behöver granskning", "Redo att publicera"],
       filterValue: statusFilter,
       onFilter: (v: string) => setStatusFilter(v),
       filterPlaceholder: "Filtrera status",
@@ -238,7 +234,7 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
         description={
           eligibleSelected.length === selected.length
             ? `Markera ${selected.length} annonser som granskade och redo att publicera?`
-            : `${eligibleSelected.length} av ${selected.length} valda annonser kommer markeras som granskade. Övriga är redan granskade eller är utkast.`
+            : `${eligibleSelected.length} av ${selected.length} valda annonser kommer markeras som granskade. Övriga är redan granskade.`
         }
         confirmLabel="Markera som granskade"
         pendingLabel="Markerar..."
