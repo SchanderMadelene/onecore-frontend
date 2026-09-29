@@ -125,6 +125,15 @@ export function getPublishVersion() {
   return publishVersion;
 }
 
+/** Flyttar publicerade annonser ur listan (t.ex. till Historik) */
+export function removePublishedSpaces(ids: string[]) {
+  if (ids.length === 0) return;
+  ids.forEach((id) => removedIds.add(id));
+  rebuildPublished();
+  publishVersion++;
+  emit();
+}
+
 export function usePublishedSpaces() {
   return useSyncExternalStore(
     (l) => {
