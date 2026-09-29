@@ -21,7 +21,6 @@ export function HousingViewingInfo({ viewing }: HousingViewingInfoProps) {
     <CollapsibleInfoCard
       title="Visning"
       collapsibleOnDesktop
-      defaultOpen
       previewContent={
         <p className="text-sm text-muted-foreground">
           {formatDate(viewing.scheduledAt)} · {viewing.hostName}
