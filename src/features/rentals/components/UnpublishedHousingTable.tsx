@@ -13,6 +13,8 @@ import { ConfirmDialog } from "@/shared/common";
 import { toast } from "sonner";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Tag } from "@/components/ui/tag";
+import { RENTAL_METHOD_LABELS } from "../data/published-housing";
 import {
   useUnpublishedSpaces,
   setMultipleSpaceStatus,
@@ -44,17 +46,24 @@ export function UnpublishedHousingTable() {
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pending, setPending] = useState(false);
+  const [methodFilter, setMethodFilter] = useState<string>("");
 
   const filtered = useMemo(() => {
-    if (!statusFilter) return spaces;
-    const map: Record<string, UnpublishedHousingSpace["status"]> = {
-      "Utkast": "draft",
-      "Behöver granskning": "needs_review",
-      "Redo att publicera": "ready_to_publish",
-    };
-    const target = map[statusFilter];
-    return target ? spaces.filter((s) => s.status === target) : spaces;
-  }, [spaces, statusFilter]);
+    let result = spaces;
+    if (statusFilter) {
+      const map: Record<string, UnpublishedHousingSpace["status"]> = {
+        "Utkast": "draft",
+        "Behöver granskning": "needs_review",
+        "Redo att publicera": "ready_to_publish",
+      };
+      const target = map[statusFilter];
+      result = target ? result.filter((s) => s.status === target) : result;
+    }
+    if (methodFilter) {
+      result = result.filter((s) => s.lastRentalMethod && RENTAL_METHOD_LABELS[s.lastRentalMethod] === methodFilter);
+    }
+    return result;
+  }, [spaces, statusFilter, methodFilter]);
 
   const eligibleSelected = useMemo(
     () => selected.filter((id) => spaces.find((s) => s.id === id)?.status === "needs_review"),
@@ -85,6 +94,19 @@ export function UnpublishedHousingTable() {
     { key: "area", label: "Område", render: (s: any) => s.area, hideOnMobile: true },
     { key: "district", label: "Distrikt", render: (s: any) => getDistrictByArea(s.area), hideOnMobile: true },
     { key: "rentalType", label: "Hyresobjektstyp", render: (s: any) => <BuildingTypeBadge type={getRentalObjectType(s.id)} />, hideOnMobile: true },
+    {
+      key: "lastRentalMethod",
+      label: "Senaste uthyrningsmetod",
+      hideOnMobile: true,
+      filterOptions: Object.values(RENTAL_METHOD_LABELS),
+      filterValue: methodFilter,
+      onFilter: (v: string) => setMethodFilter(v),
+      filterPlaceholder: "Filtrera metod",
+      render: (s: any) =>
+        s.lastRentalMethod
+          ? <Tag>{RENTAL_METHOD_LABELS[s.lastRentalMethod as keyof typeof RENTAL_METHOD_LABELS]}</Tag>
+          : <span className="text-muted-foreground">-</span>,
+    },
     { key: "rooms", label: "Rum", render: (s: any) => s.rooms, hideOnMobile: true },
     { key: "size", label: "Yta", render: (s: any) => s.size, hideOnMobile: true },
     { key: "rent", label: "Hyra", render: (s: any) => s.rent },
