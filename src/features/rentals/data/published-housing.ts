@@ -13,7 +13,16 @@ export interface PublishedHousingSpace {
   availableFrom: string;
   preferredMoveOutDate: string;
   description: string;
+  /** Uthyrningsmetod som valdes vid publicering (saknas = standard) */
+  rentalMethod?: RentalMethod;
 }
+
+export type RentalMethod = "standard" | "poangfri";
+
+export const RENTAL_METHOD_LABELS: Record<RentalMethod, string> = {
+  standard: "Standard",
+  poangfri: "Poängfri",
+};
 
 export const publishedHousingSpaces: PublishedHousingSpace[] = [
   {
