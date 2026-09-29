@@ -46,17 +46,24 @@ export function UnpublishedHousingTable() {
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pending, setPending] = useState(false);
+  const [methodFilter, setMethodFilter] = useState<string>("");
 
   const filtered = useMemo(() => {
-    if (!statusFilter) return spaces;
-    const map: Record<string, UnpublishedHousingSpace["status"]> = {
-      "Utkast": "draft",
-      "Behöver granskning": "needs_review",
-      "Redo att publicera": "ready_to_publish",
-    };
-    const target = map[statusFilter];
-    return target ? spaces.filter((s) => s.status === target) : spaces;
-  }, [spaces, statusFilter]);
+    let result = spaces;
+    if (statusFilter) {
+      const map: Record<string, UnpublishedHousingSpace["status"]> = {
+        "Utkast": "draft",
+        "Behöver granskning": "needs_review",
+        "Redo att publicera": "ready_to_publish",
+      };
+      const target = map[statusFilter];
+      result = target ? result.filter((s) => s.status === target) : result;
+    }
+    if (methodFilter) {
+      result = result.filter((s) => s.lastRentalMethod && RENTAL_METHOD_LABELS[s.lastRentalMethod] === methodFilter);
+    }
+    return result;
+  }, [spaces, statusFilter, methodFilter]);
 
   const eligibleSelected = useMemo(
     () => selected.filter((id) => spaces.find((s) => s.id === id)?.status === "needs_review"),
