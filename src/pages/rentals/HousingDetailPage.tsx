@@ -11,7 +11,6 @@ import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
 import { HousingViewingInfo } from "./components/HousingViewingInfo";
-import { RoundSummaryBar } from "./components/RoundSummaryBar";
 import { HousingRowActions, type HousingActionTab } from "@/features/rentals/components/HousingRowActions";
 import { PlusCircle } from "lucide-react";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
@@ -25,7 +24,6 @@ const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
-  const [isEditOfferDialogOpen, setIsEditOfferDialogOpen] = useState(false);
   const [smsOpen, setSmsOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
   const [isSelectingForNewRound, setIsSelectingForNewRound] = useState(false);
@@ -35,7 +33,6 @@ const HousingDetailPage = () => {
   const location = useLocation();
   const {
     startNewRound,
-    cancelRound,
     getRoundsForListing,
     canStartNewRound,
     isListingOffered,
@@ -330,21 +327,8 @@ const HousingDetailPage = () => {
                   const previousRoundIds = rounds
                     .filter(x => x.roundNumber < r.roundNumber)
                     .flatMap(x => x.selectedApplicants);
-                  const acceptedResp = r.responses.find(x => x.response === 'accepted');
-                  const acceptedName = acceptedResp
-                    ? listing.applicants.find(a => a.id === acceptedResp.applicantId)?.name
-                    : undefined;
                   return (
                     <TabsContent key={r.id} value={r.id} className="mt-4">
-                      <RoundSummaryBar
-                        round={r}
-                        onCancel={() => cancelRound(housingId, r.id)}
-                        onEditOffer={() => {
-                          setActiveRoundTab(r.id);
-                          setIsEditOfferDialogOpen(true);
-                        }}
-                        acceptedApplicantName={acceptedName}
-                      />
                       <HousingApplicantsTable
                         applicants={displayedApplicants}
                         housingAddress={listing.address}
@@ -411,25 +395,6 @@ const HousingDetailPage = () => {
           parallelActiveRounds={isSelectingForNewRound ? activeRounds.length : 0}
         />
       )}
-
-      {!isHistoryMode && (() => {
-        const editingRound = rounds.find(r => r.id === activeRoundTab);
-        if (!editingRound) return null;
-        return (
-          <SendHousingOfferDialog
-            open={isEditOfferDialogOpen}
-            onOpenChange={setIsEditOfferDialogOpen}
-            recipientCount={editingRound.selectedApplicants.length}
-            housingAddress={listing.address}
-            mode="edit"
-            roundNumber={editingRound.roundNumber}
-            onConfirm={() => {
-              setIsEditOfferDialogOpen(false);
-              sonnerToast.success(`Erbjudandet för omgång ${editingRound.roundNumber} har uppdaterats`);
-            }}
-          />
-        );
-      })()}
 
       {!isHistoryMode && (
         <BulkActionBar

@@ -1,10 +1,7 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
-import { PreviewHousingAdDialog } from "@/features/rentals/components/PreviewHousingAdDialog";
 import type { HousingSpace } from "@/features/rentals/components/types/housing";
-import type { UnpublishedHousingSpace } from "@/features/rentals/components/types/unpublished-housing";
 
 interface HousingHeaderProps {
   housingAddress: string;
@@ -43,8 +40,6 @@ export function HousingHeader({
   onCancelSelection,
   onSendNewRound,
 }: HousingHeaderProps) {
-  const [previewOpen, setPreviewOpen] = useState(false);
-
   return (
     <>
       <div className="mb-4">
@@ -63,16 +58,6 @@ export function HousingHeader({
               <Badge variant="muted">{activeRoundsCount} omgångar aktiva</Badge>
             )}
           </div>
-          {housing && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-2"
-              onClick={() => setPreviewOpen(true)}
-            >
-              Förhandsgranska annons
-            </Button>
-          )}
         </div>
 
         {!readOnly && (
@@ -95,14 +80,6 @@ export function HousingHeader({
         )}
       </div>
 
-      {housing && (
-        <PreviewHousingAdDialog
-          open={previewOpen}
-          onOpenChange={setPreviewOpen}
-          housingSpace={housing as unknown as UnpublishedHousingSpace}
-          formValues={{}}
-        />
-      )}
     </>
   );
 }

@@ -10,6 +10,14 @@ interface HousingInfoProps {
 }
 
 export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoProps) {
+  const slug = housing.address
+    .toLowerCase()
+    .replace(/[åä]/g, "a")
+    .replace(/ö/g, "o")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  const mimerAdUrl = `https://www.mimer.nu/lediga-objekt/${slug}-${housing.id}`;
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <section>
@@ -55,6 +63,17 @@ export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoP
           <div className="space-y-1">
             <p className="text-sm text-muted-foreground">Ledig från och med</p>
             <p className="font-medium">{new Date(housing.availableFrom).toLocaleDateString('sv-SE')}</p>
+          </div>
+          <div className="space-y-1 sm:col-span-2">
+            <p className="text-sm text-muted-foreground">Annons</p>
+            <a
+              href={mimerAdUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-primary underline underline-offset-4 hover:no-underline"
+            >
+              Visa annons på Mimer.nu
+            </a>
           </div>
         </div>
         <div className="space-y-1 mt-6">

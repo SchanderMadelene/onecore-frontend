@@ -21,7 +21,6 @@ import { EditableFormSection } from "./edit-housing/EditableFormSection";
 import { DetailedDescriptionTab } from "./edit-housing/DetailedDescriptionTab";
 import { PlanritningTab } from "./edit-housing/PlanritningTab";
 import { MediaTab } from "./edit-housing/MediaTab";
-import { PreviewHousingAdDialog } from "./PreviewHousingAdDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { EditHousingFormData } from "./edit-housing/types";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,7 +36,6 @@ interface EditHousingDialogProps {
 
 export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenChange, hideTrigger }: EditHousingDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
   const [reviewed, setReviewed] = useState(housingSpace.status === "ready_to_publish");
   const open = controlledOpen ?? internalOpen;
   const setOpen = (v: boolean) => {
@@ -100,10 +98,6 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
   const handlePublish = () => {
     toast.success("Bostadsannonsen har publicerats");
     setOpen(false);
-  };
-
-  const handlePreview = () => {
-    setPreviewOpen(true);
   };
 
   return (
@@ -211,15 +205,9 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
               >
                 Spara/uppdatera annons
               </Button>
-              <Button variant="outline" onClick={handlePreview} className="w-full">
-                Förhandsgranska
-              </Button>
             </div>
           ) : (
             <div className="flex gap-2">
-              <Button variant="outline" onClick={handlePreview} className="px-8">
-                Förhandsgranska
-              </Button>
               <Button onClick={form.handleSubmit(onSubmit)} className="px-8 bg-black hover:bg-gray-800 text-white">
                 Spara/uppdatera annons
               </Button>
@@ -227,12 +215,6 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
           )}
         </DialogFooter>
       </DialogContent>
-      <PreviewHousingAdDialog
-        open={previewOpen}
-        onOpenChange={setPreviewOpen}
-        housingSpace={housingSpace}
-        formValues={form.getValues()}
-      />
     </Dialog>
   );
 }
