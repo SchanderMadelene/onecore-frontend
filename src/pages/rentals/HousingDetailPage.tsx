@@ -226,7 +226,11 @@ const HousingDetailPage = () => {
     sonnerToast.success(`Kontrakt kopplat till ${linkContractApplicant.name}`, {
       description: "Annonsen har flyttats till fliken Historik",
     });
-    navigate('/rentals/housing', { state: { activeHousingTab: 'historik' } });
+    // Stanna kvar på annonsen – växla bara till historik-läge på samma sida
+    navigate(`/rentals/housing/${housingId}`, {
+      state: { activeHousingTab: 'historik' },
+      replace: true,
+    });
   };
 
   const showRoundsView = isOfferedMode && rounds.length > 0 && !isContractMode && !isHistoryMode;
