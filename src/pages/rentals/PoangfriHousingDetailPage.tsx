@@ -477,10 +477,6 @@ export default function PoangfriHousingDetailPage() {
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-muted-foreground">
-              Rangordnad efter önskat inflyttningsdatum, därefter godkända
-              kontroller och anmälningsdatum
-            </p>
           </div>
           <Card>
             <CardContent className="p-0">
