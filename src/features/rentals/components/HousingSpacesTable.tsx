@@ -1,5 +1,6 @@
 
 import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -45,22 +46,23 @@ function HousingGlobalFilters({
   const set = (patch: Partial<HousingFiltersState>) => onChange({ ...filters, ...patch });
 
   return (
-    <div className="flex flex-col lg:flex-row lg:items-center gap-3 mb-6">
-      <div className="relative flex-1 min-w-[200px]">
+    <Card className="mb-6">
+    <CardContent className="pt-6 space-y-4">
+      <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Sök bostad, objektsnummer eller område..."
+          placeholder="Sök på adress, objektsnummer eller område..."
           className="pl-9"
           value={filters.search}
           onChange={(e) => set({ search: e.target.value })}
         />
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
         <Select
           value={filters.area || "all"}
           onValueChange={(v) => set({ area: v === "all" ? "" : v, district: "" })}
         >
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="Alla områden" />
           </SelectTrigger>
           <SelectContent>
@@ -76,7 +78,7 @@ function HousingGlobalFilters({
           value={filters.district || "all"}
           onValueChange={(v) => set({ district: v === "all" ? "" : v })}
         >
-          <SelectTrigger className="w-[140px]">
+          <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="Alla distrikt" />
           </SelectTrigger>
           <SelectContent>
@@ -99,7 +101,8 @@ function HousingGlobalFilters({
           <ClearFiltersButton onClick={() => onChange(EMPTY_HOUSING_FILTERS)} />
         )}
       </div>
-    </div>
+    </CardContent>
+    </Card>
   );
 }
 
