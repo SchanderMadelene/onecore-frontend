@@ -69,7 +69,9 @@ export const useHousingListing = (id: string) => {
         getPublishedSpaces().find(h => h.id === id) ??
         publishedHousingSpaces.find(h => h.id === id);
       const unpublished = !published ? unpublishedHousingSpaces.find(h => h.id === id) : undefined;
-      const history = !published && !unpublished ? historyHousingSpaces.find(h => h.id === id) : undefined;
+      // Använd historik-storens snapshot så att annonser som just flyttats
+      // till Historik fortfarande kan renderas på detaljsidan.
+      const history = !published && !unpublished ? getHistorySpacesSnapshot().find(h => h.id === id) : undefined;
 
       const source = published ?? unpublished ?? history;
       if (!source) {
