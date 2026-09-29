@@ -249,7 +249,15 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedTo: "2024-10-20",
     availableFrom: "2024-12-01",
     preferredMoveOutDate: "2024-11-17",
-    description: "Central tvåa i populärt område"
+    description: "Central tvåa i populärt område",
+    viewing: {
+      scheduledAt: "2026-10-08T12:15:00",
+      location: "Samlas utanför entrén, Eriksgatan 18",
+      hostName: "Johan Berg",
+      hostRole: "Förvaltare",
+      phone: "073-987 65 43",
+      email: "johan.berg@example.com",
+    },
   },
   {
     id: "234-234-234-1014",
