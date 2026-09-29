@@ -62,7 +62,7 @@ export function HistoryHousingTable({ filters }: { filters: HousingFiltersState 
   return (
     <>
       <ResponsiveTable
-        data={historyHousingSpaces}
+        data={historyRows}
         columns={columns}
         keyExtractor={(h) => h.id}
         emptyMessage="Ingen historik"
@@ -70,7 +70,7 @@ export function HistoryHousingTable({ filters }: { filters: HousingFiltersState 
         onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "historik" } })}
         rowClassName="group"
       />
-      <p className="text-sm text-muted-foreground mt-3">{historyHousingSpaces.length} annonser</p>
+      <p className="text-sm text-muted-foreground mt-3">{historyRows.length} annonser</p>
     </>
   );
 }
