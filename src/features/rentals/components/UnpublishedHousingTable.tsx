@@ -80,6 +80,26 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
     [selected, spaces],
   );
 
+  const publishableSelected = useMemo(
+    () => selected.filter((id) => spaces.find((s) => s.id === id)?.status === "ready_to_publish"),
+    [selected, spaces],
+  );
+
+  const runBulkPublish = async () => {
+    setPublishPending(true);
+    await new Promise((r) => setTimeout(r, 400));
+    publishSpaces(publishableSelected, unified ? publishMethod ?? "standard" : "standard");
+    setPublishPending(false);
+    setPublishOpen(false);
+    setPublishMethod(null);
+    setSelected([]);
+    toast.success(
+      publishableSelected.length === 1
+        ? "1 annons publicerad"
+        : `${publishableSelected.length} annonser publicerade`,
+    );
+  };
+
   const runBulkReview = async () => {
     setPending(true);
     await new Promise((r) => setTimeout(r, 350));
@@ -182,6 +202,9 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
                 {eligibleSelected.length !== selected.length && (
                   <span className="text-muted-foreground font-normal"> · {eligibleSelected.length} kan markeras som granskade</span>
                 )}
+                {publishableSelected.length !== selected.length && (
+                  <span className="text-muted-foreground font-normal"> · {publishableSelected.length} kan publiceras</span>
+                )}
               </span>
               <Button variant="ghost" size="sm" onClick={() => setSelected([])} className="h-8 px-2 sm:hidden">
                 <X className="h-4 w-4 mr-1" /> Rensa
@@ -192,10 +215,17 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
                 <X className="h-4 w-4 mr-1" /> Rensa
               </Button>
               <Button
+                variant="outline"
                 onClick={() => setConfirmOpen(true)}
                 disabled={eligibleSelected.length === 0}
               >
                 Markera som granskade
+              </Button>
+              <Button
+                onClick={() => setPublishOpen(true)}
+                disabled={publishableSelected.length === 0}
+              >
+                Publicera
               </Button>
             </div>
           </div>
