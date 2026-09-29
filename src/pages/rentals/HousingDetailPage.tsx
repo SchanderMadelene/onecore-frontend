@@ -11,7 +11,6 @@ import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
 import { HousingViewingInfo } from "./components/HousingViewingInfo";
-import { RoundSummaryBar } from "./components/RoundSummaryBar";
 import { HousingRowActions, type HousingActionTab } from "@/features/rentals/components/HousingRowActions";
 import { PlusCircle } from "lucide-react";
 import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/rentals/components/SendHousingOfferDialog";
@@ -330,21 +329,8 @@ const HousingDetailPage = () => {
                   const previousRoundIds = rounds
                     .filter(x => x.roundNumber < r.roundNumber)
                     .flatMap(x => x.selectedApplicants);
-                  const acceptedResp = r.responses.find(x => x.response === 'accepted');
-                  const acceptedName = acceptedResp
-                    ? listing.applicants.find(a => a.id === acceptedResp.applicantId)?.name
-                    : undefined;
                   return (
                     <TabsContent key={r.id} value={r.id} className="mt-4">
-                      <RoundSummaryBar
-                        round={r}
-                        onCancel={() => cancelRound(housingId, r.id)}
-                        onEditOffer={() => {
-                          setActiveRoundTab(r.id);
-                          setIsEditOfferDialogOpen(true);
-                        }}
-                        acceptedApplicantName={acceptedName}
-                      />
                       <HousingApplicantsTable
                         applicants={displayedApplicants}
                         housingAddress={listing.address}
