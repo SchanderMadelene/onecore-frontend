@@ -12,8 +12,9 @@ import { Tag } from "@/components/ui/tag";
 import { useFeatureToggles } from "@/shared/contexts/FeatureTogglesContext";
 import { usePoangfriListings } from "../data/poangfri-store";
 import { RENTAL_METHOD_LABELS, type PublishedHousingSpace } from "../data/published-housing";
+import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-filters";
 
-export function PublishedHousingTable() {
+export function PublishedHousingTable({ filters }: { filters: HousingFiltersState }) {
   const navigate = useNavigate();
   const { filterHousingByStatus } = useHousingStatus();
   const publishedHousingSpaces = usePublishedSpaces();
@@ -47,10 +48,10 @@ export function PublishedHousingTable() {
         description: l.description,
         rentalMethod: "poangfri",
       }));
-    const all = [...standard, ...poangfri];
+    const all = applyHousingFilters([...standard, ...poangfri], filters);
     if (!methodFilter) return all;
     return all.filter((h) => RENTAL_METHOD_LABELS[h.rentalMethod ?? "standard"] === methodFilter);
-  }, [publishedHousingSpaces, poangfriListings, unified, methodFilter, filterHousingByStatus]);
+  }, [publishedHousingSpaces, poangfriListings, unified, methodFilter, filters, filterHousingByStatus]);
 
   const formatDate = (d?: string) => (d ? new Date(d).toLocaleDateString('sv-SE') : '-');
   const methodLabel = (h: PublishedHousingSpace) => RENTAL_METHOD_LABELS[h.rentalMethod ?? "standard"];

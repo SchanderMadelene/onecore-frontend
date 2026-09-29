@@ -15,6 +15,7 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tag } from "@/components/ui/tag";
 import { RENTAL_METHOD_LABELS } from "../data/published-housing";
+import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-filters";
 import {
   useUnpublishedSpaces,
   setMultipleSpaceStatus,
@@ -39,7 +40,7 @@ const getStatusBadge = (status: UnpublishedHousingSpace["status"]) => {
   }
 };
 
-export function UnpublishedHousingTable() {
+export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersState }) {
   const navigate = useNavigate();
   const spaces = useUnpublishedSpaces();
   const [selected, setSelected] = useState<string[]>([]);
@@ -49,7 +50,7 @@ export function UnpublishedHousingTable() {
   const [methodFilter, setMethodFilter] = useState<string>("");
 
   const filtered = useMemo(() => {
-    let result = spaces;
+    let result = applyHousingFilters(spaces, filters);
     if (statusFilter) {
       const map: Record<string, UnpublishedHousingSpace["status"]> = {
         "Utkast": "draft",
@@ -63,7 +64,7 @@ export function UnpublishedHousingTable() {
       result = result.filter((s) => s.lastRentalMethod && RENTAL_METHOD_LABELS[s.lastRentalMethod] === methodFilter);
     }
     return result;
-  }, [spaces, statusFilter, methodFilter]);
+  }, [spaces, statusFilter, methodFilter, filters]);
 
   const eligibleSelected = useMemo(
     () => selected.filter((id) => spaces.find((s) => s.id === id)?.status === "needs_review"),
