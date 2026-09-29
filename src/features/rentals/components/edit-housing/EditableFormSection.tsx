@@ -102,46 +102,6 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
         />
       </div>
 
-      <FormField
-        control={control}
-        name="queue"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-sm font-medium">Spärra</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger className="h-12">
-                  <SelectValue placeholder="Ingen spärr" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="ingen">Ingen spärr</SelectItem>
-                <SelectItem value="temporar">Temporär spärr</SelectItem>
-                <SelectItem value="permanent">Permanent spärr</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={control}
-        name="standardNote"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-sm font-medium">Standardnotering</FormLabel>
-            <FormControl>
-              <Textarea 
-                {...field} 
-                placeholder="Ej visningsbar pga renovering fram till dd-mm-yy"
-                className="min-h-[80px] resize-none"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </div>
   );
 }
