@@ -6,3 +6,4 @@
 - [x] Visningsinfo på annonsdetalj: info om visning, vem som visar, kontaktuppgifter (annons med bokad visning)
 - [x] Typkontroll grön, verifierat i Playwright (modal + detaljsida Skolgatan 9)
 - [x] Visningssektionen ihopfällbar/expanderbar (även desktop, öppen som standard, sammanfattning syns ihopfälld)
+- [x] Ersätt annonsförhandsgranskningar med länk till annonsen på Mimer.nu under Objektsinformation
