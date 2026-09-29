@@ -7,6 +7,7 @@ import { toast as sonnerToast } from "sonner";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { useState, useMemo } from "react";
 import { Notes } from "@/components/common";
+import { getHistoryNotes } from "@/features/rentals/data/history-notes";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
