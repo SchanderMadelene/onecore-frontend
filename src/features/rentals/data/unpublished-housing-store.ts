@@ -38,7 +38,8 @@ export function useUnpublishedSpaces() {
 }
 
 // --- Publicering: flyttar annons från "Behov av publicering" till "Publicerade" ---
-import { publishedHousingSpaces as publishedSeed, type PublishedHousingSpace } from "./published-housing";
+import { publishedHousingSpaces as publishedSeed, type PublishedHousingSpace, type RentalMethod } from "./published-housing";
+import { addPoangfriListing, createMockPoangfriInterests } from "./poangfri-store";
 
 /** Antal sökande i mockdatan för en annons (se useHousingListing) */
 const MOCK_APPLICANT_COUNT = 16;
@@ -51,7 +52,7 @@ const rebuildPublished = () => {
   publishedSnapshot = [...publishedExtra, ...publishedSeed];
 };
 
-const toPublished = (s: UnpublishedHousingSpace): PublishedHousingSpace => {
+const toPublished = (s: UnpublishedHousingSpace, method: RentalMethod): PublishedHousingSpace => {
   const from = new Date();
   const to = new Date();
   to.setDate(to.getDate() + 14);
@@ -72,15 +73,40 @@ const toPublished = (s: UnpublishedHousingSpace): PublishedHousingSpace => {
     availableFrom: s.availableFrom ?? iso(to),
     preferredMoveOutDate: s.preferredMoveOutDate ?? "",
     description: s.description ?? "",
+    rentalMethod: method,
   };
 };
 
-export function publishSpaces(ids: string[]) {
+export function publishSpaces(ids: string[], method: RentalMethod = "standard") {
   const idSet = new Set(ids);
   const toMove = spaces.filter((s) => idSet.has(s.id));
   if (toMove.length === 0) return 0;
   spaces = spaces.filter((s) => !idSet.has(s.id));
-  publishedExtra = [...toMove.map(toPublished), ...publishedExtra];
+  const published = toMove.map((s) => toPublished(s, method));
+  if (method === "poangfri") {
+    // Poängfri: skapa en poängfri annons med obehandlade intresseanmälningar
+    published.forEach((p) => {
+      const interests = createMockPoangfriInterests(p.id);
+      p.seekers = interests.length;
+      addPoangfriListing({
+        id: p.id,
+        rentalObjectId: p.id,
+        address: p.address,
+        area: p.area,
+        type: "Poängfri",
+        size: p.size,
+        rooms: p.rooms,
+        floor: p.floor,
+        rent: p.rent,
+        description: p.description,
+        publishedAt: new Date().toISOString(),
+        availableFrom: p.availableFrom,
+        status: "published",
+        interests,
+      });
+    });
+  }
+  publishedExtra = [...published, ...publishedExtra];
   rebuildPublished();
   publishVersion++;
   emit();
