@@ -87,7 +87,7 @@ export default function CreateHousingAdPage() {
     seekers: 0,
     publishedFrom: "",
     publishedTo: "",
-    status: "draft" as const,
+    status: "needs_review" as const,
     lastModified: new Date().toISOString(),
     createdBy: "Aktuell användare"
   };
