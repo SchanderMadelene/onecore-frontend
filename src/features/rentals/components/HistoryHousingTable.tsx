@@ -6,9 +6,13 @@ import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
 import { HousingRowActions } from "./HousingRowActions";
 import { getHousingObjectNumber } from "../utils/object-number";
+import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-filters";
 
-export function HistoryHousingTable() {
+export function HistoryHousingTable({ filters }: { filters: HousingFiltersState }) {
   const navigate = useNavigate();
+
+  const historyRows = applyHousingFilters(historyHousingSpaces, filters);
+
 
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => (
@@ -58,7 +62,7 @@ export function HistoryHousingTable() {
   return (
     <>
       <ResponsiveTable
-        data={historyHousingSpaces}
+        data={historyRows}
         columns={columns}
         keyExtractor={(h) => h.id}
         emptyMessage="Ingen historik"
@@ -66,7 +70,7 @@ export function HistoryHousingTable() {
         onRowClick={(h) => navigate(`/rentals/housing/${h.id}`, { state: { activeHousingTab: "historik" } })}
         rowClassName="group"
       />
-      <p className="text-sm text-muted-foreground mt-3">{historyHousingSpaces.length} annonser</p>
+      <p className="text-sm text-muted-foreground mt-3">{historyRows.length} annonser</p>
     </>
   );
 }

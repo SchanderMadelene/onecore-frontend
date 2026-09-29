@@ -9,13 +9,17 @@ import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
 import { HousingRowActions } from "./HousingRowActions";
 import { getHousingObjectNumber } from "../utils/object-number";
+import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-filters";
 
-export function OfferedHousingTable() {
+export function OfferedHousingTable({ filters }: { filters: HousingFiltersState }) {
   const navigate = useNavigate();
   const { offers } = useHousingOffers();
   const { filterHousingByStatus } = useHousingStatus();
 
-  const offeredHousings = filterHousingByStatus(publishedHousingSpaces, 'offered');
+  const offeredHousings = applyHousingFilters(
+    filterHousingByStatus(publishedHousingSpaces, 'offered'),
+    filters
+  );
 
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => (
