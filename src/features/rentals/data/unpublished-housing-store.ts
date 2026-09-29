@@ -47,9 +47,11 @@ const MOCK_APPLICANT_COUNT = 16;
 let publishVersion = 0;
 let publishedExtra: PublishedHousingSpace[] = [];
 let publishedSnapshot: PublishedHousingSpace[] = [...publishedSeed];
+/** Id:n som flyttats vidare (t.ex. till Historik) och inte längre ska visas som publicerade */
+const removedIds = new Set<string>();
 
 const rebuildPublished = () => {
-  publishedSnapshot = [...publishedExtra, ...publishedSeed];
+  publishedSnapshot = [...publishedExtra, ...publishedSeed].filter((h) => !removedIds.has(h.id));
 };
 
 const toPublished = (s: UnpublishedHousingSpace, method: RentalMethod): PublishedHousingSpace => {
