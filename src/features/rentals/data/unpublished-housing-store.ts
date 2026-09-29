@@ -134,6 +134,11 @@ export function removePublishedSpaces(ids: string[]) {
   emit();
 }
 
+/** True om annonsen flyttats vidare (t.ex. till Historik) och inte längre är publicerad */
+export function isRemovedFromPublished(id: string) {
+  return removedIds.has(id);
+}
+
 export function usePublishedSpaces() {
   return useSyncExternalStore(
     (l) => {
