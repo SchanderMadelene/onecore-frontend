@@ -6,9 +6,13 @@ import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
 import { HousingRowActions } from "./HousingRowActions";
 import { getHousingObjectNumber } from "../utils/object-number";
+import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-filters";
 
-export function HistoryHousingTable() {
+export function HistoryHousingTable({ filters }: { filters: HousingFiltersState }) {
   const navigate = useNavigate();
+
+  const historyRows = applyHousingFilters(historyHousingSpaces, filters);
+
 
   const columns = [
     { key: "address", label: "Adress", render: (h: any) => (
