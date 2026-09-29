@@ -24,7 +24,6 @@ const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
-  const [isEditOfferDialogOpen, setIsEditOfferDialogOpen] = useState(false);
   const [smsOpen, setSmsOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
   const [isSelectingForNewRound, setIsSelectingForNewRound] = useState(false);
@@ -34,7 +33,6 @@ const HousingDetailPage = () => {
   const location = useLocation();
   const {
     startNewRound,
-    cancelRound,
     getRoundsForListing,
     canStartNewRound,
     isListingOffered,
@@ -397,25 +395,6 @@ const HousingDetailPage = () => {
           parallelActiveRounds={isSelectingForNewRound ? activeRounds.length : 0}
         />
       )}
-
-      {!isHistoryMode && (() => {
-        const editingRound = rounds.find(r => r.id === activeRoundTab);
-        if (!editingRound) return null;
-        return (
-          <SendHousingOfferDialog
-            open={isEditOfferDialogOpen}
-            onOpenChange={setIsEditOfferDialogOpen}
-            recipientCount={editingRound.selectedApplicants.length}
-            housingAddress={listing.address}
-            mode="edit"
-            roundNumber={editingRound.roundNumber}
-            onConfirm={() => {
-              setIsEditOfferDialogOpen(false);
-              sonnerToast.success(`Erbjudandet för omgång ${editingRound.roundNumber} har uppdaterats`);
-            }}
-          />
-        );
-      })()}
 
       {!isHistoryMode && (
         <BulkActionBar
