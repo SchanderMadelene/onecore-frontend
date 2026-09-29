@@ -203,10 +203,13 @@ export function BetaSettings() {
         </ToggleSection>
 
         {/* Uthyrning */}
-        <ToggleSection title="Uthyrning" icon={Key} toggleKeys={['showRentals', 'showRentalsHousing', 'showRentalsParking', 'showRentalsStorage']}>
+        <ToggleSection title="Uthyrning" icon={Key} toggleKeys={['showRentals', 'showRentalsHousing', 'showRentalsUnifiedHousing', 'showRentalsParking', 'showRentalsStorage']}>
           <ToggleItem id="rentals" icon={Key} label="Uthyrning" description="Aktivera uthyrningsfunktioner" checked={features.showRentals} disabled={navDisabled} onToggle={() => handleFeatureToggle('showRentals')} />
           <div className="pl-4 border-l space-y-1">
             <ToggleItem id="rentals-housing" icon={Home} label="Bostad" description="Visa bostadsuthyrning" checked={features.showRentalsHousing} disabled={!features.showRentals || navDisabled} onToggle={() => handleFeatureToggle('showRentalsHousing')} />
+            <div className="pl-4 border-l space-y-1">
+              <ToggleItem id="rentals-housing-unified" icon={Home} label="Gemensam annonslista" description="Standard och poängfri i samma lista – välj uthyrningsmetod vid publicering" checked={features.showRentalsUnifiedHousing} disabled={!features.showRentalsHousing || navDisabled} onToggle={() => handleFeatureToggle('showRentalsUnifiedHousing')} />
+            </div>
             <ToggleItem id="rentals-parking" icon={Car} label="Bilplats" description="Visa bilplatsuthyrning" checked={features.showRentalsParking} disabled={!features.showRentals || navDisabled} onToggle={() => handleFeatureToggle('showRentalsParking')} />
             <ToggleItem id="rentals-storage" icon={Archive} label="Förråd" description="Visa förrådsuthyrning" checked={features.showRentalsStorage} disabled={!features.showRentals || navDisabled} onToggle={() => handleFeatureToggle('showRentalsStorage')} />
           </div>

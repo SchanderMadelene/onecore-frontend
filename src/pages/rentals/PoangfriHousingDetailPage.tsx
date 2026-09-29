@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 
-import { poangfriListings as initialListings } from "@/features/rentals/data/poangfri-housing";
+import { getPoangfriListings } from "@/features/rentals/data/poangfri-store";
 import {
   CommunicationEntry,
   CommunicationType,
@@ -56,7 +56,7 @@ export default function PoangfriHousingDetailPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const [listing, setListing] = useState<PoangfriListing | undefined>(
-    () => initialListings.find((l) => l.id === id)
+    () => getPoangfriListings().find((l) => l.id === id)
   );
 
   const [selectedInterestId, setSelectedInterestId] = useState<string | null>(null);

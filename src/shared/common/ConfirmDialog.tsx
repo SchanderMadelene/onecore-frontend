@@ -24,6 +24,8 @@ export interface ConfirmDialogProps {
   isPending?: boolean;
   pendingLabel?: string;
   error?: string | null;
+  /** Stänger av bekräfta-knappen, t.ex. tills ett obligatoriskt val gjorts */
+  confirmDisabled?: boolean;
   className?: string;
 }
 
@@ -40,6 +42,7 @@ export const ConfirmDialog = ({
   pendingLabel = "Bekräftar...",
   error,
   className,
+  confirmDisabled = false,
 }: ConfirmDialogProps) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -61,7 +64,7 @@ export const ConfirmDialog = ({
           <AlertDialogCancel disabled={isPending}>{cancelLabel}</AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
-            disabled={isPending}
+            disabled={isPending || confirmDisabled}
             className={cn(
               variant === "destructive" &&
                 "bg-destructive text-destructive-foreground hover:bg-destructive/90"

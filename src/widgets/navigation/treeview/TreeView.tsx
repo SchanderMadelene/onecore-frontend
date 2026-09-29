@@ -4,6 +4,7 @@ import { TreeItem } from "./TreeItem";
 import { TreeViewProps } from "./types";
 import { treeData } from "./treeData";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useFeatureToggles } from "@/shared/contexts/FeatureTogglesContext";
 
 export function TreeView({ 
   onNavigate, 
@@ -20,6 +21,8 @@ export function TreeView({
   showEntrances
 }: TreeViewProps) {
   const isMobile = useIsMobile();
+  const { features } = useFeatureToggles();
+  const unifiedHousing = features.showRentalsUnifiedHousing;
   
   // Helper: flatten entrance nodes, moving their children up to the building level
   const flattenEntrances = (buildingNode: any) => {
@@ -71,9 +74,18 @@ export function TreeView({
           }))
         };
       }
+      if (node.id === "rentals" && unifiedHousing && node.children) {
+        // Gemensam annonslista: poängfria annonser ligger under Bostad
+        return {
+          ...node,
+          children: node.children.map((c: any) =>
+            c.id === "rentals-bostad" ? { ...c, children: [] } : c,
+          ),
+        };
+      }
       return node;
     });
-  }, [showRentals, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showAllInspections, showFavorites, showBuildings, showApartments, showEntrances]);
+  }, [unifiedHousing, showRentals, showDesignSystem, showProperties, showTenants, showBarriers, showTurnover, showAllInspections, showFavorites, showBuildings, showApartments, showEntrances]);
 
   return (
     <div className={`${isMobile ? 'p-2' : 'p-4'} h-full overflow-y-auto bg-white`}>

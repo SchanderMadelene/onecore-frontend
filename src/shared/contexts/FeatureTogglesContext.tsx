@@ -28,6 +28,7 @@ interface FeatureToggles {
   showTenantDocuments: boolean;
   // Rentals sections
   showRentalsHousing: boolean;
+  showRentalsUnifiedHousing: boolean;
   showRentalsParking: boolean;
   showRentalsStorage: boolean;
   // Property detail page tabs
@@ -106,6 +107,7 @@ const DEFAULT_FEATURES: FeatureToggles = {
   showTenantDocuments: true,
   // Rentals sections
   showRentalsHousing: false,
+  showRentalsUnifiedHousing: false,
   showRentalsParking: false,
   showRentalsStorage: false,
   // Property detail page tabs
