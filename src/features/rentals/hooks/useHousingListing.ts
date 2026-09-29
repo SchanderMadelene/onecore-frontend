@@ -92,6 +92,7 @@ export const useHousingListing = (id: string) => {
         availableFrom: (source as any).availableFrom ?? "",
         preferredMoveOutDate: (source as any).preferredMoveOutDate ?? "",
         description: (source as any).description ?? "",
+        viewing: (source as any).viewing,
       };
 
       // Mock implementation med mockdata för sökande
