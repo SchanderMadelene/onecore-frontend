@@ -8,3 +8,4 @@
 - [x] Visningssektionen ihopfällbar/expanderbar (även desktop, öppen som standard, sammanfattning syns ihopfälld)
 - [x] Ersätt annonsförhandsgranskningar med länk till annonsen på Mimer.nu under Objektsinformation
 - [x] Ta bort sammanfattningsraden för erbjudandeomgången från annonsdetaljen
+- [ ] Ta bort Webbnotering från samtliga bostadsannonser
