@@ -15,6 +15,15 @@ export interface PublishedHousingSpace {
   description: string;
   /** Uthyrningsmetod som valdes vid publicering (saknas = standard) */
   rentalMethod?: RentalMethod;
+  /** Bokad visning för annonsen (saknas = ingen visning bokad) */
+  viewing?: {
+    scheduledAt: string;
+    location: string;
+    hostName: string;
+    hostRole: string;
+    phone: string;
+    email: string;
+  };
 }
 
 export type RentalMethod = "standard" | "poangfri";
