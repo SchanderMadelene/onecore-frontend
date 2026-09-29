@@ -19,7 +19,11 @@ import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-
 import {
   useUnpublishedSpaces,
   setMultipleSpaceStatus,
+  publishSpaces,
 } from "../data/unpublished-housing-store";
+import { useFeatureToggles } from "@/shared/contexts/FeatureTogglesContext";
+import { RentalMethodPicker } from "./RentalMethodPicker";
+import type { RentalMethod } from "../data/published-housing";
 
 const STATUS_LABEL: Record<UnpublishedHousingSpace["status"], string> = {
   draft: "Utkast",
@@ -48,6 +52,11 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pending, setPending] = useState(false);
   const [methodFilter, setMethodFilter] = useState<string>("");
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [publishPending, setPublishPending] = useState(false);
+  const [publishMethod, setPublishMethod] = useState<RentalMethod | null>(null);
+  const { features } = useFeatureToggles();
+  const unified = features.showRentalsUnifiedHousing;
 
   const filtered = useMemo(() => {
     let result = applyHousingFilters(spaces, filters);
