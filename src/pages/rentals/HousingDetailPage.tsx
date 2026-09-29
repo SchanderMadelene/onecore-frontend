@@ -17,6 +17,8 @@ import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/re
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ConfirmDialog } from "@/shared/common";
+import { moveToHistory } from "@/features/rentals/data/history-housing-store";
 
 const NEW_ROUND_TAB = "__new_round__";
 
