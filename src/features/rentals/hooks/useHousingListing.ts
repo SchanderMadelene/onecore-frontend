@@ -64,9 +64,14 @@ export const useHousingListing = (id: string) => {
   return useQuery({
     queryKey: ['housingListing', id, publishVersion],
     queryFn: () => {
-      const published =
-        getPublishedSpaces().find(h => h.id === id) ??
-        publishedHousingSpaces.find(h => h.id === id);
+      // Om annonsen flyttats vidare (t.ex. till Historik) får den inte längre
+      // läsas från publiceringslistorna – annars tappas historikdata som
+      // kontraktsvinnaren bort på detaljsidan.
+      const movedOn = isRemovedFromPublished(id);
+      const published = movedOn
+        ? undefined
+        : getPublishedSpaces().find(h => h.id === id) ??
+          publishedHousingSpaces.find(h => h.id === id);
       const unpublished = !published ? unpublishedHousingSpaces.find(h => h.id === id) : undefined;
       // Använd historik-storens snapshot så att annonser som just flyttats
       // till Historik fortfarande kan renderas på detaljsidan.
