@@ -38,7 +38,6 @@ const HousingDetailPage = () => {
     isListingOffered,
     getOfferForListing,
     linkContract,
-    unlinkContract,
     getLinkedContract,
   } = useHousingOffers();
   const { getHousingStatus } = useHousingStatus();
@@ -211,10 +210,6 @@ const HousingDetailPage = () => {
     const applicant = displayedApplicants.find(a => a.id === applicantId);
     sonnerToast.success(`Kontrakt kopplat till ${applicant?.name ?? "sökande"}`);
   };
-  const handleUnlinkContract = () => {
-    unlinkContract(housingId);
-    sonnerToast.success("Kontraktskoppling borttagen");
-  };
 
   const showRoundsView = isOfferedMode && rounds.length > 0 && !isContractMode && !isHistoryMode;
   const currentTabValue = activeRoundTab ?? (isSelectingForNewRound ? NEW_ROUND_TAB : (rounds[rounds.length - 1]?.id ?? ""));
@@ -377,7 +372,6 @@ const HousingDetailPage = () => {
                 linkedContractApplicantId={linkedContractApplicantId}
                 recommendedApplicantId={recommendedApplicantId}
                 onLinkContract={handleLinkContract}
-                onUnlinkContract={handleUnlinkContract}
               />
             )}
           </section>

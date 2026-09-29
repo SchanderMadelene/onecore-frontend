@@ -48,7 +48,6 @@ interface HousingApplicantsTableProps {
   /** Kontrakt-läge: callback för att koppla kontrakt till sökande */
   onLinkContract?: (applicantId: number) => void;
   /** Kontrakt-läge: callback för att ta bort kopplat kontrakt */
-  onUnlinkContract?: () => void;
 }
 
 export function HousingApplicantsTable({ 
@@ -70,7 +69,7 @@ export function HousingApplicantsTable({
   linkedContractApplicantId,
   recommendedApplicantId,
   onLinkContract,
-  onUnlinkContract,
+
 }: HousingApplicantsTableProps) {
   const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
   const [panelApplicantId, setPanelApplicantId] = useState<string | null>(null);
@@ -493,14 +492,7 @@ export function HousingApplicantsTable({
                         <TableCell>{responseBadge}</TableCell>
                         <TableCell className="text-right">
                           {isLinked ? (
-                            <div className="flex items-center justify-end gap-2">
-                              <Badge variant="success">Kontrakt kopplat</Badge>
-                              {onUnlinkContract && (
-                                <Button variant="ghost" size="sm" onClick={onUnlinkContract}>
-                                  Ta bort
-                                </Button>
-                              )}
-                            </div>
+                            <Badge variant="success">Kontrakt kopplat</Badge>
                           ) : linkedContractApplicantId ? (
                             <span className="text-sm text-muted-foreground">—</span>
                           ) : hasAccepted ? (
