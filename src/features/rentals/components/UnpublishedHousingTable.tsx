@@ -19,7 +19,11 @@ import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-
 import {
   useUnpublishedSpaces,
   setMultipleSpaceStatus,
+  publishSpaces,
 } from "../data/unpublished-housing-store";
+import { useFeatureToggles } from "@/shared/contexts/FeatureTogglesContext";
+import { RentalMethodPicker } from "./RentalMethodPicker";
+import type { RentalMethod } from "../data/published-housing";
 
 const STATUS_LABEL: Record<UnpublishedHousingSpace["status"], string> = {
   draft: "Utkast",
@@ -48,6 +52,11 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pending, setPending] = useState(false);
   const [methodFilter, setMethodFilter] = useState<string>("");
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [publishPending, setPublishPending] = useState(false);
+  const [publishMethod, setPublishMethod] = useState<RentalMethod | null>(null);
+  const { features } = useFeatureToggles();
+  const unified = features.showRentalsUnifiedHousing;
 
   const filtered = useMemo(() => {
     let result = applyHousingFilters(spaces, filters);
@@ -70,6 +79,26 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
     () => selected.filter((id) => spaces.find((s) => s.id === id)?.status === "needs_review"),
     [selected, spaces],
   );
+
+  const publishableSelected = useMemo(
+    () => selected.filter((id) => spaces.find((s) => s.id === id)?.status === "ready_to_publish"),
+    [selected, spaces],
+  );
+
+  const runBulkPublish = async () => {
+    setPublishPending(true);
+    await new Promise((r) => setTimeout(r, 400));
+    publishSpaces(publishableSelected, unified ? publishMethod ?? "standard" : "standard");
+    setPublishPending(false);
+    setPublishOpen(false);
+    setPublishMethod(null);
+    setSelected([]);
+    toast.success(
+      publishableSelected.length === 1
+        ? "1 annons publicerad"
+        : `${publishableSelected.length} annonser publicerade`,
+    );
+  };
 
   const runBulkReview = async () => {
     setPending(true);
@@ -173,6 +202,9 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
                 {eligibleSelected.length !== selected.length && (
                   <span className="text-muted-foreground font-normal"> · {eligibleSelected.length} kan markeras som granskade</span>
                 )}
+                {publishableSelected.length !== selected.length && (
+                  <span className="text-muted-foreground font-normal"> · {publishableSelected.length} kan publiceras</span>
+                )}
               </span>
               <Button variant="ghost" size="sm" onClick={() => setSelected([])} className="h-8 px-2 sm:hidden">
                 <X className="h-4 w-4 mr-1" /> Rensa
@@ -183,10 +215,17 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
                 <X className="h-4 w-4 mr-1" /> Rensa
               </Button>
               <Button
+                variant="outline"
                 onClick={() => setConfirmOpen(true)}
                 disabled={eligibleSelected.length === 0}
               >
                 Markera som granskade
+              </Button>
+              <Button
+                onClick={() => setPublishOpen(true)}
+                disabled={publishableSelected.length === 0}
+              >
+                Publicera
               </Button>
             </div>
           </div>
@@ -206,6 +245,36 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
         pendingLabel="Markerar..."
         isPending={pending}
         onConfirm={runBulkReview}
+      />
+
+      <ConfirmDialog
+        open={publishOpen}
+        onOpenChange={(v) => {
+          setPublishOpen(v);
+          if (!v) setPublishMethod(null);
+        }}
+        title="Publicera annonser"
+        description={
+          unified ? (
+            <div className="space-y-4">
+              <p>
+                {publishableSelected.length === selected.length
+                  ? `Publicera ${publishableSelected.length} ${publishableSelected.length === 1 ? "annons" : "annonser"}?`
+                  : `${publishableSelected.length} av ${selected.length} valda annonser kan publiceras. Övriga är inte redo att publicera.`}
+              </p>
+              <RentalMethodPicker value={publishMethod} onChange={setPublishMethod} idPrefix="bulk-method" />
+            </div>
+          ) : (
+            publishableSelected.length === selected.length
+              ? `Publicera ${publishableSelected.length} ${publishableSelected.length === 1 ? "annons" : "annonser"}?`
+              : `${publishableSelected.length} av ${selected.length} valda annonser kan publiceras. Övriga är inte redo att publicera.`
+          )
+        }
+        confirmLabel="Publicera"
+        pendingLabel="Publicerar..."
+        confirmDisabled={unified && !publishMethod}
+        isPending={publishPending}
+        onConfirm={runBulkPublish}
       />
     </>
   );
