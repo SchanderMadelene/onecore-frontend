@@ -10,11 +10,12 @@ import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-
 
 export function ContractHousingTable({ filters }: { filters: HousingFiltersState }) {
   const navigate = useNavigate();
+  const publishedSpaces = usePublishedSpaces();
 
   // Annonser där publiceringsperioden har passerat (redo för kontraktsskrivning)
   const today = new Date();
   const contractHousings = applyHousingFilters(
-    publishedHousingSpaces.filter((h) => {
+    publishedSpaces.filter((h) => {
       const publishedTo = new Date(h.publishedTo);
       return publishedTo < today;
     }),
