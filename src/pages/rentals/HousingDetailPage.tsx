@@ -256,6 +256,9 @@ const HousingDetailPage = () => {
 
 
         <div className="space-y-8">
+          {listing.viewing && !isHistoryMode && (
+            <HousingViewingInfo viewing={listing.viewing} />
+          )}
           <HousingInfo
             housing={listing}
             applicantCount={displayedApplicants.length}
