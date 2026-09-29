@@ -94,9 +94,11 @@ export const useHousingListing = (id: string) => {
         rooms: (source as any).rooms ?? 0,
         floor: (source as any).floor ?? "",
         seekers: (source as any).seekers ?? (history?.applicants ?? 0),
-        publishedFrom: (source as any).publishedFrom ?? "",
-        publishedTo: (source as any).publishedTo ?? "",
-        availableFrom: (source as any).availableFrom ?? "",
+        // Historikannonser saknar publiceringsdatum – härled rimliga datum
+        // ur historikdata så detaljsidan inte visar "Invalid Date".
+        publishedFrom: (source as any).publishedFrom ?? (history ? history.preferredMoveOutDate : ""),
+        publishedTo: (source as any).publishedTo ?? (history ? history.signedAt : ""),
+        availableFrom: (source as any).availableFrom ?? (history ? history.contractStart : ""),
         preferredMoveOutDate: (source as any).preferredMoveOutDate ?? "",
         description: (source as any).description ?? "",
         viewing: (source as any).viewing,
