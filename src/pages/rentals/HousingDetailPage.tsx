@@ -10,6 +10,7 @@ import { Notes } from "@/components/common";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
+import { HousingViewingInfo } from "./components/HousingViewingInfo";
 import { RoundSummaryBar } from "./components/RoundSummaryBar";
 import { HousingRowActions, type HousingActionTab } from "@/features/rentals/components/HousingRowActions";
 import { PlusCircle } from "lucide-react";
@@ -255,6 +256,9 @@ const HousingDetailPage = () => {
 
 
         <div className="space-y-8">
+          {listing.viewing && !isHistoryMode && (
+            <HousingViewingInfo viewing={listing.viewing} />
+          )}
           <HousingInfo
             housing={listing}
             applicantCount={displayedApplicants.length}

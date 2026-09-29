@@ -15,6 +15,15 @@ export interface PublishedHousingSpace {
   description: string;
   /** Uthyrningsmetod som valdes vid publicering (saknas = standard) */
   rentalMethod?: RentalMethod;
+  /** Bokad visning för annonsen (saknas = ingen visning bokad) */
+  viewing?: {
+    scheduledAt: string;
+    location: string;
+    hostName: string;
+    hostRole: string;
+    phone: string;
+    email: string;
+  };
 }
 
 export type RentalMethod = "standard" | "poangfri";
@@ -200,7 +209,15 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedTo: "2024-09-05",
     availableFrom: "2024-11-01",
     preferredMoveOutDate: "2024-10-18",
-    description: "Lugnt läge nära skola"
+    description: "Lugnt läge nära skola",
+    viewing: {
+      scheduledAt: "2026-10-06T17:00:00",
+      location: "Samlas utanför entrén, Skolgatan 9",
+      hostName: "Anna Lindqvist",
+      hostRole: "Kvartersvärd",
+      phone: "072-123 45 67",
+      email: "anna.lindqvist@example.com",
+    },
   },
   {
     id: "234-234-234-1012",
@@ -232,7 +249,15 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedTo: "2024-10-20",
     availableFrom: "2024-12-01",
     preferredMoveOutDate: "2024-11-17",
-    description: "Central tvåa i populärt område"
+    description: "Central tvåa i populärt område",
+    viewing: {
+      scheduledAt: "2026-10-08T12:15:00",
+      location: "Samlas utanför entrén, Eriksgatan 18",
+      hostName: "Johan Berg",
+      hostRole: "Förvaltare",
+      phone: "073-987 65 43",
+      email: "johan.berg@example.com",
+    },
   },
   {
     id: "234-234-234-1014",
