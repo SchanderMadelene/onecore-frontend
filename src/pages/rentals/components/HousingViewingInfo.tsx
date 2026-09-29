@@ -1,3 +1,4 @@
+import { CollapsibleInfoCard } from "@/shared/ui/collapsible-info-card";
 import type { HousingListing } from "@/features/rentals/hooks/useHousingListing";
 
 interface HousingViewingInfoProps {
@@ -17,8 +18,16 @@ const formatDate = (iso: string) => {
 
 export function HousingViewingInfo({ viewing }: HousingViewingInfoProps) {
   return (
-    <section className="rounded-lg border p-6">
-      <h3 className="text-lg font-semibold mb-4">Visning</h3>
+    <CollapsibleInfoCard
+      title="Visning"
+      collapsibleOnDesktop
+      defaultOpen
+      previewContent={
+        <p className="text-sm text-muted-foreground">
+          {formatDate(viewing.scheduledAt)} · {viewing.hostName}
+        </p>
+      }
+    >
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="space-y-1">
           <p className="text-sm text-muted-foreground">Datum och tid</p>
@@ -41,6 +50,6 @@ export function HousingViewingInfo({ viewing }: HousingViewingInfoProps) {
           <p className="text-sm">{viewing.email}</p>
         </div>
       </div>
-    </section>
+    </CollapsibleInfoCard>
   );
 }
