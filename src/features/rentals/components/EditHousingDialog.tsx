@@ -45,7 +45,7 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
     else setInternalOpen(v);
   };
   const isMobile = useIsMobile();
-  const showReviewToggle = housingSpace.status !== "draft";
+  const showReviewToggle = true;
   
   const form = useForm<EditHousingFormData>({
     defaultValues: {
