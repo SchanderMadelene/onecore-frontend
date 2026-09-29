@@ -4,7 +4,7 @@ import { getDistrictByArea } from "../utils/area-district";
 import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
 
-import { publishedHousingSpaces } from "../data/published-housing";
+import { usePublishedSpaces } from "../data/unpublished-housing-store";
 import { getHousingObjectNumber } from "../utils/object-number";
 import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-filters";
 

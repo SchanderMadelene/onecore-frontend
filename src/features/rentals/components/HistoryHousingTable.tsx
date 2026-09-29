@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ResponsiveTable } from "@/shared/ui/responsive-table";
-import { historyHousingSpaces } from "../data/history-housing";
+import { useHistorySpaces } from "../data/history-housing-store";
 import { getDistrictByArea } from "../utils/area-district";
 import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
@@ -11,7 +11,8 @@ import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-
 export function HistoryHousingTable({ filters }: { filters: HousingFiltersState }) {
   const navigate = useNavigate();
 
-  const historyRows = applyHousingFilters(historyHousingSpaces, filters);
+  const historySpaces = useHistorySpaces();
+  const historyRows = applyHousingFilters(historySpaces, filters);
 
 
   const columns = [
