@@ -10,18 +10,24 @@ interface CollapsibleInfoCardProps {
   titleClassName?: string;
   previewContent?: React.ReactNode;
   children: React.ReactNode;
+  /** Gör kortet ihopfällbart även på desktop (default: endast mobil) */
+  collapsibleOnDesktop?: boolean;
+  /** Starta expanderat (default: ihopfällt) */
+  defaultOpen?: boolean;
 }
 
-export const CollapsibleInfoCard = ({ 
-  title, 
+export const CollapsibleInfoCard = ({
+  title,
   titleClassName,
-  previewContent, 
-  children 
+  previewContent,
+  children,
+  collapsibleOnDesktop = false,
+  defaultOpen = false,
 }: CollapsibleInfoCardProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const isMobile = useIsMobile();
 
-  if (!isMobile) {
+  if (!isMobile && !collapsibleOnDesktop) {
     return (
       <Card>
         <CardHeader>
