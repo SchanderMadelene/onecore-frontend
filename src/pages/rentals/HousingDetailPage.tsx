@@ -277,7 +277,15 @@ const HousingDetailPage = () => {
           <HousingInfo
             housing={listing}
             applicantCount={displayedApplicants.length}
-            notesSlot={!isHistoryMode ? (
+            notesSlot={isHistoryMode ? (
+              <Notes
+                entityType="housing"
+                entityId={housingId}
+                readOnly
+                presetNotes={getHistoryNotes(housingId)}
+                emptyMessage="Inga noteringar har lagts till för denna bostad ännu."
+              />
+            ) : (
               <Notes
                 entityType="housing"
                 entityId={housingId}
@@ -287,7 +295,7 @@ const HousingDetailPage = () => {
                 categories={["Underhåll", "Klagomål", "Allmänt", "Uthyrning"]}
                 showCategory={true}
               />
-            ) : undefined}
+            )}
           />
 
           <section>
