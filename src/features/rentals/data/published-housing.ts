@@ -19,8 +19,8 @@ export interface PublishedHousingSpace {
   viewing?: {
     scheduledAt: string;
     location: string;
-    hostName: string;
-    hostRole: string;
+    /** Vem som visar: befintlig hyresgäst eller Mimer */
+    hostType: "tenant" | "mimer";
     phone: string;
     email: string;
   };
@@ -213,8 +213,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     viewing: {
       scheduledAt: "2026-10-06T17:00:00",
       location: "Samlas utanför entrén, Skolgatan 9",
-      hostName: "Anna Lindqvist",
-      hostRole: "Kvartersvärd",
+      hostType: "tenant",
       phone: "072-123 45 67",
       email: "anna.lindqvist@example.com",
     },
@@ -253,8 +252,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     viewing: {
       scheduledAt: "2026-10-08T12:15:00",
       location: "Samlas utanför entrén, Eriksgatan 18",
-      hostName: "Johan Berg",
-      hostRole: "Förvaltare",
+      hostType: "mimer",
       phone: "073-987 65 43",
       email: "johan.berg@example.com",
     },

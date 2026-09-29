@@ -16,14 +16,20 @@ const formatDate = (iso: string) => {
   return `${date.charAt(0).toUpperCase()}${date.slice(1)} kl. ${time}`;
 };
 
+const HOST_TYPE_LABELS: Record<"tenant" | "mimer", string> = {
+  tenant: "Hyresgäst",
+  mimer: "Mimer",
+};
+
 export function HousingViewingInfo({ viewing }: HousingViewingInfoProps) {
+  const hostLabel = HOST_TYPE_LABELS[viewing.hostType];
   return (
     <CollapsibleInfoCard
       title="Visning"
       collapsibleOnDesktop
       previewContent={
         <p className="text-sm text-muted-foreground">
-          {formatDate(viewing.scheduledAt)} · {viewing.hostName}
+          {formatDate(viewing.scheduledAt)} · {hostLabel}
         </p>
       }
     >
@@ -38,10 +44,7 @@ export function HousingViewingInfo({ viewing }: HousingViewingInfoProps) {
         </div>
         <div className="space-y-1">
           <p className="text-sm text-muted-foreground">Visas av</p>
-          <p className="font-medium">
-            {viewing.hostName}
-            <span className="text-sm text-muted-foreground"> · {viewing.hostRole}</span>
-          </p>
+          <p className="font-medium">{hostLabel}</p>
         </div>
         <div className="space-y-1">
           <p className="text-sm text-muted-foreground">Kontaktuppgifter</p>
