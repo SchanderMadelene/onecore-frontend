@@ -151,7 +151,6 @@ export function UnpublishedHousingTable({ filters }: { filters: HousingFiltersSt
     },
     { key: "lastModified", label: "Senast ändrad", render: (s: any) => s.lastModified, hideOnMobile: true },
     { key: "preferredMoveOutDate", label: "Ev tillgänglig från", render: (s: any) => s.preferredMoveOutDate ? new Date(s.preferredMoveOutDate).toLocaleDateString('sv-SE') : '-', hideOnMobile: true },
-    { key: "createdBy", label: "Skapad av", render: (s: any) => s.createdBy, hideOnMobile: true },
     {
       key: "actions",
       label: "",
