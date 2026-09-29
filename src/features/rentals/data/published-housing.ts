@@ -209,7 +209,15 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
     publishedTo: "2024-09-05",
     availableFrom: "2024-11-01",
     preferredMoveOutDate: "2024-10-18",
-    description: "Lugnt läge nära skola"
+    description: "Lugnt läge nära skola",
+    viewing: {
+      scheduledAt: "2026-10-06T17:00:00",
+      location: "Samlas utanför entrén, Skolgatan 9",
+      hostName: "Anna Lindqvist",
+      hostRole: "Kvartersvärd",
+      phone: "072-123 45 67",
+      email: "anna.lindqvist@example.com",
+    },
   },
   {
     id: "234-234-234-1012",
