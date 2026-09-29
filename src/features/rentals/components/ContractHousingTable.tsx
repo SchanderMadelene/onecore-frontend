@@ -4,17 +4,18 @@ import { getDistrictByArea } from "../utils/area-district";
 import { getRentalObjectType } from "../utils/rental-object-type";
 import { BuildingTypeBadge } from "@/features/property-areas/components/BuildingTypeBadge";
 
-import { publishedHousingSpaces } from "../data/published-housing";
+import { usePublishedSpaces } from "../data/unpublished-housing-store";
 import { getHousingObjectNumber } from "../utils/object-number";
 import { applyHousingFilters, type HousingFiltersState } from "../utils/housing-filters";
 
 export function ContractHousingTable({ filters }: { filters: HousingFiltersState }) {
   const navigate = useNavigate();
+  const publishedSpaces = usePublishedSpaces();
 
   // Annonser där publiceringsperioden har passerat (redo för kontraktsskrivning)
   const today = new Date();
   const contractHousings = applyHousingFilters(
-    publishedHousingSpaces.filter((h) => {
+    publishedSpaces.filter((h) => {
       const publishedTo = new Date(h.publishedTo);
       return publishedTo < today;
     }),

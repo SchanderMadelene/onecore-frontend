@@ -17,6 +17,8 @@ import { SendHousingOfferDialog, type HousingOfferDispatch } from "@/features/re
 import { BulkActionBar } from "@/shared/ui/bulk-action-bar";
 import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ConfirmDialog } from "@/shared/common";
+import { moveToHistory } from "@/features/rentals/data/history-housing-store";
 
 const NEW_ROUND_TAB = "__new_round__";
 
@@ -28,6 +30,8 @@ const HousingDetailPage = () => {
   const [emailOpen, setEmailOpen] = useState(false);
   const [isSelectingForNewRound, setIsSelectingForNewRound] = useState(false);
   const [activeRoundTab, setActiveRoundTab] = useState<string | undefined>(undefined);
+  const [linkContractApplicantId, setLinkContractApplicantId] = useState<number | null>(null);
+  const [linkContractPending, setLinkContractPending] = useState(false);
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -205,10 +209,24 @@ const HousingDetailPage = () => {
 
   const linkedContractApplicantId = isContractMode ? getLinkedContract(housingId) : undefined;
 
+  const linkContractApplicant = displayedApplicants.find(a => a.id === linkContractApplicantId) ?? null;
+
   const handleLinkContract = (applicantId: number) => {
-    linkContract(housingId, applicantId);
-    const applicant = displayedApplicants.find(a => a.id === applicantId);
-    sonnerToast.success(`Kontrakt kopplat till ${applicant?.name ?? "sökande"}`);
+    setLinkContractApplicantId(applicantId);
+  };
+
+  const handleConfirmLinkContract = async () => {
+    if (!housingId || !linkContractApplicant) return;
+    setLinkContractPending(true);
+    await new Promise((r) => setTimeout(r, 400));
+    linkContract(housingId, linkContractApplicant.id);
+    moveToHistory(listing, linkContractApplicant);
+    setLinkContractPending(false);
+    setLinkContractApplicantId(null);
+    sonnerToast.success(`Kontrakt kopplat till ${linkContractApplicant.name}`, {
+      description: "Annonsen har flyttats till fliken Historik",
+    });
+    navigate('/rentals/housing', { state: { activeHousingTab: 'historik' } });
   };
 
   const showRoundsView = isOfferedMode && rounds.length > 0 && !isContractMode && !isHistoryMode;
@@ -416,6 +434,19 @@ const HousingDetailPage = () => {
           await new Promise((r) => setTimeout(r, 300));
           sonnerToast.success(`Mejl skickat till ${sentTo.length} sökande`);
         }}
+      />
+
+      <ConfirmDialog
+        open={linkContractApplicantId !== null}
+        onOpenChange={(v) => {
+          if (!v && !linkContractPending) setLinkContractApplicantId(null);
+        }}
+        title="Koppla kontrakt"
+        description={`Vill du koppla kontrakt till ${linkContractApplicant?.name ?? "sökande"}? Annonsen flyttas till fliken Historik.`}
+        confirmLabel="Koppla kontrakt"
+        pendingLabel="Kopplar..."
+        isPending={linkContractPending}
+        onConfirm={handleConfirmLinkContract}
       />
     </PageLayout>
   );
