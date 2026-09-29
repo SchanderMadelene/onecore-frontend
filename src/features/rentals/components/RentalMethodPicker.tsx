@@ -19,23 +19,17 @@ export function RentalMethodPicker({ value, onChange, idPrefix = "method" }: Ren
       >
         <Label
           htmlFor={`${idPrefix}-standard`}
-          className="flex items-start gap-3 rounded-md border p-3 cursor-pointer font-normal has-[:checked]:border-foreground"
+          className="flex items-center gap-3 rounded-md border p-3 cursor-pointer font-normal has-[:checked]:border-foreground"
         >
-          <RadioGroupItem value="standard" id={`${idPrefix}-standard`} className="mt-0.5" />
-          <span>
-            <span className="block font-medium text-foreground">Standard</span>
-            <span className="block text-sm text-muted-foreground">Sökande rangordnas efter köpoäng. Erbjudande, visning och kontrakt.</span>
-          </span>
+          <RadioGroupItem value="standard" id={`${idPrefix}-standard`} />
+          <span className="font-medium text-foreground">Standard</span>
         </Label>
         <Label
           htmlFor={`${idPrefix}-poangfri`}
-          className="flex items-start gap-3 rounded-md border p-3 cursor-pointer font-normal has-[:checked]:border-foreground"
+          className="flex items-center gap-3 rounded-md border p-3 cursor-pointer font-normal has-[:checked]:border-foreground"
         >
-          <RadioGroupItem value="poangfri" id={`${idPrefix}-poangfri`} className="mt-0.5" />
-          <span>
-            <span className="block font-medium text-foreground">Poängfri</span>
-            <span className="block text-sm text-muted-foreground">Först till kvarn. Intresseanmälningar kvitteras manuellt.</span>
-          </span>
+          <RadioGroupItem value="poangfri" id={`${idPrefix}-poangfri`} />
+          <span className="font-medium text-foreground">Poängfri</span>
         </Label>
       </RadioGroup>
     </div>
