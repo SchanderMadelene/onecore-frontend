@@ -146,6 +146,7 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
           </TabsList>
 
           <TabsContent value="grundlaggande" className={`mt-4 ${isMobile ? 'mt-3' : 'mt-6'}`}>
+            {/*
             <div className={`space-y-4 ${isMobile ? 'space-y-4' : 'space-y-6'}`}>
               <BasicInfoSection housingSpace={housingSpace} />
               <Form {...form}>
@@ -154,24 +155,35 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
                 </form>
               </Form>
             </div>
+            */}
+            <p className="text-sm text-muted-foreground py-8 text-center">Innehåll kommer</p>
           </TabsContent>
 
           <TabsContent value="detaljerad" className={`mt-4 ${isMobile ? 'mt-3' : 'mt-6'}`}>
+            {/*
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <DetailedDescriptionTab control={form.control} />
               </form>
             </Form>
+            */}
+            <p className="text-sm text-muted-foreground py-8 text-center">Innehåll kommer</p>
           </TabsContent>
 
           <TabsContent value="media" className={`mt-4 ${isMobile ? 'mt-3' : 'mt-6'}`}>
+            {/*
             <Form {...form}>
               <MediaTab control={form.control} />
             </Form>
+            */}
+            <p className="text-sm text-muted-foreground py-8 text-center">Innehåll kommer</p>
           </TabsContent>
 
           <TabsContent value="planritning" className={`mt-4 ${isMobile ? 'mt-3' : 'mt-6'}`}>
+            {/*
             <PlanritningTab />
+            */}
+            <p className="text-sm text-muted-foreground py-8 text-center">Innehåll kommer</p>
           </TabsContent>
         </Tabs>
 
