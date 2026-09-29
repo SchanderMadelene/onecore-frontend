@@ -215,7 +215,7 @@ export const publishedHousingSpaces: PublishedHousingSpace[] = [
       location: "Samlas utanför entrén, Skolgatan 9",
       hostType: "tenant",
       phone: "072-123 45 67",
-      email: anna.lindqvist@example.com,
+      email: "anna.lindqvist@example.com",
     },
   },
   {
