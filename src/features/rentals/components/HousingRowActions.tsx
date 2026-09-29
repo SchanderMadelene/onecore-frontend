@@ -25,6 +25,7 @@ export type HousingActionTab =
   | "behovAvPublicering"
   | "klaraForErbjudande"
   | "erbjudna"
+  | "kontrakt"
   | "historik";
 
 interface HousingRowActionsProps {
@@ -132,6 +133,8 @@ function getActions(
     case "klaraForErbjudande":
       return { primary: [createOffer], menu: [newApp, preview, unpublish] };
     case "erbjudna":
+      return { primary: [], menu: [preview, unpublish] };
+    case "kontrakt":
       return { primary: [], menu: [preview, unpublish] };
     case "historik":
       return { primary: [], menu: [viewAd, preview] };
