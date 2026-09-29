@@ -28,7 +28,8 @@ import {
   hasActiveHousingFilters,
   type HousingFiltersState,
 } from "@/features/rentals/utils/housing-filters";
-import { ClearFiltersButton, DateRangeFilter } from "@/shared/common";
+import { DateRangeFilter } from "@/shared/common/DateRangeFilter";
+import { ClearFiltersButton } from "@/shared/common/ClearFiltersButton";
 
 function HousingGlobalFilters({
   filters,
