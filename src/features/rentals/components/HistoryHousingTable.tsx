@@ -55,7 +55,7 @@ export function HistoryHousingTable({ filters }: { filters: HousingFiltersState 
       <div className="text-sm text-muted-foreground">{housing.area}</div>
       <div className="grid grid-cols-[auto_auto] gap-x-4 gap-y-1 mt-2 justify-start">
         <span className="text-sm text-muted-foreground">Tilldelad:</span>
-        <span className="text-sm">{housing.contractedTo}</span>
+        <span className="text-sm">{housing.contractedTo} <span className="text-muted-foreground">{housing.contractedToCustomerNumber}</span></span>
         <span className="text-sm text-muted-foreground">Kontraktstart:</span>
         <span className="text-sm">{new Date(housing.contractStart).toLocaleDateString('sv-SE')}</span>
         <span className="text-sm text-muted-foreground">Hyra:</span>
