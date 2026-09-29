@@ -16,7 +16,7 @@ const formatDate = (iso: string) => {
   return `${date.charAt(0).toUpperCase()}${date.slice(1)} kl. ${time}`;
 };
 
-const HOST_TYPE_LABELS: Record<HousingListing["viewing"] extends { hostType: infer T } ? T : never, string> = {
+const HOST_TYPE_LABELS: Record<"tenant" | "mimer", string> = {
   tenant: "Hyresgäst",
   mimer: "Mimer",
 };
