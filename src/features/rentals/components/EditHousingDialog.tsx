@@ -146,7 +146,6 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
           </TabsList>
 
           <TabsContent value="grundlaggande" className={`mt-4 ${isMobile ? 'mt-3' : 'mt-6'}`}>
-            {/*
             <div className={`space-y-4 ${isMobile ? 'space-y-4' : 'space-y-6'}`}>
               <BasicInfoSection housingSpace={housingSpace} />
               <Form {...form}>
@@ -155,8 +154,6 @@ export function EditHousingDialog({ housingSpace, open: controlledOpen, onOpenCh
                 </form>
               </Form>
             </div>
-            */}
-            <p className="text-sm text-muted-foreground py-8 text-center">Innehåll kommer</p>
           </TabsContent>
 
           <TabsContent value="detaljerad" className={`mt-4 ${isMobile ? 'mt-3' : 'mt-6'}`}>
