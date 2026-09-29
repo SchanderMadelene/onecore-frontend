@@ -291,7 +291,8 @@ const HousingDetailPage = () => {
                   )}
                   <HousingRowActions
                     housing={listing}
-                    tab={(offerStatus === 'Publicerat nu' ? 'publicerade' :
+                    tab={(isContractMode ? 'kontrakt' :
+                          offerStatus === 'Publicerat nu' ? 'publicerade' :
                           offerStatus === 'Erbjud visning' ? 'klaraForErbjudande' :
                           offerStatus === 'Visning' ? 'erbjudna' : 'publicerade') as HousingActionTab}
                     variant="detail"
