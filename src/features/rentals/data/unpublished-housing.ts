@@ -37,7 +37,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     createdBy: "Erik Larsson",
     description: "",
     availableFrom: "2024-02-15",
-    preferredMoveOutDate: "2024-02-01"
+    preferredMoveOutDate: "2024-02-01",
+    lastRentalMethod: "poangfri"
   },
   {
     id: "234-234-234-0203",
@@ -56,7 +57,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     createdBy: "Maria Nilsson",
     description: "",
     availableFrom: "2024-03-15",
-    preferredMoveOutDate: "2024-03-01"
+    preferredMoveOutDate: "2024-03-01",
+    lastRentalMethod: "standard"
   },
   {
     id: "234-234-234-0204",
@@ -94,7 +96,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     createdBy: "Sofia Lind",
     description: "",
     availableFrom: "2024-04-15",
-    preferredMoveOutDate: "2024-04-01"
+    preferredMoveOutDate: "2024-04-01",
+    lastRentalMethod: "standard"
   },
   {
     id: "234-234-234-0206",
@@ -113,7 +116,8 @@ export const unpublishedHousingSpaces: UnpublishedHousingSpace[] = [
     createdBy: "Karin Holm",
     description: "",
     availableFrom: "2024-05-01",
-    preferredMoveOutDate: "2024-04-17"
+    preferredMoveOutDate: "2024-04-17",
+    lastRentalMethod: "poangfri"
   },
   {
     id: "234-234-234-0207",
