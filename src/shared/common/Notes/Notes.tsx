@@ -5,14 +5,16 @@ import { Plus, Save, Pin, PinOff, Trash2 } from "lucide-react";
 import { useNotesState } from "./hooks/useNotesState";
 import type { NotesProps, Note } from "./types";
 
-export function Notes({ 
-  entityType, 
-  entityId, 
+export function Notes({
+  entityType,
+  entityId,
   title = "Noteringar",
   placeholder = "Skriv din notering här...",
   emptyMessage = "Inga noteringar har lagts till ännu.",
   categories = [],
-  showCategory = false
+  showCategory = false,
+  readOnly = false,
+  presetNotes = []
 }: NotesProps) {
   const {
     state,
@@ -26,9 +28,9 @@ export function Notes({
   } = useNotesState(entityType, entityId, categories);
 
   const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { 
-      year: 'numeric', 
-      month: 'numeric', 
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'numeric',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
@@ -36,14 +38,54 @@ export function Notes({
     return new Date(dateString).toLocaleDateString('sv-SE', options);
   };
 
+  const displayNotes: Note[] = readOnly
+    ? [...presetNotes].sort((a, b) =>
+        Number(b.isPinned) - Number(a.isPinned) ||
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+    : sortedNotes;
+
+  if (readOnly) {
+    return (
+      <div className="space-y-4">
+        {displayNotes.length === 0 ? (
+          <p className="text-muted-foreground text-center py-4 text-sm">
+            {emptyMessage}
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {displayNotes.map((note: Note) => (
+              <div
+                key={note.id}
+                className={`border rounded-md p-3 ${note.isPinned ? 'bg-amber-50 border-amber-200' : ''}`}
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    {note.isPinned && (
+                      <Pin className="h-4 w-4 text-amber-600 flex-shrink-0" />
+                    )}
+                    <p className="text-xs text-muted-foreground truncate">
+                      {formatDate(note.createdAt)} av {note.createdBy}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm whitespace-pre-wrap break-words">{note.content}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {/* Add note button */}
       {!state.isAddingNote && (
         <div className="flex justify-start">
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             className="flex items-center gap-1"
             onClick={startAddingNote}
           >
@@ -56,22 +98,22 @@ export function Notes({
       {/* Add note form */}
       {state.isAddingNote && (
         <div className="border p-3 rounded-md bg-muted/20 space-y-3">
-          <Textarea 
+          <Textarea
             placeholder={placeholder}
             className="min-h-[80px] text-sm"
             value={state.newNote}
             onChange={(e) => updateNewNote(e.target.value)}
           />
           <div className="flex justify-end gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={cancelAddingNote}
             >
               Avbryt
             </Button>
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               onClick={handleAddNote}
               className="flex items-center gap-1"
             >
@@ -81,7 +123,7 @@ export function Notes({
           </div>
         </div>
       )}
-      
+
       {/* Notes list */}
       {sortedNotes.length === 0 ? (
         <p className="text-muted-foreground text-center py-4 text-sm">
@@ -90,7 +132,7 @@ export function Notes({
       ) : (
         <div className="space-y-3">
           {sortedNotes.map((note: Note) => (
-            <div 
+            <div
               key={note.id}
               className={`border rounded-md p-3 ${note.isPinned ? 'bg-amber-50 border-amber-200' : ''}`}
             >
@@ -104,9 +146,9 @@ export function Notes({
                   </p>
                 </div>
                 <div className="flex gap-1 flex-shrink-0 ml-2">
-                  <Button 
-                    variant="subtle" 
-                    size="icon" 
+                  <Button
+                    variant="subtle"
+                    size="icon"
                     className="h-6 w-6 hover:text-amber-600"
                     onClick={() => handleTogglePin(note.id)}
                     title={note.isPinned ? "Ta bort pin" : "Pinna notering"}
@@ -117,9 +159,9 @@ export function Notes({
                       <Pin className="h-4 w-4" />
                     )}
                   </Button>
-                  <Button 
-                    variant="subtle" 
-                    size="icon" 
+                  <Button
+                    variant="subtle"
+                    size="icon"
                     className="h-6 w-6 hover:text-destructive"
                     onClick={() => handleDeleteNote(note.id)}
                     title="Ta bort notering"

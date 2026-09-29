@@ -10,6 +10,11 @@ interface HousingInfoProps {
 }
 
 export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoProps) {
+  const formatDate = (value?: string) => {
+    if (!value) return "-";
+    const d = new Date(value);
+    return isNaN(d.getTime()) ? "-" : d.toLocaleDateString('sv-SE');
+  };
   const slug = housing.address
     .toLowerCase()
     .replace(/[åä]/g, "a")
@@ -58,11 +63,11 @@ export function HousingInfo({ housing, applicantCount, notesSlot }: HousingInfoP
           </div>
           <div className="space-y-1">
             <p className="text-sm text-muted-foreground">Publicerad t.o.m</p>
-            <p className="font-medium">{new Date(housing.publishedTo).toLocaleDateString('sv-SE')}</p>
+            <p className="font-medium">{formatDate(housing.publishedTo)}</p>
           </div>
           <div className="space-y-1">
             <p className="text-sm text-muted-foreground">Ledig från och med</p>
-            <p className="font-medium">{new Date(housing.availableFrom).toLocaleDateString('sv-SE')}</p>
+            <p className="font-medium">{formatDate(housing.availableFrom)}</p>
           </div>
           <div className="space-y-1 sm:col-span-2">
             <p className="text-sm text-muted-foreground">Annons</p>

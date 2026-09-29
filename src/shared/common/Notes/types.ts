@@ -16,6 +16,10 @@ export interface NotesProps {
   emptyMessage?: string;
   categories?: string[];
   showCategory?: boolean;
+  /** Visar noteringar skrivskyddat utan redigeringsmöjligheter */
+  readOnly?: boolean;
+  /** Förhandsatta noteringar när readOnly är satt */
+  presetNotes?: Note[];
 }
 
 export interface NotesState {

@@ -7,6 +7,7 @@ import { toast as sonnerToast } from "sonner";
 import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import { useState, useMemo } from "react";
 import { Notes } from "@/components/common";
+import { getHistoryNotes } from "@/features/rentals/data/history-notes";
 import { HousingHeader } from "./components/HousingHeader";
 import { HousingApplicantsTable } from "./components/HousingApplicantsTable";
 import { HousingInfo } from "./components/HousingInfo";
@@ -276,7 +277,15 @@ const HousingDetailPage = () => {
           <HousingInfo
             housing={listing}
             applicantCount={displayedApplicants.length}
-            notesSlot={!isHistoryMode ? (
+            notesSlot={isHistoryMode ? (
+              <Notes
+                entityType="housing"
+                entityId={housingId}
+                readOnly
+                presetNotes={getHistoryNotes(housingId)}
+                emptyMessage="Inga noteringar har lagts till för denna bostad ännu."
+              />
+            ) : (
               <Notes
                 entityType="housing"
                 entityId={housingId}
@@ -286,7 +295,7 @@ const HousingDetailPage = () => {
                 categories={["Underhåll", "Klagomål", "Allmänt", "Uthyrning"]}
                 showCategory={true}
               />
-            ) : undefined}
+            )}
           />
 
           <section>
