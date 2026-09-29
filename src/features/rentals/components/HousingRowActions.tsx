@@ -19,6 +19,10 @@ import { useHousingOffers } from "@/contexts/HousingOffersContext";
 import type { HousingSpace } from "./types/housing";
 import type { UnpublishedHousingSpace } from "./types/unpublished-housing";
 import { publishSpaces } from "../data/unpublished-housing-store";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { useFeatureToggles } from "@/shared/contexts/FeatureTogglesContext";
+import type { RentalMethod } from "../data/published-housing";
 
 export type HousingActionTab =
   | "publicerade"
@@ -154,21 +158,29 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
   const [earlyUnpublishPending, setEarlyUnpublishPending] = useState(false);
 
   const seekers = (housing as HousingSpace).seekers ?? 0;
+  const { features } = useFeatureToggles();
+  const unified = features.showRentalsUnifiedHousing;
+  const [rentalMethod, setRentalMethod] = useState<RentalMethod | null>(null);
+  const isPublishConfirm = confirm?.confirmLabel === "Publicera";
+  const isPoangfri = (housing as { rentalMethod?: RentalMethod }).rentalMethod === "poangfri";
 
   const stop = (e: React.MouseEvent | React.SyntheticEvent) => e.stopPropagation();
   const goDetail = () =>
-    navigate(`/rentals/housing/${housing.id}`, { state: { activeHousingTab: tab } });
+    isPoangfri
+      ? navigate(`/rentals/housing/poangfritt/${housing.id}`)
+      : navigate(`/rentals/housing/${housing.id}`, { state: { activeHousingTab: tab } });
 
   const runConfirm = async () => {
     if (!confirm) return;
     setPending(true);
     await new Promise((r) => setTimeout(r, 500));
     if (confirm.confirmLabel === "Publicera") {
-      publishSpaces([housing.id]);
+      publishSpaces([housing.id], unified ? rentalMethod ?? "standard" : "standard");
     }
     toast({ title: confirm.successTitle, description: housing.address });
     setPending(false);
     setConfirm(null);
+    setRentalMethod(null);
   };
 
   const runEarlyUnpublish = async () => {
@@ -293,9 +305,52 @@ export function HousingRowActions({ housing, tab, variant = "row", hidePrimary =
 
       <ConfirmDialog
         open={!!confirm}
-        onOpenChange={(v) => !v && setConfirm(null)}
+        onOpenChange={(v) => {
+          if (!v) {
+            setConfirm(null);
+            setRentalMethod(null);
+          }
+        }}
         title={confirm?.title ?? ""}
-        description={confirm?.description ?? ""}
+        description={
+          unified && isPublishConfirm ? (
+            <div className="space-y-4">
+              <p>{confirm?.description}</p>
+              <div className="space-y-2">
+                <Label className="text-foreground">Uthyrningsmetod</Label>
+                <RadioGroup
+                  value={rentalMethod ?? ""}
+                  onValueChange={(v) => setRentalMethod(v as RentalMethod)}
+                  className="gap-2"
+                >
+                  <Label
+                    htmlFor="method-standard"
+                    className="flex items-start gap-3 rounded-md border p-3 cursor-pointer font-normal has-[:checked]:border-foreground"
+                  >
+                    <RadioGroupItem value="standard" id="method-standard" className="mt-0.5" />
+                    <span>
+                      <span className="block font-medium text-foreground">Standard</span>
+                      <span className="block text-sm text-muted-foreground">Sökande rangordnas efter köpoäng. Erbjudande, visning och kontrakt.</span>
+                    </span>
+                  </Label>
+                  <Label
+                    htmlFor="method-poangfri"
+                    className="flex items-start gap-3 rounded-md border p-3 cursor-pointer font-normal has-[:checked]:border-foreground"
+                  >
+                    <RadioGroupItem value="poangfri" id="method-poangfri" className="mt-0.5" />
+                    <span>
+                      <span className="block font-medium text-foreground">Poängfri</span>
+                      <span className="block text-sm text-muted-foreground">Först till kvarn. Intresseanmälningar kvitteras manuellt.</span>
+                    </span>
+                  </Label>
+                </RadioGroup>
+              </div>
+            </div>
+          ) : (
+            confirm?.description ?? ""
+          )
+        }
+        confirmDisabled={unified && isPublishConfirm && !rentalMethod}
         confirmLabel={confirm?.confirmLabel}
         pendingLabel={confirm?.pendingLabel}
         variant={confirm?.destructive ? "destructive" : "default"}
