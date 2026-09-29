@@ -435,6 +435,19 @@ const HousingDetailPage = () => {
           sonnerToast.success(`Mejl skickat till ${sentTo.length} sökande`);
         }}
       />
+
+      <ConfirmDialog
+        open={linkContractApplicantId !== null}
+        onOpenChange={(v) => {
+          if (!v && !linkContractPending) setLinkContractApplicantId(null);
+        }}
+        title="Koppla kontrakt"
+        description={`Vill du koppla kontrakt till ${linkContractApplicant?.name ?? "sökande"}? Annonsen flyttas till fliken Historik.`}
+        confirmLabel="Koppla kontrakt"
+        pendingLabel="Kopplar..."
+        isPending={linkContractPending}
+        onConfirm={handleConfirmLinkContract}
+      />
     </PageLayout>
   );
 };
