@@ -71,67 +71,6 @@ export function EditableFormSection({ control }: EditableFormSectionProps) {
         />
       </div>
 
-      <FormField
-        control={control}
-        name="housingObjectType"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-sm font-medium">Hyresobjektstyp</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger className="h-12">
-                  <SelectValue placeholder="Standard, Poängfri, Korttidskontrakt, Lätt att ..." />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="standard">Standard</SelectItem>
-                <SelectItem value="poangfri">Poängfri</SelectItem>
-                <SelectItem value="korttid">Korttidskontrakt</SelectItem>
-                <SelectItem value="latt">Lätt att...</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <div className="grid grid-cols-2 gap-4">
-        <FormField
-          control={control}
-          name="moveIn"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm font-medium">Inflyttning</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="h-12">
-                    <SelectValue placeholder="Omgående" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="omgående">Omgående</SelectItem>
-                  <SelectItem value="datum">Specifikt datum</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={control}
-          name="moveInDate"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel className="text-sm font-medium">Inflyttning</FormLabel>
-              <FormControl>
-                <DatePicker value={field.value} onChange={field.onChange} placeholder="Välj datum" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
 
       <div className="grid grid-cols-2 gap-4">
         <FormField
