@@ -57,6 +57,11 @@ export function moveToHistory(
   emit();
 }
 
+/** Icke-reaktiv läsning av historikraderna (seed + flyttade annonser) */
+export function getHistorySpacesSnapshot(): HistoryHousingSpace[] {
+  return historySnapshot;
+}
+
 export function useHistorySpaces() {
   return useSyncExternalStore(
     (l) => {

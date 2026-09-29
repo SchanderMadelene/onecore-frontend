@@ -3,6 +3,7 @@ import { publishedHousingSpaces, type PublishedHousingSpace } from "../data/publ
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
 import { historyHousingSpaces } from "../data/history-housing";
 import { getPublishedSpaces, getPublishVersion } from "../data/unpublished-housing-store";
+import { getHistorySpacesSnapshot } from "../data/history-housing-store";
 
 export interface HousingApplicant {
   id: number;
