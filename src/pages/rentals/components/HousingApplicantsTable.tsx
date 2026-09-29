@@ -499,7 +499,10 @@ export function HousingApplicantsTable({
                             <Button
                               variant={isRecommended ? "default" : "outline"}
                               size="sm"
-                              onClick={() => onLinkContract?.(applicant.id)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onLinkContract?.(applicant.id);
+                              }}
                             >
                               Koppla kontrakt
                             </Button>
