@@ -10,6 +10,8 @@ interface BulkActionBarProps {
   onClear: () => void;
   onEditOffer?: () => void;
   editOfferLabel?: string;
+  onCreditCheck?: () => void;
+  creditCheckLabel?: string;
   className?: string;
 }
 
@@ -20,6 +22,8 @@ export function BulkActionBar({
   onClear,
   onEditOffer,
   editOfferLabel = "Ändra/uppdatera erbjudande",
+  onCreditCheck,
+  creditCheckLabel = "Gör kreditkontroll",
   className
 }: BulkActionBarProps) {
   const isMobile = useIsMobile();
@@ -59,7 +63,17 @@ export function BulkActionBar({
             </Button>
           </div>
 
-          <div className={cn("flex items-center gap-2", isMobile && "w-full")}>
+          <div className={cn("flex items-center gap-2", isMobile && "w-full flex-wrap")}>
+            {onCreditCheck && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onCreditCheck}
+                className={cn("h-9", isMobile ? "flex-1" : "flex-none")}
+              >
+                {creditCheckLabel}
+              </Button>
+            )}
             {onEditOffer && (
               <Button
                 variant="outline"
