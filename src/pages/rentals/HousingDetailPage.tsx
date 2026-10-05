@@ -28,6 +28,7 @@ const NEW_ROUND_TAB = "__new_round__";
 const HousingDetailPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
+  const [manualSelectedApplicants, setManualSelectedApplicants] = useState<string[]>([]);
   const [isOfferDialogOpen, setIsOfferDialogOpen] = useState(false);
   const [smsOpen, setSmsOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
@@ -83,15 +84,15 @@ const HousingDetailPage = () => {
 
   const activeHousingTab = location.state?.activeHousingTab || "publicerade";
 
-  // Sökande med urklick som saknar kreditkontroll
+  // Sökande som användaren själv bockat i och som saknar kreditkontroll
   const creditCheckEligible = useMemo(() => {
     if (!listing) return [];
     return listing.applicants.filter(
       (a) =>
-        selectedApplicants.includes(String(a.id)) &&
+        manualSelectedApplicants.includes(String(a.id)) &&
         (a.creditReport.status === "-" || a.creditReport.status === "Ingen uppgift tillgänglig"),
     );
-  }, [listing, selectedApplicants]);
+  }, [listing, manualSelectedApplicants]);
 
   const handleConfirmCreditCheck = async () => {
     if (!housingId) return;
@@ -428,6 +429,7 @@ const HousingDetailPage = () => {
                 showOfferColumns={false}
                 showSelectionColumn={!activeOffer && !isContractMode && !isHistoryMode}
                 onSelectionChange={setSelectedApplicants}
+                onManualSelectionChange={setManualSelectedApplicants}
                 offeredApplicantIds={activeOffer?.selectedApplicants || []}
                 contractMode={isContractMode}
                 autoSelectTopApplicants={(status === 'ready_for_offer' || activeHousingTab === 'klaraForErbjudande') && !isHistoryMode && !isContractMode}
