@@ -3,6 +3,7 @@ import { publishedHousingSpaces, type PublishedHousingSpace } from "../data/publ
 import { unpublishedHousingSpaces } from "../data/unpublished-housing";
 import { getPublishedSpaces, getPublishVersion, isRemovedFromPublished } from "../data/unpublished-housing-store";
 import { getHistorySpacesSnapshot } from "../data/history-housing-store";
+import { getCreditCheck, getCreditCheckVersion } from "../data/credit-check-store";
 
 export interface HousingApplicant {
   id: number;
@@ -61,8 +62,9 @@ export interface HousingListing extends PublishedHousingSpace {
 
 export const useHousingListing = (id: string) => {
   const publishVersion = getPublishVersion();
+  const creditVersion = getCreditCheckVersion();
   return useQuery({
-    queryKey: ['housingListing', id, publishVersion],
+    queryKey: ['housingListing', id, publishVersion, creditVersion],
     queryFn: () => {
       // Om annonsen flyttats vidare (t.ex. till Historik) får den inte längre
       // läsas från publiceringslistorna – annars tappas historikdata som
@@ -469,7 +471,14 @@ export const useHousingListing = (id: string) => {
           contractStart: history.contractStart,
           signedAt: history.signedAt,
         } : undefined,
-      } as HousingListing);
+      } as HousingListing).then((listing) => ({
+        ...listing,
+        // Applicera kreditkontroller som körts via bulkåtgärden
+        applicants: listing.applicants.map((a) => {
+          const cc = getCreditCheck(id, a.id);
+          return cc ? { ...a, creditReport: { status: cc.status, date: cc.date } } : a;
+        }),
+      }));
     }
   });
 };
