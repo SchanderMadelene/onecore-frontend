@@ -83,6 +83,34 @@ const HousingDetailPage = () => {
 
   const activeHousingTab = location.state?.activeHousingTab || "publicerade";
 
+  // Sökande med urklick som saknar kreditkontroll
+  const creditCheckEligible = useMemo(() => {
+    if (!listing) return [];
+    return listing.applicants.filter(
+      (a) =>
+        selectedApplicants.includes(String(a.id)) &&
+        (a.creditReport.status === "-" || a.creditReport.status === "Ingen uppgift tillgänglig"),
+    );
+  }, [listing, selectedApplicants]);
+
+  const handleConfirmCreditCheck = async () => {
+    if (!housingId) return;
+    setCreditCheckPending(true);
+    await new Promise((r) => setTimeout(r, 400));
+    const updated = runCreditChecks(
+      housingId,
+      creditCheckEligible.map((a) => ({ id: a.id, currentStatus: a.creditReport.status })),
+    );
+    setCreditCheckPending(false);
+    setCreditCheckOpen(false);
+    queryClient.invalidateQueries({ queryKey: ['housingListing', housingId] });
+    sonnerToast.success(
+      updated === 1
+        ? "Kreditkontroll klar för 1 sökande"
+        : `Kreditkontroll klar för ${updated} sökande`,
+    );
+  };
+
   const handleBack = () => {
     navigate('/rentals/housing', { state: { activeHousingTab } });
   };
@@ -432,8 +460,26 @@ const HousingDetailPage = () => {
           onSendSms={() => setSmsOpen(true)}
           onSendEmail={() => setEmailOpen(true)}
           onClear={() => setSelectedApplicants([])}
+          onCreditCheck={
+            activeHousingTab === 'klaraForErbjudande' && creditCheckEligible.length > 0
+              ? () => setCreditCheckOpen(true)
+              : undefined
+          }
         />
       )}
+
+      <ConfirmDialog
+        open={creditCheckOpen}
+        onOpenChange={(v) => {
+          if (!v && !creditCheckPending) setCreditCheckOpen(false);
+        }}
+        title="Gör kreditkontroll"
+        description={`Kör kreditkontroll på ${creditCheckEligible.length} ${creditCheckEligible.length === 1 ? "sökande" : "sökande"} som saknar kontroll?`}
+        confirmLabel="Gör kreditkontroll"
+        pendingLabel="Kör kontroll..."
+        isPending={creditCheckPending}
+        onConfirm={handleConfirmCreditCheck}
+      />
       <BulkSmsModal
         open={smsOpen}
         onOpenChange={setSmsOpen}
