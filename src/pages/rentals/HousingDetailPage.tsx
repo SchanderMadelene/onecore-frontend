@@ -20,6 +20,8 @@ import { BulkSmsModal, BulkEmailModal } from "@/features/communication";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ConfirmDialog } from "@/shared/common";
 import { moveToHistory } from "@/features/rentals/data/history-housing-store";
+import { runCreditChecks } from "@/features/rentals/data/credit-check-store";
+import { useQueryClient } from "@tanstack/react-query";
 
 const NEW_ROUND_TAB = "__new_round__";
 
@@ -33,6 +35,9 @@ const HousingDetailPage = () => {
   const [activeRoundTab, setActiveRoundTab] = useState<string | undefined>(undefined);
   const [linkContractApplicantId, setLinkContractApplicantId] = useState<number | null>(null);
   const [linkContractPending, setLinkContractPending] = useState(false);
+  const [creditCheckOpen, setCreditCheckOpen] = useState(false);
+  const [creditCheckPending, setCreditCheckPending] = useState(false);
+  const queryClient = useQueryClient();
   const { housingId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
