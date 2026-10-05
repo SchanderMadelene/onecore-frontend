@@ -78,6 +78,8 @@ export function HousingApplicantsTable({
   const [panelApplicantId, setPanelApplicantId] = useState<string | null>(null);
   const [responseOverrides, setResponseOverrides] = useState<Record<number, OfferResponseStatus>>({});
   const hasInitializedSelection = useRef(false);
+  // De automatiskt förvalda raderna — räknas inte som manuella val
+  const autoSelectedIds = useRef<Set<string>>(new Set());
 
   const handleManualResponse = (applicant: HousingApplicant, status: OfferResponseStatus) => {
     setResponseOverrides(prev => ({ ...prev, [applicant.id]: status }));
@@ -112,6 +114,7 @@ export function HousingApplicantsTable({
     }
 
     const initial = new Set(eligible);
+    autoSelectedIds.current = new Set(eligible);
     setSelectedApplicants(initial);
     onSelectionChange?.(Array.from(initial));
     hasInitializedSelection.current = true;
@@ -127,7 +130,9 @@ export function HousingApplicantsTable({
     }
     setSelectedApplicants(newSelected);
     onSelectionChange?.(Array.from(newSelected));
-    onManualSelectionChange?.(Array.from(newSelected));
+    onManualSelectionChange?.(
+      Array.from(newSelected).filter((id) => !autoSelectedIds.current.has(id)),
+    );
   };
 
   // Valbara rader: ej dimmade från tidigare omgångar
@@ -141,7 +146,9 @@ export function HousingApplicantsTable({
     const newSelected = checked ? new Set(selectableIds) : new Set<string>();
     setSelectedApplicants(newSelected);
     onSelectionChange?.(Array.from(newSelected));
-    onManualSelectionChange?.(Array.from(newSelected));
+    onManualSelectionChange?.(
+      Array.from(newSelected).filter((id) => !autoSelectedIds.current.has(id)),
+    );
   };
 
 
