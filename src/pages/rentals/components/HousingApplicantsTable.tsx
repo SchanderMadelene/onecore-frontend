@@ -130,6 +130,20 @@ export function HousingApplicantsTable({
     onManualSelectionChange?.(Array.from(newSelected));
   };
 
+  // Valbara rader: ej dimmade från tidigare omgångar
+  const selectableIds = applicants
+    .filter(a => !previousRoundApplicantIds.includes(a.id) && !activeRoundApplicantIds.includes(a.id))
+    .map(a => String(a.id));
+  const allSelected = selectableIds.length > 0 && selectableIds.every(id => selectedApplicants.has(id));
+  const someSelected = selectableIds.some(id => selectedApplicants.has(id));
+
+  const handleSelectAll = (checked: boolean) => {
+    const newSelected = checked ? new Set(selectableIds) : new Set<string>();
+    setSelectedApplicants(newSelected);
+    onSelectionChange?.(Array.from(newSelected));
+    onManualSelectionChange?.(Array.from(newSelected));
+  };
+
 
   const handleOpenPanel = (applicant: HousingApplicant) => {
     setPanelApplicantId(String(applicant.id));
@@ -273,7 +287,16 @@ export function HousingApplicantsTable({
         <Table className={contractMode ? "table-fixed" : undefined}>
         <TableHeader>
           <TableRow className={contractMode ? "bg-secondary/50" : undefined}>
-            {!historyMode && !contractMode && <TableHead className="w-12">Val</TableHead>}
+            {!historyMode && !contractMode && (
+              <TableHead className="w-12">
+                <Checkbox
+                  checked={allSelected ? true : someSelected ? "indeterminate" : false}
+                  onCheckedChange={(checked) => handleSelectAll(checked === true)}
+                  aria-label="Välj alla"
+                  className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                />
+              </TableHead>
+            )}
             <TableHead className="w-12 whitespace-nowrap">Plats</TableHead>
             <TableHead className="whitespace-nowrap">Namn</TableHead>
             <TableHead className="whitespace-nowrap">Kundnummer</TableHead>
