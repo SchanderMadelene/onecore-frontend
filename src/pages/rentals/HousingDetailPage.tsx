@@ -463,7 +463,7 @@ const HousingDetailPage = () => {
           onSendEmail={() => setEmailOpen(true)}
           onClear={() => setSelectedApplicants([])}
           onCreditCheck={
-            activeHousingTab === 'klaraForErbjudande' && creditCheckEligible.length > 0
+            activeHousingTab === 'klaraForErbjudande' && manualSelectedApplicants.length > 0
               ? () => setCreditCheckOpen(true)
               : undefined
           }
@@ -476,7 +476,11 @@ const HousingDetailPage = () => {
           if (!v && !creditCheckPending) setCreditCheckOpen(false);
         }}
         title="Gör kreditkontroll"
-        description={`Kör kreditkontroll på ${creditCheckEligible.length} ${creditCheckEligible.length === 1 ? "sökande" : "sökande"} som saknar kontroll?`}
+        description={
+          creditCheckEligible.length === 0
+            ? "Alla valda sökande har redan en kreditkontroll."
+            : `Kör kreditkontroll på ${creditCheckEligible.length} av ${manualSelectedApplicants.length} valda sökande som saknar kontroll?`
+        }
         confirmLabel="Gör kreditkontroll"
         pendingLabel="Kör kontroll..."
         isPending={creditCheckPending}
