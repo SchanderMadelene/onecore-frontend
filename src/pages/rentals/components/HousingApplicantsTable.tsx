@@ -24,6 +24,8 @@ interface HousingApplicantsTableProps {
   showOfferColumns?: boolean;
   showSelectionColumn?: boolean;
   onSelectionChange?: (selectedIds: string[]) => void;
+  /** Anropas bara vid manuella checkbox-klick (inte vid automatiskt förval) */
+  onManualSelectionChange?: (selectedIds: string[]) => void;
   offeredApplicantIds?: number[];
   /** Kontrakt-läge: dölj kolumnerna "Erbjudande" och "Visning bokad" */
   contractMode?: boolean;
@@ -57,6 +59,7 @@ export function HousingApplicantsTable({
   showOfferColumns = false,
   showSelectionColumn = true,
   onSelectionChange,
+  onManualSelectionChange,
   offeredApplicantIds = [],
   contractMode = false,
   autoSelectTopApplicants = false,
@@ -124,6 +127,7 @@ export function HousingApplicantsTable({
     }
     setSelectedApplicants(newSelected);
     onSelectionChange?.(Array.from(newSelected));
+    onManualSelectionChange?.(Array.from(newSelected));
   };
 
 
