@@ -483,6 +483,7 @@ const HousingDetailPage = () => {
         }
         confirmLabel="Gör kreditkontroll"
         pendingLabel="Kör kontroll..."
+        confirmDisabled={creditCheckEligible.length === 0}
         isPending={creditCheckPending}
         onConfirm={handleConfirmCreditCheck}
       />
